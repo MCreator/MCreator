@@ -31,7 +31,6 @@ import java.util.List;
 	public String type;
 	public String rarity;
 
-	public int minLevel;
 	public int maxLevel;
 
 	public int damageModifier;

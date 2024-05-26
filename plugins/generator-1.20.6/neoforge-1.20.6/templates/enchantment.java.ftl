@@ -33,23 +33,35 @@
 
 package ${package}.enchantment;
 
+<#function rarityToWeight rarity>
+	<#if rarity == "COMMON"><#return 10>
+	<#elseif rarity == "UNCOMMON"><#return 5>
+	<#elseif rarity == "RARE"><#return 2>
+	<#else><#return 1>
+	</#if>
+</#function>
+
+<#function rarityToAnvilCost rarity>
+	<#if rarity == "COMMON"><#return 1>
+	<#elseif rarity == "UNCOMMON"><#return 2>
+	<#elseif rarity == "RARE"><#return 4>
+	<#else><#return 8>
+	</#if>
+</#function>
+
 public class ${name}Enchantment extends Enchantment {
 
 	public ${name}Enchantment(EquipmentSlot... slots) {
-		super(Enchantment.Rarity.${data.rarity}, EnchantmentCategory.${generator.map(data.type, "enchantmenttypes")}, slots);
+		super(Enchantment.definition(
+			${generator.map(data.type, "enchantmenttypes", 0)}, <#-- supportedItems -->
+			${rarityToWeight(data.rarity)}, <#-- weight -->
+			${data.maxLevel}, <#-- maxLevel -->
+			Enchantment.dynamicCost(1, 10), <#-- minCost -->
+			Enchantment.dynamicCost(6, 10), <#-- maxCost -->
+			${rarityToAnvilCost(data.rarity)}, <#-- anvilCost -->
+			${generator.map(data.type, "enchantmenttypes", 1)} <#-- slots -->
+		));
 	}
-
-	<#if data.minLevel != 1>
-		@Override public int getMinLevel() {
-			return ${data.minLevel};
-		}
-	</#if>
-
-	<#if data.maxLevel != 1>
-		@Override public int getMaxLevel() {
-			return ${data.maxLevel};
-		}
-	</#if>
 
 	<#if data.damageModifier != 0>
 		@Override public int getDamageProtection(int level, DamageSource source) {
@@ -58,9 +70,9 @@ public class ${name}Enchantment extends Enchantment {
 	</#if>
 
 	<#if data.compatibleEnchantments?has_content>
-		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>this != ench && !</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
+		@Override protected boolean checkCompatibility(Enchantment enchantment) {
+			return <#if data.excludeEnchantments>this != enchantment && !</#if>List.of(
+				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(enchantment);
 		}
 	</#if>
 

@@ -1400,7 +1400,6 @@ public class TestWorkspaceDataProvider {
 			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 			enchantment.type = getRandomString(random,
 					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
-			enchantment.minLevel = 13;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
