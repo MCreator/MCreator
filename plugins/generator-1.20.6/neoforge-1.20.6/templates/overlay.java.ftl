@@ -35,18 +35,18 @@ package ${package}.client.screens;
 
 <#assign hasEntityModels = false>
 
-@Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
+@EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
         public static void eventHandler(RenderGuiEvent.Pre event) {
-            int w = event.getWindow().getGuiScaledWidth();
-            int h = event.getWindow().getGuiScaledHeight();
+            int w = event.getGuiGraphics().guiWidth();
+            int h = event.getGuiGraphics().guiHeight();
 	<#else>
         public static void eventHandler(ScreenEvent.Render.Post event) {
             if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
-                int w = event.getScreen().width;
-                int h = event.getScreen().height;
+                int w = event.getGuiGraphics().guiWidth();
+                int h = event.getGuiGraphics().guiHeight();
 	</#if>
 
         Level world = null;
