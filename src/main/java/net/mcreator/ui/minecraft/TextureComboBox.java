@@ -79,7 +79,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 		this.empty = new Texture.Dummy(textureType, defaultTextureName);
 
-		add("Center", comboBox);
+		add("Center" , comboBox);
 
 		JButton importTexture = new JButton(UIRES.get("18px.add"));
 		importTexture.setBorder(BorderFactory.createCompoundBorder(
@@ -90,7 +90,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			reload();
 		});
-		add("East", importTexture);
+		add("East" , importTexture);
 
 		reload();
 	}
@@ -176,6 +176,8 @@ public class TextureComboBox extends JPanel implements IValidable {
 			setOpaque(true);
 			setHorizontalAlignment(CENTER);
 			setVerticalAlignment(CENTER);
+			setHorizontalTextPosition(SwingConstants.RIGHT);
+			setHorizontalAlignment(SwingConstants.LEFT);
 		}
 
 		@Override
@@ -190,17 +192,15 @@ public class TextureComboBox extends JPanel implements IValidable {
 				setForeground(list.getForeground());
 			}
 
-			setText(value.getTextureName());
-
-			ImageIcon imageIcon = value.getTextureIcon(mcreator.getWorkspace());
-			if (imageIcon != null) {
-				setIcon(new ImageIcon(ImageUtils.resize(imageIcon.getImage(), 30)));
-			} else {
-				setIcon(new EmptyIcon(30, 30));
+			if (value != null) {
+				setText(value.getTextureName());
+				ImageIcon imageIcon = value.getTextureIcon(mcreator.getWorkspace());
+				if (imageIcon != null) {
+					setIcon(new ImageIcon(ImageUtils.resize(imageIcon.getImage(), 30)));
+				} else {
+					setIcon(new EmptyIcon(30, 30));
+				}
 			}
-
-			setHorizontalTextPosition(SwingConstants.RIGHT);
-			setHorizontalAlignment(SwingConstants.LEFT);
 
 			return this;
 		}
