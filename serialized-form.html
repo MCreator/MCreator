@@ -2332,7 +2332,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>list</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt; list</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="net/mcreator/workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&gt; list</pre>
 </li>
 <li class="block-list">
 <h5>mcreator</h5>
@@ -3290,31 +3290,6 @@ loadScripts(document, 'script');</script>
 <div class="type-signature">class ModelComboBoxRenderer extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
-<li>
-<section class="serialized-class-details" id="net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer">
-<h3>Class&nbsp;<a href="net/mcreator/ui/laf/renderer/WTextureComboBoxRenderer.html" title="class in net.mcreator.ui.laf.renderer">net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer</a></h3>
-<div class="type-signature">class WTextureComboBoxRenderer extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>textureProvider</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a>&gt; textureProvider</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer.TypeTextures">
-<h3>Class&nbsp;<a href="net/mcreator/ui/laf/renderer/WTextureComboBoxRenderer.TypeTextures.html" title="class in net.mcreator.ui.laf.renderer">net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer.TypeTextures</a></h3>
-<div class="type-signature">class TypeTextures extends <a href="net/mcreator/ui/laf/renderer/WTextureComboBoxRenderer.html" title="class in net.mcreator.ui.laf.renderer">WTextureComboBoxRenderer</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -3673,6 +3648,49 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.TextureComboBox">
+<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.TextureComboBox</a></h3>
+<div class="type-signature">class TextureComboBox extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>addPNGExtension</h5>
+<pre>boolean addPNGExtension</pre>
+</li>
+<li class="block-list">
+<h5>comboBox</h5>
+<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&gt; comboBox</pre>
+</li>
+<li class="block-list">
+<h5>defaultTextureName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> defaultTextureName</pre>
+</li>
+<li class="block-list">
+<h5>empty</h5>
+<pre><a href="net/mcreator/workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a> empty</pre>
+</li>
+<li class="block-list">
+<h5>mcreator</h5>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+<li class="block-list">
+<h5>showEmpty</h5>
+<pre>boolean showEmpty</pre>
+</li>
+<li class="block-list">
+<h5>textureType</h5>
+<pre><a href="net/mcreator/ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a> textureType</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.TextureHolder">
 <h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/TextureHolder.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.TextureHolder</a></h3>
 <div class="type-signature">class TextureHolder extends <a href="net/mcreator/ui/validation/component/VButton.html" title="class in net.mcreator.ui.validation.component">VButton</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -3686,12 +3704,12 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/ActionListener.html" title="class or interface in java.awt.event" class="external-link">ActionListener</a> actionListener</pre>
 </li>
 <li class="block-list">
-<h5>id</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> id</pre>
-</li>
-<li class="block-list">
 <h5>removeButtonHover</h5>
 <pre>boolean removeButtonHover</pre>
+</li>
+<li class="block-list">
+<h5>selectedTexture</h5>
+<pre><a href="net/mcreator/workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a> selectedTexture</pre>
 </li>
 <li class="block-list">
 <h5>size</h5>
@@ -4023,7 +4041,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>texture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; texture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> texture</pre>
 </li>
 </ul>
 </section>
@@ -4779,7 +4797,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>background</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; background</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> background</pre>
 </li>
 <li class="block-list">
 <h5>blocklyChangedListeners</h5>
@@ -4850,7 +4868,7 @@ loadScripts(document, 'script');</script>
 <ul class="block-list">
 <li class="block-list">
 <h5>armorTextureFile</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; armorTextureFile</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> armorTextureFile</pre>
 </li>
 <li class="block-list">
 <h5>armsModelPartL</h5>
@@ -4890,7 +4908,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>bodyModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; bodyModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> bodyModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>bodyName</h5>
@@ -4938,7 +4956,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>bootsModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; bootsModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> bootsModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>bootsName</h5>
@@ -5042,7 +5060,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>helmetModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; helmetModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> helmetModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>helmetName</h5>
@@ -5094,7 +5112,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>leggingsModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; leggingsModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> leggingsModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>leggingsName</h5>
@@ -6763,6 +6781,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> projectile</pre>
 </li>
 <li class="block-list">
+<h5>rangedItemChargesPower</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> rangedItemChargesPower</pre>
+</li>
+<li class="block-list">
 <h5>rangedUseCondition</h5>
 <pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> rangedUseCondition</pre>
 </li>
@@ -7102,7 +7124,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>mobModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; mobModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> mobModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>mobName</h5>
@@ -7582,7 +7604,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>scale</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> scale</pre>
+<pre><a href="net/mcreator/ui/procedure/NumberProcedureSelector.html" title="class in net.mcreator.ui.procedure">NumberProcedureSelector</a> scale</pre>
 </li>
 <li class="block-list">
 <h5>speedFactor</h5>
@@ -8145,7 +8167,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>customModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; customModelTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> customModelTexture</pre>
 </li>
 <li class="block-list">
 <h5>damage</h5>
@@ -8588,11 +8610,11 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>professionTextureFile</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; professionTextureFile</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> professionTextureFile</pre>
 </li>
 <li class="block-list">
 <h5>zombifiedProfessionTextureFile</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; zombifiedProfessionTextureFile</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> zombifiedProfessionTextureFile</pre>
 </li>
 </ul>
 </section>
@@ -10525,7 +10547,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>overlayBaseTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; overlayBaseTexture</pre>
+<pre><a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a> overlayBaseTexture</pre>
 </li>
 <li class="block-list">
 <h5>overlayTarget</h5>

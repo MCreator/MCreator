@@ -188,7 +188,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getID()" class="member-name-link">getID</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTextureName()" class="member-name-link">getTextureName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasTexture()" class="member-name-link">hasTexture</a>()</code></div>
@@ -205,9 +205,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIcon(javax.swing.Icon)" class="member-name-link">setIcon</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/Icon.html" title="class or interface in javax.swing" class="external-link">Icon</a>&nbsp;icon)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTextureFromTextureName(java.lang.String)" class="member-name-link">setTextureFromTextureName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;texture)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.workspace.resources.Texture)" class="member-name-link">setTexture</a><wbr>(<a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTextureFromTextureName(java.lang.String)" class="member-name-link">setTextureFromTextureName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;texture)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -268,25 +271,22 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="paintComponent(java.awt.Graphics)">
-<h3>paintComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">paintComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</span></div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../validation/component/VButton.html#paintComponent(java.awt.Graphics)">paintComponent</a></code>&nbsp;in class&nbsp;<code><a href="../validation/component/VButton.html" title="class in net.mcreator.ui.validation.component">VButton</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getID()">
-<h3>getID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getID</span>()</div>
-</section>
-</li>
-<li>
 <section class="detail" id="setTextureFromTextureName(java.lang.String)">
 <h3>setTextureFromTextureName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTextureFromTextureName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;texture)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTexture(net.mcreator.workspace.resources.Texture)">
+<h3>setTexture</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTexture</span><wbr><span class="parameters">(@Nullable
+ <a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getTextureName()">
+<h3>getTextureName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTextureName</span>()</div>
 </section>
 </li>
 <li>
@@ -305,6 +305,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setFlipUV(boolean)">
 <h3>setFlipUV</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="TextureHolder.html" title="class in net.mcreator.ui.minecraft">TextureHolder</a></span>&nbsp;<span class="element-name">setFlipUV</span><wbr><span class="parameters">(boolean&nbsp;uvFlip)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="paintComponent(java.awt.Graphics)">
+<h3>paintComponent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">paintComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../validation/component/VButton.html#paintComponent(java.awt.Graphics)">paintComponent</a></code>&nbsp;in class&nbsp;<code><a href="../validation/component/VButton.html" title="class in net.mcreator.ui.validation.component">VButton</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
