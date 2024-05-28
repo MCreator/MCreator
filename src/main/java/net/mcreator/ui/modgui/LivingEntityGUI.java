@@ -43,12 +43,9 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
@@ -58,8 +55,6 @@ import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -74,7 +69,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -202,7 +196,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			piglin, salmon, silverfish, slime, spider, villager, witch };
 	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
-	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
+	private TextureComboBox mobModelTexture;
 
 	private JEntityDataList entityDataList;
 
@@ -373,8 +367,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
-		mobModelTexture.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
+				"elementgui.living_entity.error_entity_model_needs_texture");
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -392,7 +386,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		});
 
 		spawnInDungeons.setOpaque(false);
-		mobModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		mobDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentMainHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -544,20 +537,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
 
-		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
-		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
-		importmobtexture.setOpaque(false);
-		importmobtexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
-			mobModelTexture.removeAllItems();
-			mobModelTexture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
-					.forEach(el -> mobModelTexture.addItem(el.getName()));
-		});
-
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
-		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
+		spo2.add(mobModelTexture);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
@@ -580,7 +562,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(new JEmptyBox());
 		spo2.add(isShakingCondition);
 
-		ComponentUtils.deriveFont(mobModelTexture, 16);
 		ComponentUtils.deriveFont(aiBase, 16);
 		ComponentUtils.deriveFont(mobModel, 16);
 		ComponentUtils.deriveFont(rangedItemType, 16);
@@ -885,13 +866,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane7.setOpaque(false);
 		pane7.setOpaque(false);
 
-		mobModelTexture.setValidator(() -> {
-			if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().isEmpty())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
 		mobName.setValidator(
 				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
@@ -945,9 +919,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		modelLayers.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		mobModelTexture.reload();
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()
@@ -1003,7 +975,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		editorReady = false;
 
 		mobName.setText(livingEntity.mobName);
-		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
+		mobModelTexture.setTextureFromTextureName(livingEntity.mobModelTexture);
 		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
@@ -1117,7 +1089,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = mobName.getText();
 		livingEntity.mobLabel = mobLabel.getText();
-		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
+		livingEntity.mobModelTexture = mobModelTexture.getTextureName();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();

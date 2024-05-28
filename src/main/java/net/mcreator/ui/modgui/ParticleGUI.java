@@ -29,6 +29,8 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -49,7 +51,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
-	private final JSpinner scale = new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1));
+	private NumberProcedureSelector scale;
 	private final JSpinner gravity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
@@ -73,6 +75,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	}
 
 	@Override protected void initGUI() {
+		scale = new NumberProcedureSelector(this.withEntry("particle/scale"), mcreator,
+				L10N.t("elementgui.particle.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
+				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -160,6 +166,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		super.reloadDataLists();
 
 		additionalExpiryCondition.refreshListKeepSelected();
+		scale.refreshListKeepSelected();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -173,7 +180,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
 		width.setValue(particle.width);
 		height.setValue(particle.height);
-		scale.setValue(particle.scale);
+		scale.setSelectedProcedure(particle.scale);
 		gravity.setValue(particle.gravity);
 		speedFactor.setValue(particle.speedFactor);
 		frameDuration.setValue(particle.frameDuration);
@@ -190,10 +197,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
+		particle.texture = texture.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
-		particle.scale = (double) scale.getValue();
+		particle.scale = scale.getSelectedProcedure();
 		particle.gravity = (double) gravity.getValue();
 		particle.speedFactor = (double) speedFactor.getValue();
 		particle.maxAge = (int) maxAge.getValue();

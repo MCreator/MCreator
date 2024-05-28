@@ -453,8 +453,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override public Dimension getElementFromGUI() {
 		Dimension dimension = new Dimension(modElement);
-		dimension.texture = texture.getID();
-		dimension.portalTexture = portalTexture.getID();
+		dimension.texture = texture.getTextureName();
+		dimension.portalTexture = portalTexture.getTextureName();
 		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();

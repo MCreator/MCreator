@@ -271,7 +271,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		musicDisc.specialInformation = specialInformation.getSelectedProcedure();
-		musicDisc.texture = texture.getID();
+		musicDisc.texture = texture.getTextureName();
 		musicDisc.music = music.getSound();
 		musicDisc.lengthInTicks = (int) lengthInTicks.getValue();
 		musicDisc.analogOutput = (int) analogOutput.getValue();

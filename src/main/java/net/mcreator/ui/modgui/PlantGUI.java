@@ -907,10 +907,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		Plant plant = new Plant(modElement);
 		plant.name = name.getText();
 		plant.creativeTabs = creativeTabs.getListElements();
-		plant.texture = texture.getID();
-		plant.textureBottom = textureBottom.getID();
-		plant.itemTexture = itemTexture.getID();
-		plant.particleTexture = particleTexture.getID();
+		plant.texture = texture.getTextureName();
+		plant.textureBottom = textureBottom.getTextureName();
+		plant.itemTexture = itemTexture.getTextureName();
+		plant.particleTexture = particleTexture.getTextureName();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();

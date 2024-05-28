@@ -447,7 +447,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
-		tool.texture = texture.getID();
+		tool.texture = texture.getTextureName();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
 		tool.renderType = 0;

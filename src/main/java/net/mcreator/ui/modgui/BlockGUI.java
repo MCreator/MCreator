@@ -468,11 +468,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureLeft.setActionListener(event -> {
 			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
 					|| textureFront.hasTexture() || textureRight.hasTexture())) {
-				texture.setTextureFromTextureName(textureLeft.getID());
-				textureTop.setTextureFromTextureName(textureLeft.getID());
-				textureBack.setTextureFromTextureName(textureLeft.getID());
-				textureFront.setTextureFromTextureName(textureLeft.getID());
-				textureRight.setTextureFromTextureName(textureLeft.getID());
+				texture.setTextureFromTextureName(textureLeft.getTextureName());
+				textureTop.setTextureFromTextureName(textureLeft.getTextureName());
+				textureBack.setTextureFromTextureName(textureLeft.getTextureName());
+				textureFront.setTextureFromTextureName(textureLeft.getTextureName());
+				textureRight.setTextureFromTextureName(textureLeft.getTextureName());
 			}
 		});
 
@@ -1564,14 +1564,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		block.texture = texture.getID();
-		block.itemTexture = itemTexture.getID();
-		block.particleTexture = particleTexture.getID();
-		block.textureTop = textureTop.getID();
-		block.textureLeft = textureLeft.getID();
-		block.textureFront = textureFront.getID();
-		block.textureRight = textureRight.getID();
-		block.textureBack = textureBack.getID();
+		block.texture = texture.getTextureName();
+		block.itemTexture = itemTexture.getTextureName();
+		block.particleTexture = particleTexture.getTextureName();
+		block.textureTop = textureTop.getTextureName();
+		block.textureLeft = textureLeft.getTextureName();
+		block.textureFront = textureFront.getTextureName();
+		block.textureRight = textureRight.getTextureName();
+		block.textureBack = textureBack.getTextureName();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getEntries();
