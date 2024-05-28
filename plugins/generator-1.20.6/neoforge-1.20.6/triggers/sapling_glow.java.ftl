@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onSaplingGrow(SaplingGrowTreeEvent event) {
+	@SubscribeEvent public static void onSaplingGrow(BlockGrowFeatureEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",

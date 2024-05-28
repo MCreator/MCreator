@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPlayerInBed(PlayerSleepInBedEvent event) {
+	@SubscribeEvent public static void onPlayerInBed(CanPlayerSleepEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",

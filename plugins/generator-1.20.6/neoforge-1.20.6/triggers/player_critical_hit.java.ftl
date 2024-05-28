@@ -9,7 +9,7 @@
 				"world": "event.getEntity().level()",
 				"entity": "event.getTarget()",
 				"sourceentity": "event.getEntity()",
-				"damagemodifier": "event.getDamageModifier()",
+				"damagemodifier": "event.getDamageMultiplier()",
 				"isvanillacritical": "event.isVanillaCritical()",
 				"event": "event"
 			}/>

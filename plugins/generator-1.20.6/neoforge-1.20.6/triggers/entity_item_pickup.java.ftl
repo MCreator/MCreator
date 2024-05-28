@@ -1,14 +1,14 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
+	@SubscribeEvent public static void onPickup(ItemEntityPickupEvent.Pre event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getEntity().getX()",
-				"y": "event.getEntity().getY()",
-				"z": "event.getEntity().getZ()",
-				"world": "event.getEntity().level()",
-				"entity": "event.getEntity()",
-				"itemstack": "event.getItem().getItem()",
+				"x": "event.getPlayer().getX()",
+				"y": "event.getPlayer().getY()",
+				"z": "event.getPlayer().getZ()",
+				"world": "event.getPlayer().level()",
+				"entity": "event.getPlayer()",
+				"itemstack": "event.getItemEntity().getItem()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

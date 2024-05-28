@@ -58,14 +58,28 @@ public class GTProcedureTriggers {
 					ModElementType.PROCEDURE);
 
 			Procedure procedure = new Procedure(modElement);
+
 			if (externalTrigger.dependencies_provided != null) {
 				procedure.getModElement().clearMetadata()
 						.putMetadata("dependencies", externalTrigger.dependencies_provided);
 				procedure.skipDependencyRegeneration();
 			}
-			procedure.procedurexml =
-					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\"><field name=\"trigger\">"
-							+ externalTrigger.getID() + "</field></block></xml>";
+
+			String additionalXML = "";
+			if (externalTrigger.has_result) {
+				additionalXML = "<next><block type=\"set_event_result\"><field name=\"result\">DENY</field></block></next>";
+			} else if (externalTrigger.cancelable) {
+				additionalXML = "<next><block type=\"cancel_event\"></block></next>";
+			}
+
+			procedure.procedurexml = """
+					<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="event_trigger">
+							<field name="trigger">%s</field>
+							%s
+						</block>
+					</xml>
+					""".formatted(externalTrigger.getID(), additionalXML);
 
 			try {
 				workspace.addModElement(modElement);
