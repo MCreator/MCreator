@@ -1,4 +1,4 @@
-This parameter determines the effect category
+This parameter determines the effect category.
 
 The categories are:
 
