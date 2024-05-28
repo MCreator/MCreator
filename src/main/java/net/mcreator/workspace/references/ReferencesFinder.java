@@ -94,7 +94,7 @@ public class ReferencesFinder {
 					return ref != null && ref.value() == type;
 				}, (a, t) -> {
 					TextureReference ref = a.getAnnotation(TextureReference.class);
-					if (!Set.of(ref.defaultValues()).contains(t)) {
+					if (!Set.of(ref.defaultValues()).contains(t) && t.indexOf(':') == -1) {
 						for (String template : ref.files()) {
 							String file = template.isEmpty() ? t : template.formatted(t);
 							if (workspace.getFolderManager()

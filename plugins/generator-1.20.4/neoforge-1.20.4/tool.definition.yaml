@@ -24,6 +24,18 @@ templates:
     condition: "toolType %= Shield"
     name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
+tags:
+  - tag: ITEMS:minecraft:pickaxes
+    condition: ${data.toolType == "Pickaxe" || data.toolType == "Special" || data.toolType == "MultiTool"}
+  - tag: ITEMS:minecraft:axes
+    condition: ${data.toolType == "Axe" || data.toolType == "MultiTool"}
+  - tag: ITEMS:minecraft:swords
+    condition: ${data.toolType == "Sword" || data.toolType == "MultiTool"}
+  - tag: ITEMS:minecraft:shovels
+    condition: ${data.toolType == "Spade"}
+  - tag: ITEMS:minecraft:hoes
+    condition: ${data.toolType == "Hoe"}
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
