@@ -48,7 +48,7 @@ package ${package}.init;
 </#if>
 public class ${JavaModName}Items {
 
-	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(BuiltInRegistries.ITEM, ${JavaModName}.MODID);
+	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
 
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">

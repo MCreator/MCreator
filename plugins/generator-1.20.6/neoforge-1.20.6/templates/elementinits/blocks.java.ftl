@@ -58,7 +58,7 @@ package ${package}.init;
 
 public class ${JavaModName}Blocks {
 
-	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(BuiltInRegistries.BLOCK, ${JavaModName}.MODID);
+	public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(${JavaModName}.MODID);
 
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
