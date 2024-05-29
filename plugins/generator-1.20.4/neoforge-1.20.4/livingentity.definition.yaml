@@ -18,6 +18,10 @@ templates:
 
 unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
 
+tags:
+  - tag: ENTITIES:minecraft:raiders
+    condition: "${data.mobBehaviourType == 'Raider'}"
+
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg
     mapto: mobName

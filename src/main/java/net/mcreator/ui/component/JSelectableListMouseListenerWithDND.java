@@ -29,13 +29,14 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
+class JSelectableListMouseListenerWithDND<T> extends MouseAdapter {
 
 	@Nullable private Point srcPoint = new Point(); // when null, we are in dnd
 
@@ -60,6 +61,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		list.setCursor(null);
 		if (list.additionalDNDComponent != null)
 			list.additionalDNDComponent.setCursor(null);
+		selection = null;
 		finalDNDselection = null;
 	}
 
@@ -121,8 +123,6 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			System.arraycopy(curr, 0, indices, selNew.length, curr.length);
 			list.setSelectedIndices(indices);
 			list.repaint();
-
-			selection = indices;
 		}
 	}
 
@@ -146,19 +146,15 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			}
 
 			stopDNDAction();
+			selection = list.getSelectedIndices();
 		}
 	}
 
-	@Override public void pressFiltered(MouseEvent e, int clicks) {
-		if (clicks == 2 && list.dndCustom) {
+	@Override public void mousePressed(MouseEvent e) {
+		if (list.dndCustom && selection != null && Arrays.stream(selection)
+				.anyMatch(i -> list.getCellBounds(i, i).contains(e.getPoint()))) {
 			srcPoint = null; // Initiate DND action
-		} else if (clicks == 1 && list.dndCustom) {
-			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
-				selection = list.getSelectedIndices();
-			} else {
-				selection = null; // If only one click, reset the DND selection candidates
-			}
-		} else if (clicks == 0) {
+		} else {
 			int index = list.locationToIndex(e.getPoint());
 			Rectangle rect = list.getCellBounds(index, index);
 			if (rect != null && rect.contains(e.getPoint())) {
@@ -171,7 +167,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			} else {
 				list.setFocusable(false);
 			}
-			srcPoint = new Point();
+			srcPoint = new Point(); // Enter selection mode
 			srcPoint.setLocation(e.getPoint());
 			list.repaint();
 		}

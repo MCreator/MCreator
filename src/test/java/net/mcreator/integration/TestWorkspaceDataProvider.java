@@ -1620,7 +1620,7 @@ public class TestWorkspaceDataProvider {
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
-		livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
+		livingEntity.mobBehaviourType = getRandomString(random, List.of("Creature", "Mob", "Raider"));
 		livingEntity.mobCreatureType = getRandomItem(random,
 				new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 		livingEntity.attackStrength = 4;
@@ -1671,6 +1671,8 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
+				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
@@ -1687,7 +1689,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.hasAI = _true;
 		livingEntity.aiBase = "(none)";
 		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-		livingEntity.breedable = _true;
+		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
@@ -1727,6 +1729,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
+			livingEntity.raidSpawnsCount[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
