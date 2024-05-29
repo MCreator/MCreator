@@ -32,12 +32,7 @@
 package ${package}.item.inventory;
 
 <#compress>
-@EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ItemStackHandler {
-
-	public static final Codec<${name}InventoryCapability> CODEC = ItemStack.OPTIONAL_CODEC.listOf().xmap(${name}InventoryCapability::new, cap -> cap.stacks);
-
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}InventoryCapability> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC
-			.apply(ByteBufCodecs.list()).map(${name}InventoryCapability::new, cap -> cap.stacks);
+@EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ComponentItemHandler {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
 		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
@@ -47,21 +42,8 @@ package ${package}.item.inventory;
 		}
 	}
 
-	${name}InventoryCapability(List<ItemStack> stackList) {
-		this();
-		for (int i = 0; i < stackList.size(); i++) {
-			this.stacks.set(i, stackList.get(i));
-		}
-	}
-
-	private ItemStack owner;
-
-	public ${name}InventoryCapability() {
-		super(${data.inventorySize});
-	}
-
-	public void setOwner(ItemStack owner) {
-		this.owner = owner;
+	public ${name}InventoryCapability(MutableDataComponentHolder parent) {
+		super(parent, DataComponents.CONTAINER, ${data.inventorySize});
 	}
 
 	@Override public int getSlotLimit(int slot) {
@@ -72,31 +54,8 @@ package ${package}.item.inventory;
 		return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
 	}
 
-	@Override public void setSize(int size) {
-	}
-
 	@Override public ItemStack getStackInSlot(int slot) {
 		return super.getStackInSlot(slot).copy();
-	}
-
-	@Override protected void onContentsChanged(int slot) {
-		super.onContentsChanged(slot);
-		if (owner != null) {
-			owner.remove(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_INVENTORY);
-			owner.set(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_INVENTORY, this);
-		}
-	}
-
-	@Override public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		} else {
-			return object instanceof ${name}InventoryCapability other && ItemStack.listMatches(this.stacks, other.stacks);
-		}
-	}
-
-	@Override public int hashCode() {
-		return ItemStack.hashStackList(this.stacks);
 	}
 
 }

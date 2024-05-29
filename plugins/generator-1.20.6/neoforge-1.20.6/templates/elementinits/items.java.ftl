@@ -96,39 +96,17 @@ public class ${JavaModName}Items {
 	// End of user code block custom items
 
 	<#if itemsWithInventory?size != 0>
-		public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(${JavaModName}.MODID);
-
+	<#compress>
+	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
-			public static final DeferredHolder<DataComponentType<?>, DataComponentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
-				DATA_COMPONENTS.registerComponentType("${item.getModElement().getRegistryName()}_inventory",
-					builder -> builder.persistent(${item.getModElement().getName()}InventoryCapability.CODEC).networkSynchronized(${item.getModElement().getName()}InventoryCapability.STREAM_CODEC)
-				);
+			event.registerItem(
+				Capabilities.ItemHandler.ITEM,
+				(stack, context) -> new ${item.getModElement().getName()}InventoryCapability(stack),
+				${item.getModElement().getRegistryNameUpper()}.get()
+			);
 		</#list>
-
-		public static void register(IEventBus bus) {
-			REGISTRY.register(bus);
-			DATA_COMPONENTS.register(bus);
-		}
-
-		<#compress>
-		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-			<#list itemsWithInventory as item>
-				event.registerItem(
-					Capabilities.ItemHandler.ITEM,
-					(stack, context) -> {
-						${item.getModElement().getName()}InventoryCapability cap = stack.getOrDefault(${item.getModElement().getRegistryNameUpper()}_INVENTORY, new ${item.getModElement().getName()}InventoryCapability());
-						cap.setOwner(stack);
-						return cap;
-					},
-					${item.getModElement().getRegistryNameUpper()}.get()
-				);
-			</#list>
-		}
-		</#compress>
-	<#else>
-		public static void register(IEventBus bus) {
-			REGISTRY.register(bus);
-		}
+	}
+	</#compress>
 	</#if>
 
 	<#if hasBlocks>
