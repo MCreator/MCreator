@@ -94,6 +94,30 @@ feature_simple_random_selector:
   - SimpleRandomSelectorFeature
   - SimpleRandomFeatureConfiguration
   - "minecraft:simple_random_selector"
+feature_tree_simple:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_spruce:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_pine:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_azalea:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_cherry:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_mangrove:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:
