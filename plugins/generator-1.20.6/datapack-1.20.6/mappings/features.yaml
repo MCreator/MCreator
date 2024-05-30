@@ -14,6 +14,10 @@ feature_simple_block:
   - SimpleBlockFeature
   - SimpleBlockConfiguration
   - "minecraft:simple_block"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:
