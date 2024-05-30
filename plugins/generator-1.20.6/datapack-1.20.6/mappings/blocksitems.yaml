@@ -4100,8 +4100,8 @@ Items.TURTLE_HELMET:
   - Items.TURTLE_HELMET
   - "turtle_helmet"
 Items.SCUTE:
-  - Items.SCUTE
-  - "scute"
+  - Items.TURTLE_SCUTE
+  - "turtle_scute"
 Items.SPRUCE_SIGN:
   - Items.SPRUCE_SIGN
   - "spruce_sign"
@@ -4579,3 +4579,12 @@ Items.SKULL_POTTERY_SHERD:
 Items.SNORT_POTTERY_SHERD:
   - Items.SNORT_POTTERY_SHERD
   - "snort_pottery_sherd"
+Items.ARMADILLO_SCUTE:
+  - Items.ARMADILLO_SCUTE
+  - "armadillo_scute"
+Items.ARMADILLO_SPAWN_EGG:
+  - Items.ARMADILLO_SPAWN_EGG
+  - "armadillo_spawn_egg"
+Items.WOLF_ARMOR:
+  - Items.WOLF_ARMOR
+  - "wolf_armor"
