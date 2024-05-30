@@ -56,6 +56,10 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		return PROJECTILE_ITEM;
 	}
 
+	@Override protected ItemStack getDefaultPickupItem() {
+		return ${mappedMCItemToItemStackCode(data.projectileItem)};
+	}
+
 	@Override protected void doPostHurtEffects(LivingEntity entity) {
 		super.doPostHurtEffects(entity);
 		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
@@ -139,7 +143,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entityarrow.setBaseDamage(damage);
 		entityarrow.setKnockback(knockback);
 		<#if data.igniteFire>
-			entityarrow.setSecondsOnFire(100);
+			entityarrow.igniteForSeconds(100);
 		</#if>
 		world.addFreshEntity(entityarrow);
 
@@ -163,7 +167,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entityarrow.setKnockback(${data.knockback});
 		entityarrow.setCritArrow(${data.showParticles});
 		<#if data.igniteFire>
-			entityarrow.setSecondsOnFire(100);
+			entityarrow.igniteForSeconds(100);
 		</#if>
 		entity.level().addFreshEntity(entityarrow);
 

@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}EntityRenderers {
 
 	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		<#list entities as entity>
