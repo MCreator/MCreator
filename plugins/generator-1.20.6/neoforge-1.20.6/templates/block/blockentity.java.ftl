@@ -41,38 +41,38 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
 	}
 
-	@Override public void load(CompoundTag compound) {
-		super.load(compound);
+	@Override public void loadAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
+		super.loadAdditional(compound, lookupProvider);
 
 		if (!this.tryLoadLootTable(compound))
 			this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 
-		ContainerHelper.loadAllItems(compound, this.stacks);
+		ContainerHelper.loadAllItems(compound, this.stacks, lookupProvider);
 
 		<#if data.hasEnergyStorage>
 		if(compound.get("energyStorage") instanceof IntTag intTag)
-			energyStorage.deserializeNBT(intTag);
+			energyStorage.deserializeNBT(lookupProvider, intTag);
 		</#if>
 
 		<#if data.isFluidTank>
 		if(compound.get("fluidTank") instanceof CompoundTag compoundTag)
-			fluidTank.readFromNBT(compoundTag);
+			fluidTank.readFromNBT(lookupProvider, compoundTag);
 		</#if>
 	}
 
-	@Override public void saveAdditional(CompoundTag compound) {
-		super.saveAdditional(compound);
+	@Override public void saveAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
+		super.saveAdditional(compound, lookupProvider);
 
 		if (!this.trySaveLootTable(compound)) {
-			ContainerHelper.saveAllItems(compound, this.stacks);
+			ContainerHelper.saveAllItems(compound, this.stacks, lookupProvider);
 		}
 
 		<#if data.hasEnergyStorage>
-		compound.put("energyStorage", energyStorage.serializeNBT());
+		compound.put("energyStorage", energyStorage.serializeNBT(lookupProvider));
 		</#if>
 
 		<#if data.isFluidTank>
-		compound.put("fluidTank", fluidTank.writeToNBT(new CompoundTag()));
+		compound.put("fluidTank", fluidTank.writeToNBT(lookupProvider, new CompoundTag()));
 		</#if>
 	}
 
@@ -80,8 +80,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
-	@Override public CompoundTag getUpdateTag() {
-		return this.saveWithFullMetadata();
+	@Override public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
+		return this.saveWithFullMetadata(lookupProvider);
 	}
 
 	@Override public int getContainerSize() {
