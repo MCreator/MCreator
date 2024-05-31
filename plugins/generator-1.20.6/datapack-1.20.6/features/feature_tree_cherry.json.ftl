@@ -28,10 +28,8 @@
     "branch_horizontal_length": ${input$branch_length},
     "branch_end_offset_from_top": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": -1,
-        "max_inclusive": 0
-      }
+      "min_inclusive": -1,
+      "max_inclusive": 0
     },
     "branch_start_offset_from_top": {
       "min_inclusive": -4,

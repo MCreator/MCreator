@@ -19,17 +19,13 @@
     "place_branch_per_log_probability": ${field$branch_per_log_probability},
     "extra_branch_length": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 0,
-        "max_inclusive": 1
-      }
+      "min_inclusive": 0,
+      "max_inclusive": 1
     },
     "extra_branch_steps": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 1,
-        "max_inclusive": <#if field$type == "mangrove">4<#else>6</#if>
-      }
+      "min_inclusive": 1,
+      "max_inclusive": <#if field$type == "mangrove">4<#else>6</#if>
     }
   },
   <#if field$type == "mangrove">
