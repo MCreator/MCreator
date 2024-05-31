@@ -207,7 +207,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
-	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+
+	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
+			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
@@ -750,9 +753,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.harvest_tool")));
 		selp3.add(destroyTool);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
-				L10N.label("elementgui.block.harvest_level")));
-		selp3.add(breakHarvestLevel);
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
+				L10N.label("elementgui.block.vanilla_tool_tier")));
+		selp3.add(vanillaToolTier);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -1404,7 +1407,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
-		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		vanillaToolTier.setSelectedItem(block.vanillaToolTier);
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
@@ -1533,7 +1536,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.stepSound = stepSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
-		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
+		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
