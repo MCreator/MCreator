@@ -467,6 +467,19 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if hasProcedure(data.additionalHarvestCondition)>
+	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		return super.canHarvestBlock(state, world, pos, player) && <@procedureCode data.additionalHarvestCondition, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"entity": "player",
+			"world": "player.level()",
+			"blockstate": "state"
+		}, false/>;
+	}
+	</#if>
+
 	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
