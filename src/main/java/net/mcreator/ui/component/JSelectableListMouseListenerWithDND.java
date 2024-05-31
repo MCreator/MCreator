@@ -151,8 +151,8 @@ class JSelectableListMouseListenerWithDND<T> extends MouseAdapter {
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		if (list.dndCustom && selection != null && Arrays.stream(selection)
-				.anyMatch(i -> list.getCellBounds(i, i).contains(e.getPoint()))) {
+		if (list.dndCustom && selection != null && Arrays.stream(selection).mapToObj(i -> list.getCellBounds(i, i))
+				.anyMatch(c -> c != null && c.contains(e.getPoint()))) {
 			srcPoint = null; // Initiate DND action
 		} else {
 			int index = list.locationToIndex(e.getPoint());
