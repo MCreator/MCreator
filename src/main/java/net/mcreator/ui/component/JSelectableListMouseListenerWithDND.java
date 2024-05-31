@@ -115,8 +115,10 @@ class JSelectableListMouseListenerWithDND<T> extends MouseAdapter {
 			rubberBand.lineTo(destPoint.x, destPoint.y);
 			rubberBand.lineTo(srcPoint.x, destPoint.y);
 			rubberBand.closePath();
-			int[] selNew = IntStream.range(0, list.getModel().getSize())
-					.filter(i -> rubberBand.intersects(list.getCellBounds(i, i))).toArray();
+			int[] selNew = IntStream.range(0, list.getModel().getSize()).filter(i -> {
+				Rectangle cell = list.getCellBounds(i, i);
+				return cell != null && rubberBand.intersects(cell);
+			}).toArray();
 			int[] curr = list.getSelectedIndices();
 			int[] indices = new int[selNew.length + curr.length];
 			System.arraycopy(selNew, 0, indices, 0, selNew.length);
