@@ -115,8 +115,10 @@ class JSelectableListMouseListenerWithDND<T> extends MouseAdapter {
 			rubberBand.lineTo(destPoint.x, destPoint.y);
 			rubberBand.lineTo(srcPoint.x, destPoint.y);
 			rubberBand.closePath();
-			int[] selNew = IntStream.range(0, list.getModel().getSize())
-					.filter(i -> rubberBand.intersects(list.getCellBounds(i, i))).toArray();
+			int[] selNew = IntStream.range(0, list.getModel().getSize()).filter(i -> {
+				Rectangle cell = list.getCellBounds(i, i);
+				return cell != null && rubberBand.intersects(cell);
+			}).toArray();
 			int[] curr = list.getSelectedIndices();
 			int[] indices = new int[selNew.length + curr.length];
 			System.arraycopy(selNew, 0, indices, 0, selNew.length);
@@ -151,8 +153,8 @@ class JSelectableListMouseListenerWithDND<T> extends MouseAdapter {
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		if (list.dndCustom && selection != null && Arrays.stream(selection)
-				.anyMatch(i -> list.getCellBounds(i, i).contains(e.getPoint()))) {
+		if (list.dndCustom && selection != null && Arrays.stream(selection).mapToObj(i -> list.getCellBounds(i, i))
+				.anyMatch(c -> c != null && c.contains(e.getPoint()))) {
 			srcPoint = null; // Initiate DND action
 		} else {
 			int index = list.locationToIndex(e.getPoint());
