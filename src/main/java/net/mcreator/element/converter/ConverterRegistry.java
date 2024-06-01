@@ -52,6 +52,7 @@ import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 import net.mcreator.element.converter.v2024_2.BlockHarvestLevelConverter;
 import net.mcreator.element.converter.v2024_2.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
+import net.mcreator.element.converter.v2024_2.HarvestLevelProceduresRemover;
 
 import java.util.HashMap;
 import java.util.List;
@@ -163,7 +164,8 @@ public class ConverterRegistry {
 			new LegacyGameModeConverter(),
 			new ProcedureArrowProjectileFixer(),
 			new ProcedureCustomDamageRemover(),
-			new CallProcedureAtBlockConverter()
+			new CallProcedureAtBlockConverter(),
+			new HarvestLevelProceduresRemover()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
