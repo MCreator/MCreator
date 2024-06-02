@@ -32,6 +32,10 @@ EntityAreaEffectCloud:
   - AreaEffectCloud
   - EntityType.AREA_EFFECT_CLOUD
   - area_effect_cloud
+EntityArmadillo:
+  - Armadillo
+  - EntityType.ARMADILLO
+  - armadillo
 EntityArmorStand:
   - ArmorStand
   - EntityType.ARMOR_STAND
