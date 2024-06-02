@@ -3,6 +3,7 @@ _default: zombie
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 EntityArrow: arrow
+EntityArmadillo: armadillo
 EntityBat: bat
 EntityBlaze: blaze
 EntityBoat: boat
