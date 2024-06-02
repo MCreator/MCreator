@@ -113,7 +113,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			return ${data.efficiency}f;
 		}
 	<#elseif data.toolType=="MultiTool">
-		@Override public boolean isCorrectToolForDrops(BlockState blockstate) {
+		@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
 			int tier = ${data.harvestLevel};
 			if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
 				return false;
