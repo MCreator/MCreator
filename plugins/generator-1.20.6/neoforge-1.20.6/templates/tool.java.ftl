@@ -42,8 +42,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 	public ${name}Item () {
-		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
-				|| data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+		super(
+		<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 			new Tier() {
 				public int getUses() {
 					return ${data.usageCount};
@@ -80,17 +80,22 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.toolType=="Sword">3<#elseif data.toolType=="Hoe">0<#else>1</#if>,${data.attackSpeed - 4}f,
 			</#if>
 
-				new Item.Properties()
-				<#if data.immuneToFire>
-				.fireResistant()
-				</#if>
-		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
-				.durability(${data.usageCount})
-				<#if data.immuneToFire>
-				.fireResistant()
-				</#if>
-		</#if>);
+		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
+			new Item.Properties().durability(${data.usageCount})
+		</#if>
+			<#if data.immuneToFire>
+			.fireResistant()
+			</#if>
+			<#if data.toolType=="MultiTool">
+			.attributes(ItemAttributeModifiers.builder()
+					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.build())
+			</#if>
+		);
 	}
 
 	<#if data.toolType == "Shield" && data.repairItems?has_content>
@@ -135,18 +140,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			return ${data.efficiency}f;
 		}
-
-		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-			if (equipmentSlot == EquipmentSlot.MAINHAND) {
-				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-				return builder.build();
-			}
-
-			return super.getDefaultAttributeModifiers(equipmentSlot);
-		}
 	</#if>
 
 	<#if data.toolType=="MultiTool">
@@ -173,6 +166,12 @@ public class ${name}Item extends Item {
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
+			.attributes(ItemAttributeModifiers.builder()
+				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.build())
 		);
 	}
 
@@ -188,18 +187,6 @@ public class ${name}Item extends Item {
 
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
-	}
-
-	@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-		if (equipmentSlot == EquipmentSlot.MAINHAND) {
-			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-			return builder.build();
-		}
-
-		return super.getDefaultAttributeModifiers(equipmentSlot);
 	}
 
 	<@commonMethods/>
