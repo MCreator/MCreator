@@ -41,60 +41,61 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
+
+	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+	private static final Tier TOOL_TIER = new Tier() {
+
+		public int getUses() {
+			return ${data.usageCount};
+		}
+
+		public float getSpeed() {
+			return ${data.efficiency}f;
+		}
+
+		public float getAttackDamageBonus() {
+			return 0; <#-- handled by attributes -->
+		}
+
+		public int getLevel() {
+			return ${data.harvestLevel};
+		}
+
+		public int getEnchantmentValue() {
+			return ${data.enchantability};
+		}
+
+		public Ingredient getRepairIngredient() {
+			return ${mappedMCItemsToIngredient(data.repairItems)};
+		}
+
+	};
+	</#if>
+
 	public ${name}Item () {
 		super(
-		<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
-			new Tier() {
-				public int getUses() {
-					return ${data.usageCount};
-				}
-
-				public float getSpeed() {
-					return ${data.efficiency}f;
-				}
-
-				public float getAttackDamageBonus() {
-					<#if data.toolType == "Sword">
-					return ${data.damageVsEntity - 4}f;
-					<#elseif data.toolType == "Hoe">
-					return ${data.damageVsEntity - 1}f;
-					<#else>
-					return ${data.damageVsEntity - 2}f;
-					</#if>
-				}
-
-				public int getLevel() {
-					return ${data.harvestLevel};
-				}
-
-				public int getEnchantmentValue() {
-					return ${data.enchantability};
-				}
-
-				public Ingredient getRepairIngredient() {
-					return ${mappedMCItemsToIngredient(data.repairItems)};
-				}
-			},
-
-			<#if data.toolType!="MultiTool">
-				<#if data.toolType=="Sword">3<#elseif data.toolType=="Hoe">0<#else>1</#if>,${data.attackSpeed - 4}f,
+			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+			TOOL_TIER,
 			</#if>
-
 			new Item.Properties()
-		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
-			new Item.Properties().durability(${data.usageCount})
-		</#if>
-			<#if data.immuneToFire>
-			.fireResistant()
-			</#if>
-			<#if data.toolType=="MultiTool">
-			.attributes(ItemAttributeModifiers.builder()
-					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
-							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
-							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-					.build())
-			</#if>
+				<#if data.toolType == "Shears" || data.toolType == "Shield">
+				.durability(${data.usageCount})
+				</#if>
+				<#if data.toolType == "MultiTool">
+				.attributes(ItemAttributeModifiers.builder()
+						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						.build())
+				<#elseif data.toolType == "Sword">
+				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				</#if>
+				<#if data.immuneToFire>
+				.fireResistant()
+				</#if>
 		);
 	}
 
