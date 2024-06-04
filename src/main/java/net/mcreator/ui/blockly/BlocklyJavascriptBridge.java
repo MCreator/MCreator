@@ -210,6 +210,9 @@ public final class BlocklyJavascriptBridge {
 			case "arrowProjectile" -> openDataListEntrySelector(
 					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"projectiles");
+			case "configuredfeature" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "configured_features");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
