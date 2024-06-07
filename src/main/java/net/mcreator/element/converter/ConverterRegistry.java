@@ -51,6 +51,7 @@ import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 import net.mcreator.element.converter.v2024_2.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
+import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -186,7 +187,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.TOOL, List.of(
 			new SpecialInformationConverter(),
-			new ItemHasGlowConverter()
+			new ItemHasGlowConverter(),
+			new ToolHarvestLevelConverter()
 		));
 	}};
 	//@formatter:on

@@ -45,27 +45,39 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final Tier TOOL_TIER = new Tier() {
 
-		public int getUses() {
+		@Override public int getUses() {
 			return ${data.usageCount};
 		}
 
-		public float getSpeed() {
+		@Override public float getSpeed() {
 			return ${data.efficiency}f;
 		}
 
-		public float getAttackDamageBonus() {
+		@Override public float getAttackDamageBonus() {
 			return 0; <#-- handled by attributes -->
 		}
 
-		public int getLevel() {
-			return ${data.harvestLevel};
+		@Override public TagKey<Block> getIncorrectBlocksForDrops() {
+			<#if data.blockDropsTier == "WOOD">
+			return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
+			<#elseif data.blockDropsTier == "STONE">
+			return BlockTags.INCORRECT_FOR_STONE_TOOL;
+			<#elseif data.blockDropsTier == "IRON">
+			return BlockTags.INCORRECT_FOR_IRON_TOOL;
+			<#elseif data.blockDropsTier == "DIAMOND">
+			return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
+			<#elseif data.blockDropsTier == "GOLD">
+			return BlockTags.INCORRECT_FOR_GOLD_TOOL;
+			<#else>
+			return BlockTags.INCORRECT_FOR_NETHERITE_TOOL;
+			</#if>
 		}
 
-		public int getEnchantmentValue() {
+		@Override public int getEnchantmentValue() {
 			return ${data.enchantability};
 		}
 
-		public Ingredient getRepairIngredient() {
+		@Override public Ingredient getRepairIngredient() {
 			return ${mappedMCItemsToIngredient(data.repairItems)};
 		}
 
@@ -99,6 +111,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		);
 	}
 
+	<#if hasProcedure(data.additionalDropCondition) && data.toolType!="MultiTool">
+	@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
+		return super.isCorrectToolForDrops(itemstack, blockstate) && <@procedureCode data.additionalDropCondition, {
+		"itemstack": "itemstack",
+		"blockstate": "blockstate"
+		}, false/>;
+	}
+	</#if>
+
 	<#if data.toolType == "Shield" && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
@@ -115,19 +136,22 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		}
 	<#elseif data.toolType=="MultiTool">
 		@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
-			int tier = ${data.harvestLevel};
-			if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-				return false;
-			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
-				return false;
-			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
-								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
-						);
-			}
+			<#if hasProcedure(data.additionalDropCondition)>
+				if(!<@procedureCode data.additionalDropCondition, {
+					"itemstack": "itemstack",
+					"blockstate": "blockstate"
+				}, false/>) return false;
+			</#if>
+
+			<#if data.blockDropsTier == "WOOD" || data.blockDropsTier == "GOLD">
+			return !blockstate.is(BlockTags.NEEDS_STONE_TOOL) && !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "STONE">
+			return !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "IRON">
+			return !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#else>
+			return blockstate.is(BlockTags.MINEABLE_WITH_AXE) || blockstate.is(BlockTags.MINEABLE_WITH_HOE) || blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL);
+			</#if>
 		}
 
 		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {

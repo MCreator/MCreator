@@ -1658,9 +1658,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
 		livingEntity.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
-				modElement.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
-						.collect(Collectors.toList())));
+				modElement.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
+						.map(ModElement::getName).collect(Collectors.toList())));
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
@@ -1773,7 +1772,9 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 		tool.toolType = toolType;
-		tool.harvestLevel = 3;
+		tool.blockDropsTier = getRandomString(random,
+				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
+		tool.additionalDropCondition = new Procedure("condition3");
 		tool.efficiency = 6.5;
 		tool.attackSpeed = 4.8;
 		tool.enchantability = 4;
