@@ -132,7 +132,8 @@ import java.util.stream.Collectors;
 
 	public int luminance;
 	public boolean unbreakable;
-	public int breakHarvestLevel;
+	public String vanillaToolTier;
+	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;
 
@@ -204,6 +205,7 @@ import java.util.stream.Collectors;
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
+		this.vanillaToolTier = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 

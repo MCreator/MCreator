@@ -426,8 +426,8 @@
 
 <#macro onBlockRightClicked procedure="">
 <#if hasProcedure(procedure)>
-@Override public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
-	super.use(blockstate, world, pos, entity, hand, hit);
+@Override public InteractionResult useWithoutItem(BlockState blockstate, Level world, BlockPos pos, Player entity, BlockHitResult hit) {
+	super.useWithoutItem(blockstate, world, pos, entity, hit);
 	<@procedureCodeWithOptResult procedure, "actionresulttype", "InteractionResult.SUCCESS", {
 		"x": "pos.getX()",
 		"y": "pos.getY()",
