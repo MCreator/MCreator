@@ -39,7 +39,7 @@ package ${package}.init;
 <#assign blockentitiesWithInventory = w.getGElementsOfType("block")?filter(e -> e.hasInventory)>
 
 <#if blockentitiesWithInventory?size != 0>
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}BlockEntities {
 
