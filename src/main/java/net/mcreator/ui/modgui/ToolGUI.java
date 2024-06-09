@@ -252,13 +252,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
-				L10N.label("elementgui.tool.shield_blocking_model")));
-		selp.add(blockingModel);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
 				L10N.label("elementgui.common.repair_items")));
 		selp.add(repairItems);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+				L10N.label("elementgui.tool.shield_blocking_model")));
+		selp.add(blockingModel);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 				L10N.label("elementgui.tool.blocks_affected")));
