@@ -44,7 +44,7 @@ public class ${name}FluidType extends FluidType {
 			<#else>
 			.canSwim(false)
 			.canDrown(false)
-			.pathType(BlockPathTypes.LAVA)
+			.pathType(PathType.LAVA)
 			.adjacentPathType(null)
 			</#if>
 			.motionScale(${0.007 * data.flowStrength}D)
