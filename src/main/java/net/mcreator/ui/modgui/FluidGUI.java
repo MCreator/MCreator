@@ -335,15 +335,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
 
-		luminosity.setOpaque(false);
-		density.setOpaque(false);
-		viscosity.setOpaque(false);
-		temperature.setOpaque(false);
-		ComponentUtils.deriveFont(luminosity, 16);
-		ComponentUtils.deriveFont(density, 16);
-		ComponentUtils.deriveFont(viscosity, 16);
-		ComponentUtils.deriveFont(temperature, 16);
-
 		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
 				L10N.label("elementgui.fluid.luminosity")));
 		forgeProperties.add(luminosity);
