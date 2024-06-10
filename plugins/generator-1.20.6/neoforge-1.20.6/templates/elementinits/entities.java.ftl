@@ -85,14 +85,12 @@ public class ${JavaModName}Entities {
 	</#if>
 
 	<#if hasLivingEntities>
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
-		event.enqueueWork(() -> {
+	@SubscribeEvent public static void init(SpawnPlacementRegisterEvent event) {
 		<#list entities as entity>
 			<#if entity.getModElement().getTypeString() == "livingentity">
-				${entity.getModElement().getName()}Entity.init();
+				${entity.getModElement().getName()}Entity.init(event);
 			</#if>
 		</#list>
-		});
 	}
 
 	@SubscribeEvent public static void registerAttributes(EntityAttributeCreationEvent event) {
