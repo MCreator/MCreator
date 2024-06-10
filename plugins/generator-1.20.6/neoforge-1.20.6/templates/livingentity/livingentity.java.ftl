@@ -104,7 +104,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.flyingMob>
 		this.moveControl = new FlyingMoveControl(this, 10, true);
 		<#elseif data.waterMob>
-		this.setPathfindingMalus(BlockPathTypes.WATER, 0);
+		this.setPathfindingMalus(PathType.WATER, 0);
 		this.moveControl = new MoveControl(this) {
 			@Override public void tick() {
 			    if (${name}Entity.this.isInWater())
