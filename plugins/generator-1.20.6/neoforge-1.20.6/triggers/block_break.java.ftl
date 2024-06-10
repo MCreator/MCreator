@@ -7,11 +7,11 @@
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
 				"z": "event.getPos().getZ()",
-				"px": "event.getPlayer().getX()",
-				"py": "event.getPlayer().getY()",
-				"pz": "event.getPlayer().getZ()",
+				"px": "event.getBreaker() != null ? event.getBreaker().getX() : event.getPos().getX()",
+				"py": "event.getBreaker() != null ? event.getBreaker().getY() : event.getPos().getY()",
+				"pz": "event.getBreaker() != null ? event.getBreaker().getZ() : event.getPos().getZ()",
 				"world": "event.getLevel()",
-				"entity": "event.getPlayer()",
+				"entity": "event.getBreaker()",
 				"blockstate": "event.getState()"
 			}/>
 		</#compress></#assign>
