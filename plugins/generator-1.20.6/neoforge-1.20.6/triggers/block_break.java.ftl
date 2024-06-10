@@ -1,9 +1,9 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
+	@SubscribeEvent public static void onBlockBreak(BlockDropsEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"xpAmount": "event.getExpToDrop()",
+				"xpAmount": "event.getDroppedExperience()",
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
 				"z": "event.getPos().getZ()",
