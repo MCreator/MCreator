@@ -53,7 +53,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	public ${name}Block() {
 		super(
 		<#if data.plantType == "normal">
-			List.of(new SuspiciousEffectHolder.EffectEntry(${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration})),
+		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
 		</#if>
 		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -127,8 +127,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>
 
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
-	@Override public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return BlockPathTypes.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
+		return PathType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
 	}
 	</#if>
 
@@ -217,9 +217,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			for(;world.getBlockState(pos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
-				if (CommonHooks.onCropsGrowPre(world, pos, blockstate, true)) {
+				if (CommonHooks.canCropGrow(world, pos, blockstate, true)) {
 					if (j == 15) {
 						world.setBlockAndUpdate(pos.above(), defaultBlockState());
+						CommonHooks.fireCropGrowPost(world, pos.above(), defaultBlockState());
 						world.setBlock(pos, blockstate.setValue(AGE, 0), 4);
 					} else {
 						world.setBlock(pos, blockstate.setValue(AGE, j + 1), 4);
