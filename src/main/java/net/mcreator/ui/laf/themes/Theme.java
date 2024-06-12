@@ -130,6 +130,8 @@ public class Theme {
 			overrides.put("TabbedPane.contentOpaque", "false");
 			overrides.put("Tree.rendererFillBackground", "false");
 
+			overrides.put("TabbedPane.focusColor", "@background");
+
 			overrides.put("List.focusCellHighlightBorder", "0,0,0,0");
 			overrides.put("List.border", "0,0,0,0");
 			overrides.put("ScrollPane.border", "0,0,0,0");
