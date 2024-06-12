@@ -5,6 +5,7 @@ _mcreator_map_template: "@modid:@registryname"
 adventure/adventuring_time: minecraft:adventure/adventuring_time
 adventure/arbalistic: minecraft:adventure/arbalistic
 adventure/avoid_vibration: minecraft:adventure/avoid_vibration
+adventure/brush_armadillo: minecraft:adventure/brush_armadillo
 adventure/bullseye: minecraft:adventure/bullseye
 adventure/craft_decorated_pot_using_only_sherds: minecraft:adventure/craft_decorated_pot_using_only_sherds
 adventure/fall_from_world_height: minecraft:adventure/fall_from_world_height
@@ -63,6 +64,8 @@ husbandry/obtain_netherite_hoe: minecraft:husbandry/obtain_netherite_hoe
 husbandry/obtain_sniffer_egg: minecraft:husbandry/obtain_sniffer_egg
 husbandry/plant_any_sniffer_seed: minecraft:husbandry/plant_any_sniffer_seed
 husbandry/plant_seed: minecraft:husbandry/plant_seed
+husbandry/remove_wolf_armor: minecraft:husbandry/remove_wolf_armor
+husbandry/repair_wolf_armor: minecraft:husbandry/repair_wolf_armor
 husbandry/ride_a_boat_with_a_goat: minecraft:husbandry/ride_a_boat_with_a_goat
 husbandry/root: minecraft:husbandry/root
 husbandry/safely_harvest_honey: minecraft:husbandry/safely_harvest_honey
@@ -72,6 +75,7 @@ husbandry/tadpole_in_a_bucket: minecraft:husbandry/tadpole_in_a_bucket
 husbandry/tame_an_animal: minecraft:husbandry/tame_an_animal
 husbandry/wax_off: minecraft:husbandry/wax_off
 husbandry/wax_on: minecraft:husbandry/wax_on
+husbandry/whole_pack: minecraft:husbandry/whole_pack
 nether/all_effects: minecraft:nether/all_effects
 nether/all_potions: minecraft:nether/all_potions
 nether/brew_potion: minecraft:nether/brew_potion
