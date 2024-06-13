@@ -41,57 +41,84 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
-	public ${name}Item () {
-		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
-				|| data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
-			new Tier() {
-				public int getUses() {
-					return ${data.usageCount};
-				}
 
-				public float getSpeed() {
-					return ${data.efficiency}f;
-				}
+	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+	private static final Tier TOOL_TIER = new Tier() {
 
-				public float getAttackDamageBonus() {
-					<#if data.toolType == "Sword">
-					return ${data.damageVsEntity - 4}f;
-					<#elseif data.toolType == "Hoe">
-					return ${data.damageVsEntity - 1}f;
-					<#else>
-					return ${data.damageVsEntity - 2}f;
-					</#if>
-				}
+		@Override public int getUses() {
+			return ${data.usageCount};
+		}
 
-				public int getLevel() {
-					return ${data.harvestLevel};
-				}
+		@Override public float getSpeed() {
+			return ${data.efficiency}f;
+		}
 
-				public int getEnchantmentValue() {
-					return ${data.enchantability};
-				}
+		@Override public float getAttackDamageBonus() {
+			return 0; <#-- handled by attributes -->
+		}
 
-				public Ingredient getRepairIngredient() {
-					return ${mappedMCItemsToIngredient(data.repairItems)};
-				}
-			},
-
-			<#if data.toolType!="MultiTool">
-				<#if data.toolType=="Sword">3<#elseif data.toolType=="Hoe">0<#else>1</#if>,${data.attackSpeed - 4}f,
+		@Override public TagKey<Block> getIncorrectBlocksForDrops() {
+			<#if data.blockDropsTier == "WOOD">
+			return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
+			<#elseif data.blockDropsTier == "STONE">
+			return BlockTags.INCORRECT_FOR_STONE_TOOL;
+			<#elseif data.blockDropsTier == "IRON">
+			return BlockTags.INCORRECT_FOR_IRON_TOOL;
+			<#elseif data.blockDropsTier == "DIAMOND">
+			return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
+			<#elseif data.blockDropsTier == "GOLD">
+			return BlockTags.INCORRECT_FOR_GOLD_TOOL;
+			<#else>
+			return BlockTags.INCORRECT_FOR_NETHERITE_TOOL;
 			</#if>
+		}
 
-				new Item.Properties()
-				<#if data.immuneToFire>
-				.fireResistant()
-				</#if>
-		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
+		@Override public int getEnchantmentValue() {
+			return ${data.enchantability};
+		}
+
+		@Override public Ingredient getRepairIngredient() {
+			return ${mappedMCItemsToIngredient(data.repairItems)};
+		}
+
+	};
+	</#if>
+
+	public ${name}Item () {
+		super(
+			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+			TOOL_TIER,
+			</#if>
 			new Item.Properties()
+				<#if data.toolType == "Shears" || data.toolType == "Shield">
 				.durability(${data.usageCount})
+				</#if>
+				<#if data.toolType == "MultiTool">
+				.attributes(ItemAttributeModifiers.builder()
+						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						.build())
+				<#elseif data.toolType == "Sword">
+				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
-		</#if>);
+		);
 	}
+
+	<#if hasProcedure(data.additionalDropCondition) && data.toolType!="MultiTool">
+	@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
+		return super.isCorrectToolForDrops(itemstack, blockstate) && <@procedureCode data.additionalDropCondition, {
+		"itemstack": "itemstack",
+		"blockstate": "blockstate"
+		}, false/>;
+	}
+	</#if>
 
 	<#if data.toolType == "Shield" && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
@@ -108,20 +135,23 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			return ${data.efficiency}f;
 		}
 	<#elseif data.toolType=="MultiTool">
-		@Override public boolean isCorrectToolForDrops(BlockState blockstate) {
-			int tier = ${data.harvestLevel};
-			if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-				return false;
-			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
-				return false;
-			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
-								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
-						);
-			}
+		@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
+			<#if hasProcedure(data.additionalDropCondition)>
+				if(!<@procedureCode data.additionalDropCondition, {
+					"itemstack": "itemstack",
+					"blockstate": "blockstate"
+				}, false/>) return false;
+			</#if>
+
+			<#if data.blockDropsTier == "WOOD" || data.blockDropsTier == "GOLD">
+			return !blockstate.is(BlockTags.NEEDS_STONE_TOOL) && !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "STONE">
+			return !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "IRON">
+			return !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#else>
+			return blockstate.is(BlockTags.MINEABLE_WITH_AXE) || blockstate.is(BlockTags.MINEABLE_WITH_HOE) || blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL);
+			</#if>
 		}
 
 		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
@@ -134,18 +164,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
 			return ${data.efficiency}f;
-		}
-
-		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-			if (equipmentSlot == EquipmentSlot.MAINHAND) {
-				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-				return builder.build();
-			}
-
-			return super.getDefaultAttributeModifiers(equipmentSlot);
 		}
 	</#if>
 
@@ -173,6 +191,12 @@ public class ${name}Item extends Item {
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
+			.attributes(ItemAttributeModifiers.builder()
+				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.build())
 		);
 	}
 
@@ -188,18 +212,6 @@ public class ${name}Item extends Item {
 
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
-	}
-
-	@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-		if (equipmentSlot == EquipmentSlot.MAINHAND) {
-			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
-			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
-			return builder.build();
-		}
-
-		return super.getDefaultAttributeModifiers(equipmentSlot);
 	}
 
 	<@commonMethods/>

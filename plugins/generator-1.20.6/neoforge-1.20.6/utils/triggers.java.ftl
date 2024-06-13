@@ -190,7 +190,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		itemstack.hurtAndBreak(1, entity, EquipmentSlot.MAINHAND);
 	<#else>
 		boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
 	</#if>
