@@ -29,7 +29,7 @@ import java.util.Locale;
 
 public class DefaultFreemarkerConfiguration extends Configuration {
 
-	private static final Version FTL_CONFIGURATION_VERSION = Configuration.VERSION_2_3_32;
+	private static final Version FTL_CONFIGURATION_VERSION = Configuration.VERSION_2_3_33;
 
 	public DefaultFreemarkerConfiguration() {
 		super(FTL_CONFIGURATION_VERSION);
