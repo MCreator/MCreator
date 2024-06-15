@@ -41,7 +41,7 @@ public abstract class AbstractWorkspacePanel extends JPanel implements IReloadab
 	 * @param workspacePanel The main workspace section.
 	 */
 	public AbstractWorkspacePanel(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
+		super(new BorderLayout(0, 0));
 		this.workspacePanel = workspacePanel;
 		setOpaque(false);
 	}
