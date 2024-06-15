@@ -16,11 +16,25 @@ templates:
     condition: spawnThisMob
     name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
 
+global_templates:
+  - template: json/monster_room_mobs.json.ftl
+    writer: json
+    condition: "${w.getGElementsOfType('livingentity')?filter(e -> e.spawnInDungeons)?size != 0}"
+    name: "@RESROOT/data/neoforge/data_maps/entity_type/monster_room_mobs.json"
+
 unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
 
 tags:
   - tag: ENTITIES:minecraft:raiders
     condition: "${data.mobBehaviourType == 'Raider'}"
+  - tag: ENTITIES:minecraft:undead
+    condition: "${data.mobCreatureType == 'UNDEAD'}"
+  - tag: ENTITIES:minecraft:arthropod
+    condition: "${data.mobCreatureType == 'ARTHROPOD'}"
+  - tag: ENTITIES:minecraft:illager
+    condition: "${data.mobCreatureType == 'ILLAGER'}"
+  - tag: ENTITIES:minecraft:aquatic
+    condition: "${data.mobCreatureType == 'WATER'}"
 
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg

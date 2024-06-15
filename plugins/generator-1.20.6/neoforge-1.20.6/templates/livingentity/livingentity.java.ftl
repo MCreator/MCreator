@@ -70,7 +70,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
-		setMaxUpStep(${data.stepHeight}f);
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -105,7 +104,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.flyingMob>
 		this.moveControl = new FlyingMoveControl(this, 10, true);
 		<#elseif data.waterMob>
-		this.setPathfindingMalus(BlockPathTypes.WATER, 0);
+		this.setPathfindingMalus(PathType.WATER, 0);
 		this.moveControl = new MoveControl(this) {
 			@Override public void tick() {
 			    if (${name}Entity.this.isInWater())
@@ -151,10 +150,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 
 	<#if data.entityDataEntries?has_content>
-	@Override protected void defineSynchedData() {
-		super.defineSynchedData();
+	@Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
 		<#list data.entityDataEntries as entry>
-			this.entityData.define(DATA_${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
+			builder.define(DATA_${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
 		</#list>
 	}
 	</#if>
@@ -197,10 +196,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	@Override public MobType getMobType() {
-		return MobType.${data.mobCreatureType};
-	}
-
 	<#if !data.doesDespawnWhenIdle>
 	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;
@@ -208,17 +203,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.mobModelName == "Biped">
-	@Override protected float ridingOffset(Entity entity) {
-		return -0.35F;
+	@Override public Vec3 getPassengerRidingPosition(Entity entity) {
+		return super.getPassengerRidingPosition(entity).add(0, -0.35F, 0);
 	}
 	<#elseif data.mobModelName == "Silverfish">
-	@Override protected float ridingOffset(Entity entity) {
-		return 0.1F;
+	@Override public Vec3 getPassengerRidingPosition(Entity entity) {
+		return super.getPassengerRidingPosition(entity).add(0, 0.1F, 0);
 	}
 	</#if>
 
 	<#if data.mountedYOffset != 0>
-	@Override protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float f) {
+	@Override protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float f) {
 		return super.getPassengerAttachmentPoint(entity, dimensions, f).add(0, ${data.mountedYOffset}f, 0);
 	}
 	</#if>
@@ -404,9 +399,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if hasProcedure(data.onInitialSpawn)>
-	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-			MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
+	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
+		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata);
 		<@procedureCode data.onInitialSpawn, {
 			"x": "this.getX()",
 			"y": "this.getY()",
@@ -455,7 +449,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			</#if>
 		</#list>
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
-		compound.put("InventoryCustom", inventory.serializeNBT());
+		compound.put("InventoryCustom", inventory.serializeNBT(this.registryAccess()));
 		</#if>
 	}
 
@@ -473,7 +467,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#list>
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
-			inventory.deserializeNBT(inventoryTag);
+			inventory.deserializeNBT(this.registryAccess(), inventoryTag);
 		</#if>
 	}
 	</#if>
@@ -524,9 +518,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			} else {
 				if (this.isTame()) {
 					if (this.isOwnedBy(sourceentity)) {
-						if (item.isEdible() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+						if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
-							this.heal((float)item.getFoodProperties().getNutrition());
+							FoodProperties foodproperties = itemstack.getFoodProperties(this);
+							float nutrition = foodproperties != null ? (float) foodproperties.nutrition() : 1;
+							this.heal(nutrition);
 							retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 						} else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
@@ -649,7 +645,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null);
 			return retval;
 		}
 
@@ -784,16 +780,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if hasProcedure(data.boundingBoxScale) || (data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1)>
-	@Override public EntityDimensions getDimensions(Pose pose) {
+	@Override public EntityDimensions getDefaultDimensions(Pose pose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;
 			Level world = this.level();
 			double x = this.getX();
 			double y = this.getY();
 			double z = this.getZ();
-			return super.getDimensions(pose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
+			return super.getDefaultDimensions(pose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
 		<#else>
-			return super.getDimensions(pose).scale(${data.boundingBoxScale.getFixedValue()}f);
+			return super.getDefaultDimensions(pose).scale(${data.boundingBoxScale.getFixedValue()}f);
 		</#if>
 	}
 	</#if>
@@ -815,11 +811,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	public static void init() {
+	public static void init(SpawnPlacementRegisterEvent event) {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType == "creature">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -829,12 +825,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && world.getRawBrightness(pos, 0) > 8)
-				</#if>
+							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) &&
+							world.getRawBrightness(pos, 0) > 8)
+				</#if>,
+				SpawnPlacementRegisterEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-					SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+					SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -844,11 +842,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 					<#else>
 					Mob::checkMobSpawnRules
-					</#if>
+					</#if>,
+					SpawnPlacementRegisterEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -858,12 +857,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 					<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER))
-					</#if>
+							(world.getBlockState(pos).is(Blocks.WATER) &&
+							world.getBlockState(pos.above()).is(Blocks.WATER))
+					</#if>,
+					SpawnPlacementRegisterEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "undergroundWaterCreature">
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-					SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -872,14 +873,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					(entityType, world, reason, pos, random) -> {
-					    return world.getFluidState(pos.below()).is(FluidTags.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER) && pos.getY() >= (world.getSeaLevel() - 13) && pos.getY() <= world.getSeaLevel();
-                    }
-					</#if>
+					(entityType, world, reason, pos, random) ->
+							(world.getFluidState(pos.below()).is(FluidTags.WATER) &&
+							world.getBlockState(pos.above()).is(Blocks.WATER) &&
+							pos.getY() >= (world.getSeaLevel() - 13) &&
+							pos.getY() <= world.getSeaLevel())
+					</#if>,
+					SpawnPlacementRegisterEvent.Operation.REPLACE
 			);
 			<#else>
-			SpawnPlacements.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
-					SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
 						int x = pos.getX();
@@ -889,15 +893,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 					<#else>
 						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random)
-										&& Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
-					</#if>
+								(world.getDifficulty() != Difficulty.PEACEFUL &&
+								Monster.isDarkEnoughToSpawn(world, pos, random) &&
+								Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
+					</#if>,
+					SpawnPlacementRegisterEvent.Operation.REPLACE
 			);
 			</#if>
-		</#if>
-
-		<#if data.spawnInDungeons>
-			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
 		</#if>
 
 		<#if data.mobBehaviourType == "Raider">
@@ -917,6 +919,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		builder = builder.add(Attributes.ATTACK_DAMAGE, ${data.attackStrength});
 		builder = builder.add(Attributes.FOLLOW_RANGE, ${data.followRange});
 
+		builder = builder.add(Attributes.STEP_HEIGHT, ${data.stepHeight});
+
 		<#if (data.knockbackResistance > 0)>
 		builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, ${data.knockbackResistance});
 		</#if>
@@ -930,7 +934,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.waterMob>
-		builder = builder.add(NeoForgeMod.SWIM_SPEED.value(), ${data.movementSpeed});
+		builder = builder.add(NeoForgeMod.SWIM_SPEED, ${data.movementSpeed});
 		</#if>
 
 		<#if data.aiBase == "Zombie">

@@ -35,7 +35,7 @@ package ${package}.entity;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}EntityProjectile extends AbstractArrow implements ItemSupplier {
 
-	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.rangedAttackItem, 1)};
+	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.rangedAttackItem)};
 
 	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, Level world) {
 		super(type, world, PROJECTILE_ITEM);
@@ -57,5 +57,10 @@ package ${package}.entity;
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
 		return PROJECTILE_ITEM;
 	}
+
+	@Override protected ItemStack getDefaultPickupItem() {
+		return ${mappedMCItemToItemStackCode(data.rangedAttackItem)};
+	}
+
 }
 <#-- @formatter:on -->
