@@ -89,6 +89,7 @@ public class TagsUtils {
 				} else if (map.containsKey("entry")) {
 					String entry = GeneratorTokens.replaceTokens(generator.getWorkspace(), ((String) map.get("entry"))
 									//@formatter:off
+									.replace("@NAME", element.getModElement().getName())
 									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 									.replace("@registryname", element.getModElement().getRegistryName())
 							//@formatter:on

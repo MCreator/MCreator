@@ -719,7 +719,7 @@ public class TestWorkspaceDataProvider {
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			structure.terrainAdaptation = getRandomString(random,
-					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
+					Arrays.asList("none", "beard_thin", "beard_box", "bury", "encapsulate"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
@@ -1212,7 +1212,7 @@ public class TestWorkspaceDataProvider {
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
-			block.breakHarvestLevel = 4;
+			block.vanillaToolTier = getRandomString(random, Arrays.asList("NONE", "STONE", "IRON", "DIAMOND"));
 			block.tickRandomly = _true;
 			block.hasInventory = _true;
 			block.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
@@ -1290,6 +1290,7 @@ public class TestWorkspaceDataProvider {
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.placingCondition = new Procedure("condition2");
+				block.additionalHarvestCondition = new Procedure("condition1");
 				block.isBonemealTargetCondition = new Procedure("condition3");
 				block.bonemealSuccessCondition = new Procedure("condition4");
 				block.onBonemealSuccess = new Procedure("procedure15");
@@ -1400,7 +1401,6 @@ public class TestWorkspaceDataProvider {
 			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 			enchantment.type = getRandomString(random,
 					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
-			enchantment.minLevel = 13;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
@@ -1659,9 +1659,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
 		livingEntity.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
-				modElement.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
-						.collect(Collectors.toList())));
+				modElement.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
+						.map(ModElement::getName).collect(Collectors.toList())));
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
@@ -1774,7 +1773,9 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 		tool.toolType = toolType;
-		tool.harvestLevel = 3;
+		tool.blockDropsTier = getRandomString(random,
+				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
+		tool.additionalDropCondition = new Procedure("condition3");
 		tool.efficiency = 6.5;
 		tool.attackSpeed = 4.8;
 		tool.enchantability = 4;
