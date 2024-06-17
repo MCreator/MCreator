@@ -24,8 +24,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -86,12 +84,11 @@ public class JavaMemberNameValidator implements Validator {
 		}
 	}
 
-	private static final Set<String> common_names = new HashSet<>(
-			Arrays.asList("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword", "Shears", "FishingRod", "Compass",
-					"Clock", "Shield", "Overworld", "Nether", "World", "Living", "Mob", "Monster", "Animal", "End",
-					"Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "Creature",
-					"Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack", "Emerald", "Entity",
-					"Surface", "WoodButton", "StoneButton", "Flower", "Falling", "Furnace", "Bush", "Crop", "Structure",
-					"Blocks", "Items", "Biomes", "Timer"));
+	private static final Set<String> common_names = Set.of("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword",
+			"Shears", "FishingRod", "Compass", "Clock", "Shield", "Overworld", "Nether", "World", "Living", "Mob",
+			"Monster", "Animal", "End", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door",
+			"FenceGate", "Creature", "Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack",
+			"Emerald", "Entity", "Surface", "WoodButton", "StoneButton", "Flower", "Falling", "Furnace", "Bush", "Crop",
+			"Structure", "Blocks", "Items", "Biomes", "Timer", "Direction", "Number");
 
 }
