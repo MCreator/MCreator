@@ -41,8 +41,8 @@ public class ${name}BlockEntity extends BlockEntity {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
-	@Override public CompoundTag getUpdateTag() {
-		return this.saveWithFullMetadata();
+	@Override public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
+		return this.saveWithFullMetadata(lookupProvider);
 	}
 
 }
