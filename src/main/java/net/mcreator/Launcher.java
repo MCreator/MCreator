@@ -95,7 +95,7 @@ public class Launcher {
 
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
 			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"
-							+ "Please make sure that the user running MCreator has permissions to read and write to the directory<br>"
+							+ "Make sure that the user running MCreator has permissions to read and write to the directory<br>"
 							+ "in which MCreator tried to create user specific data storage. The path MCreator could not write to is:<br><br>"
 							+ UserFolderManager.getFileFromUserFolder("/") + "<br>", "MCreator file system error",
 					JOptionPane.WARNING_MESSAGE);
