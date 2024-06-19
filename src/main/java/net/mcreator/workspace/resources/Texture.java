@@ -21,11 +21,9 @@ package net.mcreator.workspace.resources;
 
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.io.File;
 
 public abstract class Texture {
 
@@ -33,7 +31,7 @@ public abstract class Texture {
 
 	protected final String textureName;
 
-	public Texture(TextureType textureType, String textureName) {
+	Texture(TextureType textureType, String textureName) {
 		this.textureType = textureType;
 		this.textureName = textureName;
 	}
@@ -63,29 +61,9 @@ public abstract class Texture {
 			return null;
 
 		if (name.indexOf(':') == -1)
-			return new Custom(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
+			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
 
 		return null;
-	}
-
-	public static final class Custom extends Texture {
-
-		public Custom(TextureType textureType, File texture) {
-			super(textureType, textureType == TextureType.ARMOR ?
-					(FilenameUtils.removeExtension(texture.getName()).replace("_layer_1", "").replace("_layer_2", "")) :
-					FilenameUtils.removeExtension(texture.getName()));
-		}
-
-		@Override public ImageIcon getTextureIcon(Workspace workspace) {
-			if (textureType == TextureType.ARMOR) {
-				File[] armorTextures = workspace.getFolderManager()
-						.getArmorTextureFilesForName(textureName);
-				return new ImageIcon(armorTextures[0].getAbsolutePath());
-			} else {
-				return workspace.getFolderManager().getTextureImageIcon(textureName, textureType);
-			}
-		}
-
 	}
 
 	public static final class Dummy extends Texture {
