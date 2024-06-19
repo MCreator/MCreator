@@ -35,6 +35,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.swing.*;
 import java.awt.*;
@@ -159,9 +160,9 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("portal".equals(suffix))
-			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
+			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture);
 		else
-			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, texture);
 	}
 
 	@Override public List<MItemBlock> poiBlocks() {

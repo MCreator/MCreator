@@ -20,10 +20,13 @@
 package net.mcreator.workspace.resources;
 
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class Texture {
 
@@ -64,6 +67,18 @@ public abstract class Texture {
 			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
 
 		return null;
+	}
+
+	@Nonnull public static ImageIcon getImageIcon(Workspace workspace, TextureType textureType, String name) {
+		Texture texture = fromName(workspace, textureType, name);
+		if (texture == null)
+			return new EmptyIcon.ImageIcon(16,16);
+
+		return texture.getTextureIcon(workspace);
+	}
+
+	@Nonnull public static Image getImage(Workspace workspace, TextureType textureType, String name) {
+		return getImageIcon(workspace, textureType, name).getImage();
 	}
 
 	public static final class Dummy extends Texture {

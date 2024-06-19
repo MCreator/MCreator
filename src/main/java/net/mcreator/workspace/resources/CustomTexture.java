@@ -41,7 +41,8 @@ public final class CustomTexture extends Texture {
 			File[] armorTextures = workspace.getFolderManager().getArmorTextureFilesForName(textureName);
 			return new ImageIcon(armorTextures[0].getAbsolutePath());
 		} else {
-			return workspace.getFolderManager().getTextureImageIcon(textureName, textureType);
+			return new ImageIcon(
+					workspace.getFolderManager().getTextureFile(textureName, textureType).getAbsolutePath());
 		}
 	}
 
