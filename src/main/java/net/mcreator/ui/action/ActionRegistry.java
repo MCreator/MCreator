@@ -89,7 +89,6 @@ public class ActionRegistry {
 
 	// Workspace related actions
 	public final BasicAction exportToJAR;
-	public final BasicAction exportToDeobfJAR;
 	public final BasicAction workspaceSettings;
 	public final BasicAction exportWorkspaceToZIP;
 	public final BasicAction exportWorkspaceToZIPWithRunDir;
@@ -191,7 +190,6 @@ public class ActionRegistry {
 		this.runServer = new RunServerAction(this).setIcon(UIRES.get("16px.runserver"));
 		this.runGradleTask = new RunGradleTaskAction(this);
 		this.exportToJAR = new ExportWorkspaceForDistAction(this).setIcon(UIRES.get("16px.exporttojar"));
-		this.exportToDeobfJAR = new ExportWorkspaceForDistAction.Deobf(this);
 		this.workspaceSettings = new WorkspaceSettingsAction(this).setIcon(UIRES.get("16px.wrksett"));
 		this.mcreatorWebsite = new VisitURIAction(this, L10N.t("action.mcreator_website"),
 				MCreatorApplication.SERVER_DOMAIN);
