@@ -64,7 +64,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 					"MOTION_BLOCKING_NO_LEAVES" });
 
 	private final JComboBox<String> terrainAdaptation = new JComboBox<>(
-			new String[] { "none", "beard_thin", "beard_box", "bury" });
+			new String[] { "none", "beard_thin", "beard_box", "bury", "encapsulate" });
 
 	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
 

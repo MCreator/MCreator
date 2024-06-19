@@ -193,7 +193,13 @@ public class OrePackMakerTool {
 		oreBlock.hardness = 3.0 * factor;
 		oreBlock.resistance = 5.0 * Math.pow(factor, 0.8);
 		oreBlock.destroyTool = "pickaxe";
-		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
+		if (factor < 1) {
+			oreBlock.vanillaToolTier = "STONE";
+		} else if (factor == 1) {
+			oreBlock.vanillaToolTier = "IRON";
+		} else {
+			oreBlock.vanillaToolTier = "DIAMOND";
+		}
 		oreBlock.requiresCorrectTool = true;
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
@@ -219,7 +225,13 @@ public class OrePackMakerTool {
 		oreBlockBlock.resistance = 10.0;
 		oreBlockBlock.texture = oreBlockTextureName;
 		oreBlockBlock.destroyTool = "pickaxe";
-		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
+		if (factor < 1) {
+			oreBlockBlock.vanillaToolTier = "STONE";
+		} else if (factor == 1) {
+			oreBlockBlock.vanillaToolTier = "IRON";
+		} else {
+			oreBlockBlock.vanillaToolTier = "DIAMOND";
+		}
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
 		oreBlockBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));

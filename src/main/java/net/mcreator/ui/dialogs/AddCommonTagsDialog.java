@@ -90,6 +90,9 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, itemTags, "planks", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "flowers", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "enchantable/weapon", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "enchantable/mining", "minecraft", TagType.ITEMS, false));
 
 		callables.add(addTag(mcreator, entityTags, "arrows", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "impact_projectiles", "minecraft", TagType.ENTITIES, false));
@@ -151,7 +154,7 @@ public class AddCommonTagsDialog {
 
 		JCheckBox box = new JCheckBox("<html><kbd>" + namespace + ":" + name + "</kbd><small><br>" + L10N.t(
 				"dialog.tools.inject_tags.tag." + type.name().toLowerCase(Locale.ENGLISH) + "." + namespace + "."
-						+ name));
+						+ name.replace("/", ".")));
 		box.setSelected(checked);
 
 		JPanel wrap = new JPanel(new GridLayout());

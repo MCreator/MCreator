@@ -132,7 +132,8 @@ import java.util.stream.Collectors;
 
 	public int luminance;
 	public boolean unbreakable;
-	public int breakHarvestLevel;
+	public String vanillaToolTier;
+	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;
 
@@ -206,6 +207,7 @@ import java.util.stream.Collectors;
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
+		this.vanillaToolTier = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -348,9 +350,12 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-			baseTypes.add(BaseType.FEATURE);
+		if (generateFeature) {
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
+			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
+				baseTypes.add(BaseType.FEATURE);
+		}
 
 		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);

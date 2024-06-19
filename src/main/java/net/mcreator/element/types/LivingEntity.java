@@ -139,6 +139,7 @@ import java.util.*;
 	public Sound hurtSound;
 	public Sound deathSound;
 	public Sound stepSound;
+	public Sound raidCelebrationSound;
 
 	public List<PropertyDataWithValue<?>> entityDataEntries;
 
@@ -175,6 +176,7 @@ import java.util.*;
 	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
+	public int[] raidSpawnsCount;
 
 	private LivingEntity() {
 		this(null);
@@ -199,6 +201,8 @@ import java.util.*;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();
+
+		this.raidSpawnsCount = new int[] {4, 3, 3, 4, 4, 4, 2};
 	}
 
 	@Override @Nullable public Model getEntityModel() {

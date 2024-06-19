@@ -300,7 +300,15 @@ public class ToolPackMakerTool {
 
 	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool,
 			FolderElement folder) {
-		tool.harvestLevel = (int) Math.round(2 * factor);
+		if (factor < 0.5) {
+			tool.blockDropsTier = "WOOD";
+		} else if (factor < 1) {
+			tool.blockDropsTier = "STONE";
+		} else if (factor == 1) {
+			tool.blockDropsTier = "IRON";
+		} else {
+			tool.blockDropsTier = "DIAMOND";
+		}
 		tool.efficiency = (double) Math.round(6.0f * Math.pow(factor, 0.6));
 		tool.enchantability = (int) Math.round(14 * factor);
 		tool.damageVsEntity = (double) Math.round(4.0f * factor);

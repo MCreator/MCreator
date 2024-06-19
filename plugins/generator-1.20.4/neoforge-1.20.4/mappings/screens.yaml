@@ -88,7 +88,6 @@ Options: OptionsScreen
 OptionsSounds: SoundOptionsScreen
 Pack: PackSelectionScreen
 Realms: RealmsScreen
-Realms32bitWarning: Realms32bitWarningScreen
 RecoverWorldData: RecoverWorldDataScreen
 ReportPlayer: ReportPlayerScreen
 ReportReasonSelection: ReportReasonSelectionScreen

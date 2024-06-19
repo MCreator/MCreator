@@ -23,10 +23,6 @@
     {
       "name": "itemstack",
       "type": "itemstack"
-    },
-    {
-      "name": "originalitemstack",
-      "type": "itemstack"
     }
   ],
   "cancelable": "true"

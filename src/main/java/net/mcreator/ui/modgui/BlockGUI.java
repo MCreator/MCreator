@@ -204,7 +204,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
-	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+
+	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
+			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+
+	private ProcedureSelector additionalHarvestCondition;
+
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
@@ -338,6 +343,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+		additionalHarvestCondition = new ProcedureSelector(this.withEntry("block/event_additional_harvest_condition"),
+				mcreator, L10N.t("elementgui.block.event_additional_harvest_condition"),
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -744,9 +754,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.harvest_tool")));
 		selp3.add(destroyTool);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
-				L10N.label("elementgui.block.harvest_level")));
-		selp3.add(breakHarvestLevel);
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
+				L10N.label("elementgui.block.vanilla_tool_tier")));
+		selp3.add(vanillaToolTier);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -861,10 +871,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-		selp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
 
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -879,8 +885,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.setOpaque(false);
 		soundProperties.setOpaque(false);
 
+		JComponent selpWrap = PanelUtils.centerAndSouthElement(selp3, additionalHarvestCondition);
+		selpWrap.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selp3, soundProperties))));
+				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1305,6 +1317,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
+		additionalHarvestCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
@@ -1379,6 +1392,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		specialInformation.setSelectedProcedure(block.specialInformation);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
+		additionalHarvestCondition.setSelectedProcedure(block.additionalHarvestCondition);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
 		hasGravity.setSelected(block.hasGravity);
@@ -1396,7 +1410,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
-		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		vanillaToolTier.setSelectedItem(block.vanillaToolTier);
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
@@ -1525,9 +1539,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.stepSound = stepSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
-		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
+		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
+		block.additionalHarvestCondition = additionalHarvestCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();

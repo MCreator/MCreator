@@ -166,7 +166,6 @@ public class WoodPackMakerTool {
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
-		woodBlock.breakHarvestLevel = 0;
 		woodBlock.flammability = (int) Math.round(5 * factor);
 		woodBlock.rotationMode = 5; // log rotation
 		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -189,7 +188,6 @@ public class WoodPackMakerTool {
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
-		logBlock.breakHarvestLevel = 0;
 		logBlock.flammability = (int) Math.round(5 * factor);
 		logBlock.rotationMode = 5; // log rotation
 		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -207,7 +205,6 @@ public class WoodPackMakerTool {
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
-		planksBlock.breakHarvestLevel = 0;
 		planksBlock.flammability = (int) Math.round(5 * factor);
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksBlock);
@@ -222,7 +219,6 @@ public class WoodPackMakerTool {
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
-		leavesBlock.breakHarvestLevel = 0;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
@@ -240,7 +236,6 @@ public class WoodPackMakerTool {
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		stairsBlock.hardness = 3 * factor;
 		stairsBlock.resistance = 2 * factor;
-		stairsBlock.breakHarvestLevel = 0;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 		stairsBlock.lightOpacity = 0;
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -258,7 +253,6 @@ public class WoodPackMakerTool {
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
-		slabBlock.breakHarvestLevel = 0;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 		slabBlock.lightOpacity = 0;
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -274,7 +268,6 @@ public class WoodPackMakerTool {
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
-		fenceBlock.breakHarvestLevel = 0;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 		fenceBlock.lightOpacity = 0;
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -290,7 +283,6 @@ public class WoodPackMakerTool {
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
-		fenceGateBlock.breakHarvestLevel = 0;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 		fenceGateBlock.lightOpacity = 0;
 		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -306,7 +298,6 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		pressurePlateBlock.hardness = 2 * factor;
 		pressurePlateBlock.resistance = 3 * factor;
-		pressurePlateBlock.breakHarvestLevel = 0;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -322,7 +313,6 @@ public class WoodPackMakerTool {
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		buttonBlock.hardness = 2 * factor;
 		buttonBlock.resistance = 3 * factor;
-		buttonBlock.breakHarvestLevel = 0;
 		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));

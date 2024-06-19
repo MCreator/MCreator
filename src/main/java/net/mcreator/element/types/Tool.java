@@ -57,16 +57,19 @@ import java.util.*;
 	public String name;
 	public StringListProcedure specialInformation;
 	public List<TabEntry> creativeTabs;
-	public int harvestLevel;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
 	public double damageVsEntity;
 	public int usageCount;
-	@ModElementReference public List<MItemBlock> blocksAffected;
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
+
+	public String blockDropsTier;
+	public Procedure additionalDropCondition;
+
+	@ModElementReference public List<MItemBlock> blocksAffected;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -92,6 +95,8 @@ import java.util.*;
 		this.attackSpeed = 2.8;
 
 		this.blockingModelName = "Normal blocking";
+
+		this.blockDropsTier = "WOOD";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
