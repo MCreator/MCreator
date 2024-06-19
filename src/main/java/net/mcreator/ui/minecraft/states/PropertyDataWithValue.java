@@ -35,7 +35,7 @@ import java.lang.reflect.Type;
 	static class GSONAdapter
 			implements JsonSerializer<PropertyDataWithValue<?>>, JsonDeserializer<PropertyDataWithValue<?>> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setStrictness(Strictness.LENIENT)
 				.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 		@Override
