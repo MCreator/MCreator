@@ -62,8 +62,8 @@ public abstract class Texture {
 
 		if (name.indexOf(':') == -1)
 			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
-
-		return null;
+		else
+			return VanillaTexture.getTexture(workspace, textureType, name);
 	}
 
 	public static final class Dummy extends Texture {

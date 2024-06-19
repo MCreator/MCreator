@@ -29,6 +29,7 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
+import net.mcreator.workspace.resources.VanillaTexture;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -54,6 +55,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 	private final JTextField filterField = new JTextField(20);
 
 	private final MCreator mcreator;
+
+	private boolean loadVanillaTextures = false;
 
 	public TypedTextureSelectorDialog(MCreator mcreator, TextureType type) {
 		super(mcreator);
@@ -137,6 +140,11 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		add(pn);
 	}
 
+	public TypedTextureSelectorDialog loadVanillaTextures() {
+		this.loadVanillaTextures = true;
+		return this;
+	}
+
 	public TextureType getTextureType() {
 		return type;
 	}
@@ -154,6 +162,10 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 		// Load custom textures
 		CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+
+		if (loadVanillaTextures) {
+			VanillaTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+		}
 
 		list.setSelectedIndex(0);
 
