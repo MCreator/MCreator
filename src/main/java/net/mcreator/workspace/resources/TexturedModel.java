@@ -20,6 +20,7 @@ package net.mcreator.workspace.resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +36,7 @@ public class TexturedModel extends Model {
 
 	private static final Logger LOG = LogManager.getLogger(TexturedModel.class);
 
-	private static final Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
+	private static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting().create();
 
 	private TextureMapping textureMapping;
 
