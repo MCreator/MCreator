@@ -14,20 +14,6 @@ neoforge-1.20.6:
 
     dependencies { implementation files("lib/mcreator_link.jar") }
 
-neoforge-1.20.4:
-  required_when_enabled: true
-  update_files:
-    - lib/mcreator_link.jar
-  gradle: |
-    tasks.register('mcreatorLink') {
-      ant.mkdir(dir: 'lib/');
-      ant.get(src: 'https://mcreator.net/link/download/1.20.4', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
-    }
-
-    compileJava.dependsOn mcreatorLink
-
-    dependencies { implementation files("lib/mcreator_link.jar") }
-
 forge-1.20.1:
   required_when_enabled: true
   update_files:

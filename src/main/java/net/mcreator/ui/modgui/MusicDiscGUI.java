@@ -34,7 +34,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -57,7 +57,7 @@ import java.net.URISyntaxException;
 
 public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private StringListProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
@@ -122,7 +122,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
 
