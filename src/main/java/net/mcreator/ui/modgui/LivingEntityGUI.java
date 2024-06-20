@@ -32,7 +32,6 @@ import net.mcreator.element.types.LivingEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -152,7 +151,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox flyingMob = L10N.checkbox("elementgui.living_entity.is_flying_mob");
 
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final JComboBox<String> mobSpawningType = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
@@ -651,12 +650,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			}
 		});
 
-		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXX"));
-
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, new JEmptyBox(2, 2), spawnEggBaseColor,
-				new JEmptyBox(2, 2), spawnEggDotColor, new JEmptyBox(5, 5), creativeTab));
+		spo2.add(PanelUtils.westAndCenterElement(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg,
+				new JEmptyBox(2, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor), creativeTabs, 5, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
@@ -905,6 +902,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "MISC")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			mobName.setText(readableNameFromModElement);
 		}
@@ -945,9 +944,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
 						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("MISC"));
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
 				mcreator.getWorkspace().getModElements().stream()
@@ -1110,8 +1106,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
 
-		if (livingEntity.creativeTab != null)
-			creativeTab.setSelectedItem(livingEntity.creativeTab);
+		creativeTabs.setListElements(livingEntity.creativeTabs);
 
 		Model model = livingEntity.getEntityModel();
 		if (model != null)
@@ -1220,7 +1215,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.breatheUnderwater = breatheUnderwater.getSelectedProcedure();
 		livingEntity.pushedByFluids = pushedByFluids.getSelectedProcedure();
 		livingEntity.flyingMob = flyingMob.isSelected();
-		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		livingEntity.creativeTabs = creativeTabs.getListElements();
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
