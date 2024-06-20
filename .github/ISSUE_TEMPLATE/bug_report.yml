@@ -4,7 +4,7 @@ labels: bug
 body:
  - type: checkboxes
    attributes:
-    label: Issue tracker rule checks (please read carefully)
+    label: Issue tracker rule checks (read carefully)
     options:
      - label: "I have checked that my problem <a href='https://github.com/MCreator/MCreator/issues?q=is%3Aissue' target='_blank'>is not already reported</a>"
        required: true

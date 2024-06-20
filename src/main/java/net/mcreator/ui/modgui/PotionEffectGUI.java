@@ -213,7 +213,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override public PotionEffect getElementFromGUI() {
 		PotionEffect potion = new PotionEffect(modElement);
 		potion.effectName = effectName.getText();
-		potion.icon = icon.getID() + ".png"; // legacy, old workspaces stored name with extension
+		potion.icon = icon.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
 		potion.color = color.getColor();
 		potion.isInstant = isInstant.isSelected();
 		potion.isBad = isBad.isSelected();

@@ -75,7 +75,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
-		setLayout(new BorderLayout(0, 5));
 
 		listFieldBlocksItems.disableItemCentering();
 		listFieldEntities.disableItemCentering();
@@ -212,17 +211,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		header.setResizingColumn(header.getColumnModel().getColumn(3));
 
 		JScrollPane sp = new JScrollPane(elements);
+		sp.setBorder(BorderFactory.createEmptyBorder());
 		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
 
 		sp.setColumnHeaderView(null);
 
-		JPanel holder = new JPanel(new BorderLayout());
-		holder.setOpaque(false);
-		holder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		holder.add(sp);
-
-		add("Center", holder);
+		add("Center", sp);
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));

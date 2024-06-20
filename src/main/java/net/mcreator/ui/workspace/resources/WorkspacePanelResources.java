@@ -40,16 +40,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
 	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
-		resourceTabs = new JTabbedPane() {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
+		resourceTabs = new JTabbedPane();
+		resourceTabs.setOpaque(false);
 
 		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
 		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
@@ -82,11 +74,6 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				.contains("@"))
 			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
-		for (int i = 0; i < resourceTabs.getTabCount(); i++) {
-			resourceTabs.setBackgroundAt(i, new Color(0, 0, 0, 0));
-		}
-
-		resourceTabs.setOpaque(false);
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());
 		add(resourceTabs);
 	}

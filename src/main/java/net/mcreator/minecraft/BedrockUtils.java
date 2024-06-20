@@ -111,9 +111,8 @@ public class BedrockUtils {
 				new File(bpdev, workspace.getWorkspaceSettings().getModID()));
 		FileIO.copyDirectory(workspace.getGenerator().getResourceRoot(),
 				new File(rpdev, workspace.getWorkspaceSettings().getModID()));
-
-		WindowsProcessUtil.startProcessAsync(
-				"cmd.exe /c start \"\" \"shell:AppsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App\"");
+		Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", "start", "",
+				"shell:AppsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App" });
 	}
 
 	private static boolean detectAndDeletePack(File bpacksdir, String uuid) {

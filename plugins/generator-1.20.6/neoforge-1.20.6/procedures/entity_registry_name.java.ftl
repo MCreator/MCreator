@@ -1,0 +1,1 @@
+(BuiltInRegistries.ENTITY_TYPE.getKey(${input$entity}.getType()).toString())

@@ -7,6 +7,9 @@
 - EntityAreaEffectCloud:
   readable_name: "Area of effect cloud"
   type: spawnable
+- EntityArmadillo:
+  readable_name: "Armadillo"
+  type: spawnable
 - EntityArmorStand:
   readable_name: "Armor stand"
   type: spawnable

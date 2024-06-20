@@ -21,25 +21,24 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.Texture;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class TextureHolder extends VButton {
 
-	private String id = "";
+	@Nullable private Texture selectedTexture = null;
+
 	private final TypedTextureSelectorDialog td;
+	private final int size;
+	private boolean removeButtonHover;
+	private boolean uvFlip;
 
 	private ActionListener actionListener;
-
-	private final int size;
-
-	private boolean removeButtonHover;
-
-	private boolean uvFlip;
 
 	public TextureHolder(TypedTextureSelectorDialog td) {
 		this(td, 70);
@@ -48,21 +47,17 @@ public class TextureHolder extends VButton {
 	public TextureHolder(TypedTextureSelectorDialog td, int size) {
 		super("");
 		this.td = td;
-
 		this.size = size;
 
 		setMargin(new Insets(0, 0, 0, 0));
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
-			if (td.list.getSelectedValue() != null) {
-				id = FilenameUtilsPatched.removeExtension(td.list.getSelectedValue().getName());
-				setIcon(new ImageIcon(
-						ImageUtils.resize(new ImageIcon(td.list.getSelectedValue().toString()).getImage(), this.size)));
-				td.setVisible(false);
+			td.setVisible(false);
+			Texture texture = td.list.getSelectedValue();
+			if (texture != null) {
+				setTexture(texture);
 				if (actionListener != null)
 					actionListener.actionPerformed(new ActionEvent(this, 0, ""));
-				getValidationStatus();
-				setToolTipText(id);
 			}
 		});
 
@@ -70,8 +65,8 @@ public class TextureHolder extends VButton {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (isEnabled()) {
 					if (e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11
-							&& !id.isEmpty()) {
-						id = "";
+							&& selectedTexture != null) {
+						selectedTexture = null;
 						setIcon(null);
 						getValidationStatus();
 						setToolTipText(null);
@@ -97,36 +92,26 @@ public class TextureHolder extends VButton {
 		});
 	}
 
-	@Override public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		if (!id.isEmpty()) {
-			ImageIcon removeIcon;
-			if (removeButtonHover || !isEnabled()) {
-				removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.6f);
-			} else {
-				removeIcon = UIRES.get("18px.remove");
-			}
-			g.drawImage(removeIcon.getImage(), 1, getHeight() - 12, 11, 11, null);
-		}
-	}
-
-	public String getID() {
-		return id;
-	}
-
 	public void setTextureFromTextureName(String texture) {
-		if (texture != null && !texture.isEmpty()) {
-			id = texture;
-			setToolTipText(texture);
-			setIcon(new ImageIcon(ImageUtils.resize(
-					td.getMCreator().getFolderManager().getTextureImageIcon(id, td.getTextureType()).getImage(),
-					this.size)));
+		setTexture(Texture.fromName(td.getMCreator().getWorkspace(), td.getTextureType(), texture));
+	}
+
+	protected void setTexture(@Nullable Texture texture) {
+		if (texture != null) {
+			selectedTexture = texture;
+			setIcon(new ImageIcon(
+					ImageUtils.resize(texture.getTextureIcon(td.getMCreator().getWorkspace()).getImage(), this.size)));
+			getValidationStatus();
+			setToolTipText(selectedTexture.getTextureName());
 		}
+	}
+
+	public String getTextureName() {
+		return selectedTexture != null ? selectedTexture.getTextureName() : "";
 	}
 
 	public boolean hasTexture() {
-		return id != null && !id.isEmpty();
+		return selectedTexture != null && !selectedTexture.getTextureName().isEmpty();
 	}
 
 	public void setActionListener(ActionListener actionListener) {
@@ -137,6 +122,20 @@ public class TextureHolder extends VButton {
 		this.uvFlip = uvFlip;
 		repaint();
 		return this;
+	}
+
+	@Override public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		if (selectedTexture != null) {
+			ImageIcon removeIcon;
+			if (removeButtonHover || !isEnabled()) {
+				removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.6f);
+			} else {
+				removeIcon = UIRES.get("18px.remove");
+			}
+			g.drawImage(removeIcon.getImage(), 1, getHeight() - 12, 11, 11, null);
+		}
 	}
 
 	@Override public void setIcon(Icon icon) {
@@ -164,4 +163,5 @@ public class TextureHolder extends VButton {
 			});
 		}
 	}
+
 }

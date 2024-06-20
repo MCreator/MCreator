@@ -337,6 +337,13 @@ public class ElementUtil {
 		return retval.toArray(new String[0]);
 	}
 
+	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE));
+		retval.addAll(DataListLoader.loadDataList("configuredfeatures"));
+		return retval;
+	}
+
 	public static List<DataListEntry> loadStepSounds() {
 		return DataListLoader.loadDataList("stepsounds");
 	}

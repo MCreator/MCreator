@@ -335,15 +335,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
 
-		luminosity.setOpaque(false);
-		density.setOpaque(false);
-		viscosity.setOpaque(false);
-		temperature.setOpaque(false);
-		ComponentUtils.deriveFont(luminosity, 16);
-		ComponentUtils.deriveFont(density, 16);
-		ComponentUtils.deriveFont(viscosity, 16);
-		ComponentUtils.deriveFont(temperature, 16);
-
 		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
 				L10N.label("elementgui.fluid.luminosity")));
 		forgeProperties.add(luminosity);
@@ -489,8 +480,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		Fluid fluid = new Fluid(modElement);
 		fluid.name = name.getText();
 		fluid.bucketName = bucketName.getText();
-		fluid.textureFlowing = textureFlowing.getID();
-		fluid.textureStill = textureStill.getID();
+		fluid.textureFlowing = textureFlowing.getTextureName();
+		fluid.textureStill = textureStill.getTextureName();
 		fluid.canMultiply = canMultiply.isSelected();
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();
@@ -504,7 +495,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
 		fluid.generateBucket = generateBucket.isSelected();
-		fluid.textureBucket = textureBucket.getID();
+		fluid.textureBucket = textureBucket.getTextureName();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
 		fluid.resistance = (double) resistance.getValue();
