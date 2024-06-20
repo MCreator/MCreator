@@ -70,7 +70,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
-		pane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		changeListener = e -> {
 		};
@@ -193,6 +192,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}, "WorkspaceLocalizationsReload").start());
 
 			JScrollPane sp = new JScrollPane(elements);
+			sp.setBorder(BorderFactory.createEmptyBorder());
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
 

@@ -28,7 +28,8 @@ public enum BaseType {
 	BLOCKENTITY,
 	ITEM,
 	ENTITY,
-	FEATURE;
+	FEATURE,
+	CONFIGUREDFEATURE;
 	// @formatter:on
 
 	public String getPluralName() {

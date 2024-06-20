@@ -68,8 +68,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private TextureHolder portalTexture;
-	private TextureHolder texture;
+	private TextureSelectionButton portalTexture;
+	private TextureSelectionButton texture;
 
 	private MCItemHolder portalFrame;
 	private MCItemHolder mainFillerBlock;
@@ -218,8 +218,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		portalTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
@@ -450,8 +450,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override public Dimension getElementFromGUI() {
 		Dimension dimension = new Dimension(modElement);
-		dimension.texture = texture.getID();
-		dimension.portalTexture = portalTexture.getID();
+		dimension.texture = texture.getTextureName();
+		dimension.portalTexture = portalTexture.getTextureName();
 		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.igniterTab = new TabEntry(mcreator.getWorkspace(), igniterTab.getSelectedItem());
 		dimension.portalSound = portalSound.getSound();

@@ -37,7 +37,7 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -60,8 +60,8 @@ import java.net.URISyntaxException;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
-	private TextureHolder textureStill;
-	private TextureHolder textureFlowing;
+	private TextureSelectionButton textureStill;
+	private TextureSelectionButton textureFlowing;
 
 	private final VTextField name = new VTextField(18);
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
@@ -82,7 +82,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final VTextField bucketName = new VTextField(18);
-	private TextureHolder textureBucket;
+	private TextureSelectionButton textureBucket;
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
@@ -157,9 +157,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureStill = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -220,7 +220,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
-		textureBucket = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		textureBucket = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		generateBucket.setOpaque(false);
 		textureBucket.setOpaque(false);
 
@@ -334,15 +334,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
-
-		luminosity.setOpaque(false);
-		density.setOpaque(false);
-		viscosity.setOpaque(false);
-		temperature.setOpaque(false);
-		ComponentUtils.deriveFont(luminosity, 16);
-		ComponentUtils.deriveFont(density, 16);
-		ComponentUtils.deriveFont(viscosity, 16);
-		ComponentUtils.deriveFont(temperature, 16);
 
 		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/luminosity"),
 				L10N.label("elementgui.fluid.luminosity")));
@@ -489,8 +480,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		Fluid fluid = new Fluid(modElement);
 		fluid.name = name.getText();
 		fluid.bucketName = bucketName.getText();
-		fluid.textureFlowing = textureFlowing.getID();
-		fluid.textureStill = textureStill.getID();
+		fluid.textureFlowing = textureFlowing.getTextureName();
+		fluid.textureStill = textureStill.getTextureName();
 		fluid.canMultiply = canMultiply.isSelected();
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();
@@ -504,7 +495,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
 		fluid.generateBucket = generateBucket.isSelected();
-		fluid.textureBucket = textureBucket.getID();
+		fluid.textureBucket = textureBucket.getTextureName();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
 		fluid.resistance = (double) resistance.getValue();

@@ -50,6 +50,7 @@ public class ElementOrderEditor {
 		LinkedHashMap<String, DefaultListModel<ModElement>> tabEditors = new LinkedHashMap<>();
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
+		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 			GeneratableElement generatableElement = modElement.getGeneratableElement();

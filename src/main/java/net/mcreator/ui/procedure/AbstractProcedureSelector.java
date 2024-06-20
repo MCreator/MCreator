@@ -20,6 +20,7 @@ package net.mcreator.ui.procedure;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -42,7 +43,7 @@ import java.util.*;
 
 public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
 
-	private static final Gson gson = new GsonBuilder().setLenient().create();
+	private static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
 	final SearchableComboBox<ProcedureEntry> procedures = new SearchableComboBox<>();
 

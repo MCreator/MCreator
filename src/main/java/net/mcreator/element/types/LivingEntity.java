@@ -41,12 +41,14 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -139,6 +141,7 @@ import java.util.*;
 	public Sound hurtSound;
 	public Sound deathSound;
 	public Sound stepSound;
+	public Sound raidCelebrationSound;
 
 	public List<PropertyDataWithValue<?>> entityDataEntries;
 
@@ -175,6 +178,7 @@ import java.util.*;
 	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
+	public int[] raidSpawnsCount;
 
 	private LivingEntity() {
 		this(null);
@@ -197,6 +201,8 @@ import java.util.*;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();
+
+		this.raidSpawnsCount = new int[] { 4, 3, 3, 4, 4, 4, 2 };
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -219,8 +225,10 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(getModElement().getWorkspace(),
-				mobModelTexture, spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
+		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(
+				Texture.getImage(getModElement().getWorkspace(), TextureType.ENTITY,
+						FilenameUtilsPatched.removeExtension(mobModelTexture)), spawnEggBaseColor, spawnEggDotColor,
+				hasSpawnEgg);
 	}
 
 	public boolean hasDrop() {

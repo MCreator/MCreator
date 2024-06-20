@@ -40,7 +40,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -71,7 +71,7 @@ import java.util.stream.Collectors;
 
 public class ItemGUI extends ModElementGUI<Item> {
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private StringListProcedureSelector specialInformation;
 
@@ -96,6 +96,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox rangedItemChargesPower = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
 	private ProcedureSelector rangedUseCondition;
@@ -222,7 +223,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
@@ -424,7 +425,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2, 2));
+		JPanel rangedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
@@ -441,6 +442,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
+				L10N.label("elementgui.item.charges_power")));
+		rangedItemChargesPower.setOpaque(false);
+		rangedProperties.add(rangedItemChargesPower);
+
+		shootConstantly.addActionListener((e) -> {
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
+			if (shootConstantly.isSelected())
+				rangedItemChargesPower.setSelected(false);
+		});
 
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
@@ -498,6 +509,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateRangedPanel() {
 		if (enableRanged.isSelected()) {
 			shootConstantly.setEnabled(true);
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
@@ -511,6 +523,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		} else {
 			shootConstantly.setEnabled(false);
+			rangedItemChargesPower.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			rangedUseCondition.setEnabled(false);
@@ -608,6 +621,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		eatResultItem.setBlock(item.eatResultItem);
 		enableRanged.setSelected(item.enableRanged);
 		shootConstantly.setSelected(item.shootConstantly);
+		rangedItemChargesPower.setSelected(item.rangedItemChargesPower);
 		projectile.setSelectedItem(item.projectile);
 		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
 		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
@@ -665,11 +679,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.shootConstantly = shootConstantly.isSelected();
+		item.rangedItemChargesPower = rangedItemChargesPower.isSelected();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();
 
-		item.texture = texture.getID();
+		item.texture = texture.getTextureName();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 

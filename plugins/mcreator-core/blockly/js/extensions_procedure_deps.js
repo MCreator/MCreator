@@ -78,7 +78,9 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
 
     // Retrieve number of inputs from XML
     domToMutation: function (xmlElement) {
-        this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
+        this.inputCount_ = isNaN(xmlElement.getAttribute('inputs')) ?
+            0 : // If block existed before without this mutator, initialize the property with default value
+            parseInt(xmlElement.getAttribute('inputs'), 10);
         this.updateShape_();
     },
 

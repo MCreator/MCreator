@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -38,7 +39,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -66,16 +67,20 @@ import java.util.stream.Collectors;
 
 public class ToolGUI extends ModElementGUI<Tool> {
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
-	private final JSpinner harvestLevel = new JSpinner(new SpinnerNumberModel(1, 0, 128000, 1));
 	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 0, 128000, 1));
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
 	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 128000, 1));
 
-	private final VTextField name = new VTextField(28);
+	private final JComboBox<String> blockDropsTier = new JComboBox<>(
+			new String[] { "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" });
+
+	private ProcedureSelector additionalDropCondition;
+
+	private final VTextField name = new VTextField(30);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
@@ -152,6 +157,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
+		additionalDropCondition = new ProcedureSelector(this.withEntry("tool/event_additional_drop_condition"),
+				mcreator, L10N.t("elementgui.tool.event_additional_drop_condition"),
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"itemstack:itemstack/blockstate:blockstate")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
+
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
@@ -162,7 +173,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		immuneToFire.setOpaque(false);
@@ -194,13 +205,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
 				0, 5)));
 
-		JPanel selp = new JPanel(new GridLayout(15, 2, 10, 2));
+		JPanel selp = new JPanel(new GridLayout(16, 2, 0, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
-
-		harvestLevel.setOpaque(false);
-		efficiency.setOpaque(false);
 
 		blockingModel.setFont(blockingModel.getFont().deriveFont(16.0f));
 		blockingModel.setRenderer(new ModelComboBoxRenderer());
@@ -217,9 +225,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.common.creative_tab")));
 		selp.add(creativeTab);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/harvest_level"),
-				L10N.label("elementgui.tool.harvest_level")));
-		selp.add(harvestLevel);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
+				L10N.label("elementgui.tool.blocks_drop_tier")));
+		selp.add(blockDropsTier);
+
+		selp.add(new JEmptyBox());
+		selp.add(additionalDropCondition);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
 				L10N.label("elementgui.tool.efficiency")));
@@ -241,13 +252,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
-				L10N.label("elementgui.tool.shield_blocking_model")));
-		selp.add(blockingModel);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
 				L10N.label("elementgui.common.repair_items")));
 		selp.add(repairItems);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+				L10N.label("elementgui.tool.shield_blocking_model")));
+		selp.add(blockingModel);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 				L10N.label("elementgui.tool.blocks_affected")));
@@ -314,7 +325,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				blockingModel.setSelectedItem(normalBlocking);
 			}
 
-			harvestLevel.setEnabled(true);
+			blockDropsTier.setEnabled(true);
+			additionalDropCondition.setEnabled(true);
 			efficiency.setEnabled(true);
 			damageVsEntity.setEnabled(true);
 			attackSpeed.setEnabled(true);
@@ -322,17 +334,19 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			repairItems.setEnabled(true);
 
 			if (toolType.getSelectedItem().equals("Special")) {
-				harvestLevel.setEnabled(false);
+				blockDropsTier.setEnabled(false);
 				repairItems.setEnabled(false);
 			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
 					.equals("Shield")) {
-				harvestLevel.setEnabled(false);
+				blockDropsTier.setEnabled(false);
+				additionalDropCondition.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 				blocksAffected.setEnabled(false);
 			} else if (toolType.getSelectedItem().equals("Shears")) {
-				harvestLevel.setEnabled(false);
+				blockDropsTier.setEnabled(false);
+				additionalDropCondition.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 				blocksAffected.setEnabled(false);
@@ -355,6 +369,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
+
+		additionalDropCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
@@ -383,7 +399,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		name.setText(tool.name);
 		texture.setTextureFromTextureName(tool.texture);
 		toolType.setSelectedItem(tool.toolType);
-		harvestLevel.setValue(tool.harvestLevel);
+		blockDropsTier.setSelectedItem(tool.blockDropsTier);
+		additionalDropCondition.setSelectedProcedure(tool.additionalDropCondition);
 		efficiency.setValue(tool.efficiency);
 		enchantability.setValue(tool.enchantability);
 		attackSpeed.setValue(tool.attackSpeed);
@@ -425,7 +442,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.name = name.getText();
 		tool.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		tool.toolType = (String) toolType.getSelectedItem();
-		tool.harvestLevel = (int) harvestLevel.getValue();
+		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
+		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();
 		tool.efficiency = (double) efficiency.getValue();
 		tool.enchantability = (int) enchantability.getValue();
 		tool.attackSpeed = (double) attackSpeed.getValue();
@@ -448,7 +466,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
-		tool.texture = texture.getID();
+		tool.texture = texture.getTextureName();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
 		tool.renderType = 0;

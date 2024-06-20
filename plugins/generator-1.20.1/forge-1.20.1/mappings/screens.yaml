@@ -95,7 +95,6 @@ Warning: WarningScreen
 ChatReport: ChatReportScreen
 ChatSelection: ChatSelectionScreen
 Realms: RealmsScreen
-Realms32bitWarning: Realms32bitWarningScreen
 DisconnectedRealms: DisconnectedRealmsScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 SocialInteractions: SocialInteractionsScreen

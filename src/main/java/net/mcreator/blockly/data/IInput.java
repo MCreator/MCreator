@@ -30,7 +30,7 @@ import java.lang.reflect.Type;
 
 	class GSONAdapter implements JsonDeserializer<IInput> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setStrictness(Strictness.LENIENT)
 				.create();
 
 		@Override

@@ -42,7 +42,7 @@ InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\installer_side.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\installer_side.bmp"
 
-!define MUI_LICENSEPAGE_TEXT_TOP "Please read our terms of use published on our website. You can find the links below."
+!define MUI_LICENSEPAGE_TEXT_TOP "Read the license agreement below."
 
 !define MUI_FINISHPAGE_RUN_TEXT "Start MCreator after finish"
 !define MUI_FINISHPAGE_RUN "$INSTDIR\mcreator.exe"

@@ -72,11 +72,11 @@ import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
 
-	private TextureHolder texture;
-	private TextureHolder textureBottom;
+	private TextureSelectionButton texture;
+	private TextureSelectionButton textureBottom;
 
-	private TextureHolder itemTexture;
-	private TextureHolder particleTexture;
+	private TextureSelectionButton itemTexture;
+	private TextureSelectionButton particleTexture;
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
@@ -260,15 +260,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBottom = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
-		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
-		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
 		isItemTinted.setOpaque(false);
@@ -907,10 +907,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		Plant plant = new Plant(modElement);
 		plant.name = name.getText();
 		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
-		plant.texture = texture.getID();
-		plant.textureBottom = textureBottom.getID();
-		plant.itemTexture = itemTexture.getID();
-		plant.particleTexture = particleTexture.getID();
+		plant.texture = texture.getTextureName();
+		plant.textureBottom = textureBottom.getTextureName();
+		plant.itemTexture = itemTexture.getTextureName();
+		plant.particleTexture = particleTexture.getTextureName();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();

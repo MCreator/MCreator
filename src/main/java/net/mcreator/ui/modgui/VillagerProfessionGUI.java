@@ -26,37 +26,27 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
@@ -64,8 +54,9 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
-	private final VComboBox<String> professionTextureFile = new SearchableComboBox<>();
-	private final VComboBox<String> zombifiedProfessionTextureFile = new SearchableComboBox<>();
+
+	private TextureComboBox professionTextureFile;
+	private TextureComboBox zombifiedProfessionTextureFile;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -76,12 +67,10 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	}
 
 	@Override protected void initGUI() {
-		professionTextureFile.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		professionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		zombifiedProfessionTextureFile.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		zombifiedProfessionTextureFile.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+		this.professionTextureFile = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
+				"elementgui.villager_profession.profession_needs_texture");
+		this.zombifiedProfessionTextureFile = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
+				"elementgui.villager_profession.profession_needs_zombified_texture");
 
 		ComponentUtils.deriveFont(displayName, 16);
 		ComponentUtils.deriveFont(hat, 16);
@@ -105,36 +94,13 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 				L10N.label("elementgui.villager_profession.hat")));
 		subpanel.add(hat);
 
-		JButton importProfessionTexture = new JButton(UIRES.get("18px.add"));
-		importProfessionTexture.setToolTipText(L10N.t("elementgui.villager_profession.import_profession_texture"));
-		importProfessionTexture.setOpaque(false);
-		importProfessionTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
-			professionTextureFile.removeAllItems();
-			professionTextureFile.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
-					.forEach(el -> professionTextureFile.addItem(el.getName()));
-		});
-
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/profession_texture"),
 				L10N.label("elementgui.villager_profession.profession_texture")));
-		subpanel.add(PanelUtils.centerAndEastElement(professionTextureFile, importProfessionTexture));
-
-		JButton importZombifiedProfessionTexture = new JButton(UIRES.get("18px.add"));
-		importZombifiedProfessionTexture.setToolTipText(
-				L10N.t("elementgui.villager_profession.import_zombified_profession_texture"));
-		importZombifiedProfessionTexture.setOpaque(false);
-		importZombifiedProfessionTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
-			zombifiedProfessionTextureFile.removeAllItems();
-			zombifiedProfessionTextureFile.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
-					.forEach(el -> zombifiedProfessionTextureFile.addItem(el.getName()));
-		});
+		subpanel.add(professionTextureFile);
 
 		subpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagerprofession/zombified_profession_texture"),
 				L10N.label("elementgui.villager_profession.zombified_profession_texture")));
-		subpanel.add(PanelUtils.centerAndEastElement(zombifiedProfessionTextureFile, importZombifiedProfessionTexture));
+		subpanel.add(zombifiedProfessionTextureFile);
 
 		page1group.addValidationElement(displayName);
 		page1group.addValidationElement(pointOfInterest);
@@ -154,19 +120,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(this::isEditingMode));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
-		professionTextureFile.setValidator(() -> {
-			if (professionTextureFile.getSelectedItem() == null || professionTextureFile.getSelectedItem().isEmpty())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.villager_profession.profession_needs_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-		zombifiedProfessionTextureFile.setValidator(() -> {
-			if (zombifiedProfessionTextureFile.getSelectedItem() == null
-					|| zombifiedProfessionTextureFile.getSelectedItem().isEmpty())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.villager_profession.profession_needs_zombified_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel));
 
@@ -178,13 +131,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(professionTextureFile, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
-
-		ComboBoxUtil.updateComboBoxContents(zombifiedProfessionTextureFile, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		professionTextureFile.reload();
+		zombifiedProfessionTextureFile.reload();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -198,8 +146,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		pointOfInterest.setBlock(profession.pointOfInterest);
 		actionSound.setSound(profession.actionSound);
 		hat.setSelectedItem(profession.hat);
-		professionTextureFile.setSelectedItem(profession.professionTextureFile);
-		zombifiedProfessionTextureFile.setSelectedItem(profession.zombifiedProfessionTextureFile);
+		professionTextureFile.setTextureFromTextureName(profession.professionTextureFile);
+		zombifiedProfessionTextureFile.setTextureFromTextureName(profession.zombifiedProfessionTextureFile);
 	}
 
 	@Override public VillagerProfession getElementFromGUI() {
@@ -208,8 +156,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		profession.pointOfInterest = pointOfInterest.getBlock();
 		profession.actionSound = actionSound.getSound();
 		profession.hat = (String) hat.getSelectedItem();
-		profession.professionTextureFile = professionTextureFile.getSelectedItem();
-		profession.zombifiedProfessionTextureFile = zombifiedProfessionTextureFile.getSelectedItem();
+		profession.professionTextureFile = professionTextureFile.getTextureName();
+		profession.zombifiedProfessionTextureFile = zombifiedProfessionTextureFile.getTextureName();
 		return profession;
 	}
 

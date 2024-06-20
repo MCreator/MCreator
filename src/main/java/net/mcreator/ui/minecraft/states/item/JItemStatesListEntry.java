@@ -31,7 +31,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
@@ -54,7 +54,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	private final JStateLabel stateLabel;
 
-	private final TextureHolder texture;
+	private final TextureSelectionButton texture;
 
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtinitemmodels);
 
@@ -66,7 +66,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
 		texture.setValidator(new TileHolderValidator(texture));
 
 		ComponentUtils.deriveFont(model, 16);
@@ -123,7 +123,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		Item.StateEntry retVal = new Item.StateEntry();
 		retVal.setWorkspace(mcreator.getWorkspace());
 		retVal.customModelName = Objects.requireNonNull(model.getSelectedItem()).getReadableName();
-		retVal.texture = texture.getID();
+		retVal.texture = texture.getTextureName();
 		retVal.renderType = Item.encodeModelType(Objects.requireNonNull(model.getSelectedItem()).getType());
 		retVal.stateMap = stateLabel.getStateMap();
 		return retVal;
