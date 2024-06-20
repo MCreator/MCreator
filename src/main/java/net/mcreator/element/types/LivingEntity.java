@@ -81,7 +81,7 @@ import java.util.*;
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
 	public String bossBarColor;
@@ -187,6 +187,8 @@ import java.util.*;
 	public LivingEntity(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.modelShadowSize = 0.5;
 		this.mobCreatureType = "UNDEFINED";
 		this.trackingRange = 64;
@@ -220,8 +222,8 @@ import java.util.*;
 			return List.of(BaseType.ENTITY);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -72,7 +72,7 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public double hardness;
 	public double resistance;
 	public int luminance;
@@ -141,6 +141,8 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
@@ -188,8 +190,8 @@ import java.util.stream.Collectors;
 				32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	public boolean isBlockTinted() {

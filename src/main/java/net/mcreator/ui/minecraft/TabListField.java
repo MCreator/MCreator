@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
+import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public interface ITabContainedElement {
+public class TabListField extends JItemListField<TabEntry> {
 
-	List<TabEntry> getCreativeTabs();
+	public TabListField(MCreator mcreator) {
+		super(mcreator);
+	}
 
-	/**
-	 * WARNING: Calls to this method are generally not thread safe.
-	 * Implementations can call MCItem.Custom::new that calls
-	 * getBlockIconBasedOnName that calls ModElement#getGeneratableElement
-	 * which is not thread safe
-	 *
-	 * @return list of items in the creative tab of this element
-	 */
-	List<MCItem> getCreativeTabItems();
-
+	@Override protected List<TabEntry> getElementsToAdd() {
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllTabs,
+						L10N.t("dialog.list_field.tab_title"), L10N.t("dialog.list_field.tab_message")).stream()
+				.map(e -> new TabEntry(mcreator.getWorkspace(), e)).toList();
+	}
 }

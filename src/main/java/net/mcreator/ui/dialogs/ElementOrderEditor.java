@@ -55,50 +55,47 @@ public class ElementOrderEditor {
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
 			if (generatableElement instanceof ITabContainedElement element) {
-				TabEntry tab = element.getCreativeTab();
-
-				if (tab == null || tab.getUnmappedValue().equals("No creative tab entry")
-						|| element.getCreativeTabItems().isEmpty()) {
+				if (element.getCreativeTabItems().isEmpty())
 					continue;
-				}
+				for (TabEntry tab : element.getCreativeTabs()) {
+					if (tabEditors.get(tab.getUnmappedValue()) == null) {
+						DefaultListModel<ModElement> model = new DefaultListModel<>() {
+							@Override public void add(int idx, ModElement element) {
+								super.add(idx, element);
+								element.reinit(mcreator.getWorkspace());
+							}
+						};
+						JList<ModElement> list = new JList<>(model);
+						list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+						list.setVisibleRowCount(-1);
+						list.setTransferHandler(new ReordarableListTransferHandler());
+						list.setDropMode(DropMode.INSERT);
+						list.setDragEnabled(true);
+						list.setBackground(Theme.current().getAltBackgroundColor());
 
-				if (tabEditors.get(tab.getUnmappedValue()) == null) {
-					DefaultListModel<ModElement> model = new DefaultListModel<>() {
-						@Override public void add(int idx, ModElement element) {
-							super.add(idx, element);
-							element.reinit(mcreator.getWorkspace());
+						list.setCellRenderer(new SmallIconModListRender(false));
+
+						Optional<DataListEntry> tabEntry = tab.getDataListEntry();
+						if (tabEntry.isPresent()) {
+							tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+											BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
+									new JScrollPane(list));
+						} else {
+							Icon tabIcon = null;
+							if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+								tabIcon = new ImageIcon(ImageUtils.resizeAA(
+										MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), tab.getUnmappedValue())
+												.getImage(), 24));
+							tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
 						}
-					};
-					JList<ModElement> list = new JList<>(model);
-					list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-					list.setVisibleRowCount(-1);
-					list.setTransferHandler(new ReordarableListTransferHandler());
-					list.setDropMode(DropMode.INSERT);
-					list.setDragEnabled(true);
-					list.setBackground(Theme.current().getAltBackgroundColor());
 
-					list.setCellRenderer(new SmallIconModListRender(false));
-
-					Optional<DataListEntry> tabEntry = tab.getDataListEntry();
-					if (tabEntry.isPresent()) {
-						tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
-										BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
-								new JScrollPane(list));
-					} else {
-						Icon tabIcon = null;
-						if (tab.getUnmappedValue().startsWith("CUSTOM:"))
-							tabIcon = new ImageIcon(ImageUtils.resizeAA(
-									MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), tab.getUnmappedValue())
-											.getImage(), 24));
-						tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+						tabEditors.put(tab.getUnmappedValue(), model);
 					}
 
-					tabEditors.put(tab.getUnmappedValue(), model);
+					// Add ME items here only if the tab items are in does not have order overridden
+					if (mcreator.getWorkspace().getCreativeTabsOrder().get(tab.getUnmappedValue()) == null)
+						tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 				}
-
-				// Add ME items here only if the tab items are in does not have order overridden
-				if (mcreator.getWorkspace().getCreativeTabsOrder().get(tab.getUnmappedValue()) == null)
-					tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 			}
 		}
 
