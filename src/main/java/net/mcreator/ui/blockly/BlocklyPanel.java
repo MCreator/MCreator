@@ -53,6 +53,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -71,7 +72,7 @@ public class BlocklyPanel extends JFXPanel {
 	private final MCreator mcreator;
 	private final BlocklyEditorType type;
 
-	private final List<ChangeListener> changeListeners = new ArrayList<>();
+	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
