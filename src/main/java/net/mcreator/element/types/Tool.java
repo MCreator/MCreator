@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -37,7 +38,6 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -54,7 +54,7 @@ import java.util.Map;
 
 	public int renderType;
 	public int blockingRenderType;
-	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
 
@@ -102,8 +102,7 @@ import java.util.Map;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
-				32);
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
 	}
 
 	@Override public Model getItemModel() {
@@ -124,14 +123,14 @@ import java.util.Map;
 		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();
 	}
 
-	public Map<String, String> getBlockingTextureMap() {
+	public Map<String, TextureHolder> getBlockingTextureMap() {
 		Model model = getBlockingModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
@@ -159,7 +158,7 @@ import java.util.Map;
 		return creativeTab;
 	}
 
-	@Override public String getTexture() {
+	@Override public TextureHolder getTexture() {
 		return texture;
 	}
 

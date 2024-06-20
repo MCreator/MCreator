@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#if data.itemTexture?has_content>
+<#if data.itemTexture?? && !data.itemTexture.isEmpty()>
 {
   "parent": "item/generated",
   "textures": {

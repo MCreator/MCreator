@@ -1,8 +1,8 @@
 {
   "parent": "block/${var_model}",
   "textures": {
-    "cross": "${modid}:block/${data.textureBottom?has_content?then(data.textureBottom, data.texture)}",
-    "particle": "${modid}:block/<#if data.particleTexture?has_content>${data.particleTexture}<#else>${data.textureBottom?has_content?then(data.textureBottom, data.texture)}</#if>"
+    "cross": "${modid}:block/${data.textureBottom()}",
+    "particle": "${modid}:block/<#if data.particleTexture?? && !data.particleTexture.isEmpty()>${data.particleTexture}<#else>${data.textureBottom()}</#if>"
   },
   "render_type": "cutout"
 }

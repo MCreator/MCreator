@@ -16,7 +16,7 @@
     }
   },
   "textures": {
-    "particle": "${modid}:block/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+    "particle": "${modid}:block/${data.getParticleTexture()}"
   },
   "render_type": "${data.getRenderType()}"
 }

@@ -900,10 +900,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	@Override public void openInEditingMode(Armor armor) {
-		textureHelmet.setTextureFromTextureName(armor.textureHelmet);
-		textureBody.setTextureFromTextureName(armor.textureBody);
-		textureLeggings.setTextureFromTextureName(armor.textureLeggings);
-		textureBoots.setTextureFromTextureName(armor.textureBoots);
+		textureHelmet.setTexture(armor.textureHelmet);
+		textureBody.setTexture(armor.textureBody);
+		textureLeggings.setTexture(armor.textureLeggings);
+		textureBoots.setTexture(armor.textureBoots);
 		armorTextureFile.setTextureFromTextureName(armor.armorTextureFile);
 		maxDamage.setValue(armor.maxDamage);
 		damageValueBoots.setValue(armor.damageValueBoots);
@@ -1017,13 +1017,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	@Override public Armor getElementFromGUI() {
 		Armor armor = new Armor(modElement);
 		armor.enableHelmet = enableHelmet.isSelected();
-		armor.textureHelmet = textureHelmet.getTextureName();
+		armor.textureHelmet = textureHelmet.getTextureHolder();
 		armor.enableBody = enableBody.isSelected();
-		armor.textureBody = textureBody.getTextureName();
+		armor.textureBody = textureBody.getTextureHolder();
 		armor.enableLeggings = enableLeggings.isSelected();
-		armor.textureLeggings = textureLeggings.getTextureName();
+		armor.textureLeggings = textureLeggings.getTextureHolder();
 		armor.enableBoots = enableBoots.isSelected();
-		armor.textureBoots = textureBoots.getTextureName();
+		armor.textureBoots = textureBoots.getTextureHolder();
 		armor.onHelmetTick = onHelmetTick.getSelectedProcedure();
 		armor.onBodyTick = onBodyTick.getSelectedProcedure();
 		armor.onLeggingsTick = onLeggingsTick.getSelectedProcedure();

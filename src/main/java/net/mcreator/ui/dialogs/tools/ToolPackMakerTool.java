@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.tools;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -192,7 +193,7 @@ public class ToolPackMakerTool {
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = name + " Pickaxe";
-		pickaxeTool.texture = pickaxeTextureName;
+		pickaxeTool.texture = new TextureHolder(workspace, pickaxeTextureName);
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		pickaxeTool.creativeTab = new TabEntry(workspace, "TOOLS");
@@ -203,7 +204,7 @@ public class ToolPackMakerTool {
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = name + " Axe";
-		axeTool.texture = axeTextureName;
+		axeTool.texture = new TextureHolder(workspace, axeTextureName);
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
 		axeTool.creativeTab = new TabEntry(workspace, "TOOLS");
@@ -215,7 +216,7 @@ public class ToolPackMakerTool {
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = name + " Sword";
-		swordTool.texture = swordTextureName;
+		swordTool.texture = new TextureHolder(workspace, swordTextureName);
 		swordTool.toolType = "Sword";
 		swordTool.creativeTab = new TabEntry(mcreator.getWorkspace(), "COMBAT");
 		swordTool.repairItems = Collections.singletonList(base);
@@ -227,7 +228,7 @@ public class ToolPackMakerTool {
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = name + " Shovel";
-		shovelTool.texture = shovelTextureName;
+		shovelTool.texture = new TextureHolder(workspace, shovelTextureName);
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
 		shovelTool.creativeTab = new TabEntry(workspace, "TOOLS");
@@ -239,7 +240,7 @@ public class ToolPackMakerTool {
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = name + " Hoe";
-		hoeTool.texture = hoeTextureName;
+		hoeTool.texture = new TextureHolder(workspace, hoeTextureName);
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
 		hoeTool.creativeTab = new TabEntry(workspace, "TOOLS");

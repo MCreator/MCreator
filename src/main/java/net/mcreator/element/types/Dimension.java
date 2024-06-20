@@ -75,8 +75,8 @@ import java.util.*;
 	public String igniterRarity;
 	public StringListProcedure specialInformation;
 	public TabEntry igniterTab;
-	@TextureReference(TextureType.ITEM) public String texture;
-	@TextureReference(TextureType.BLOCK) public String portalTexture;
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;
@@ -124,8 +124,7 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		return this.enablePortal ?
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-						Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture),
-						Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture), portalFrame,
+						portalTexture.getImage(TextureType.BLOCK), texture.getImage(TextureType.ITEM), portalFrame,
 						this.hasIgniter()) :
 				null;
 	}
@@ -160,9 +159,9 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("portal".equals(suffix))
-			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture);
+			return portalTexture.getImageIcon(TextureType.BLOCK);
 		else
-			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, texture);
+			return texture.getImageIcon(TextureType.ITEM);
 	}
 
 	@Override public List<MItemBlock> poiBlocks() {

@@ -484,8 +484,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FLUID.equals(modElement.getType())) {
 			Fluid fluid = new Fluid(modElement);
 			fluid.name = modElement.getName();
-			fluid.textureFlowing = "test";
-			fluid.textureStill = "test2";
+			fluid.textureFlowing = new TextureHolder(modElement.getWorkspace(), "test");
+			fluid.textureStill = new TextureHolder(modElement.getWorkspace(), "test2");
 			fluid.canMultiply = _true;
 			fluid.flowRate = 8;
 			fluid.levelDecrease = 2;
@@ -503,7 +503,7 @@ public class TestWorkspaceDataProvider {
 			fluid.temperature = 375;
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
-			fluid.textureBucket = emptyLists ? "" : "itest";
+			fluid.textureBucket = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			fluid.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			fluid.emptySound = !emptyLists ?
@@ -657,8 +657,8 @@ public class TestWorkspaceDataProvider {
 					biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
-			dimension.texture = "test";
-			dimension.portalTexture = "test2";
+			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			dimension.portalTexture = new TextureHolder(modElement.getWorkspace(), "test2");
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
@@ -776,16 +776,16 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
-			armor.textureHelmet = "test";
+			armor.textureHelmet = new TextureHolder(modElement.getWorkspace(), "test");
 			armor.helmetModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBody = !_true;
-			armor.textureBody = "test2";
+			armor.textureBody = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.bodyModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableLeggings = !_true;
-			armor.textureLeggings = "test3";
+			armor.textureLeggings = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.leggingsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBoots = !_true;
-			armor.textureBoots = "test4";
+			armor.textureBoots = new TextureHolder(modElement.getWorkspace(), "test4");
 			armor.bootsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.helmetItemRenderType = 0;
 			armor.helmetItemCustomModelName = "Normal";
@@ -851,10 +851,10 @@ public class TestWorkspaceDataProvider {
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			plant.texture = "test";
-			plant.textureBottom = "test2";
-			plant.itemTexture = emptyLists ? "" : "itest";
-			plant.particleTexture = emptyLists ? "" : "test3";
+			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
+			plant.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
+			plant.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
@@ -1006,7 +1006,7 @@ public class TestWorkspaceDataProvider {
 			item.damageVsEntity = 6.53;
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			item.texture = "test2";
+			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 
@@ -1030,7 +1030,7 @@ public class TestWorkspaceDataProvider {
 					Item.StateEntry stateEntry = new Item.StateEntry();
 					stateEntry.setWorkspace(modElement.getWorkspace());
 					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
-					stateEntry.texture = i == 0 ? "test" : "test" + i;
+					stateEntry.texture = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 					stateEntry.renderType = 0;
 					stateEntry.stateMap = stateMap;
 
@@ -1295,14 +1295,14 @@ public class TestWorkspaceDataProvider {
 				block.bonemealSuccessCondition = new Procedure("condition4");
 				block.onBonemealSuccess = new Procedure("procedure15");
 			}
-			block.itemTexture = emptyLists ? "" : "itest";
-			block.particleTexture = emptyLists ? "" : "test7";
-			block.texture = "test";
-			block.textureTop = "test2";
-			block.textureLeft = "test3";
-			block.textureFront = "test4";
-			block.textureRight = "test5";
-			block.textureBack = "test6";
+			block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
+			block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
+			block.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
+			block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
+			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
+			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
+			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 			block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			block.tintType = getRandomString(random,
@@ -1393,7 +1393,7 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			musicDisc.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			musicDisc.texture = "test";
+			musicDisc.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
@@ -1812,7 +1812,7 @@ public class TestWorkspaceDataProvider {
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
 		tool.onEntitySwing = new Procedure("procedure11");
-		tool.texture = "test";
+		tool.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
 		tool.blockingRenderType = 0;

@@ -245,7 +245,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setText(musicDisc.name);
 		rarity.setSelectedItem(musicDisc.rarity);
 		description.setText(musicDisc.description);
-		texture.setTextureFromTextureName(musicDisc.texture);
+		texture.setTexture(musicDisc.texture);
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(musicDisc.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(musicDisc.onCrafted);
@@ -276,7 +276,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		musicDisc.specialInformation = specialInformation.getSelectedProcedure();
-		musicDisc.texture = texture.getTextureName();
+		musicDisc.texture = texture.getTextureHolder();
 		musicDisc.music = music.getSound();
 		musicDisc.lengthInTicks = (int) lengthInTicks.getValue();
 		musicDisc.analogOutput = (int) analogOutput.getValue();

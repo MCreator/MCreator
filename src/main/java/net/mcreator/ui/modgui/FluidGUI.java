@@ -426,8 +426,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	@Override public void openInEditingMode(Fluid fluid) {
-		textureStill.setTextureFromTextureName(fluid.textureStill);
-		textureFlowing.setTextureFromTextureName(fluid.textureFlowing);
+		textureStill.setTexture(fluid.textureStill);
+		textureFlowing.setTexture(fluid.textureFlowing);
 		name.setText(fluid.name);
 		bucketName.setText(fluid.bucketName);
 		canMultiply.setSelected(fluid.canMultiply);
@@ -443,7 +443,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		viscosity.setValue(fluid.viscosity);
 		temperature.setValue(fluid.temperature);
 		generateBucket.setSelected(fluid.generateBucket);
-		textureBucket.setTextureFromTextureName(fluid.textureBucket);
+		textureBucket.setTexture(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
 		rarity.setSelectedItem(fluid.rarity);
 		resistance.setValue(fluid.resistance);
@@ -480,8 +480,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		Fluid fluid = new Fluid(modElement);
 		fluid.name = name.getText();
 		fluid.bucketName = bucketName.getText();
-		fluid.textureFlowing = textureFlowing.getTextureName();
-		fluid.textureStill = textureStill.getTextureName();
+		fluid.textureFlowing = textureFlowing.getTextureHolder();
+		fluid.textureStill = textureStill.getTextureHolder();
 		fluid.canMultiply = canMultiply.isSelected();
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();
@@ -495,7 +495,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
 		fluid.generateBucket = generateBucket.isSelected();
-		fluid.textureBucket = textureBucket.getTextureName();
+		fluid.textureBucket = textureBucket.getTextureHolder();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
 		fluid.resistance = (double) resistance.getValue();

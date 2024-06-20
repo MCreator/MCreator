@@ -22,6 +22,7 @@ package net.mcreator.workspace.references;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -103,6 +104,22 @@ public class ReferencesFinder {
 						}
 					}
 					return false;
+				}) ||
+				anyValueMatches(ge, TextureHolder.class, e -> {
+					TextureReference ref = e.getAnnotation(TextureReference.class);
+					return ref != null && ref.value() == type;
+				}, (a, t) -> {
+					TextureReference ref = a.getAnnotation(TextureReference.class);
+					String textureName = t.getFullTextureName();
+					if (!Set.of(ref.defaultValues()).contains(textureName) && textureName.indexOf(':') == -1) {
+						for (String template : ref.files()) {
+							String file = template.isEmpty() ? textureName : template.formatted(t);
+							if (workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
+								return true;
+						}
+					}
+					return false;
 				})
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
@@ -115,7 +132,7 @@ public class ReferencesFinder {
 					ResourceReference ref = e.getAnnotation(ResourceReference.class);
 					return ref != null && ref.value().equals("model");
 				}, (a, t) ->
-					model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)
+					model.equals(t) || TexturedModel.getModelTextureMapVariations(workspace, model).contains(t)
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());

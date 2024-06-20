@@ -19,10 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -158,7 +155,7 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		woodBlock.name = name + " Wood";
 		woodBlock.material = new Material(workspace, "WOOD");
-		woodBlock.texture = woodTextureName;
+		woodBlock.texture = new TextureHolder(workspace, woodTextureName);
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
 		woodBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -175,12 +172,12 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		logBlock.name = name + " Log";
 		logBlock.material = new Material(workspace, "WOOD");
-		logBlock.texture = logTextureName;
-		logBlock.textureTop = logTextureName;
-		logBlock.textureBack = woodTextureName;
-		logBlock.textureFront = woodTextureName;
-		logBlock.textureLeft = woodTextureName;
-		logBlock.textureRight = woodTextureName;
+		logBlock.texture = new TextureHolder(workspace, logTextureName);
+		logBlock.textureTop = new TextureHolder(workspace, logTextureName);
+		logBlock.textureBack = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureFront = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureLeft = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureRight = new TextureHolder(workspace, woodTextureName);
 		logBlock.renderType = 10; // normal
 		logBlock.customModelName = "Normal";
 		logBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -197,7 +194,7 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
 		planksBlock.name = name + " Planks";
 		planksBlock.material = new Material(workspace, "WOOD");
-		planksBlock.texture = planksTextureName;
+		planksBlock.texture = new TextureHolder(workspace, planksTextureName);
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
 		planksBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -214,7 +211,7 @@ public class WoodPackMakerTool {
 		leavesBlock.name = name + " Leaves";
 		leavesBlock.blockBase = "Leaves";
 		leavesBlock.material = new Material(workspace, "LEAVES");
-		leavesBlock.texture = leavesTextureName;
+		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
@@ -229,9 +226,9 @@ public class WoodPackMakerTool {
 		stairsBlock.name = name + " Stairs";
 		stairsBlock.blockBase = "Stairs";
 		stairsBlock.material = new Material(workspace, "WOOD");
-		stairsBlock.texture = planksTextureName;
-		stairsBlock.textureTop = planksTextureName;
-		stairsBlock.textureFront = planksTextureName;
+		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		stairsBlock.hardness = 3 * factor;
 		stairsBlock.resistance = 2 * factor;
@@ -246,9 +243,9 @@ public class WoodPackMakerTool {
 		slabBlock.name = name + " Slab";
 		slabBlock.blockBase = "Slab";
 		slabBlock.material = new Material(workspace, "WOOD");
-		slabBlock.texture = planksTextureName;
-		slabBlock.textureTop = planksTextureName;
-		slabBlock.textureFront = planksTextureName;
+		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
+		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
+		slabBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
@@ -263,7 +260,7 @@ public class WoodPackMakerTool {
 		fenceBlock.name = name + " Fence";
 		fenceBlock.blockBase = "Fence";
 		fenceBlock.material = new Material(workspace, "WOOD");
-		fenceBlock.texture = planksTextureName;
+		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
@@ -278,7 +275,7 @@ public class WoodPackMakerTool {
 		fenceGateBlock.name = name + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
 		fenceGateBlock.material = new Material(workspace, "WOOD");
-		fenceGateBlock.texture = planksTextureName;
+		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
@@ -293,7 +290,7 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.name = name + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.material = new Material(workspace, "WOOD");
-		pressurePlateBlock.texture = planksTextureName;
+		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		pressurePlateBlock.hardness = 2 * factor;
 		pressurePlateBlock.resistance = 3 * factor;
@@ -308,7 +305,7 @@ public class WoodPackMakerTool {
 		buttonBlock.name = name + " Button";
 		buttonBlock.blockBase = "Button";
 		buttonBlock.material = new Material(workspace, "WOOD");
-		buttonBlock.texture = planksTextureName;
+		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		buttonBlock.hardness = 2 * factor;
 		buttonBlock.resistance = 3 * factor;

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
@@ -106,8 +107,18 @@ public class TextureSelectionButton extends VButton {
 		}
 	}
 
+	public void setTexture(@Nullable TextureHolder texture) {
+		if (texture != null) {
+			setTexture(texture.toTexture(td.getTextureType()));
+		}
+	}
+
 	public String getTextureName() {
 		return selectedTexture != null ? selectedTexture.getTextureName() : "";
+	}
+
+	public TextureHolder getTextureHolder() {
+		return new TextureHolder(td.getMCreator().getWorkspace(), selectedTexture);
 	}
 
 	public boolean hasTexture() {

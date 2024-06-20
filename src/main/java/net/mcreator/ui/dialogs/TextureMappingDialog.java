@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
@@ -58,9 +59,9 @@ public class TextureMappingDialog {
 
 		if (currentState == null) {
 			currentState = new HashMap<>();
-			Map<String, String> textureMap = new HashMap<>();
+			Map<String, TextureHolder> textureMap = new HashMap<>();
 			for (String texture : texturesList)
-				textureMap.put(texture, "");
+				textureMap.put(texture, new TextureHolder(mcreator.getWorkspace(), ""));
 			currentState.put("default", new TexturedModel.TextureMapping("default", textureMap));
 		} else if (texturesList == null) {
 			TexturedModel.TextureMapping textureMapping = currentState.get("default");
@@ -90,9 +91,9 @@ public class TextureMappingDialog {
 							});
 					if (mapping != null) {
 						mapping = Transliteration.transliterateString(mapping.toLowerCase(Locale.ENGLISH));
-						Map<String, String> textureMap = new HashMap<>();
+						Map<String, TextureHolder> textureMap = new HashMap<>();
 						for (String texture : finalTexturesList)
-							textureMap.put(texture, "");
+							textureMap.put(texture, new TextureHolder(mcreator.getWorkspace(), ""));
 						currentState.put(mapping, new TexturedModel.TextureMapping(mapping, textureMap));
 						addMappingPanel(mcreator, mapping, pane);
 					}
@@ -152,21 +153,21 @@ public class TextureMappingDialog {
 	private void addMappingPanel(MCreator mcreator, String currentMappingName, JTabbedPane addTo) {
 		TexturedModel.TextureMapping textureMapping = currentState.get(currentMappingName);
 
-		Set<Map.Entry<String, String>> entries = textureMapping.getTextureMap().entrySet();
+		Set<Map.Entry<String, TextureHolder>> entries = textureMapping.getTextureMap().entrySet();
 
 		JPanel panel = new JPanel(new GridLayout(entries.size(), 2, 100, 10));
 
 		TextureSelectionButton[] tx = new TextureSelectionButton[entries.size()];
 		int idx = 0;
-		for (Map.Entry<String, String> s : entries) {
+		for (Map.Entry<String, TextureHolder> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
 			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 			if (s.getValue() != null && !s.getValue().isEmpty())
-				tx[idx].setTextureFromTextureName(s.getValue());
+				tx[idx].setTexture(s.getValue());
 			panel.add(PanelUtils.join(tx[idx]));
 			int finalIdx = idx;
-			tx[idx].setActionListener(
-					e -> currentState.get(currentMappingName).getTextureMap().put(s.getKey(), tx[finalIdx].getTextureName()));
+			tx[idx].setActionListener(e -> currentState.get(currentMappingName).getTextureMap()
+					.put(s.getKey(), tx[finalIdx].getTextureHolder()));
 			idx++;
 		}
 

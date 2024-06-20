@@ -583,7 +583,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public void openInEditingMode(Item item) {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
-		texture.setTextureFromTextureName(item.texture);
+		texture.setTexture(item.texture);
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -684,7 +684,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();
 
-		item.texture = texture.getTextureName();
+		item.texture = texture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 

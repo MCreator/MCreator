@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -36,7 +37,6 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
@@ -49,13 +49,13 @@ import java.util.*;
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
-	@TextureReference(TextureType.ITEM) public String textureHelmet;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureHelmet;
 	public boolean enableBody;
-	@TextureReference(TextureType.ITEM) public String textureBody;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureBody;
 	public boolean enableLeggings;
-	@TextureReference(TextureType.ITEM) public String textureLeggings;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureLeggings;
 	public boolean enableBoots;
-	@TextureReference(TextureType.ITEM) public String textureBoots;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureBoots;
 
 	public Procedure onHelmetTick;
 	public Procedure onBodyTick;
@@ -155,13 +155,13 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		List<Image> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureHelmet));
+			armorPieces.add(textureHelmet.getImage(TextureType.ITEM));
 		if (enableBody)
-			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBody));
+			armorPieces.add(textureBody.getImage(TextureType.ITEM));
 		if (enableLeggings)
-			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureLeggings));
+			armorPieces.add(textureLeggings.getImage(TextureType.ITEM));
 		if (enableBoots)
-			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBoots));
+			armorPieces.add(textureBoots.getImage(TextureType.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
@@ -240,7 +240,7 @@ import java.util.*;
 		};
 	}
 
-	public Map<String, String> getItemModelTextureMap(String part) {
+	public Map<String, TextureHolder> getItemModelTextureMap(String part) {
 		Model model = switch (part) {
 			case "helmet" -> getHelmetItemModel();
 			case "body" -> getBodyItemModel();
@@ -253,7 +253,7 @@ import java.util.*;
 		return new HashMap<>();
 	}
 
-	public String getItemTextureFor(String part) {
+	public TextureHolder getItemTextureFor(String part) {
 		return switch (part) {
 			case "helmet" -> textureHelmet;
 			case "body" -> textureBody;
@@ -363,10 +363,10 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return switch (suffix) {
-			case "helmet" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureHelmet);
-			case "body" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBody);
-			case "legs" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureLeggings);
-			case "boots" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBoots);
+			case "helmet" -> textureHelmet.getImageIcon(TextureType.ITEM);
+			case "body" -> textureBody.getImageIcon(TextureType.ITEM);
+			case "legs" -> textureLeggings.getImageIcon(TextureType.ITEM);
+			case "boots" -> textureBoots.getImageIcon(TextureType.ITEM);
 			default -> null;
 		};
 	}

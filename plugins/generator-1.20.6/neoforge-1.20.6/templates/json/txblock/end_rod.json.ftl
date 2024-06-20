@@ -16,7 +16,7 @@
     "ambientocclusion": false,
     "textures": {
         "end_rod": "${modid}:block/${data.texture}",
-        "particle": "${modid}:block/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+        "particle": "${modid}:block/${data.getParticleTexture()}"
     },
     "elements": [
         {

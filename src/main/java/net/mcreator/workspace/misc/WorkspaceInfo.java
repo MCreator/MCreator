@@ -108,7 +108,7 @@ import java.util.*;
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getGeneratableElement() instanceof IItemWithTexture itemWithTexture) {
-				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture());
+				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture().getFullTextureName());
 			}
 		}
 		return textureMap;

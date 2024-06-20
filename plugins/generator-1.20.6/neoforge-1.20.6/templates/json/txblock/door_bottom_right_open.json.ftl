@@ -1,9 +1,9 @@
 {
     "parent": "block/door_bottom_right_open",
     "textures": {
-        <#if data.particleTexture?has_content>"particle": "${modid}:block/${data.particleTexture}",</#if>
+        <#if data.particleTexture?? && !data.particleTexture.isEmpty()>"particle": "${modid}:block/${data.particleTexture}",</#if>
         "bottom": "${modid}:block/${data.texture}",
-        "top": "${modid}:block/${data.textureTop?has_content?then(data.textureTop, data.texture)}"
+        "top": "${modid}:block/${data.textureTop()}"
     },
     "render_type": "${data.getRenderType()}"
 }

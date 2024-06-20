@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
@@ -34,7 +35,6 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
-import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -49,8 +49,8 @@ import java.util.List;
 	public String name;
 	public String bucketName;
 
-	@TextureReference(TextureType.BLOCK) public String textureStill;
-	@TextureReference(TextureType.BLOCK) public String textureFlowing;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureStill;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureFlowing;
 
 	public String tintType;
 
@@ -69,7 +69,7 @@ import java.util.List;
 	@Nonnull public String type;
 
 	public boolean generateBucket;
-	@TextureReference(TextureType.ITEM) public String textureBucket;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
@@ -119,8 +119,7 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, textureStill), 32);
+		return ImageUtils.resizeAndCrop(textureStill.getImage(TextureType.BLOCK), 32);
 	}
 
 	@Override public TabEntry getCreativeTab() {
@@ -167,11 +166,10 @@ import java.util.List;
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
 			if (textureBucket != null && !textureBucket.isEmpty()) {
-				return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBucket);
+				return textureBucket.getImageIcon(TextureType.ITEM);
 			}
 			// Otherwise, fallback to the generated fluid bucket icon
-			return MinecraftImageGenerator.generateFluidBucketIcon(
-					Texture.getImageIcon(getModElement().getWorkspace(), TextureType.BLOCK, textureStill));
+			return MinecraftImageGenerator.generateFluidBucketIcon(textureStill.getImageIcon(TextureType.BLOCK));
 		}
 		return null;
 	}

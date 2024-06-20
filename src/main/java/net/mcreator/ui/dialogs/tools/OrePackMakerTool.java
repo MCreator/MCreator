@@ -177,7 +177,7 @@ public class OrePackMakerTool {
 		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
 		oreItem.name = name;
-		oreItem.texture = gemTextureName;
+		oreItem.texture = new TextureHolder(workspace, gemTextureName);
 		oreItem.creativeTab = new TabEntry(workspace, "MATERIALS");
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
@@ -186,7 +186,7 @@ public class OrePackMakerTool {
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = name + " Ore";
 		oreBlock.material = new Material(workspace, "ROCK");
-		oreBlock.texture = oreTextureName;
+		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
 		oreBlock.soundOnStep = new StepSound(workspace, "STONE");
@@ -223,7 +223,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
 		oreBlockBlock.resistance = 10.0;
-		oreBlockBlock.texture = oreBlockTextureName;
+		oreBlockBlock.texture = new TextureHolder(workspace, oreBlockTextureName);
 		oreBlockBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
 			oreBlockBlock.vanillaToolTier = "STONE";
