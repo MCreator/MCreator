@@ -54,6 +54,6 @@ public class PotionEffectCategoryConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 63;
+		return 66;
 	}
 }
