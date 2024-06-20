@@ -26,7 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -49,7 +49,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	private final VTextField title = new VTextField(28);
 	private final VTextField author = new VTextField(28);
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -60,7 +60,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(

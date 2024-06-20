@@ -68,8 +68,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private TextureHolder portalTexture;
-	private TextureHolder texture;
+	private TextureSelectionButton portalTexture;
+	private TextureSelectionButton texture;
 
 	private MCItemHolder portalFrame;
 	private MCItemHolder mainFillerBlock;
@@ -218,8 +218,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		pane3.setOpaque(false);
 
-		portalTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		portalTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
