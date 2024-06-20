@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
@@ -59,7 +60,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potioneffect.is_benefitical");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> potionCures = new JComboBox<>(
+	private final JList<String> potionCures = new JList<>(
 			new String[] { "DEFAULT_CURES", "PROTECTED_BY_TOTEM", "HONEY", "MILK"});
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -207,7 +208,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
 		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
-		potionCures.setSelectedItem(potion.potionCures);
+		potionCures.setEntries(potion.potionCures);
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -224,7 +225,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
 		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
-		potion.potionCures = (String) potionCures.getSelectedItem();
+		potion.potionCures = potionCures.getSelectedValuesList();
 		return potion;
 	}
 

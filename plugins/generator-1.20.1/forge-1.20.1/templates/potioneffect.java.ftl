@@ -47,10 +47,12 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
-	<#if data.potionCures != "DEFAULT_CURES">
+	<#if data.potionCures?size == 1 && data.potionCures[0] != "DEFAULT_CURES">
 	@Override public List<ItemStack> getCurativeItems() {
 		ArrayList<ItemStack> cures = new ArrayList<ItemStack>();
-		cures.add(<#if data.potionCures == "MILK">new ItemStack(Items.MILK_BUCKET)<#elseif data.potionCures == "PROTECTED_BY_TOTEM">new ItemStack(Items.TOTEM_OF_UNDYING)<#else>new ItemStack(Items.HONEY_BOTTLE)</#if>);
+		<#list data.potionCures as potionCures>
+		cures.add(<#if potionCures == "MILK">new ItemStack(Items.MILK_BUCKET)<#elseif potionCures == "PROTECTED_BY_TOTEM">new ItemStack(Items.TOTEM_OF_UNDYING)<#else>new ItemStack(Items.HONEY_BOTTLE)</#if>);
+		</#list>
 		return cures;
 	}
 	</#if>

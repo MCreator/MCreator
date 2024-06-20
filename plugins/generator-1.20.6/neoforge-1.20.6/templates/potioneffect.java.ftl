@@ -40,6 +40,14 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 	}
 
+	<#if data.potionCures?size == 1 && data.potionCures[0] != "DEFAULT_CURES">
+	@Override public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+		<#list data.potionCures as potionCures>
+		cures.add(EffectCures.${potionCures});
+		</#list>
+	}
+	</#if>
+
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
