@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -32,12 +31,10 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
-import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -190,7 +187,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -685,9 +682,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.material")));
 		selp.add(material);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -732,9 +729,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
-
-		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("BUILDING_BLOCKS"));
-		creativeTab.addPopupMenuListener(new ComboBoxFullWidthPopup());
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -1335,8 +1329,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 	}
@@ -1407,7 +1399,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isWaterloggable.setSelected(block.isWaterloggable);
 		emissiveRendering.setSelected(block.emissiveRendering);
 		tickRandomly.setSelected(block.tickRandomly);
-		creativeTab.setSelectedItem(block.creativeTab);
+		creativeTabs.setListElements(block.creativeTabs);
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep);
 		breakSound.setSound(block.breakSound);
@@ -1516,7 +1508,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isWaterloggable = isWaterloggable.isSelected();
 		block.emissiveRendering = emissiveRendering.isSelected();
 		block.tickRandomly = tickRandomly.isSelected();
-		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		block.creativeTabs = creativeTabs.getListElements();
 		block.destroyTool = (String) destroyTool.getSelectedItem();
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();

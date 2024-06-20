@@ -49,6 +49,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class WoodPackMakerTool {
@@ -164,7 +165,7 @@ public class WoodPackMakerTool {
 		woodBlock.destroyTool = "axe";
 		woodBlock.flammability = (int) Math.round(5 * factor);
 		woodBlock.rotationMode = 5; // log rotation
-		woodBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, woodBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -186,7 +187,7 @@ public class WoodPackMakerTool {
 		logBlock.destroyTool = "axe";
 		logBlock.flammability = (int) Math.round(5 * factor);
 		logBlock.rotationMode = 5; // log rotation
-		logBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, logBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -202,7 +203,7 @@ public class WoodPackMakerTool {
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
 		planksBlock.flammability = (int) Math.round(5 * factor);
-		planksBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -217,7 +218,7 @@ public class WoodPackMakerTool {
 		leavesBlock.resistance = 0.2 * factor;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
-		leavesBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
+		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -234,7 +235,7 @@ public class WoodPackMakerTool {
 		stairsBlock.resistance = 2 * factor;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 		stairsBlock.lightOpacity = 0;
-		stairsBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stairsBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -251,7 +252,7 @@ public class WoodPackMakerTool {
 		slabBlock.resistance = 3 * factor;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 		slabBlock.lightOpacity = 0;
-		slabBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, slabBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -266,7 +267,7 @@ public class WoodPackMakerTool {
 		fenceBlock.resistance = 3 * factor;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 		fenceBlock.lightOpacity = 0;
-		fenceBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -281,7 +282,7 @@ public class WoodPackMakerTool {
 		fenceGateBlock.resistance = 3 * factor;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 		fenceGateBlock.lightOpacity = 0;
-		fenceGateBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceGateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -296,7 +297,7 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.resistance = 3 * factor;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
-		pressurePlateBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pressurePlateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -311,7 +312,7 @@ public class WoodPackMakerTool {
 		buttonBlock.resistance = 3 * factor;
 		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
-		buttonBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
 
 		//Recipes

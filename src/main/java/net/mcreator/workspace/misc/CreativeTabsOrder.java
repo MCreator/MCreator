@@ -32,16 +32,23 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 
 	public void addOrUpdateModElementTabs(GeneratableElement element) {
 		if (element instanceof ITabContainedElement tabElement) {
-			TabEntry tabEntry = tabElement.getCreativeTab();
+			List<TabEntry> tabEntries = tabElement.getCreativeTabs();
 			String meName = element.getModElement().getName();
 
-			// remove element from its prior tab
+			// remove element from its prior tabs
 			for (Entry<String, ArrayList<String>> entry : this.entrySet()) {
-				if (tabEntry == null || !entry.getKey().equals(tabEntry.getUnmappedValue()))
+				boolean found = false;
+				for (TabEntry tabEntry : tabEntries) {
+					if (entry.getKey().equals(tabEntry.getUnmappedValue())) {
+						found = true;
+						break;
+					}
+				}
+				if (!found)
 					entry.getValue().remove(meName);
 			}
 
-			if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
+			for (TabEntry tabEntry : tabEntries) {
 				ArrayList<String> tabContents = this.get(tabEntry.getUnmappedValue());
 
 				// if order in new tab is overridden, add the element explicitly

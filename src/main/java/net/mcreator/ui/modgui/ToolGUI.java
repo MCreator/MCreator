@@ -21,7 +21,6 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -37,8 +36,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -62,6 +61,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -112,7 +112,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private MCItemListField repairItems;
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -221,9 +221,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
 		selp.add(toolType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
 				L10N.label("elementgui.tool.blocks_drop_tier")));
@@ -310,6 +310,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
@@ -372,9 +374,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		additionalDropCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("TOOLS"));
-
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
@@ -395,7 +394,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	}
 
 	@Override public void openInEditingMode(Tool tool) {
-		creativeTab.setSelectedItem(tool.creativeTab);
+		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
 		texture.setTexture(tool.texture);
 		toolType.setSelectedItem(tool.toolType);
@@ -440,7 +439,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	@Override public Tool getElementFromGUI() {
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
-		tool.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		tool.creativeTabs = creativeTabs.getListElements();
 		tool.toolType = (String) toolType.getSelectedItem();
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
 		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();

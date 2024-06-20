@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class MusicDisc extends GeneratableElement
@@ -44,7 +45,7 @@ import java.util.List;
 	public String rarity;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	public String description;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
@@ -67,6 +68,7 @@ import java.util.List;
 	public MusicDisc(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
 		this.rarity = "RARE";
 	}
 
@@ -78,8 +80,8 @@ import java.util.List;
 		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

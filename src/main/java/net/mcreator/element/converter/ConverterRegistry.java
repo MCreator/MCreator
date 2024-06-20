@@ -53,6 +53,7 @@ import net.mcreator.element.converter.v2024_2.BlockHarvestLevelConverter;
 import net.mcreator.element.converter.v2024_2.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
 import net.mcreator.element.converter.v2024_2.HarvestLevelProceduresRemover;
+import net.mcreator.element.converter.v2024_2.ItemsCreativeTabsConverter;
 import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
 
 import java.util.HashMap;
@@ -71,7 +72,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.BIOME, List.of(
 			new BiomeSpawnListConverter(),
@@ -89,16 +91,19 @@ public class ConverterRegistry {
 			new BlockGenerationConditionRemover(),
 			new BlockFeatureDimensionRestrictionConverter(),
 			new SpecialInformationConverter(),
-			new BlockHarvestLevelConverter()
+			new BlockHarvestLevelConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.FLUID, List.of(
 			new FluidNameFixer(),
 			new FluidGenToFeatureConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.COMMAND, List.of(
 			new CommandParameterBlockFixer()
@@ -118,7 +123,8 @@ public class ConverterRegistry {
 			new EntityTexturesConverter(),
 			new EntitiesRangedAttackConverter(),
 			new WaterEntitiesConverter(),
-			new EntityGlowLayerConverter()
+			new EntityGlowLayerConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
@@ -137,7 +143,8 @@ public class ConverterRegistry {
 			new PlantGenerationTypeConverter(),
 			new PlantGenerationConditionRemover(),
 			new BlockFeatureDimensionRestrictionConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.POTION, List.of(
 			new PotionToEffectConverter()
@@ -174,7 +181,8 @@ public class ConverterRegistry {
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
-			new ItemHasGlowConverter()
+			new ItemHasGlowConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -187,12 +195,14 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.MUSICDISC, List.of(
 			new SpecialInformationConverter(),
-			new ItemHasGlowConverter()
+			new ItemHasGlowConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.TOOL, List.of(
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
-			new ToolHarvestLevelConverter()
+			new ToolHarvestLevelConverter(),
+			new ItemsCreativeTabsConverter()
 		));
 	}};
 	//@formatter:on
