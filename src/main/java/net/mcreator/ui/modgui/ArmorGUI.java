@@ -78,7 +78,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -88,10 +87,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private static final int ARMOR_TEXTURE_SIZE_FACTOR = 5;
 
-	private TextureHolder textureHelmet;
-	private TextureHolder textureBody;
-	private TextureHolder textureLeggings;
-	private TextureHolder textureBoots;
+	private TextureSelectionButton textureHelmet;
+	private TextureSelectionButton textureBody;
+	private TextureSelectionButton textureLeggings;
+	private TextureSelectionButton textureBoots;
 
 	private final VTextField helmetName = new VTextField();
 	private final VTextField bodyName = new VTextField();
@@ -332,10 +331,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBody = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBoots = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureBody = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureLeggings = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureBoots = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);

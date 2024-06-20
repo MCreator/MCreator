@@ -19,7 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -27,13 +27,13 @@ import javax.swing.*;
 public class TileHolderValidator implements Validator {
 
 	private JToggleButton requirement;
-	private final TextureHolder holder;
+	private final TextureSelectionButton holder;
 
-	public TileHolderValidator(TextureHolder holder) {
+	public TileHolderValidator(TextureSelectionButton holder) {
 		this.holder = holder;
 	}
 
-	public TileHolderValidator(TextureHolder holder, JToggleButton requirement) {
+	public TileHolderValidator(TextureSelectionButton holder, JToggleButton requirement) {
 		this.holder = holder;
 		this.requirement = requirement;
 	}

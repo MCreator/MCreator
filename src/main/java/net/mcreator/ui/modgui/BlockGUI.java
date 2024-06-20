@@ -80,15 +80,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
-	private TextureHolder texture;
-	private TextureHolder textureTop;
-	private TextureHolder textureLeft;
-	private TextureHolder textureFront;
-	private TextureHolder textureRight;
-	private TextureHolder textureBack;
+	private TextureSelectionButton texture;
+	private TextureSelectionButton textureTop;
+	private TextureSelectionButton textureLeft;
+	private TextureSelectionButton textureFront;
+	private TextureSelectionButton textureRight;
+	private TextureSelectionButton textureBack;
 
-	private TextureHolder itemTexture;
-	private TextureHolder particleTexture;
+	private TextureSelectionButton itemTexture;
+	private TextureSelectionButton particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private JBoundingBoxList boundingBoxList;
@@ -444,16 +444,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
-		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
 
-		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureRight = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBack = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
