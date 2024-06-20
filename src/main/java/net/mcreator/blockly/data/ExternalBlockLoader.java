@@ -54,7 +54,7 @@ public class ExternalBlockLoader {
 
 		List<ToolboxCategory> toolboxCategories = new ArrayList<>();
 
-		final Gson gson = new GsonBuilder().setLenient().create();
+		final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
 		List<ToolboxBlock> toolboxBlocksList = new ArrayList<>();
 

@@ -27,10 +27,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 
 public class WebIO {
 
@@ -40,7 +39,7 @@ public class WebIO {
 		StringBuilder sb = new StringBuilder();
 		if (MCreatorApplication.isInternet) {
 			try {
-				HttpURLConnection urlConn = (HttpURLConnection) new URL(s).openConnection();
+				HttpURLConnection urlConn = (HttpURLConnection) new URI(s).toURL().openConnection();
 				urlConn.setConnectTimeout(4000);
 				urlConn.setInstanceFollowRedirects(true);
 				urlConn.connect();
@@ -72,12 +71,12 @@ public class WebIO {
 
 		Image colorImage = null;
 		try {
-			Image original = new ImageIcon(ImageIO.read(new URL(url))).getImage();
+			Image original = new ImageIcon(ImageIO.read(new URI(url).toURL())).getImage();
 			if (noStretch)
 				colorImage = ImageUtils.cover(original, new Dimension(x, y));
 			else
 				colorImage = ImageUtils.resize(original, x, y);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 		}
 		if (colorImage != null) {

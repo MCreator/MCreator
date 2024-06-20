@@ -27,6 +27,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 
 import javax.swing.*;
@@ -35,9 +36,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class TypedTextureSelectorDialog extends MCreatorDialog {
@@ -142,23 +141,28 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		return type;
 	}
 
-	@Override public void setVisible(boolean b) {
-		if (b)
+	@Override public void setVisible(boolean visible) {
+		if (visible) {
 			reloadList();
-		super.setVisible(b);
+		}
+
+		super.setVisible(visible);
 	}
 
 	private void reloadList() {
-		List<File> block = mcreator.getFolderManager().getTexturesList(type);
 		model.removeAllElements();
-		block.stream().filter(element -> element.getName().endsWith(".png"))
-				.forEach(e -> model.addElement(new Texture.Custom(type, e)));
+
+		// Load custom textures
+		CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+
 		list.setSelectedIndex(0);
-		if (block.isEmpty()) {
+
+		if (model.getSize() == 0) {
 			layout.show(center, "help");
 		} else {
 			layout.show(center, "list");
 		}
+
 		list.requestFocus();
 	}
 

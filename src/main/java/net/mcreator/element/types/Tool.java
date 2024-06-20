@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -60,16 +61,19 @@ import java.util.Map;
 	public String name;
 	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
-	public int harvestLevel;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
 	public double damageVsEntity;
 	public int usageCount;
-	@ModElementReference public List<MItemBlock> blocksAffected;
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
+
+	public String blockDropsTier;
+	public Procedure additionalDropCondition;
+
+	@ModElementReference public List<MItemBlock> blocksAffected;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -93,11 +97,13 @@ import java.util.Map;
 		this.attackSpeed = 2.8;
 
 		this.blockingModelName = "Normal blocking";
+
+		this.blockDropsTier = "WOOD";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
 	@Override public Model getItemModel() {

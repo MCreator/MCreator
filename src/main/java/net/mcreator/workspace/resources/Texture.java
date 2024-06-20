@@ -20,12 +20,13 @@
 package net.mcreator.workspace.resources;
 
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FilenameUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.io.File;
+import java.awt.*;
 
 public abstract class Texture {
 
@@ -33,7 +34,7 @@ public abstract class Texture {
 
 	protected final String textureName;
 
-	public Texture(TextureType textureType, String textureName) {
+	Texture(TextureType textureType, String textureName) {
 		this.textureType = textureType;
 		this.textureName = textureName;
 	}
@@ -63,29 +64,21 @@ public abstract class Texture {
 			return null;
 
 		if (name.indexOf(':') == -1)
-			return new Custom(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
+			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
 
 		return null;
 	}
 
-	public static final class Custom extends Texture {
+	@Nonnull public static ImageIcon getImageIcon(Workspace workspace, TextureType textureType, String name) {
+		Texture texture = fromName(workspace, textureType, name);
+		if (texture == null)
+			return new EmptyIcon.ImageIcon(16,16);
 
-		public Custom(TextureType textureType, File texture) {
-			super(textureType, textureType == TextureType.ARMOR ?
-					(FilenameUtils.removeExtension(texture.getName()).replace("_layer_1", "").replace("_layer_2", "")) :
-					FilenameUtils.removeExtension(texture.getName()));
-		}
+		return texture.getTextureIcon(workspace);
+	}
 
-		@Override public ImageIcon getTextureIcon(Workspace workspace) {
-			if (textureType == TextureType.ARMOR) {
-				File[] armorTextures = workspace.getFolderManager()
-						.getArmorTextureFilesForName(textureName);
-				return new ImageIcon(armorTextures[0].getAbsolutePath());
-			} else {
-				return workspace.getFolderManager().getTextureImageIcon(textureName, textureType);
-			}
-		}
-
+	@Nonnull public static Image getImage(Workspace workspace, TextureType textureType, String name) {
+		return getImageIcon(workspace, textureType, name).getImage();
 	}
 
 	public static final class Dummy extends Texture {

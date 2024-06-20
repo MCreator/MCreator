@@ -89,6 +89,7 @@ base_templates:
 sources_setup_tasks:
   - task: copy_models
     type: JAVA_viatemplate
+    cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 

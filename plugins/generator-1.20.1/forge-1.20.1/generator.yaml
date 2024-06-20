@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: lts
-buildfileversion: 47.2.0
+buildfileversion: 47.3.0
 subversion: 1.0 # force setup re-run to update Gradle wrapper to work with Java 21
 
 import:
@@ -81,6 +81,7 @@ base_templates:
 sources_setup_tasks:
   - task: copy_models
     type: JAVA_viatemplate
+    cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 

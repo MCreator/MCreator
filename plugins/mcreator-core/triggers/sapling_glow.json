@@ -21,6 +21,6 @@
       "type": "number"
     }
   ],
-  "has_result": "true",
+  "cancelable": "true",
   "side": "server"
 }

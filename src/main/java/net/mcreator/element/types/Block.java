@@ -38,6 +38,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -132,7 +133,8 @@ import java.util.stream.Collectors;
 
 	public int luminance;
 	public boolean unbreakable;
-	public int breakHarvestLevel;
+	public String vanillaToolTier;
+	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;
 
@@ -204,6 +206,7 @@ import java.util.stream.Collectors;
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
+		this.vanillaToolTier = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -326,13 +329,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage();
+		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, texture);
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.isEmpty())
 			return getMainTexture();
-		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
+		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, textureName);
 	}
 
 	@Override public String getRenderType() {
@@ -346,9 +349,12 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-			baseTypes.add(BaseType.FEATURE);
+		if (generateFeature) {
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
+			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
+				baseTypes.add(BaseType.FEATURE);
+		}
 
 		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);

@@ -5,9 +5,6 @@ _mcreator_map_template:
 _default:
   - ParticleTypes.CRIT
   - "crit"
-SPELL_MOB_AMBIENT:
-  - ParticleTypes.AMBIENT_ENTITY_EFFECT
-  - "ambient_entity_effect"
 VILLAGER_ANGRY:
   - ParticleTypes.ANGRY_VILLAGER
   - "angry_villager"
@@ -56,9 +53,6 @@ ENCHANTMENT_TABLE:
 END_ROD:
   - ParticleTypes.END_ROD
   - "end_rod"
-ENTITY_EFFECT:
-  - ParticleTypes.ENTITY_EFFECT
-  - "entity_effect"
 EXPLOSION_EMITTER:
   - ParticleTypes.EXPLOSION_EMITTER
   - "explosion_emitter"
@@ -275,20 +269,6 @@ EGG_CRACK:
 DUST_PLUME:
   - ParticleTypes.DUST_PLUME
   - "dust_plume"
-GUST_DUST:
-  - ParticleTypes.GUST_DUST
-  - "gust_dust"
 TRIAL_SPAWNER_DETECTION:
   - ParticleTypes.TRIAL_SPAWNER_DETECTION
   - "trial_spawner_detection"
-
-#LEGACY
-DRIPPING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-FALLING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-LANDING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"

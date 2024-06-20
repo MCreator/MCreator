@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
@@ -48,7 +49,7 @@ public class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 
-	public static final Gson gson = new GsonBuilder().setLenient().setPrettyPrinting()
+	public static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
 			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
 			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
 			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();

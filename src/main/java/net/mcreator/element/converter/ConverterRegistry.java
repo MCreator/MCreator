@@ -49,9 +49,12 @@ import net.mcreator.element.converter.v2023_4.*;
 import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 import net.mcreator.element.converter.v2024_1.TagModElementConverter;
+import net.mcreator.element.converter.v2024_2.BlockHarvestLevelConverter;
 import net.mcreator.element.converter.v2024_2.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
 import net.mcreator.element.converter.v2024_2.PotionEffectCategoryConverter;
+import net.mcreator.element.converter.v2024_2.HarvestLevelProceduresRemover;
+import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +89,8 @@ public class ConverterRegistry {
 			new BlockOreReplacementBlocksFixer(),
 			new BlockGenerationConditionRemover(),
 			new BlockFeatureDimensionRestrictionConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new BlockHarvestLevelConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
@@ -163,7 +167,8 @@ public class ConverterRegistry {
 			new LegacyGameModeConverter(),
 			new ProcedureArrowProjectileFixer(),
 			new ProcedureCustomDamageRemover(),
-			new CallProcedureAtBlockConverter()
+			new CallProcedureAtBlockConverter(),
+			new HarvestLevelProceduresRemover()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
@@ -188,7 +193,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.TOOL, List.of(
 			new SpecialInformationConverter(),
-			new ItemHasGlowConverter()
+			new ItemHasGlowConverter(),
+			new ToolHarvestLevelConverter()
 		));
 	}};
 	//@formatter:on

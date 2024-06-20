@@ -98,3 +98,5 @@
   type: number
 - ENDER_PEARLS_VANISH_ON_DEATH:
   type: logic
+- SPAWN_CHUNK_RADIUS:
+  type: number
