@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
-import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.ui.MCreatorApplication;
@@ -36,45 +35,16 @@ import java.io.File;
 public class ExportWorkspaceForDistAction extends GradleAction {
 
 	public ExportWorkspaceForDistAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.workspace.export_mod"), e -> exportImpl(actionRegistry, "build"));
+		super(actionRegistry, L10N.t("action.workspace.export_mod"), e -> exportImpl(actionRegistry));
 	}
 
-	public static class Deobf extends GradleAction {
-
-		public Deobf(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.export_mod_deobf"), e -> {
-				int sel = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(),
-						L10N.t("dialog.workspace.export_deobf.message"), L10N.t("dialog.workspace.export_deobf.title"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (sel == JOptionPane.YES_OPTION) {
-					exportImpl(actionRegistry, "jar");
-				}
-			});
-		}
-
-		@Override public boolean isEnabled() {
-			return super.isEnabled()
-					&& actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-					== GeneratorFlavor.BaseLanguage.JAVA;
-		}
-
-		@Override public void setEnabled(boolean b) {
-			if (actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-					== GeneratorFlavor.BaseLanguage.JAVA)
-				super.setEnabled(b);
-			else
-				super.setEnabled(false);
-
-		}
-	}
-
-	private static void exportImpl(ActionRegistry actionRegistry, String task) {
+	private static void exportImpl(ActionRegistry actionRegistry) {
 		actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 		actionRegistry.getMCreator().getGenerator().generateBase();
 
 		actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
 
-		actionRegistry.getMCreator().getGradleConsole().exec(task, taskResult -> {
+		actionRegistry.getMCreator().getGradleConsole().exec("build", taskResult -> {
 			String exportFile = actionRegistry.getMCreator().getGeneratorConfiguration()
 					.getGradleTaskFor("export_file");
 			String exportExtension = FilenameUtilsPatched.getExtension(exportFile);
@@ -102,7 +72,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 						new String[] { "." + exportExtension });
 				if (loc != null) {
 					actionRegistry.getMCreator().getApplication().getAnalytics()
-							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);
+							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, "build");
 
 					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
 				}

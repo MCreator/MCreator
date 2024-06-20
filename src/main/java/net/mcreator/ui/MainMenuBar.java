@@ -153,7 +153,6 @@ public class MainMenuBar extends JMenuBar {
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.workspaceSettings);
 		workspace.addSeparator();
-		workspace.add(mcreator.actionRegistry.exportToDeobfJAR);
 		workspace.add(mcreator.actionRegistry.exportToJAR);
 		add(workspace);
 

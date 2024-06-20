@@ -264,12 +264,12 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
+					workspace.getFolderManager().getTextureFile("other0", TextureType.OTHER));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.ENTITY));
+					workspace.getFolderManager().getTextureFile("entityTx0", TextureType.ENTITY));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("entityTx1", TextureType.ENTITY));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
@@ -777,16 +777,16 @@ public class TestWorkspaceDataProvider {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
 			armor.textureHelmet = "test";
-			armor.helmetModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBody = !_true;
 			armor.textureBody = "test2";
-			armor.bodyModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.bodyModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableLeggings = !_true;
 			armor.textureLeggings = "test3";
-			armor.leggingsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.leggingsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
-			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.bootsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.helmetItemRenderType = 0;
 			armor.helmetItemCustomModelName = "Normal";
 			armor.bodyItemRenderType = 0;
@@ -1423,7 +1423,7 @@ public class TestWorkspaceDataProvider {
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
-			painting.texture = "test.png";
+			painting.texture = "other0.png";
 			painting.title = modElement.getName();
 			painting.author = modElement.getName() + " author";
 			painting.width = 16;
@@ -1472,8 +1472,8 @@ public class TestWorkspaceDataProvider {
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
-			profession.professionTextureFile = "test.png";
-			profession.zombifiedProfessionTextureFile = "test.png";
+			profession.professionTextureFile = "entityTx0.png";
+			profession.zombifiedProfessionTextureFile = "entityTx1.png";
 			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
@@ -1744,7 +1744,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
-			modelLayer.texture = "test.png";
+			modelLayer.texture = "entityTx0.png";
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");

@@ -32,12 +32,13 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
+@SuppressWarnings("unused") public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
 	public String rarity;
@@ -75,8 +76,8 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
 	@Override public List<TabEntry> getCreativeTabs() {

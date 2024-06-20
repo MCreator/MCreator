@@ -32,17 +32,14 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TextureComboBox extends JPanel implements IValidable {
 
@@ -79,7 +76,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 		this.empty = new Texture.Dummy(textureType, defaultTextureName);
 
-		add("Center" , comboBox);
+		add("Center", comboBox);
 
 		JButton importTexture = new JButton(UIRES.get("18px.add"));
 		importTexture.setBorder(BorderFactory.createCompoundBorder(
@@ -90,7 +87,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
 			reload();
 		});
-		add("East" , importTexture);
+		add("East", importTexture);
 
 		reload();
 	}
@@ -106,25 +103,12 @@ public class TextureComboBox extends JPanel implements IValidable {
 	}
 
 	public void reload() {
-		List<File> customTextureFiles;
-		if (textureType == TextureType.ARMOR) {
-			customTextureFiles = new ArrayList<>();
-			List<File> armors = mcreator.getFolderManager().getTexturesList(TextureType.ARMOR);
-			for (File texture : armors)
-				if (texture.getName().endsWith("_layer_1.png"))
-					customTextureFiles.add(texture);
-		} else {
-			customTextureFiles = mcreator.getFolderManager().getTexturesList(textureType);
-		}
-
 		if (showEmpty) {
 			ComboBoxUtil.updateComboBoxContents(comboBox, ListUtils.merge(Collections.singleton(empty),
-					customTextureFiles.stream().map(e -> new Texture.Custom(textureType, e))
-							.collect(Collectors.toList())), empty);
+					CustomTexture.getTexturesOfType(mcreator.getWorkspace(), textureType)), empty);
 		} else {
 			ComboBoxUtil.updateComboBoxContents(comboBox,
-					customTextureFiles.stream().map(e -> new Texture.Custom(textureType, e))
-							.collect(Collectors.toList()));
+					CustomTexture.getTexturesOfType(mcreator.getWorkspace(), textureType));
 		}
 	}
 

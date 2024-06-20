@@ -26,9 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -146,9 +144,9 @@ public class GoogleAnalytics {
 		requestExecutor.submit(() -> trackEventSync(name, context));
 	}
 
-	private void processRequestURL(String requesturl) throws IOException {
+	private void processRequestURL(String requesturl) throws IOException, URISyntaxException {
 		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED && !Launcher.version.isDevelopment()) {
-			HttpURLConnection conn = (HttpURLConnection) new URL(requesturl).openConnection();
+			HttpURLConnection conn = (HttpURLConnection) new URI(requesturl).toURL().openConnection();
 			conn.setInstanceFollowRedirects(true);
 			conn.setUseCaches(false);
 			conn.setDefaultUseCaches(false);

@@ -38,6 +38,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -330,13 +331,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage();
+		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, texture);
 	}
 
 	private Image getTextureWithFallback(String textureName) {
 		if (textureName.isEmpty())
 			return getMainTexture();
-		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
+		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, textureName);
 	}
 
 	@Override public String getRenderType() {

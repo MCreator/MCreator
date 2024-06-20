@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -100,8 +101,8 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
 	@Override public Model getItemModel() {

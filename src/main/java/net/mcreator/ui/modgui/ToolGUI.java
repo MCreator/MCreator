@@ -38,7 +38,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 
 public class ToolGUI extends ModElementGUI<Tool> {
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 0, 128000, 1));
@@ -173,7 +173,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		immuneToFire.setOpaque(false);
