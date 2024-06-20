@@ -37,7 +37,7 @@ package ${package}.potion;
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
 	public ${name}MobEffect() {
-		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
+		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
 	}
 
 	<#if hasProcedure(data.onStarted)>
