@@ -64,7 +64,7 @@ public final class VanillaTexture extends Texture {
 
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
 		return CACHE.computeIfAbsent(workspace.getGeneratorConfiguration(), key -> {
-			Map<String, Texture> textures = new HashMap<>();
+			Map<String, Texture> textures = new LinkedHashMap<>();
 			if (workspace.getGenerator().getProjectJarManager() != null) {
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
