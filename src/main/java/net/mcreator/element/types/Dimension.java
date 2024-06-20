@@ -124,8 +124,8 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		return this.enablePortal ?
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
+						Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture),
+						Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture), portalFrame,
 						this.hasIgniter()) :
 				null;
 	}
