@@ -89,7 +89,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 					AtomicReference<Workspace> workspace = new AtomicReference<>();
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Workspace setup", () -> {
+					tests.add(DynamicTest.dynamicTest("Workspace setup", () -> {
 						// create temporary directory
 						File workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
 
@@ -132,61 +132,59 @@ import static org.junit.jupiter.api.Assertions.fail;
 						}
 					}));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Base generation",
+					tests.add(DynamicTest.dynamicTest("Base generation",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
-					tests.add(DynamicTest.dynamicTest(generator + " - Resource setup tasks",
+					tests.add(DynamicTest.dynamicTest("Resource setup tasks",
 							() -> workspace.get().getGenerator().runResourceSetupTasks()));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
+					tests.add(DynamicTest.dynamicTest("Preparing and generating sample mod elements",
 							() -> GTSampleElements.provideAndGenerateSampleElements(random, workspace.get())));
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
+					tests.add(DynamicTest.dynamicTest("Testing mod elements generation",
 							() -> GTModElements.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure triggers",
+						tests.add(DynamicTest.dynamicTest("Testing procedure triggers",
 								() -> GTProcedureTriggers.runTest(LOG, generator, workspace.get())));
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
+						tests.add(DynamicTest.dynamicTest("Testing procedure blocks",
 								() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace.get())));
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.COMMAND) != GeneratorStats.CoverageStatus.NONE)
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
+						tests.add(DynamicTest.dynamicTest("Testing command argument blocks",
 								() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.FEATURE) != GeneratorStats.CoverageStatus.NONE)
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing feature blocks",
+						tests.add(DynamicTest.dynamicTest("Testing feature blocks",
 								() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.LIVINGENTITY) != GeneratorStats.CoverageStatus.NONE)
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
+						tests.add(DynamicTest.dynamicTest("Testing AI task blocks",
 								() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace.get())));
 
-					tests.add(DynamicTest.dynamicTest(
-							generator + " - Re-generating base to include generated mod elements",
+					tests.add(DynamicTest.dynamicTest("Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports",
-							() -> {
-								try (Stream<Path> entries = Files.walk(workspace.get().getWorkspaceFolder().toPath())) {
-									ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
-											entries.filter(Files::isRegularFile).map(Path::toFile)
-													.collect(Collectors.toList()), null);
-								}
-							}));
+					tests.add(DynamicTest.dynamicTest("Reformatting the code and organising the imports", () -> {
+						try (Stream<Path> entries = Files.walk(workspace.get().getWorkspaceFolder().toPath())) {
+							ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
+									entries.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList()),
+									null);
+						}
+					}));
 
 					// Verify Java files
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
+					tests.add(DynamicTest.dynamicTest("Testing workspace build with mod elements",
 							() -> GTBuild.runTest(LOG, generator, workspace.get())));
 
 					// Verify JSON files
-					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
+					tests.add(DynamicTest.dynamicTest("Verifying workspace JSON files",
 							() -> verifyGeneratedJSON(workspace.get())));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
+					tests.add(DynamicTest.dynamicTest("Stop Gradle and close workspace", () -> {
 						GradleDaemonUtils.stopAllDaemons(workspace.get());
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
