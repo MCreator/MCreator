@@ -45,8 +45,8 @@ jobs:
         with:
           include_passed: true
           detailed_summary: true
-          check_title_template: {{BREAD_CRUMB}}.{{SUITE_NAME}}.{{TEST_NAME}}
-          bread_crumb_delimiter: .
+          check_title_template: "{{BREAD_CRUMB}}.{{SUITE_NAME}}.{{TEST_NAME}}"
+          bread_crumb_delimiter: "."
           report_paths: '**/build/test-results/test/TEST-*.xml'
       - name: Prepare Gradle Cache
         run: |
