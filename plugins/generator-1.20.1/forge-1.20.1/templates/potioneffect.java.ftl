@@ -37,13 +37,13 @@
 <#assign isHoneyPresent = false>
 <#assign i = 0>
 <#list data.potionCures as potionCures>
-	<#if generator.map(potionCures, "potioncures") == "DEFAULT_CURES">
+	<#if generator.map(potionCures, "potioncures") == "MILK_BUCKET">
 		<#assign isDefaultCuresPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">
+	<#elseif generator.map(potionCures, "potioncures") == "TOTEM_OF_UNDYING">
 		<#assign isProtectedByTotemPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "MILK">
+	<#elseif generator.map(potionCures, "potioncures") == "MILK_BUCKET">
 		<#assign isMilkPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "HONEY">
+	<#elseif generator.map(potionCures, "potioncures") == "HONEY_BOTTLE">
 		<#assign isHoneyPresent = true>
 	</#if>
 	<#assign i = i + 1>
@@ -71,8 +71,8 @@ public class ${name}MobEffect extends MobEffect {
 		cures.add(new ItemStack(Items.MILK_BUCKET));
 		</#if>
 		<#list data.potionCures as potionCures>
-			<#if !(isDefaultCuresPresent || isMilkPresent) || generator.map(potionCures, "potioncures") == "HONEY" || generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">
-			cures.add(new ItemStack(Items.<#if generator.map(potionCures, "potioncures") == "MILK">MILK_BUCKET<#elseif generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">TOTEM_OF_UNDYING<#else>HONEY_BOTTLE</#if>));
+			<#if !(isDefaultCuresPresent || isMilkPresent) || generator.map(potionCures, "potioncures") == "HONEY_BOTTLE" || generator.map(potionCures, "potioncures") == "TOTEM_OF_UNDYING">
+			cures.add(new ItemStack(Items.${generator.map(potionCures, "potioncures")}));
 			</#if>
 		</#list>
 		return cures;

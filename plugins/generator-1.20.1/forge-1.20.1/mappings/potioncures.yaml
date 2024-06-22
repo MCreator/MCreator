@@ -1,5 +1,5 @@
-_default: DEFAULT_CURES
-DefaultCures: DEFAULT_CURES
-ProtectedByTotem: PROTECTED_BY_TOTEM
-Honey: HONEY
-Milk: MILK
+_default: MILK_BUCKET
+DefaultCures: MILK_BUCKET
+ProtectedByTotem: TOTEM_OF_UNDYING
+Honey: HONEY_BOTTLE
+Milk: MILK_BUCKET
