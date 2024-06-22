@@ -25,6 +25,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.Texture;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -110,7 +111,8 @@ import java.lang.reflect.Type;
 		@Override public TextureHolder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			try {
-				return new TextureHolder(json.getAsString());
+				// remove extension call for legacy reasons if previously .png was stored as part of texture name
+				return new TextureHolder(FilenameUtils.removeExtension(json.getAsString()));
 			} catch (Exception e) {
 				return new TextureHolder(null);
 			}
@@ -118,7 +120,8 @@ import java.lang.reflect.Type;
 
 		@Override
 		public JsonElement serialize(TextureHolder textureHolder, Type typeOfSrc, JsonSerializationContext context) {
-			return new JsonPrimitive(textureHolder.texture == null ? "" : textureHolder.texture);
+			return new JsonPrimitive(
+					textureHolder.texture == null ? "" : FilenameUtils.removeExtension(textureHolder.texture));
 		}
 	}
 
