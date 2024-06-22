@@ -1423,7 +1423,7 @@ public class TestWorkspaceDataProvider {
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
-			painting.texture = "other0.png";
+			painting.texture = new TextureHolder(modElement.getWorkspace(), "other0.png");
 			painting.title = modElement.getName();
 			painting.author = modElement.getName() + " author";
 			painting.width = 16;
