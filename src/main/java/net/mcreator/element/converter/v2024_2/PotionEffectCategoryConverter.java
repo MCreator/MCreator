@@ -23,7 +23,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.types.*;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -36,18 +35,19 @@ public class PotionEffectCategoryConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		try {
-			JsonObject potioneffectDefinition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+
 			if(input instanceof PotionEffect potion) {
-				if (potioneffectDefinition.get("isBad").getAsBoolean()) {
+				if (definition.get("isBad").getAsBoolean()) {
 					potion.mobEffectCategory = "HARMFUL";
-				} else if (potioneffectDefinition.get("isBenefitical").getAsBoolean()) {
+				} else if (definition.get("isBenefitical").getAsBoolean()) {
 					potion.mobEffectCategory = "BENEFICIAL";
 				} else {
 					potion.mobEffectCategory = "NEUTRAL";
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to convert potion effect category for " + input.getModElement().getName(), e);
+			LOG.warn("Failed to convert potion effect category", e);
 		}
 
 		return input;
