@@ -67,7 +67,14 @@ public class PalettePanel extends JTabbedPane {
 			palettes.addAll(
 					gson.fromJson(FileIO.readFileToString(this.paletteFile), PaletteListPanel.PaletteStorage.class));
 		} else {
-			// TODO: specify default palettes
+			//@formatter:off
+			palettes.add(ColorPalette.generate("Overworld", "#3D552C", "#313E25", "#B4D0FB", "#3F3A26", "#878D80", "#705439", "#1D2D15", "#38507D", "#D5CCA4", "#57703C",
+					"#212523", "#453824", "#496331", "#BBBBB9", "#494F50", "#312614", "#636436", "#776255", "#1F2F4F", "#2C4317"));
+			palettes.add(ColorPalette.generate("Cave", "#8B8478", "#423C37", "#ED6A0E", "#393028", "#544A3E", "#655544", "#666049", "#1B1612"));
+			palettes.add(ColorPalette.generate("Winter", "#213331", "#83BAE5", "#182427", "#DFF0EE", "#533726", "#1B1B1B", "#2C4144", "#213A33", "#73959C", "#475B64"));
+			palettes.add(ColorPalette.generate("Nether", "#955E61", "#2E1C20", "#7F2C2A", "#29B3A8", "#EA732E", "#1D3A35", "#481817", "#280B0B", "#7B261D"));
+			palettes.add(ColorPalette.generate("End", "#140E18", "#44363E", "#6E7455", "#555941", "#130E19", "#94A170", "#614B59", "#818762", "#9FA776"));
+			//@formatter:on
 		}
 	}
 
