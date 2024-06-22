@@ -35,6 +35,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +74,7 @@ import java.util.*;
 	public String igniterName;
 	public String igniterRarity;
 	public StringListProcedure specialInformation;
-	public TabEntry igniterTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public String texture;
 	@TextureReference(TextureType.BLOCK) public String portalTexture;
 	public boolean enablePortal;
@@ -92,6 +93,7 @@ import java.util.*;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
+		this.creativeTabs = new ArrayList<>();
 		this.igniterRarity = "COMMON";
 		this.sleepResult = "ALLOW";
 	}
@@ -123,14 +125,14 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		return this.enablePortal ?
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
+						Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture),
+						Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture), portalFrame,
 						this.hasIgniter()) :
 				null;
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return igniterTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
@@ -159,9 +161,9 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("portal".equals(suffix))
-			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
+			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture);
 		else
-			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+			return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, texture);
 	}
 
 	@Override public List<MItemBlock> poiBlocks() {

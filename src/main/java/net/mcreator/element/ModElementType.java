@@ -57,6 +57,13 @@ public class ModElementType<GE extends GeneratableElement> {
 		return registryName;
 	}
 
+	public String getPluralName() {
+		if (this == LIVINGENTITY)
+			return "livingentities";
+
+		return registryName.toLowerCase(Locale.ENGLISH) + "s";
+	}
+
 	public Character getShortcut() {
 		return shortcut;
 	}

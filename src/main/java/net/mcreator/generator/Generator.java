@@ -336,7 +336,7 @@ public class Generator implements IGenerator, Closeable {
 
 			if (!filteredGeneratableElements.isEmpty()) {
 				globalTemplatesList.forEach(
-						e -> e.addDataModelEntry(type.getRegistryName() + "s", filteredGeneratableElements));
+						e -> e.addDataModelEntry(type.getPluralName(), filteredGeneratableElements));
 
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type

@@ -39,7 +39,6 @@ import net.mcreator.workspace.references.ModElementReference;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
@@ -93,12 +92,14 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.CONFIGUREDFEATURE));
+
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
-			return List.of(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
+			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
 		else if (hasGenerationConditions())
-			return List.of(BaseType.FEATURE);
-		else
-			return Collections.emptyList();
+			baseTypes.add(BaseType.FEATURE);
+
+		return baseTypes;
 	}
 
 }

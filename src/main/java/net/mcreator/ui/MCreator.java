@@ -98,6 +98,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final DebugPanel debugPanel;
 
+	private JPanel mainPanel;
+
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
 
@@ -171,8 +173,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
 
-		JPanel mpan;
-
 		// Load backgrounds depending on the background source
 		List<Image> bgimages = new ArrayList<>();
 		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
@@ -201,15 +201,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 
 		if (bgimage != null) {
-			mpan = new ImagePanel(bgimage);
-			((ImagePanel) mpan).setKeepRatio(true);
+			mainPanel = new ImagePanel(bgimage);
+			((ImagePanel) mainPanel).setKeepRatio(true);
 		} else {
-			mpan = new JPanel();
-			mpan.setBackground(Theme.current().getSecondAltBackgroundColor());
+			mainPanel = new JPanel();
+			mainPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
-		mpan.setLayout(new BorderLayout());
-		mpan.add("Center", mcreatorTabs.getContainer());
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add("Center", mcreatorTabs.getContainer());
 
 		mv = new WorkspacePanel(this);
 
@@ -257,7 +257,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mpan);
+		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mainPanel);
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
 		splitPane.setBackground(Theme.current().getAltBackgroundColor());
@@ -475,6 +475,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	public DebugPanel getDebugPanel() {
 		return debugPanel;
+	}
+
+	public JPanel getMainPanel() {
+		return mainPanel;
 	}
 
 }

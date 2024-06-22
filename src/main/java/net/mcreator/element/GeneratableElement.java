@@ -42,7 +42,7 @@ import java.util.List;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 61;
+	public static final int formatVersion = 65;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -119,7 +119,7 @@ public abstract class GeneratableElement {
 		private static final Gson gson;
 
 		static {
-			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
+			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setStrictness(Strictness.LENIENT);
 
 			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 

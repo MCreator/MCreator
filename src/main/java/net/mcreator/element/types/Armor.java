@@ -36,12 +36,14 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
@@ -60,7 +62,7 @@ import java.util.*;
 	public Procedure onLeggingsTick;
 	public Procedure onBootsTick;
 
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
@@ -135,6 +137,8 @@ import java.util.*;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
 		this.leggingsModelName = "Default";
@@ -151,15 +155,15 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		ArrayList<File> armorPieces = new ArrayList<>();
+		List<Image> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureHelmet, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureHelmet));
 		if (enableBody)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBody, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBody));
 		if (enableLeggings)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureLeggings, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureLeggings));
 		if (enableBoots)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBoots, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBoots));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
@@ -361,16 +365,16 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return switch (suffix) {
-			case "helmet" -> workspace.getFolderManager().getTextureImageIcon(textureHelmet, TextureType.ITEM);
-			case "body" -> workspace.getFolderManager().getTextureImageIcon(textureBody, TextureType.ITEM);
-			case "legs" -> workspace.getFolderManager().getTextureImageIcon(textureLeggings, TextureType.ITEM);
-			case "boots" -> workspace.getFolderManager().getTextureImageIcon(textureBoots, TextureType.ITEM);
+			case "helmet" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureHelmet);
+			case "body" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBody);
+			case "legs" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureLeggings);
+			case "boots" -> Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBoots);
 			default -> null;
 		};
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 }

@@ -64,7 +64,17 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
 				public int getLevel() {
-					return ${data.harvestLevel};
+					<#if data.blockDropsTier == "WOOD" || data.blockDropsTier == "GOLD">
+					return 0;
+					<#elseif data.blockDropsTier == "STONE">
+					return 1;
+					<#elseif data.blockDropsTier == "IRON">
+					return 2;
+					<#elseif data.blockDropsTier == "DIAMOND">
+					return 3;
+					<#else>
+					return 4;
+					</#if>
 				}
 
 				public int getEnchantmentValue() {
@@ -93,6 +103,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		</#if>);
 	}
 
+	<#if hasProcedure(data.additionalDropCondition)>
+	@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
+		return super.isCorrectToolForDrops(itemstack, blockstate) && <@procedureCode data.additionalDropCondition, {
+			"itemstack": "itemstack",
+			"blockstate": "blockstate"
+		}, false/>;
+	}
+	</#if>
+
 	<#if data.toolType == "Shield" && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
@@ -109,19 +128,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		}
 	<#elseif data.toolType=="MultiTool">
 		@Override public boolean isCorrectToolForDrops(BlockState blockstate) {
-			int tier = ${data.harvestLevel};
-			if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-				return false;
-			} else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
-				return false;
-			} else {
-				return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL) ? false : (
-								blockstate.is(BlockTags.MINEABLE_WITH_AXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_HOE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
-								blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL)
-						);
-			}
+			<#if data.blockDropsTier == "WOOD" || data.blockDropsTier == "GOLD">
+			return !blockstate.is(BlockTags.NEEDS_STONE_TOOL) && !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "STONE">
+			return !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#elseif data.blockDropsTier == "IRON">
+			return !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL);
+			<#else>
+			return blockstate.is(BlockTags.MINEABLE_WITH_AXE) || blockstate.is(BlockTags.MINEABLE_WITH_HOE) || blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL);
+			</#if>
 		}
 
 		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {

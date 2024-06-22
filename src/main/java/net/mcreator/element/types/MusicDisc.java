@@ -32,17 +32,19 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
+@SuppressWarnings("unused") public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
 	public String rarity;
 	@TextureReference(TextureType.ITEM) public String texture;
 	public String description;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
@@ -65,6 +67,7 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	public MusicDisc(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
 		this.rarity = "RARE";
 	}
 
@@ -73,12 +76,12 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

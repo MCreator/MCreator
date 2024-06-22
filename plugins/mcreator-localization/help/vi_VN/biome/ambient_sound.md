@@ -1,1 +1,1 @@
-Âm thanh xung quanh được chơi liên tục trong quần xã.
+Âm thanh môi trường được chơi liên tục trong quần xã.
