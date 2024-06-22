@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.color;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -35,7 +36,7 @@ import java.io.File;
 
 public class PalettePanel extends JTabbedPane {
 
-	private static final Gson gson = new GsonBuilder().setLenient().create();
+	private static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
 	private final File paletteFile;
 
