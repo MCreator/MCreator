@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.types.Potion;
 import net.mcreator.element.types.PotionEffect;
 import net.mcreator.io.FileIO;
@@ -79,6 +80,10 @@ public class PotionToEffectConverter implements IConverter {
 
 			PotionEffect potionEffect = new Gson().fromJson(jsonElementInput.getAsJsonObject().get("definition"),
 					PotionEffect.class);
+
+			// Set workspace for all workspace dependent objects
+			IWorkspaceDependent.processWorkspaceDependentObjects(potionEffect,
+					workspaceDependent -> workspaceDependent.setWorkspace(workspace));
 
 			// Pre-update for FV31 - new texture types
 			try {
