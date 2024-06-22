@@ -11,8 +11,7 @@
               </#if>
           </#if>
           "icon": {
-            ${mappedMCItemToItemObjectJSON(data.achievementIcon, "id")},
-            "count": 1
+            ${mappedMCItemToItemObjectJSON(data.achievementIcon, "id")}
           },
           "title": "${data.achievementName}",
           "description": "${data.achievementDescription}",
