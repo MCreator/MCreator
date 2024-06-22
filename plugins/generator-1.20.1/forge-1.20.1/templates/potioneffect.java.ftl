@@ -31,7 +31,23 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
-
+<#assign isDefaultCuresPresent = false>
+<#assign isProtectedByTotemPresent = false>
+<#assign isMilkPresent = false>
+<#assign isHoneyPresent = false>
+<#assign i = 0>
+<#list data.potionCures as potionCures>
+	<#if generator.map(potionCures, "potioncures") == "DEFAULT_CURES">
+		<#assign isDefaultCuresPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">
+		<#assign isProtectedByTotemPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "MILK">
+		<#assign isMilkPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "HONEY">
+		<#assign isHoneyPresent = true>
+	</#if>
+	<#assign i = i + 1>
+</#list>
 package ${package}.potion;
 
 <#compress>
@@ -47,11 +63,17 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
-	<#if data.potionCures?size == 1 && data.potionCures[0] != "DEFAULT_CURES">
+	<#if !((isDefaultCuresPresent || isMilkPresent) && i == 1) &&
+         !((isDefaultCuresPresent || isMilkPresent) && !(isHoneyPresent || isProtectedByTotemPresent))>
 	@Override public List<ItemStack> getCurativeItems() {
 		ArrayList<ItemStack> cures = new ArrayList<ItemStack>();
+		<#if isDefaultCuresPresent || isMilkPresent>
+		cures.add(new ItemStack(Items.MILK_BUCKET));
+		</#if>
 		<#list data.potionCures as potionCures>
-		cures.add(<#if potionCures == "MILK">new ItemStack(Items.MILK_BUCKET)<#elseif potionCures == "PROTECTED_BY_TOTEM">new ItemStack(Items.TOTEM_OF_UNDYING)<#else>new ItemStack(Items.HONEY_BOTTLE)</#if>);
+			<#if !(isDefaultCuresPresent || isMilkPresent) || generator.map(potionCures, "potioncures") == "HONEY" || generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">
+			cures.add(new ItemStack(Items.<#if generator.map(potionCures, "potioncures") == "MILK">MILK_BUCKET<#elseif generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">TOTEM_OF_UNDYING<#else>HONEY_BOTTLE</#if>));
+			</#if>
 		</#list>
 		return cures;
 	}

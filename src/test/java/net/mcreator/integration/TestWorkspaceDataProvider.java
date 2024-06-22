@@ -1122,7 +1122,10 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isBenefitical = !_true;
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
-			potionEffect.potionCures = new ArrayList<>();
+			List<String> potionEffectCures = new ArrayList<>();
+			if (!emptyLists)
+				potionEffectCures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("potioncures")));
+			potionEffect.potionCures = potionEffectCures;
 			potionEffect.onStarted = new Procedure("procedure1");
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");

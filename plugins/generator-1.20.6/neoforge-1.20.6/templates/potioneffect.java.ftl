@@ -29,8 +29,24 @@
 -->
 
 <#-- @formatter:off -->
+<#assign isDefaultCuresPresent = false>
+<#assign isProtectedByTotemPresent = false>
+<#assign isMilkPresent = false>
+<#assign isHoneyPresent = false>
+<#assign i = 0>
+<#list data.potionCures as potionCures>
+	<#if generator.map(potionCures, "potioncures") == "DEFAULT_CURES">
+		<#assign isDefaultCuresPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "PROTECTED_BY_TOTEM">
+		<#assign isProtectedByTotemPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "MILK">
+		<#assign isMilkPresent = true>
+	<#elseif generator.map(potionCures, "potioncures") == "HONEY">
+		<#assign isHoneyPresent = true>
+	</#if>
+	<#assign i = i + 1>
+</#list>
 <#include "procedures.java.ftl">
-
 package ${package}.potion;
 
 <#compress>
@@ -40,10 +56,17 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 	}
 
-	<#if data.potionCures?size == 1 && data.potionCures[0] != "DEFAULT_CURES">
+	<#if !(isDefaultCuresPresent && i == 1) &&
+         !(isProtectedByTotemPresent && isMilkPresent && i == 2) &&
+         !((isDefaultCuresPresent || (isProtectedByTotemPresent && isMilkPresent)) && !isHoneyPresent)>
 	@Override public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+		<#if isDefaultCuresPresent || (isProtectedByTotemPresent && isMilkPresent)>
+		cures.addAll(EffectCures.DEFAULT_CURES);
+		</#if>
 		<#list data.potionCures as potionCures>
-		cures.add(EffectCures.${potionCures});
+			<#if !(isDefaultCuresPresent || (isProtectedByTotemPresent && isMilkPresent)) || generator.map(potionCures, "potioncures") == "HONEY">
+			cures.add(EffectCures.${generator.map(potionCures, "potioncures")});
+			</#if>
 		</#list>
 	}
 	</#if>
