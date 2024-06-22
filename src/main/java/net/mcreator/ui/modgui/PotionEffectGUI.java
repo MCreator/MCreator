@@ -31,7 +31,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -53,7 +53,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final VTextField effectName = new VTextField(20);
 	private final JColor color = new JColor(mcreator, false, false);
-	private TextureHolder icon;
+	private TextureSelectionButton icon;
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
 	private final JCheckBox isBad = L10N.checkbox("elementgui.potioneffect.is_bad");
@@ -107,7 +107,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
-		icon = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
+		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
 		icon.setOpaque(false);
 
 		JComponent iconComponent = PanelUtils.totalCenterInPanel(

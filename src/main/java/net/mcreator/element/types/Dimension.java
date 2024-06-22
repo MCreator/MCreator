@@ -74,7 +74,7 @@ import java.util.*;
 	public String igniterName;
 	public String igniterRarity;
 	public StringListProcedure specialInformation;
-	public TabEntry igniterTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public String texture;
 	@TextureReference(TextureType.BLOCK) public String portalTexture;
 	public boolean enablePortal;
@@ -93,6 +93,7 @@ import java.util.*;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
+		this.creativeTabs = new ArrayList<>();
 		this.igniterRarity = "COMMON";
 		this.sleepResult = "ALLOW";
 	}
@@ -124,14 +125,14 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		return this.enablePortal ?
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
+						Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, portalTexture),
+						Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture), portalFrame,
 						this.hasIgniter()) :
 				null;
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return igniterTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

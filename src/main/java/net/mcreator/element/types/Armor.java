@@ -41,8 +41,9 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
@@ -61,7 +62,7 @@ import java.util.*;
 	public Procedure onLeggingsTick;
 	public Procedure onBootsTick;
 
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
@@ -136,6 +137,8 @@ import java.util.*;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
 		this.leggingsModelName = "Default";
@@ -152,15 +155,15 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		ArrayList<File> armorPieces = new ArrayList<>();
+		List<Image> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureHelmet, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureHelmet));
 		if (enableBody)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBody, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBody));
 		if (enableLeggings)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureLeggings, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureLeggings));
 		if (enableBoots)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBoots, TextureType.ITEM));
+			armorPieces.add(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, textureBoots));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
@@ -370,8 +373,8 @@ import java.util.*;
 		};
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 }

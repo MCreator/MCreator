@@ -20,7 +20,6 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -37,7 +36,8 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TabListField;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -60,8 +60,8 @@ import java.net.URISyntaxException;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
-	private TextureHolder textureStill;
-	private TextureHolder textureFlowing;
+	private TextureSelectionButton textureStill;
+	private TextureSelectionButton textureFlowing;
 
 	private final VTextField name = new VTextField(18);
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
@@ -82,8 +82,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final VTextField bucketName = new VTextField(18);
-	private TextureHolder textureBucket;
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private TextureSelectionButton textureBucket;
+	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 	private StringListProcedureSelector specialInformation;
@@ -157,9 +157,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		destalx.setOpaque(false);
 
-		textureStill = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureStill = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -220,7 +220,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
-		textureBucket = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		textureBucket = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		generateBucket.setOpaque(false);
 		textureBucket.setOpaque(false);
 
@@ -236,9 +236,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.bucket_texture")));
 		bucketProperties.add(PanelUtils.centerInPanel(textureBucket));
 
-		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		bucketProperties.add(creativeTab);
+		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		bucketProperties.add(creativeTabs);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/empty_sound"),
 				L10N.label("elementgui.fluid.empty_sound")));
@@ -258,7 +258,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		generateBucket.addActionListener(e -> {
 			bucketName.setEnabled(generateBucket.isSelected());
 			textureBucket.setEnabled(generateBucket.isSelected());
-			creativeTab.setEnabled(generateBucket.isSelected());
+			creativeTabs.setEnabled(generateBucket.isSelected());
 			emptySound.setEnabled(generateBucket.isSelected());
 			rarity.setEnabled(generateBucket.isSelected());
 			specialInformation.setEnabled(generateBucket.isSelected());
@@ -415,8 +415,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
-
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -465,12 +463,11 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluidtype.setSelectedItem(fluid.type);
 		specialInformation.setSelectedProcedure(fluid.specialInformation);
 
-		if (fluid.creativeTab != null)
-			creativeTab.setSelectedItem(fluid.creativeTab);
+		creativeTabs.setListElements(fluid.creativeTabs);
 
 		bucketName.setEnabled(generateBucket.isSelected());
 		textureBucket.setEnabled(generateBucket.isSelected());
-		creativeTab.setEnabled(generateBucket.isSelected());
+		creativeTabs.setEnabled(generateBucket.isSelected());
 		emptySound.setEnabled(generateBucket.isSelected());
 		rarity.setEnabled(generateBucket.isSelected());
 		specialInformation.setEnabled(generateBucket.isSelected());
@@ -517,7 +514,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.type = (String) fluidtype.getSelectedItem();
 		fluid.specialInformation = specialInformation.getSelectedProcedure();
 
-		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		fluid.creativeTabs = creativeTabs.getListElements();
 		return fluid;
 	}
 

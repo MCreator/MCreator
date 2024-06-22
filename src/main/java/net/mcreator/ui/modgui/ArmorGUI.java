@@ -30,7 +30,6 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.JavaModels;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -78,7 +77,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -88,10 +90,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private static final int ARMOR_TEXTURE_SIZE_FACTOR = 5;
 
-	private TextureHolder textureHelmet;
-	private TextureHolder textureBody;
-	private TextureHolder textureLeggings;
-	private TextureHolder textureBoots;
+	private TextureSelectionButton textureHelmet;
+	private TextureSelectionButton textureBody;
+	private TextureSelectionButton textureLeggings;
+	private TextureSelectionButton textureBoots;
 
 	private final VTextField helmetName = new VTextField();
 	private final VTextField bodyName = new VTextField();
@@ -182,7 +184,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private ProcedureSelector onLeggingsTick;
 	private ProcedureSelector onBootsTick;
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup group1page = new ValidationGroup();
 	private final ValidationGroup group2page = new ValidationGroup();
@@ -332,10 +334,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBody = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBoots = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureBody = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureLeggings = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureBoots = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);
@@ -571,9 +573,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.armor.layer_texture")));
 		enderpanel.add(armorTextureFile);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		enderpanel.add(creativeTab);
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		enderpanel.add(creativeTabs);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/equip_sound"),
 				L10N.label("elementgui.armor.equip_sound")));
@@ -782,6 +784,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "COMBAT")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			helmetName.setText(L10N.t("elementgui.armor.helmet", readableNameFromModElement));
 			bodyName.setText(L10N.t("elementgui.armor.chestplate", readableNameFromModElement));
@@ -816,8 +820,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySpecialInformation.refreshListKeepSelected();
 		leggingsSpecialInformation.refreshListKeepSelected();
 		bootsSpecialInformation.refreshListKeepSelected();
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("COMBAT"));
 
 		ComboBoxUtil.updateComboBoxContents(helmetModel, ListUtils.merge(Collections.singleton(defaultModel),
 				Model.getModels(mcreator.getWorkspace()).stream()
@@ -926,7 +928,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableBody.setSelected(armor.enableBody);
 		enableLeggings.setSelected(armor.enableLeggings);
 		enableBoots.setSelected(armor.enableBoots);
-		creativeTab.setSelectedItem(armor.creativeTab);
+		creativeTabs.setListElements(armor.creativeTabs);
 		textureHelmet.setEnabled(enableHelmet.isSelected());
 		textureBody.setEnabled(enableBody.isSelected());
 		textureLeggings.setEnabled(enableLeggings.isSelected());
@@ -1033,7 +1035,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodySpecialInformation = bodySpecialInformation.getSelectedProcedure();
 		armor.leggingsSpecialInformation = leggingsSpecialInformation.getSelectedProcedure();
 		armor.bootsSpecialInformation = bootsSpecialInformation.getSelectedProcedure();
-		armor.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		armor.creativeTabs = creativeTabs.getListElements();
 		armor.armorTextureFile = armorTextureFile.getTextureName();
 		armor.maxDamage = (int) maxDamage.getValue();
 		armor.damageValueHelmet = (int) damageValueHelmet.getValue();

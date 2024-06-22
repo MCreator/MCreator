@@ -29,7 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class TextureHolder extends VButton {
+public class TextureSelectionButton extends VButton {
 
 	@Nullable private Texture selectedTexture = null;
 
@@ -40,11 +40,11 @@ public class TextureHolder extends VButton {
 
 	private ActionListener actionListener;
 
-	public TextureHolder(TypedTextureSelectorDialog td) {
+	public TextureSelectionButton(TypedTextureSelectorDialog td) {
 		this(td, 70);
 	}
 
-	public TextureHolder(TypedTextureSelectorDialog td, int size) {
+	public TextureSelectionButton(TypedTextureSelectorDialog td, int size) {
 		super("");
 		this.td = td;
 		this.size = size;
@@ -118,7 +118,7 @@ public class TextureHolder extends VButton {
 		this.actionListener = actionListener;
 	}
 
-	public TextureHolder setFlipUV(boolean uvFlip) {
+	public TextureSelectionButton setFlipUV(boolean uvFlip) {
 		this.uvFlip = uvFlip;
 		repaint();
 		return this;
