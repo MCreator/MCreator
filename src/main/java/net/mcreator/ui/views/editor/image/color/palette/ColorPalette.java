@@ -42,21 +42,21 @@ public class ColorPalette {
 		this.name = name;
 	}
 
-	public ArrayListListModel<Color> getColors() {
+	ArrayListListModel<Color> getColors() {
 		return colors;
+	}
+
+	public static ColorPalette generate(String name, String... hexColors) {
+		ColorPalette palette = new ColorPalette(name);
+		for (String hexColor : hexColors) {
+			palette.colors.add(Color.decode(hexColor));
+		}
+		return palette;
 	}
 
 	public Image getIcon(int width, int height) {
 		BufferedImage icon = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = icon.createGraphics();
-		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 		int colorCount = Math.min(colors.size(), width * height);
 
@@ -65,24 +65,18 @@ public class ColorPalette {
 		int rows = (int) Math.ceil((float) colorCount / columns);
 
 		// calculate square cell size based on the width
-		float cellSize = ((float) width) / columns;
+		int cellSize = (int) Math.floor(((float) width) / columns);
 
 		// calculate offset to center the palette
-		int offsetY = (int) ((height - (cellSize * rows)) / 2);
+		int offsetY = (height - (cellSize * rows)) / 2;
 
 		// draw tiles
 		for (int i = 0; i < colorCount; i++) {
-			int xi = i % columns;
-			int yi = i / columns;
-
-			float x = xi * cellSize;
-			float y = yi * cellSize;
-
-			float sizeX = cellSize * (xi + 1) - x;
-			float sizeY = cellSize * (yi + 1) - y;
+			int x = (i % columns) * cellSize;
+			int y = (i / columns) * cellSize;
 
 			g2d.setColor(colors.get(i));
-			g2d.fillRect(Math.round(x), Math.round(y + offsetY), Math.round(sizeX), Math.round(sizeY));
+			g2d.fillRect(x, y + offsetY, cellSize, cellSize);
 		}
 
 		g2d.dispose();
