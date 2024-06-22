@@ -1,0 +1,1 @@
+El parámetro de Reparación de ítems controla los objetos que pueden utilizarse para reparar la armadura dentro del yunque.
