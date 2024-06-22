@@ -93,10 +93,6 @@ public class TextureSelectionButton extends VButton {
 		});
 	}
 
-	public void setTextureFromTextureName(String texture) {
-		setTexture(Texture.fromName(td.getMCreator().getWorkspace(), td.getTextureType(), texture));
-	}
-
 	protected void setTexture(@Nullable Texture texture) {
 		if (texture != null) {
 			selectedTexture = texture;
@@ -111,10 +107,6 @@ public class TextureSelectionButton extends VButton {
 		if (texture != null) {
 			setTexture(texture.toTexture(td.getTextureType()));
 		}
-	}
-
-	public String getTextureName() {
-		return selectedTexture != null ? selectedTexture.getTextureName() : "";
 	}
 
 	public TextureHolder getTextureHolder() {

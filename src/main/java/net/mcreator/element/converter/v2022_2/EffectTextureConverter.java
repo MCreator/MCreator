@@ -25,7 +25,6 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.PotionEffect;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 
 public class EffectTextureConverter implements IConverter {
@@ -33,10 +32,9 @@ public class EffectTextureConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		PotionEffect effect = (PotionEffect) input;
 
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.icon), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.icon), TextureType.EFFECT));
+		FileIO.copyFile(
+				workspace.getFolderManager().getTextureFile(effect.icon.getFullTextureName(), TextureType.OTHER),
+				workspace.getFolderManager().getTextureFile(effect.icon.getFullTextureName(), TextureType.EFFECT));
 
 		return effect;
 	}

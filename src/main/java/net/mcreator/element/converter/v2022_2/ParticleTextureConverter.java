@@ -34,9 +34,10 @@ public class ParticleTextureConverter implements IConverter {
 		Particle effect = (Particle) input;
 
 		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.PARTICLE));
+				.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture.getFullTextureName()),
+						TextureType.OTHER), workspace.getFolderManager()
+				.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture.getFullTextureName()),
+						TextureType.PARTICLE));
 
 		return effect;
 	}

@@ -19,15 +19,14 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,7 +34,7 @@ import java.io.File;
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
 	public String effectName;
-	@TextureReference(TextureType.EFFECT) public String icon;
+	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
 	public Color color;
 	public boolean isInstant;
 	public boolean isBad;
@@ -53,15 +52,12 @@ import java.io.File;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(new ImageIcon(
-				getModElement().getWorkspace().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT)
-						.toString()).getImage());
+		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(icon.getImage(TextureType.EFFECT));
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT);
+				.getTextureFile(icon.getFullTextureName(), TextureType.EFFECT);
 		File newLocation = new File(
 				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
 				getModElement().getRegistryName() + ".png");

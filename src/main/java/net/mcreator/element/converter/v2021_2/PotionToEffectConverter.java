@@ -30,7 +30,6 @@ import net.mcreator.element.types.Potion;
 import net.mcreator.element.types.PotionEffect;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -84,10 +83,9 @@ public class PotionToEffectConverter implements IConverter {
 			// Pre-update for FV31 - new texture types
 			try {
 				FileIO.copyFile(workspace.getFolderManager()
-								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
+								.getTextureFile(potionEffect.icon.getFullTextureName(), TextureType.OTHER),
 						workspace.getFolderManager()
-								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
-										TextureType.EFFECT));
+								.getTextureFile(potionEffect.icon.getFullTextureName(), TextureType.EFFECT));
 			} catch (Exception e) {
 				LOG.warn("Failed to copy image for potion effect {}: {}", potionEffect.getModElement().getType(),
 						e.getMessage());

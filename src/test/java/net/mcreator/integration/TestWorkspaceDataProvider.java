@@ -1116,7 +1116,7 @@ public class TestWorkspaceDataProvider {
 			PotionEffect potionEffect = new PotionEffect(modElement);
 			potionEffect.effectName = modElement.getName() + " Effect Name";
 			potionEffect.color = Color.magenta;
-			potionEffect.icon = "effect1.png";
+			potionEffect.icon = new TextureHolder(modElement.getWorkspace(), "effect1.png");
 			potionEffect.isInstant = !_true;
 			potionEffect.isBad = _true;
 			potionEffect.isBenefitical = !_true;
@@ -1431,7 +1431,7 @@ public class TestWorkspaceDataProvider {
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
-			particle.texture = "particle1.png";
+			particle.texture = new TextureHolder(modElement.getWorkspace(), "particle1.png");
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
@@ -1598,8 +1598,10 @@ public class TestWorkspaceDataProvider {
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
 		livingEntity.isBoss = _true;
-		livingEntity.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		livingEntity.creativeTabs = emptyLists ?
+				List.of() :
+				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomItem(random,
 				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 		livingEntity.bossBarType = getRandomItem(random,
@@ -1765,8 +1767,10 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
-		tool.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		tool.creativeTabs = emptyLists ?
+				List.of() :
+				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
 		tool.blockDropsTier = getRandomString(random,
 				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
