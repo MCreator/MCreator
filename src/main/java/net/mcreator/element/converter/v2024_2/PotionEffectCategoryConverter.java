@@ -29,15 +29,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PotionEffectCategoryConverter implements IConverter {
-
 	private static final Logger LOG = LogManager.getLogger(PotionEffectCategoryConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+		PotionEffect potionEffect = (PotionEffect) input;
 		try {
 			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			if(input instanceof PotionEffect potion) {
+			if(potionEffect instanceof PotionEffect potion) {
 				if (definition.get("isBad").getAsBoolean()) {
 					potion.mobEffectCategory = "HARMFUL";
 				} else if (definition.get("isBenefitical").getAsBoolean()) {
@@ -47,10 +47,9 @@ public class PotionEffectCategoryConverter implements IConverter {
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to convert potion effect category", e);
+			LOG.warn("Failed to convert potion effect category of: {}", potionEffect.getModElement().getName());
 		}
-
-		return input;
+		return potionEffect;
 	}
 
 	@Override public int getVersionConvertingTo() {
