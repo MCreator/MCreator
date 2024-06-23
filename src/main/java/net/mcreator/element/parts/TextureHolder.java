@@ -91,7 +91,7 @@ import java.lang.reflect.Type;
 	}
 
 	public String getFullTextureName() {
-		return texture == null ? "" : texture;
+		return texture == null ? "" : FilenameUtils.removeExtension(texture);
 	}
 
 	@Override public String toString() {
