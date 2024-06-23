@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
 
 	// Private constructor to satisfy final fields
 	private TextureHolder(@Nullable String texture) {
-		this.texture = texture;
+		this.texture = FilenameUtils.removeExtension(texture);
 	}
 
 	public TextureHolder(Workspace workspace, @Nullable Texture textureObj) {
@@ -48,6 +48,14 @@ import java.lang.reflect.Type;
 		this.workspace = workspace;
 	}
 
+	/**
+	 * A way to "convert" a texture string to a TextureHolder object.
+	 * <p/>
+	 * We recommend omitting .png extension, but if provided, it will be removed.
+	 *
+	 * @param workspace Workspace the texture belongs to
+	 * @param texture   Texture name
+	 */
 	public TextureHolder(Workspace workspace, @Nullable String texture) {
 		this(texture);
 		this.workspace = workspace;
