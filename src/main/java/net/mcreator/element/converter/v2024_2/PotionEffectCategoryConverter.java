@@ -37,14 +37,12 @@ public class PotionEffectCategoryConverter implements IConverter {
 		try {
 			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			if(potionEffect instanceof PotionEffect potion) {
-				if (definition.get("isBad").getAsBoolean()) {
-					potion.mobEffectCategory = "HARMFUL";
-				} else if (definition.get("isBenefitical").getAsBoolean()) {
-					potion.mobEffectCategory = "BENEFICIAL";
-				} else {
-					potion.mobEffectCategory = "NEUTRAL";
-				}
+			if (definition.get("isBad").getAsBoolean()) {
+				potionEffect.mobEffectCategory = "HARMFUL";
+			} else if (definition.get("isBenefitical").getAsBoolean()) {
+				potionEffect.mobEffectCategory = "BENEFICIAL";
+			} else {
+				potionEffect.mobEffectCategory = "NEUTRAL";
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to convert potion effect category of: {}", potionEffect.getModElement().getName());
