@@ -1,11 +1,11 @@
 {
   "parent": "block/grass_block",
   "textures": {
-    "bottom": "${modid}:block/${data.texture}",
-    "top": "${modid}:block/${data.textureTop()}",
-    "side": "${modid}:block/${data.textureFront()}",
-    "overlay": "${modid}:block/${data.textureLeft()}",
-    "particle": "${modid}:block/${data.getParticleTexture()}"
+    "bottom": "${data.texture.format("%s:block/%s")}",
+    "top": "${data.textureTop().format("%s:block/%s")}",
+    "side": "${data.textureFront().format("%s:block/%s")}",
+    "overlay": "${data.textureLeft().format("%s:block/%s")}",
+    "particle": "${data.getParticleTexture().format("%s:block/%s")}"
   },
   "render_type": "${data.getRenderType()}"
 }

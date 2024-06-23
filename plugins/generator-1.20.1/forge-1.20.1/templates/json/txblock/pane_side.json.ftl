@@ -1,9 +1,9 @@
 {
     "parent": "block/template_glass_pane_side",
     "textures": {
-        <#if data.particleTexture?? && !data.particleTexture.isEmpty()>"particle": "${modid}:block/${data.particleTexture}",</#if>
-        "edge": "${modid}:block/${data.textureTop()}",
-        "pane": "${modid}:block/${data.texture}"
+        <#if data.particleTexture?? && !data.particleTexture.isEmpty()>"particle": "${data.particleTexture.format("%s:block/%s")}",</#if>
+        "edge": "${data.textureTop().format("%s:block/%s")}",
+        "pane": "${data.texture.format("%s:block/%s")}"
     },
     "render_type": "${data.getRenderType()}"
 }

@@ -102,6 +102,10 @@ import java.lang.reflect.Type;
 		return texture == null ? "" : texture;
 	}
 
+	public String format(String pattern) {
+		return pattern.formatted(namespace(), name());
+	}
+
 	@Override public String toString() {
 		return getFullTextureName();
 	}
