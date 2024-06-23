@@ -11,7 +11,7 @@
               </#if>
           </#if>
           "icon": {
-            ${mappedMCItemToItemObjectJSON(data.achievementIcon)}
+            ${mappedMCItemToItemObjectJSON(data.achievementIcon, "id")}
           },
           "title": {
             "translate": "advancements.${registryname}.title"
