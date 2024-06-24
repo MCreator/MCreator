@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber(value = {Dist.CLIENT}) public class ${name}Procedure {
-	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.RightClickEmpty event) {
+	@SubscribeEvent public static void onRightClick(PlayerInteractEvent.RightClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
