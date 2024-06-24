@@ -2,7 +2,11 @@
   "parent": "block/${var_model}",
   "textures": {
     "cross": "${data.textureBottom().format("%s:block/%s")}",
-    "particle": "${modid}:block/<#if data.particleTexture?? && !data.particleTexture.isEmpty()>${data.particleTexture}<#else>${data.textureBottom()}</#if>"
+    <#if data.particleTexture?has_content>
+    "particle": "${data.particleTexture.format("%s:block/%s")}"
+    <#else>
+    "particle": "${data.textureBottom().format("%s:block/%s")}"
+    </#if>
   },
   "render_type": "cutout"
 }

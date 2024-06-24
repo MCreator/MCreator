@@ -1,7 +1,7 @@
 {
     "parent": "block/${var_model}",
     "textures": {
-      <#if data.particleTexture?? && !data.particleTexture.isEmpty()>"particle": "${data.particleTexture.format("%s:block/%s")}",</#if>
+      <#if data.particleTexture?has_content>"particle": "${data.particleTexture.format("%s:block/%s")}",</#if>
       "bottom": "${data.texture.format("%s:block/%s")}",
       "top": "${data.textureTop().format("%s:block/%s")}",
       "side": "${data.textureFront().format("%s:block/%s")}"

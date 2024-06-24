@@ -1,6 +1,10 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "${modid}:<#if data.itemTexture?? && !data.itemTexture.isEmpty()>item/${data.itemTexture}<#else>block/${data.texture}</#if>"
+    <#if data.itemTexture?has_content>
+    "layer0": "${data.itemTexture.format("%s:item/%s")}"
+    <#else>
+    "layer0": "${data.texture.format("%s:block/%s")}"
+    </#if>
   }
 }

@@ -21,6 +21,11 @@ package net.mcreator.element.parts;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
+import freemarker.ext.beans.BeanModel;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.GenericObjectModel;
+import freemarker.ext.beans.StringModel;
+import freemarker.template.TemplateModel;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -30,6 +35,7 @@ import org.apache.commons.io.FilenameUtils;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.Type;
 
 @JsonAdapter(TextureHolder.GSONAdapter.class) public class TextureHolder implements IWorkspaceDependent {
@@ -65,6 +71,14 @@ import java.lang.reflect.Type;
 		return Texture.fromName(workspace, textureType, texture);
 	}
 
+	public TemplateModel toTemplateModel(BeansWrapper wrapper) {
+		return new GenericObjectModel(this, wrapper) {
+			@Override public boolean isEmpty() {
+				return TextureHolder.this.isEmpty();
+			}
+		};
+	}
+
 	public ImageIcon getImageIcon(TextureType textureType) {
 		Texture texture = toTexture(textureType);
 		if (texture == null)
@@ -86,7 +100,8 @@ import java.lang.reflect.Type;
 
 		if (texture.contains(":"))
 			return texture.split(":")[0];
-		return workspace.getWorkspaceSettings().getModID();
+		else
+			return workspace.getWorkspaceSettings().getModID();
 	}
 
 	public String name() {
@@ -95,7 +110,8 @@ import java.lang.reflect.Type;
 
 		if (texture.contains(":"))
 			return texture.split(":")[1];
-		return texture;
+		else
+			return texture;
 	}
 
 	public String getFullTextureName() {
