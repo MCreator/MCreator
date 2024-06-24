@@ -34,9 +34,9 @@
         				return;
         			<#assign dependenciesCode><#compress>
         				<@procedureDependenciesCode dependencies, {
-        				"x": "context.player().getPos().getX()",
-        				"y": "context.player().getPos().getY()",
-        				"z": "context.player().getPos().getZ()",
+        				"x": "context.player().getX()",
+        				"y": "context.player().getY()",
+        				"z": "context.player().getZ()",
         				"world": "context.player().level()",
         				"entity": "context.player()"
         				}/>

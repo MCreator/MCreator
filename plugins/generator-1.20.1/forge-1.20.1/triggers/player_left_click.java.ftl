@@ -29,9 +29,9 @@
         			return;
         		<#assign dependenciesCode><#compress>
         			<@procedureDependenciesCode dependencies, {
-        			"x": "context.getSender().getPos().getX()",
-        			"y": "context.getSender().getPos().getY()",
-        			"z": "context.getSender().getPos().getZ()",
+        			"x": "context.getSender().getX()",
+        			"y": "context.getSender().getY()",
+        			"z": "context.getSender().getZ()",
         			"world": "context.getSender().level()",
         			"entity": "context.getSender()"
         			}/>
