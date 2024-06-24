@@ -23,25 +23,25 @@
 		public static void buffer(${name}Message message, FriendlyByteBuf buffer) {}
 
 		public static void handler(${name}Message message, Supplier<NetworkEvent.Context> contextSupplier) {
-    		NetworkEvent.Context context = contextSupplier.get();
-    		context.enqueueWork(() -> {
-    			if (!context.getSender().level().hasChunkAt(context.getSender().blockPosition()))
-        			return;
-        		<#assign dependenciesCode><#compress>
-        			<@procedureDependenciesCode dependencies, {
-        			"x": "context.getSender().getX()",
-        			"y": "context.getSender().getY()",
-        			"z": "context.getSender().getZ()",
-        			"world": "context.getSender().level()",
-        			"entity": "context.getSender()"
-        			}/>
-        		</#compress></#assign>
-    			execute(${dependenciesCode});
-    		});
-    		context.setPacketHandled(true);
-    	}
+			NetworkEvent.Context context = contextSupplier.get();
+			context.enqueueWork(() -> {
+				if (!context.getSender().level().hasChunkAt(context.getSender().blockPosition()))
+					return;
+				<#assign dependenciesCode><#compress>
+					<@procedureDependenciesCode dependencies, {
+					"x": "context.getSender().getX()",
+					"y": "context.getSender().getY()",
+					"z": "context.getSender().getZ()",
+					"world": "context.getSender().level()",
+					"entity": "context.getSender()"
+					}/>
+				</#compress></#assign>
+				execute(${dependenciesCode});
+			});
+			context.setPacketHandled(true);
+		}
 
-    	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-    		${JavaModName}.addNetworkMessage(${name}Message.class, ${name}Message::buffer, ${name}Message::new, ${name}Message::handler);
-    	}
+		@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
+			${JavaModName}.addNetworkMessage(${name}Message.class, ${name}Message::buffer, ${name}Message::new, ${name}Message::handler);
+		}
 	}
