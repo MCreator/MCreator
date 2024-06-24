@@ -26,15 +26,24 @@ import net.mcreator.element.types.PotionEffect;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class EffectTextureConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger(EffectTextureConverter.class);
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		PotionEffect effect = (PotionEffect) input;
 
-		FileIO.copyFile(
-				workspace.getFolderManager().getTextureFile(effect.icon.getFullTextureName(), TextureType.OTHER),
-				workspace.getFolderManager().getTextureFile(effect.icon.getFullTextureName(), TextureType.EFFECT));
+		try {
+			FileIO.copyFile(effect.icon.toFile(TextureType.OTHER), effect.icon.toFile(TextureType.EFFECT));
+		} catch (IOException e) {
+			LOG.warn("Failed to copy effect texture", e);
+		}
 
 		return effect;
 	}

@@ -110,7 +110,7 @@ public class ReferencesFinder {
 					return ref != null && ref.value() == type;
 				}, (a, t) -> {
 					TextureReference ref = a.getAnnotation(TextureReference.class);
-					String textureName = t.getFullTextureName();
+					String textureName = t.getRawTextureName();
 					// Because TextureHolder isCustomObject true, we need to repeat validIf condition because it is skipped for custom objects
 					if ((ref != null && ref.value() == type) && !Set.of(ref.defaultValues()).contains(textureName) && textureName.indexOf(':') == -1) {
 						for (String template : ref.files()) {

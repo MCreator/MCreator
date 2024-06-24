@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -104,11 +105,11 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public Map<String, String> getItemTextureMap() {
-		Map<String, String> textureMap = new HashMap<>();
+	public Map<String, TextureHolder> getItemTextureMap() {
+		Map<String, TextureHolder> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getGeneratableElement() instanceof IItemWithTexture itemWithTexture) {
-				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture().getFullTextureName());
+				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture());
 			}
 		}
 		return textureMap;

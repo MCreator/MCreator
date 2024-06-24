@@ -30,6 +30,8 @@ import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -38,6 +40,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Particle extends GeneratableElement {
+
+	private static final Logger LOG = LogManager.getLogger(Particle.class);
 
 	@TextureReference(TextureType.PARTICLE) public TextureHolder texture;
 
@@ -66,44 +70,48 @@ public class Particle extends GeneratableElement {
 	}
 
 	public int getTextureTileCount() {
-		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(texture.getFullTextureName(), TextureType.PARTICLE);
-		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
-		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
-			if (original.getIconWidth() >= original.getIconHeight()
-					|| original.getIconHeight() % original.getIconWidth() != 0)
-				return 1;
-
-			return original.getIconHeight() / original.getIconWidth();
+		try {
+			ImageIcon original = new ImageIcon(texture.toFile(TextureType.PARTICLE).getAbsolutePath());
+			if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
+				if (original.getIconWidth() >= original.getIconHeight()
+						|| original.getIconHeight() % original.getIconWidth() != 0)
+					return 1;
+				return original.getIconHeight() / original.getIconWidth();
+			}
+		} catch (Exception e) {
+			LOG.error("Failed to get texture tile count", e);
 		}
 		return 1;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(texture.getFullTextureName(), TextureType.PARTICLE);
+		try {
+			File originalTextureFileLocation = texture.toFile(TextureType.PARTICLE);
 
-		ImageIcon original = new ImageIcon(originalTextureFileLocation.toString());
+			ImageIcon original = new ImageIcon(originalTextureFileLocation.getAbsolutePath());
 
-		if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
-			if (original.getIconWidth() >= original.getIconHeight()
-					|| original.getIconHeight() % original.getIconWidth() != 0) {
-				FileIO.copyFile(originalTextureFileLocation,
-						new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
-								getModElement().getRegistryName() + ".png"));
-			} else {
-				try {
-					TiledImageUtils tiu = new TiledImageUtils(ImageUtils.toBufferedImage(original.getImage()),
-							original.getIconWidth(), original.getIconWidth());
-					int tiles = getTextureTileCount();
-					for (int i = 1; i <= tiles; i++) {
-						ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
-								new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
-										getModElement().getRegistryName() + "_" + i + ".png"));
+			if (original.getImage() != null && original.getIconWidth() > 0 && original.getIconHeight() > 0) {
+				if (original.getIconWidth() >= original.getIconHeight()
+						|| original.getIconHeight() % original.getIconWidth() != 0) {
+					FileIO.copyFile(originalTextureFileLocation,
+							new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
+									getModElement().getRegistryName() + ".png"));
+				} else {
+					try {
+						TiledImageUtils tiu = new TiledImageUtils(ImageUtils.toBufferedImage(original.getImage()),
+								original.getIconWidth(), original.getIconWidth());
+						int tiles = getTextureTileCount();
+						for (int i = 1; i <= tiles; i++) {
+							ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
+									new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
+											getModElement().getRegistryName() + "_" + i + ".png"));
+						}
+					} catch (InvalidTileSizeException | IOException ignored) {
 					}
-				} catch (InvalidTileSizeException | IOException ignored) {
 				}
 			}
+		} catch (Exception e) {
+			LOG.error("Failed to generate particle texture files", e);
 		}
 	}
 

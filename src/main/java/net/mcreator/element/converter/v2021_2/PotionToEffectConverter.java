@@ -87,10 +87,8 @@ public class PotionToEffectConverter implements IConverter {
 
 			// Pre-update for FV31 - new texture types
 			try {
-				FileIO.copyFile(workspace.getFolderManager()
-								.getTextureFile(potionEffect.icon.getFullTextureName(), TextureType.OTHER),
-						workspace.getFolderManager()
-								.getTextureFile(potionEffect.icon.getFullTextureName(), TextureType.EFFECT));
+				FileIO.copyFile(potionEffect.icon.toFile(TextureType.OTHER),
+						potionEffect.icon.toFile(TextureType.EFFECT));
 			} catch (Exception e) {
 				LOG.warn("Failed to copy image for potion effect {}: {}", potionEffect.getModElement().getType(),
 						e.getMessage());

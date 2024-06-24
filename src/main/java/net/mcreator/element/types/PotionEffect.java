@@ -26,12 +26,16 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
+
+	private static final Logger LOG = LogManager.getLogger(PotionEffect.class);
 
 	public String effectName;
 	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
@@ -56,12 +60,14 @@ import java.io.File;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-				.getTextureFile(icon.getFullTextureName(), TextureType.EFFECT);
-		File newLocation = new File(
-				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
-				getModElement().getRegistryName() + ".png");
-		FileIO.copyFile(originalTextureFileLocation, newLocation);
+		try {
+			File newLocation = new File(
+					getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
+					getModElement().getRegistryName() + ".png");
+			FileIO.copyFile(icon.toFile(TextureType.EFFECT), newLocation);
+		} catch (Exception e) {
+			LOG.error("Failed to copy potion effect icon", e);
+		}
 	}
 
 	public boolean hasCustomRenderer() {

@@ -21,14 +21,13 @@ package net.mcreator.element.parts;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
-import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.GenericObjectModel;
-import freemarker.ext.beans.StringModel;
 import freemarker.template.TemplateModel;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 import org.apache.commons.io.FilenameUtils;
 
@@ -36,6 +35,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 @JsonAdapter(TextureHolder.GSONAdapter.class) public class TextureHolder implements IWorkspaceDependent {
@@ -69,6 +69,12 @@ import java.lang.reflect.Type;
 
 	public Texture toTexture(TextureType textureType) {
 		return Texture.fromName(workspace, textureType, texture);
+	}
+
+	public File toFile(TextureType textureType) throws IOException {
+		if (toTexture(textureType) instanceof CustomTexture customTexture)
+			return customTexture.getTextureFile();
+		throw new IOException("One can only obtain file from custom textures");
 	}
 
 	public TemplateModel toTemplateModel(BeansWrapper wrapper) {
@@ -114,8 +120,8 @@ import java.lang.reflect.Type;
 			return texture;
 	}
 
-	public String getFullTextureName() {
-		return texture == null ? "" : texture;
+	public String getRawTextureName() {
+		return isEmpty() ? "" : texture;
 	}
 
 	public String format(String pattern) {
@@ -123,7 +129,7 @@ import java.lang.reflect.Type;
 	}
 
 	@Override public String toString() {
-		return getFullTextureName();
+		return getRawTextureName();
 	}
 
 	@Override public void setWorkspace(@Nullable Workspace workspace) {
