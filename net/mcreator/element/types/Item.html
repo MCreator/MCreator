@@ -131,8 +131,8 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#animation" class="member-name-link">animation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#creativeTabs" class="member-name-link">creativeTabs</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#customModelName" class="member-name-link">customModelName</a></code></div>
@@ -311,14 +311,14 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateModElementPicture()" class="member-name-link">generateModElementPicture</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTab()" class="member-name-link">getCreativeTab</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabItems()" class="member-name-link">getCreativeTabItems</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabItems()" class="member-name-link">getCreativeTabItems</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">WARNING: Calls to this method are generally not thread safe.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabs()" class="member-name-link">getCreativeTabs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getItemModel()" class="member-name-link">getItemModel</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -426,9 +426,9 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 </section>
 </li>
 <li>
-<section class="detail" id="creativeTab">
-<h3>creativeTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></span>&nbsp;<span class="element-name">creativeTab</span></div>
+<section class="detail" id="creativeTabs">
+<h3>creativeTabs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a>&gt;</span>&nbsp;<span class="element-name">creativeTabs</span></div>
 </section>
 </li>
 <li>
@@ -727,12 +727,12 @@ implements <a href="interfaces/IItem.html" title="interface in net.mcreator.elem
 </section>
 </li>
 <li>
-<section class="detail" id="getCreativeTab()">
-<h3>getCreativeTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a></span>&nbsp;<span class="element-name">getCreativeTab</span>()</div>
+<section class="detail" id="getCreativeTabs()">
+<h3>getCreativeTabs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a>&gt;</span>&nbsp;<span class="element-name">getCreativeTabs</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="interfaces/ITabContainedElement.html#getCreativeTab()">getCreativeTab</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
+<dd><code><a href="interfaces/ITabContainedElement.html#getCreativeTabs()">getCreativeTabs</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
 </dl>
 </section>
 </li>
