@@ -3,11 +3,11 @@
 	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getPos().getX()",
-			"y": "event.getPos().getY()",
-			"z": "event.getPos().getZ()",
-			"world": "event.getLevel()",
-			"entity": "event.getEntity()"
+				"x": "event.getPos().getX()",
+				"y": "event.getPos().getY()",
+				"z": "event.getPos().getZ()",
+				"world": "event.getLevel()",
+				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
 		PacketDistributor.sendToServer(new ${name}Message());
@@ -34,11 +34,11 @@
 						return;
 					<#assign dependenciesCode><#compress>
 						<@procedureDependenciesCode dependencies, {
-						"x": "context.player().getX()",
-						"y": "context.player().getY()",
-						"z": "context.player().getZ()",
-						"world": "context.player().level()",
-						"entity": "context.player()"
+							"x": "context.player().getX()",
+							"y": "context.player().getY()",
+							"z": "context.player().getZ()",
+							"world": "context.player().level()",
+							"entity": "context.player()"
 						}/>
 					</#compress></#assign>
 					execute(${dependenciesCode});

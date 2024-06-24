@@ -3,11 +3,11 @@
 	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getPos().getX()",
-			"y": "event.getPos().getY()",
-			"z": "event.getPos().getZ()",
-			"world": "event.getLevel()",
-			"entity": "event.getEntity()"
+				"x": "event.getPos().getX()",
+				"y": "event.getPos().getY()",
+				"z": "event.getPos().getZ()",
+				"world": "event.getLevel()",
+				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
 		${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Message());
@@ -29,11 +29,11 @@
 					return;
 				<#assign dependenciesCode><#compress>
 					<@procedureDependenciesCode dependencies, {
-					"x": "context.getSender().getX()",
-					"y": "context.getSender().getY()",
-					"z": "context.getSender().getZ()",
-					"world": "context.getSender().level()",
-					"entity": "context.getSender()"
+						"x": "context.getSender().getX()",
+						"y": "context.getSender().getY()",
+						"z": "context.getSender().getZ()",
+						"world": "context.getSender().level()",
+						"entity": "context.getSender()"
 					}/>
 				</#compress></#assign>
 				execute(${dependenciesCode});
