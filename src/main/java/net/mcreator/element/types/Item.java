@@ -62,7 +62,7 @@ import java.util.*;
 
 	public String name;
 	public String rarity;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;
@@ -120,6 +120,8 @@ import java.util.*;
 	public Item(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.customProperties = new LinkedHashMap<>();
 		this.states = new ArrayList<>();
 
@@ -145,8 +147,8 @@ import java.util.*;
 		return new HashMap<>();
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public String getTexture() {
