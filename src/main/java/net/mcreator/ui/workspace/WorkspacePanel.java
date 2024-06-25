@@ -61,6 +61,7 @@ import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
@@ -85,21 +86,11 @@ import java.util.stream.Collectors;
 
 	public final JSelectableList<IElement> list;
 
-	private final CardLayout cardLayout = new CardLayout() {
-		@Override public void show(Container container, String s) {
-			super.show(container, s);
-			currentTab = s;
-			search.repaint();
-		}
-	};
-	private final JPanel panels = new JPanel(cardLayout);
-
-	private final JPanel rotatablePanel = new JPanel();
 	private final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
-	private final List<JButton> verticalTabs = new ArrayList<>();
+
 	public final WorkspacePanelResources resourcesPan;
 
-	private String currentTab = "mods";
+	@Nullable private AbstractWorkspacePanel currentTabPanel = null;
 
 	private final MCreator mcreator;
 
@@ -137,7 +128,7 @@ import java.util.stream.Collectors;
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_date"));
-	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
+	public final JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 
 	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
@@ -164,6 +155,8 @@ import java.util.stream.Collectors;
 		}
 	};
 
+	private final JTabbedPane subTabs;
+
 	public WorkspacePanel(final MCreator mcreator) {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
@@ -181,8 +174,6 @@ import java.util.stream.Collectors;
 		});
 
 		JPopupMenu contextMenu = new JPopupMenu();
-
-		panels.setOpaque(false);
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -288,10 +279,14 @@ import java.util.stream.Collectors;
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-		sp.setBorder(null);
+		sp.setBorder(BorderFactory.createEmptyBorder());
 
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
-		modElementsPanel.setOpaque(false);
+		if (mcreator.getMainPanel() instanceof ImagePanel) {
+			modElementsPanel.setOpaque(false);
+		} else {
+			modElementsPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
+		}
 
 		JPanel slo = new JPanel(new BorderLayout(0, 3));
 
@@ -305,7 +300,7 @@ import java.util.stream.Collectors;
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					if (!currentTab.equals("mods")) {
+					if (currentTabPanel instanceof WorkspacePanelMods) {
 						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
 					} else {
 						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 19);
@@ -639,13 +634,38 @@ import java.util.stream.Collectors;
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
 
-		slo.add("Center", panels);
+		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor(Theme.current().getAltBackgroundColor());
+				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.dispose();
+				super.paintComponent(g);
+			}
+		};
+		subTabs.setOpaque(false);
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
+		subTabs.addChangeListener(e -> {
+			if (subTabs.getComponentAt(subTabs.getSelectedIndex()) instanceof AbstractWorkspacePanel tabComponent) {
+				if (tabComponent.canSwitchToSection()) {
+					currentTabPanel = tabComponent;
+				} else {
+					// Switch to the last tab that can be switched to
+					switchToVerticalTab(currentTabPanel);
+				}
+			}
 
-		slo.setBorder(null);
+			search.repaint();
+			reloadElementsInCurrentTab();
+			modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
+			subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR, !(currentTabPanel instanceof WorkspacePanelMods));
+		});
 
-		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
-		rotatablePanel.setBackground(Theme.current().getBackgroundColor());
-		slo.add("West", rotatablePanel);
+		slo.add("Center", subTabs);
+
+		slo.setBorder(BorderFactory.createEmptyBorder());
 
 		add("Center", slo);
 
@@ -718,14 +738,20 @@ import java.util.stream.Collectors;
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
-		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
-			@Override public void paintComponent(Graphics g) {
-				g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
-				g.fillRect(0, 0, getWidth(), getHeight());
-				super.paintComponent(g);
-			}
-		};
-		toolp.setOpaque(false);
+		JPanel toolp;
+		if (mcreator.getMainPanel() instanceof ImagePanel) {
+			toolp = new JPanel(new BorderLayout(0, 0)) {
+				@Override public void paintComponent(Graphics g) {
+					g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
+					g.fillRect(0, 0, getWidth(), getHeight());
+					super.paintComponent(g);
+				}
+			};
+			toolp.setOpaque(false);
+		} else {
+			toolp = new JPanel(new BorderLayout(0, 0));
+		}
+
 		toolp.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
 		toolp.add("North", pne);
 
@@ -833,22 +859,10 @@ import java.util.stream.Collectors;
 		if (getVerticalTab(id) != null)
 			return;
 
-		panels.add(section, id);
 		sectionTabs.put(id, section);
 
 		if (section.isSupportedInWorkspace()) {
-			VerticalTabButton tab = new VerticalTabButton(name);
-			tab.setName(id);
-			tab.setContentAreaFilled(false);
-			tab.setMargin(new Insets(7, 1, 7, 2));
-			tab.setBorderPainted(false);
-			tab.setFocusPainted(false);
-			tab.setOpaque(true);
-			tab.setBackground(Theme.current().getBackgroundColor());
-			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			tab.addActionListener(e -> switchToVerticalTab(id));
-			verticalTabs.add(tab);
-			rotatablePanel.add(tab);
+			subTabs.addTab(name, section);
 		}
 	}
 
@@ -856,22 +870,27 @@ import java.util.stream.Collectors;
 		return sectionTabs.get(id);
 	}
 
-	public void switchToVerticalTab(String id) {
-		if (sectionTabs.get(id).canSwitchToSection()) {
-			for (JButton btt : verticalTabs) {
-				btt.setBackground(btt.getName().equals(id) ?
-						Theme.current().getAltBackgroundColor() :
-						Theme.current().getBackgroundColor());
+	public void switchToVerticalTab(AbstractWorkspacePanel panel) {
+		if (panel != null && panel.canSwitchToSection()) {
+			// Find the tab to switch to
+			for (int i = 0; i < subTabs.getTabCount(); i++) {
+				if (subTabs.getComponentAt(i) == panel) {
+					subTabs.setSelectedIndex(i);
+					break;
+				}
 			}
-			cardLayout.show(panels, id);
-			reloadElementsInCurrentTab();
-			modElementsBar.setVisible(id.equals("mods"));
 		}
+	}
+
+	public void switchToVerticalTab(String id) {
+		switchToVerticalTab(sectionTabs.get(id));
 	}
 
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
+
+		list.cancelDND();
 
 		sectionTabs.get("mods").reloadElements();
 
@@ -905,7 +924,8 @@ import java.util.stream.Collectors;
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get() == HiddenSection.IconSize.TILES) {
+		switch (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()) {
+		case TILES -> {
 			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
@@ -913,8 +933,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.tiles"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.LARGE) {
+		}
+		case LARGE -> {
 			list.setCellRenderer(new LargeIconModListRender());
 			list.setFixedCellHeight(97);
 			list.setFixedCellWidth(90);
@@ -922,8 +942,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.large"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.MEDIUM) {
+		}
+		case MEDIUM -> {
 			list.setCellRenderer(new MediumIconModListRender());
 			list.setFixedCellHeight(52);
 			list.setFixedCellWidth(287);
@@ -931,8 +951,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.medium"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.SMALL) {
+		}
+		case SMALL -> {
 			list.setCellRenderer(new SmallIconModListRender(true));
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
@@ -940,8 +960,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.small"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.LIST) {
+		}
+		case LIST -> {
 			list.setCellRenderer(new ListIconModListRender());
 			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
@@ -949,8 +969,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.list"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.DETAILS) {
+		}
+		case DETAILS -> {
 			list.setCellRenderer(new DetailsIconModListRender());
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
@@ -958,6 +978,7 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.details"));
 			view.setText(L10N.t("workspace.elements.list.details"));
 			detailsbar.setVisible(true);
+		}
 		}
 	}
 
@@ -1261,7 +1282,8 @@ import java.util.stream.Collectors;
 	}
 
 	public synchronized void reloadElementsInCurrentTab() {
-		sectionTabs.get(currentTab).reloadElements();
+		if (currentTabPanel != null)
+			currentTabPanel.reloadElements();
 	}
 
 	public MCreator getMCreator() {
@@ -1269,8 +1291,8 @@ import java.util.stream.Collectors;
 	}
 
 	private class FilterModel extends DefaultListModel<IElement> {
-		ArrayList<IElement> items;
-		ArrayList<IElement> filterItems;
+		final ArrayList<IElement> items;
+		final ArrayList<IElement> filterItems;
 
 		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 

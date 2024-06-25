@@ -57,7 +57,7 @@ public class AdvancementTriggerInverter implements IConverter {
 		try {
 			advancement.triggerxml = fixXML(advancement.triggerxml);
 		} catch (Exception e) {
-			LOG.warn("Failed to convert advancement " + input.getModElement().getName(), e);
+			LOG.warn("Failed to convert advancement {}", input.getModElement().getName(), e);
 		}
 		return advancement;
 	}

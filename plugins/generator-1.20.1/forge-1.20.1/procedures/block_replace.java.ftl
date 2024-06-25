@@ -1,13 +1,13 @@
 <#include "mcelements.ftl">
 <#include "mcitems.ftl">
-<#if field$nbt?lower_case == "false" && field$state?lower_case == "false">
+<#if field$nbt == "FALSE" && field$state == "FALSE">
 world.setBlock(${toBlockPos(input$x,input$y,input$z)}, ${mappedBlockToBlockStateCode(input$block)},3);
 <#else>
 {
 	BlockPos _bp = ${toBlockPos(input$x,input$y,input$z)};
 	BlockState _bs = ${mappedBlockToBlockStateCode(input$block)};
 
-	<#if field$state?lower_case == "true">
+	<#if field$state == "TRUE">
 	BlockState _bso = world.getBlockState(_bp);
 	for(Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
 		Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
@@ -18,7 +18,7 @@ world.setBlock(${toBlockPos(input$x,input$y,input$z)}, ${mappedBlockToBlockState
 	}
 	</#if>
 
-	<#if field$nbt?lower_case == "true">
+	<#if field$nbt == "TRUE">
 	BlockEntity _be = world.getBlockEntity(_bp);
 	CompoundTag _bnbt = null;
 	if(_be != null) {
@@ -29,7 +29,7 @@ world.setBlock(${toBlockPos(input$x,input$y,input$z)}, ${mappedBlockToBlockState
 
 	world.setBlock(_bp, _bs, 3);
 
-	<#if field$nbt?lower_case == "true">
+	<#if field$nbt == "TRUE">
 	if(_bnbt != null) {
 		_be = world.getBlockEntity(_bp);
 		if(_be != null) {

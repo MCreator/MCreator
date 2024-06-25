@@ -37,14 +37,12 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -59,17 +57,20 @@ import java.util.Map;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public TabEntry creativeTab;
-	public int harvestLevel;
+	public List<TabEntry> creativeTabs;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
 	public double damageVsEntity;
 	public int usageCount;
-	@ModElementReference public List<MItemBlock> blocksAffected;
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
+
+	public String blockDropsTier;
+	public Procedure additionalDropCondition;
+
+	@ModElementReference public List<MItemBlock> blocksAffected;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -90,14 +91,18 @@ import java.util.Map;
 	public Tool(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.attackSpeed = 2.8;
 
 		this.blockingModelName = "Normal blocking";
+
+		this.blockDropsTier = "WOOD";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
 	@Override public Model getItemModel() {
@@ -149,8 +154,8 @@ import java.util.Map;
 		}
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public String getTexture() {

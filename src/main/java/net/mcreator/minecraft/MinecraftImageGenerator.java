@@ -25,30 +25,21 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageTransformUtil;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 public class MinecraftImageGenerator {
-
-	private static final Logger LOG = LogManager.getLogger("MC Img Gen");
 
 	public static BufferedImage generateBackground(int width, int height) {
 		if (height < 10)
@@ -323,11 +314,10 @@ public class MinecraftImageGenerator {
 		 * @param template Template of the recipe.
 		 * @param input    Input of the recipe.
 		 * @param addition Addition of the recipe.
-		 * @param result   Result of the recipe.
 		 * @return Returns the generated image.
 		 */
 		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock template,
-				MItemBlock input, MItemBlock addition, MItemBlock result) {
+				MItemBlock input, MItemBlock addition) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			int offsetY = 9;
 			Graphics2D graphics2D = icon.createGraphics();
@@ -694,14 +684,11 @@ public class MinecraftImageGenerator {
 		 * @param portalTexture      <p>This texture is used for portal's inner filler.</p>
 		 * @param triggerTexture     <p>This texture is used for portal's igniter texture above portal.</p>
 		 * @param portalFrameTexture <p>The item provided is used to calculate it's average color for portal's frame.</p>
-		 * @param isIgniterEnabled   <p>Wether the portal's igniter is enabled or not.</p>
+		 * @param isIgniterEnabled   <p>Whether the portal's igniter is enabled or not.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateDimensionPreviewPicture(Workspace workspace, File portalTexture,
-				File triggerTexture, MItemBlock portalFrameTexture, boolean isIgniterEnabled) {
-			if (!portalTexture.isFile())
-				return null;
-
+		public static BufferedImage generateDimensionPreviewPicture(Workspace workspace, Image portalTexture,
+				Image triggerTexture, MItemBlock portalFrameTexture, boolean isIgniterEnabled) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setColor(new Color(255, 255, 255, 180));
@@ -716,58 +703,19 @@ public class MinecraftImageGenerator {
 			graphics2D.fillRect(8, 0, 12, 5);
 			graphics2D.fillRect(8, 23, 12, 5);
 
-			try {
-				Image tex = ImageUtils.changeSaturation(
-						new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(portalTexture))), 0.1f).getImage();
-				graphics2D.drawImage(tex, 8, 5, 6, 6, null);
-				graphics2D.drawImage(tex, 14, 5, 6, 6, null);
-				graphics2D.drawImage(tex, 8, 11, 6, 6, null);
-				graphics2D.drawImage(tex, 14, 11, 6, 6, null);
-				graphics2D.drawImage(tex, 8, 17, 6, 6, null);
-				graphics2D.drawImage(tex, 14, 17, 6, 6, null);
+			Image tex = ImageUtils.changeSaturation(
+					new ImageIcon(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(portalTexture))), 0.1f).getImage();
+			graphics2D.drawImage(tex, 8, 5, 6, 6, null);
+			graphics2D.drawImage(tex, 14, 5, 6, 6, null);
+			graphics2D.drawImage(tex, 8, 11, 6, 6, null);
+			graphics2D.drawImage(tex, 14, 11, 6, 6, null);
+			graphics2D.drawImage(tex, 8, 17, 6, 6, null);
+			graphics2D.drawImage(tex, 14, 17, 6, 6, null);
 
-				if (isIgniterEnabled) {
-					BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
-					graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
-				}
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+			if (isIgniterEnabled) {
+				BufferedImage igniter = ImageUtils.autoCropTile(ImageUtils.toBufferedImage(triggerTexture));
+				graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
 			}
-
-			graphics2D.dispose();
-			return icon;
-		}
-
-		/**
-		 * <p>This method generates fuel images.</p>
-		 *
-		 * @param fuel <p>This texture is used as icon of the fuel.</p>
-		 * @return <p>Returns generated image.</p>
-		 */
-		public static BufferedImage generateFuelPreviewPicture(Workspace workspace, MItemBlock fuel) {
-			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D graphics2D = icon.createGraphics();
-			int zamik = -7;
-
-			graphics2D.setPaint(new GradientPaint(15, 17 + zamik, new Color(255, 179, 31, 180), 14, 10 + zamik,
-					new Color(255, 52, 25, 180)));
-
-			graphics2D.drawLine(11, 10 + zamik, 11, 13 + zamik);
-			graphics2D.drawLine(10, 14 + zamik, 10, 15 + zamik);
-			graphics2D.drawLine(11, 16 + zamik, 14, 13 + zamik);
-			graphics2D.drawLine(12, 17 + zamik, 12, 17 + zamik);
-			graphics2D.drawLine(13, 16 + zamik, 14, 16 + zamik);
-			graphics2D.drawLine(14, 17 + zamik, 15, 17 + zamik);
-			graphics2D.drawLine(14, 12 + zamik, 14, 11 + zamik);
-			graphics2D.drawLine(13, 10 + zamik, 13, 10 + zamik);
-			graphics2D.drawLine(16, 16 + zamik, 16, 16 + zamik);
-			graphics2D.drawLine(16, 15 + zamik, 15, 14 + zamik);
-			graphics2D.drawLine(17, 14 + zamik, 17, 13 + zamik);
-			graphics2D.drawLine(16, 12 + zamik, 16, 11 + zamik);
-			graphics2D.drawLine(17, 10 + zamik, 17, 10 + zamik);
-
-			graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-					MCItem.getBlockIconBasedOnName(workspace, fuel.getUnmappedValue()).getImage())), 10), 9, 15, null);
 
 			graphics2D.dispose();
 			return icon;
@@ -779,53 +727,47 @@ public class MinecraftImageGenerator {
 		 * @param armorPieces <p>These textures are used to assemble the armor image.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static BufferedImage generateArmorPreviewPicture(ArrayList<File> armorPieces) {
+		public static BufferedImage generateArmorPreviewPicture(List<Image> armorPieces) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
-			try {
-				switch (armorPieces.size()) {
-				case 1:
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.getFirst())), 28), 0, 0,
-							null);
-					break;
-				case 2:
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 7,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 7,
-							null);
-					break;
-				case 3:
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 7, 0,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 0, 14,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 14, 14,
-							null);
-					break;
-				case 4:
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 14), 0, 0,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(1))), 14), 14, 0,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(2))), 14), 0, 14,
-							null);
-					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(3))), 14), 14, 14,
-							null);
-					break;
-				}
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+			switch (armorPieces.size()) {
+			case 1 -> graphics2D.drawImage(
+					ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.getFirst())),
+							28), 0, 0, null);
+			case 2 -> {
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(0))),
+								14), 0, 7, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(1))),
+								14), 14, 7, null);
+			}
+			case 3 -> {
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(0))),
+								14), 7, 0, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(1))),
+								14), 0, 14, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(2))),
+								14), 14, 14, null);
+			}
+			case 4 -> {
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(0))),
+								14), 0, 0, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(1))),
+								14), 14, 0, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(2))),
+								14), 0, 14, null);
+				graphics2D.drawImage(
+						ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(armorPieces.get(3))),
+								14), 14, 14, null);
+			}
 			}
 
 			graphics2D.dispose();
@@ -1242,15 +1184,12 @@ public class MinecraftImageGenerator {
 		 * @param hasSpawnEgg       Toggle spawn egg rendering.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateMobPreviewPicture(Workspace workspace, String mobModelTexture,
-				Color spawnEggBaseColor, Color spawnEggDotColor, boolean hasSpawnEgg) {
+		public static BufferedImage generateMobPreviewPicture(Image mobModelTexture, Color spawnEggBaseColor,
+				Color spawnEggDotColor, boolean hasSpawnEgg) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
-			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(new ImageIcon(
-					workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
-							.getAbsolutePath()).getImage()));
+			Color textureColor = ImageUtils.getAverageColor(ImageUtils.toBufferedImage(mobModelTexture));
 
 			graphics2D.drawImage(
 					ImageUtils.colorize(UIRES.get("mod_preview_bases.entity_base"), textureColor, false).getImage(), 0,
@@ -1283,21 +1222,13 @@ public class MinecraftImageGenerator {
 		 * @param height  Painting's height.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generatePaintingPreviewPicture(File texture, int width, int height) {
-			if (!texture.isFile())
-				return null;
+		public static BufferedImage generatePaintingPreviewPicture(Image texture, int width, int height) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
-
-			try {
-				Image tex = new ImageIcon(ImageUtils.autoCropTile(ImageIO.read(texture))).getImage();
-				double maxdim = Math.max(width, height);
-				int drawWidth = (int) ((width / maxdim) * 28), drawHeight = (int) ((height / maxdim) * 28);
-				graphics2D.drawImage(tex, 14 - drawWidth / 2, 14 - drawHeight / 2, drawWidth, drawHeight, null);
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-
+			Image tex = new ImageIcon(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(texture))).getImage();
+			double maxdim = Math.max(width, height);
+			int drawWidth = (int) ((width / maxdim) * 28), drawHeight = (int) ((height / maxdim) * 28);
+			graphics2D.drawImage(tex, 14 - drawWidth / 2, 14 - drawHeight / 2, drawWidth, drawHeight, null);
 			graphics2D.dispose();
 			return icon;
 		}
@@ -1391,35 +1322,31 @@ public class MinecraftImageGenerator {
 		 * @param tiled   If the texture is tiled.
 		 * @return Returns generated image.
 		 */
-		public static BufferedImage generateParticlePreviewPicture(File texture, boolean tiled, String randomSeed) {
+		public static BufferedImage generateParticlePreviewPicture(Image texture, boolean tiled, String randomSeed) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics2D = icon.createGraphics();
 
-			double maxdim = -1;
-			double width = -1, height = -1;
+			double width, height, maxdim;
 			Image tex = null;
 			ArrayList<Image> rantex = new ArrayList<>();
-			try {
-				if (tiled) {
-					BufferedImage readImage = ImageIO.read(texture);
-					Random random = new Random(randomSeed.hashCode());
-					rantex.add(ImageUtils.randomTile(readImage, random));
-					rantex.add(ImageUtils.randomTile(readImage, random));
-					rantex.add(ImageUtils.randomTile(readImage, random));
-					width = Math.min(readImage.getWidth(), readImage.getHeight());
-					height = width;
-					maxdim = width;
-				} else {
-					tex = new ImageIcon(ImageIO.read(texture)).getImage();
-					width = tex.getWidth(null);
-					height = tex.getHeight(null);
-					maxdim = Math.max(width, height);
-				}
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+			if (tiled) {
+				BufferedImage readImage = ImageUtils.toBufferedImage(texture);
+				Random random = new Random(randomSeed.hashCode());
+				rantex.add(ImageUtils.randomTile(readImage, random));
+				rantex.add(ImageUtils.randomTile(readImage, random));
+				rantex.add(ImageUtils.randomTile(readImage, random));
+				width = Math.min(readImage.getWidth(), readImage.getHeight());
+				//noinspection SuspiciousNameCombination
+				height = width;
+				maxdim = width;
+			} else {
+				tex = texture;
+				width = tex.getWidth(null);
+				height = tex.getHeight(null);
+				maxdim = Math.max(width, height);
 			}
 
-			if ((maxdim > 0 & width > 0 & height > 0) & (tex != null || rantex.size() > 2)) {
+			if (maxdim > 0 && width > 0 && height > 0) {
 				Image tex1, tex2, tex3;
 				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
 				if (tex != null) {
@@ -1472,4 +1399,5 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 	}
+
 }

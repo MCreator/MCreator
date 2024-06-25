@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -29,6 +30,8 @@ import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -45,7 +48,7 @@ public class Particle extends GeneratableElement {
 
 	public double width;
 	public double height;
-	public double scale;
+	public NumberProcedure scale;
 	public double speedFactor;
 	public double gravity;
 	public int maxAge;
@@ -107,9 +110,9 @@ public class Particle extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(getModElement().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.PARTICLE),
-				getTextureTileCount() > 1, getModElement().getName());
+		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(
+				Texture.getImage(getModElement().getWorkspace(), TextureType.PARTICLE,
+						FilenameUtils.removeExtension(texture)), getTextureTileCount() > 1, getModElement().getName());
 	}
 
 }

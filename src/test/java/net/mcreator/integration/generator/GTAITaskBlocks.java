@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -84,8 +83,7 @@ public class GTAITaskBlocks {
 				workspace.getGenerator().generateElement(livingentity, true);
 				workspace.getModElementManager().storeModElement(livingentity);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating AI task block: " + aiTask.getMachineName());
+				fail("[" + generatorName + "] Failed generating AI task block: " + aiTask.getMachineName(), t);
 			}
 		}
 

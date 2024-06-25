@@ -42,6 +42,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
+import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -61,7 +62,7 @@ import java.util.*;
 
 	public String name;
 	public String rarity;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;
@@ -98,6 +99,7 @@ import java.util.*;
 	// Ranged properties
 	public boolean enableRanged;
 	public boolean shootConstantly;
+	public boolean rangedItemChargesPower;
 	public ProjectileEntry projectile;
 	public Procedure onRangedItemUsed;
 	public Procedure rangedUseCondition;
@@ -118,6 +120,8 @@ import java.util.*;
 	public Item(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.customProperties = new LinkedHashMap<>();
 		this.states = new ArrayList<>();
 
@@ -129,8 +133,8 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(Texture.getImage(getModElement().getWorkspace(), TextureType.ITEM, texture),
+				32);
 	}
 
 	@Override public Model getItemModel() {
@@ -143,8 +147,8 @@ import java.util.*;
 		return new HashMap<>();
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public String getTexture() {

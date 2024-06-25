@@ -1,0 +1,1 @@
+Este parámetro controla el número de arbustos muertos en un chunk del bioma

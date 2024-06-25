@@ -37,6 +37,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -68,10 +69,10 @@ public class WYSIWYGEditor extends JPanel {
 	}};
 	//@formatter:on
 
-	public WYSIWYG editor = new WYSIWYG(this);
+	public final WYSIWYG editor = new WYSIWYG(this);
 
-	public ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
-	public JList<GUIComponent> list = new JList<>(components);
+	public final ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
+	public final JList<GUIComponent> list = new JList<>(components);
 
 	private final JButton moveComponent = new JButton(UIRES.get("18px.move"));
 	private final JButton editComponent = new JButton(UIRES.get("18px.edit"));
@@ -79,35 +80,38 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
 
-	public JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
-	public JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
+	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
+	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
 
-	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
-	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
-	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
+	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
 	private boolean opening = false;
 
-	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
-	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
+	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
+	public final JComboBox<String> priority = new JComboBox<>(
+			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
-	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
+	public TextureComboBox overlayBaseTexture;
 
-	public MCreator mcreator;
+	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(
+			ElementUtil.getDataListAsStringArray("screens"));
 
-	public JPanel ovst = new JPanel();
+	public final MCreator mcreator;
 
-	public JPanel sidebar = new JPanel(new BorderLayout(0, 0));
+	public final JPanel ovst = new JPanel();
+
+	public final JPanel sidebar = new JPanel(new BorderLayout(0, 0));
 
 	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 
@@ -121,6 +125,8 @@ public class WYSIWYGEditor extends JPanel {
 		this.isNotOverlayType = isNotOverlayType;
 
 		editor.isNotOverlayType = isNotOverlayType;
+
+		overlayBaseTexture = new TextureComboBox(mcreator, TextureType.SCREEN);
 
 		spa1.setPreferredSize(new Dimension(60, 24));
 		spa2.setPreferredSize(new Dimension(60, 24));
@@ -373,8 +379,7 @@ public class WYSIWYGEditor extends JPanel {
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					Theme.current().getForegroundColor()));
 
-			overlayBaseTexture.addActionListener(e -> editor.repaint());
-			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
+			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
 
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/overlay_target"),
 					L10N.label("elementgui.gui.overlay_target")));
@@ -384,21 +389,9 @@ public class WYSIWYGEditor extends JPanel {
 					L10N.label("elementgui.gui.rendering_priority")));
 			ovst2.add(priority);
 
-			JButton importScreenTexture = new JButton(UIRES.get("18px.add"));
-			importScreenTexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
-			importScreenTexture.setOpaque(false);
-			importScreenTexture.setMargin(new Insets(0, 0, 0, 0));
-			importScreenTexture.addActionListener(e -> {
-				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN);
-				overlayBaseTexture.removeAllItems();
-				overlayBaseTexture.addItem("");
-				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN)
-						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
-			});
-
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
 					L10N.label("elementgui.gui.overlay_base_texture")));
-			ovst2.add(PanelUtils.centerAndEastElement(overlayBaseTexture, importScreenTexture));
+			ovst2.add(overlayBaseTexture);
 
 			ovst.add(ovst2);
 			ovst.add(new JEmptyBox(2, 2));

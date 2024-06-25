@@ -38,13 +38,11 @@ public class RSTAIcons {
 	private static final Map<Icon, Icon> lookup_cache = new IdentityHashMap<>();
 
 	public static Icon themeRSTAIcon(Icon icon) {
-		if (icon instanceof DecoratableIcon decoratableIcon) {
-			return RSTAIcons.rstaIconToThemeIcon(decoratableIcon);
-		} else if (icon instanceof ImageIcon imageIcon) {
-			return RSTAIcons.rstaIconToThemeIcon(imageIcon);
-		}
-
-		return icon;
+		return switch (icon) {
+			case DecoratableIcon decoratableIcon -> RSTAIcons.rstaIconToThemeIcon(decoratableIcon);
+			case ImageIcon imageIcon -> RSTAIcons.rstaIconToThemeIcon(imageIcon);
+			case null, default -> icon;
+		};
 	}
 
 	public static Icon rstaIconToThemeIcon(ImageIcon imageIcon) {
@@ -67,14 +65,11 @@ public class RSTAIcons {
 				mainIconFiled.setAccessible(true);
 				Icon mainIcon = (Icon) mainIconFiled.get(key);
 
-				DecoratableIcon newIcon;
-				if (mainIcon instanceof DecoratableIcon decoratableIcon) {
-					newIcon = new DecoratableIcon(rstaIconToThemeIcon(decoratableIcon));
-				} else if (mainIcon instanceof ImageIcon imageIcon) {
-					newIcon = new DecoratableIcon(rstaIconToThemeIcon(imageIcon));
-				} else {
-					newIcon = new DecoratableIcon(mainIcon);
-				}
+				DecoratableIcon newIcon = switch (mainIcon) {
+					case DecoratableIcon decoratableIcon -> new DecoratableIcon(rstaIconToThemeIcon(decoratableIcon));
+					case ImageIcon imageIcon -> new DecoratableIcon(rstaIconToThemeIcon(imageIcon));
+					default -> new DecoratableIcon(mainIcon);
+				};
 
 				Field decorationsFiled = decoratableIconClass.getDeclaredField("decorations");
 				decorationsFiled.setAccessible(true);
@@ -94,7 +89,7 @@ public class RSTAIcons {
 
 				return newIcon;
 			} catch (Exception e) {
-				LOG.error("Failed to load icon: " + key, e);
+				LOG.error("Failed to load icon: {}", key, e);
 				return null;
 			}
 		});

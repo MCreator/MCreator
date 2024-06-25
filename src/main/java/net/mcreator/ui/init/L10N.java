@@ -38,7 +38,7 @@ public class L10N {
 
 	private static final Logger LOG = LogManager.getLogger("L10N");
 
-	public static final Locale DEFAULT_LOCALE = new Locale("en", "US");
+	public static final Locale DEFAULT_LOCALE = Locale.of("en", "US");
 
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
@@ -58,12 +58,12 @@ public class L10N {
 		if (supportedLocales.containsKey(getLocale())) {
 			rb = supportedLocales.get(getLocale()).resourceBundle();
 		} else {
-			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
+			LOG.warn("Locale {} is not supported. Falling back to default locale.", getLocale());
 
 			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
-		LOG.info("Setting default locale to: " + getLocale());
+		LOG.info("Setting default locale to: {}", getLocale());
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
 	}
@@ -78,7 +78,7 @@ public class L10N {
 
 		Set<String> localeFiles = PluginLoader.INSTANCE.getResourcesInPackage("lang");
 		supportedLocales = localeFiles.stream().map(FilenameUtilsPatched::getBaseName).filter(e -> e.contains("_"))
-				.map(e -> e.split("_")).map(e -> new Locale(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
+				.map(e -> e.split("_")).map(e -> Locale.of(e[1], e[2])).collect(Collectors.toMap(key -> key, value -> {
 					ResourceBundle rb = ResourceBundle.getBundle("lang/texts", value, PluginLoader.INSTANCE,
 							new UTF8Control());
 					return new LocaleRegistration(rb,
@@ -123,9 +123,9 @@ public class L10N {
 	public static String getBlocklyLangName() {
 		Locale locale = getLocale();
 
-		if (new Locale("zh", "TW").equals(locale)) // Chinese Traditional
+		if (Locale.of("zh", "TW").equals(locale)) // Chinese Traditional
 			return "zh-hant";
-		else if (new Locale("zh", "CN").equals(locale)) // Chinese Simplified
+		else if (Locale.of("zh", "CN").equals(locale)) // Chinese Simplified
 			return "zh-hans";
 
 		return getLocaleString().split("_")[0].replace("iw", "he");

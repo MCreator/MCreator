@@ -28,10 +28,10 @@ import java.awt.*;
 public class Button extends SizedComponent {
 
 	public String name;
-	public String text;
-	public boolean isUndecorated;
-	public Procedure onClick;
-	public Procedure displayCondition;
+	public final String text;
+	public final boolean isUndecorated;
+	public final Procedure onClick;
+	public final Procedure displayCondition;
 
 	public Button(String name, int x, int y, String text, int width, int height, boolean isUndecorated,
 			Procedure onClick, Procedure displayCondition) {

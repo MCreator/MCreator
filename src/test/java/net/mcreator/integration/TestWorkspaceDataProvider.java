@@ -46,6 +46,7 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -263,12 +264,12 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.OTHER) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.OTHER));
+					workspace.getFolderManager().getTextureFile("other0", TextureType.OTHER));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.ENTITY));
+					workspace.getFolderManager().getTextureFile("entityTx0", TextureType.ENTITY));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("entityTx1", TextureType.ENTITY));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
@@ -325,6 +326,8 @@ public class TestWorkspaceDataProvider {
 		List<MCItem> blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
+		List<TabEntry> tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
@@ -503,8 +506,7 @@ public class TestWorkspaceDataProvider {
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = emptyLists ? "" : "itest";
-			fluid.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			fluid.creativeTabs = emptyLists ? List.of() : tabs;
 			fluid.emptySound = !emptyLists ?
 					new Sound(modElement.getWorkspace(), "") :
 					new Sound(modElement.getWorkspace(),
@@ -661,8 +663,7 @@ public class TestWorkspaceDataProvider {
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			dimension.igniterTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			dimension.creativeTabs = emptyLists ? List.of() : tabs;
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
@@ -718,7 +719,7 @@ public class TestWorkspaceDataProvider {
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			structure.terrainAdaptation = getRandomString(random,
-					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
+					Arrays.asList("none", "beard_thin", "beard_box", "bury", "encapsulate"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
@@ -776,16 +777,16 @@ public class TestWorkspaceDataProvider {
 			Armor armor = new Armor(modElement);
 			armor.enableHelmet = !_true;
 			armor.textureHelmet = "test";
-			armor.helmetModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.helmetModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBody = !_true;
 			armor.textureBody = "test2";
-			armor.bodyModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.bodyModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableLeggings = !_true;
 			armor.textureLeggings = "test3";
-			armor.leggingsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.leggingsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.enableBoots = !_true;
 			armor.textureBoots = "test4";
-			armor.bootsModelTexture = emptyLists ? "From armor" : "test.png";
+			armor.bootsModelTexture = emptyLists ? "From armor" : "entityTx0.png";
 			armor.helmetItemRenderType = 0;
 			armor.helmetItemCustomModelName = "Normal";
 			armor.bodyItemRenderType = 0;
@@ -824,8 +825,7 @@ public class TestWorkspaceDataProvider {
 			armor.bodyName = modElement.getName() + " appendix2";
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
-			armor.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armorTexture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
@@ -848,8 +848,7 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
@@ -972,8 +971,7 @@ public class TestWorkspaceDataProvider {
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
 			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			item.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			item.creativeTabs = emptyLists ? List.of() : tabs;
 			item.stackSize = 52;
 			item.enchantability = 3;
 			item.useDuration = 8;
@@ -982,7 +980,10 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
-			item.guiBoundTo = "<NONE>";
+			item.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+					modElement.getWorkspace().getModElements().stream()
+							.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+							.collect(Collectors.toList())));
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
@@ -1048,6 +1049,7 @@ public class TestWorkspaceDataProvider {
 			item.projectile = new ProjectileEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			item.shootConstantly = emptyLists;
+			item.rangedItemChargesPower = !item.shootConstantly;
 			item.onRangedItemUsed = new Procedure("procedure4");
 			item.rangedUseCondition = new Procedure("condition1");
 			return item;
@@ -1158,8 +1160,7 @@ public class TestWorkspaceDataProvider {
 			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
 			block.requiresCorrectTool = _true;
-			block.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			block.creativeTabs = emptyLists ? List.of() : tabs;
 			block.destroyTool = getRandomItem(random,
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
@@ -1207,10 +1208,13 @@ public class TestWorkspaceDataProvider {
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
 			block.unbreakable = _true;
-			block.breakHarvestLevel = 4;
+			block.vanillaToolTier = getRandomString(random, Arrays.asList("NONE", "STONE", "IRON", "DIAMOND"));
 			block.tickRandomly = _true;
 			block.hasInventory = _true;
-			block.guiBoundTo = "<NONE>";
+			block.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+					modElement.getWorkspace().getModElements().stream()
+							.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+							.collect(Collectors.toList())));
 			block.openGUIOnRightClick = !_true;
 			block.inventorySize = 10;
 			block.inventoryStackSize = 42;
@@ -1282,6 +1286,7 @@ public class TestWorkspaceDataProvider {
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.onHitByProjectile = new Procedure("procedure14");
 				block.placingCondition = new Procedure("condition2");
+				block.additionalHarvestCondition = new Procedure("condition1");
 				block.isBonemealTargetCondition = new Procedure("condition3");
 				block.bonemealSuccessCondition = new Procedure("condition4");
 				block.onBonemealSuccess = new Procedure("procedure15");
@@ -1366,8 +1371,7 @@ public class TestWorkspaceDataProvider {
 			musicDisc.name = modElement.getName();
 			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			musicDisc.description = modElement.getName();
-			musicDisc.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+			musicDisc.creativeTabs = emptyLists ? List.of() : tabs;
 			musicDisc.glowCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 			musicDisc.onRightClickedInAir = new Procedure("procedure1");
 			musicDisc.onRightClickedOnBlock = emptyLists ?
@@ -1392,7 +1396,6 @@ public class TestWorkspaceDataProvider {
 			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 			enchantment.type = getRandomString(random,
 					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
-			enchantment.minLevel = 13;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
@@ -1420,7 +1423,7 @@ public class TestWorkspaceDataProvider {
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
-			painting.texture = "test.png";
+			painting.texture = "other0.png";
 			painting.title = modElement.getName();
 			painting.author = modElement.getName() + " author";
 			painting.width = 16;
@@ -1432,7 +1435,7 @@ public class TestWorkspaceDataProvider {
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
-			particle.scale = 1.38;
+			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
@@ -1469,8 +1472,8 @@ public class TestWorkspaceDataProvider {
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
-			profession.professionTextureFile = "test.png";
-			profession.zombifiedProfessionTextureFile = "test.png";
+			profession.professionTextureFile = "entityTx0.png";
+			profession.zombifiedProfessionTextureFile = "entityTx1.png";
 			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
@@ -1565,6 +1568,7 @@ public class TestWorkspaceDataProvider {
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
+			feature.skipPlacement = !_true;
 			return feature;
 		}
 		return null;
@@ -1594,8 +1598,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
 		livingEntity.isBoss = _true;
-		livingEntity.creativeTab = new TabEntry(modElement.getWorkspace(),
-				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+		livingEntity.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomItem(random,
 				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 		livingEntity.bossBarType = getRandomItem(random,
@@ -1612,7 +1616,7 @@ public class TestWorkspaceDataProvider {
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
-		livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
+		livingEntity.mobBehaviourType = getRandomString(random, List.of("Creature", "Mob", "Raider"));
 		livingEntity.mobCreatureType = getRandomItem(random,
 				new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 		livingEntity.attackStrength = 4;
@@ -1649,7 +1653,9 @@ public class TestWorkspaceDataProvider {
 		livingEntity.ridable = _true;
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
-		livingEntity.guiBoundTo = "<NONE>";
+		livingEntity.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+				modElement.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
+						.map(ModElement::getName).collect(Collectors.toList())));
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
@@ -1659,6 +1665,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
+				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
 				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
@@ -1676,7 +1684,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.hasAI = _true;
 		livingEntity.aiBase = "(none)";
 		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-		livingEntity.breedable = _true;
+		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
@@ -1716,6 +1724,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
+			livingEntity.raidSpawnsCount[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
@@ -1727,13 +1737,15 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
-			modelLayer.texture = "test.png";
+			modelLayer.texture = "entityTx0.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
 			livingEntity.modelLayers.add(modelLayer);
@@ -1741,6 +1753,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = true;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
@@ -1752,10 +1765,12 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
-		tool.creativeTab = new TabEntry(modElement.getWorkspace(),
-				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+		tool.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
-		tool.harvestLevel = 3;
+		tool.blockDropsTier = getRandomString(random,
+				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
+		tool.additionalDropCondition = new Procedure("condition3");
 		tool.efficiency = 6.5;
 		tool.attackSpeed = 4.8;
 		tool.enchantability = 4;
@@ -1915,6 +1930,12 @@ public class TestWorkspaceDataProvider {
 		int listSize = list.length;
 		int randomIndex = random.nextInt(listSize);
 		return list[randomIndex];
+	}
+
+	public static <T> T getRandomItem(Random random, List<T> list) {
+		int listSize = list.size();
+		int randomIndex = random.nextInt(listSize);
+		return list.get(randomIndex);
 	}
 
 	public static DataListEntry getRandomDataListEntry(Random random, List<DataListEntry> list) {

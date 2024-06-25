@@ -154,7 +154,7 @@ public class ModelImportActions {
 				return;
 			}
 		} catch (Exception err) {
-			LOG.error("Failed to load Java model: " + file, err);
+			LOG.error("Failed to load Java model: {}", file, err);
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),

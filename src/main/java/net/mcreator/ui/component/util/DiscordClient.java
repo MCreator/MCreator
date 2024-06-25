@@ -48,9 +48,9 @@ public class DiscordClient implements Closeable {
 			startTime = System.currentTimeMillis() / 1000L;
 
 			DiscordEventHandlers handlers = new DiscordEventHandlers();
-			handlers.ready = (user) -> LOG.debug("Connected with " + user.username);
-			handlers.disconnected = (errorCode, message) -> LOG.debug("Disconnected: " + errorCode + " - " + message);
-			handlers.errored = (errorCode, message) -> LOG.warn(errorCode + " - " + message);
+			handlers.ready = (user) -> LOG.debug("Connected with {}", user.username);
+			handlers.disconnected = (errorCode, message) -> LOG.debug("Disconnected: {} - {}", errorCode, message);
+			handlers.errored = (errorCode, message) -> LOG.warn("{} - {}", errorCode, message);
 			discordRpc.Discord_Initialize("712264497787568171", handlers, true, null);
 			timer.schedule(new TimerTask() {
 				@Override public void run() {

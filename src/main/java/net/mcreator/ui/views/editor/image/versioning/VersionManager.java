@@ -164,8 +164,7 @@ public class VersionManager {
 
 	private void printHeapSize(String message) {
 		int byteSize = sizeOf();
-		LOG.debug(message + ", current heap size: " + byteSize + "B/" + byteSize / 1000 + "KB/" + byteSize / 1000000
-				+ "MB");
+		LOG.debug("{}, current heap size: {}B/{}KB/{}MB", message, byteSize, byteSize / 1000, byteSize / 1000000);
 	}
 
 	public interface RevisionListener {

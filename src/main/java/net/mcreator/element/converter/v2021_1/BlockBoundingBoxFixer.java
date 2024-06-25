@@ -48,7 +48,7 @@ public class BlockBoundingBoxFixer implements IConverter {
 				block.boundingBoxes.add(newBB);
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update bounding box of: " + block.getModElement().getName());
+			LOG.warn("Could not update bounding box of: {}", block.getModElement().getName());
 		}
 		return block;
 	}

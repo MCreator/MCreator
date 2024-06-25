@@ -182,7 +182,7 @@ public class Generator implements IGenerator, Closeable {
 			this.generateElement(element, true);
 			return true;
 		} catch (TemplateGeneratorException e) {
-			LOG.error("Failed to generate mod element: " + element.getModElement().getName(), e);
+			LOG.error("Failed to generate mod element: {}", element.getModElement().getName(), e);
 			return false;
 		}
 	}
@@ -196,8 +196,8 @@ public class Generator implements IGenerator, Closeable {
 	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
 			boolean performFSTasks) throws TemplateGeneratorException {
 		if (element.getModElement().isCodeLocked()) {
-			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
-					+ " - the code of this element is locked");
+			LOG.debug("Skipping code generation for mod element: {} - the code of this element is locked",
+					element.getModElement().getName());
 			return new ArrayList<>();
 		}
 
@@ -205,8 +205,8 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-						.getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						element.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -262,6 +262,9 @@ public class Generator implements IGenerator, Closeable {
 			// add/update tag elements to the workspace
 			TagsUtils.processDefinitionToTags(this, element, (List<?>) map.get("tags"), false);
 
+			// add/update tab sorting info to the workspace
+			workspace.getCreativeTabsOrder().addOrUpdateModElementTabs(element);
+
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
 		}
@@ -274,8 +277,8 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-						.getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						element.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -290,8 +293,8 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null) {
 			if (generatableElement.getModElement().getType()
 					!= ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-						.getType().getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						generatableElement.getModElement().getType().getRegistryName());
 			return;
 		}
 
@@ -307,6 +310,9 @@ public class Generator implements IGenerator, Closeable {
 
 		// delete tag elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
+
+		// delete tab sorting info associated with the mod element from the workspace
+		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
@@ -330,7 +336,7 @@ public class Generator implements IGenerator, Closeable {
 
 			if (!filteredGeneratableElements.isEmpty()) {
 				globalTemplatesList.forEach(
-						e -> e.addDataModelEntry(type.getRegistryName() + "s", filteredGeneratableElements));
+						e -> e.addDataModelEntry(type.getPluralName(), filteredGeneratableElements));
 
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
@@ -433,8 +439,8 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null) {
 			if (generatableElement.getModElement().getType()
 					!= ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-						.getType().getRegistryName());
+				LOG.info("Failed to load element definition for mod element type {}",
+						generatableElement.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -481,8 +487,8 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 		if (map == null) {
-			LOG.info("Failed to load element list templates definition for mod element type "
-					+ generatableElement.getModElement().getType().getRegistryName());
+			LOG.info("Failed to load element list templates definition for mod element type {}",
+					generatableElement.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 

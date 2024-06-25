@@ -91,7 +91,7 @@ public class Theme {
 			consoleFont = consoleFont.deriveFont(12.0f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(consoleFont);
 		} catch (NullPointerException | FontFormatException | IOException e2) {
-			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
+			LOG.info("Failed to init MCreator Theme! Error {}", e2.getMessage());
 		}
 
 		return this;
@@ -129,6 +129,8 @@ public class Theme {
 
 			overrides.put("TabbedPane.contentOpaque", "false");
 			overrides.put("Tree.rendererFillBackground", "false");
+
+			overrides.put("TabbedPane.focusColor", "@background");
 
 			overrides.put("List.focusCellHighlightBorder", "0,0,0,0");
 			overrides.put("List.border", "0,0,0,0");

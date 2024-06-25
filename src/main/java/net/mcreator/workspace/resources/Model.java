@@ -167,7 +167,7 @@ public class Model {
 						textureMap);
 			}
 		} catch (ModelException e) {
-			LOG.warn("Failed to load model: " + name + "for reason: " + e.getMessage());
+			LOG.warn("Failed to load model: {}for reason: {}", name, e.getMessage());
 		}
 		return null;
 	}

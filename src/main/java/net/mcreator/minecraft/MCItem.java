@@ -146,8 +146,13 @@ public class MCItem extends DataListEntry {
 					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(Color.BLACK));
 				}
 			} else {
-				retval = BlockItemIcons.getIconForItem(
-						DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
+				DataListEntry entry = DataListLoader.loadDataMap("blocksitems").get(name);
+				if (entry != null) {
+					retval = BlockItemIcons.getIconForItem(
+							DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
+				} else {
+					retval = DEFAULT_ICON;
+				}
 			}
 
 			if (retval != null && retval.getImage() != null && retval.getImage().getWidth(null) > -1
@@ -157,7 +162,7 @@ public class MCItem extends DataListEntry {
 			}
 
 		} catch (Exception e) {
-			LOG.warn("Failed to load icon for item: " + name, e);
+			LOG.warn("Failed to load icon for item: {}", name, e);
 		}
 
 		return DEFAULT_ICON;

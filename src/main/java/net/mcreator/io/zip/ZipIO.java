@@ -202,7 +202,7 @@ public class ZipIO {
 	}
 
 	private static void reportError(String action, String path, Throwable exception) {
-		LOG.error(action + ": " + exception.getMessage() + " - for file: " + path, exception);
+		LOG.error("{}: {} - for file: {}", action, exception.getMessage(), path, exception);
 	}
 
 }

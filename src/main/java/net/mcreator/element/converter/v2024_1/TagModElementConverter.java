@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
@@ -43,6 +44,14 @@ public class TagModElementConverter implements IConverter {
 			if (type != null) {
 				String name = definition.get("name").getAsString();
 				String namespace = definition.get("namespace").getAsString();
+
+				// Check if name contains upper-case letters
+				if (name.chars().anyMatch(Character::isUpperCase)) {
+					LOG.warn(
+							"Tag element name contains upper-case letters (likely from old ore dictionary system): {} - converting to lower-case",
+							name);
+					name = RegistryNameFixer.fromCamelCase(name);
+				}
 
 				TagElement tagElement = new TagElement(type, namespace + ":" + name);
 				if (!workspace.getTagElements().containsKey(tagElement)) {

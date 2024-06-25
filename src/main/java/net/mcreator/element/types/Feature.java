@@ -39,13 +39,13 @@ import net.mcreator.workspace.references.ModElementReference;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
+	public boolean skipPlacement;
 	public String generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
@@ -87,13 +87,19 @@ import java.util.List;
 		return generateCondition != null;
 	}
 
+	public boolean hasPlacedFeature() {
+		return !skipPlacement;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.CONFIGUREDFEATURE));
+
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
-			return List.of(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
+			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
 		else if (hasGenerationConditions())
-			return List.of(BaseType.FEATURE);
-		else
-			return Collections.emptyList();
+			baseTypes.add(BaseType.FEATURE);
+
+		return baseTypes;
 	}
 
 }

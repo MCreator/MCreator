@@ -43,11 +43,11 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.ModElementListField;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -62,7 +62,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -82,12 +81,12 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final JComboBox<String> rewardFunction = new JComboBox<>();
 
-	private final JComboBox<String> background = new JComboBox<>();
+	private TextureComboBox background;
 
-	JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
-	JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
-	JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
-	JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -114,6 +113,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	@Override protected void initGUI() {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
+		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
+
 		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
@@ -122,9 +123,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		ComponentUtils.deriveFont(achievementName, 16);
 		ComponentUtils.deriveFont(achievementDescription, 16);
-
-		background.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		background.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
 
 		parentAchievement.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXX"));
 
@@ -280,9 +278,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
 						.map(ModElement::getName).collect(Collectors.toList())), "No function");
 
-		ComboBoxUtil.updateComboBoxContents(background, ListUtils.merge(Collections.singleton("Default"),
-				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
-						.collect(Collectors.toList())), "Default");
+		background.reload();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -302,7 +298,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		announceToChat.setSelected(achievement.announceToChat);
 		hideIfNotCompleted.setSelected(achievement.hideIfNotCompleted);
 		rewardFunction.setSelectedItem(achievement.rewardFunction);
-		background.setSelectedItem(achievement.background);
+		background.setTextureFromTextureName(achievement.background);
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
@@ -322,7 +318,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.announceToChat = announceToChat.isSelected();
 		achievement.hideIfNotCompleted = hideIfNotCompleted.isSelected();
 		achievement.rewardFunction = (String) rewardFunction.getSelectedItem();
-		achievement.background = (String) background.getSelectedItem();
+		achievement.background = background.getTextureName();
 		achievement.rewardLoot = rewardLoot.getListElements().stream().map(NonMappableElement::getUnmappedValue)
 				.collect(Collectors.toList());
 		achievement.rewardRecipes = rewardRecipes.getListElements().stream().map(NonMappableElement::getUnmappedValue)

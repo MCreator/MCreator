@@ -40,7 +40,7 @@ public class PreferencesManager {
 
 	private static final File PREFERENCES_FILE = UserFolderManager.getFileFromUserFolder("userpreferences");
 
-	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 
 	/**
 	 * <p>Stores values when the preferences file is loaded</p>
@@ -100,7 +100,7 @@ public class PreferencesManager {
 		boolean failedToLoad = false;
 
 		try {
-			LOG.debug("Loading preferences from " + identifier);
+			LOG.debug("Loading preferences from {}", identifier);
 			if (preferencesFileCache != null && preferencesFileCache.containsKey(identifier)) {
 				// Convert values from the file to properly work
 				preferencesFileCache.get(identifier).forEach((section, entries) -> entries.keySet().forEach(
@@ -113,12 +113,12 @@ public class PreferencesManager {
 									}
 								})));
 			} else {
-				LOG.info("Preferences with identifier " + identifier
-						+ " have no saved values. Default values will be used.");
+				LOG.info("Preferences with identifier {} have no saved values. Default values will be used.",
+						identifier);
 				failedToLoad = true;
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to load preferences. Reloading defaults for identifier " + identifier, e);
+			LOG.warn("Failed to load preferences. Reloading defaults for identifier {}", identifier, e);
 			failedToLoad = true;
 		}
 

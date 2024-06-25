@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,7 +92,7 @@ public class WorkspaceFolderManager {
 			return true;
 		} else {
 			if (!silent)
-				LOG.warn(file.getAbsolutePath() + " is not in workspace path!");
+				LOG.warn("{} is not in workspace path!", file.getAbsolutePath());
 			return false;
 		}
 	}
@@ -109,17 +108,6 @@ public class WorkspaceFolderManager {
 			throw new RuntimeException(file.getAbsolutePath() + " is not in workspace path!");
 
 		return workspaceFolder.toPath().relativize(file.toPath()).toString();
-	}
-
-	/**
-	 * <p>This method gets an image depending on the desired type.</p>
-	 *
-	 * @param textureIdentifier <p>This is the name without the file extension of the texture file.</p>
-	 * @param section           <p>This {@link TextureType} defines which path, defined by each generator, MCreator will search the texture file.</p>
-	 * @return <p>The texture file as an {@link ImageIcon}.</p>
-	 */
-	public ImageIcon getTextureImageIcon(String textureIdentifier, TextureType section) {
-		return new ImageIcon(getTextureFile(textureIdentifier, section).getAbsolutePath());
 	}
 
 	/**

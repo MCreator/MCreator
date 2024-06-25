@@ -70,8 +70,8 @@ public class ToolboxCategory {
 			else
 				return Color.decode(color);
 		} catch (Exception e) {
-			LOG.warn("The color for toolbox category " + getName()
-					+ " isn't formatted correctly. Using black color for it");
+			LOG.warn("The color for toolbox category {} isn't formatted correctly. Using black color for it",
+					getName());
 			return Color.BLACK;
 		}
 	}

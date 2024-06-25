@@ -101,12 +101,10 @@ public class CompileNotesPanel extends JPanel {
 			setBackground(Theme.current().getBackgroundColor());
 			setForeground(Theme.current().getForegroundColor());
 			ComponentUtils.deriveFont(this, 12);
-			if (value.type() == BlocklyCompileNote.Type.ERROR) {
-				setIcon(UIRES.get("18px.remove"));
-			} else if (value.type() == BlocklyCompileNote.Type.WARNING) {
-				setIcon(UIRES.get("18px.warning"));
-			} else {
-				setIcon(UIRES.get("18px.info"));
+			switch (value.type()) {
+			case ERROR -> setIcon(UIRES.get("18px.remove"));
+			case WARNING -> setIcon(UIRES.get("18px.warning"));
+			case INFO -> setIcon(UIRES.get("18px.info"));
 			}
 			setText(value.message());
 			return this;

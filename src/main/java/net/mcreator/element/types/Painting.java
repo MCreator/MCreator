@@ -25,6 +25,8 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
+import org.apache.commons.io.FilenameUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,8 +44,9 @@ public class Painting extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER), width, height);
+		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
+				Texture.getImage(getModElement().getWorkspace(), TextureType.OTHER,
+						FilenameUtils.removeExtension(texture)), width, height);
 	}
 
 	@Override public void finalizeModElementGeneration() {

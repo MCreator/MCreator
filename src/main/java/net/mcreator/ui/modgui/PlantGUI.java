@@ -67,16 +67,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
 
-	private TextureHolder texture;
-	private TextureHolder textureBottom;
+	private TextureSelectionButton texture;
+	private TextureSelectionButton textureBottom;
 
-	private TextureHolder itemTexture;
-	private TextureHolder particleTexture;
+	private TextureSelectionButton itemTexture;
+	private TextureSelectionButton particleTexture;
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
@@ -127,7 +128,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
@@ -260,15 +261,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBottom = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
 		textureBottom.setVisible(false);
 
-		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
-		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
 		isItemTinted.setOpaque(false);
@@ -451,9 +452,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -708,6 +709,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
@@ -780,9 +783,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("DECORATIONS"));
-
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
@@ -838,7 +838,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
-		creativeTab.setSelectedItem(plant.creativeTab);
+		creativeTabs.setListElements(plant.creativeTabs);
 		onBlockAdded.setSelectedProcedure(plant.onBlockAdded);
 		onNeighbourBlockChanges.setSelectedProcedure(plant.onNeighbourBlockChanges);
 		onTickUpdate.setSelectedProcedure(plant.onTickUpdate);
@@ -906,11 +906,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override public Plant getElementFromGUI() {
 		Plant plant = new Plant(modElement);
 		plant.name = name.getText();
-		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
-		plant.texture = texture.getID();
-		plant.textureBottom = textureBottom.getID();
-		plant.itemTexture = itemTexture.getID();
-		plant.particleTexture = particleTexture.getID();
+		plant.creativeTabs = creativeTabs.getListElements();
+		plant.texture = texture.getTextureName();
+		plant.textureBottom = textureBottom.getTextureName();
+		plant.itemTexture = itemTexture.getTextureName();
+		plant.particleTexture = particleTexture.getTextureName();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();

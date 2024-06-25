@@ -49,7 +49,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	@Nullable private final TemplateGenerator templateGenerator;
 	private final Workspace workspace;
 
-	protected List<IBlockGenerator> blockGenerators;
+	protected final List<IBlockGenerator> blockGenerators;
 
 	protected final BlocklyEditorType editorType;
 

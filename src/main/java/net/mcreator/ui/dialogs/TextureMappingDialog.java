@@ -25,7 +25,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -156,17 +156,17 @@ public class TextureMappingDialog {
 
 		JPanel panel = new JPanel(new GridLayout(entries.size(), 2, 100, 10));
 
-		TextureHolder[] tx = new TextureHolder[entries.size()];
+		TextureSelectionButton[] tx = new TextureSelectionButton[entries.size()];
 		int idx = 0;
 		for (Map.Entry<String, String> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
-			tx[idx] = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 			if (s.getValue() != null && !s.getValue().isEmpty())
 				tx[idx].setTextureFromTextureName(s.getValue());
 			panel.add(PanelUtils.join(tx[idx]));
 			int finalIdx = idx;
 			tx[idx].setActionListener(
-					e -> currentState.get(currentMappingName).getTextureMap().put(s.getKey(), tx[finalIdx].getID()));
+					e -> currentState.get(currentMappingName).getTextureMap().put(s.getKey(), tx[finalIdx].getTextureName()));
 			idx++;
 		}
 

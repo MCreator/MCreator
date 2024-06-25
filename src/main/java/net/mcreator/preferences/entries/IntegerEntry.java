@@ -30,8 +30,8 @@ import java.util.function.Consumer;
 
 public class IntegerEntry extends PreferencesEntry<Integer> {
 
-	protected transient int min;
-	protected transient int max;
+	protected final transient int min;
+	protected final transient int max;
 
 	public IntegerEntry(String id, int value) {
 		this(id, value, Integer.MIN_VALUE, Integer.MAX_VALUE);

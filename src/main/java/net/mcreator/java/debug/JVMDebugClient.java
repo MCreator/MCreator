@@ -64,8 +64,7 @@ public class JVMDebugClient {
 			try {
 				virtualMachine = connectToRemoteVM(vmDebugPort);
 				if (virtualMachine != null) {
-					LOG.info("Connected to remote VM: " + virtualMachine.name() + "host: localhost, port: "
-							+ vmDebugPort);
+					LOG.info("Connected to remote VM: {}host: localhost, port: {}", virtualMachine.name(), vmDebugPort);
 
 					virtualMachine.eventRequestManager().createClassPrepareRequest().enable();
 

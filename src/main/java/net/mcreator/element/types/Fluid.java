@@ -34,6 +34,7 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -69,7 +70,7 @@ import java.util.List;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) public String textureBucket;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public Sound emptySound;
 	public String rarity;
 	public StringListProcedure specialInformation;
@@ -99,6 +100,8 @@ import java.util.List;
 	public Fluid(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.tintType = "No tint";
 
 		this.rarity = "COMMON";
@@ -119,11 +122,11 @@ import java.util.List;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK).getImage(), 32);
+				Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, textureStill), 32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	public boolean isFluidTinted() {
@@ -166,11 +169,11 @@ import java.util.List;
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
 			if (textureBucket != null && !textureBucket.isEmpty()) {
-				return workspace.getFolderManager().getTextureImageIcon(textureBucket, TextureType.ITEM);
+				return Texture.getImageIcon(getModElement().getWorkspace(), TextureType.ITEM, textureBucket);
 			}
 			// Otherwise, fallback to the generated fluid bucket icon
 			return MinecraftImageGenerator.generateFluidBucketIcon(
-					workspace.getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK));
+					Texture.getImageIcon(getModElement().getWorkspace(), TextureType.BLOCK, textureStill));
 		}
 		return null;
 	}

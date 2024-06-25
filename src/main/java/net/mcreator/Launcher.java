@@ -60,12 +60,12 @@ public class Launcher {
 			LOG.error("Failed to read MCreator config", e);
 		}
 
-		LOG.info("Starting MCreator " + version);
+		LOG.info("Starting MCreator {}", version);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
-				+ ", vendor: " + System.getProperty("java.vendor"));
-		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
+		LOG.info("Java version: {}, VM: {}, vendor: {}", System.getProperty("java.version"),
+				System.getProperty("java.vm.name"), System.getProperty("java.vendor"));
+		LOG.info("Current JAVA_HOME for running instance: {}", System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
 		PreferencesManager.init();
@@ -90,12 +90,12 @@ public class Launcher {
 			System.exit(-1);
 		}
 
-		LOG.info("Installation path: " + System.getProperty("user.dir"));
-		LOG.info("User home of MCreator: " + UserFolderManager.getFileFromUserFolder("/"));
+		LOG.info("Installation path: {}", System.getProperty("user.dir"));
+		LOG.info("User home of MCreator: {}", UserFolderManager.getFileFromUserFolder("/"));
 
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
 			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"
-							+ "Please make sure that the user running MCreator has permissions to read and write to the directory<br>"
+							+ "Make sure that the user running MCreator has permissions to read and write to the directory<br>"
 							+ "in which MCreator tried to create user specific data storage. The path MCreator could not write to is:<br><br>"
 							+ UserFolderManager.getFileFromUserFolder("/") + "<br>", "MCreator file system error",
 					JOptionPane.WARNING_MESSAGE);

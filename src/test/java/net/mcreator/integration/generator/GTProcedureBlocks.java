@@ -26,7 +26,6 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -178,8 +177,8 @@ public class GTProcedureBlocks {
 				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName());
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName(),
+						t);
 			}
 		}
 

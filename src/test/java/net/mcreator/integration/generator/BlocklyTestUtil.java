@@ -101,7 +101,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (!templatesDefined) {
-				LOG.warn("Skipping Blockly block with incomplete template: " + toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with incomplete template: {}", toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -131,7 +131,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
-				LOG.warn("Skipping Blockly block with special fields: " + toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -153,8 +153,8 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: "
-						+ toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: {}",
+						toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -262,6 +262,9 @@ public class BlocklyTestUtil {
 		case "arrowProjectile":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "configuredfeature":
+				return ElementUtil.loadAllConfiguredFeatures(workspace).stream().map(DataListEntry::getName)
+						.toArray(String[]::new);
 		default: {
 			if (datalist.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
