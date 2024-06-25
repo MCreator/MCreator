@@ -8,9 +8,21 @@
   "step": "${generator.map(data.generationStep, "generationsteps")}",
   "terrain_adaptation": "${data.terrainAdaptation}",
   "start_height": {
-      "absolute": 0
+    <#if data.useStartHeight>
+    "type": "minecraft:${data.startHeightProviderType?lower_case}",
+    "min_inclusive": {
+      "absolute": ${data.startHeightMin}
+    },
+    "max_inclusive": {
+      "absolute": ${data.startHeightMax}
+    }
+    <#else>
+    "absolute": 0
+    </#if>
   },
+  <#if !data.useStartHeight>
   "project_start_to_heightmap": "${data.surfaceDetectionType}",
+  </#if>
   <#if spawnBiomes?size == 1>
   "biomes": "${spawnBiomes?first}",
   <#else>
