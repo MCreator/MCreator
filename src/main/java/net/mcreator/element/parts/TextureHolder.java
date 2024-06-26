@@ -25,6 +25,7 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.GenericObjectModel;
 import freemarker.template.TemplateModel;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.CustomTexture;
@@ -46,7 +47,7 @@ import java.lang.reflect.Type;
 
 	// Private constructor to satisfy final fields
 	private TextureHolder(@Nullable String texture) {
-		this.texture = FilenameUtils.removeExtension(texture);
+		this.texture = FilenameUtilsPatched.removeExtension(texture);
 	}
 
 	public TextureHolder(Workspace workspace, @Nullable Texture textureObj) {
@@ -146,7 +147,7 @@ import java.lang.reflect.Type;
 				throws JsonParseException {
 			try {
 				// remove extension call for legacy reasons if previously .png was stored as part of texture name
-				return new TextureHolder(FilenameUtils.removeExtension(json.getAsString()));
+				return new TextureHolder(FilenameUtilsPatched.removeExtension(json.getAsString()));
 			} catch (Exception e) {
 				return new TextureHolder(null);
 			}
@@ -155,7 +156,7 @@ import java.lang.reflect.Type;
 		@Override
 		public JsonElement serialize(TextureHolder textureHolder, Type typeOfSrc, JsonSerializationContext context) {
 			return new JsonPrimitive(
-					textureHolder.texture == null ? "" : FilenameUtils.removeExtension(textureHolder.texture));
+					textureHolder.texture == null ? "" : FilenameUtilsPatched.removeExtension(textureHolder.texture));
 		}
 	}
 
