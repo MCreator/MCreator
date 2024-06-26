@@ -396,7 +396,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	@Override public void openInEditingMode(Tool tool) {
 		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
-		texture.setTextureFromTextureName(tool.texture);
+		texture.setTexture(tool.texture);
 		toolType.setSelectedItem(tool.toolType);
 		blockDropsTier.setSelectedItem(tool.blockDropsTier);
 		additionalDropCondition.setSelectedProcedure(tool.additionalDropCondition);
@@ -465,7 +465,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
-		tool.texture = texture.getTextureName();
+		tool.texture = texture.getTextureHolder();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
 		tool.renderType = 0;

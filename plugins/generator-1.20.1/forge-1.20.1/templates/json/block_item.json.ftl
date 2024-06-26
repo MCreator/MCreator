@@ -3,7 +3,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "${modid}:item/${data.itemTexture}"
+    "layer0": "${data.itemTexture.format("%s:item/%s")}"
   },
   "render_type": "translucent"
 }

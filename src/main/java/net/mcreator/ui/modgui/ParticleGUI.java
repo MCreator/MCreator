@@ -176,8 +176,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	}
 
 	@Override public void openInEditingMode(Particle particle) {
-		texture.setTextureFromTextureName(
-				StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
+		texture.setTexture(particle.texture);
 		width.setValue(particle.width);
 		height.setValue(particle.height);
 		scale.setSelectedProcedure(particle.scale);
@@ -197,7 +196,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
+		particle.texture = texture.getTextureHolder();
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = scale.getSelectedProcedure();

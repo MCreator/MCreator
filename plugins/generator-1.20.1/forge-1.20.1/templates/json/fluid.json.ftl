@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "${modid}:block/${data.textureStill}"
+    "particle": "${data.textureStill.format("%s:block/%s")}"
   }
 }

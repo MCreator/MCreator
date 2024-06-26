@@ -23,9 +23,11 @@ import com.google.gson.JsonParser;
 import de.javagl.obj.Mtl;
 import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,13 +52,13 @@ public class ModelUtils {
 		return jsonModel;
 	}
 
-	public static void copyOBJorMTLApplyTextureMapping(File objFrom, File objTo, Model model, String prefix) {
+	public static void copyOBJorMTLApplyTextureMapping(Workspace workspace, File objFrom, File objTo, Model model, String prefix) {
 		if (FilenameUtilsPatched.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
-			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(workspace,
 					model);
 
 			if (textureMappingMap != null && textureMappingMap.containsKey("default")) {
-				Map<String, String> textureMap = textureMappingMap.get("default").getTextureMap();
+				Map<String, TextureHolder> textureMap = textureMappingMap.get("default").getTextureMap();
 
 				try {
 					List<Mtl> mtlList = MtlReader.read(new FileInputStream(objFrom));
