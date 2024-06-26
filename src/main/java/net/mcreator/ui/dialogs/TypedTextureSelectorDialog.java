@@ -63,6 +63,10 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		this.type = type;
 		this.mcreator = mcreator;
 
+		if (type == TextureType.BLOCK || type == TextureType.ITEM) {
+			loadVanillaTextures(true);
+		}
+
 		setModal(true);
 		setTitle(L10N.t("dialog.textures_selector.title", type));
 		setSize(842, 480);
@@ -140,8 +144,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		add(pn);
 	}
 
-	public TypedTextureSelectorDialog loadVanillaTextures() {
-		this.loadVanillaTextures = true;
+	public TypedTextureSelectorDialog loadVanillaTextures(boolean shouldLoad) {
+		this.loadVanillaTextures = shouldLoad;
 		return this;
 	}
 

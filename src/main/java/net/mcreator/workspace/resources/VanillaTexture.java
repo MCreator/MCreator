@@ -41,7 +41,7 @@ public final class VanillaTexture extends Texture {
 
 	private static final Logger LOG = LogManager.getLogger(VanillaTexture.class);
 
-	private static final Map<GeneratorConfiguration, Map<String, Texture>> CACHE = new HashMap<>();
+	private static final Map<CacheIdentifier, Map<String, Texture>> CACHE = new HashMap<>();
 
 	private final ImageIcon icon;
 
@@ -55,28 +55,37 @@ public final class VanillaTexture extends Texture {
 	}
 
 	public static VanillaTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
-		if (!CACHE.containsKey(workspace.getGeneratorConfiguration())) {
+		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), textureType);
+
+		if (!CACHE.containsKey(cacheIdentifier))
 			getTexturesOfType(workspace, textureType); // Load CACHE if not already loaded
-		}
-		return (VanillaTexture) CACHE.get(workspace.getGeneratorConfiguration()).getOrDefault(textureName,
+
+		return (VanillaTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
 				new VanillaTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
 	}
 
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
-		return CACHE.computeIfAbsent(workspace.getGeneratorConfiguration(), key -> {
+		String root = workspace.getGeneratorConfiguration()
+				.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
+		if (root == null)
+			return Collections.emptyList();
+
+		String[] data = root.split("!/"); // 0 = jar name, 1 = path
+		final String jarName = data[0];
+		final String path = data[1];
+
+		return CACHE.computeIfAbsent(new CacheIdentifier(workspace.getGeneratorConfiguration(), type), key -> {
 			Map<String, Texture> textures = new LinkedHashMap<>();
 			if (workspace.getGenerator().getProjectJarManager() != null) {
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
 					if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
-						if (libraryFile.getName().contains("client-extra")) {
+						if (libraryFile.getName().contains(jarName)) {
 							try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
 								List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
 								entries.stream().sorted(Comparator.comparing(ZipEntry::getName)).forEach(entry -> {
-									if (type == TextureType.BLOCK && entry.getName()
-											.startsWith("assets/minecraft/textures/block/") && entry.getName()
-											.endsWith(".png")) {
+									if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
 										String textureName = "minecraft:" + FilenameUtils.getName(entry.getName());
 										try {
 											textures.put(textureName, new VanillaTexture(type, textureName,
@@ -96,5 +105,7 @@ public final class VanillaTexture extends Texture {
 			return textures;
 		}).values().stream().toList();
 	}
+
+	private record CacheIdentifier(GeneratorConfiguration generatorConfiguration, TextureType textureType) {}
 
 }
