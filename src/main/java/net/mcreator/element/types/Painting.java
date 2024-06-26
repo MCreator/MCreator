@@ -19,21 +19,23 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
-import net.mcreator.workspace.resources.Texture;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Painting extends GeneratableElement {
 
-	@TextureReference(TextureType.OTHER) public String texture;
+	private static final Logger LOG = LogManager.getLogger(Painting.class);
+
+	@TextureReference(TextureType.OTHER) public TextureHolder texture;
 	public int width;
 	public int height;
 	public String title;
@@ -44,16 +46,18 @@ public class Painting extends GeneratableElement {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(
-				Texture.getImage(getModElement().getWorkspace(), TextureType.OTHER,
-						FilenameUtils.removeExtension(texture)), width, height);
+		return MinecraftImageGenerator.Preview.generatePaintingPreviewPicture(texture.getImage(TextureType.OTHER),
+				width, height);
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File originalTextureFileLocation = getModElement().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(texture), TextureType.OTHER);
-		File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-				"painting/" + getModElement().getRegistryName() + ".png");
-		FileIO.copyFile(originalTextureFileLocation, newLocation);
+		try {
+			File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+					"painting/" + getModElement().getRegistryName() + ".png");
+			FileIO.copyFile(texture.toFile(TextureType.OTHER), newLocation);
+		} catch (Exception e) {
+			LOG.error("Failed to copy painting texture", e);
+		}
 	}
+
 }

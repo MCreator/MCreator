@@ -425,8 +425,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterName.setText(dimension.igniterName);
 		igniterRarity.setSelectedItem(dimension.igniterRarity);
 		specialInformation.setSelectedProcedure(dimension.specialInformation);
-		portalTexture.setTextureFromTextureName(dimension.portalTexture);
-		texture.setTextureFromTextureName(dimension.texture);
+		portalTexture.setTexture(dimension.portalTexture);
+		texture.setTexture(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
 		creativeTabs.setListElements(dimension.creativeTabs);
@@ -453,8 +453,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override public Dimension getElementFromGUI() {
 		Dimension dimension = new Dimension(modElement);
-		dimension.texture = texture.getTextureName();
-		dimension.portalTexture = portalTexture.getTextureName();
+		dimension.texture = texture.getTextureHolder();
+		dimension.portalTexture = portalTexture.getTextureHolder();
 		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();

@@ -19,8 +19,10 @@
 
 package net.mcreator.element.types.interfaces;
 
+import net.mcreator.element.parts.TextureHolder;
+
 public interface IItemWithTexture {
 
-	String getTexture();
+	TextureHolder getTexture();
 
 }

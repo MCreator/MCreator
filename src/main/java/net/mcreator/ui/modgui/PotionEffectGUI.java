@@ -39,7 +39,6 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -188,8 +187,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override public void openInEditingMode(PotionEffect potion) {
 		effectName.setText(potion.effectName);
-		icon.setTextureFromTextureName(
-				StringUtils.removeEnd(potion.icon, ".png")); // legacy, old workspaces stored name with extension
+		icon.setTexture(potion.icon);
 		color.setColor(potion.color);
 		isInstant.setSelected(potion.isInstant);
 		isBad.setSelected(potion.isBad);
@@ -205,7 +203,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override public PotionEffect getElementFromGUI() {
 		PotionEffect potion = new PotionEffect(modElement);
 		potion.effectName = effectName.getText();
-		potion.icon = icon.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
+		potion.icon = icon.getTextureHolder();
 		potion.color = color.getColor();
 		potion.isInstant = isInstant.isSelected();
 		potion.isBad = isBad.isSelected();
