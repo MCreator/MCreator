@@ -660,7 +660,8 @@ import java.util.stream.Collectors;
 			search.repaint();
 			reloadElementsInCurrentTab();
 			modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
-			subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR, !(currentTabPanel instanceof WorkspacePanelMods));
+			subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
+					!(currentTabPanel instanceof WorkspacePanelMods));
 		});
 
 		slo.add("Center", subTabs);

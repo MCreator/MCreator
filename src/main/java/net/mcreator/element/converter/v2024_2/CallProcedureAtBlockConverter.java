@@ -57,9 +57,9 @@ public class CallProcedureAtBlockConverter extends ProcedureConverter {
 				// Rename the value inputs
 				for (Element value : XMLUtil.getChildrenWithName(element, "value")) {
 					switch (value.getAttribute("name")) {
-						case "x" -> value.setAttribute("name", "arg0");
-						case "y" -> value.setAttribute("name", "arg1");
-						case "z" -> value.setAttribute("name", "arg2");
+					case "x" -> value.setAttribute("name", "arg0");
+					case "y" -> value.setAttribute("name", "arg1");
+					case "z" -> value.setAttribute("name", "arg2");
 					}
 				}
 

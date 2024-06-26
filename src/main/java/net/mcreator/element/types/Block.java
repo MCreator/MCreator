@@ -380,7 +380,7 @@ import java.util.stream.Collectors;
 	}
 
 	public TextureHolder textureBack() {
-		return textureBack == null ||textureBack.isEmpty() ? texture : textureBack;
+		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
 	}
 
 	public TextureHolder getParticleTexture() {

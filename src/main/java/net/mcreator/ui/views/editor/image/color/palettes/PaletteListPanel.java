@@ -81,7 +81,6 @@ public class PaletteListPanel extends ListEditPanel<ColorPalette> {
 		return palettes;
 	}
 
-	public static final class PaletteStorage extends ArrayListListModel<ColorPalette> {
-	}
+	public static final class PaletteStorage extends ArrayListListModel<ColorPalette> {}
 
 }

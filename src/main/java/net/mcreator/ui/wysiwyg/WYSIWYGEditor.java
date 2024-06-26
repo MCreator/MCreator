@@ -30,7 +30,6 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;

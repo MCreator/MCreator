@@ -52,10 +52,11 @@ public class ModelUtils {
 		return jsonModel;
 	}
 
-	public static void copyOBJorMTLApplyTextureMapping(Workspace workspace, File objFrom, File objTo, Model model, String prefix) {
+	public static void copyOBJorMTLApplyTextureMapping(Workspace workspace, File objFrom, File objTo, Model model,
+			String prefix) {
 		if (FilenameUtilsPatched.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
-			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(workspace,
-					model);
+			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+					workspace, model);
 
 			if (textureMappingMap != null && textureMappingMap.containsKey("default")) {
 				Map<String, TextureHolder> textureMap = textureMappingMap.get("default").getTextureMap();
