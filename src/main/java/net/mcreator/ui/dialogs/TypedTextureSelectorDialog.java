@@ -119,6 +119,14 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pno2.add(L10N.label("dialog.textures_selector.search"));
 		pno2.add(filterField);
 
+		JButton all = L10N.button("dialog.item_selector.all");
+		all.addActionListener(event -> filterField.setText(""));
+		JButton mods = L10N.button("dialog.item_selector.custom_elements");
+		mods.addActionListener(event -> filterField.setText("!minecraft"));
+
+		pno2.add(all);
+		pno2.add(mods);
+
 		JPanel pno = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 4));
 
 		JButton createTx2 = L10N.button("dialog.textures_selector.create_from_scratch");
@@ -260,8 +268,14 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		private void refilter() {
 			filterItems.clear();
 			String term = filterField.getText();
-			filterItems.addAll(items.stream().filter(item -> item.getTextureName().toLowerCase(Locale.ENGLISH)
-					.contains(term.toLowerCase(Locale.ENGLISH))).toList());
+			filterItems.addAll(items.stream().filter(item -> {
+				if (term.startsWith("!")) {
+					return !item.getTextureName().toLowerCase(Locale.ENGLISH)
+							.contains(term.substring(1).toLowerCase(Locale.ENGLISH));
+				} else {
+					return item.getTextureName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
+				}
+			}).toList());
 			fireContentsChanged(this, 0, getSize());
 		}
 
