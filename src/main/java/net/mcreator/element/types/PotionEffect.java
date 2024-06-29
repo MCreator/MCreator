@@ -19,23 +19,26 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
+	private static final Logger LOG = LogManager.getLogger(PotionEffect.class);
+
 	public String effectName;
-	@TextureReference(TextureType.EFFECT) public String icon;
+	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
 	public Color color;
 	public boolean isInstant;
 	public String mobEffectCategory;
@@ -58,19 +61,18 @@ import java.io.File;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(new ImageIcon(
-				getModElement().getWorkspace().getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT)
-						.toString()).getImage());
+		return MinecraftImageGenerator.Preview.generatePotionEffectIcon(icon.getImage(TextureType.EFFECT));
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File originalTextureFileLocation = getModElement().getWorkspace().getFolderManager()
-				.getTextureFile(FilenameUtilsPatched.removeExtension(icon), TextureType.EFFECT);
-		File newLocation = new File(
-				getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
-				getModElement().getRegistryName() + ".png");
-		FileIO.copyFile(originalTextureFileLocation, newLocation);
+		try {
+			File newLocation = new File(
+					getModElement().getWorkspace().getFolderManager().getTexturesFolder(TextureType.EFFECT),
+					getModElement().getRegistryName() + ".png");
+			FileIO.copyFile(icon.toFile(TextureType.EFFECT), newLocation);
+		} catch (Exception e) {
+			LOG.error("Failed to copy potion effect icon", e);
+		}
 	}
 
 	public boolean hasCustomRenderer() {

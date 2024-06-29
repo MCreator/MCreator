@@ -25,18 +25,25 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Particle;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class ParticleTextureConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger(ParticleTextureConverter.class);
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Particle effect = (Particle) input;
 
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(effect.texture), TextureType.PARTICLE));
+		try {
+			FileIO.copyFile(effect.texture.toFile(TextureType.OTHER), effect.texture.toFile(TextureType.PARTICLE));
+		} catch (IOException e) {
+			LOG.warn("Failed to copy particle texture", e);
+		}
 
 		return effect;
 	}

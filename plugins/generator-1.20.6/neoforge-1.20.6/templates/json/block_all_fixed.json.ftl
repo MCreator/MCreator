@@ -1,13 +1,13 @@
 {
   "parent": "block/cube",
   "textures": {
-    "down": "${modid}:block/${data.texture}",
-    "up": "${modid}:block/${data.textureTop?has_content?then(data.textureTop, data.texture)}",
-    "north": "${modid}:block/${data.textureFront?has_content?then(data.textureFront, data.texture)}",
-    "east": "${modid}:block/${data.textureLeft?has_content?then(data.textureLeft, data.texture)}",
-    "south": "${modid}:block/${data.textureBack?has_content?then(data.textureBack, data.texture)}",
-    "west": "${modid}:block/${data.textureRight?has_content?then(data.textureRight, data.texture)}",
-    "particle": "${modid}:block/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+    "down": "${data.texture.format("%s:block/%s")}",
+    "up": "${data.textureTop().format("%s:block/%s")}",
+    "north": "${data.textureFront().format("%s:block/%s")}",
+    "east": "${data.textureLeft().format("%s:block/%s")}",
+    "south": "${data.textureBack().format("%s:block/%s")}",
+    "west": "${data.textureRight().format("%s:block/%s")}",
+    "particle": "${data.getParticleTexture().format("%s:block/%s")}"
   },
   "render_type": "${data.getRenderType()}"
 }

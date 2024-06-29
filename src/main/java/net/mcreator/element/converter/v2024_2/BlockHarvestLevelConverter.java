@@ -35,7 +35,8 @@ public class BlockHarvestLevelConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
 		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("breakHarvestLevel") != null) {
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("breakHarvestLevel")
+					!= null) {
 				int breakHarvestLevel = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 						.get("breakHarvestLevel").getAsInt();
 				if (breakHarvestLevel == 1) {

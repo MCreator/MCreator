@@ -18,7 +18,8 @@
 
 package net.mcreator.integration.generator;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorStats;
@@ -52,8 +53,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(IntegrationTestSetup.class) public class GeneratorsTest {
 
@@ -200,8 +200,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 		try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
 			entries.filter(Files::isRegularFile).map(Path::toFile)
 					.filter(file -> FilenameUtils.isExtension(file.getName(), "json")).forEach(file -> {
+						String contents = FileIO.readFileToString(file);
+
+						// If png extension is present twice, something is wrong with resource path handling somewhere
+						assertFalse(contents.contains(".png.png"));
+
+						// If there is any resource patch containing more than one colon, it is invalid
+						assertFalse(contents.contains("\"([^\":]*:){2,}[^\":]*\""));
+
 						try {
-							new Gson().fromJson(FileIO.readFileToString(file), Object.class); // try to parse JSON
+							new GsonBuilder().setStrictness(Strictness.STRICT).create()
+									.fromJson(contents, Object.class); // try to parse JSON
 						} catch (Exception e) {
 							fail("Invalid JSON in file: " + file);
 						}

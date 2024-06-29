@@ -24,8 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -144,12 +142,8 @@ public class Plugin implements Comparable<Plugin> {
 		return info.getVersion();
 	}
 
-	public URL toURL() throws MalformedURLException, URISyntaxException {
-		if (file.isDirectory()) {
-			return file.toURI().toURL();
-		} else {
-			return new URI("jar:file:" + file.getAbsolutePath() + "!/").toURL();
-		}
+	public URL toURL() throws MalformedURLException {
+		return file.toURI().toURL();
 	}
 
 	@Nullable public String getLoadFailure() {

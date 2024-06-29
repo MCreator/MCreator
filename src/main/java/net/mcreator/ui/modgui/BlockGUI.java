@@ -441,8 +441,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
-		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
+				true);
+		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
+				true);
 
 		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
@@ -478,11 +480,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureLeft.setActionListener(event -> {
 			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
 					|| textureFront.hasTexture() || textureRight.hasTexture())) {
-				texture.setTextureFromTextureName(textureLeft.getTextureName());
-				textureTop.setTextureFromTextureName(textureLeft.getTextureName());
-				textureBack.setTextureFromTextureName(textureLeft.getTextureName());
-				textureFront.setTextureFromTextureName(textureLeft.getTextureName());
-				textureRight.setTextureFromTextureName(textureLeft.getTextureName());
+				texture.setTexture(textureLeft.getTextureHolder());
+				textureTop.setTexture(textureLeft.getTextureHolder());
+				textureBack.setTexture(textureLeft.getTextureHolder());
+				textureFront.setTexture(textureLeft.getTextureHolder());
+				textureRight.setTexture(textureLeft.getTextureHolder());
 			}
 		});
 
@@ -1346,14 +1348,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	@Override public void openInEditingMode(Block block) {
-		itemTexture.setTextureFromTextureName(block.itemTexture);
-		particleTexture.setTextureFromTextureName(block.particleTexture);
-		texture.setTextureFromTextureName(block.texture);
-		textureTop.setTextureFromTextureName(block.textureTop);
-		textureLeft.setTextureFromTextureName(block.textureLeft);
-		textureFront.setTextureFromTextureName(block.textureFront);
-		textureRight.setTextureFromTextureName(block.textureRight);
-		textureBack.setTextureFromTextureName(block.textureBack);
+		itemTexture.setTexture(block.itemTexture);
+		particleTexture.setTexture(block.particleTexture);
+		texture.setTexture(block.texture);
+		textureTop.setTexture(block.textureTop);
+		textureLeft.setTexture(block.textureLeft);
+		textureFront.setTexture(block.textureFront);
+		textureRight.setTexture(block.textureRight);
+		textureBack.setTexture(block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
@@ -1579,14 +1581,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		block.texture = texture.getTextureName();
-		block.itemTexture = itemTexture.getTextureName();
-		block.particleTexture = particleTexture.getTextureName();
-		block.textureTop = textureTop.getTextureName();
-		block.textureLeft = textureLeft.getTextureName();
-		block.textureFront = textureFront.getTextureName();
-		block.textureRight = textureRight.getTextureName();
-		block.textureBack = textureBack.getTextureName();
+		block.texture = texture.getTextureHolder();
+		block.itemTexture = itemTexture.getTextureHolder();
+		block.particleTexture = particleTexture.getTextureHolder();
+		block.textureTop = textureTop.getTextureHolder();
+		block.textureLeft = textureLeft.getTextureHolder();
+		block.textureFront = textureFront.getTextureHolder();
+		block.textureRight = textureRight.getTextureHolder();
+		block.textureBack = textureBack.getTextureHolder();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getEntries();

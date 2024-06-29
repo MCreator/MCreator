@@ -141,13 +141,13 @@ public class Model {
 			if (type == Type.BUILTIN)
 				return new BuiltInModel(name);
 			else if (type == Type.JSON)
-				return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".json"),
-						textureMap);
+				return new TexturedModel(workspace,
+						new File(workspace.getFolderManager().getModelsDir(), name + ".json"), textureMap);
 			else if (type == Type.OBJ) {
 				Model objModel = new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"));
 				if (textureMap != null)
-					objModel = new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"),
-							textureMap);
+					objModel = new TexturedModel(workspace,
+							new File(workspace.getFolderManager().getModelsDir(), name + ".obj"), textureMap);
 				return objModel;
 			} else if (type == Type.JAVA) {
 				for (String modelsKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
@@ -163,8 +163,8 @@ public class Model {
 				}
 				throw new ModelException("Model not found");
 			} else if (type == Type.MCREATOR) {
-				return new TexturedModel(new File(workspace.getFolderManager().getModelsDir(), name + ".mcm"),
-						textureMap);
+				return new TexturedModel(workspace,
+						new File(workspace.getFolderManager().getModelsDir(), name + ".mcm"), textureMap);
 			}
 		} catch (ModelException e) {
 			LOG.warn("Failed to load model: {}for reason: {}", name, e.getMessage());
@@ -177,7 +177,7 @@ public class Model {
 		File[] candidates = workspace.getFolderManager().getModelsDir().listFiles();
 		for (File f : candidates != null ? candidates : new File[0]) {
 			try {
-				models.addAll(TexturedModel.getModelTextureMapVariations(new Model(f)));
+				models.addAll(TexturedModel.getModelTextureMapVariations(workspace, new Model(f)));
 			} catch (ModelException ignored) {
 			}
 		}

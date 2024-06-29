@@ -19,6 +19,7 @@
 
 package net.mcreator.element.types.interfaces;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.workspace.resources.Model;
 
 import java.util.Map;
@@ -27,6 +28,6 @@ import java.util.Map;
 
 	Model getItemModel();
 
-	Map<String, String> getTextureMap();
+	Map<String, TextureHolder> getTextureMap();
 
 }

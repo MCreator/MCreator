@@ -112,8 +112,8 @@ public class GeneratorFileTasks {
 							if (model.getType() == Model.Type.OBJ) {
 								Arrays.stream(model.getFiles())
 										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureMapping(f,
-												new File(to, f.getName()), model, prefix));
+										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureMapping(
+												generator.getWorkspace(), f, new File(to, f.getName()), model, prefix));
 							}
 						}
 						break;

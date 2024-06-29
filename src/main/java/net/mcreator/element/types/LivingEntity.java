@@ -48,7 +48,6 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -227,10 +226,10 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(
-				Texture.getImage(getModElement().getWorkspace(), TextureType.ENTITY,
-						FilenameUtilsPatched.removeExtension(mobModelTexture)), spawnEggBaseColor, spawnEggDotColor,
-				hasSpawnEgg);
+		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(new ImageIcon(
+				getModElement().getWorkspace().getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
+						.getAbsolutePath()).getImage(), spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
 	}
 
 	public boolean hasDrop() {
