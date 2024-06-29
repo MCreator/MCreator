@@ -31,8 +31,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
@@ -44,21 +42,18 @@ import java.util.List;
 	public boolean isBenefitical;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
-	public List<String> potionCures;
+
+	public boolean isCuredByMilk;
+	public boolean isProtectedByTotem;
+	public boolean isCuredbyHoney;
 
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
 
-	private PotionEffect() {
-		this(null);
-	}
-
 	public PotionEffect(ModElement element) {
 		super(element);
-
-		this.potionCures = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

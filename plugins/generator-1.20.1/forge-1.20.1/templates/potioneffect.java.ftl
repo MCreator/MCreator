@@ -31,23 +31,6 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
-<#assign isDefaultCuresPresent = false>
-<#assign isProtectedByTotemPresent = false>
-<#assign isMilkPresent = false>
-<#assign isHoneyPresent = false>
-<#assign i = 0>
-<#list data.potionCures as potionCures>
-	<#if generator.map(potionCures, "potioncures") == "MILK_BUCKET">
-		<#assign isDefaultCuresPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "TOTEM_OF_UNDYING">
-		<#assign isProtectedByTotemPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "MILK_BUCKET">
-		<#assign isMilkPresent = true>
-	<#elseif generator.map(potionCures, "potioncures") == "HONEY_BOTTLE">
-		<#assign isHoneyPresent = true>
-	</#if>
-	<#assign i = i + 1>
-</#list>
 package ${package}.potion;
 
 <#compress>
@@ -63,18 +46,18 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
-	<#if !((isDefaultCuresPresent || isMilkPresent) && i == 1) &&
-         !((isDefaultCuresPresent || isMilkPresent) && !(isHoneyPresent || isProtectedByTotemPresent))>
+	<#if !(data.isCuredByMilk && data.isProtectedByTotem) || data.isCuredbyHoney>
 	@Override public List<ItemStack> getCurativeItems() {
 		ArrayList<ItemStack> cures = new ArrayList<ItemStack>();
-		<#if isDefaultCuresPresent || isMilkPresent>
+		<#if data.isCuredByMilk>
 		cures.add(new ItemStack(Items.MILK_BUCKET));
 		</#if>
-		<#list data.potionCures as potionCures>
-			<#if !(isDefaultCuresPresent || isMilkPresent) || generator.map(potionCures, "potioncures") == "HONEY_BOTTLE" || generator.map(potionCures, "potioncures") == "TOTEM_OF_UNDYING">
-			cures.add(new ItemStack(Items.${generator.map(potionCures, "potioncures")}));
-			</#if>
-		</#list>
+		<#if data.isProtectedByTotem>
+		cures.add(new ItemStack(Items.TOTEM_OF_UNDYING));
+		</#if>
+		<#if data.isCuredbyHoney>
+		cures.add(new ItemStack(Items.HONEY_BOTTLE));
+		</#if>
 		return cures;
 	}
 	</#if>
