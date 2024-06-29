@@ -78,7 +78,7 @@ import java.util.List;
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
 			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
 
-			this.getModElement().clearMetadata().putMetadata("has_nbt_structure",
+			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
 		};
 	}
