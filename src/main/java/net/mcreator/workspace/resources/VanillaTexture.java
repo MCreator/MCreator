@@ -86,7 +86,7 @@ public final class VanillaTexture extends Texture {
 								List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
 								entries.stream().sorted(Comparator.comparing(ZipEntry::getName)).forEach(entry -> {
 									if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
-										String textureName = "minecraft:" + FilenameUtils.getName(entry.getName());
+										String textureName = "minecraft:" + FilenameUtils.getBaseName(entry.getName());
 										try {
 											textures.put(textureName, new VanillaTexture(type, textureName,
 													new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
