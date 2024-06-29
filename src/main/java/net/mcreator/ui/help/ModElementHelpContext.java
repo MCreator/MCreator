@@ -20,15 +20,23 @@
 package net.mcreator.ui.help;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.ui.modgui.ModElementGUI;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.net.URI;
-import java.util.function.Supplier;
 
-public record ModElementHelpContext(@Nullable String contextName, @Nullable URI contextURL, @Nullable String entry,
-									Supplier<GeneratableElement> generatableElement) implements IHelpContext {
+public record ModElementHelpContext<GE extends GeneratableElement>(@Nullable String contextName,
+																   @Nullable URI contextURL, @Nullable String entry,
+																   ModElementGUI<GE> modElementGUI)
+		implements IHelpContext {
 
-	public GeneratableElement getModElementFromGUI() {
-		return generatableElement.get();
+	public GE getModElementFromGUI() {
+		return modElementGUI.getElementFromGUI();
 	}
+
+	@Nullable @Override public JComponent owner() {
+		return modElementGUI;
+	}
+
 }

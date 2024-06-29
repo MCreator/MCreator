@@ -65,75 +65,79 @@ public class HelpUtils {
 
 	public static JComponent helpButton(IHelpContext context) {
 		JLabel lab = new JLabel(HelpLoader.hasFullHelp(context) ? UIRES.get("help") : UIRES.get("help_partial"));
-		lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		lab.addMouseListener(new MouseAdapter() {
+		if (context instanceof ModElementHelpContext<?>) {
+			lab.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			lab.addMouseListener(new MouseAdapter() {
 
-			BalloonTip balloonTip = null;
-			JTextPane editorPane = null;
+				BalloonTip balloonTip = null;
+				JTextPane editorPane = null;
 
-			@Override public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
+				@Override public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
 
-				// lazy load tooltip for performance reasons
-				if (balloonTip == null) {
-					editorPane = new JTextPane();
+					// lazy load tooltip for performance reasons
+					if (balloonTip == null) {
+						editorPane = new JTextPane();
 
-					editorPane.setContentType("text/html");
-					editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-					ComponentUtils.deriveFont(editorPane, 12);
+						editorPane.setContentType("text/html");
+						editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+						ComponentUtils.deriveFont(editorPane, 12);
 
-					editorPane.setEditable(false);
+						editorPane.setEditable(false);
 
-					editorPane.addHyperlinkListener(he -> {
-						if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-							DesktopUtils.browseSafe(he.getURL().toString());
-						}
-					});
+						editorPane.addHyperlinkListener(he -> {
+							if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+								DesktopUtils.browseSafe(he.getURL().toString());
+							}
+						});
 
-					JScrollPane scrollPane = new JScrollPane(editorPane);
-					scrollPane.setPreferredSize(new Dimension(335, 190));
+						JScrollPane scrollPane = new JScrollPane(editorPane);
+						scrollPane.setPreferredSize(new Dimension(335, 190));
 
-					balloonTip = new BalloonTip(lab, scrollPane,
-							new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
-									Theme.current().getAltBackgroundColor()), BalloonTip.Orientation.LEFT_BELOW,
-							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
+						balloonTip = new BalloonTip(lab, scrollPane,
+								new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
+										Theme.current().getAltBackgroundColor()), BalloonTip.Orientation.LEFT_BELOW,
+								BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
 
-					balloonTip.setFocusable(true);
-					balloonTip.addFocusListener(new FocusAdapter() {
-						@Override public void focusLost(FocusEvent e) {
-							super.focusLost(e);
-							if (e.getOppositeComponent() != editorPane)
-								balloonTip.setVisible(false);
-						}
-					});
+						balloonTip.setFocusable(true);
+						balloonTip.addFocusListener(new FocusAdapter() {
+							@Override public void focusLost(FocusEvent e) {
+								super.focusLost(e);
+								if (e.getOppositeComponent() != editorPane)
+									balloonTip.setVisible(false);
+							}
+						});
 
-					editorPane.addFocusListener(new FocusAdapter() {
-						@Override public void focusLost(FocusEvent e) {
-							super.focusLost(e);
-							if (e.getOppositeComponent() != balloonTip)
-								balloonTip.setVisible(false);
-						}
-					});
+						editorPane.addFocusListener(new FocusAdapter() {
+							@Override public void focusLost(FocusEvent e) {
+								super.focusLost(e);
+								if (e.getOppositeComponent() != balloonTip)
+									balloonTip.setVisible(false);
+							}
+						});
 
-					balloonTip.setVisible(false);
+						balloonTip.setVisible(false);
 
-					JButton closeButton = new JButton();
-					closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-					closeButton.setContentAreaFilled(false);
-					closeButton.setIcon(UIRES.get("close_small"));
-					balloonTip.setCloseButton(closeButton, false);
+						JButton closeButton = new JButton();
+						closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+						closeButton.setContentAreaFilled(false);
+						closeButton.setIcon(UIRES.get("close_small"));
+						balloonTip.setCloseButton(closeButton, false);
+					}
+
+					editorPane.setText(HelpLoader.loadHelpFor(context, false));
+					editorPane.setCaretPosition(0);
+
+					balloonTip.setVisible(!balloonTip.isVisible());
+
+					if (balloonTip.isVisible())
+						balloonTip.requestFocus(true);
 				}
-
-				editorPane.setText(HelpLoader.loadHelpFor(context));
-				editorPane.setCaretPosition(0);
-
-				balloonTip.setVisible(!balloonTip.isVisible());
-
-				if (balloonTip.isVisible())
-					balloonTip.requestFocus(true);
-			}
-		});
+			});
+		} else {
+			lab.setToolTipText(HelpLoader.loadHelpFor(context, true));
+		}
 
 		return lab;
 	}

@@ -632,9 +632,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	@Override @Nullable public IHelpContext withEntry(String entry) {
 		try {
-			return new ModElementHelpContext(this.contextName(), this.contextURL(), entry, this::getElementFromGUI);
+			return new ModElementHelpContext<>(this.contextName(), this.contextURL(), entry, this);
 		} catch (URISyntaxException e) {
-			return new ModElementHelpContext(this.contextName(), null, entry, this::getElementFromGUI);
+			throw new RuntimeException(e);
 		}
 	}
 
