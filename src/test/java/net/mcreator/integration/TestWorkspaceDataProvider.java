@@ -711,6 +711,11 @@ public class TestWorkspaceDataProvider {
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
 							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
+			structure.useStartHeight = _true;
+			structure.startHeightProviderType = getRandomString(random,
+					Arrays.asList("UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID"));
+			structure.startHeightMin = -23;
+			structure.startHeightMax = 61;
 			structure.ignoredBlocks = new ArrayList<>();
 			if (!emptyLists) {
 				structure.ignoredBlocks.addAll(
