@@ -1,7 +1,7 @@
 {
   "textures": {
-    "particle": "${modid}:block/${data.portalTexture}",
-    "portal": "${modid}:block/${data.portalTexture}"
+    "particle": "${data.portalTexture.format("%s:block/%s")}",
+    "portal": "${data.portalTexture.format("%s:block/%s")}"
   },
   "elements": [
     {

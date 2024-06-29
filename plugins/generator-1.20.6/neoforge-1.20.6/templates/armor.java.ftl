@@ -42,7 +42,7 @@ import net.minecraft.client.model.Model;
 
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
 
-	@SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
+	@SubscribeEvent public static void registerArmorMaterial(RegisterEvent event) {
 		event.register(Registries.ARMOR_MATERIAL, registerHelper -> {
 			ArmorMaterial armorMaterial = new ArmorMaterial(
 				Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {

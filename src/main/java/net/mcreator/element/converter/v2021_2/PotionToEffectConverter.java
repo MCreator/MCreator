@@ -26,11 +26,11 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.types.Potion;
 import net.mcreator.element.types.PotionEffect;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -81,13 +81,14 @@ public class PotionToEffectConverter implements IConverter {
 			PotionEffect potionEffect = new Gson().fromJson(jsonElementInput.getAsJsonObject().get("definition"),
 					PotionEffect.class);
 
+			// Set workspace for all workspace dependent objects
+			IWorkspaceDependent.processWorkspaceDependentObjects(potionEffect,
+					workspaceDependent -> workspaceDependent.setWorkspace(workspace));
+
 			// Pre-update for FV31 - new texture types
 			try {
-				FileIO.copyFile(workspace.getFolderManager()
-								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
-						workspace.getFolderManager()
-								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
-										TextureType.EFFECT));
+				FileIO.copyFile(potionEffect.icon.toFile(TextureType.OTHER),
+						potionEffect.icon.toFile(TextureType.EFFECT));
 			} catch (Exception e) {
 				LOG.warn("Failed to copy image for potion effect {}: {}", potionEffect.getModElement().getType(),
 						e.getMessage());

@@ -144,22 +144,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return null;
 	}
 
-	public ModElement putMetadata(String key, Object data) {
+	public void putMetadata(String key, @Nullable Object data) {
 		if (metadata == null)
 			metadata = new HashMap<>();
 		metadata.put(key, data);
-
-		return this;
 	}
 
-	public ModElement clearMetadata() {
-		if (metadata != null)
-			metadata = new HashMap<>();
-
-		return this;
-	}
-
-	public Object getMetadata(String key) {
+	@Nullable public Object getMetadata(String key) {
 		if (metadata == null)
 			return null;
 		return metadata.get(key);

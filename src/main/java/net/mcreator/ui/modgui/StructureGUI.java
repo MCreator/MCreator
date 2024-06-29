@@ -73,6 +73,11 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
+	private final JCheckBox useStartHeight = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> startHeightProviderType = new JComboBox<>(
+			new String[] { "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" });
+	private final JMinMaxSpinner startHeightRange = new JMinMaxSpinner(0, 128, -1024, 1024, 1);
+
 	private SearchableComboBox<String> structureSelector;
 
 	private final JComboBox<String> generationStep = new JComboBox<>(
@@ -115,7 +120,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 			ignoreBlocks.setListElements(List.of(new MItemBlock(modElement.getWorkspace(), "Blocks.STRUCTURE_BLOCK")));
 		}
 
-		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
+		JPanel params = new JPanel(new GridLayout(9, 2, 5, 2));
 		params.setOpaque(false);
 
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
@@ -148,6 +153,13 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ground_detection"),
 				L10N.label("elementgui.structuregen.surface_detection_type")));
 		params.add(surfaceDetectionType);
+
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/start_height"),
+				L10N.label("elementgui.structuregen.start_height")));
+		params.add(PanelUtils.westAndCenterElement(useStartHeight,
+				PanelUtils.westAndCenterElement(startHeightProviderType, startHeightRange, 5, 5), 5, 5));
+
+		useStartHeight.addActionListener(e -> updateEnabledFields());
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
 				L10N.label("elementgui.structuregen.terrain_adaptation")));
@@ -208,6 +220,14 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane5);
 		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7, false);
+
+		updateEnabledFields();
+	}
+
+	private void updateEnabledFields() {
+		surfaceDetectionType.setEnabled(!useStartHeight.isSelected());
+		startHeightProviderType.setEnabled(useStartHeight.isSelected());
+		startHeightRange.setEnabled(useStartHeight.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -228,6 +248,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ignoreBlocks.setListElements(structure.ignoredBlocks);
 		projection.setSelectedItem(structure.projection);
 		surfaceDetectionType.setSelectedItem(structure.surfaceDetectionType);
+		useStartHeight.setSelected(structure.useStartHeight);
+		startHeightProviderType.setSelectedItem(structure.startHeightProviderType);
+		startHeightRange.setMinValue(structure.startHeightMin);
+		startHeightRange.setMaxValue(structure.startHeightMax);
 		terrainAdaptation.setSelectedItem(structure.terrainAdaptation);
 		structureSelector.setSelectedItem(structure.structure);
 		restrictionBiomes.setListElements(structure.restrictionBiomes);
@@ -237,6 +261,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		size.setValue(structure.size);
 		maxDistanceFromCenter.setValue(structure.maxDistanceFromCenter);
 		jigsaw.setEntries(structure.jigsawPools);
+
+		updateEnabledFields();
 	}
 
 	@Override public Structure getElementFromGUI() {
@@ -244,6 +270,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		structure.ignoredBlocks = ignoreBlocks.getListElements();
 		structure.projection = (String) projection.getSelectedItem();
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
+		structure.useStartHeight = useStartHeight.isSelected();
+		structure.startHeightProviderType = (String) startHeightProviderType.getSelectedItem();
+		structure.startHeightMin = startHeightRange.getIntMinValue();
+		structure.startHeightMax = startHeightRange.getIntMaxValue();
 		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
 		structure.structure = structureSelector.getSelectedItem();

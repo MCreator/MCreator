@@ -141,7 +141,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	private void editSelectedModelTextureMappings() {
 		Model model = elementList.getSelectedValue();
-		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
+		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+				workspacePanel.getMCreator().getWorkspace(), model);
 		if (textureMappingMap != null) {
 			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
 					workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);

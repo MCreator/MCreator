@@ -28,8 +28,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 public class BooleanGameRulesConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		if (input.getModElement().getMetadata("type").equals("boolean")) {
-			input.getModElement().clearMetadata();
+		if ("boolean".equals(input.getModElement().getMetadata("type"))) {
 			input.getModElement().putMetadata("type", VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 		}
 

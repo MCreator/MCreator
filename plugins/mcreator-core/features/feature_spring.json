@@ -1,0 +1,61 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "state",
+      "datalist": "fluid"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "valid_blocks",
+      "check": "BlockHolderSet"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "requires_block_below",
+      "checked": true
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "rock_count",
+      "value": 4,
+      "min": 0,
+      "max": 5,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "hole_count",
+      "value": 1,
+      "min": 0,
+      "max": 5,
+      "precision": 1
+    }
+  ],
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"valid_blocks\"><block type=\"block_holderset_tag\"><field name=\"tag\">minecraft:base_stone_overworld</field></block></value>"
+    ],
+    "inputs": [
+      "valid_blocks"
+    ],
+    "fields": [
+      "state",
+      "requires_block_below",
+      "rock_count",
+      "hole_count"
+    ]
+  }
+}

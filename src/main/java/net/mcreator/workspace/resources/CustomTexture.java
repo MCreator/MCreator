@@ -30,10 +30,18 @@ import java.util.List;
 
 public final class CustomTexture extends Texture {
 
+	private final File textureFile;
+
 	CustomTexture(TextureType textureType, File texture) {
 		super(textureType, textureType == TextureType.ARMOR ?
 				(FilenameUtils.removeExtension(texture.getName()).replace("_layer_1", "").replace("_layer_2", "")) :
 				FilenameUtils.removeExtension(texture.getName()));
+
+		this.textureFile = texture;
+	}
+
+	public File getTextureFile() {
+		return textureFile;
 	}
 
 	@Override public ImageIcon getTextureIcon(Workspace workspace) {

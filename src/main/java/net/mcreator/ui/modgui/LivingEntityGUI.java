@@ -652,8 +652,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.westAndCenterElement(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg,
-				new JEmptyBox(2, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor), creativeTabs, 5, 0));
+		spo2.add(PanelUtils.westAndCenterElement(
+				PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, new JEmptyBox(2, 2), spawnEggBaseColor,
+						new JEmptyBox(2, 2), spawnEggDotColor), creativeTabs, 5, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
