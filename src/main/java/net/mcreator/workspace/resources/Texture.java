@@ -65,8 +65,10 @@ public abstract class Texture {
 
 		if (name.indexOf(':') == -1)
 			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
-		else
+		else if (name.startsWith("minecraft:"))
 			return VanillaTexture.getTexture(workspace, textureType, name);
+
+		return null;
 	}
 
 	public static final class Dummy extends Texture {
