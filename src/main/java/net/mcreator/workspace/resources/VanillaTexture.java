@@ -80,25 +80,25 @@ public final class VanillaTexture extends Texture {
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
-					if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
-						if (libraryFile.getName().contains(jarName)) {
-							try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
-								List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
-								entries.stream().sorted(Comparator.comparing(ZipEntry::getName)).forEach(entry -> {
-									if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
-										String textureName = "minecraft:" + FilenameUtils.getBaseName(entry.getName());
-										try {
-											textures.put(textureName, new VanillaTexture(type, textureName,
-													new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
-										} catch (IOException ignored) {
+					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
+						try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
+							List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
+							entries.parallelStream().sorted(Comparator.comparing(ZipEntry::getName))
+									.forEachOrdered(entry -> {
+										if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
+											String textureName =
+													"minecraft:" + FilenameUtils.getBaseName(entry.getName());
+											try {
+												textures.put(textureName, new VanillaTexture(type, textureName,
+														new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
+											} catch (IOException ignored) {
+											}
 										}
-									}
-								});
-							} catch (IOException e) {
-								LOG.warn("Failed to read library file: {}", libraryFile, e);
-							}
-							break;
+									});
+						} catch (IOException e) {
+							LOG.warn("Failed to read library file: {}", libraryFile, e);
 						}
+						break;
 					}
 				}
 			}
