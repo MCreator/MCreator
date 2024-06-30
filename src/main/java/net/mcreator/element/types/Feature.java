@@ -80,15 +80,21 @@ import java.util.List;
 
 			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
+			this.getModElement().putMetadata("skip_configured_feature",
+							blocklyToFeature.getFeatureType().equals("configured_feature_reference") ? true : null);
 		};
 	}
 
 	public boolean hasGenerationConditions() {
-		return generateCondition != null;
+		return generateCondition != null && hasConfiguredFeature();
 	}
 
 	public boolean hasPlacedFeature() {
 		return !skipPlacement;
+	}
+
+	public boolean hasConfiguredFeature() {
+		return this.getModElement().getMetadata("skip_configured_feature") == null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
