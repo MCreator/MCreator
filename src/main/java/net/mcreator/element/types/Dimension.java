@@ -35,7 +35,6 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
-import net.mcreator.workspace.resources.Texture;
 
 import javax.swing.*;
 import java.awt.*;

@@ -711,6 +711,11 @@ public class TestWorkspaceDataProvider {
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
 							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
+			structure.useStartHeight = _true;
+			structure.startHeightProviderType = getRandomString(random,
+					Arrays.asList("UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID"));
+			structure.startHeightMin = -23;
+			structure.startHeightMax = 61;
 			structure.ignoredBlocks = new ArrayList<>();
 			if (!emptyLists) {
 				structure.ignoredBlocks.addAll(
@@ -1118,8 +1123,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.color = Color.magenta;
 			potionEffect.icon = new TextureHolder(modElement.getWorkspace(), "effect1");
 			potionEffect.isInstant = !_true;
-			potionEffect.isBad = _true;
-			potionEffect.isBenefitical = !_true;
+			potionEffect.mobEffectCategory = getRandomItem(random,
+					new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.onStarted = new Procedure("procedure1");

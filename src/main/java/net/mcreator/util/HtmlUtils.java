@@ -26,8 +26,8 @@ public class HtmlUtils {
 	private static HashMap<String, CharSequence> lookupMap = null;
 
 	public static String html2text(String input) {
-		input = input.replace("\n", "").replace("\r", "").replaceAll("(?i)<br[^>]* */?>", "\n").replaceAll("<.*?>", "")
-				.replaceAll(" +", " ");
+		input = input.replaceAll("<head[\\s\\S]*?</head>", "").replace("\n", "").replace("\r", "")
+				.replaceAll("(?i)<br[^>]* */?>", "\n").replaceAll("<.*?>", "").replaceAll(" +", " ");
 		return unescapeHtml(input).trim();
 	}
 

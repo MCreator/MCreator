@@ -23,6 +23,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import java.util.List;
 public final class CustomTexture extends Texture {
 
 	private final File textureFile;
+
+	@Nullable private ImageIcon cachedIcon = null;
 
 	CustomTexture(TextureType textureType, File texture) {
 		super(textureType, textureType == TextureType.ARMOR ?
@@ -45,11 +48,14 @@ public final class CustomTexture extends Texture {
 	}
 
 	@Override public ImageIcon getTextureIcon(Workspace workspace) {
+		if (cachedIcon != null)
+			return cachedIcon;
+
 		if (textureType == TextureType.ARMOR) {
 			File[] armorTextures = workspace.getFolderManager().getArmorTextureFilesForName(textureName);
-			return new ImageIcon(armorTextures[0].getAbsolutePath());
+			return cachedIcon = new ImageIcon(armorTextures[0].getAbsolutePath());
 		} else {
-			return new ImageIcon(
+			return cachedIcon = new ImageIcon(
 					workspace.getFolderManager().getTextureFile(textureName, textureType).getAbsolutePath());
 		}
 	}
@@ -66,7 +72,7 @@ public final class CustomTexture extends Texture {
 			customTextureFiles = workspace.getFolderManager().getTexturesList(type);
 		}
 
-		return customTextureFiles.stream().map(e -> (Texture) new CustomTexture(type, e)).toList();
+		return customTextureFiles.parallelStream().map(e -> (Texture) new CustomTexture(type, e)).toList();
 	}
 
 }

@@ -52,6 +52,7 @@ import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 import net.mcreator.element.converter.v2024_2.BlockHarvestLevelConverter;
 import net.mcreator.element.converter.v2024_2.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
+import net.mcreator.element.converter.v2024_2.PotionEffectCategoryConverter;
 import net.mcreator.element.converter.v2024_2.HarvestLevelProceduresRemover;
 import net.mcreator.element.converter.v2024_2.ItemsCreativeTabsConverter;
 import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
@@ -150,7 +151,8 @@ public class ConverterRegistry {
 			new PotionToEffectConverter()
 		));
 		put(ModElementType.POTIONEFFECT, List.of(
-			new EffectTextureConverter()
+			new EffectTextureConverter(),
+			new PotionEffectCategoryConverter()
 		));
 		put(ModElementType.PROCEDURE, List.of(
 			new LegacyDimensionProcedureRemover(),

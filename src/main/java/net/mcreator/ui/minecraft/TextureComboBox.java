@@ -84,7 +84,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 				BorderFactory.createEmptyBorder(0, 8, 0, 8)));
 		importTexture.setOpaque(false);
 		importTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
+			TextureImportDialogs.importMultipleTextures(mcreator, textureType);
 			reload();
 		});
 		add("East", importTexture);

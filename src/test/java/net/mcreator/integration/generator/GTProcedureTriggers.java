@@ -60,8 +60,7 @@ public class GTProcedureTriggers {
 			Procedure procedure = new Procedure(modElement);
 
 			if (externalTrigger.dependencies_provided != null) {
-				procedure.getModElement().clearMetadata()
-						.putMetadata("dependencies", externalTrigger.dependencies_provided);
+				procedure.getModElement().putMetadata("dependencies", externalTrigger.dependencies_provided);
 				procedure.skipDependencyRegeneration();
 			}
 

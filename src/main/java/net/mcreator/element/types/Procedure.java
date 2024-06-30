@@ -120,10 +120,10 @@ public class Procedure extends GeneratableElement {
 
 			if (!this.skipDependencyRegeneration) {
 				// we update the dependency list of the procedure
-				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
-						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
-								null :
-								blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
+				this.getModElement().putMetadata("dependencies", blocklyToJava.getDependencies());
+				this.getModElement().putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+						null :
+						blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
 			}
 
 			additionalData.put("dependencies", reloadDependencies());

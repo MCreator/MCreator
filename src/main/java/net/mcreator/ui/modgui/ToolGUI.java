@@ -159,8 +159,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		additionalDropCondition = new ProcedureSelector(this.withEntry("tool/event_additional_drop_condition"),
 				mcreator, L10N.t("elementgui.tool.event_additional_drop_condition"),
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"itemstack:itemstack/blockstate:blockstate")).setDefaultName(
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("itemstack:itemstack/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
