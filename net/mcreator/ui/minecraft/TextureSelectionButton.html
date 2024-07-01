@@ -187,8 +187,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTextureName()" class="member-name-link">getTextureName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTextureHolder()" class="member-name-link">getTextureHolder</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasTexture()" class="member-name-link">hasTexture</a>()</code></div>
@@ -205,11 +205,11 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIcon(javax.swing.Icon)" class="member-name-link">setIcon</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/Icon.html" title="class or interface in javax.swing" class="external-link">Icon</a>&nbsp;icon)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.workspace.resources.Texture)" class="member-name-link">setTexture</a><wbr>(<a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.element.parts.TextureHolder)" class="member-name-link">setTexture</a><wbr>(<a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a>&nbsp;texture)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTextureFromTextureName(java.lang.String)" class="member-name-link">setTextureFromTextureName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;texture)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.workspace.resources.Texture)" class="member-name-link">setTexture</a><wbr>(<a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -271,12 +271,6 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setTextureFromTextureName(java.lang.String)">
-<h3>setTextureFromTextureName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTextureFromTextureName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;texture)</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="setTexture(net.mcreator.workspace.resources.Texture)">
 <h3>setTexture</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTexture</span><wbr><span class="parameters">(@Nullable
@@ -284,9 +278,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTextureName()">
-<h3>getTextureName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTextureName</span>()</div>
+<section class="detail" id="setTexture(net.mcreator.element.parts.TextureHolder)">
+<h3>setTexture</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTexture</span><wbr><span class="parameters">(@Nullable
+ <a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a>&nbsp;texture)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getTextureHolder()">
+<h3>getTextureHolder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></span>&nbsp;<span class="element-name">getTextureHolder</span>()</div>
 </section>
 </li>
 <li>

@@ -82,11 +82,11 @@ loadScripts(document, 'script');</script>
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">net.mcreator.ui.help</a></div>
-<h1 title="Record Class ModElementHelpContext" class="title">Record Class ModElementHelpContext</h1>
+<h1 title="Record Class ModElementHelpContext" class="title">Record Class ModElementHelpContext&lt;GE extends <a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">java.lang.Record</a>
-<div class="inheritance">net.mcreator.ui.help.ModElementHelpContext</div>
+<div class="inheritance">net.mcreator.ui.help.ModElementHelpContext&lt;GE&gt;</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ModElementHelpContext</span>(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextName, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;contextURL, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generatableElement)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ModElementHelpContext&lt;GE extends <a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span>(@Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextName, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;contextURL, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry, <a href="../modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a> extends <a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;modElementGUI)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a>
 implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></span></div>
 </section>
@@ -118,10 +118,10 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.net.URI,java.lang.String,java.util.function.Supplier)" class="member-name-link">ModElementHelpContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.net.URI,java.lang.String,net.mcreator.ui.modgui.ModElementGUI)" class="member-name-link">ModElementHelpContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;contextURL,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generatableElement)</code></div>
+ <a href="../modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a>&gt;&nbsp;modElementGUI)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>ModElementHelpContext</code> record class.</div>
 </div>
@@ -159,22 +159,25 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates whether some other object is "equal to" this one.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a><wbr>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generatableElement()" class="member-name-link">generatableElement</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the value of the <code>generatableElement</code> record component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElementFromGUI()" class="member-name-link">getModElementFromGUI</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElementFromGUI()" class="member-name-link">getModElementFromGUI</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a><wbr>&lt;<a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#modElementGUI()" class="member-name-link">modElementGUI</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <code>modElementGUI</code> record component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owner()" class="member-name-link">owner</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
 </div>
@@ -198,7 +201,7 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.net.URI,java.lang.String,java.util.function.Supplier)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.net.URI,java.lang.String,net.mcreator.ui.modgui.ModElementGUI)">
 <h3>ModElementHelpContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ModElementHelpContext</span><wbr><span class="parameters">(@Nullable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextName,
@@ -206,14 +209,14 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;contextURL,
  @Nullable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generatableElement)</span></div>
+ <a href="../modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a>&gt;&nbsp;modElementGUI)</span></div>
 <div class="block">Creates an instance of a <code>ModElementHelpContext</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>contextName</code> - the value for the <code>contextName</code> record component</dd>
 <dd><code>contextURL</code> - the value for the <code>contextURL</code> record component</dd>
 <dd><code>entry</code> - the value for the <code>entry</code> record component</dd>
-<dd><code>generatableElement</code> - the value for the <code>generatableElement</code> record component</dd>
+<dd><code>modElementGUI</code> - the value for the <code>modElementGUI</code> record component</dd>
 </dl>
 </section>
 </li>
@@ -228,7 +231,18 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
 <li>
 <section class="detail" id="getModElementFromGUI()">
 <h3>getModElementFromGUI</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></span>&nbsp;<span class="element-name">getModElementFromGUI</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a></span>&nbsp;<span class="element-name">getModElementFromGUI</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="owner()">
+<h3>owner</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></span>&nbsp;<span class="element-name">owner</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="IHelpContext.html#owner()">owner</a></code>&nbsp;in interface&nbsp;<code><a href="IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -315,13 +329,13 @@ implements <a href="IHelpContext.html" title="interface in net.mcreator.ui.help"
 </section>
 </li>
 <li>
-<section class="detail" id="generatableElement()">
-<h3>generatableElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span>&nbsp;<span class="element-name">generatableElement</span>()</div>
-<div class="block">Returns the value of the <code>generatableElement</code> record component.</div>
+<section class="detail" id="modElementGUI()">
+<h3>modElementGUI</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="ModElementHelpContext.html" title="type parameter in ModElementHelpContext">GE</a>&gt;</span>&nbsp;<span class="element-name">modElementGUI</span>()</div>
+<div class="block">Returns the value of the <code>modElementGUI</code> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the value of the <code>generatableElement</code> record component</dd>
+<dd>the value of the <code>modElementGUI</code> record component</dd>
 </dl>
 </section>
 </li>
