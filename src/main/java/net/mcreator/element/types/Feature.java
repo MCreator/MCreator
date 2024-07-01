@@ -98,7 +98,10 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.CONFIGUREDFEATURE));
+		List<BaseType> baseTypes = new ArrayList<>();
+
+		if (hasConfiguredFeature())
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
