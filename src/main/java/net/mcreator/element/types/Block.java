@@ -38,7 +38,6 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
@@ -52,12 +51,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
-	@TextureReference(TextureType.BLOCK) public String texture;
-	@TextureReference(TextureType.BLOCK) public String textureTop;
-	@TextureReference(TextureType.BLOCK) public String textureLeft;
-	@TextureReference(TextureType.BLOCK) public String textureFront;
-	@TextureReference(TextureType.BLOCK) public String textureRight;
-	@TextureReference(TextureType.BLOCK) public String textureBack;
+	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureLeft;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureFront;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureRight;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 	public int renderType;
 	@Nonnull public String customModelName;
 	public int rotationMode;
@@ -65,8 +64,8 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
-	@TextureReference(TextureType.ITEM) public String itemTexture;
-	@TextureReference(TextureType.BLOCK) public String particleTexture;
+	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
 
@@ -270,7 +269,7 @@ import java.util.stream.Collectors;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
@@ -331,13 +330,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, texture);
+		return texture.getImage(TextureType.BLOCK);
 	}
 
-	private Image getTextureWithFallback(String textureName) {
-		if (textureName.isEmpty())
+	private Image getTextureWithFallback(TextureHolder texture) {
+		if (texture.isEmpty())
 			return getMainTexture();
-		return Texture.getImage(getModElement().getWorkspace(), TextureType.BLOCK, textureName);
+		return texture.getImage(TextureType.BLOCK);
 	}
 
 	@Override public String getRenderType() {
@@ -362,6 +361,30 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public TextureHolder textureTop() {
+		return textureTop == null || textureTop.isEmpty() ? texture : textureTop;
+	}
+
+	public TextureHolder textureLeft() {
+		return textureLeft == null || textureLeft.isEmpty() ? texture : textureLeft;
+	}
+
+	public TextureHolder textureFront() {
+		return textureFront == null || textureFront.isEmpty() ? texture : textureFront;
+	}
+
+	public TextureHolder textureRight() {
+		return textureRight == null || textureRight.isEmpty() ? texture : textureRight;
+	}
+
+	public TextureHolder textureBack() {
+		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+
+	public TextureHolder getParticleTexture() {
+		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
 	}
 
 }

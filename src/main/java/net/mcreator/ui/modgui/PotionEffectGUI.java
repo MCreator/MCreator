@@ -39,7 +39,6 @@ import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -54,10 +53,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private TextureSelectionButton icon;
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
-	private final JCheckBox isBad = L10N.checkbox("elementgui.potioneffect.is_bad");
-	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potioneffect.is_benefitical");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> mobEffectCategory = new JComboBox<>(
+			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -93,13 +92,11 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(7, 2, 50, 2));
 
 		ComponentUtils.deriveFont(effectName, 16);
 
 		isInstant.setOpaque(false);
-		isBad.setOpaque(false);
-		isBenefitical.setOpaque(false);
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 
@@ -118,13 +115,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 				L10N.label("elementgui.potioneffect.instant")));
 		selp.add(isInstant);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/bad"),
-				L10N.label("elementgui.potioneffect.bad")));
-		selp.add(isBad);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/benefitical"),
-				L10N.label("elementgui.potioneffect.benefitical")));
-		selp.add(isBenefitical);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/category"),
+				L10N.label("elementgui.potioneffect.category")));
+		selp.add(mobEffectCategory);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_inventory"),
 				L10N.label("elementgui.potioneffect.render_status_inventory")));
@@ -188,12 +181,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override public void openInEditingMode(PotionEffect potion) {
 		effectName.setText(potion.effectName);
-		icon.setTextureFromTextureName(
-				StringUtils.removeEnd(potion.icon, ".png")); // legacy, old workspaces stored name with extension
+		icon.setTexture(potion.icon);
 		color.setColor(potion.color);
 		isInstant.setSelected(potion.isInstant);
-		isBad.setSelected(potion.isBad);
-		isBenefitical.setSelected(potion.isBenefitical);
+		mobEffectCategory.setSelectedItem(potion.mobEffectCategory);
 		renderStatusInInventory.setSelected(potion.renderStatusInInventory);
 		renderStatusInHUD.setSelected(potion.renderStatusInHUD);
 		onStarted.setSelectedProcedure(potion.onStarted);
@@ -205,11 +196,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override public PotionEffect getElementFromGUI() {
 		PotionEffect potion = new PotionEffect(modElement);
 		potion.effectName = effectName.getText();
-		potion.icon = icon.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
+		potion.icon = icon.getTextureHolder();
 		potion.color = color.getColor();
 		potion.isInstant = isInstant.isSelected();
-		potion.isBad = isBad.isSelected();
-		potion.isBenefitical = isBenefitical.isSelected();
+		potion.mobEffectCategory = (String) mobEffectCategory.getSelectedItem();
 		potion.renderStatusInInventory = renderStatusInInventory.isSelected();
 		potion.renderStatusInHUD = renderStatusInHUD.isSelected();
 		potion.onStarted = onStarted.getSelectedProcedure();

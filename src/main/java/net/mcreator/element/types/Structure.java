@@ -40,9 +40,14 @@ import java.util.List;
 	public int separation;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
-	public String surfaceDetectionType;
 	public String terrainAdaptation;
 	public String generationStep;
+
+	public String surfaceDetectionType;
+	public boolean useStartHeight;
+	public String startHeightProviderType;
+	public int startHeightMin;
+	public int startHeightMax;
 
 	public int size;
 	public int maxDistanceFromCenter;
@@ -58,6 +63,11 @@ import java.util.List;
 		this.size = 1;
 		this.maxDistanceFromCenter = 64;
 		this.jigsawPools = new ArrayList<>();
+
+		this.useStartHeight = false;
+		this.startHeightProviderType = "UNIFORM";
+		this.startHeightMin = 0;
+		this.startHeightMax = 128;
 	}
 
 	public List<JigsawPool.JigsawPart> getPoolParts() {

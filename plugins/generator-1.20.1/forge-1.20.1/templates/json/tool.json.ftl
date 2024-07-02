@@ -2,9 +2,9 @@
     "parent": "item/handheld",
     "textures": {
         <#if var_item??>
-            "layer0": "${modid}:item/${data.getItemTextureFor(var_item)}"
+            "layer0": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
         <#else>
-            "layer0": "${modid}:item/${data.texture}"
+            "layer0": "${data.texture.format("%s:item/%s")}"
         </#if>
     }
     <#if data.getModels?? && data.getModels()?has_content>,

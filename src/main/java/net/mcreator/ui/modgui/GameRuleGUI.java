@@ -162,7 +162,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	@Override protected void afterGeneratableElementStored() {
 		super.afterGeneratableElementStored();
-		modElement.clearMetadata();
 		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ?
 				VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 				VariableTypeLoader.BuiltInTypes.LOGIC.getName());

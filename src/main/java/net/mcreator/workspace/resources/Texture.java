@@ -65,20 +65,10 @@ public abstract class Texture {
 
 		if (name.indexOf(':') == -1)
 			return new CustomTexture(textureType, workspace.getFolderManager().getTextureFile(name, textureType));
+		else if (name.startsWith("minecraft:"))
+			return VanillaTexture.getTexture(workspace, textureType, name);
 
 		return null;
-	}
-
-	@Nonnull public static ImageIcon getImageIcon(Workspace workspace, TextureType textureType, String name) {
-		Texture texture = fromName(workspace, textureType, name);
-		if (texture == null)
-			return new EmptyIcon.ImageIcon(16,16);
-
-		return texture.getTextureIcon(workspace);
-	}
-
-	@Nonnull public static Image getImage(Workspace workspace, TextureType textureType, String name) {
-		return getImageIcon(workspace, textureType, name).getImage();
 	}
 
 	public static final class Dummy extends Texture {

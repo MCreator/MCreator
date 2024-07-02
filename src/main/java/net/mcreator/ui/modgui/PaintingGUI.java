@@ -34,7 +34,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -127,8 +126,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		author.setText(painting.author);
 		width.setValue(painting.width);
 		height.setValue(painting.height);
-		texture.setTextureFromTextureName(
-				StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
+		texture.setTexture(painting.texture);
 	}
 
 	@Override public Painting getElementFromGUI() {
@@ -137,7 +135,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
+		painting.texture = texture.getTextureHolder();
 		return painting;
 	}
 

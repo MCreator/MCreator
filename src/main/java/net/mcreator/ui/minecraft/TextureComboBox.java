@@ -29,12 +29,12 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -84,7 +84,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 				BorderFactory.createEmptyBorder(0, 8, 0, 8)));
 		importTexture.setOpaque(false);
 		importTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
+			TextureImportDialogs.importMultipleTextures(mcreator, textureType);
 			reload();
 		});
 		add("East", importTexture);
@@ -114,7 +114,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 	public void setTextureFromTextureName(@Nullable String textureName) {
 		if (textureName != null && !textureName.isBlank()) {
-			textureName = FilenameUtils.removeExtension(textureName);
+			textureName = FilenameUtilsPatched.removeExtension(textureName);
 			comboBox.setSelectedItem(Texture.fromName(mcreator.getWorkspace(), textureType, textureName));
 		}
 	}

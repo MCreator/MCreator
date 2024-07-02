@@ -813,10 +813,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override public void openInEditingMode(Plant plant) {
-		itemTexture.setTextureFromTextureName(plant.itemTexture);
-		particleTexture.setTextureFromTextureName(plant.particleTexture);
-		texture.setTextureFromTextureName(plant.texture);
-		textureBottom.setTextureFromTextureName(plant.textureBottom);
+		itemTexture.setTexture(plant.itemTexture);
+		particleTexture.setTexture(plant.particleTexture);
+		texture.setTexture(plant.texture);
+		textureBottom.setTexture(plant.textureBottom);
 		name.setText(plant.name);
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
@@ -907,10 +907,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		Plant plant = new Plant(modElement);
 		plant.name = name.getText();
 		plant.creativeTabs = creativeTabs.getListElements();
-		plant.texture = texture.getTextureName();
-		plant.textureBottom = textureBottom.getTextureName();
-		plant.itemTexture = itemTexture.getTextureName();
-		plant.particleTexture = particleTexture.getTextureName();
+		plant.texture = texture.getTextureHolder();
+		plant.textureBottom = textureBottom.getTextureHolder();
+		plant.itemTexture = itemTexture.getTextureHolder();
+		plant.particleTexture = particleTexture.getTextureHolder();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();

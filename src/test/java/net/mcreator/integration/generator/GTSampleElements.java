@@ -59,8 +59,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "LOGIC");
+				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "LOGIC");
 				me.putMetadata("dependencies",
 						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
@@ -74,8 +74,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 3; i++) {
-				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "NUMBER");
+				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "NUMBER");
 				if (i == 3) {
 					me.putMetadata("dependencies", Collections.emptyList());
 				} else {
@@ -94,8 +94,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "STRING");
+				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "STRING");
 				me.putMetadata("dependencies",
 						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
@@ -110,8 +110,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "ITEMSTACK");
+				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "ITEMSTACK");
 				me.putMetadata("dependencies",
 						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
@@ -125,8 +125,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "ACTIONRESULTTYPE");
+				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "ACTIONRESULTTYPE");
 				me.putMetadata("dependencies",
 						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
@@ -141,8 +141,8 @@ public class GTSampleElements {
 			}
 
 			for (int i = 1; i <= 1; i++) {
-				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata(
-						"return_type", "ENTITY");
+				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "ENTITY");
 				me.putMetadata("dependencies",
 						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")));
 

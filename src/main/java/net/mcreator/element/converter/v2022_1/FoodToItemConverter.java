@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -49,7 +50,7 @@ public class FoodToItemConverter implements IConverter {
 
 			JsonObject food = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 			item.name = food.get("name").getAsString();
-			item.texture = food.get("texture").getAsString();
+			item.texture = new TextureHolder(workspace, food.get("texture").getAsString());
 			item.renderType = food.get("renderType").getAsInt();
 			if (food.get("customModelName") != null)
 				item.customModelName = food.get("customModelName").getAsString();

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
@@ -92,10 +93,6 @@ public class TextureSelectionButton extends VButton {
 		});
 	}
 
-	public void setTextureFromTextureName(String texture) {
-		setTexture(Texture.fromName(td.getMCreator().getWorkspace(), td.getTextureType(), texture));
-	}
-
 	protected void setTexture(@Nullable Texture texture) {
 		if (texture != null) {
 			selectedTexture = texture;
@@ -106,8 +103,14 @@ public class TextureSelectionButton extends VButton {
 		}
 	}
 
-	public String getTextureName() {
-		return selectedTexture != null ? selectedTexture.getTextureName() : "";
+	public void setTexture(@Nullable TextureHolder texture) {
+		if (texture != null) {
+			setTexture(texture.toTexture(td.getTextureType()));
+		}
+	}
+
+	public TextureHolder getTextureHolder() {
+		return new TextureHolder(td.getMCreator().getWorkspace(), selectedTexture);
 	}
 
 	public boolean hasTexture() {

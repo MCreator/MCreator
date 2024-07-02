@@ -159,8 +159,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		additionalDropCondition = new ProcedureSelector(this.withEntry("tool/event_additional_drop_condition"),
 				mcreator, L10N.t("elementgui.tool.event_additional_drop_condition"),
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"itemstack:itemstack/blockstate:blockstate")).setDefaultName(
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("itemstack:itemstack/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
@@ -396,7 +396,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	@Override public void openInEditingMode(Tool tool) {
 		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
-		texture.setTextureFromTextureName(tool.texture);
+		texture.setTexture(tool.texture);
 		toolType.setSelectedItem(tool.toolType);
 		blockDropsTier.setSelectedItem(tool.blockDropsTier);
 		additionalDropCondition.setSelectedProcedure(tool.additionalDropCondition);
@@ -465,7 +465,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.immuneToFire = immuneToFire.isSelected();
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
-		tool.texture = texture.getTextureName();
+		tool.texture = texture.getTextureHolder();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
 		tool.renderType = 0;
