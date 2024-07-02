@@ -55,6 +55,11 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
+
+	private final JCheckBox isCuredByMilk = L10N.checkbox("elementgui.potioneffect.is_cured_by_milk");
+	private final JCheckBox isCuredbyHoney = L10N.checkbox("elementgui.potioneffect.is_cured_by_honey");
+	private final JCheckBox isProtectedByTotem = L10N.checkbox("elementgui.potioneffect.is_protected_by_totem");
+  
 	private final JComboBox<String> mobEffectCategory = new JComboBox<>(
 			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
 
@@ -133,7 +138,22 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		selp.setOpaque(false);
 
-		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
+		JPanel curesSubpane = new JPanel(new GridLayout(1, 2, 50, 2));
+		curesSubpane.setOpaque(false);
+
+		isCuredByMilk.setOpaque(false);
+		isProtectedByTotem.setOpaque(false);
+		isCuredbyHoney.setOpaque(false);
+
+		isCuredByMilk.setSelected(true);
+		isProtectedByTotem.setSelected(true);
+
+		curesSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/cures"),
+				L10N.label("elementgui.potioneffect.cures")));
+		curesSubpane.add(
+				PanelUtils.gridElements(3, 2, 50, 2, isCuredByMilk, isProtectedByTotem, isCuredbyHoney));
+
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)), curesSubpane)));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
@@ -191,6 +211,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
 		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
+		isCuredByMilk.setSelected(potion.isCuredByMilk);
+		isProtectedByTotem.setSelected(potion.isProtectedByTotem);
+		isCuredbyHoney.setSelected(potion.isCuredbyHoney);
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -206,6 +229,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
 		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
+		potion.isCuredByMilk = isCuredByMilk.isSelected();
+		potion.isProtectedByTotem = isProtectedByTotem.isSelected();
+		potion.isCuredbyHoney = isCuredbyHoney.isSelected();
 		return potion;
 	}
 

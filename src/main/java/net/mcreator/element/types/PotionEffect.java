@@ -45,6 +45,10 @@ import java.io.File;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
 
+	public boolean isCuredByMilk;
+	public boolean isProtectedByTotem;
+	public boolean isCuredbyHoney;
+
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;

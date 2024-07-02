@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
-
 package ${package}.potion;
 
 <#compress>
@@ -39,6 +38,20 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
 	}
+
+	<#if !(data.isCuredByMilk && data.isProtectedByTotem) || data.isCuredbyHoney>
+	@Override public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+		<#if data.isCuredByMilk>
+		cures.add(EffectCures.MILK);
+		</#if>
+		<#if data.isProtectedByTotem>
+		cures.add(EffectCures.PROTECTED_BY_TOTEM);
+		</#if>
+		<#if data.isCuredbyHoney>
+		cures.add(EffectCures.HONEY);
+		</#if>
+	}
+	</#if>
 
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
