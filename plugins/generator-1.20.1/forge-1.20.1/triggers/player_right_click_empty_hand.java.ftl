@@ -10,6 +10,8 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
+		if (event.getHand() != event.getEntity().getUsedItemHand())
+			return;
 		${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}

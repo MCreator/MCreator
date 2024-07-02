@@ -10,6 +10,8 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
+		if (event.getHand() != event.getEntity().getUsedItemHand())
+			return;
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}
