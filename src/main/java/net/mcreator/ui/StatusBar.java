@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
@@ -123,9 +124,9 @@ public class StatusBar extends JPanel {
 	private void addToolTipReader() {
 		Toolkit.getDefaultToolkit().addAWTEventListener(e -> {
 			if (e.getID() == 504 && e.getSource() instanceof JComponent component) {
-				if (component.getToolTipText() != null) {
-					setMessage(component.getToolTipText().replace("<br>", " ").replace("<br/>", " ")
-							.replaceAll("<[^>]*>", ""));
+				String toolTipText = component.getToolTipText();
+				if (toolTipText != null) {
+					setMessage(HtmlUtils.html2text(toolTipText));
 				}
 			}
 		}, AWTEvent.MOUSE_EVENT_MASK);

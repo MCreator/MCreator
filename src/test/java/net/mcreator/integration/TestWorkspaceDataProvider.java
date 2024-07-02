@@ -1123,8 +1123,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.color = Color.magenta;
 			potionEffect.icon = new TextureHolder(modElement.getWorkspace(), "effect1");
 			potionEffect.isInstant = !_true;
-			potionEffect.isBad = _true;
-			potionEffect.isBenefitical = !_true;
+			potionEffect.mobEffectCategory = getRandomItem(random,
+					new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.isCuredByMilk = !_true;

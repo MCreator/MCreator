@@ -19,6 +19,7 @@
 package net.mcreator.ui.help;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -36,9 +37,9 @@ public interface IHelpContext {
 
 	default IHelpContext withEntry(String entry) {
 		try {
-			return new HelpContextWithEntry(this.contextName(), this.contextURL(), entry);
+			return new HelpContextWithEntry(this.contextName(), this.contextURL(), this.owner(), entry);
 		} catch (URISyntaxException e) {
-			return new HelpContextWithEntry(this.contextName(), null, entry);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -47,6 +48,10 @@ public interface IHelpContext {
 	}
 
 	@Nullable String contextName();
+
+	@Nullable default JComponent owner() {
+		return null;
+	}
 
 	@Nullable default URI contextURL() throws URISyntaxException {
 		return null;

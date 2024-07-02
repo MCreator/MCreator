@@ -80,7 +80,7 @@ public class HelpLoader {
 		return helpContext != null && helpContext.entry() != null && getFromCache(helpContext.entry()) != null;
 	}
 
-	public static String loadHelpFor(IHelpContext helpContext) {
+	public static String loadHelpFor(IHelpContext helpContext, boolean limitWidth) {
 		if (helpContext != null) {
 			URI uri = null;
 			try {
@@ -92,15 +92,20 @@ public class HelpLoader {
 					"<html><head><style>table{ border-collapse: collapse; border-spacing: 0; } "
 							+ "th { border: 1px solid #a0a0a0; } td { border: 1px solid #a0a0a0; } </style></head><body>");
 
+			if (limitWidth) {
+				helpString.append("<div style='width: 200px;'>");
+			}
+
 			if (helpContext.entry() != null) {
 				String helpText = getFromCache(helpContext.entry());
 				if (helpText != null) {
 					if (helpText.contains("${") || helpText.contains("<#")) {
 						try {
 							Map<String, Object> dataModel = new HashMap<>();
+							//noinspection InstantiationOfUtilityClass
 							dataModel.put("l10n", new L10N());
 
-							if (helpContext instanceof ModElementHelpContext meHelpContext) {
+							if (helpContext instanceof ModElementHelpContext<?> meHelpContext) {
 								dataModel.put("data", meHelpContext.getModElementFromGUI());
 								dataModel.put("registryname",
 										meHelpContext.getModElementFromGUI().getModElement().getRegistryName());
