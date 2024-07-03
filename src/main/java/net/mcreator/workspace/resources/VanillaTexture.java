@@ -21,6 +21,8 @@ package net.mcreator.workspace.resources;
 
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.plugin.modapis.ModAPIImplementation;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -65,45 +67,64 @@ public final class VanillaTexture extends Texture {
 	}
 
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
-		String root = workspace.getGeneratorConfiguration()
-				.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
-		if (root == null)
-			return Collections.emptyList();
-
-		String[] data = root.split("!/"); // 0 = jar name, 1 = path
-		final String jarName = data[0];
-		final String path = data[1];
-
-		return CACHE.computeIfAbsent(new CacheIdentifier(workspace.getGeneratorConfiguration(), type), key -> {
+		CacheIdentifier cacheId = new CacheIdentifier(workspace.getGeneratorConfiguration(), type);
+		if (!CACHE.containsKey(cacheId)) {
 			Map<String, Texture> textures = new LinkedHashMap<>();
-			if (workspace.getGenerator().getProjectJarManager() != null) {
+
+			String root = workspace.getGeneratorConfiguration()
+					.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
+			if (root != null && workspace.getGenerator().getProjectJarManager() != null) {
+				String[] data = root.split("!/"); // 0 = jar name, 1 = path
+				final String jarName = data[0];
+				final String path = data[1];
+
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
 					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
-						try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
-							List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
-							entries.parallelStream().sorted(Comparator.comparing(ZipEntry::getName))
-									.forEachOrdered(entry -> {
-										if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
-											String textureName =
-													"minecraft:" + FilenameUtils.getBaseName(entry.getName());
-											try {
-												textures.put(textureName, new VanillaTexture(type, textureName,
-														new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
-											} catch (IOException ignored) {
-											}
-										}
-									});
-						} catch (IOException e) {
-							LOG.warn("Failed to read library file: {}", libraryFile, e);
-						}
+						loadTexturesFrom(libraryFile, path, type, textures);
 						break;
 					}
 				}
 			}
-			return textures;
-		}).values().stream().toList();
+
+			for (ModAPIImplementation apiImpl : ModAPIManager.getModAPIsForGenerator(
+					workspace.getGenerator().getGeneratorName())) {
+				if (apiImpl.resource_paths() != null) {
+					String resPath = apiImpl.resource_paths().get(type.getID() + "_textures_dir");
+					if (resPath != null) {
+						String[] data = resPath.split("!/"); // 0 = jar name, 1 = path
+						final String jarName = data[0];
+						final String path = data[1];
+
+						File apiLibFile = new File(workspace.getWorkspaceFolder(), jarName);
+						if (apiLibFile.isFile())
+							loadTexturesFrom(apiLibFile, path, type, textures);
+					}
+				}
+			}
+
+			CACHE.put(cacheId, textures);
+		}
+		return CACHE.get(cacheId).values().stream().toList();
+	}
+
+	private static void loadTexturesFrom(File libFile, String path, TextureType type, Map<String, Texture> textures) {
+		try (ZipFile zipFile = ZipIO.openZipFile(libFile)) {
+			List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
+			entries.parallelStream().sorted(Comparator.comparing(ZipEntry::getName)).forEachOrdered(entry -> {
+				if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
+					String textureName = "minecraft:" + FilenameUtils.getBaseName(entry.getName());
+					try {
+						textures.put(textureName, new VanillaTexture(type, textureName,
+								new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
+					} catch (IOException ignored) {
+					}
+				}
+			});
+		} catch (IOException e) {
+			LOG.warn("Failed to read library file: {}", libFile, e);
+		}
 	}
 
 	private record CacheIdentifier(GeneratorConfiguration generatorConfiguration, TextureType textureType) {}
