@@ -82,7 +82,7 @@ public final class VanillaTexture extends Texture {
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
 					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
-						loadTexturesFrom(libraryFile, path, type, textures);
+						loadTexturesFrom(libraryFile, "minecraft", path, type, textures);
 						break;
 					}
 				}
@@ -99,7 +99,7 @@ public final class VanillaTexture extends Texture {
 
 						File apiLibFile = new File(workspace.getWorkspaceFolder(), jarName);
 						if (apiLibFile.isFile())
-							loadTexturesFrom(apiLibFile, path, type, textures);
+							loadTexturesFrom(apiLibFile, apiImpl.parent().id(), path, type, textures);
 					}
 				}
 			}
@@ -109,12 +109,13 @@ public final class VanillaTexture extends Texture {
 		return CACHE.get(cacheId).values().stream().toList();
 	}
 
-	private static void loadTexturesFrom(File libFile, String path, TextureType type, Map<String, Texture> textures) {
+	private static void loadTexturesFrom(File libFile, String namespace, String path, TextureType type,
+			Map<String, Texture> textures) {
 		try (ZipFile zipFile = ZipIO.openZipFile(libFile)) {
 			List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
 			entries.parallelStream().sorted(Comparator.comparing(ZipEntry::getName)).forEachOrdered(entry -> {
 				if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
-					String textureName = "minecraft:" + FilenameUtils.getBaseName(entry.getName());
+					String textureName = namespace + ":" + FilenameUtils.getBaseName(entry.getName());
 					try {
 						textures.put(textureName, new VanillaTexture(type, textureName,
 								new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
