@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
+
 package ${package}.potion;
 
 <#compress>
