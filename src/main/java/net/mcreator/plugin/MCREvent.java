@@ -19,11 +19,36 @@
 
 package net.mcreator.plugin;
 
+import java.util.concurrent.ExecutionException;
+
 public abstract class MCREvent {
 
 	public static <T extends MCREvent> void event(T event) {
+		boolean canCancel = event instanceof MCRCancelableEvent;
 		PluginLoader.INSTANCE.getJavaPlugins().forEach(javaPlugin -> javaPlugin.getListeners().get(event.getClass())
-				.forEach(listener -> javaPlugin.getEventQueue().submit(() -> listener.eventTriggered(event))));
+				.forEach(listener -> {
+					var future = javaPlugin.getEventQueue().submit(() -> listener.eventTriggered(event));
+					if (canCancel) {
+						try {
+							//wait for all jobs complement
+							future.get();
+						} catch (InterruptedException | ExecutionException e) {
+							throw new RuntimeException(e);
+						}
+					}
+				}));
+	}
+
+	public static abstract class MCRCancelableEvent extends MCREvent{
+		private boolean canceled = false;
+
+		public boolean isCanceled() {
+			return canceled;
+		}
+
+		public void setCanceled(boolean canceled) {
+			this.canceled = canceled;
+		}
 	}
 
 }
