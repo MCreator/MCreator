@@ -256,12 +256,13 @@ public final class MCreatorApplication {
 	 * @return MCreator if new instance, null if existing is open or open failed
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
+		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
 		PreMCreatorCreatingEvent event = new PreMCreatorCreatingEvent(PreMCreatorCreatingEvent.OPENING,workspaceFile);
 		MCREvent.event(event);
-		if (event.isCanceled())
+		if (event.isCanceled()) {
 			return null;
-
-		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		}
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
