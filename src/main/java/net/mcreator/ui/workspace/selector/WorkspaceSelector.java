@@ -30,6 +30,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
+import net.mcreator.plugin.events.workspace.PreMCreatorCreatingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.SplashScreen;
@@ -114,8 +115,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		newWorkspace = mainWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("wrk_add"),
 				e -> {
 					NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
-					if (newWorkspaceDialog.getWorkspaceFile() != null)
-						workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
+					if (newWorkspaceDialog.getWorkspaceFile() != null) {
+						var file = newWorkspaceDialog.getWorkspaceFile();
+						PreMCreatorCreatingEvent event = new PreMCreatorCreatingEvent(PreMCreatorCreatingEvent.NEWING,file);
+
+						MCREvent.event(event);
+						if (event.isCanceled())
+							return;
+						workspaceOpenListener.workspaceOpened(file);
+					}
 				});
 
 		actions.add("North", newWorkspace);

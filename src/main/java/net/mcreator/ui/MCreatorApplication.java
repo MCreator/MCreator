@@ -35,6 +35,7 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
+import net.mcreator.plugin.events.workspace.PreMCreatorCreatingEvent;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -255,6 +256,11 @@ public final class MCreatorApplication {
 	 * @return MCreator if new instance, null if existing is open or open failed
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
+		PreMCreatorCreatingEvent event = new PreMCreatorCreatingEvent(PreMCreatorCreatingEvent.OPENING,workspaceFile);
+		MCREvent.event(event);
+		if (event.isCanceled())
+			return null;
+
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
