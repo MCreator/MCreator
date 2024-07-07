@@ -63,6 +63,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
@@ -237,6 +238,50 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		norecentsloaded.setForeground(Theme.current().getAltForegroundColor());
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
+
+		JPopupMenu recentListMenu = new JPopupMenu();
+		JMenuItem deleteFromRecentList = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.recent_list"));
+		deleteFromRecentList.addActionListener(a-> {
+			if (recentsList.getSelectedValue() == null) {
+				return;
+			}
+			removeRecentWorkspace(recentsList.getSelectedValue());
+			reloadRecents();
+		});
+		recentListMenu.add(deleteFromRecentList);
+		JMenuItem deleteFromFolder = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.workspace"));
+		deleteFromFolder.addActionListener(a->{
+			if (recentsList.getSelectedValue() == null) {
+				return;
+			}
+			int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
+					L10N.t("dialog.workspace_selector.delete_workspace.confirmation",
+							recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (m == 0) {
+				FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+				reloadRecents();
+			}
+		});
+		recentListMenu.add(deleteFromFolder);
+
+		recentListMenu.addSeparator();
+		JMenuItem copyPath = new JMenuItem(L10N.t("dialog.workspace_selector.copy_path"));
+		copyPath.addActionListener(a->{
+			var content = new StringSelection(recentsList.getSelectedValue().getPath().getParent());
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(content,content);
+		});
+		recentListMenu.add(copyPath);
+
+		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("dialog.workspace_selector.open_in_system_explorer"));
+		openInSystemExplorer.addActionListener(a->{
+			if (recentsList.getSelectedValue() == null) {
+				return;
+			}
+			DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
+		});
+		recentListMenu.add(openInSystemExplorer);
+		recentsList.setComponentPopupMenu(recentListMenu);
 
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
