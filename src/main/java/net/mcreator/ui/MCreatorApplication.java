@@ -261,6 +261,7 @@ public final class MCreatorApplication {
 		PreMCreatorCreatingEvent event = new PreMCreatorCreatingEvent(PreMCreatorCreatingEvent.OPENING,workspaceFile);
 		MCREvent.event(event);
 		if (event.isCanceled()) {
+			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			return null;
 		}
 		try {
