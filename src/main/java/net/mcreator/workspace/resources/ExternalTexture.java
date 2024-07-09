@@ -39,15 +39,15 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public final class VanillaTexture extends Texture {
+public final class ExternalTexture extends Texture {
 
-	private static final Logger LOG = LogManager.getLogger(VanillaTexture.class);
+	private static final Logger LOG = LogManager.getLogger(ExternalTexture.class);
 
 	private static final Map<CacheIdentifier, Map<String, Texture>> CACHE = new HashMap<>();
 
 	private final ImageIcon icon;
 
-	private VanillaTexture(TextureType textureType, String textureName, ImageIcon icon) {
+	private ExternalTexture(TextureType textureType, String textureName, ImageIcon icon) {
 		super(textureType, textureName);
 		this.icon = icon;
 	}
@@ -56,14 +56,14 @@ public final class VanillaTexture extends Texture {
 		return icon;
 	}
 
-	public static VanillaTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
+	public static ExternalTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
 		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), textureType);
 
 		if (!CACHE.containsKey(cacheIdentifier))
 			getTexturesOfType(workspace, textureType); // Load CACHE if not already loaded
 
-		return (VanillaTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
-				new VanillaTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
+		return (ExternalTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
+				new ExternalTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
 	}
 
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
@@ -117,7 +117,7 @@ public final class VanillaTexture extends Texture {
 				if (entry.getName().startsWith(path) && entry.getName().endsWith(".png")) {
 					String textureName = namespace + ":" + FilenameUtils.getBaseName(entry.getName());
 					try {
-						textures.put(textureName, new VanillaTexture(type, textureName,
+						textures.put(textureName, new ExternalTexture(type, textureName,
 								new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)))));
 					} catch (IOException ignored) {
 					}
