@@ -39,6 +39,9 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * A texture loaded from vanilla MC asset archives or from mods downloaded by API plugins.
+ */
 public final class ExternalTexture extends Texture {
 
 	private static final Logger LOG = LogManager.getLogger(ExternalTexture.class);
@@ -56,6 +59,14 @@ public final class ExternalTexture extends Texture {
 		return icon;
 	}
 
+	/**
+	 * Searches in the provided workspace for an externally loaded texture with matching name and type.
+	 *
+	 * @param workspace   The workspace to search in.
+	 * @param textureType The type of the textures to check.
+	 * @param textureName The name of the texture to look for.
+	 * @return The vanilla/external texture with the provided name of the specified type.
+	 */
 	public static ExternalTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
 		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), textureType);
 
@@ -66,6 +77,13 @@ public final class ExternalTexture extends Texture {
 				new ExternalTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
 	}
 
+	/**
+	 * Scans the workspace and collects all the available externally loaded textures of a certain type.
+	 *
+	 * @param workspace The workspace to collect icons for.
+	 * @param type      The type of the textures to collect.
+	 * @return The list of textures from vanilla MC and API mods available in the provided workspace.
+	 */
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
 		CacheIdentifier cacheId = new CacheIdentifier(workspace.getGeneratorConfiguration(), type);
 		if (!CACHE.containsKey(cacheId)) {
