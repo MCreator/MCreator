@@ -122,7 +122,7 @@ public class ${JavaModName}Items {
 	</#if>
 
 	<#if hasItemsWithProperties>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 			event.enqueueWork(() -> {
 			<#compress>

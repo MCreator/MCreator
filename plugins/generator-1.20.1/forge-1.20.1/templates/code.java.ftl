@@ -59,7 +59,7 @@ public class ${name} {
 	}
 
     @Mod.EventBusSubscriber
-	private static class ForgeBusEvents {
+	private static class ${name}ForgeBusEvents {
 
 		@SubscribeEvent
 		public static void serverLoad(ServerStartingEvent event) {
