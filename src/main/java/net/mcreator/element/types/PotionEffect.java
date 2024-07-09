@@ -62,6 +62,8 @@ import java.io.File;
 		super(element);
 
 		this.mobEffectCategory = "NEUTRAL";
+		this.isCuredByMilk = true;
+		this.isProtectedByTotem = true;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
