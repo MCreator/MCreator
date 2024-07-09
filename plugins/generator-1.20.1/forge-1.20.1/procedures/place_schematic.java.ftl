@@ -6,8 +6,8 @@ if (world instanceof ServerLevel _serverworld) {
 				${toBlockPos(input$x,input$y,input$z)},
 				${toBlockPos(input$x,input$y,input$z)},
 				new StructurePlaceSettings()
-						.setRotation(Rotation.${field$rotation!'NONE'})
-						.setMirror(Mirror.${field$mirror!'NONE'})
+						.setRotation(Rotation.<#if field$rotation != "RANDOM">${field$rotation!'NONE'}<#else>values()[new Random().nextInt(3)]</#if>)
+						.setMirror(Mirror.<#if field$mirror != "RANDOM">${field$mirror!'NONE'}<#else>values()[new Random().nextInt(2)]</#if>)
 						.setIgnoreEntities(false), _serverworld.random, 3);
 	}
 }
