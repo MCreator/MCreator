@@ -20,10 +20,13 @@
 package net.mcreator.workspace.resources;
 
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Base class for texture resource implementations.
