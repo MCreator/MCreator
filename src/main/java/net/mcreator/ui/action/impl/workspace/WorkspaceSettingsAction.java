@@ -39,6 +39,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.util.diff.DiffResult;
 import net.mcreator.util.diff.ListDiff;
 import net.mcreator.workspace.ShareableZIPManager;
+import net.mcreator.workspace.resources.ExternalTexture;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
@@ -199,6 +200,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 			} else { // in any other case, we need to regenerate the whole code
 				if (change.gradleCachesRebuildNeeded()) { // and rebuild caches when needed
 					ModAPIManager.deleteAPIs(mcreator.getWorkspace(), change.oldSettings);
+					ExternalTexture.invalidateCache(mcreator.getWorkspace());
 					mcreator.actionRegistry.reloadGradleProject.doAction();
 				}
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
