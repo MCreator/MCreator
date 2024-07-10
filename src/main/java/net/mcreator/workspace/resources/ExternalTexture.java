@@ -164,7 +164,7 @@ public final class ExternalTexture extends Texture {
 	}
 
 	public static void invalidateCache(Workspace workspace) {
-		CACHE.get(workspace).clear();
+		CACHE.remove(workspace);
 	}
 
 	private record CacheIdentifier(GeneratorConfiguration generatorConfiguration, TextureType textureType) {}
