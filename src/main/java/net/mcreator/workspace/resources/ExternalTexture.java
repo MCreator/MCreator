@@ -89,14 +89,17 @@ public final class ExternalTexture extends Texture {
 		if (!CACHE.containsKey(cacheId)) {
 			Map<String, Texture> textures = new LinkedHashMap<>();
 
+			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
+					workspace.getGenerator().getProjectJarManager().getClassFileSources() :
+					List.of();
+
 			String root = workspace.getGeneratorConfiguration()
 					.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
-			if (root != null && workspace.getGenerator().getProjectJarManager() != null) {
+			if (root != null) {
 				String[] data = root.split("!/"); // 0 = jar name, 1 = path
 				final String jarName = data[0];
 				final String path = data[1];
 
-				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
 					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
@@ -106,9 +109,10 @@ public final class ExternalTexture extends Texture {
 				}
 			}
 
-			for (ModAPIImplementation apiImpl : ModAPIManager.getModAPIsForGenerator(
-					workspace.getGenerator().getGeneratorName())) {
-				if (apiImpl.resource_paths() != null) {
+			for (String dep : workspace.getWorkspaceSettings().getMCreatorDependencies()) {
+				ModAPIImplementation apiImpl = ModAPIManager.getModAPIForNameAndGenerator(dep,
+						workspace.getGenerator().getGeneratorName());
+				if (apiImpl != null && apiImpl.resource_paths() != null) {
 					String resPath = apiImpl.resource_paths().get(type.getID() + "_textures_dir");
 					if (resPath != null) {
 						String[] data = resPath.split("!/"); // 0 = jar name, 1 = path
@@ -116,8 +120,18 @@ public final class ExternalTexture extends Texture {
 						final String path = data[1];
 
 						File apiLibFile = new File(workspace.getWorkspaceFolder(), jarName);
-						if (apiLibFile.isFile())
+						if (apiLibFile.isFile()) {
 							loadTexturesFrom(apiLibFile, apiImpl.parent().id(), path, type, textures);
+							break;
+						}
+
+						for (LibraryInfo libraryInfo : libraryInfos) {
+							File libraryFile = new File(libraryInfo.getLocationAsString());
+							if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
+								loadTexturesFrom(libraryFile, apiImpl.parent().id(), path, type, textures);
+								break;
+							}
+						}
 					}
 				}
 			}
