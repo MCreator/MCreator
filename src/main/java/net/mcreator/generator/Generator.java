@@ -587,11 +587,12 @@ public class Generator implements IGenerator, Closeable {
 					FileIO.touchFile(generatorFile.getFile());
 
 				javaFiles.put(generatorFile.getFile(),
-						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(), "//"));
+						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
+								generatorFile.getUsercodeComment()));
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
-				String usercodeComment = generatorFile.source().getUsercodeComment();
+				String usercodeComment = generatorFile.getUsercodeComment();
 				if (usercodeComment != null)
 					FileIO.writeStringToFile(
 							UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
