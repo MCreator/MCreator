@@ -294,6 +294,21 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		fileManager.close();
 	}
 
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o instanceof Workspace other) {
+			return getWorkspaceFolder().equals(other.getWorkspaceFolder());
+		}
+
+		return false;
+	}
+
+	@Override public int hashCode() {
+		return getWorkspaceFolder().hashCode();
+	}
+
 	@Override public String toString() {
 		return workspaceSettings.getModID();
 	}
