@@ -32,7 +32,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
-import net.mcreator.workspace.resources.ExternalTexture;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -293,7 +292,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		generator.close();
 		fileManager.close();
-		ExternalTexture.invalidateCache(this);
 	}
 
 	@Override public String toString() {

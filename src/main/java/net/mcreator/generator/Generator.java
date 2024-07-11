@@ -39,6 +39,7 @@ import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.resources.ExternalTexture;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
@@ -639,6 +640,8 @@ public class Generator implements IGenerator, Closeable {
 			if (gradleConnector != null)
 				gradleConnector.disconnect();
 		}
+
+		ExternalTexture.invalidateCache(workspace);
 	}
 
 	public void loadOrCreateGradleCaches() throws GradleCacheImportFailedException {
@@ -664,6 +667,8 @@ public class Generator implements IGenerator, Closeable {
 
 	public void reloadGradleCaches() {
 		LOG.info("Reloading generator Gradle cache");
+
+		ExternalTexture.invalidateCache(workspace);
 
 		this.generatorGradleCache = new GeneratorGradleCache(this);
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);
