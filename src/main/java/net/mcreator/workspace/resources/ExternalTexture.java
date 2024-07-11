@@ -19,7 +19,6 @@
 
 package net.mcreator.workspace.resources;
 
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
@@ -46,7 +45,7 @@ public final class ExternalTexture extends Texture {
 
 	private static final Logger LOG = LogManager.getLogger(ExternalTexture.class);
 
-	private static final Map<Workspace, Map<CacheIdentifier, Map<String, Texture>>> CACHE = new HashMap<>();
+	private static final Map<CacheIdentifier, Map<String, Texture>> CACHE = new HashMap<>();
 
 	private final ImageIcon icon;
 
@@ -68,12 +67,12 @@ public final class ExternalTexture extends Texture {
 	 * @return The vanilla/external texture with the provided name of the specified type.
 	 */
 	public static ExternalTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
-		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), textureType);
+		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace, textureType);
 
-		if (!CACHE.containsKey(workspace) || !CACHE.get(workspace).containsKey(cacheIdentifier))
+		if (!CACHE.containsKey(cacheIdentifier))
 			getTexturesOfType(workspace, textureType); // Load CACHE if not already loaded
 
-		return (ExternalTexture) CACHE.get(workspace).get(cacheIdentifier).getOrDefault(textureName,
+		return (ExternalTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
 				new ExternalTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
 	}
 
@@ -85,11 +84,8 @@ public final class ExternalTexture extends Texture {
 	 * @return The list of textures from vanilla MC and API mods available in the provided workspace.
 	 */
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
-		if (!CACHE.containsKey(workspace))
-			CACHE.put(workspace, new HashMap<>());
-
-		CacheIdentifier cacheId = new CacheIdentifier(workspace.getGeneratorConfiguration(), type);
-		if (!CACHE.get(workspace).containsKey(cacheId)) {
+		CacheIdentifier cacheId = new CacheIdentifier(workspace, type);
+		if (!CACHE.containsKey(cacheId)) {
 			Map<String, Texture> textures = new LinkedHashMap<>();
 
 			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
@@ -139,9 +135,10 @@ public final class ExternalTexture extends Texture {
 				}
 			}
 
-			CACHE.get(workspace).put(cacheId, textures);
+			CACHE.put(cacheId, textures);
 		}
-		return CACHE.get(workspace).get(cacheId).values().stream().toList();
+
+		return CACHE.get(cacheId).values().stream().toList();
 	}
 
 	private static void loadTexturesFrom(File libFile, String namespace, String path, TextureType type,
@@ -164,9 +161,9 @@ public final class ExternalTexture extends Texture {
 	}
 
 	public static void invalidateCache(Workspace workspace) {
-		CACHE.remove(workspace);
+		CACHE.keySet().stream().filter(e -> e.workspace.equals(workspace)).toList().forEach(CACHE::remove);
 	}
 
-	private record CacheIdentifier(GeneratorConfiguration generatorConfiguration, TextureType textureType) {}
+	private record CacheIdentifier(Workspace workspace, TextureType textureType) {}
 
 }
