@@ -2,6 +2,11 @@
   "args0": [
     {
       "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
       "name": "x",
       "check": "Number"
     },
@@ -14,11 +19,6 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "entity",
-      "check": "Entity"
     }
   ],
   "inputsInline": true,
@@ -28,16 +28,16 @@
   "mcreator": {
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
       "<value name=\"x\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"y\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"z\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"z\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "inputs": [
+      "entity",
       "x",
       "y",
-      "z",
-      "entity"
+      "z"
     ]
   }
 }
