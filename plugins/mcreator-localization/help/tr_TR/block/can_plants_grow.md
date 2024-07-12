@@ -1,0 +1,1 @@
+Eğer bu parametre işaretlendiyse herhangi bir bitki bu bloğun büyüyebilir.
