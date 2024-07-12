@@ -1,1 +1,1 @@
-Bu, blok kırıldığında çıkan sestir.
+Bu, blok kırıldığında duyulan sestir.
