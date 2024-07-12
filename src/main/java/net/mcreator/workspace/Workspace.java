@@ -43,7 +43,6 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -301,10 +300,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		if (o instanceof Workspace other) {
 			try {
-				return Files.isSameFile(getWorkspaceFolder().toPath(), other.getWorkspaceFolder().toPath());
+				return getWorkspaceFolder().getCanonicalPath().equals(other.getWorkspaceFolder().getCanonicalPath());
 			} catch (Exception ignored) {
-				return getWorkspaceFolder().toPath().normalize()
-						.equals(other.getWorkspaceFolder().toPath().normalize());
+				return getWorkspaceFolder().getAbsolutePath().equals(other.getWorkspaceFolder().getAbsolutePath());
 			}
 		}
 
@@ -312,7 +310,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	@Override public int hashCode() {
-		return getWorkspaceFolder().toPath().normalize().hashCode();
+		try {
+			return getWorkspaceFolder().getCanonicalPath().hashCode();
+		} catch (Exception ignored) {
+			return getWorkspaceFolder().getAbsolutePath().hashCode();
+		}
 	}
 
 	@Override public String toString() {
