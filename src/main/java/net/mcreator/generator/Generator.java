@@ -633,6 +633,8 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	@Override public void close() {
+		ExternalTexture.invalidateCache(workspace);
+
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
@@ -640,8 +642,6 @@ public class Generator implements IGenerator, Closeable {
 			if (gradleConnector != null)
 				gradleConnector.disconnect();
 		}
-
-		ExternalTexture.invalidateCache(workspace);
 	}
 
 	public void loadOrCreateGradleCaches() throws GradleCacheImportFailedException {
@@ -668,12 +668,12 @@ public class Generator implements IGenerator, Closeable {
 	public void reloadGradleCaches() {
 		LOG.info("Reloading generator Gradle cache");
 
-		ExternalTexture.invalidateCache(workspace);
-
 		this.generatorGradleCache = new GeneratorGradleCache(this);
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);
 		FileIO.writeStringToFile(cache,
 				new File(workspace.getFolderManager().getWorkspaceCacheDir(), "generatorGradleCache"));
+
+		ExternalTexture.invalidateCache(workspace);
 	}
 
 	public GeneratorGradleCache getGradleCache() {
