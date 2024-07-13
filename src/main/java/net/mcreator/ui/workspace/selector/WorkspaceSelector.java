@@ -361,7 +361,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		recentListMenu.add(copyPath);
 
-		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("dialog.workspace_selector.open_in_system_explorer"));
+		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("action.open_workspace_folder"));
 		openInSystemExplorer.addActionListener(a -> {
 			if (recentsList.getSelectedValue() == null) {
 				return;
