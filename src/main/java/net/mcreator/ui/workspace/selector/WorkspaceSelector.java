@@ -317,12 +317,17 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private JPopupMenu getRightClickMenu() {
 		JPopupMenu recentListMenu = new JPopupMenu();
+
 		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
-		openSelectedWorkspace.addActionListener(a-> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
+		openSelectedWorkspace.addActionListener(
+				a -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
 		recentListMenu.add(openSelectedWorkspace);
+
 		recentListMenu.addSeparator();
-		JMenuItem deleteFromRecentList = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.recent_list"));
-		deleteFromRecentList.addActionListener(a-> {
+
+		JMenuItem deleteFromRecentList = new JMenuItem(
+				L10N.t("dialog.workspace_selector.delete_workspace.recent_list"));
+		deleteFromRecentList.addActionListener(a -> {
 			if (recentsList.getSelectedValue() == null) {
 				return;
 			}
@@ -330,8 +335,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			reloadRecents();
 		});
 		recentListMenu.add(deleteFromRecentList);
+
 		JMenuItem deleteFromFolder = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.workspace"));
-		deleteFromFolder.addActionListener(a->{
+		deleteFromFolder.addActionListener(a -> {
 			if (recentsList.getSelectedValue() == null) {
 				return;
 			}
@@ -347,21 +353,23 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentListMenu.add(deleteFromFolder);
 
 		recentListMenu.addSeparator();
+
 		JMenuItem copyPath = new JMenuItem(L10N.t("dialog.workspace_selector.copy_path"));
-		copyPath.addActionListener(a->{
+		copyPath.addActionListener(a -> {
 			var content = new StringSelection(recentsList.getSelectedValue().getPath().getParent());
-			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(content,content);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(content, content);
 		});
 		recentListMenu.add(copyPath);
 
 		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("dialog.workspace_selector.open_in_system_explorer"));
-		openInSystemExplorer.addActionListener(a->{
+		openInSystemExplorer.addActionListener(a -> {
 			if (recentsList.getSelectedValue() == null) {
 				return;
 			}
 			DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
 		});
 		recentListMenu.add(openInSystemExplorer);
+
 		return recentListMenu;
 	}
 
