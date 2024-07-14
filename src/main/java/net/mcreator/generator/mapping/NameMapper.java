@@ -69,12 +69,14 @@ public class NameMapper {
 			return origName;
 
 		Object skip_prefixes = mapping.get("_bypass_prefix");
-		if (skip_prefixes instanceof String && origName.startsWith((String) skip_prefixes)) {
-			return origName;
-		} else if (skip_prefixes instanceof List) {
-			for (Object skip_prefix : (List<?>) skip_prefixes) {
-				if (skip_prefix instanceof String && origName.startsWith((String) skip_prefix))
-					return origName;
+		if (skip_prefixes instanceof String skipPrefix && origName.startsWith(skipPrefix)) {
+			return origName.replace(skipPrefix + "mod:",
+					skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
+		} else if (skip_prefixes instanceof List<?> skipPrefixesList) {
+			for (Object skip_prefix : skipPrefixesList) {
+				if (skip_prefix instanceof String skipPrefix && origName.startsWith(skipPrefix))
+					return origName.replace(skipPrefix + "mod:",
+							skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
 			}
 		}
 

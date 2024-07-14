@@ -28,6 +28,12 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 		return source.getFile();
 	}
 
+	public String getUsercodeComment() {
+		if (writer == Writer.JAVA)
+			return "//";
+		return source.getUsercodeComment();
+	}
+
 	@Override public boolean equals(Object o) {
 		if (this == o)
 			return true;
