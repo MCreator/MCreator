@@ -1,0 +1,1 @@
+Söz konusu varlık, yalnızca bu koşulu geçerse bu görev yürütülmeye başlanacaktır.
