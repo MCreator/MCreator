@@ -1,1 +1,1 @@
-Mostra l'avanzamento in alto a destra dello schermo quando il giocatore completa l'avanzamento.
+Mostra l'avanzamento in alto a destra dello schermo quando il giocatore lo completa.

@@ -25,7 +25,6 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.GenericObjectModel;
 import freemarker.template.TemplateModel;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.CustomTexture;
@@ -46,7 +45,7 @@ import java.lang.reflect.Type;
 
 	// Private constructor to satisfy final fields
 	private TextureHolder(@Nullable String texture) {
-		this.texture = FilenameUtilsPatched.removeExtension(texture);
+		this.texture = texture;
 	}
 
 	public TextureHolder(Workspace workspace, @Nullable Texture textureObj) {
@@ -56,8 +55,6 @@ import java.lang.reflect.Type;
 
 	/**
 	 * A way to "convert" a texture string to a TextureHolder object.
-	 * <p/>
-	 * We recommend omitting .png extension, but if provided, it will be removed.
 	 *
 	 * @param workspace Workspace the texture belongs to
 	 * @param texture   Texture name
@@ -144,18 +141,12 @@ import java.lang.reflect.Type;
 
 		@Override public TextureHolder deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			try {
-				// remove extension call for legacy reasons if previously .png was stored as part of texture name
-				return new TextureHolder(FilenameUtilsPatched.removeExtension(json.getAsString()));
-			} catch (Exception e) {
-				return new TextureHolder(null);
-			}
+			return new TextureHolder(json.getAsString());
 		}
 
 		@Override
 		public JsonElement serialize(TextureHolder textureHolder, Type typeOfSrc, JsonSerializationContext context) {
-			return new JsonPrimitive(
-					textureHolder.texture == null ? "" : FilenameUtilsPatched.removeExtension(textureHolder.texture));
+			return new JsonPrimitive(textureHolder.texture == null ? "" : textureHolder.texture);
 		}
 	}
 

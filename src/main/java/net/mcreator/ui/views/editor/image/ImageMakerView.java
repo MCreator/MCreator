@@ -66,7 +66,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
 	private static final int FPS = 4;
 
-	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
+	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("ImageMakerToolExecutor");
+		thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+		return thread;
+	});
 
 	private final CanvasRenderer canvasRenderer;
 	private final JZoomPane zoomPane;

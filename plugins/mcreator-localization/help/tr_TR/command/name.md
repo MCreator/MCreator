@@ -1,0 +1,1 @@
+Gamemode, give, setblock vb. gibi komutları tanımlamak için oyuncunun / işaretinden sonra yazması gereken kelime.

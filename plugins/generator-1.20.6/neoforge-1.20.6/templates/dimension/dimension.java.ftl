@@ -41,7 +41,7 @@ package ${package}.world.dimension;
 </#if>
 public class ${name}Dimension {
 
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class DimensionSpecialEffectsHandler {
+	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ${name}SpecialEffectsHandler {
 
 		@SubscribeEvent public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
 			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(

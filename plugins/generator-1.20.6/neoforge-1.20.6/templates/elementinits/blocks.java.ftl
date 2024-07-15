@@ -74,7 +74,7 @@ public class ${JavaModName}Blocks {
 	// End of user code block custom blocks
 
 	<#if hasTintedBlocks || hasTintedBlockItems>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class BlocksClientSideHandler {
 		<#if hasTintedBlocks>
 		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			<#list blocks as block>
