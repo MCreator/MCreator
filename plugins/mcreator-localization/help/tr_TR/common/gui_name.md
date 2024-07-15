@@ -1,0 +1,1 @@
+Oyun içi ad, oyun içi menülerde, öğe ipuçlarında ve görsel adın görüntülenmesinin mümkün olduğu diğer yerlerde gösterilen mod öğesinin adıdır.
