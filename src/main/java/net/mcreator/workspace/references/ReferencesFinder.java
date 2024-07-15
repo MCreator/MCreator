@@ -39,6 +39,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.*;
 import java.util.List;
 import java.util.Map;
@@ -114,9 +115,18 @@ public class ReferencesFinder {
 					// Because TextureHolder isCustomObject true, we need to repeat validIf condition because it is skipped for custom objects
 					if ((ref != null && ref.value() == type) && !Set.of(ref.defaultValues()).contains(textureName) && textureName.indexOf(':') == -1) {
 						for (String template : ref.files()) {
-							String file = template.isEmpty() ? textureName : template.formatted(t);
-							if (workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
+							File toLookup;
+							if (template.isEmpty()) {
+								try {
+									toLookup = t.toFile(type);
+								} catch (IOException e) {
+									return false;
+								}
+							} else {
+								toLookup = workspace.getFolderManager()
+										.getTextureFile(FilenameUtilsPatched.removeExtension(template.formatted(t)), type);
+							}
+							if (toLookup.equals(texture))
 								return true;
 						}
 					}
