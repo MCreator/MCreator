@@ -61,6 +61,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -77,12 +79,10 @@ import java.util.concurrent.CompletableFuture;
 public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
-
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 	private final CardLayout recentPanes = new CardLayout();
 	private final JPanel recentPanel = new JPanel(recentPanes);
 	private final WorkspaceOpenListener workspaceOpenListener;
-	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
-
 	@Nullable private final MCreatorApplication application;
 
 	private final JButton newWorkspace;
@@ -93,6 +93,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 	private final JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -362,6 +363,20 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		recentListMenu.add(openInSystemExplorer);
 
+		recentListMenu.addPopupMenuListener(new PopupMenuListener() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				recentsList.setSelectedIndex(recentsList.locationToIndex(recentsList.getMousePosition()));
+			}
+
+			@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
+
 		return recentListMenu;
 	}
 
@@ -426,8 +441,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentWorkspaces.getList().remove(recentWorkspace);
 		saveRecentWorkspaces();
 	}
-
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 
 	private void saveRecentWorkspaces() {
 		String serialized = gson.toJson(recentWorkspaces);
