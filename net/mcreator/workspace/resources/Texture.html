@@ -124,7 +124,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#textureName" class="member-name-link">textureName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Name of the texture, ALWAYS without the final .png extension.</div>
+</div>
 <div class="col-first odd-row-color"><code>protected final <a href="../../ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#textureType" class="member-name-link">textureType</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -186,6 +188,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="textureName">
 <h3>textureName</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">textureName</span></div>
+<div class="block">Name of the texture, ALWAYS without the final .png extension.
+ However, if the original texture name is textureName.png.png,
+ this will be textureName.png</div>
 </section>
 </li>
 </ul>
