@@ -177,14 +177,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground(new Color(0x8D5C5C));
 				}
 
-				int noFilesTab = indexOfTab(L10N.t("mod_element_code_viewer.no_files"));
-				if (noFilesTab == -1 && getTabCount() == 0) {
+				if (getTabCount() == 0)
 					addTab(L10N.t("mod_element_code_viewer.no_files"), PanelUtils.totalCenterInPanel(
 							ComponentUtils.setForeground(L10N.label("mod_element_code_viewer.no_files.desc"),
 									Theme.current().getAltForegroundColor())));
-				} else if (noFilesTab != -1 && getTabCount() > 0) {
-					removeTabAt(noFilesTab);
-				}
 
 				updateRunning = false;
 
