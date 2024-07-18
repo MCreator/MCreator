@@ -38,6 +38,9 @@ package ${package}.item;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
+<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+</#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
@@ -90,7 +93,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			TOOL_TIER,
 			</#if>
 			new Item.Properties()
-				<#if data.toolType == "Shears" || data.toolType == "Shield">
+				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
 				.durability(${data.usageCount})
 				</#if>
 				<#if data.toolType == "MultiTool">
@@ -110,6 +113,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 		);
 	}
+
+	<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
+	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
+		event.modify(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
+	}
+	</#if>
 
 	<#if hasProcedure(data.additionalDropCondition) && data.toolType!="MultiTool">
 	@Override public boolean isCorrectToolForDrops(ItemStack itemstack, BlockState blockstate) {
@@ -187,7 +196,9 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
+			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
@@ -221,7 +232,9 @@ public class ${name}Item extends FishingRodItem {
 
 	public ${name}Item() {
 		super(new Item.Properties()
+			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>

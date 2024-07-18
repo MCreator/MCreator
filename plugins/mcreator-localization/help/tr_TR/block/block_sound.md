@@ -1,1 +1,1 @@
-Bu bloğu tanımlayan ses grubu. Bu parametre sesleri blok yerleştirme sesi olarak etkiler, blok kırılma sesi ve blokta yürürken çalınan ses.
+Bu bloğu tanımlayan ses grubu. Bu parametre blok yerleştirme sesi, blok kırma sesi ve blok üzerinde yürürken çalınan ses gibi sesleri etkiler.

@@ -61,7 +61,12 @@ public class GoogleAnalytics {
 	private String currentPage = "";
 	private String previousPage = "";
 
-	private final ExecutorService requestExecutor = Executors.newSingleThreadExecutor();
+	private final ExecutorService requestExecutor = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("GA4-Requests");
+		thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+		return thread;
+	});
 
 	public GoogleAnalytics(DeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
