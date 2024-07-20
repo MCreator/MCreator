@@ -69,8 +69,8 @@ public final class VanillaTexture extends Texture {
 	public static VanillaTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
 		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace, textureType);
 
-		if (!CACHE.containsKey(cacheIdentifier))
-			getTexturesOfType(workspace, textureType); // Load CACHE if not already loaded
+		// Ensure cache is populated and valid
+		getTexturesOfType(workspace, textureType);
 
 		return (VanillaTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
 				new VanillaTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
@@ -85,7 +85,9 @@ public final class VanillaTexture extends Texture {
 	 */
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
 		CacheIdentifier cacheId = new CacheIdentifier(workspace, type);
-		if (!CACHE.containsKey(cacheId)) {
+
+		Map<String, Texture> textures = CACHE.getOrDefault(cacheId, new LinkedHashMap<>());
+		if (textures.isEmpty()) { // if not cached or empty list is cached, attempt to rebuild cache
 			Map<String, Texture> textures = new LinkedHashMap<>();
 
 			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
@@ -138,7 +140,7 @@ public final class VanillaTexture extends Texture {
 			CACHE.put(cacheId, textures);
 		}
 
-		return CACHE.get(cacheId).values().stream().toList();
+		return textures.values().stream().toList();
 	}
 
 	private static void loadTexturesFrom(File libFile, String namespace, String path, TextureType type,
