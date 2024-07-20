@@ -29,7 +29,7 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
-import net.mcreator.workspace.resources.VanillaTexture;
+import net.mcreator.workspace.resources.ExternalTexture;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -176,7 +176,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
 
 		if (loadExternalTextures) {
-			VanillaTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+			ExternalTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
 		}
 
 		list.setSelectedIndex(0);
