@@ -57,8 +57,8 @@ public final class VanillaTexture extends Texture {
 	public static VanillaTexture getTexture(Workspace workspace, TextureType textureType, String textureName) {
 		CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), textureType);
 
-		if (!CACHE.containsKey(cacheIdentifier))
-			getTexturesOfType(workspace, textureType); // Load CACHE if not already loaded
+		// Ensure cache is populated and valid
+		getTexturesOfType(workspace, textureType);
 
 		return (VanillaTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
 				new VanillaTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
@@ -70,12 +70,14 @@ public final class VanillaTexture extends Texture {
 		if (root == null)
 			return Collections.emptyList();
 
-		String[] data = root.split("!/"); // 0 = jar name, 1 = path
-		final String jarName = data[0];
-		final String path = data[1];
+		final CacheIdentifier cacheIdentifier = new CacheIdentifier(workspace.getGeneratorConfiguration(), type);
 
-		return CACHE.computeIfAbsent(new CacheIdentifier(workspace.getGeneratorConfiguration(), type), key -> {
-			Map<String, Texture> textures = new LinkedHashMap<>();
+		Map<String, Texture> textures = CACHE.getOrDefault(cacheIdentifier, new LinkedHashMap<>());
+		if (textures.isEmpty()) { // if not cached or empty list is cached, attempt to rebuild cache
+			String[] data = root.split("!/"); // 0 = jar name, 1 = path
+			final var jarName = data[0];
+			final var path = data[1];
+
 			if (workspace.getGenerator().getProjectJarManager() != null) {
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
@@ -102,8 +104,10 @@ public final class VanillaTexture extends Texture {
 					}
 				}
 			}
-			return textures;
-		}).values().stream().toList();
+			CACHE.put(cacheIdentifier, textures);
+		}
+
+		return textures.values().stream().toList();
 	}
 
 	private record CacheIdentifier(GeneratorConfiguration generatorConfiguration, TextureType textureType) {}
