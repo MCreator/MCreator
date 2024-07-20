@@ -90,7 +90,7 @@ public abstract class Texture {
 
 			return new CustomTexture(textureType, textureFile);
 		} else {
-			return ExternalTexture.getTexture(workspace, textureType, name);
+			return VanillaTexture.getTexture(workspace, textureType, name);
 		}
 	}
 
