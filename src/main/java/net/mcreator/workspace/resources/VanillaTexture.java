@@ -88,8 +88,6 @@ public final class VanillaTexture extends Texture {
 
 		Map<String, Texture> textures = CACHE.getOrDefault(cacheId, new LinkedHashMap<>());
 		if (textures.isEmpty()) { // if not cached or empty list is cached, attempt to rebuild cache
-			Map<String, Texture> textures = new LinkedHashMap<>();
-
 			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
 					workspace.getGenerator().getProjectJarManager().getClassFileSources() :
 					List.of();
