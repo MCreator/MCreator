@@ -42,7 +42,7 @@ client_run_dir: "@WORKSPACEROOT/runs/client"
 server_run_dir: "@WORKSPACEROOT/runs/server"
 
 # specific resource folders
-#sounds_dir: "@MODASSETSROOT/sounds"
+sounds_dir: "@MODASSETSROOT/sounds"
 #structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
@@ -67,16 +67,16 @@ base_templates:
   - template: pack.mcmeta.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/pack.mcmeta"
-#  - template: modbase/sounds.json.ftl
-#    writer: json
-#    name: "@MODASSETSROOT/sounds.json"
-#    condition: hasSounds()
-#  - template: modbase/sounds.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
-#    condition: hasSounds()
-#  - template: modbase/variableslist.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-#    condition: hasVariables()
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
 #  - template: elementinits/tabs.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
 #    condition: hasItemsInTabs()

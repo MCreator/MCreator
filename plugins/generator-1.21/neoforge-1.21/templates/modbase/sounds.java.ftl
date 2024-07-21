@@ -42,7 +42,7 @@ public class ${JavaModName}Sounds {
 
 	<#list sounds as sound>
 	public static final DeferredHolder<SoundEvent, SoundEvent> ${sound.getJavaName()} =
-			REGISTRY.register("${sound.getName()}", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${modid}", "${sound}")));
+			REGISTRY.register("${sound.getName()}", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath("${modid}", "${sound}")));
 	</#list>
 
 }
