@@ -346,6 +346,8 @@ public class GradleConsole extends JPanel {
 			this.debugClient = optionalDebugClient;
 			this.debugClient.init(task, cancellationSource.token());
 			ref.getDebugPanel().startDebug(this.debugClient);
+		} else {
+			this.debugClient = null;
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
