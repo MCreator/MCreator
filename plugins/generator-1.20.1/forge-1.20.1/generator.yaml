@@ -91,7 +91,7 @@ sources_setup_tasks:
 
 tags:
   template: tags.json.ftl
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:
   format: json
