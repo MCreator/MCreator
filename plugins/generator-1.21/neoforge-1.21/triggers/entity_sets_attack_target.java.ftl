@@ -7,7 +7,7 @@
 				"y": "event.getEntity().getY()",
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level()",
-				"entity": "event.getOriginalTarget()",
+				"entity": "event.getOriginalAboutToBeSetTarget()",
 				"sourceentity": "event.getEntity()",
 				"event": "event"
 			}/>

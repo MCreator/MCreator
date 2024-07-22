@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityAttacked(LivingAttackEvent event) {
+	@SubscribeEvent public static void onEntityAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() != null) {
 			<#assign dependenciesCode><#compress>
 				<@procedureDependenciesCode dependencies, {
