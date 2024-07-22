@@ -43,7 +43,7 @@ import java.util.zip.ZipFile;
  */
 public final class ExternalTexture extends Texture {
 
-	private static final Logger LOG = LogManager.getLogger(ExternalTexture.class);
+	private static final Logger LOG = LogManager.getLogger("External textures");
 
 	private static final Map<CacheIdentifier, Map<String, Texture>> CACHE = new HashMap<>();
 
@@ -108,6 +108,8 @@ public final class ExternalTexture extends Texture {
 				}
 			}
 
+			boolean anyVanillaLoaded = !textures.isEmpty();
+
 			for (String dep : workspace.getWorkspaceSettings().getMCreatorDependencies()) {
 				ModAPIImplementation apiImpl = ModAPIManager.getModAPIForNameAndGenerator(dep,
 						workspace.getGenerator().getGeneratorName());
@@ -135,7 +137,12 @@ public final class ExternalTexture extends Texture {
 				}
 			}
 
-			CACHE.put(cacheId, textures);
+			// Only cache if any vanilla textures were loaded
+			if (anyVanillaLoaded) {
+				CACHE.put(cacheId, textures);
+
+				LOG.debug("Loaded {} {} textures for workspace {} into cache", textures.size(), type, workspace);
+			}
 		}
 
 		return textures.values().stream().toList();
