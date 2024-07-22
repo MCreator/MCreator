@@ -134,14 +134,14 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '1.6.0'
-    implementation group: 'com.formdev', name: 'flatlaf', version: '3.5', classifier: 'no-natives'
-    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5') {
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.4.1', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.4.1') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 group: 'com.formdev', name: 'flatlaf', version: '3.5', classifier: 'windows-x86_64', ext: 'dll'
-    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.5', classifier: 'macos-x86_64', ext: 'dylib'
-    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.5', classifier: 'macos-arm64', ext: 'dylib'
-    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5', classifier: 'linux-x86_64', ext: 'so'
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.4.1', classifier: 'windows-x86_64', ext: 'dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.4.1', classifier: 'macos-x86_64', ext: 'dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.4.1', classifier: 'macos-arm64', ext: 'dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.4.1', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.3'
