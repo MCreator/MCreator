@@ -37,7 +37,7 @@ import ${package}.${JavaModName};
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}Message(int eventType, int pressedms) implements CustomPacketPayload {
 
-	public static final Type<${name}Message> TYPE = new Type<>(new ResourceLocation(${JavaModName}.MODID, "key_${registryname}"));
+	public static final Type<${name}Message> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "key_${registryname}"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}Message> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, ${name}Message message) -> {
