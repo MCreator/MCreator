@@ -16,7 +16,16 @@
     <#elseif slot == "/*@int*/3">
         <#return "EquipmentSlot.HEAD">
     <#else>
-        <#return "EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, ${opt.toInt(slot)})">
+        <#return "new Object(){
+            public static EquipmentSlot armorSlotByIndex(int _slotindex) {
+                for (EquipmentSlot _slot : EquipmentSlot.values()) {
+                    if (_slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && _slot.getIndex() == _slotindex) {
+                        return _slot;
+                    }
+                }
+                throw new IllegalArgumentException(\"Invalid slot index: \" + _slotindex);
+            }
+        }.armorSlotByIndex(${opt.toInt(slot)})">
     </#if>
 </#function>
 
