@@ -71,7 +71,6 @@ public class MCreatorTabs {
 		container.setOpaque(false);
 
 		tabsStrip = new JPanel();
-		tabsStrip.setOpaque(false);
 		tabsStrip.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		tabsStrip.addComponentListener(new ComponentAdapter() {
 			@Override public void componentResized(ComponentEvent componentEvent) {
@@ -432,6 +431,11 @@ public class MCreatorTabs {
 						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
 								Theme.current().getSecondAltBackgroundColor()),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, inactiveColor)));
+
+			Container parent = getParent();
+			if (parent != null && parent != container.container) {
+				parent.repaint();
+			}
 		}
 
 		public void setHasRightBorder(boolean hasRightBorder) {
