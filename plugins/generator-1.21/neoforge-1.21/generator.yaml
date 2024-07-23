@@ -51,7 +51,7 @@ sounds_dir: "@MODASSETSROOT/sounds"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
 #vanilla_block_textures_dir: "client-1.21-client-extra.jar!/assets/minecraft/textures/block"
