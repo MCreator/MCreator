@@ -9,7 +9,7 @@ import:
 java_models:
   key: mojmap-1.20.x
   compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
