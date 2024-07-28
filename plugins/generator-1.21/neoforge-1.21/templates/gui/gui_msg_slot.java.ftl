@@ -33,34 +33,38 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) implements CustomPacketPayload {
 
-	public static final Type<${name}ButtonMessage> TYPE = new Type<>(new ResourceLocation(${JavaModName}.MODID, "${registryname}_buttons"));
+	public static final Type<${name}SlotMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_slots"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}ButtonMessage> STREAM_CODEC = StreamCodec.of(
-			(RegistryFriendlyByteBuf buffer, ${name}ButtonMessage message) -> {
-				buffer.writeInt(message.buttonID);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SlotMessage> STREAM_CODEC = StreamCodec.of(
+			(RegistryFriendlyByteBuf buffer, ${name}SlotMessage message) -> {
+				buffer.writeInt(message.slotID);
 				buffer.writeInt(message.x);
 				buffer.writeInt(message.y);
 				buffer.writeInt(message.z);
+				buffer.writeInt(message.changeType);
+				buffer.writeInt(message.meta);
 			},
-			(RegistryFriendlyByteBuf buffer) -> new ${name}ButtonMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt())
+			(RegistryFriendlyByteBuf buffer) -> new ${name}SlotMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt())
 	);
 
-	@Override public Type<${name}ButtonMessage> type() {
+	@Override public Type<${name}SlotMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${name}ButtonMessage message, final IPayloadContext context) {
+	public static void handleData(final ${name}SlotMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
 			context.enqueueWork(() -> {
 				Player entity = context.player();
-				int buttonID = message.buttonID;
+				int slotID = message.slotID;
+				int changeType = message.changeType;
+				int meta = message.meta;
 				int x = message.x;
 				int y = message.y;
 				int z = message.z;
 
-				handleButtonAction(entity, buttonID, x, y, z);
+				handleSlotAction(entity, slotID, changeType, meta, x, y, z);
 			}).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
 				return null;
@@ -68,7 +72,7 @@ package ${package}.network;
 		}
 	}
 
-	public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
+	public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
 		Level world = entity.level();
 		HashMap guistate = ${name}Menu.guistate;
 
@@ -76,27 +80,30 @@ package ${package}.network;
 		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
-		<#assign btid = 0>
-		<#list data.getComponentsOfType("Button") as component>
-				<#if hasProcedure(component.onClick)>
-					if (buttonID == ${btid}) {
-						<@procedureOBJToCode component.onClick/>
+		<#list data.components as component>
+			<#if component.getClass().getSimpleName()?ends_with("Slot")>
+				<#if hasProcedure(component.onSlotChanged)>
+					if (slot == ${component.id} && changeType == 0) {
+						<@procedureOBJToCode component.onSlotChanged/>
 					}
 				</#if>
-				<#assign btid +=1>
-		</#list>
-		<#list data.getComponentsOfType("ImageButton") as component>
-				<#if hasProcedure(component.onClick)>
-					if (buttonID == ${btid}) {
-						<@procedureOBJToCode component.onClick/>
+				<#if hasProcedure(component.onTakenFromSlot)>
+					if (slot == ${component.id} && changeType == 1) {
+						<@procedureOBJToCode component.onTakenFromSlot/>
 					}
 				</#if>
-				<#assign btid +=1>
+				<#if hasProcedure(component.onStackTransfer)>
+					if (slot == ${component.id} && changeType == 2) {
+						int amount = meta;
+						<@procedureOBJToCode component.onStackTransfer/>
+					}
+				</#if>
+			</#if>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}ButtonMessage.TYPE, ${name}ButtonMessage.STREAM_CODEC, ${name}ButtonMessage::handleData);
+		${JavaModName}.addNetworkMessage(${name}SlotMessage.TYPE, ${name}SlotMessage.STREAM_CODEC, ${name}SlotMessage::handleData);
 	}
 
 }

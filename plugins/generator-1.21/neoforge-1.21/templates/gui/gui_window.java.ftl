@@ -76,7 +76,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	</#if>
 
 	<#if data.renderBgLayer>
-	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png");
+	private static final ResourceLocation texture = ResourceLocation.parse("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
@@ -129,7 +129,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.image}"),
+				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -242,9 +242,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				<#if component.hoveredImage?has_content>
-				new WidgetSprites(new ResourceLocation("${modid}:textures/screens/${component.image}"), new ResourceLocation("${modid}:textures/screens/${component.hoveredImage}")),
+				new WidgetSprites(ResourceLocation.parse("${modid}:textures/screens/${component.image}"), ResourceLocation.parse("${modid}:textures/screens/${component.hoveredImage}")),
 				<#else>
-				new WidgetSprites(new ResourceLocation("${modid}:textures/screens/${component.image}"), new ResourceLocation("${modid}:textures/screens/${component.image}")),
+				new WidgetSprites(ResourceLocation.parse("${modid}:textures/screens/${component.image}"), ResourceLocation.parse("${modid}:textures/screens/${component.image}")),
 				</#if>
 				<@buttonOnClick component/>
 			) {
