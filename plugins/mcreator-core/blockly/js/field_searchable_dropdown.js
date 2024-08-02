@@ -9,17 +9,7 @@ class FieldSearchableDropdown extends Blockly.FieldDropdown {
         this.searchText = '';
 
         this.searchLabel_ = document.createElement('div');
-        this.searchLabel_.style.cssText = `
-            background-color: rgba(50, 50, 50, 0.85);
-            color: #f0f0f0;
-            padding: 2px 5px;
-            margin-bottom: 2px;
-            font-size: 12px;
-            text-align: left;
-            border-radius: 3px;
-            display: none;
-            white-space: nowrap;
-        `;
+        this.searchLabel_.classList.add('blocklySearchableDropDownLabel');
     }
 
     showEditor_() {
@@ -93,7 +83,7 @@ class FieldSearchableDropdown extends Blockly.FieldDropdown {
         	    menuElement.removeChild(menuElement.firstChild);
         	}
 
-        	this.fullOptions_.forEach((option, index) => {
+        	this.fullOptions_.forEach(option => {
         	    if (option[0].toLowerCase().includes(this.searchText.toLowerCase())) {
         	        const menuItem = new Blockly.MenuItem(option[0]);
         	        menuItem.setCheckable(true);
