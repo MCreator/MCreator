@@ -110,3 +110,8 @@ body {
     background: #171c23;
     color: #eaeaea;
 }
+
+.blocklySearchableDropDownLabel {
+	background-color: rgba(40, 55, 70, 0.85);
+    color: #e8e8e8;
+}
