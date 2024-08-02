@@ -1,6 +1,7 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
 buildfileversion: 20.6.117
+subversion: 1.1 # force setup re-run to remove configuration cache setting
 
 import:
   - datapack-1.20.6

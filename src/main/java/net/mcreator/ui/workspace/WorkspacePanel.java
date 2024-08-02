@@ -647,21 +647,23 @@ import java.util.stream.Collectors;
 		subTabs.setOpaque(false);
 		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
 				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
-		subTabs.addChangeListener(e -> {
-			if (subTabs.getComponentAt(subTabs.getSelectedIndex()) instanceof AbstractWorkspacePanel tabComponent) {
-				if (tabComponent.canSwitchToSection()) {
-					currentTabPanel = tabComponent;
-				} else {
-					// Switch to the last tab that can be switched to
-					switchToVerticalTab(currentTabPanel);
+		subTabs.setModel(new DefaultSingleSelectionModel() {
+			@Override public void setSelectedIndex(int index) {
+				if (subTabs.getComponentAt(index) instanceof AbstractWorkspacePanel tabComponent) {
+					if (tabComponent.canSwitchToSection()) {
+						currentTabPanel = tabComponent;
+					} else { // No permission to view the newly selected tab
+						return;
+					}
 				}
-			}
 
-			search.repaint();
-			reloadElementsInCurrentTab();
-			modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
-			subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
-					!(currentTabPanel instanceof WorkspacePanelMods));
+				super.setSelectedIndex(index);
+				search.repaint();
+				reloadElementsInCurrentTab();
+				modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
+				subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
+						!(currentTabPanel instanceof WorkspacePanelMods));
+			}
 		});
 
 		slo.add("Center", subTabs);

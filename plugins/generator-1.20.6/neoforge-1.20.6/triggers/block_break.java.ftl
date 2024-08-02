@@ -1,17 +1,16 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBlockBreak(BlockDropsEvent event) {
+	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"xpAmount": "event.getDroppedExperience()",
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
 				"z": "event.getPos().getZ()",
-				"px": "event.getBreaker() != null ? event.getBreaker().getX() : event.getPos().getX()",
-				"py": "event.getBreaker() != null ? event.getBreaker().getY() : event.getPos().getY()",
-				"pz": "event.getBreaker() != null ? event.getBreaker().getZ() : event.getPos().getZ()",
+				"px": "event.getPlayer() != null ? event.getPlayer().getX() : event.getPos().getX()",
+				"py": "event.getPlayer() != null ? event.getPlayer().getY() : event.getPos().getY()",
+				"pz": "event.getPlayer() != null ? event.getPlayer().getZ() : event.getPos().getZ()",
 				"world": "event.getLevel()",
-				"entity": "event.getBreaker()",
+				"entity": "event.getPlayer()",
 				"blockstate": "event.getState()"
 			}/>
 		</#compress></#assign>
