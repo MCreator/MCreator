@@ -54,15 +54,12 @@ class FieldSearchableDropdown extends Blockly.FieldDropdown {
         if (key === 'Backspace' && e.ctrlKey && this.searchText.length >= 1) {
         	// Handle CTRL + Backspace
             this.searchText = this.searchText.split(' ').slice(0, -1).join(' ') + ' ';
-
         } else if (key === 'Backspace' && this.searchText.length >= 1) {
         	// Handle Backspace
         	this.searchText = this.searchText.slice(0, -1);
-
         } else if (key === 'Space') {
         	// Handle Space
             this.searchText += ' ';
-
         } else if (typeof key === 'string' && key.length === 1  && /^[a-zA-Z0-9]+$/.test(key)) {
             this.searchText += key;
         }
