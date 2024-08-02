@@ -82,3 +82,15 @@ body {
 .blocklyDropDownContent {
     position: relative;
 }
+
+.blocklySearchableDropDownLabel {
+	background-color: rgba(55, 55, 55, 0.85);
+    color: #e8e8e8;
+    padding: 2px 5px;
+    margin-bottom: 2px;
+    font-size: 12px;
+    text-align: left;
+    border-radius: 3px;
+    display: none;
+    white-space: nowrap;
+}
