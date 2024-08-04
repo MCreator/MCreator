@@ -101,10 +101,11 @@ public class SplashScreen extends JWindow {
 		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);
 		setVisible(true);
-		setAlwaysOnTop(true);
+		setAlwaysOnTop(true); // this may work instead of toFront on some systems
 		requestFocus();
 		requestFocusInWindow();
 		toFront();
+		setAlwaysOnTop(false); // however, we don't want to keep splash on top all the time
 	}
 
 	public void setProgress(int percentage, String message) {
