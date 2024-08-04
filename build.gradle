@@ -161,7 +161,7 @@ test {
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     // default max heap is VM RAM / 4, which may be too low on low RAM VMs
-    maxHeapSize = "2048m"
+    minHeapSize = "3072m"
 
     testLogging {
         // https://stackoverflow.com/a/48709645/1627085
