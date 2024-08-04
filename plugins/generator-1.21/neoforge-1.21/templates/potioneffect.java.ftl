@@ -34,6 +34,9 @@
 package ${package}.potion;
 
 <#compress>
+<#if data.hasCustomRenderer()>
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+</#if>
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
 	public ${name}MobEffect() {
@@ -91,25 +94,25 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 	</#if>
 
 	<#if data.hasCustomRenderer()>
-		@Override public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
-			consumer.accept(new IClientMobEffectExtensions() {
-				<#if !data.renderStatusInInventory>
-					@Override public boolean isVisibleInInventory(MobEffectInstance effect) {
-						return false;
-					}
-		
-					@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
-						return false;
-					}
-				</#if>
-	
-				<#if !data.renderStatusInHUD>
-					@Override public boolean isVisibleInGui(MobEffectInstance effect) {
-						return false;
-					}
-				</#if>
-			});
-		}
+	@SubscribeEvent public static void registerMobEffectExtensions(RegisterClientExtensionsEvent event) {
+		event.registerMobEffect(new IClientMobEffectExtensions() {
+			<#if !data.renderStatusInInventory>
+			@Override public boolean isVisibleInInventory(MobEffectInstance effect) {
+				return false;
+			}
+
+			@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+				return false;
+			}
+			</#if>
+
+			<#if !data.renderStatusInHUD>
+			@Override public boolean isVisibleInGui(MobEffectInstance effect) {
+				return false;
+			}
+			</#if>
+		}, ${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}.get());
+	}
 	</#if>
 }
 </#compress>
