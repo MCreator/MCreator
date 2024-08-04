@@ -190,7 +190,7 @@ import static org.junit.jupiter.api.Assertions.*;
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 						GradleDaemonUtils.stopAllDaemons(workspace.get());
 						workspace.get().close();
-						//FileIO.deleteDir(workspace.get().getWorkspaceFolder());
+						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));
 
 					return DynamicContainer.dynamicContainer("Test generator: " + generator, tests);
