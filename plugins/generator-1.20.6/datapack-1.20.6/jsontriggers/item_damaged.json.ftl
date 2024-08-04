@@ -5,9 +5,13 @@
         "items": [
             "${input$item}"
         ],
-        "durability": {
-          "min": ${input$amount_l},
-          "max": ${input$amount_h}
+        "predicates": {
+            "minecraft:damage": {
+                "durability": {
+                    "min": ${input$amount_l},
+                    "max": ${input$amount_h}
+                }
+            }
         }
       }
   }

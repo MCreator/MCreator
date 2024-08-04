@@ -7,7 +7,7 @@
             "entity": "this",
             "predicate": {
               "location": {
-                "biome": "${generator.map(field$biome, "biomes")}"
+                "biomes": "${generator.map(field$biome, "biomes")}"
               }
             }
         }
