@@ -25,9 +25,12 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import java.io.File;
 
-class Pre1193FolderStructure extends AbstractFolderStructure {
+/**
+ * Before 1.21, structures folder is in plural form
+ */
+class Pre1210FolderStructure extends AbstractFolderStructure {
 
-	protected Pre1193FolderStructure(Workspace workspace) {
+	protected Pre1210FolderStructure(Workspace workspace) {
 		super(workspace);
 	}
 
@@ -41,13 +44,11 @@ class Pre1193FolderStructure extends AbstractFolderStructure {
 
 	@Nullable @Override public File getTexturesFolder(TextureType section) {
 		return new File(getResourceRoot(), "assets/" + workspace.getWorkspaceSettings().getModID() + switch (section) {
-			case BLOCK -> "/textures/blocks";
-			case ITEM -> "/textures/items";
+			case BLOCK -> "/textures/block";
+			case ITEM -> "/textures/item";
+			case ENTITY -> "/textures/entities";
 			case ARMOR -> "/textures/models/armor";
 			case OTHER -> "/textures";
-			// The types below may not exist on older generators with shared folder for all but block, item and armor,
-			// but this will be taken care of by converters from other texture type section
-			case ENTITY -> "/textures/entities";
 			case EFFECT -> "/textures/mob_effect";
 			case PARTICLE -> "/textures/particle";
 			case SCREEN -> "/textures/screens";
