@@ -1,0 +1,1 @@
+Bu parametreyi işaretlediğinizde bu blok redstone gücü yayabilecektir.

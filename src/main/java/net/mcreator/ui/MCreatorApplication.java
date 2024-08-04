@@ -203,11 +203,15 @@ public final class MCreatorApplication {
 				LOG.warn("Failed to register desktop handlers", e);
 			}
 
-			SwingUtilities.invokeLater(() -> {
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
+				// Prepare workspace selector on swing thread before closing splash screen
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
+				// Make sure splash screen is closed on the swing thread before we continue
 				splashScreen.setVisible(false);
+			});
 
+			SwingUtilities.invokeLater(() -> {
 				boolean directLaunch = false;
 				if (!launchArguments.isEmpty()) {
 					String lastArg = launchArguments.getLast();
@@ -216,7 +220,6 @@ public final class MCreatorApplication {
 						lastArg = lastArg.substring(1, lastArg.length() - 1);
 					File passedFile = new File(lastArg);
 					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
-						splashScreen.setVisible(false);
 						MCreator mcreator = openWorkspaceInMCreator(passedFile);
 						StartupNotifications.handleStartupNotifications(mcreator);
 						directLaunch = true;

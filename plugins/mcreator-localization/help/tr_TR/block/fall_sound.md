@@ -1,0 +1,1 @@
+Bu ses blok düşerse oynatılacaktır.
