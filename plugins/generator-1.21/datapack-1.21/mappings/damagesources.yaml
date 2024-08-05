@@ -9,6 +9,9 @@ _bypass_prefix: "#"
 IN_FIRE:
   - DamageTypes.IN_FIRE
   - in_fire
+CAMPFIRE:
+  - DamageTypes.CAMPFIRE
+  - campfire
 LIGHTNING_BOLT:
   - DamageTypes.LIGHTNING_BOLT
   - lightning_bolt
