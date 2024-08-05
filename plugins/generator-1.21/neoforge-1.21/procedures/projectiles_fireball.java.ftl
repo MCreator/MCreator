@@ -8,9 +8,8 @@ new Object() {
 		AbstractHurtingProjectile entityToSpawn = new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, level);
 		<#if hasShooter>entityToSpawn.setOwner(shooter);</#if>
 		<#if hasAcceleration>
-		entityToSpawn.xPower = ax;
-		entityToSpawn.yPower = ay;
-		entityToSpawn.zPower = az;
+		entityToSpawn.setDeltaMovement(new Vec3(ax, ay, az));
+        entityToSpawn.hasImpulse = true;
 		</#if>
 		return entityToSpawn;
 	}
