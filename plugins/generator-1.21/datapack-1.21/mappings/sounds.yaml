@@ -683,9 +683,9 @@ block.trial_spawner.about_to_spawn_item: block.trial_spawner.about_to_spawn_item
 block.trial_spawner.spawn_item: block.trial_spawner.spawn_item
 block.trial_spawner.spawn_item_begin: block.trial_spawner.spawn_item_begin
 block.trial_spawner.detect_player: block.trial_spawner.detect_player
-block.trial_spawner.charge_activate: block.trial_spawner.charge_activate
+block.trial_spawner.charge_activate: block.trial_spawner.ominous_activate
 block.trial_spawner.ambient: block.trial_spawner.ambient
-block.trial_spawner.ambient_charged: block.trial_spawner.ambient_charged
+block.trial_spawner.ambient_charged: block.trial_spawner.ambient_ominous
 block.trial_spawner.open_shutter: block.trial_spawner.open_shutter
 block.trial_spawner.close_shutter: block.trial_spawner.close_shutter
 block.trial_spawner.eject_item: block.trial_spawner.eject_item
@@ -886,6 +886,9 @@ record.wait: music_disc.wait
 record.ward: music_disc.ward
 record.otherside: music_disc.otherside
 record.relic: music_disc.relic
+record.creator: music_disc.creator
+record.creator_music_box: music_disc.creator_music_box
+record.precipice: music_disc.precipice
 music.dragon: music.dragon
 music.end: music.end
 music.game: music.game
@@ -1439,6 +1442,7 @@ block.vault.break: block.vault.break
 block.vault.close_shutter: block.vault.close_shutter
 block.vault.deactivate: block.vault.deactivate
 block.vault.eject_item: block.vault.eject_item
+block.vault.reject_rewarded_player: block.vault.reject_rewarded_player
 block.vault.fall: block.vault.fall
 block.vault.hit: block.vault.hit
 block.vault.insert_item: block.vault.insert_item
