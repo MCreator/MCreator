@@ -94,6 +94,7 @@ ReportPlayer: ReportPlayerScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 ServerList: DirectJoinServerScreen
 ServerReconfig: ServerReconfigScreen
+ServerLinks: ServerLinksScreen
 Settings: OptionsSubScreen
 ShareToLan: ShareToLanScreen
 SkinReport: SkinReportScreen
@@ -106,7 +107,6 @@ UnsupportedGraphicsWarning: UnsupportedGraphicsWarningScreen
 VideoSettings: VideoSettingsScreen
 Warning: WarningScreen
 Win: WinScreen
-WithNarratorSettings: SimpleOptionsSubScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen
