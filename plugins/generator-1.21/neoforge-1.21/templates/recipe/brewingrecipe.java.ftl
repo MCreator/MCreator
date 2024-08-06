@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 
-package ${package}.recipes.brewing;
+package ${package}.recipe.brewing;
 
 @EventBusSubscriber public class ${name}BrewingRecipe implements IBrewingRecipe {
 
