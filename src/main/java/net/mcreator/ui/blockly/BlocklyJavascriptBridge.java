@@ -132,30 +132,6 @@ public final class BlocklyJavascriptBridge {
 
 		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
 	}
-
-	/**
-	 * Opens a string selector window, where each string has a value that is returned by selecting it
-	 *
-	 * @param map  {"readable name": value}
-	 * @param type The type of the data list, used for the selector title and message
-	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
-	 */
-
-	private String[] openKeyAndValueEntrySelector(Map<String, String> map, String type) {
-		SwingUtilities.invokeLater(() -> {
-			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-			Pair<String, String> selected = KeyAndValueSelectorDialog.openSelectorDialog(mcreator, map,
-					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
-			if (selected.getKey() != null) {
-				retval[0] = selected.getKey(); // Value
-				retval[1] = selected.getValue();  // Readable name
-				Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
-			}
-		});
-
-		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
-	}
-
 	/**
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
@@ -234,10 +210,10 @@ public final class BlocklyJavascriptBridge {
 			case "configuredfeature" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "configured_features");
-			case "global_triggers" -> openKeyAndValueEntrySelector(
-					// Before sending ext_triggers, the keys and values must be swapped
-					ext_triggers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey,
-							(oldValue, newValue) -> oldValue, LinkedHashMap::new)), "global_trigger");
+			case "global_triggers" -> openDataListEntrySelector(
+					w -> ext_triggers.entrySet().stream().map(entry ->
+							(DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{ setReadableName(entry.getValue()); }}).toList(),
+					"global_trigger");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
