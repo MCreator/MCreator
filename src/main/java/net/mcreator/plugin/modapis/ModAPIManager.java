@@ -61,15 +61,20 @@ public class ModAPIManager {
 						Map<?, ?> impldef = (Map<?, ?>) apiconfiguration.get(keyraw);
 						String gradle = (String) impldef.get("gradle");
 						List<?> updateFiles = (List<?>) impldef.get("update_files");
+						Map<?, ?> resPaths = (Map<?, ?>) impldef.get("resource_paths");
 						boolean requiredWhenEnabled =
 								impldef.get("required_when_enabled") != null && Boolean.parseBoolean(
 										impldef.get("required_when_enabled").toString());
 
 						if (updateFiles == null)
 							updateFiles = Collections.emptyList();
+						if (resPaths == null)
+							resPaths = Collections.emptyMap();
 
 						ModAPIImplementation implementation = new ModAPIImplementation(modAPI, gradle,
 								updateFiles.stream().map(Object::toString).collect(Collectors.toList()),
+								resPaths.entrySet().stream().collect(
+										Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString())),
 								requiredWhenEnabled);
 						modAPI.implementations().put(key, implementation);
 					}
