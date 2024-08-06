@@ -237,7 +237,7 @@ public final class BlocklyJavascriptBridge {
 			case "global_triggers" -> openKeyAndValueEntrySelector(
 					// Before sending ext_triggers, the keys and values must be swapped
 					ext_triggers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey,
-							(oldValue, newValue) -> oldValue, LinkedHashMap::new)), "global_triggers");
+							(oldValue, newValue) -> oldValue, LinkedHashMap::new)), "global_trigger");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
