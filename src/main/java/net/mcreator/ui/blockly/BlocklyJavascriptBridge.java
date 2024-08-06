@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import javafx.util.Pair;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
@@ -28,10 +29,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.dialogs.AIConditionEditor;
-import net.mcreator.ui.dialogs.DataListSelectorDialog;
-import net.mcreator.ui.dialogs.MCItemSelectorDialog;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
+import net.mcreator.ui.dialogs.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
@@ -136,6 +134,29 @@ public final class BlocklyJavascriptBridge {
 	}
 
 	/**
+	 * Opens a string selector window, where each string has a value that is returned by selecting it
+	 *
+	 * @param map  {"readable name": value}
+	 * @param type The type of the data list, used for the selector title and message
+	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
+	 */
+
+	private String[] openKeyAndValueEntrySelector(Map<String, String> map, String type) {
+		SwingUtilities.invokeLater(() -> {
+			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+			Pair<String, String> selected = KeyAndValueSelectorDialog.openSelectorDialog(mcreator, map,
+					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
+			if (selected.getKey() != null) {
+				retval[0] = selected.getKey(); // Value
+				retval[1] = selected.getValue();  // Readable name
+				Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
+			}
+		});
+
+		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+	}
+
+	/**
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
@@ -213,6 +234,10 @@ public final class BlocklyJavascriptBridge {
 			case "configuredfeature" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "configured_features");
+			case "global_triggers" -> openKeyAndValueEntrySelector(
+					// Before sending ext_triggers, the keys and values must be swapped
+					ext_triggers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey,
+							(oldValue, newValue) -> oldValue, LinkedHashMap::new)), "global_triggers");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -363,6 +388,9 @@ public final class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
+		case "global_triggers" -> {
+			return ext_triggers.get(value);
+		}
 		default -> {
 			return "";
 		}
