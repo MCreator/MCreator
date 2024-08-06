@@ -1,0 +1,1 @@
+"${generator.map(field$feature, "configuredfeatures", 2)}"
