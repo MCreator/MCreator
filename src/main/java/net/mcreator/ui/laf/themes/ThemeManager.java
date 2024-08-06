@@ -21,6 +21,7 @@ package net.mcreator.ui.laf.themes;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.IntelliJTheme;
+import com.formdev.flatlaf.util.HiDPIUtils;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
@@ -66,6 +67,9 @@ public class ThemeManager {
 			Map<String, String> flatLafDefaults = new HashMap<>();
 			theme.applyFlatLafOverrides(flatLafDefaults);
 			FlatLaf.setGlobalExtraDefaults(flatLafDefaults);
+
+			// Make sure UI works on Windows High-DPI
+			HiDPIUtils.installHiDPIRepaintManager();
 
 			FlatLaf laf;
 			String themeName = theme.getFlatLafTheme();
