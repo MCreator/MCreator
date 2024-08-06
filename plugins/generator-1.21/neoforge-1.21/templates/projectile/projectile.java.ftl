@@ -40,16 +40,18 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
 
+	private int knockback = 0;
+
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, Level world) {
-		super(type, world, PROJECTILE_ITEM);
+		super(type, world);
 	}
 
-	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world) {
-		super(type, x, y, z, world, PROJECTILE_ITEM);
+	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world, @Nullable ItemStack firedFromWeapon) {
+		super(type, x, y, z, world, PROJECTILE_ITEM, firedFromWeapon);
 	}
 
-	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world) {
-		super(type, entity, world, PROJECTILE_ITEM);
+	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world, @Nullable ItemStack firedFromWeapon) {
+		super(type, entity, world, PROJECTILE_ITEM, firedFromWeapon);
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
@@ -63,6 +65,20 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override protected void doPostHurtEffects(LivingEntity entity) {
 		super.doPostHurtEffects(entity);
 		entity.setArrowCount(entity.getArrowCount() - 1); <#-- #53957 -->
+	}
+
+	public void setKnockback(int knockback) {
+		this.knockback = knockback;
+	}
+
+	@Override protected void doKnockback(LivingEntity livingEntity, DamageSource damageSource) {
+		if (knockback > 0.0) {
+			double d1 = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+			Vec3 vec3 = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(knockback * 0.6 * d1);
+			if (vec3.lengthSqr() > 0.0) {
+				livingEntity.push(vec3.x, 0.1, vec3.z);
+			}
+		}
 	}
 
 	<#if hasProcedure(data.onHitsPlayer)>
@@ -136,7 +152,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world, null);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.showParticles});
@@ -149,14 +165,14 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 		<#if data.actionSound.toString()?has_content>
 		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+				.get(ResourceLocation.parse("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 		</#if>
 
 		return entityarrow;
 	}
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level());
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level(), null);
 		double dx = target.getX() - entity.getX();
 		double dy = target.getY() + target.getEyeHeight() - 1.1;
 		double dz = target.getZ() - entity.getZ();
@@ -173,7 +189,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 		<#if data.actionSound.toString()?has_content>
 		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
+				.get(ResourceLocation.parse("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
 		</#if>
 
 		return entityarrow;
