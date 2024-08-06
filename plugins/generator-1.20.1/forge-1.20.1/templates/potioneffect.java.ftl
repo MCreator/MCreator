@@ -47,6 +47,22 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
+	<#if !(data.isCuredByMilk && data.isProtectedByTotem) || data.isCuredbyHoney>
+	@Override public List<ItemStack> getCurativeItems() {
+		ArrayList<ItemStack> cures = new ArrayList<ItemStack>();
+		<#if data.isCuredByMilk>
+		cures.add(new ItemStack(Items.MILK_BUCKET));
+		</#if>
+		<#if data.isProtectedByTotem>
+		cures.add(new ItemStack(Items.TOTEM_OF_UNDYING));
+		</#if>
+		<#if data.isCuredbyHoney>
+		cures.add(new ItemStack(Items.HONEY_BOTTLE));
+		</#if>
+		return cures;
+	}
+	</#if>
+
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {

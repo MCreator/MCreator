@@ -45,6 +45,10 @@ import java.io.File;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
 
+	public boolean isCuredByMilk;
+	public boolean isProtectedByTotem;
+	public boolean isCuredbyHoney;
+
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
@@ -58,6 +62,8 @@ import java.io.File;
 		super(element);
 
 		this.mobEffectCategory = "NEUTRAL";
+		this.isCuredByMilk = true;
+		this.isProtectedByTotem = true;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
