@@ -254,13 +254,24 @@ public final class MCreatorApplication {
 	}
 
 	/**
-	 * @param workspaceFile File of the .mcreator workspace definition
+	 * @param workspaceFile   File of the .mcreator workspace definition
 	 * @return MCreator if new instance, null if existing is open or open failed
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
+		return openWorkspaceInMCreator(workspaceFile, false);
+	}
+
+	/**
+	 * @param workspaceFile   File of the .mcreator workspace definition
+	 * @param forceRegenerate If true, the workspace will be regenerated
+	 * @return MCreator if new instance, null if existing is open or open failed
+	 */
+	public MCreator openWorkspaceInMCreator(File workspaceFile, boolean forceRegenerate) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			if (forceRegenerate)
+				workspace.requireRegenerate();
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				ThreadUtil.runOnSwingThreadAndWait(() -> JOptionPane.showMessageDialog(workspaceSelector,

@@ -27,20 +27,23 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
 
 	private static final Logger LOG = LogManager.getLogger("Shareable ZIP manager");
 
-	public static File importZIP(File file, File workspaceDir, Window window) {
+	@Nullable public static ImportResult importZIP(File file, File workspaceDir, Window window) {
 		AtomicReference<File> retval = new AtomicReference<>();
+		AtomicBoolean regenerateRequired = new AtomicBoolean(false);
 
 		ProgressDialog dial = new ProgressDialog(window, L10N.t("dialog.workspace.import_from_zip.importing"));
 
@@ -104,6 +107,8 @@ public class ShareableZIPManager {
 
 				// make sure we store any potential changes made to the workspace
 				workspace.markDirty();
+
+				regenerateRequired.set(workspace.isRegenerateRequired());
 			} catch (UnsupportedGeneratorException | MissingGeneratorFeaturesException e) {
 				// Exception that already prompted user action resulting in us landing here happened before
 				// So we just cancel the import at this point by returning null
@@ -119,7 +124,7 @@ public class ShareableZIPManager {
 		t.start();
 		dial.setVisible(true);
 
-		return retval.get();
+		return retval.get() == null ? null : new ImportResult(retval.get(), regenerateRequired.get());
 	}
 
 	public static void exportZIP(String title, File file, MCreator mcreator, boolean excludeRunDir) {
@@ -149,5 +154,7 @@ public class ShareableZIPManager {
 		t.start();
 		dial.setVisible(true);
 	}
+
+	public record ImportResult(File file, boolean regenerateRequired){}
 
 }
