@@ -61,6 +61,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -238,6 +240,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
+		recentsList.setComponentPopupMenu(getRightClickMenu());
+
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recentsList.addMouseListener(new MouseAdapter() {
@@ -310,6 +314,71 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentPanel.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 			centerComponent.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 		}
+	}
+
+	private JPopupMenu getRightClickMenu() {
+		JPopupMenu recentListMenu = new JPopupMenu();
+
+		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
+		openSelectedWorkspace.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+			}
+		});
+		recentListMenu.add(openSelectedWorkspace);
+
+		recentListMenu.addSeparator();
+
+		JMenuItem deleteFromRecentList = new JMenuItem(
+				L10N.t("dialog.workspace_selector.delete_workspace.recent_list"));
+		deleteFromRecentList.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				removeRecentWorkspace(recentsList.getSelectedValue());
+				reloadRecents();
+			}
+		});
+		recentListMenu.add(deleteFromRecentList);
+
+		JMenuItem deleteFromFolder = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.workspace"));
+		deleteFromFolder.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
+						L10N.t("dialog.workspace_selector.delete_workspace.confirmation",
+								recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (m == 0) {
+					FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+					reloadRecents();
+				}
+			}
+		});
+		recentListMenu.add(deleteFromFolder);
+
+		recentListMenu.addSeparator();
+
+		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("action.open_workspace_folder"));
+		openInSystemExplorer.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
+			}
+		});
+		recentListMenu.add(openInSystemExplorer);
+
+		recentListMenu.addPopupMenuListener(new PopupMenuListener() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				recentsList.setSelectedIndex(recentsList.locationToIndex(recentsList.getMousePosition()));
+			}
+
+			@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
+
+		return recentListMenu;
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
