@@ -1,6 +1,9 @@
+templates:
+  - template: json/painting.json.ftl
+    writer: json
+    name: "@MODDATAROOT/painting_variant/@registryname.json"
+
 global_templates:
-  - template: elementinits/paintings.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNamePaintings.java"
   - template: json/paintingtag.json.ftl
     writer: json
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
