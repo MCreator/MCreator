@@ -62,9 +62,9 @@ public class ${name}Item extends Item {
 				</#if>
 				<#if data.enableMeleeDamage>
 				.attributes(ItemAttributeModifiers.builder()
-					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 1},
+					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4,
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4,
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 					.build())
 				</#if>
@@ -119,7 +119,7 @@ public class ${name}Item extends Item {
 	</#if>
 
 	<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
-	@Override public int getUseDuration(ItemStack itemstack) {
+	@Override public int getUseDuration(ItemStack itemstack, LivingEntity livingEntity) {
 		return ${data.useDuration};
 	}
 	</#if>
@@ -262,7 +262,7 @@ public class ${name}Item extends Item {
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 					<#if data.rangedItemChargesPower>
-						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack, player) - time);
 						if (pullingPower < 0.1)
 							return;
 					</#if>
@@ -311,11 +311,11 @@ public class ${name}Item extends Item {
 				arrowPickupStack = new ItemStack(${generator.map(projectile, "projectiles", 2)});
 				arrowPickupStack.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
 			}
-			${projectileClass} projectile = new ${projectileClass}(world, entity, arrowPickupStack);
+			${projectileClass} projectile = new ${projectileClass}(world, entity, arrowPickupStack, itemstack);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.rangedItemChargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+				.get(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
 		<#if data.damageCount != 0>
@@ -326,10 +326,8 @@ public class ${name}Item extends Item {
 			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 		} else {
 			if (stack.isDamageableItem()) {
-				stack.hurtAndBreak(1, world.getRandom(), player, () -> {
-					stack.shrink(1);
-					stack.setDamageValue(0);
-				});
+				if (world instanceof ServerLevel serverLevel)
+					stack.hurtAndBreak(1, serverLevel, player, _stkprov -> {});
 			} else {
 				stack.shrink(1);
 			}
