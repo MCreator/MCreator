@@ -98,9 +98,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 				<#if data.toolType == "MultiTool">
 				.attributes(ItemAttributeModifiers.builder()
-						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.build())
 				<#elseif data.toolType == "Sword">
@@ -163,12 +163,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			</#if>
 		}
 
-		@Override public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-			return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
-					ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+		@Override public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
+			return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
+					ItemAbilities.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
+					ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
+					ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
+					ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(toolAction);
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
@@ -203,9 +203,9 @@ public class ${name}Item extends Item {
 			.fireResistant()
 			</#if>
 			.attributes(ItemAttributeModifiers.builder()
-				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1},
+				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4},
+				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.build())
 		);
