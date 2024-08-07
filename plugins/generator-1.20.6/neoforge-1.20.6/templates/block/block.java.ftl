@@ -76,6 +76,14 @@ public class ${name}Block extends
 	<#if data.isWaterloggable>
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
+	<#list data.customProperties as prop>
+			<#assign propName = prop.property.getName().replace("CUSTOM:", "")>
+			<#if prop.property.getClass().getSimpleName().equals("LogicType")>
+				public static final BooleanProperty ${propName} = BooleanProperty.create("${propName?lower_case}");
+			<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
+				public static final IntegerProperty ${propName} = IntegerProperty.create("${propName?lower_case}", ${prop.property.getMin()}, ${prop.property.getMax()});
+			</#if>
+	</#list>
 
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(properties -> new ${name}Block());
@@ -192,7 +200,7 @@ public class ${name}Block extends
 			super(<@blockProperties/>);
 		</#if>
 
-	    <#if data.rotationMode != 0 || data.isWaterloggable>
+	    <#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	    this.registerDefaultState(this.stateDefinition.any()
 	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	    	.setValue(FACING, Direction.NORTH)
@@ -204,6 +212,15 @@ public class ${name}Block extends
 	    	<#elseif data.rotationMode == 5>
 	    	.setValue(AXIS, Direction.Axis.Y)
 	    	</#if>
+			<#list data.customProperties as prop>
+				.setValue(${prop.property.getName().replace("CUSTOM:", "")},
+					<#if prop.property.getClass().getSimpleName().equals("LogicType")>
+						false
+					<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
+						${prop.property.getMin()}
+					</#if>
+				)
+			</#list>
 	    	<#if data.isWaterloggable>
 	    	.setValue(WATERLOGGED, false)
 	    	</#if>
@@ -266,7 +283,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.rotationMode != 0 || data.isWaterloggable>
+	<#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		<#assign props = []>
 		<#if data.rotationMode == 5>
@@ -277,6 +294,9 @@ public class ${name}Block extends
 				<#assign props += ["FACE"]>
 			</#if>
 		</#if>
+		<#list data.customProperties as prop>
+				<#assign props += [prop.property.getName().replace("CUSTOM:", "")]>
+		</#list>
 		<#if data.isWaterloggable>
 			<#assign props += ["WATERLOGGED"]>
 		</#if>
@@ -302,6 +322,7 @@ public class ${name}Block extends
 			<#elseif data.rotationMode == 5>
 			.setValue(AXIS, context.getClickedFace().getAxis())
 			</#if>
+	    	<@initCustomBlockStateProperties />
 			<#if data.isWaterloggable>
 			.setValue(WATERLOGGED, flag)
 			</#if>;
@@ -314,6 +335,7 @@ public class ${name}Block extends
 	    		<#else>
 	    		    .setValue(FACING, Direction.NORTH)
 	    		</#if>
+	    		<@initCustomBlockStateProperties />
 	    		<#if data.isWaterloggable>
 	    		.setValue(WATERLOGGED, flag)
 	    		</#if>;
@@ -323,12 +345,25 @@ public class ${name}Block extends
 	    	    .setValue(FACE, AttachFace.WALL)
 	    	</#if>
 	    	.setValue(FACING, context.getClickedFace())
+	    	<@initCustomBlockStateProperties />
 	    	<#if data.isWaterloggable>
 	    	.setValue(WATERLOGGED, flag)
 	    	</#if>;
 		</#if>
 	}
 	</#if>
+
+	<#macro initCustomBlockStateProperties>
+		<#list data.customProperties as prop>
+			.setValue(${prop.property.getName().replace("CUSTOM:", "")},
+				<#if prop.property.getClass().getSimpleName().equals("LogicType")>
+					false
+				<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
+					${prop.property.getMin()}
+				</#if>
+			)
+		</#list>
+	</#macro>
 
 	<#if data.rotationMode != 0>
 		<#if data.rotationMode != 5>
