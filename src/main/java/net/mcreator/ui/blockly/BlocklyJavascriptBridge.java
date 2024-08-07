@@ -21,7 +21,6 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
-import javafx.util.Pair;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
@@ -29,7 +28,10 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.dialogs.*;
+import net.mcreator.ui.dialogs.AIConditionEditor;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
+import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
@@ -132,6 +134,7 @@ public final class BlocklyJavascriptBridge {
 
 		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
 	}
+
 	/**
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
