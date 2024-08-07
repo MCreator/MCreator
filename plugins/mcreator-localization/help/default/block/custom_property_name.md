@@ -1,0 +1,1 @@
+This parameter specifies the name of this custom block property.

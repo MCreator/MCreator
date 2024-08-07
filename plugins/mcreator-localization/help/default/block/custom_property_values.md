@@ -1,0 +1,1 @@
+These are the values that this custom block property can have.

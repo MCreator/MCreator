@@ -32,6 +32,7 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -78,6 +79,8 @@ import java.util.stream.Collectors;
 
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
+
+	public List<PropertyEntry> customProperties;
 
 	public String name;
 	public StringListProcedure specialInformation;
@@ -194,6 +197,8 @@ import java.util.stream.Collectors;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+
+		this.customProperties = new ArrayList<>();
 
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
@@ -385,6 +390,12 @@ import java.util.stream.Collectors;
 
 	public TextureHolder getParticleTexture() {
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
+	}
+
+	public static class PropertyEntry {
+
+		public PropertyData<?> property;
+
 	}
 
 }
