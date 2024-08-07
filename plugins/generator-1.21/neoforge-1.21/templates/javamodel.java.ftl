@@ -36,6 +36,7 @@ ${model
     ?replace("new ResourceLocation\\(\"modid\", \"(.*?)\"\\)", "ResourceLocation.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
     ?replace("ResourceLocation.fromNamespaceAndPath\\(\"modid\", \"(.*?)\"\\)", "ResourceLocation.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
     ?replace("float\\s+red,\\s+float\\s+green,\\s+float\\s+blue,\\s+float\\s+alpha", "int rgb", "r")
+    ?replace("red,\\s+green,\\s+blue,\\s+alpha", "rgb", "r")
 }
 
 <#-- @formatter:on -->
