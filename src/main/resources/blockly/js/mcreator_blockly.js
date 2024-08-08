@@ -85,15 +85,6 @@ function arrayToBlocklyDropDownArray(arrorig) {
     return retval;
 }
 
-function jsonToBlocklyDropDownArray(json) {
-    let map = JSON.parse(json);
-    let retval = [];
-    Object.keys(map).forEach(function (key) {
-        retval.push(["" + map[key], "" + key]);
-    });
-    return retval;
-}
-
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);
