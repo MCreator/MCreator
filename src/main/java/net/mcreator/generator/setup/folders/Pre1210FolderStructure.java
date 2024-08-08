@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 
 /**
- * Before 1.21, structures folder is in plural form
+ * Before 1.21.0, structures folder is in plural form
  */
 class Pre1210FolderStructure extends AbstractFolderStructure {
 
