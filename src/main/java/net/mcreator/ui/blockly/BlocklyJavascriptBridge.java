@@ -255,10 +255,6 @@ public final class BlocklyJavascriptBridge {
 		return L10N.t(key);
 	}
 
-	@SuppressWarnings("unused") public String getGlobalTriggers() {
-		return new Gson().toJson(ext_triggers, Map.class);
-	}
-
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
 		return getListOfForWorkspace(mcreator.getWorkspace(), type);
 	}
