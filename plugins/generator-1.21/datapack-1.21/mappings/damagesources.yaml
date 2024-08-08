@@ -3,7 +3,7 @@ _default:
   - generic
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
-  - "ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(\"@modid:@registryname\"))"
+  - "ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.parse(\"@modid:@registryname\"))"
   - "@modid:@registryname"
 _bypass_prefix: "#"
 IN_FIRE:
