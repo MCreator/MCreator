@@ -27,6 +27,9 @@ description="${settings.getDescription()}"
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
+<#if w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == "Raider")?size != 0>
+enumExtensions="META-INF/enumextensions.json"
+</#if>
 
 # Start of user code block mod configuration
 # End of user code block mod configuration

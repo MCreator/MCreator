@@ -38,15 +38,15 @@ package ${package}.entity;
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.rangedAttackItem)};
 
 	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, Level world) {
-		super(type, world, PROJECTILE_ITEM);
+		super(type, world);
 	}
 
 	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, double x, double y, double z, Level world) {
-		super(type, x, y, z, world, PROJECTILE_ITEM);
+		super(type, x, y, z, world, PROJECTILE_ITEM, null);
 	}
 
 	public ${name}EntityProjectile(EntityType<? extends ${name}EntityProjectile> type, LivingEntity entity, Level world) {
-		super(type, entity, world, PROJECTILE_ITEM);
+		super(type, entity, world, PROJECTILE_ITEM, null);
 	}
 
 	@Override protected void doPostHurtEffects(LivingEntity livingEntity) {

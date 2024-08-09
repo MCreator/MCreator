@@ -87,6 +87,11 @@ base_templates:
 #    condition_any:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
 #      - "${w.hasElementsOfType('feature')}"
+  - template: modbase/enumextensions.json.ftl
+    writer: json
+    name: "@RESROOT/META-INF/enumextensions.json"
+    condition_any:
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()

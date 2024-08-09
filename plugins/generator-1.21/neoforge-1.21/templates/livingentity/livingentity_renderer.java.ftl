@@ -102,7 +102,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<${name}Entity, ${model}>(this) {
-			final ResourceLocation LAYER_TEXTURE = new ResourceLocation("${modid}:textures/entities/${layer.texture}");
+			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
 
 			<#compress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light,
@@ -122,10 +122,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 					model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 					model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 					model.renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
 				<#else>
 					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
@@ -154,7 +154,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
-		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
+		return ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>

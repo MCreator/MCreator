@@ -85,7 +85,7 @@ public class ${JavaModName}Entities {
 	</#if>
 
 	<#if hasLivingEntities>
-	@SubscribeEvent public static void init(SpawnPlacementRegisterEvent event) {
+	@SubscribeEvent public static void init(RegisterSpawnPlacementsEvent event) {
 		<#list entities as entity>
 			<#if entity.getModElement().getTypeString() == "livingentity">
 				${entity.getModElement().getName()}Entity.init(event);
