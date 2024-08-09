@@ -1,3 +1,4 @@
+_default: ""
 Sword: Sword
 Pickaxe: Pickaxe
 Axe: Axe
@@ -13,7 +14,6 @@ Crossbow: Crossbow
 Dye: Dye
 EnchantedBook: EnchantedBook
 Potion: Potion
-Record: Record
 Shield: Shield
 SpawnEgg: SpawnEgg
 Trident: Trident

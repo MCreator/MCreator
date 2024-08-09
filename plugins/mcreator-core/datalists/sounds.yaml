@@ -589,6 +589,9 @@
 - record.pigstep
 - record.otherside
 - record.relic
+- record.creator
+- record.creator_music_box
+- record.precipice
 - ui.button.click
 - ui.toast.in
 - ui.toast.out
@@ -1512,6 +1515,7 @@
 - block.trial_spawner.open_shutter
 - block.trial_spawner.close_shutter
 - block.trial_spawner.eject_item
+- block.vault.reject_rewarded_player
 - entity.parrot.imitate.breeze
 - entity.player.teleport
 - block.sponge.break

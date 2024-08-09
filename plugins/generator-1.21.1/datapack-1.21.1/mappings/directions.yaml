@@ -1,0 +1,18 @@
+DOWN:
+  - Direction.DOWN
+  - down
+UP:
+  - Direction.UP
+  - up
+NORTH:
+  - Direction.NORTH
+  - north
+SOUTH:
+  - Direction.SOUTH
+  - south
+WEST:
+  - Direction.WEST
+  - west
+EAST:
+  - Direction.EAST
+  - east

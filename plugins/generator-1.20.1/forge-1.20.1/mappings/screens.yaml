@@ -58,7 +58,6 @@ ShareToLan: ShareToLanScreen
 SleepInMultiplayer: InBedChatScreen
 Stats: StatsScreen
 VideoSettings: VideoSettingsScreen
-WithNarratorSettings: SimpleOptionsSubScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen

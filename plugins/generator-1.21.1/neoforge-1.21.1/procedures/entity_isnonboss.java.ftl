@@ -1,0 +1,1 @@
+(${input$entity}.canChangeDimensions(${input$entity}.level(), ${input$entity}.level()))

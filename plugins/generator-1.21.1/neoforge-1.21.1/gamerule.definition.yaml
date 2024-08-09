@@ -1,0 +1,9 @@
+global_templates:
+  - template: elementinits/gamerules.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGameRules.java"
+
+localizationkeys:
+  - key: gamerule.@lc1_name
+    mapto: displayName
+  - key: gamerule.@lc1_name.description
+    mapto: description

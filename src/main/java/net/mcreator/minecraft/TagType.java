@@ -36,10 +36,10 @@ import java.util.function.BiFunction;
 public enum TagType {
 
 	//@formatter:off
-	ITEMS("items", Dependency.getColor("itemstack"), MItemBlock::new),
-	BLOCKS("blocks", Dependency.getColor("blockstate"), MItemBlock::new),
-	ENTITIES("entity_types", Dependency.getColor("entity"), EntityEntry::new),
-	FUNCTIONS("functions", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
+	ITEMS("item", Dependency.getColor("itemstack"), MItemBlock::new),
+	BLOCKS("block", Dependency.getColor("blockstate"), MItemBlock::new),
+	ENTITIES("entity_type", Dependency.getColor("entity"), EntityEntry::new),
+	FUNCTIONS("function", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
 	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
 	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new);
 	//@formatter:on
@@ -60,6 +60,13 @@ public enum TagType {
 
 	public String getFolder() {
 		return folder;
+	}
+
+	public String getPre21Folder() {
+		return switch (this) {
+			case ITEMS, FUNCTIONS, ENTITIES, BLOCKS -> folder + "s";
+			default -> folder;
+		};
 	}
 
 	public Color getColor() {

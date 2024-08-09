@@ -40,26 +40,18 @@ class Pre1193FolderStructure extends AbstractFolderStructure {
 	}
 
 	@Nullable @Override public File getTexturesFolder(TextureType section) {
-		return switch (section) {
-			case BLOCK -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/blocks");
-			case ITEM -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/items");
-			case ARMOR -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/models/armor");
-			case OTHER ->
-					new File(getResourceRoot(), "assets/" + workspace.getWorkspaceSettings().getModID() + "/textures");
+		return new File(getResourceRoot(), "assets/" + workspace.getWorkspaceSettings().getModID() + switch (section) {
+			case BLOCK -> "/textures/blocks";
+			case ITEM -> "/textures/items";
+			case ARMOR -> "/textures/models/armor";
+			case OTHER -> "/textures";
 			// The types below may not exist on older generators with shared folder for all but block, item and armor,
 			// but this will be taken care of by converters from other texture type section
-			case ENTITY -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/entities");
-			case EFFECT -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/mob_effect");
-			case PARTICLE -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/particle");
-			case SCREEN -> new File(getResourceRoot(),
-					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/screens");
-		};
+			case ENTITY -> "/textures/entities";
+			case EFFECT -> "/textures/mob_effect";
+			case PARTICLE -> "/textures/particle";
+			case SCREEN -> "/textures/screens";
+		});
 	}
 
 	@Nullable @Override public File getSourceRoot() {
