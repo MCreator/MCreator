@@ -33,7 +33,7 @@
 package ${package}.fluid.types;
 
 <#compress>
-public class ${name}FluidType extends FluidType {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}FluidType extends FluidType {
 	public ${name}FluidType() {
 		super(FluidType.Properties.create()
 			<#if data.type == "WATER">
@@ -56,17 +56,17 @@ public class ${name}FluidType extends FluidType {
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.emptySound}")))
+			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.emptySound}")))
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
 			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH));
 	}
 
-	@Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-		consumer.accept(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${data.textureStill.format("%s:block/%s")}"),
-				FLOWING_TEXTURE = new ResourceLocation("${data.textureFlowing.format("%s:block/%s")}");
+	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
+		event.registerFluidType(new IClientFluidTypeExtensions() {
+			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}"),
+				FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
 
 				@Override public ResourceLocation getStillTexture() {
 					return STILL_TEXTURE;
@@ -120,7 +120,6 @@ public class ${name}FluidType extends FluidType {
 					</#if> | 0xFF000000;
 				}
 				</#if>
-			}
-		);
+		}, ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get());
 	}
 }</#compress>
