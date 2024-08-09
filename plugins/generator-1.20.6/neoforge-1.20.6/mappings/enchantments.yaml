@@ -1,6 +1,6 @@
 _default: Enchantments.BLOCK_EFFICIENCY
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.parse(\"@modid:@registryname\"))"
+_mcreator_map_template: "@JavaModNameEnchantments.@REGISTRYNAME.get()"
 PROTECTION: Enchantments.PROTECTION
 FIRE_PROTECTION: Enchantments.FIRE_PROTECTION
 FEATHER_FALLING: Enchantments.FEATHER_FALLING
