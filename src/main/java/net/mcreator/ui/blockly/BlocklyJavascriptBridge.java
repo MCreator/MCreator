@@ -213,10 +213,17 @@ public final class BlocklyJavascriptBridge {
 			case "configuredfeature" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "configured_features");
-			case "global_triggers" -> openDataListEntrySelector(
-					w -> ext_triggers.entrySet().stream().map(entry ->
-							(DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{ setReadableName(entry.getValue()); }}).toList(),
-					"global_trigger");
+			case "global_triggers" -> {
+				String[] selectedEntry = openDataListEntrySelector(
+						w -> ext_triggers.entrySet().stream().map(entry ->
+								(DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{ setReadableName(entry.getValue()); }}).toList(),
+						"global_trigger");
+				// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
+				if (selectedEntry[0].isEmpty()) {
+					selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
+				}
+				yield selectedEntry;
+			}
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
