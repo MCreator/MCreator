@@ -34,6 +34,7 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -58,7 +59,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	// current mod icon if not obtained from mcitem - used for recipes
 	// it is transient, so it does not get serialized
-	private transient ImageIcon elementIcon;
+	@Nullable private transient ImageIcon elementIcon;
 
 	// Workspace this ModElement is in
 	// it is transient, so it does not get serialized
@@ -123,11 +124,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void reloadElementIcon() {
-		if (elementIcon != null && elementIcon.getImage() != null)
-			elementIcon.getImage().flush();
-
-		elementIcon = new ImageIcon(
+		File elementIconFile = new File(
 				workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + name + ".png");
+		if (elementIconFile.isFile()) {
+			if (elementIcon != null && elementIcon.getImage() != null)
+				elementIcon.getImage().flush();
+			elementIcon = new ImageIcon(elementIconFile.getAbsolutePath());
+		} else {
+			elementIcon = null;
+		}
 	}
 
 	@Override public @Nonnull Workspace getWorkspace() {
