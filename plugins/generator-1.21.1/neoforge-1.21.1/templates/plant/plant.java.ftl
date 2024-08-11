@@ -66,11 +66,11 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.breakSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.stepSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.placeSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.hitSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.fallSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -199,12 +199,29 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
 		}
-	</#if>
+	<#else><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+		private boolean canPlantTypeSurvive(BlockState state, LevelReader world, BlockPos pos) {
+			${generator.map(data.growapableSpawnType, "planttypes")}
+		}
 
-	<#if !(data.growapableSpawnType == "Plains" && data.plantType == "normal")>
-	@Override public PlantType getPlantType(BlockGetter world, BlockPos pos) {
-		return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
-	}
+		@Override public boolean canSurvive(BlockState blockstate, LevelReader world, BlockPos pos) {
+			BlockPos posbelow = pos.below();
+			BlockState statebelow = world.getBlockState(posbelow);
+			<#if data.plantType == "normal"><#-- emulate BushBlock plant type logic -->
+        	if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
+        	return this.mayPlaceOn(statebelow, world, posbelow);
+			<#elseif data.plantType == "growapable"><#-- emulate SugarCaneBlock plant type logic -->
+			if (this.canPlantTypeSurvive(statebelow, world, posbelow)) return true;
+			return super.canSurvive(blockstate, world, pos);
+			<#else><#-- emulate DoublePlantBlock plant type logic -->
+        	if (blockstate.getValue(HALF) != DoubleBlockHalf.UPPER) {
+				if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
+				return this.mayPlaceOn(statebelow, world, posbelow);
+			} else {
+				return statebelow.is(this) && statebelow.getValue(HALF) == DoubleBlockHalf.LOWER;
+			}
+			</#if>
+		}
 	</#if>
 
 	<@onBlockAdded data.onBlockAdded, false, 0/>
