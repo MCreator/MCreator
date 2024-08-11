@@ -34,27 +34,11 @@
 
 package ${package}.block;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import org.slf4j.Logger;
 
 public class ${name}PortalBlock extends NetherPortalBlock {
 
-	public ${name}PortalBlock() {
-		super(BlockBehaviour.Properties.of().noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
-				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
-	}
-
-	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-		<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
-		<#if hasProcedure(data.onPortalTickUpdate)>
-			<@procedureCode data.onPortalTickUpdate, {
-				"x": "pos.getX()",
-				"y": "pos.getY()",
-				"z": "pos.getZ()",
-				"world": "world",
-				"blockstate": "blockstate"
-			}/>
-		</#if>
-	}
+	private static final Logger LOGGER = LogUtils.getLogger();
 
 	public static void portalSpawn(Level world, BlockPos pos) {
 		Optional<${name}PortalShape> optional = ${name}PortalShape.findEmptyPortalShape(world, pos, Direction.Axis.X);
@@ -63,8 +47,51 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		}
 	}
 
+	public ${name}PortalBlock() {
+		super(BlockBehaviour.Properties.of().noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
+				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
+	}
+
+	private ${name}Teleporter getTeleporter(ServerLevel level) {
+		return new ${name}Teleporter(level);
+	}
+
 	@Override ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
 				   .replace("new PortalShape(", "new "+name+"PortalShape(")}
+
+	@Override @Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getPortalDestination", "ServerLevel", "Entity", "BlockPos")
+							 .replace("Level.NETHER", "ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(\"${modid}:${registryname}\"))")}
+
+	@Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getExitPortal", "ServerLevel", "Entity", "BlockPos", "BlockPos", "boolean", "WorldBorder")
+				   .replace("p_350564_.getPortalForcer()", "getTeleporter(p_350564_)")}
+
+	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getDimensionTransitionFromExit",
+			"Entity", "BlockPos", "BlockUtil.FoundRectangle", "ServerLevel", "DimensionTransition.PostDimensionTransition")}
+
+	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "createDimensionTransition",
+			"ServerLevel", "BlockUtil.FoundRectangle", "Direction.Axis", "Vec3", "Entity", "Vec3", "float", "float", "DimensionTransition.PostDimensionTransition")
+				.replace("PortalShape.", name+"PortalShape.")}
+
+	@Override public int getPortalTransitionTime(ServerLevel world, Entity entity) {
+		return 0;
+	}
+
+	@Override public Portal.Transition getLocalTransition() {
+		return Portal.Transition.NONE;
+	}
+
+	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+	<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
+		<#if hasProcedure(data.onPortalTickUpdate)>
+			<@procedureCode data.onPortalTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+			}/>
+		</#if>
+	}
 
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		for (int i = 0; i < 4; i++) {
@@ -89,27 +116,9 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
+					BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
 					random.nextFloat() * 0.4f + 0.8f);
         </#if>
-	}
-
-	@Override public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-		if (entity.canChangeDimensions() && !entity.level().isClientSide() && <@procedureOBJToConditionCode data.portalUseCondition/>) {
-			if (entity.isOnPortalCooldown()) {
-				entity.setPortalCooldown();
-			} else if (entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
-				entity.setPortalCooldown();
-				teleportToDimension(entity, pos, ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}")));
-			} else {
-				entity.setPortalCooldown();
-				teleportToDimension(entity, pos, Level.OVERWORLD);
-			}
-		}
-	}
-
-	private void teleportToDimension(Entity entity, BlockPos pos, ResourceKey<Level> destinationType) {
-		entity.changeDimension(entity.getServer().getLevel(destinationType), new ${name}Teleporter(entity.getServer().getLevel(destinationType), pos));
 	}
 
 }

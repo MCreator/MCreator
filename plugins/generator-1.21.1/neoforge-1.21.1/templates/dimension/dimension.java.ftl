@@ -67,7 +67,7 @@ public class ${name}Dimension {
 					return ${data.hasFog};
 				}
 			};
-			event.register(new ResourceLocation("${modid}:${registryname}"), customEffect);
+			event.register(ResourceLocation.parse("${modid}:${registryname}"), customEffect);
 		}
 
 	}
@@ -81,13 +81,13 @@ public class ${name}Dimension {
 		double z = entity.getZ();
 
 		<#if hasProcedure(data.onPlayerLeavesDimension)>
-		if (event.getFrom() == ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
+		if (event.getFrom() == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
         </#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
-		if (event.getTo() == ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
+		if (event.getTo() == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
         </#if>
