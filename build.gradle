@@ -120,20 +120,20 @@ dependencies {
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.13'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.8'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.16'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.9'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.4.1'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.5.1'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.5.0'
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.6.0'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'no-natives'
     implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.1') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
@@ -149,7 +149,7 @@ dependencies {
 }
 
 javafx {
-    version = '22.0.1'
+    version = '22.0.2'
     modules = ['javafx.web', 'javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
     // we provide natives during deployment or with SDK
@@ -161,7 +161,7 @@ test {
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
     // default max heap is VM RAM / 4, which may be too low on low RAM VMs
-    maxHeapSize = "2048m"
+    maxHeapSize = "4096m"
 
     testLogging {
         // https://stackoverflow.com/a/48709645/1627085

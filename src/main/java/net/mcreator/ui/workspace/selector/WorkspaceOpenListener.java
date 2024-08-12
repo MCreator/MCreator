@@ -21,5 +21,17 @@ package net.mcreator.ui.workspace.selector;
 import java.io.File;
 
 public interface WorkspaceOpenListener {
-	void workspaceOpened(File workspaceFolder);
+
+	default void workspaceOpened(File workspaceFolder) {
+		workspaceOpened(workspaceFolder, false);
+	}
+
+	/**
+	 * Called when workspace is opened
+	 *
+	 * @param workspaceFolder Folder in which workspace file is located
+	 * @param forceRegenerate If set to true, the workspace being open should trigger code regenerate action
+	 */
+	void workspaceOpened(File workspaceFolder, boolean forceRegenerate);
+
 }
