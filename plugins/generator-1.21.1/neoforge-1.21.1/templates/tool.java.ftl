@@ -35,8 +35,6 @@
 
 package ${package}.item;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
-
 <#compress>
 <#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
