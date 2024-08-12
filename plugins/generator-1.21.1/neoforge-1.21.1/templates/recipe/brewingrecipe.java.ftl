@@ -44,7 +44,7 @@ package ${package}.recipe.brewing;
 		Item inputItem = input.getItem();
 		Optional<Holder<Potion>> optionalPotion = input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion();
 		return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
-			&& !optionalPotion.isEmpty() && optionalPotion.get().is(${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")});
+			&& optionalPotion.isPresent() && optionalPotion.get().is(${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")});
 		<#else>
 		return ${mappedMCItemToIngredient(data.brewingInputStack)}.test(input);
 		</#if>

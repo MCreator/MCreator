@@ -76,7 +76,7 @@ public class ${name}Item extends Item {
 	</#if>
 
 	<#if data.stayInGridWhenCrafting>
-		@Override public boolean hasCraftingRemainingItem() {
+		@Override public boolean hasCraftingRemainingItem(ItemStack stack) {
 			return true;
 		}
 
