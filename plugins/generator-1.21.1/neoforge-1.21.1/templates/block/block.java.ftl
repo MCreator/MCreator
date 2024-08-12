@@ -93,11 +93,11 @@ public class ${name}Block extends
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.breakSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.stepSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.placeSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.hitSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.fallSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -226,8 +226,8 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.beaconColorModifier?has_content>
-	@Override public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
-		return new float[] { ${data.beaconColorModifier.getRed()/255}f, ${data.beaconColorModifier.getGreen()/255}f, ${data.beaconColorModifier.getBlue()/255}f };
+	@Override public Integer getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
+		return FastColor.ARGB32.opaque(${data.beaconColorModifier.getRGB()});
 	}
 	</#if>
 
@@ -449,8 +449,8 @@ public class ${name}Block extends
 
 	<#if data.plantsGrowOn>
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
-		return true;
+	public TriState canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, BlockState plant) {
+		return TriState.TRUE;
 	}
 	</#if>
 
