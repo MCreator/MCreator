@@ -1,0 +1,16 @@
+_default:
+  - WATER
+  - minecraft:water
+_mcreator_prefix: "CUSTOM:"
+FLOWING_WATER:
+  - FLOWING_WATER
+  - minecraft:flowing_water
+WATER:
+  - WATER
+  - minecraft:water
+FLOWING_LAVA:
+  - FLOWING_LAVA
+  - minecraft:flowing_lava
+LAVA:
+  - LAVA
+  - minecraft:lava
