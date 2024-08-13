@@ -5,6 +5,7 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator featuresPerStep
 public-f net.minecraft.world.level.chunk.ChunkGenerator generationSettingsGetter
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
+public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
 </#if>
 
 <#if w.getGElementsOfType("biome")?filter(e -> e.hasVines() || e.hasFruits())?size != 0>
