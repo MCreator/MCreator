@@ -7,6 +7,9 @@ EntityArmadillo: armadillo
 EntityBat: bat
 EntityBlaze: blaze
 EntityBoat: boat
+EntityBogged: bogged
+EntityBreeze: breeze
+EntityBreezeWindCharge: breeze_wind_charge_projectile
 EntityCat: cat
 EntityCamel: camel
 EntityCaveSpider: cave_spider
@@ -47,6 +50,7 @@ EntityMinecartHopper: hopper_minecart
 EntityMinecartTNT: tnt_minecart
 EntityMule: mule
 EntityOcelot: ocelot
+EntityOminousItemSpawner: ominous_item_spawner
 EntityPainting: painting
 EntityPanda: panda
 EntityParrot: parrot
@@ -118,3 +122,4 @@ EntityAllay: allay
 EntityFrog: frog
 EntityTadpole: tadpole
 EntityWarden: warden
+EntityWindCharge: wind_charge_projectile
