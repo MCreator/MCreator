@@ -5,6 +5,7 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator f_223020_ #featuresPerSt
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_223021_ #generationSettingsGetter
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
+public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
 </#if>
 
 <#if w.hasElementsOfType("feature")>

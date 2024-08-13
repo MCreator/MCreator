@@ -1,0 +1,60 @@
+_default:
+  - ItemTags.MINING_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+ARMOR_FEET:
+  - ItemTags.FOOT_ARMOR_ENCHANTABLE
+  - EquipmentSlot.FEET
+ARMOR_LEGS:
+  - ItemTags.LEG_ARMOR_ENCHANTABLE
+  - EquipmentSlot.LEGS
+ARMOR_CHEST:
+  - ItemTags.CHEST_ARMOR_ENCHANTABLE
+  - EquipmentSlot.CHEST
+ARMOR_HEAD:
+  - ItemTags.HEAD_ARMOR_ENCHANTABLE
+  - EquipmentSlot.HEAD
+ARMOR:
+  - ItemTags.ARMOR_ENCHANTABLE
+  - new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}
+SWORD:
+  - ItemTags.SWORD_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+FIRE_ASPECT:
+  - ItemTags.FIRE_ASPECT_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+SHARP:
+  - ItemTags.SHARP_WEAPON_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+WEAPON:
+  - ItemTags.WEAPON_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+DIGGER:
+  - ItemTags.MINING_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+DIGGER_LOOT:
+  - ItemTags.MINING_LOOT_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+FISHING_ROD:
+  - ItemTags.FISHING_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+TRIDENT:
+  - ItemTags.TRIDENT_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+BREAKABLE:
+  - ItemTags.DURABILITY_ENCHANTABLE
+  - EquipmentSlot.values()
+BOW:
+  - ItemTags.BOW_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+WEARABLE:
+  - ItemTags.EQUIPPABLE_ENCHANTABLE
+  - new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}
+CROSSBOW:
+  - ItemTags.CROSSBOW_ENCHANTABLE
+  - EquipmentSlot.MAINHAND
+VANISHABLE:
+  - ItemTags.VANISHING_ENCHANTABLE
+  - EquipmentSlot.values()
+MACE:
+  - ItemTags.MACE_ENCHANTABLE
+  - EquipmentSlot.MAINHAND

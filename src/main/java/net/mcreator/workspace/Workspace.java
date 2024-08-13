@@ -446,7 +446,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						retval.getWorkspaceSettings().setCurrentGenerator(selectedGenerator.getGeneratorName());
 
 						retval.generator = new Generator(retval);
-						retval.regenerateRequired = true;
+						retval.requireRegenerate();
 
 						WorkspaceGeneratorSetup.requestSetup(retval);
 					} else {
@@ -515,7 +515,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
 			retval.generator = new Generator(retval);
-			retval.regenerateRequired = true;
+			retval.requireRegenerate();
 
 			WorkspaceGeneratorSetup.requestSetup(retval);
 		} else {
@@ -543,6 +543,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		LOG.info("Created new workspace with workspace file {}, modid: {}, generator: {}", workspaceFile,
 				workspaceSettings.getModID(), workspaceSettings.getCurrentGenerator());
 		return retval;
+	}
+
+	public void requireRegenerate() {
+		this.regenerateRequired = true;
 	}
 
 	public boolean isRegenerateRequired() {

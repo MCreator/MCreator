@@ -78,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, f -> {}));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, (file, forceRegenerate) -> {}));
 	}
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {

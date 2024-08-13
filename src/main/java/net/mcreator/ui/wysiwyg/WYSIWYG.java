@@ -198,7 +198,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 						ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, getHeight());
 			}
 
-			if (!isNotOverlayType) {
+			if (!isNotOverlayType && selected != null) {
 				GUIComponent.AnchorPoint anchorPoint = selected.getAnchorPoint();
 				if (anchorPoint != null) {
 					Point anchor = anchorPoint.getAnchorPoint(W, H);

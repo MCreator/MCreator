@@ -1,0 +1,4 @@
+templates:
+  - template: advancement.json.ftl
+    writer: json
+    name: "@MODDATAROOT/advancements/@registryname.json"
