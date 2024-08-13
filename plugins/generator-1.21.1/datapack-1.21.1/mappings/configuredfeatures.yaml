@@ -40,6 +40,7 @@ dripstone_cluster: dripstone_cluster
 end_gateway_delayed: end_gateway_delayed
 end_gateway_return: end_gateway_return
 end_island: end_island
+end_platform: end_platform
 end_spike: end_spike
 fancy_oak: fancy_oak
 fancy_oak_bees: fancy_oak_bees
