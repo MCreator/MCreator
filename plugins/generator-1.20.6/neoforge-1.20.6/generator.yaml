@@ -55,8 +55,8 @@ armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
-vanilla_block_textures_dir: "client-1.20.6-client-extra.jar!/assets/minecraft/textures/block"
-vanilla_item_textures_dir: "client-1.20.6-client-extra.jar!/assets/minecraft/textures/item"
+vanilla_block_textures_dir: ".*-client-extra.jar!/assets/minecraft/textures/block"
+vanilla_item_textures_dir: ".*-client-extra.jar!/assets/minecraft/textures/item"
 
 base_templates:
   - template: modbase/mod.java.ftl
