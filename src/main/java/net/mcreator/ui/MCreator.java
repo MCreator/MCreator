@@ -98,7 +98,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final DebugPanel debugPanel;
 
-	private JPanel mainPanel;
+	private final JPanel mainPanel;
 
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());

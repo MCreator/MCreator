@@ -72,6 +72,8 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
+	private static final Pattern ANSI_REMOVER = Pattern.compile("\u001B\\[[;\\d]*m");
+
 	private static final Color COLOR_TASK_START = new Color(0xBBD9D0);
 	private static final Color COLOR_TASK_COMPLETE = new Color(0xbbe86c);
 	private static final Color COLOR_UNIMPORTANT = new Color(0x7B7B7B);
@@ -346,6 +348,8 @@ public class GradleConsole extends JPanel {
 			this.debugClient = optionalDebugClient;
 			this.debugClient.init(task, cancellationSource.token());
 			ref.getDebugPanel().startDebug(this.debugClient);
+		} else {
+			this.debugClient = null;
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -355,7 +359,9 @@ public class GradleConsole extends JPanel {
 
 		task.withCancellationToken(cancellationSource.token());
 
-		task.setStandardOutput(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
+		task.setStandardOutput(new OutputStreamEventHandler(rawLine -> SwingUtilities.invokeLater(() -> {
+			String line = ANSI_REMOVER.matcher(rawLine).replaceAll("");
+
 			taskOut.append(line).append("\n");
 
 			if (line.startsWith("Note: Some input files use or ov"))
@@ -379,6 +385,8 @@ public class GradleConsole extends JPanel {
 			if (line.contains("to show the individual deprecation warnings and determine"))
 				return;
 			if (line.contains("#sec:command_line_warnings"))
+				return;
+			if (line.startsWith("*** Started working on "))
 				return;
 
 			if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
@@ -411,6 +419,7 @@ public class GradleConsole extends JPanel {
 
 		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskErr.append(line).append("\n");
+
 			if (line.startsWith("[")) {
 				appendAutoColor(line);
 			} else {
