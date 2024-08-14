@@ -26,6 +26,12 @@
     ],
     "fields": [
       "enhancement"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

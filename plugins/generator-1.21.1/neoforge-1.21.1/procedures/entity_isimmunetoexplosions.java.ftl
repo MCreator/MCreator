@@ -1,0 +1,1 @@
+(${input$entity}.ignoreExplosion(new Explosion(${input$entity}.level(), null, 0, 0, 0, 4, true, Explosion.BlockInteraction.DESTROY)))

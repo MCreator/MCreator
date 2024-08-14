@@ -34,6 +34,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -75,14 +76,14 @@ public final class VanillaTexture extends Texture {
 		Map<String, Texture> textures = CACHE.getOrDefault(cacheIdentifier, new LinkedHashMap<>());
 		if (textures.isEmpty()) { // if not cached or empty list is cached, attempt to rebuild cache
 			String[] data = root.split("!/"); // 0 = jar name, 1 = path
-			final var jarName = data[0];
+			final var jarNameRegex = data[0];
 			final var path = data[1];
 
 			if (workspace.getGenerator().getProjectJarManager() != null) {
 				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager().getClassFileSources();
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
-					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
+					if (libraryFile.isFile() && Pattern.compile(jarNameRegex).matcher(libraryFile.getName()).find()) {
 						try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
 							List<? extends ZipEntry> entries = Collections.list(zipFile.entries());
 							entries.parallelStream().sorted(Comparator.comparing(ZipEntry::getName))

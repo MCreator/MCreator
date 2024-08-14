@@ -28,6 +28,15 @@
 - EntityBoat:
   readable_name: "Boat"
   type: spawnable
+- EntityBogged:
+  readable_name: "Bogged"
+  type: spawnable
+- EntityBreeze:
+  readable_name: "Breeze"
+  type: spawnable
+- EntityBreezeWindCharge:
+  readable_name: "Breeze wind charge"
+  type: spawnable
 - EntityChestBoat:
   readable_name: "Boat with chest"
   type: spawnable
@@ -200,6 +209,9 @@
   type: spawnable
 - EntityOcelot:
   readable_name: "Ocelot"
+  type: spawnable
+- EntityOminousItemSpawner:
+  readable_name: "Ominous item spawner"
   type: spawnable
 - EntityPainting:
   readable_name: "Painting"
@@ -392,6 +404,9 @@
   type: spawnable
 - EntityWarden:
   readable_name: "Warden"
+  type: spawnable
+- EntityWindCharge:
+  readable_name: "Wind charge"
   type: spawnable
 - EntityBlockDisplay:
   readable_name: "Block display"
