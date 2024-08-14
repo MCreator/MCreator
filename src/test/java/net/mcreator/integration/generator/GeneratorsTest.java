@@ -171,7 +171,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports",
 							() -> {
-								try (Stream<Path> entries = Files.walk(workspace.get().getWorkspaceFolder().toPath())) {
+								try (Stream<Path> entries = Files.walk(
+										workspace.get().getGenerator().getSourceRoot().toPath())) {
 									ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
 											entries.filter(Files::isRegularFile).map(Path::toFile)
 													.collect(Collectors.toList()), null);
