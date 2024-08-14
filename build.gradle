@@ -126,14 +126,14 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.5.1'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.4.1' // version 3.5.1 has logs debug messages to stdout (https://github.com/bobbylight/RSyntaxTextArea/issues/561)
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.6.0'
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.5.0' // version 1.6.0 hangs in some parts of UI (https://github.com/weisJ/jsvg/issues/88)
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'no-natives'
     implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.1') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
