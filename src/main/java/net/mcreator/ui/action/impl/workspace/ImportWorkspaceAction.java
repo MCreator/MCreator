@@ -33,10 +33,10 @@ public class ImportWorkspaceAction extends BasicAction {
 			if (file != null) {
 				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(actionRegistry.getMCreator(), null);
 				if (workspaceDir != null) {
-					File workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
+					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
 							actionRegistry.getMCreator());
 					if (workspaceFile != null)
-						actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile);
+						actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile.file(), workspaceFile.regenerateRequired());
 				}
 			}
 		});

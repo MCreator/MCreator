@@ -1,0 +1,36 @@
+plugins {
+    id 'eclipse'
+    id 'net.neoforged.moddev' version '1.0.17'
+}
+
+version = '1.0'
+base.archivesName = "modid"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = "${generator.getGeneratorBuildFileVersion()}"
+
+    validateAccessTransformers = true
+
+    runs {
+        client {
+            client()
+        }
+
+        server {
+            server()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+apply from: 'mcreator.gradle'

@@ -31,6 +31,12 @@
       "item",
       "levels",
       "treasure"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }
