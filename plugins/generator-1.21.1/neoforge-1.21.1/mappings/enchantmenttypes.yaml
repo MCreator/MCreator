@@ -1,0 +1,60 @@
+_default:
+  - "#minecraft:enchantable/MINING_ENCHANTABLE"
+  - "\"mainhand\""
+ARMOR_FEET:
+  - "#minecraft:enchantable/FOOT_ARMOR_ENCHANTABLE"
+  - "\"feet\""
+ARMOR_LEGS:
+  - "#minecraft:enchantable/LEG_ARMOR_ENCHANTABLE"
+  - "\"legs\""
+ARMOR_CHEST:
+  - "#minecraft:enchantable/CHEST_ARMOR_ENCHANTABLE"
+  - "\"chest\""
+ARMOR_HEAD:
+  - "#minecraft:enchantable/HEAD_ARMOR_ENCHANTABLE"
+  - "\"head\""
+ARMOR:
+  - "#minecraft:enchantable/ARMOR_ENCHANTABLE"
+  - "\"head\", \"chest\", \"legs\", \"feet\""
+SWORD:
+  - "#minecraft:enchantable/SWORD_ENCHANTABLE"
+  - "\"mainhand\""
+FIRE_ASPECT:
+  - "#minecraft:enchantable/FIRE_ASPECT_ENCHANTABLE"
+  - "\"mainhand\""
+SHARP:
+  - "#minecraft:enchantable/SHARP_WEAPON_ENCHANTABLE"
+  - "\"mainhand\""
+WEAPON:
+  - "#minecraft:enchantable/WEAPON_ENCHANTABLE"
+  - "\"mainhand\""
+DIGGER:
+  - "#minecraft:enchantable/MINING_ENCHANTABLE"
+  - "\"mainhand\""
+DIGGER_LOOT:
+  - "#minecraft:enchantable/MINING_LOOT_ENCHANTABLE"
+  - "\"mainhand\""
+FISHING_ROD:
+  - "#minecraft:enchantable/FISHING_ENCHANTABLE"
+  - "\"mainhand\""
+TRIDENT:
+  - "#minecraft:enchantable/TRIDENT_ENCHANTABLE"
+  - "\"mainhand\""
+BREAKABLE:
+  - "#minecraft:enchantable/DURABILITY_ENCHANTABLE"
+  - "\"any\""
+BOW:
+  - "#minecraft:enchantable/BOW_ENCHANTABLE"
+  - "\"mainhand\""
+WEARABLE:
+  - "#minecraft:enchantable/EQUIPPABLE_ENCHANTABLE"
+  - "\"head\", \"chest\", \"legs\", \"feet\""
+CROSSBOW:
+  - "#minecraft:enchantable/CROSSBOW_ENCHANTABLE"
+  - "\"mainhand\""
+VANISHABLE:
+  - "#minecraft:enchantable/VANISHING_ENCHANTABLE"
+  - "\"any\""
+MACE:
+  - "#minecraft:enchantable/MACE_ENCHANTABLE"
+  - "\"mainhand\""
