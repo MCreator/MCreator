@@ -445,6 +445,8 @@ public class GradleConsole extends JPanel {
 					return;
 				if (line.startsWith("SLF4J: "))
 					return;
+				if (line.startsWith("Cannot inject duplicate file mcp/client/Start.class"))
+					return;
 
 				append(line, COLOR_STDERR);
 			}
