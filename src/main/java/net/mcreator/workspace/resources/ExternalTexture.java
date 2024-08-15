@@ -117,7 +117,7 @@ public final class ExternalTexture extends Texture {
 				if (apiImpl != null && apiImpl.resource_paths() != null) {
 					String resPath = apiImpl.resource_paths().get(type.getID() + "_textures_dir");
 					if (resPath != null) {
-						String[] data = root.split("!/"); // 0 = jar name, 1 = path
+						String[] data = resPath.split("!/"); // 0 = jar name, 1 = path
 						final var jarName = data[0];
 						final var path = data[1];
 
