@@ -73,7 +73,7 @@ public final class ExternalTexture extends Texture {
 		// Ensure cache is populated and valid
 		getTexturesOfType(workspace, textureType);
 
-		return (ExternalTexture) CACHE.get(cacheIdentifier).getOrDefault(textureName,
+		return (ExternalTexture) CACHE.getOrDefault(cacheIdentifier, new LinkedHashMap<>()).getOrDefault(textureName,
 				new ExternalTexture(textureType, textureName, new EmptyIcon.ImageIcon(16, 16)));
 	}
 
