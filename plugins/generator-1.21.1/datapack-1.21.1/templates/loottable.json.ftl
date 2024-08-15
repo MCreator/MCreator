@@ -36,7 +36,7 @@
                       "predicates": {
                         "minecraft:enchantments": [
                           {
-                            "enchantment": "minecraft:silk_touch",
+                            "enchantments": "minecraft:silk_touch",
                             "levels": {
                               "min": 1
                             }
@@ -70,7 +70,7 @@
                 </#if>
                 "functions": [
                     {
-                      "function": "set_count",
+                      "function": "minecraft:set_count",
                       "count": {
                         "min": ${entry.minCount},
                         "max": ${entry.maxCount}
@@ -78,8 +78,7 @@
                     }
                     <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
                     ,{
-                      "function": "enchant_with_levels",
-                      "treasure": true,
+                      "function": "minecraft:enchant_with_levels",
                       "levels": {
                         "min": ${entry.minEnchantmentLevel},
                         "max": ${entry.maxEnchantmentLevel}
