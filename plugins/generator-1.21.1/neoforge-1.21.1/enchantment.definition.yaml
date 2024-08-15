@@ -1,0 +1,8 @@
+templates:
+  - template: json/enchantment.json.ftl
+    writer: json
+    name: "@MODDATAROOT/enchantment/@registryname.json"
+
+localizationkeys:
+  - key: enchantment.@modid.@registryname
+    mapto: name
