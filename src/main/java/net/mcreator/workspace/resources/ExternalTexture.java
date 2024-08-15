@@ -35,6 +35,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -96,12 +97,12 @@ public final class ExternalTexture extends Texture {
 					.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
 			if (root != null) {
 				String[] data = root.split("!/"); // 0 = jar name, 1 = path
-				final String jarName = data[0];
-				final String path = data[1];
+				final var jarNameRegex = data[0];
+				final var path = data[1];
 
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
-					if (libraryFile.isFile() && libraryFile.getName().contains(jarName)) {
+					if (libraryFile.isFile() && Pattern.compile(jarNameRegex).matcher(libraryFile.getName()).find()) {
 						loadTexturesFrom(libraryFile, "minecraft", path, type, textures);
 						break;
 					}
@@ -116,9 +117,9 @@ public final class ExternalTexture extends Texture {
 				if (apiImpl != null && apiImpl.resource_paths() != null) {
 					String resPath = apiImpl.resource_paths().get(type.getID() + "_textures_dir");
 					if (resPath != null) {
-						String[] data = resPath.split("!/"); // 0 = jar name, 1 = path
-						final String jarName = data[0];
-						final String path = data[1];
+						String[] data = root.split("!/"); // 0 = jar name, 1 = path
+						final var jarName = data[0];
+						final var path = data[1];
 
 						File apiLibFile = new File(workspace.getWorkspaceFolder(), jarName);
 						if (apiLibFile.isFile()) {
