@@ -74,7 +74,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	@Override protected void initGUI() {
 		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true, true);
-		compatibleEnchantments = new EnchantmentListField(mcreator);
+		compatibleEnchantments = new EnchantmentListField(mcreator, true, false);
 
 		JPanel pane1 = new JPanel(new BorderLayout());
 

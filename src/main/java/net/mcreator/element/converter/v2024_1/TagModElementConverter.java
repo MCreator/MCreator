@@ -19,6 +19,7 @@
 
 package net.mcreator.element.converter.v2024_1;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
@@ -65,6 +66,7 @@ public class TagModElementConverter implements IConverter {
 					case FUNCTIONS -> definition.getAsJsonArray("functions");
 					case BIOMES -> definition.getAsJsonArray("biomes");
 					case DAMAGE_TYPES -> definition.getAsJsonArray("damageTypes");
+					default -> new JsonArray(); // Other tag types did not exist before FV 60
 				}) {
 					workspace.getTagElements().get(tagElement).add(type == TagType.FUNCTIONS ?
 							value.getAsString() :

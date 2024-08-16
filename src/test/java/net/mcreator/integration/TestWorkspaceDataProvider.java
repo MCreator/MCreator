@@ -154,6 +154,11 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("testmod:testdamage");
 			workspace.getTagElements().get(tag).add("~testmod:testdamage2");
+
+			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("testmod:testenchantment");
+			workspace.getTagElements().get(tag).add("~testmod:testenchantment2");
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")

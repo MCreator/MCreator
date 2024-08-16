@@ -24,6 +24,7 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Enchantment;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.ui.init.L10N;
@@ -41,7 +42,8 @@ public enum TagType {
 	ENTITIES("entity_type", Dependency.getColor("entity"), EntityEntry::new),
 	FUNCTIONS("function", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
 	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
-	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new);
+	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new),
+	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new);
 	//@formatter:on
 
 	private final String folder;
