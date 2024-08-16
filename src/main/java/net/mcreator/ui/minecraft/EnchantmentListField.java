@@ -20,23 +20,45 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.Enchantment;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnchantmentListField extends JItemListField<Enchantment> {
 
 	public EnchantmentListField(MCreator mcreator) {
-		super(mcreator, true);
+		super(mcreator, false);
+	}
+
+	public EnchantmentListField(MCreator mcreator, boolean allowTags) {
+		super(mcreator, false, allowTags);
+	}
+
+	public EnchantmentListField(MCreator mcreator, boolean excludeButton, boolean allowTags) {
+		super(mcreator, excludeButton, allowTags);
 	}
 
 	@Override protected List<Enchantment> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllEnchantments,
 						L10N.t("dialog.list_field.enchantment_title"), L10N.t("dialog.list_field.enchantment_message")).stream()
 				.map(e -> new Enchantment(mcreator.getWorkspace(), e)).toList();
+	}
+
+	@Override protected List<Enchantment> getTagsToAdd() {
+		List<Enchantment> tags = new ArrayList<>();
+
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.ENCHANTMENTS, "treasure", "non_treasure",
+				"curse", "tradeable", "in_enchanting_table", "on_random_loot");
+		if (tag != null)
+			tags.add(new Enchantment(mcreator.getWorkspace(), "#" + tag));
+
+		return tags;
 	}
 
 }

@@ -29,7 +29,7 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
-import net.mcreator.workspace.resources.VanillaTexture;
+import net.mcreator.workspace.resources.ExternalTexture;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -56,7 +56,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 	private final MCreator mcreator;
 
-	private boolean loadVanillaTextures = false;
+	private boolean loadExternalTextures = false;
 
 	public TypedTextureSelectorDialog(MCreator mcreator, TextureType type) {
 		super(mcreator);
@@ -64,7 +64,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		this.mcreator = mcreator;
 
 		if (type == TextureType.BLOCK || type == TextureType.ITEM) {
-			loadVanillaTextures(true);
+			loadExternalTextures(true);
 		}
 
 		setModal(true);
@@ -152,8 +152,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		add(pn);
 	}
 
-	public TypedTextureSelectorDialog loadVanillaTextures(boolean shouldLoad) {
-		this.loadVanillaTextures = shouldLoad;
+	public TypedTextureSelectorDialog loadExternalTextures(boolean shouldLoad) {
+		this.loadExternalTextures = shouldLoad;
 		return this;
 	}
 
@@ -175,8 +175,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		// Load custom textures
 		CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
 
-		if (loadVanillaTextures) {
-			VanillaTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+		if (loadExternalTextures) {
+			ExternalTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
 		}
 
 		list.setSelectedIndex(0);

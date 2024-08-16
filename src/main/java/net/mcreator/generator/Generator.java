@@ -39,6 +39,7 @@ import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.resources.ExternalTexture;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.GradleConnector;
@@ -633,6 +634,8 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	@Override public void close() {
+		ExternalTexture.invalidateCache(workspace);
+
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
@@ -670,6 +673,8 @@ public class Generator implements IGenerator, Closeable {
 		String cache = new GsonBuilder().disableHtmlEscaping().create().toJson(generatorGradleCache);
 		FileIO.writeStringToFile(cache,
 				new File(workspace.getFolderManager().getWorkspaceCacheDir(), "generatorGradleCache"));
+
+		ExternalTexture.invalidateCache(workspace);
 	}
 
 	public GeneratorGradleCache getGradleCache() {
