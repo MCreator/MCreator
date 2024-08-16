@@ -3927,7 +3927,7 @@ Items.CAKE:
   - "cake"
 Items.BED:
   - Items.WHITE_BED
-  - "white_bed"pul
+  - "white_bed"
 Items.COOKIE:
   - Items.COOKIE
   - "cookie"
