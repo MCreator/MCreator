@@ -17,7 +17,6 @@
   "slots": [
     ${generator.map(data.type, "enchantmenttypes", 1)}
   ],
-  "exclusive_set": "#minecraft:exclusive_set/damage"
   <#if data.damageModifier != 0>,
   "effects": {
     "minecraft:damage_protection": [
