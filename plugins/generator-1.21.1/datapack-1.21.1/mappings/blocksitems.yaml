@@ -340,7 +340,7 @@ Blocks.SPONGE#1:
   - "wet_sponge"
 Blocks.SANDSTONE:
   - Blocks.SANDSTONE
-  - "#minecraft:sandstone"
+  - "#c:sandstone/blocks"
 Blocks.SANDSTONE#0:
   - Blocks.SANDSTONE
   - "sandstone"
@@ -352,7 +352,7 @@ Blocks.SANDSTONE#2:
   - "cut_sandstone"
 Blocks.RED_SANDSTONE:
   - Blocks.RED_SANDSTONE
-  - "#minecraft:sandstone"
+  - "#c:sandstone/blocks"
 Blocks.RED_SANDSTONE#0:
   - Blocks.RED_SANDSTONE
   - "red_sandstone"
