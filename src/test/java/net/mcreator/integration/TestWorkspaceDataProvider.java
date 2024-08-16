@@ -1409,7 +1409,6 @@ public class TestWorkspaceDataProvider {
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
-			enchantment.isAllowedOnBooks = !_true;
 			enchantment.isCurse = _true;
 			enchantment.canGenerateInLootTables = !_true;
 			enchantment.canVillagerTrade = _true;

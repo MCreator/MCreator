@@ -76,12 +76,6 @@ public class ${name}Enchantment extends Enchantment {
 		}
 	</#if>
 
-	<#if !data.isAllowedOnBooks>
-		@Override public boolean isAllowedOnBooks() {
-			return false;
-		}
-	</#if>
-
 	<#if !data.canGenerateInLootTables>
 		@Override public boolean isDiscoverable() {
 			return false;

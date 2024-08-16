@@ -57,7 +57,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final JCheckBox isTreasureEnchantment = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCurse = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox isAllowedOnBooks = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canGenerateInLootTables = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canVillagerTrade = L10N.checkbox("elementgui.common.enable");
 
@@ -80,19 +79,17 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		pane1.setOpaque(false);
 
-		isAllowedOnBooks.setOpaque(false);
 		isCurse.setOpaque(false);
 		isTreasureEnchantment.setOpaque(false);
 		canGenerateInLootTables.setOpaque(false);
 		canVillagerTrade.setOpaque(false);
 
-		isAllowedOnBooks.setSelected(true);
 		canGenerateInLootTables.setSelected(true);
 		canVillagerTrade.setSelected(true);
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
 		selp.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
@@ -122,10 +119,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/curse"),
 				L10N.label("elementgui.enchantment.curse")));
 		selp.add(isCurse);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/allowed_on_books"),
-				L10N.label("elementgui.enchantment.allowed_on_books")));
-		selp.add(isAllowedOnBooks);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/generate_in_loot_tables"),
 				L10N.label("elementgui.enchantment.can_generate_in_loot_tables")));
@@ -181,7 +174,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		compatibleItems.setExclusionMode(enchantment.excludeItems);
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
-		isAllowedOnBooks.setSelected(enchantment.isAllowedOnBooks);
 		canGenerateInLootTables.setSelected(enchantment.canGenerateInLootTables);
 		canVillagerTrade.setSelected(enchantment.canVillagerTrade);
 	}
@@ -199,7 +191,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.excludeItems = compatibleItems.isExclusionMode();
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
-		enchantment.isAllowedOnBooks = isAllowedOnBooks.isSelected();
 		enchantment.canGenerateInLootTables = canGenerateInLootTables.isSelected();
 		enchantment.canVillagerTrade = canVillagerTrade.isSelected();
 		return enchantment;

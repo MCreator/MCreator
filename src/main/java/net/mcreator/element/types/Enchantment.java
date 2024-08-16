@@ -43,7 +43,6 @@ import java.util.List;
 
 	public boolean isTreasureEnchantment;//tag - for true and for false
 	public boolean isCurse;//tag
-	public boolean isAllowedOnBooks;//TODO: removed
 	public boolean canGenerateInLootTables;//tag
 	public boolean canVillagerTrade;//tag
 
