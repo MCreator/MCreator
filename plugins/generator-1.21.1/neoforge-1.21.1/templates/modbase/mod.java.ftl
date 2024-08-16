@@ -29,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
