@@ -3220,9 +3220,6 @@ Items.DYE#18:
 Items.DYE#19:
   - Items.WHITE_DYE
   - "white_dye"
-Items.COAL:
-  - Items.COAL
-  - "#minecraft:coals"
 Items.COAL#0:
   - Items.COAL
   - "coal"
@@ -3769,9 +3766,6 @@ Items.MELON:
 Items.MELON_SEEDS:
   - Items.MELON_SEEDS
   - "melon_seeds"
-Items.FISH:
-  - Items.COD
-  - "#minecraft:fishes"
 Items.FISH#0:
   - Items.COD
   - "cod"
@@ -3784,9 +3778,6 @@ Items.FISH#2:
 Items.FISH#3:
   - Items.PUFFERFISH
   - "pufferfish"
-Items.COOKED_FISH:
-  - Items.COOKED_COD
-  - "#minecraft:fishes"
 Items.COOKED_FISH#0:
   - Items.COOKED_COD
   - "cooked_cod"

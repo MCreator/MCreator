@@ -5654,12 +5654,6 @@
   type: item
   texture: DYE#19
 
-- Items.COAL:
-  readable_name: "Any Coal"
-  type: item
-  texture: COAL
-  subtypes: true
-
 - Items.COAL#0:
   readable_name: "Coal"
   type: item
@@ -7039,12 +7033,6 @@
   type: item
   texture: GLOW_BERRIES
 
-- Items.FISH:
-  readable_name: "Any Fish"
-  type: item
-  texture: FISH
-  subtypes: true
-
 - Items.FISH#0:
   readable_name: "Raw Fish"
   type: item
@@ -7064,12 +7052,6 @@
   readable_name: "Pufferfish"
   type: item
   texture: FISH#3
-
-- Items.COOKED_FISH:
-  readable_name: "Any Cooked Fish"
-  type: item
-  texture: COOKED_FISH
-  subtypes: true
 
 - Items.COOKED_FISH#0:
   readable_name: "Cooked Fish"
