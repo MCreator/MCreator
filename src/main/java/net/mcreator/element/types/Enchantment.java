@@ -33,7 +33,7 @@ import java.util.List;
 
 	public int maxLevel;
 
-	public int damageModifier;//effect
+	public int damageModifier;
 
 	@ModElementReference public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;// TODO: this now only works as exclusive_set
 	public boolean excludeEnchantments;//
