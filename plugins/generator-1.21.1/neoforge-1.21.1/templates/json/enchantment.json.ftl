@@ -15,7 +15,7 @@
   },
   "anvil_cost": ${rarityToAnvilCost(data.rarity)},
   "slots": [
-    "${generator.map(data.type, "enchantmenttypes", 1)}"
+    ${generator.map(data.type, "enchantmenttypes", 1)}
   ],
   "exclusive_set": "#minecraft:exclusive_set/damage"
   <#if data.damageModifier != 0>,

@@ -41,10 +41,10 @@ import java.util.List;
 	@ModElementReference public List<MItemBlock> compatibleItems;// TODO: this will need to be reworked to supported_items
 	public boolean excludeItems;//
 
-	public boolean isTreasureEnchantment;//tag - for true and for false
-	public boolean isCurse;//tag
-	public boolean canGenerateInLootTables;//tag
-	public boolean canVillagerTrade;//tag
+	public boolean isTreasureEnchantment;
+	public boolean isCurse;
+	public boolean canGenerateInLootTables;
+	public boolean canVillagerTrade;
 
 	private Enchantment() {
 		this(null);
