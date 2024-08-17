@@ -5,6 +5,7 @@ _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@JavaModNameEnchantments.@REGISTRYNAME.get()"
   - "@modid:@registryname"
+_bypass_prefix: "#"
 PROTECTION:
   - Enchantments.PROTECTION
   - protection

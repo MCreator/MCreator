@@ -5,6 +5,7 @@ _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.parse(\"@modid:@registryname\"))"
   - "@modid:@registryname"
+_bypass_prefix: "#"
 PROTECTION:
   - Enchantments.PROTECTION
   - protection
