@@ -13,8 +13,17 @@
           "icon": {
             ${mappedMCItemToItemObjectJSON(data.achievementIcon, "id")}
           },
+          <#if generator.getGeneratorFlavor() == "DATAPACK">
           "title": "${data.achievementName}",
           "description": "${data.achievementDescription}",
+          <#else>
+          "title": {
+            "translate": "advancements.${registryname}.title"
+          },
+          "description": {
+            "translate": "advancements.${registryname}.descr"
+          },
+          </#if>
           "frame": "${data.achievementType}",
           "show_toast": ${data.showPopup},
           "announce_to_chat": ${data.announceToChat},
@@ -49,8 +58,8 @@
         </#if>
     }
     </#if>
-    <#if data.parent?has_content && data.parent != "none" && !data.parent.toString().contains("@")>
-    ,"parent": "${data.parent}"
+    <#if data.parent?has_content && data.parent != "none" && !data.parent.toString().contains("@")>,
+    "parent": "${data.parent}"
     </#if>
 }
 <#-- @formatter:on -->

@@ -123,6 +123,10 @@ import java.util.stream.Collectors;
 		return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
 	}
 
+	public String getGeneratorFlavor() {
+		return generator.getGeneratorConfiguration().getGeneratorFlavor().name();
+	}
+
 	public Workspace getWorkspace() {
 		return generator.getWorkspace();
 	}
