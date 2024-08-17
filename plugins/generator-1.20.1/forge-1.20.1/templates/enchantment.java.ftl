@@ -31,61 +31,89 @@
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 
+<#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
+<#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
+
+<#macro weightToRarity weight>
+	<#if weight <= 1>VERY_RARE
+	<#elseif weight <= 2>RARE
+	<#elseif weight <= 5>UNCOMMON
+	<#else>COMMON
+	</#if>
+</#macro>
+
+<#macro slotsCode slots>
+	<#if slots == "any">EquipmentSlot.values()
+	<#elseif slots == "hand">new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }
+	<#elseif slots == "armor">new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }
+	<#elseif slots == "body">new EquipmentSlot[] { EquipmentSlot.CHEST }
+	<#else>new EquipmentSlot[] { EquipmentSlot.${slots?upper_case} }
+	</#if>
+</#macro>
+
 package ${package}.enchantment;
 
 public class ${name}Enchantment extends Enchantment {
 
-	public ${name}Enchantment(EquipmentSlot... slots) {
-		super(Enchantment.Rarity.${data.rarity}, EnchantmentCategory.${generator.map(data.type, "enchantmenttypes")}, slots);
+	private static final EnchantmentCategory ENCHANTMENT_CATEGORY = EnchantmentCategory.create("${modid}_${registryname}",
+		item -> ${mappedMCItemsToIngredient(supportedItems)}.test(new ItemStack(item))
+	);
+
+	public ${name}Enchantment() {
+		super(Enchantment.Rarity.<@weightToRarity data.weight/>, ENCHANTMENT_CATEGORY, <@slotsCode data.supportedSlots/>);
+	}
+
+	@Override public int getMinCost(int level) {
+		return 1 + level * 10;
+	}
+
+	@Override public int getMaxCost(int level) {
+		return 6 + level * 10;
 	}
 
 	<#if data.maxLevel != 1>
-		@Override public int getMaxLevel() {
-			return ${data.maxLevel};
-		}
+	@Override public int getMaxLevel() {
+		return ${data.maxLevel};
+	}
 	</#if>
 
 	<#if data.damageModifier != 0>
-		@Override public int getDamageProtection(int level, DamageSource source) {
-			return level * ${data.damageModifier};
-		}
+	@Override public int getDamageProtection(int level, DamageSource source) {
+		return level * ${data.damageModifier};
+	}
 	</#if>
 
-	<#if data.compatibleEnchantments?has_content>
-		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>this != ench && !</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
-		}
-	</#if>
-
-	<#if data.compatibleItems?has_content>
-		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-			return <#if data.excludeItems>!</#if>${mappedMCItemsToIngredient(data.compatibleItems)}.test(itemstack);
-		}
+	<#if incompatibleEnchantments?has_content>
+	@Override protected boolean checkCompatibility(Enchantment enchantment) {
+		return super.checkCompatibility(enchantment) && !List.of(
+			<#list incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>
+		).contains(enchantment);
+	}
 	</#if>
 
 	<#if data.isTreasureEnchantment>
-		@Override public boolean isTreasureOnly() {
-			return true;
-		}
+	@Override public boolean isTreasureOnly() {
+		return true;
+	}
 	</#if>
 
 	<#if data.isCurse>
-		@Override public boolean isCurse() {
-			return true;
-		}
+	@Override public boolean isCurse() {
+		return true;
+	}
 	</#if>
 
 	<#if !data.canGenerateInLootTables>
-		@Override public boolean isDiscoverable() {
-			return false;
-		}
+	@Override public boolean isDiscoverable() {
+		return false;
+	}
 	</#if>
 
 	<#if !data.canVillagerTrade>
-		@Override public boolean isTradeable() {
-			return false;
-		}
+	@Override public boolean isTradeable() {
+		return false;
+	}
 	</#if>
+
 }
 <#-- @formatter:on -->

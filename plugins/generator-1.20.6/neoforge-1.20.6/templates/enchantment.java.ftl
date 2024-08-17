@@ -30,80 +30,89 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+<#include "mcelements.ftl">
+
+<#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
+<#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
+
+<#macro slotsCode slots>
+	<#if slots == "any">EquipmentSlot.values()
+	<#elseif slots == "hand">new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }
+	<#elseif slots == "armor">new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }
+	<#else>new EquipmentSlot[] { EquipmentSlot.${slots?upper_case} }
+	</#if>
+</#macro>
+
+<#macro supportedItemsCode supportedItems slots>
+	<#if supportedItems?size == 1 && supportedItems?first?starts_with("#")>
+		ItemTags.create(${toResourceLocation(supportedItems?first)})
+	<#else>
+	<#-- we will override this in canApplyAtEnchantingTable anyway, but still try to match appropriate one here -->
+		<#if slots == "armor" || slots == "feet" || slots == "legs" || slots == "chest" || slots == "head" || slots == "body">
+		ItemTags.ARMOR_ENCHANTABLE
+		<#else>
+		ItemTags.MINING_ENCHANTABLE
+		</#if>
+	</#if>
+</#macro>
 
 package ${package}.enchantment;
 
-<#function rarityToWeight rarity>
-	<#if rarity == "COMMON"><#return 10>
-	<#elseif rarity == "UNCOMMON"><#return 5>
-	<#elseif rarity == "RARE"><#return 2>
-	<#else><#return 1>
-	</#if>
-</#function>
-
-<#function rarityToAnvilCost rarity>
-	<#if rarity == "COMMON"><#return 1>
-	<#elseif rarity == "UNCOMMON"><#return 2>
-	<#elseif rarity == "RARE"><#return 4>
-	<#else><#return 8>
-	</#if>
-</#function>
-
 public class ${name}Enchantment extends Enchantment {
 
-	public ${name}Enchantment(EquipmentSlot... slots) {
+	public ${name}Enchantment() {
 		super(Enchantment.definition(
-			${generator.map(data.type, "enchantmenttypes", 0)}, <#-- supportedItems -->
-			${rarityToWeight(data.rarity)}, <#-- weight -->
+			<@supportedItemsCode supportedItems data.supportedSlots/>, <#-- supportedItems -->
+			${data.weight}, <#-- weight -->
 			${data.maxLevel}, <#-- maxLevel -->
 			Enchantment.dynamicCost(1, 10), <#-- minCost -->
 			Enchantment.dynamicCost(6, 10), <#-- maxCost -->
-			${rarityToAnvilCost(data.rarity)}, <#-- anvilCost -->
-			${generator.map(data.type, "enchantmenttypes", 1)} <#-- slots -->
+			${data.anvilCost}, <#-- anvilCost -->
+			<@slotsCode data.supportedSlots/> <#-- slots -->
 		));
 	}
 
+	@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
+		return ${mappedMCItemsToIngredient(supportedItems)}.test(itemstack);
+	}
+
 	<#if data.damageModifier != 0>
-		@Override public int getDamageProtection(int level, DamageSource source) {
-			return level * ${data.damageModifier};
-		}
+	@Override public int getDamageProtection(int level, DamageSource source) {
+		return level * ${data.damageModifier};
+	}
 	</#if>
 
-	<#if data.compatibleEnchantments?has_content>
-		@Override protected boolean checkCompatibility(Enchantment enchantment) {
-			return <#if data.excludeEnchantments>this != enchantment && !</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(enchantment);
-		}
-	</#if>
-
-	<#if data.compatibleItems?has_content>
-		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-			return <#if data.excludeItems>!</#if>${mappedMCItemsToIngredient(data.compatibleItems)}.test(itemstack);
-		}
+	<#if incompatibleEnchantments?has_content>
+	@Override protected boolean checkCompatibility(Enchantment enchantment) {
+		return super.checkCompatibility(enchantment) && !List.of(
+			<#list incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>
+		).contains(enchantment);
+	}
 	</#if>
 
 	<#if data.isTreasureEnchantment>
-		@Override public boolean isTreasureOnly() {
-			return true;
-		}
+	@Override public boolean isTreasureOnly() {
+		return true;
+	}
 	</#if>
 
 	<#if data.isCurse>
-		@Override public boolean isCurse() {
-			return true;
-		}
+	@Override public boolean isCurse() {
+		return true;
+	}
 	</#if>
 
 	<#if !data.canGenerateInLootTables>
-		@Override public boolean isDiscoverable() {
-			return false;
-		}
+	@Override public boolean isDiscoverable() {
+		return false;
+	}
 	</#if>
 
 	<#if !data.canVillagerTrade>
-		@Override public boolean isTradeable() {
-			return false;
-		}
+	@Override public boolean isTradeable() {
+		return false;
+	}
 	</#if>
+
 }
 <#-- @formatter:on -->

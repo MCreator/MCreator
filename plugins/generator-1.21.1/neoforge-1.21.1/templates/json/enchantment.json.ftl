@@ -1,9 +1,20 @@
+<#include "../mcitems.ftl">
+
+<#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
+<#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
+
 {
   "description": {
     "translate": "enchantment.${modid}.${registryname}"
   },
-  "supported_items": "${generator.map(data.type, "enchantmenttypes", 0)}",
-  "weight": ${rarityToWeight(data.rarity)},
+  <#if supportedItems?size == 1>
+  "supported_items": "${mappedMCItemToRegistryName(supportedItems?first)}",
+  <#else>
+  "supported_items": [
+    <#list supportedItems as supportedItem>"${mappedMCItemToRegistryName(supportedItem)}"<#sep>,</#list>
+  ],
+  </#if>
+  "weight": ${data.weight},
   "max_level": ${data.maxLevel},
   "min_cost": {
     "base": 1,
@@ -13,10 +24,17 @@
     "base": 6,
     "per_level_above_first": 10
   },
-  "anvil_cost": ${rarityToAnvilCost(data.rarity)},
+  "anvil_cost": ${data.anvilCost},
   "slots": [
-    ${generator.map(data.type, "enchantmenttypes", 1)}
+    ${data.supportedSlots}
+  ],
+  <#if incompatibleEnchantments?size == 1>
+  "exclusive_set": "${incompatibleEnchantments?first}"
+  <#else>
+  "exclusive_set": [
+    <#list incompatibleEnchantments as incompatibleEnchantment>"${incompatibleEnchantment}"<#sep>,</#list>
   ]
+  </#if>
   <#if data.damageModifier != 0>,
   "effects": {
     "minecraft:damage_protection": [
@@ -34,19 +52,3 @@
   }
   </#if>
 }
-
-<#function rarityToWeight rarity>
-	<#if rarity == "COMMON"><#return 10>
-	<#elseif rarity == "UNCOMMON"><#return 5>
-	<#elseif rarity == "RARE"><#return 2>
-	<#else><#return 1>
-	</#if>
-</#function>
-
-<#function rarityToAnvilCost rarity>
-	<#if rarity == "COMMON"><#return 1>
-	<#elseif rarity == "UNCOMMON"><#return 2>
-	<#elseif rarity == "RARE"><#return 4>
-	<#else><#return 8>
-	</#if>
-</#function>
