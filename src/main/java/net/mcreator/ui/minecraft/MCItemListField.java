@@ -31,12 +31,18 @@ import net.mcreator.util.image.IconUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MCItemListField extends JItemListField<MItemBlock> {
 
 	private final MCItem.ListProvider supplier;
+
+	private final List<String> additionalTagSuggestions = new ArrayList<>() {{
+		add("tag");
+		add("category/tag");
+	}};
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier) {
 		this(mcreator, supplier, false, false);
@@ -48,6 +54,10 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		this.supplier = supplier;
 
 		elementsList.setCellRenderer(new CustomListCellRenderer());
+	}
+
+	public void addAdditionalTagSuggestions(String... suggestions) {
+		additionalTagSuggestions.addAll(Arrays.asList(suggestions));
 	}
 
 	@Override public List<MItemBlock> getElementsToAdd() {
@@ -66,7 +76,8 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		}
 
 		List<MItemBlock> tags = new ArrayList<>();
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, tagType, "tag", "category/tag");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, tagType,
+				additionalTagSuggestions.toArray(new String[0]));
 		if (tag != null)
 			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
 		return tags;

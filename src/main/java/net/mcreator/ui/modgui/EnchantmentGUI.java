@@ -78,6 +78,13 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		supportedItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		incompatibleEnchantments = new EnchantmentListField(mcreator, false, true);
 
+		supportedItems.addAdditionalTagSuggestions("enchantable/foot_armor", "enchantable/leg_armor",
+				"enchantable/chest_armor", "enchantable/head_armor", "enchantable/armor", "enchantable/sword",
+				"enchantable/fire_aspect", "enchantable/sharp_weapon", "enchantable/weapon", "enchantable/mining",
+				"enchantable/mining_loot", "enchantable/fishing", "enchantable/trident", "enchantable/durability",
+				"enchantable/bow", "enchantable/equippable", "enchantable/crossbow", "enchantable/vanishing",
+				"enchantable/mace");
+
 		JPanel pane1 = new JPanel(new BorderLayout());
 
 		pane1.setOpaque(false);
