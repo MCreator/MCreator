@@ -55,9 +55,23 @@ package ${package}.enchantment;
 
 public class ${name}Enchantment extends Enchantment {
 
-	private static final EnchantmentCategory ENCHANTMENT_CATEGORY = EnchantmentCategory.create("${modid}_${registryname}",
-		item -> ${mappedMCItemsToIngredient(supportedItems)}.test(new ItemStack(item))
-	);
+	private static final EnchantmentCategory ENCHANTMENT_CATEGORY =
+		<#if supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/foot_armor">EnchantmentCategory.ARMOR_FEET;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/leg_armor">EnchantmentCategory.ARMOR_LEGS;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/chest_armor">EnchantmentCategory.ARMOR_CHEST;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/head_armor">EnchantmentCategory.ARMOR_HEAD;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/armor">EnchantmentCategory.ARMOR;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/weapon">EnchantmentCategory.WEAPON;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/mining">EnchantmentCategory.DIGGER;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/fishing">EnchantmentCategory.FISHING_ROD;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/trident">EnchantmentCategory.TRIDENT;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/durability">EnchantmentCategory.BREAKABLE;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/bow">EnchantmentCategory.BOW;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/equippable">EnchantmentCategory.WEARABLE;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/crossbow">EnchantmentCategory.CROSSBOW;
+		<#elseif supportedItems?size == 1 && supportedItems?first == "TAG:minecraft:enchantable/vanishing">EnchantmentCategory.VANISHABLE;
+		<#else>EnchantmentCategory.create("${modid}_${registryname}", item -> ${mappedMCItemsToIngredient(supportedItems)}.test(new ItemStack(item)));
+		</#if>
 
 	public ${name}Enchantment() {
 		super(Enchantment.Rarity.<@weightToRarity data.weight/>, ENCHANTMENT_CATEGORY, <@slotsCode data.supportedSlots/>);
