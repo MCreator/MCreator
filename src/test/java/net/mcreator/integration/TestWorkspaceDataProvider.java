@@ -1414,22 +1414,25 @@ public class TestWorkspaceDataProvider {
 			enchantment.canGenerateInLootTables = !_true;
 			enchantment.canVillagerTrade = _true;
 			enchantment.supportedItems = new ArrayList<>();
-			if (!emptyLists) {
-				if (_true) {
-					enchantment.supportedItems = new ArrayList<>(blocksAndItemsAndTags.stream()
-							.skip(((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-							.limit(blocksAndItemsAndTags.size() / 4)
-							.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				} else {
-					enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				}
+			if (_true) {
+				enchantment.supportedItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+						.skip(((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+						.limit(blocksAndItemsAndTags.size() / 4)
+						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+			} else {
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft:enchantable/fishing"));
 			}
 			enchantment.incompatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.incompatibleEnchantments.addAll(
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
-								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-										e.getName())).toList());
+				if (_true) {
+					enchantment.incompatibleEnchantments.addAll(
+							ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
+									.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+											e.getName())).toList());
+				} else {
+					enchantment.incompatibleEnchantments.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+							"#minecraft:non_treasure"));
+				}
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
