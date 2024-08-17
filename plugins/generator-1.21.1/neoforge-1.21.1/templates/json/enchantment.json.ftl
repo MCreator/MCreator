@@ -29,10 +29,10 @@
     ${data.supportedSlots}
   ],
   <#if incompatibleEnchantments?size == 1>
-  "exclusive_set": "${incompatibleEnchantments?first}"
+  "exclusive_set": "${generator.map(incompatibleEnchantments?first.getUnmappedValue(), "enchantments", 1)}"
   <#else>
   "exclusive_set": [
-    <#list incompatibleEnchantments as incompatibleEnchantment>"${incompatibleEnchantment}"<#sep>,</#list>
+    <#list incompatibleEnchantments as incompatibleEnchantment>"${generator.map(incompatibleEnchantment.getUnmappedValue(), "enchantments", 1)}"<#sep>,</#list>
   ]
   </#if>
   <#if data.damageModifier != 0>,
