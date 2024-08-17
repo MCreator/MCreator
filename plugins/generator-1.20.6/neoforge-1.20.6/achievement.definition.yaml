@@ -1,5 +1,5 @@
 templates:
-  - template: json/advancement.json.ftl
+  - template: advancement.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/advancements/@registryname.json"
 

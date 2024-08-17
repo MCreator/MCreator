@@ -38,7 +38,7 @@ public class ItemListFieldSingleTagValidator implements Validator {
 
 		if (listElements.size() > 1) {
 			for (Object object : listElements) {
-				if (object.toString().startsWith("#"))
+				if (object.toString().startsWith("#") || object.toString().startsWith("TAG:"))
 					return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
 			}
 		}
