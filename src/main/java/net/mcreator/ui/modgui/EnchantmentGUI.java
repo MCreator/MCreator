@@ -19,11 +19,9 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Enchantment;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -31,8 +29,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -42,16 +43,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.stream.Collectors;
 
 public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> type = new JComboBox<>();
-	private final JComboBox<String> rarity = new JComboBox<>(
-			new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 
-	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(1, 1, 64000, 1));
+	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
+	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
+
+	private final JComboBox<String> supportedSlots = new JComboBox<>(
+			new String[] { "any", "mainhand", "offhand", "hand", "feet", "legs", "chest", "head", "armor", "body" });
+
+	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(4, 1, 255, 1));
 
 	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -60,8 +63,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JCheckBox canGenerateInLootTables = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canVillagerTrade = L10N.checkbox("elementgui.common.enable");
 
-	private MCItemListField compatibleItems;
-	private EnchantmentListField compatibleEnchantments;
+	private MCItemListField supportedItems;
+	private EnchantmentListField incompatibleEnchantments;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -72,8 +75,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected void initGUI() {
-		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true, true);
-		compatibleEnchantments = new EnchantmentListField(mcreator, true, false);
+		supportedItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+		incompatibleEnchantments = new EnchantmentListField(mcreator, false, true);
 
 		JPanel pane1 = new JPanel(new BorderLayout());
 
@@ -89,24 +92,36 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 50, 2));
 		selp.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
 				L10N.label("elementgui.enchantment.name")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/type"),
-				L10N.label("elementgui.enchantment.type")));
-		selp.add(type);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/rarity"),
-				L10N.label("elementgui.enchantment.rarity")));
-		selp.add(rarity);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/weight"),
+				L10N.label("elementgui.enchantment.weight")));
+		selp.add(weight);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/level"),
 				L10N.label("elementgui.enchantment.level")));
 		selp.add(maxLevel);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/supported_items"),
+				L10N.label("elementgui.enchantment.supported_items")));
+		selp.add(supportedItems);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/supported_slots"),
+				L10N.label("elementgui.enchantment.supported_slots")));
+		selp.add(supportedSlots);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/incompatible_enchantments"),
+				L10N.label("elementgui.enchantment.incompatible_enchantments")));
+		selp.add(incompatibleEnchantments);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/anvil_cost"),
+				L10N.label("elementgui.enchantment.anvil_cost")));
+		selp.add(anvilCost);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/damage_modifier"),
 				L10N.label("elementgui.enchantment.damage_modifier")));
@@ -128,20 +143,20 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.can_villager_trade")));
 		selp.add(canVillagerTrade);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/compatible_enchantments"),
-				L10N.label("elementgui.enchantment.compatible_enchantments")));
-		selp.add(compatibleEnchantments);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/can_apply_to"),
-				L10N.label("elementgui.enchantment.can_apply_to")));
-		selp.add(compatibleItems);
-
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.enchantment.needs_name")));
 		name.enableRealtimeValidation();
 
+		supportedItems.setValidator(new CompoundValidator(
+				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
+				new ItemListFieldSingleTagValidator(supportedItems)));
+
+		incompatibleEnchantments.setValidator(new ItemListFieldSingleTagValidator(incompatibleEnchantments));
+
 		page1group.addValidationElement(name);
+		page1group.addValidationElement(supportedItems);
+		page1group.addValidationElement(incompatibleEnchantments);
 
 		addPage(pane1);
 
@@ -151,27 +166,19 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		}
 	}
 
-	@Override public void reloadDataLists() {
-		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(type,
-				ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).collect(Collectors.toList()));
-	}
-
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Enchantment enchantment) {
 		name.setText(enchantment.name);
-		type.setSelectedItem(enchantment.type);
-		rarity.setSelectedItem(enchantment.rarity);
+		supportedSlots.setSelectedItem(enchantment.supportedSlots);
+		weight.setValue(enchantment.weight);
+		anvilCost.setValue(enchantment.anvilCost);
 		maxLevel.setValue(enchantment.maxLevel);
 		damageModifier.setValue(enchantment.damageModifier);
-		compatibleEnchantments.setListElements(enchantment.compatibleEnchantments);
-		compatibleEnchantments.setExclusionMode(enchantment.excludeEnchantments);
-		compatibleItems.setListElements(enchantment.compatibleItems);
-		compatibleItems.setExclusionMode(enchantment.excludeItems);
+		incompatibleEnchantments.setListElements(enchantment.incompatibleEnchantments);
+		supportedItems.setListElements(enchantment.supportedItems);
 		isTreasureEnchantment.setSelected(enchantment.isTreasureEnchantment);
 		isCurse.setSelected(enchantment.isCurse);
 		canGenerateInLootTables.setSelected(enchantment.canGenerateInLootTables);
@@ -181,14 +188,13 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	@Override public Enchantment getElementFromGUI() {
 		Enchantment enchantment = new Enchantment(modElement);
 		enchantment.name = name.getText();
-		enchantment.type = (String) type.getSelectedItem();
-		enchantment.rarity = (String) rarity.getSelectedItem();
+		enchantment.supportedSlots = (String) supportedSlots.getSelectedItem();
+		enchantment.weight = (int) weight.getValue();
+		enchantment.anvilCost = (int) anvilCost.getValue();
 		enchantment.maxLevel = (int) maxLevel.getValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
-		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
-		enchantment.excludeEnchantments = compatibleEnchantments.isExclusionMode();
-		enchantment.compatibleItems = compatibleItems.getListElements();
-		enchantment.excludeItems = compatibleItems.isExclusionMode();
+		enchantment.incompatibleEnchantments = incompatibleEnchantments.getListElements();
+		enchantment.supportedItems = supportedItems.getListElements();
 		enchantment.isTreasureEnchantment = isTreasureEnchantment.isSelected();
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.canGenerateInLootTables = canGenerateInLootTables.isSelected();

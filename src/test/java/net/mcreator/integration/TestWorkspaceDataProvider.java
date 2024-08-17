@@ -1128,8 +1128,7 @@ public class TestWorkspaceDataProvider {
 			potionEffect.color = Color.magenta;
 			potionEffect.icon = new TextureHolder(modElement.getWorkspace(), "effect1");
 			potionEffect.isInstant = !_true;
-			potionEffect.mobEffectCategory = getRandomItem(random,
-					new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
+			potionEffect.mobEffectCategory = getRandomItem(random, new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.onStarted = new Procedure("procedure1");
@@ -1403,31 +1402,33 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
-			enchantment.type = getRandomString(random,
-					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
+			enchantment.supportedSlots = getRandomItem(random,
+					new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
+			enchantment.weight = 42;
+			enchantment.anvilCost = 32;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
 			enchantment.isCurse = _true;
 			enchantment.canGenerateInLootTables = !_true;
 			enchantment.canVillagerTrade = _true;
-			enchantment.compatibleItems = new ArrayList<>();
+			enchantment.supportedItems = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleItems = new ArrayList<>(blocksAndItemsAndTags.stream()
-						.skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-						.limit(blocksAndItemsAndTags.size() / 4)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				enchantment.excludeEnchantments = _true;
+				if (_true) {
+					enchantment.supportedItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+							.skip(((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+							.limit(blocksAndItemsAndTags.size() / 4)
+							.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				} else {
+					enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				}
 			}
-			enchantment.compatibleEnchantments = new ArrayList<>();
+			enchantment.incompatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleEnchantments.addAll(
+				enchantment.incompatibleEnchantments.addAll(
 						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
 								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
 										e.getName())).toList());
-				enchantment.excludeItems = _true;
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {

@@ -28,18 +28,25 @@ import java.util.List;
 @SuppressWarnings("unused") public class Enchantment extends GeneratableElement {
 
 	public String name;
-	public String type;
-	public String rarity;
+
+	//public String type;
+	public String supportedSlots; // TODO: converter from type
+
+	//public String rarity;
+	public int weight; // TODO: converter from rarity
+	public int anvilCost; // TODO: converter from rarity
 
 	public int maxLevel;
 
 	public int damageModifier;
 
-	@ModElementReference public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;// TODO: this now only works as exclusive_set
-	public boolean excludeEnchantments;//
+	//@ModElementReference public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;
+	//public boolean excludeEnchantments;//
+	@ModElementReference public List<net.mcreator.element.parts.Enchantment> incompatibleEnchantments;// TODO: converter from compatibleEnchantments and excludeEnchantments
 
-	@ModElementReference public List<MItemBlock> compatibleItems;// TODO: this will need to be reworked to supported_items
-	public boolean excludeItems;//
+	//@ModElementReference public List<MItemBlock> compatibleItems
+	//public boolean excludeItems;//
+	@ModElementReference public List<MItemBlock> supportedItems; // TODO: converter from compatibleItems and excludeItems
 
 	public boolean isTreasureEnchantment;
 	public boolean isCurse;

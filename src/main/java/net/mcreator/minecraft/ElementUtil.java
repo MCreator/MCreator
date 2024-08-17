@@ -205,10 +205,6 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors");
 	}
 
-	public static List<DataListEntry> loadEnchantmentTypes() {
-		return DataListLoader.loadDataList("enchantmenttypes");
-	}
-
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
