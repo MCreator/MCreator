@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "mcelements.ftl">
 
 <#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
 <#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
@@ -44,8 +43,8 @@
 </#macro>
 
 <#macro supportedItemsCode supportedItems slots>
-	<#if supportedItems?size == 1 && supportedItems?first?starts_with("#")>
-		ItemTags.create(${toResourceLocation(supportedItems?first)})
+	<#if supportedItems?size == 1 && supportedItems?first?starts_with("TAG:")>
+		ItemTags.create(new ResourceLocation("${supportedItems?first?replace("TAG:", "")}"))
 	<#else>
 	<#-- we will override this in canApplyAtEnchantingTable anyway, but still try to match appropriate one here -->
 		<#if slots == "armor" || slots == "feet" || slots == "legs" || slots == "chest" || slots == "head" || slots == "body">
@@ -82,10 +81,12 @@ public class ${name}Enchantment extends Enchantment {
 	}
 	</#if>
 
-	<#if incompatibleEnchantments?has_content>
+	<#if incompatibleEnchantments?has_content && !incompatibleEnchantments?first?starts_with("#")>
 	@Override protected boolean checkCompatibility(Enchantment enchantment) {
 		return super.checkCompatibility(enchantment) && !List.of(
-			<#list incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>
+			<#list incompatibleEnchantments as incompatibleEnchantment>
+				${incompatibleEnchantment}<#sep>,
+			</#list>
 		).contains(enchantment);
 	}
 	</#if>

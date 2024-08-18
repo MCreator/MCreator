@@ -97,10 +97,12 @@ public class ${name}Enchantment extends Enchantment {
 	}
 	</#if>
 
-	<#if incompatibleEnchantments?has_content>
+	<#if incompatibleEnchantments?has_content && !incompatibleEnchantments?first?starts_with("#")>
 	@Override protected boolean checkCompatibility(Enchantment enchantment) {
 		return super.checkCompatibility(enchantment) && !List.of(
-			<#list incompatibleEnchantments as incompatibleEnchantment>${incompatibleEnchantment}<#sep>,</#list>
+			<#list incompatibleEnchantments as incompatibleEnchantment>
+				${incompatibleEnchantment}<#sep>,
+			</#list>
 		).contains(enchantment);
 	}
 	</#if>
