@@ -1,7 +1,7 @@
 templates:
   - template: advancement.json.ftl # loaded from datapack generator
     writer: json
-    name: "@MODDATAROOT/advancements/@registryname.json"
+    name: "@MODDATAROOT/advancement/@registryname.json"
 
 localizationkeys:
   - key: advancements.@registryname.title
