@@ -206,8 +206,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						// If png extension is present twice, something is wrong with resource path handling somewhere
 						assertFalse(contents.contains(".png.png"));
 
-						// If there is any resource patch containing more than one colon, it is invalid
+						// If there is any resource path containing more than one colon, it is invalid
 						assertFalse(contents.contains("\"([^\":]*:){2,}[^\":]*\""));
+
+						// If there is any resource path that is tag and contains invalid characters, it is invalid
+						assertFalse(contents.contains("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\""));
 
 						try {
 							new GsonBuilder().setStrictness(Strictness.STRICT).create()
