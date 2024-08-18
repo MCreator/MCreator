@@ -98,7 +98,9 @@ public class EnchantmentDefinitionConverter implements IConverter {
 						net.mcreator.element.parts.Enchantment enchantmentEntry = new net.mcreator.element.parts.Enchantment(
 								workspace, entry);
 						// If in include mode and compatibleEnchantments does not contain the entry, add it to incompatibleEnchantments
-						if (!compatibleEnchantments.contains(enchantmentEntry)) {
+						// Also make sure to not add this enchantment itself to incompatibleEnchantments
+						if (!compatibleEnchantments.contains(enchantmentEntry) && !enchantmentEntry.getUnmappedValue()
+								.equals("CUSTOM:" + enchantment.getModElement().getName())) {
 							enchantment.incompatibleEnchantments.add(enchantmentEntry);
 						}
 					}
