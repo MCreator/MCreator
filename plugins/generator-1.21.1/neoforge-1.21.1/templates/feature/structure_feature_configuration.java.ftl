@@ -32,14 +32,12 @@
 package ${package}.world.features.configurations;
 
 public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
-	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
-		return builder.group(
-			ResourceLocation.CODEC.fieldOf("structure").forGetter(StructureFeatureConfiguration::structure),
-			Codec.BOOL.fieldOf("random_rotation").orElse(false).forGetter(StructureFeatureConfiguration::randomRotation),
-			Codec.BOOL.fieldOf("random_mirror").orElse(false).forGetter(StructureFeatureConfiguration::randomMirror),
-			RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("ignored_blocks").forGetter(StructureFeatureConfiguration::ignoredBlocks),
-			Vec3i.offsetCodec(48).optionalFieldOf("offset", Vec3i.ZERO).forGetter(StructureFeatureConfiguration::offset)
-		).apply(builder, StructureFeatureConfiguration::new);
-	});
+	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+		ResourceLocation.CODEC.fieldOf("structure").forGetter(StructureFeatureConfiguration::structure),
+		Codec.BOOL.fieldOf("random_rotation").orElse(false).forGetter(StructureFeatureConfiguration::randomRotation),
+		Codec.BOOL.fieldOf("random_mirror").orElse(false).forGetter(StructureFeatureConfiguration::randomMirror),
+		RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("ignored_blocks").forGetter(StructureFeatureConfiguration::ignoredBlocks),
+		Vec3i.offsetCodec(48).optionalFieldOf("offset", Vec3i.ZERO).forGetter(StructureFeatureConfiguration::offset)
+	).apply(builder, StructureFeatureConfiguration::new));
 }
 <#-- @formatter:on -->
