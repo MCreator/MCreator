@@ -63,7 +63,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.setPreferredSize(new Dimension(5, 550));
 
 		pane5.setOpaque(false);
-		pane5.add("Center", ComponentUtils.applyPadding(editor, 5, true, true, true, true));
+		pane5.add("Center", editor);
 
 		addPage(pane5, false);
 	}
