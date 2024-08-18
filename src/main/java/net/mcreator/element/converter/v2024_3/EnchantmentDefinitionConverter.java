@@ -114,7 +114,7 @@ public class EnchantmentDefinitionConverter implements IConverter {
 					&& !excludeItems) { // include mode with non-empty compatibleItems list, we can convert directly
 				for (MItemBlock compatibleItem : compatibleItems) {
 					// we do not allow tags in enchantment.supportedItems, unless there is only one item (tag) in the list
-					if (!compatibleItem.getUnmappedValue().startsWith("#") || compatibleItems.size() == 1) {
+					if (!compatibleItem.getUnmappedValue().startsWith("TAG:") || compatibleItems.size() == 1) {
 						compatibleItem.setWorkspace(workspace);
 						enchantment.supportedItems.add(compatibleItem);
 					}
@@ -122,7 +122,7 @@ public class EnchantmentDefinitionConverter implements IConverter {
 			}
 			// If at this point, supportedItems is empty, we need to find suitable fallback
 			if (enchantment.supportedItems.isEmpty()) {
-				enchantment.supportedItems.add(new MItemBlock(workspace, "#enchantable/" + switch (type) {
+				enchantment.supportedItems.add(new MItemBlock(workspace, "TAG:enchantable/" + switch (type) {
 					case "ARMOR_FEET" -> "foot_armor";
 					case "ARMOR_LEGS" -> "leg_armor";
 					case "ARMOR_CHEST" -> "chest_armor";
