@@ -12,7 +12,7 @@
   },
   </#if>
   <#if supportedItems?size == 1>
-  "supported_items": "${mappedMCItemToRegistryName(supportedItems?first)}",
+  "supported_items": "${mappedMCItemToRegistryName(supportedItems?first, true)}",
   <#else>
   "supported_items": [
     <#list supportedItems as supportedItem>"${mappedMCItemToRegistryName(supportedItem)}"<#sep>,</#list>
