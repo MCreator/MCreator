@@ -20,6 +20,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemListField;
@@ -40,9 +41,10 @@ public class ItemListFieldSingleTagValidator implements Validator {
 			List<MItemBlock> listElements = mcItemListField.getListElements();
 			if (listElements.size() > 1) {
 				for (MItemBlock object : listElements) {
-					if (object.toString().startsWith("TAG:") ||
-							// a bit of a hack to also make sure that entry may not map to a tag
-							object.getMappedValue(1).startsWith("#"))
+					MCItem dle = object.getDataListEntry().isPresent() ?
+							(MCItem) object.getDataListEntry().get() :
+							null;
+					if (object.toString().startsWith("TAG:") || (dle != null && !dle.hasNoSubtypes()))
 						return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
 				}
 			}
