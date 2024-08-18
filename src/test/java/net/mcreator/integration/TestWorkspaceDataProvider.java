@@ -1415,10 +1415,9 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.supportedItems = new ArrayList<>();
 			if (_true) {
-				enchantment.supportedItems = new ArrayList<>(blocksAndItemsAndTags.stream()
-						.skip(((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-						.limit(blocksAndItemsAndTags.size() / 4)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.WOODEN_PICKAXE"));
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.IRON_HELMET"));
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.CRIMSON_DOOR"));
 			} else {
 				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft:enchantable/fishing"));
 			}
