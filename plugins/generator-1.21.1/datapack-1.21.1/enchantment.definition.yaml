@@ -1,5 +1,5 @@
 templates:
-  - template: enchantment.json.ftl # loaded from datapack generator
+  - template: enchantment.json.ftl
     writer: json
     name: "@MODDATAROOT/enchantment/@registryname.json"
 
@@ -14,7 +14,3 @@ tags:
     condition: isTreasureEnchantment
   - tag: ENCHANTMENTS:minecraft:non_treasure
     condition: ${!data.isTreasureEnchantment}
-
-localizationkeys:
-  - key: enchantment.@modid.@registryname
-    mapto: name

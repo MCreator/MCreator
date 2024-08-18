@@ -1,12 +1,16 @@
-<#include "../mcitems.ftl">
+<#include "mcitems.ftl">
 
 <#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
 <#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
 
 {
+  <#if generator.getGeneratorFlavor() == "DATAPACK">
+  "description": "${data.name}",
+  <#else>
   "description": {
     "translate": "enchantment.${modid}.${registryname}"
   },
+  </#if>
   <#if supportedItems?size == 1>
   "supported_items": "${mappedMCItemToRegistryName(supportedItems?first)}",
   <#else>
