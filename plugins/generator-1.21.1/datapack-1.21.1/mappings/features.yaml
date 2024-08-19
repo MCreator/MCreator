@@ -62,22 +62,22 @@ feature_bamboo:
   - BambooFeature
   - ProbabilityFeatureConfiguration
   - "minecraft:bamboo"
-#feature_random_patch_simple:
-#  - RandomPatchFeature
-#  - RandomPatchConfiguration
-#  - "minecraft:random_patch"
-#feature_random_patch:
-#  - RandomPatchFeature
-#  - RandomPatchConfiguration
-#  - "minecraft:random_patch"
-#feature_block_column_simple:
-#  - BlockColumnFeature
-#  - BlockColumnConfiguration
-#  - "minecraft:block_column"
-#feature_geode_simple:
-#  - GeodeFeature
-#  - GeodeConfiguration
-#  - "minecraft:geode"
+feature_random_patch_simple:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
+feature_random_patch:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
+feature_block_column_simple:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - "minecraft:block_column"
+feature_geode_simple:
+  - GeodeFeature
+  - GeodeConfiguration
+  - "minecraft:geode"
 #feature_ore:
 #  - OreFeature
 #  - OreConfiguration
@@ -86,18 +86,18 @@ feature_bamboo:
 #  - ScatteredOreFeature
 #  - OreConfiguration
 #  - "minecraft:scattered_ore"
-#feature_replace_single_block:
-#  - ReplaceBlockFeature
-#  - ReplaceBlockConfiguration
-#  - "minecraft:replace_single_block"
-#feature_simple_random_selector:
-#  - SimpleRandomSelectorFeature
-#  - SimpleRandomFeatureConfiguration
-#  - "minecraft:simple_random_selector"
-#feature_spring:
-#  - SpringFeature
-#  - SpringConfiguration
-#  - "minecraft:spring_feature"
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfiguration
+  - "minecraft:replace_single_block"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_spring:
+  - SpringFeature
+  - SpringConfiguration
+  - "minecraft:spring_feature"
 #feature_tree_simple:
 #  - TreeFeature
 #  - TreeConfiguration
