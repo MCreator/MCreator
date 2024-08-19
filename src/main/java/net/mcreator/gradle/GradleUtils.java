@@ -126,14 +126,21 @@ public class GradleUtils {
 	}
 
 	public static void cleanupEnvironment(Map<String, String> environment) {
-		environment.remove("_JAVA_OPTIONS");
-		environment.remove("GRADLE_USER_HOME");
-		environment.remove("GRADLE_OPTS");
+		// General Java environment variables
 		environment.remove("JAVA_HOME");
-		environment.remove("JDK_HOME");
 		environment.remove("JRE_HOME");
+		environment.remove("JDK_HOME");
 		environment.remove("CLASSPATH");
+		environment.remove("_JAVA_OPTIONS");
+		environment.remove("JAVA_OPTS");
 		environment.remove("JAVA_TOOL_OPTIONS");
+		environment.remove("JAVACMD");
+		environment.remove("JDK_JAVA_OPTIONS");
+
+		// Gradle-specific environment variables
+		environment.remove("GRADLE_HOME");
+		environment.remove("GRADLE_OPTS");
+		environment.remove("GRADLE_USER_HOME");
 	}
 
 }
