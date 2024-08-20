@@ -54,7 +54,8 @@ public class EnchantmentListField extends JItemListField<Enchantment> {
 		List<Enchantment> tags = new ArrayList<>();
 
 		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.ENCHANTMENTS, "treasure", "non_treasure",
-				"curse", "tradeable", "in_enchanting_table", "on_random_loot");
+				"curse", "tradeable", "in_enchanting_table", "on_random_loot", "exclusive_set/mining",
+				"exclusive_set/damage", "exclusive_set/armor");
 		if (tag != null)
 			tags.add(new Enchantment(mcreator.getWorkspace(), "#" + tag));
 
