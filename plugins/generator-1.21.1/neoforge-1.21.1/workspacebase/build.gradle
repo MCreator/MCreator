@@ -11,8 +11,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = "${generator.getGeneratorBuildFileVersion()}"
 
-    validateAccessTransformers = true
-
     runs {
         client {
             client()
