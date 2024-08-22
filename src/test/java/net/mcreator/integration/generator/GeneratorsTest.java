@@ -33,7 +33,9 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.resources.ExternalTexture;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -132,6 +134,12 @@ import static org.junit.jupiter.api.Assertions.*;
 							latch.await();
 						}
 					}));
+
+					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing texture references system",
+								() -> assertFalse(ExternalTexture.getTexturesOfType(workspace.get(), TextureType.BLOCK)
+										.isEmpty())));
+					}
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Base generation",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
