@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
@@ -169,19 +170,26 @@ import static org.junit.jupiter.api.Assertions.*;
 							generator + " - Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports",
-							() -> {
-								try (Stream<Path> entries = Files.walk(
-										workspace.get().getGenerator().getSourceRoot().toPath())) {
-									ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
-											entries.filter(Files::isRegularFile).map(Path::toFile)
-													.collect(Collectors.toList()), null);
-								}
-							}));
+					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
+							== GeneratorFlavor.BaseLanguage.JAVA) {
+						tests.add(DynamicTest.dynamicTest(
+								generator + " - Reformatting the code and organising imports", () -> {
+									try (Stream<Path> entries = Files.walk(
+											workspace.get().getGenerator().getSourceRoot().toPath())) {
+										ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
+												entries.filter(Files::isRegularFile).map(Path::toFile)
+														.collect(Collectors.toList()), null);
+									}
+								}));
 
-					// Verify Java files
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
-							() -> GTBuild.runTest(LOG, generator, workspace.get())));
+						// Verify if MinecraftCodeProvider failed to load any code
+						tests.add(DynamicTest.dynamicTest(generator + " - Making sure code provider works",
+								() -> assertFalse(workspace.get().checkFailingGradleDependenciesAndClear())));
+
+						// Verify Java files
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
+								() -> GTBuild.runTest(LOG, generator, workspace.get())));
+					}
 
 					// Verify JSON files
 					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
