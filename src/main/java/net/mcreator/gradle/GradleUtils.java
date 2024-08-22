@@ -38,7 +38,7 @@ public class GradleUtils {
 
 	private static final Logger LOG = LogManager.getLogger(GradleUtils.class);
 
-	private static ProjectConnection getGradleProjectConnection(Workspace workspace) {
+	public static ProjectConnection getGradleProjectConnection(Workspace workspace) {
 		updateMCreatorBuildFile(workspace);
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
@@ -55,8 +55,8 @@ public class GradleUtils {
 		return environment;
 	}
 
-	public static BuildLauncher getGradleTaskLauncher(Workspace workspace, String... tasks) {
-		BuildLauncher retval = getGradleProjectConnection(workspace).newBuild().forTasks(tasks)
+	public static BuildLauncher getGradleTaskLauncher(ProjectConnection projectConnection, String... tasks) {
+		BuildLauncher retval = projectConnection.newBuild().forTasks(tasks)
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
 						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
 

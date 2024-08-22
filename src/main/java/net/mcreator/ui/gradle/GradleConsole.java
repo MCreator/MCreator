@@ -337,12 +337,14 @@ public class GradleConsole extends JPanel {
 			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
+		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
+
 		String[] commandTokens = command.split(" ");
 		String[] commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
 		List<String> arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--"))
 				.collect(Collectors.toList());
 
-		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
+		BuildLauncher task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
 
 		if (optionalDebugClient != null) {
 			this.debugClient = optionalDebugClient;
