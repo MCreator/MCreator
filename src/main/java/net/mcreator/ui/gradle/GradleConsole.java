@@ -288,23 +288,10 @@ public class GradleConsole extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
 			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
-		status = RUNNING;
-
 		final var commandTokens = command.split(" ");
 		final var commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
-
-		ref.consoleTab.repaint();
-		ref.statusBar.reloadGradleIndicator();
-
-		stateListeners.forEach(listener -> listener.taskStarted(command));
-
-		StringBuffer taskOut = new StringBuffer();
-		StringBuffer taskErr = new StringBuffer();
-
-		pan.clearConsole();
-		searchBar.reinstall(pan);
 
 		if (isGradleSync) {
 			append("Executing Gradle synchronization tasks", COLOR_TASK_START);
@@ -313,6 +300,36 @@ public class GradleConsole extends JPanel {
 			append("Executing Gradle task: " + command, COLOR_TASK_START);
 			ref.statusBar.setGradleMessage("Gradle: " + command);
 		}
+
+		var projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
+
+		ConfigurableLauncher<?> task;
+		if (isGradleSync) {
+			task = GradleUtils.getGradleSyncLauncher(projectConnection);
+		} else {
+			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
+
+			if (optionalDebugClient != null) {
+				this.debugClient = optionalDebugClient;
+				this.debugClient.init(task, cancellationSource.token());
+				ref.getDebugPanel().startDebug(this.debugClient);
+			} else {
+				this.debugClient = null;
+			}
+		}
+
+		status = RUNNING;
+
+		stateListeners.forEach(GradleStateListener::taskStarted);
+
+		ref.consoleTab.repaint();
+		ref.statusBar.reloadGradleIndicator();
+
+		StringBuffer taskOut = new StringBuffer();
+		StringBuffer taskErr = new StringBuffer();
+
+		pan.clearConsole();
+		searchBar.reinstall(pan);
 
 		String java_home = GradleUtils.getJavaHome();
 
@@ -349,23 +366,6 @@ public class GradleConsole extends JPanel {
 			JOptionPane.showMessageDialog(ref, L10N.t("dialog.gradle_console.offline_mode_message"),
 					L10N.t("dialog.gradle_console.offline_mode_title"), JOptionPane.WARNING_MESSAGE);
 			PreferencesManager.PREFERENCES.gradle.offline.set(false);
-		}
-
-		var projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
-
-		ConfigurableLauncher<?> task;
-		if (isGradleSync) {
-			task = GradleUtils.getGradleSyncLauncher(projectConnection);
-		} else {
-			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
-
-			if (optionalDebugClient != null) {
-				this.debugClient = optionalDebugClient;
-				this.debugClient.init(task, cancellationSource.token());
-				ref.getDebugPanel().startDebug(this.debugClient);
-			} else {
-				this.debugClient = null;
-			}
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -537,14 +537,6 @@ public class GradleConsole extends JPanel {
 					} else if (failure instanceof BuildCancelledException) {
 						append(" ");
 						append("TASK CANCELED", COLOR_LOGLEVEL_WARN);
-						succeed();
-						taskComplete(GradleErrorCodes.STATUS_OK);
-						return;
-					} else if (failure.getCause().getClass().getSimpleName().equals("DaemonDisappearedException")
-							// workaround for MDK bug with gradle daemon
-							&& command.startsWith("run")) {
-						append(" ");
-						append("RUN COMPLETE", COLOR_TASK_COMPLETE);
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
 						return;
