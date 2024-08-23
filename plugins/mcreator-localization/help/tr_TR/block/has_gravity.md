@@ -1,0 +1,1 @@
+Bu parametre işaretlendiyse blok kum gibi aşağı düşecektir.
