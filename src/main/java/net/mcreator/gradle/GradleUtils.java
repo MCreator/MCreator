@@ -44,9 +44,8 @@ public class GradleUtils {
 
 	public static BuildActionExecuter<Void> getGradleSyncLauncher(ProjectConnection projectConnection) {
 		BuildAction<Void> syncBuildAction = GradleSyncBuildAction.loadFromIsolatedClassLoader();
-		//BuildAction<EclipseProject> eclipseProjectBuildAction = GradleLoadEclipseModelAction.loadFromIsolatedClassLoader();
 		BuildActionExecuter<Void> retval = projectConnection.action().projectsLoaded(syncBuildAction, unused -> {})
-				/*.buildFinished(eclipseProjectBuildAction, unused -> {})*/.build().forTasks();
+				.build().forTasks();
 		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
 	}
 

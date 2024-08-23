@@ -32,7 +32,7 @@ public class IsolatedGradleClassLoader {
 
 	private static void ensureLoaded() {
 		if (classLoader == null) { // lazy-load classloader
-			ClassLoader compatClassloader = GradleLoadEclipseModelAction.class.getClassLoader();
+			ClassLoader compatClassloader = GradleSyncBuildAction.class.getClassLoader();
 			ClassLoader tapiClassloader = ProjectConnection.class.getClassLoader();
 			URL[] urls;
 			try {
