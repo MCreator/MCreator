@@ -31,7 +31,7 @@ public class GradleTaskAction extends BasicAction {
 	GradleTaskAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
 		super(actionRegistry, name, listener);
 		actionRegistry.getMCreator().getGradleConsole().addGradleStateListener(new GradleStateListener() {
-			@Override public void taskStarted() {
+			@Override public void taskStarted(String taskName) {
 				setEnabled(true);
 			}
 

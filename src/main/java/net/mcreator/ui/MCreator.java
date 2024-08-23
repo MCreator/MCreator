@@ -109,7 +109,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
-			@Override public void taskStarted() {
+			@Override public void taskStarted(String taskName) {
 				mv.disableRemoving();
 			}
 

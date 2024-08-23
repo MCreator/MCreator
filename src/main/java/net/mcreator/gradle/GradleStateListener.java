@@ -20,7 +20,7 @@ package net.mcreator.gradle;
 
 public interface GradleStateListener {
 
-	void taskStarted();
+	void taskStarted(String taskName);
 
 	void taskFinished(GradleTaskResult result);
 
