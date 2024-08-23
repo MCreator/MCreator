@@ -26,8 +26,7 @@ import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.gradle.tooling.BuildLauncher;
-import org.gradle.tooling.ProjectConnection;
+import org.gradle.tooling.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -44,38 +43,37 @@ public class GradleUtils {
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
 
-	public static Map<String, String> getEnvironment(String java_home) {
-		Map<String, String> environment = new HashMap<>(System.getenv());
-
-		// avoid global overrides
-		cleanupEnvironment(environment);
-
-		if (java_home != null)
-			environment.put("JAVA_HOME", java_home);
-
-		return environment;
+	public static BuildActionExecuter<Void> getGradleSyncLauncher(ProjectConnection projectConnection) {
+		BuildAction<Void> syncBuildAction = GradleSyncBuildAction.loadFromIsolatedClassLoader();
+		BuildActionExecuter<Void> retval = projectConnection.action().projectsLoaded(syncBuildAction, unused -> {})
+				.build().forTasks();
+		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
 	}
 
 	public static BuildLauncher getGradleTaskLauncher(ProjectConnection projectConnection, String... tasks) {
-		BuildLauncher retval = projectConnection.newBuild().forTasks(tasks)
-				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
-						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
+		BuildLauncher retval = projectConnection.newBuild().forTasks(tasks);
+		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
+	}
+
+	private static <T extends ConfigurableLauncher<T>> T configureLauncher(T launcher) {
+		launcher.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
+				"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
 
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
-			retval = retval.setJavaHome(new File(java_home));
+			launcher = launcher.setJavaHome(new File(java_home));
 
 		// use custom set of environment variables to prevent system overrides
-		retval.setEnvironmentVariables(getEnvironment(java_home));
+		launcher.setEnvironmentVariables(getEnvironment(java_home));
 
 		if (java_home != null)
-			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
+			launcher.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
 					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
 
 		// some mod API toolchains need to think they are running in IDE, so we make them think we are Eclipse
-		retval.addJvmArguments("-Declipse.application=net.mcreator");
+		launcher.addJvmArguments("-Declipse.application=net.mcreator");
 
-		return retval;
+		return launcher;
 	}
 
 	public static String getJavaHome() {
@@ -124,6 +122,18 @@ public class GradleUtils {
 			FileIO.writeStringToFile(mcreatorGradleConfBuilder.toString(),
 					new File(workspace.getWorkspaceFolder(), "mcreator.gradle"));
 		}
+	}
+
+	public static Map<String, String> getEnvironment(String java_home) {
+		Map<String, String> environment = new HashMap<>(System.getenv());
+
+		// avoid global overrides
+		cleanupEnvironment(environment);
+
+		if (java_home != null)
+			environment.put("JAVA_HOME", java_home);
+
+		return environment;
 	}
 
 	public static void cleanupEnvironment(Map<String, String> environment) {
