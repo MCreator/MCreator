@@ -45,7 +45,7 @@ public class TagsUtils {
 									.apply(workspace, TagElement.getEntryName(e))).toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
-					JSONWriter.writeJSONToFile(json, tagFile);
+					JSONWriter.writeJSONToFile(workspace, json, tagFile);
 				} catch (TemplateGeneratorException e) {
 					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}

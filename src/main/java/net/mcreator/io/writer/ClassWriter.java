@@ -19,6 +19,7 @@
 package net.mcreator.io.writer;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
@@ -40,9 +41,10 @@ public class ClassWriter {
 	public static void writeClassToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
 		if (formatAndOrganiseImports) {
-			FileIO.writeStringToFile(codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
+			TrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code),
+					file);
 		} else {
-			FileIO.writeStringToFile(code, file);
+			TrackingFileIO.writeFile(workspace, code, file);
 		}
 	}
 
@@ -60,9 +62,9 @@ public class ClassWriter {
 			}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
 					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
 
-			formattedCodes.forEach((file, code) -> FileIO.writeStringToFile(code, file));
+			formattedCodes.forEach((file, code) -> TrackingFileIO.writeFile(workspace, code, file));
 		} else {
-			codes.forEach((key, value) -> FileIO.writeStringToFile(value, key));
+			codes.forEach((key, value) -> TrackingFileIO.writeFile(workspace, value, key));
 		}
 	}
 

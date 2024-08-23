@@ -21,6 +21,7 @@ package net.mcreator.generator;
 
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
@@ -129,7 +130,7 @@ public class GeneratorFileTasks {
 							if (model.getType() == Model.Type.JSON) {
 								String jsonorig = FileIO.readFileToString(model.getFile());
 								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
-								FileIO.writeStringToFile(notextures, new File(to, model.getFile().getName()));
+								TrackingFileIO.writeFile(generator, notextures, new File(to, model.getFile().getName()));
 							}
 						}
 						break;
