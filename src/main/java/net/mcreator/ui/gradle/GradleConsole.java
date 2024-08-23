@@ -268,25 +268,24 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void exec(String command) {
-		exec(command, null);
+		execImpl(command, null, null, null);
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener) {
-		exec(command, null, taskSpecificListener);
+		execImpl(command, taskSpecificListener, null, null);
 	}
 
 	public void exec(String command, @Nullable ProgressListener progressListener,
 			@Nullable GradleTaskFinishedListener taskSpecificListener) {
-		exec(command, taskSpecificListener, progressListener, null);
+		execImpl(command, taskSpecificListener, progressListener, null);
 	}
 
-	public void exec(String command, @Nullable ProgressListener progressListener,
-			@Nullable JVMDebugClient jvmDebugClient) {
-		exec(command, null, progressListener, jvmDebugClient);
+	public void exec(String command, @Nullable JVMDebugClient jvmDebugClient) {
+		execImpl(command, null, null, jvmDebugClient);
 	}
 
 	@SuppressWarnings("unchecked")
-	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
+	private void execImpl(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
 			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
@@ -499,7 +498,7 @@ public class GradleConsole extends JPanel {
 								LOG.warn("Gradle task suggested re-run. Attempting re-running task: {}", command);
 
 								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener, progressListener, debugClient);
+								execImpl(command, taskSpecificListener, progressListener, debugClient);
 
 								return;
 							}
