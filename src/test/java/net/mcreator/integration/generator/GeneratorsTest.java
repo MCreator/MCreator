@@ -33,6 +33,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.ExternalTexture;
@@ -116,23 +117,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
-						if (workspace.get().getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
-							CountDownLatch latch = new CountDownLatch(1);
+						GradleDaemonUtils.stopAllDaemons(workspace.get());
 
-							GradleDaemonUtils.stopAllDaemons(workspace.get());
-
-							new MCreator(null, workspace.get()).getGradleConsole()
-									.exec(workspace.get().getGeneratorConfiguration().getGradleTaskFor("setup_task"),
-											taskResult -> {
-												if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
-													workspace.get().getGenerator().reloadGradleCaches();
-												} else {
-													fail("Gradle MDK setup failed!");
-												}
-												latch.countDown();
-											});
-							latch.await();
-						}
+						CountDownLatch latch = new CountDownLatch(1);
+						new MCreator(null, workspace.get()).getGradleConsole()
+								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
+									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
+										workspace.get().getGenerator().reloadGradleCaches();
+									} else {
+										fail("Gradle MDK setup failed!");
+									}
+									latch.countDown();
+								});
+						latch.await();
 					}));
 
 					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {
