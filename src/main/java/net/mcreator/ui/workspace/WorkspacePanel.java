@@ -311,7 +311,9 @@ import java.util.stream.Collectors;
 		search.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent e) {
 				super.focusGained(e);
-				search.setText("");
+				if (e.getCause() == FocusEvent.Cause.MOUSE_EVENT) {
+					search.setText(null);
+				}
 			}
 		});
 
@@ -1001,7 +1003,7 @@ import java.util.stream.Collectors;
 		IElement mu = list.getSelectedValue();
 		if (mu instanceof ModElement modElement && !NamespacedGeneratableElement.class.isAssignableFrom(
 				modElement.getType().getModElementStorageClass())) {
-			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, modElement);
 			if (modified != null)
 				mcreator.getWorkspace().markDirty();
 		} else {
@@ -1012,6 +1014,8 @@ import java.util.stream.Collectors;
 	}
 
 	private void lockCode() {
+		List<IElement> selectedElements = list.getSelectedValuesList();
+
 		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
 				UIManager.getString("OptionPane.cancelButtonText") };
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
@@ -1025,7 +1029,7 @@ import java.util.stream.Collectors;
 				dial.addProgressUnit(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
-				list.getSelectedValuesList().forEach(el -> {
+				selectedElements.forEach(el -> {
 					if (el instanceof ModElement mu) {
 						if (mu.isCodeLocked()) {
 							mu.setCodeLock(false);
@@ -1072,11 +1076,13 @@ import java.util.stream.Collectors;
 	}
 
 	private void searchModElementsUsages() {
-		if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+		List<IElement> selectedElements = list.getSelectedValuesList();
+
+		if (selectedElements.stream().anyMatch(i -> i instanceof ModElement)) {
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
-			for (IElement el : list.getSelectedValuesList()) {
+			for (IElement el : selectedElements) {
 				if (el instanceof ModElement mod) {
 					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
@@ -1203,16 +1209,18 @@ import java.util.stream.Collectors;
 	}
 
 	private void deleteCurrentlySelectedModElement() {
+		List<IElement> selectedElements = list.getSelectedValuesList();
+
 		if (but3.isEnabled()) {
-			if (list.getSelectedValue() != null) {
+			if (!selectedElements.isEmpty()) {
 				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 				Set<ModElement> references = new HashSet<>();
-				for (IElement el : list.getSelectedValuesList()) {
+				for (IElement el : selectedElements) {
 					if (el instanceof ModElement mod)
 						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
-				list.getSelectedValuesList().stream() // exclude usages by other mod elements being removed
+				selectedElements.stream() // exclude usages by other mod elements being removed
 						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
 
 				mcreator.setCursor(Cursor.getDefaultCursor());
@@ -1220,7 +1228,7 @@ import java.util.stream.Collectors;
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
-					list.getSelectedValuesList().forEach(re -> {
+					selectedElements.forEach(re -> {
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();

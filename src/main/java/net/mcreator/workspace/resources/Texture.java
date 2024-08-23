@@ -27,6 +27,9 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 
+/**
+ * Base class for texture resource implementations.
+ */
 public abstract class Texture {
 
 	protected final TextureType textureType;
@@ -63,6 +66,14 @@ public abstract class Texture {
 
 	public abstract ImageIcon getTextureIcon(Workspace workspace);
 
+	/**
+	 * Searches in the provided workspace for a texture with matching name and type.
+	 *
+	 * @param workspace   The workspace to search in.
+	 * @param textureType The type of the textures to check.
+	 * @param name        The name of the texture to look for.
+	 * @return The texture with the provided name of the specified type.
+	 */
 	@Nullable public static Texture fromName(Workspace workspace, TextureType textureType, String name) {
 		if (name == null || name.isBlank())
 			return null;
@@ -78,11 +89,9 @@ public abstract class Texture {
 			}
 
 			return new CustomTexture(textureType, textureFile);
-		} else if (name.startsWith("minecraft:")) {
-			return VanillaTexture.getTexture(workspace, textureType, name);
+		} else {
+			return ExternalTexture.getTexture(workspace, textureType, name);
 		}
-
-		return null;
 	}
 
 	public static final class Dummy extends Texture {

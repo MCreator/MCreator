@@ -206,10 +206,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 	public void storeModElementPicture(GeneratableElement element) {
 		try {
 			BufferedImage modImage = element.generateModElementPicture();
-			if (modImage != null)
-				FileIO.writeImageToPNGFile(modImage,
-						new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-								element.getModElement().getName() + ".png"));
+			File modImageFile = new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+					element.getModElement().getName() + ".png");
+			if (modImage != null) {
+				FileIO.writeImageToPNGFile(modImage, modImageFile);
+			} else if (modImageFile.isFile()) {
+				// If there is no preview image generated, we revert back to default one
+				modImageFile.delete();
+			}
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
 		}

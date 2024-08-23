@@ -1,1 +1,1 @@
-Se viene specificata una condizione, questa immagine può essere visualizzata solo nel caso in cui la condizione venga superata.
+Se viene specificata una condizione, questa immagine può essere visualizzata solo nel caso in cui la condizione venga soddisfatta.

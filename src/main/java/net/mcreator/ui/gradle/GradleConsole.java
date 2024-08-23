@@ -72,6 +72,8 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
+	private static final Pattern ANSI_REMOVER = Pattern.compile("\u001B\\[[;\\d]*m");
+
 	private static final Color COLOR_TASK_START = new Color(0xBBD9D0);
 	private static final Color COLOR_TASK_COMPLETE = new Color(0xbbe86c);
 	private static final Color COLOR_UNIMPORTANT = new Color(0x7B7B7B);
@@ -335,12 +337,14 @@ public class GradleConsole extends JPanel {
 			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
+		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
+
 		String[] commandTokens = command.split(" ");
 		String[] commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
 		List<String> arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--"))
 				.collect(Collectors.toList());
 
-		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
+		BuildLauncher task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
 
 		if (optionalDebugClient != null) {
 			this.debugClient = optionalDebugClient;
@@ -357,7 +361,9 @@ public class GradleConsole extends JPanel {
 
 		task.withCancellationToken(cancellationSource.token());
 
-		task.setStandardOutput(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
+		task.setStandardOutput(new OutputStreamEventHandler(rawLine -> SwingUtilities.invokeLater(() -> {
+			String line = ANSI_REMOVER.matcher(rawLine).replaceAll("");
+
 			taskOut.append(line).append("\n");
 
 			if (line.startsWith("Note: Some input files use or ov"))
@@ -381,6 +387,8 @@ public class GradleConsole extends JPanel {
 			if (line.contains("to show the individual deprecation warnings and determine"))
 				return;
 			if (line.contains("#sec:command_line_warnings"))
+				return;
+			if (line.startsWith("*** Started working on "))
 				return;
 
 			if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
@@ -413,6 +421,7 @@ public class GradleConsole extends JPanel {
 
 		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskErr.append(line).append("\n");
+
 			if (line.startsWith("[")) {
 				appendAutoColor(line);
 			} else {
@@ -437,6 +446,8 @@ public class GradleConsole extends JPanel {
 				if (line.startsWith("WARNING: All illegal access operations will"))
 					return;
 				if (line.startsWith("SLF4J: "))
+					return;
+				if (line.startsWith("Cannot inject duplicate file mcp/client/Start.class"))
 					return;
 
 				append(line, COLOR_STDERR);

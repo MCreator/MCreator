@@ -27,6 +27,7 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import javax.swing.*;
 import java.awt.Shape;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -35,6 +36,7 @@ import java.awt.image.BufferedImage;
 public class FloodFillTool extends AbstractModificationTool {
 
 	private int threshold = 30;
+	private final JCheckBox isGlobal;
 
 	public FloodFillTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super(L10N.t("dialog.image_maker.tools.types.floodfill"),
@@ -44,8 +46,10 @@ public class FloodFillTool extends AbstractModificationTool {
 		JSlidingSpinner thresholdSlider = new JSlidingSpinner(L10N.t("dialog.image_maker.tools.types.threshold"),
 				threshold, 0, 255, 1);
 		thresholdSlider.addChangeListener(e -> threshold = (int) Math.round(thresholdSlider.getValue()));
+		isGlobal = new JCheckBox(L10N.t("dialog.image_maker.tools.types.floodfill_global"));
 
 		settingsPanel.add(thresholdSlider);
+		settingsPanel.add(isGlobal);
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
@@ -54,8 +58,13 @@ public class FloodFillTool extends AbstractModificationTool {
 
 		if (layer.in(e.getX(), e.getY()) && selection.isInside(validArea, e.getX(), e.getY())) {
 			layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
-			fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
-					colorSelector.getForegroundColor());
+			if (isGlobal.isSelected()) {
+				fillGlobal(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
+						colorSelector.getForegroundColor());
+			} else {
+				fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
+						colorSelector.getForegroundColor());
+			}
 			return true;
 		}
 		return false;
@@ -135,6 +144,29 @@ public class FloodFillTool extends AbstractModificationTool {
 					index++;
 					stack[index][0] = x;
 					stack[index][1] = y + 1;
+				}
+			}
+		}
+		g2d.dispose();
+	}
+
+	public void fillGlobal(BufferedImage image, BufferedImage overlay, int x, int y, Color fill) {
+		Graphics2D g2d = overlay.createGraphics();
+		Selection selection = canvas.getSelection();
+		Shape validArea = selection.getLayerMask(layer);
+		g2d.setColor(fill);
+		int originalint = image.getRGB(x, y);
+		// Skip pixels outside the selection
+		int minX = selection.hasSurface() ? selection.getLeft() : image.getMinX();
+		int maxX = selection.hasSurface() ? selection.getRight() : image.getWidth();
+		int minY = selection.hasSurface() ? selection.getTop() : image.getMinY();
+		int maxY = selection.hasSurface() ? selection.getBottom() : image.getHeight();
+
+		for (int i = minX; i < maxX; i++) {
+			for (int j = minY; j < maxY; j++) {
+				if (toPaint(image.getRGB(i, j), overlay.getRGB(i, j), originalint)
+						&& selection.isInside(validArea, i, j)) {
+					g2d.fillRect(i, j, 1, 1);
 				}
 			}
 		}

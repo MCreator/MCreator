@@ -23,27 +23,28 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Enchantment extends GeneratableElement {
 
 	public String name;
-	public String type;
-	public String rarity;
+
+	public String supportedSlots;
+
+	public int weight;
+	public int anvilCost;
 
 	public int maxLevel;
 
 	public int damageModifier;
 
-	@ModElementReference public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;
-	public boolean excludeEnchantments;
+	@ModElementReference public List<net.mcreator.element.parts.Enchantment> incompatibleEnchantments;
 
-	@ModElementReference public List<MItemBlock> compatibleItems;
-	public boolean excludeItems;
+	@ModElementReference public List<MItemBlock> supportedItems;
 
 	public boolean isTreasureEnchantment;
 	public boolean isCurse;
-	public boolean isAllowedOnBooks;
 	public boolean canGenerateInLootTables;
 	public boolean canVillagerTrade;
 
@@ -56,6 +57,11 @@ import java.util.List;
 
 		canGenerateInLootTables = true;
 		canVillagerTrade = true;
+
+		supportedSlots = "any";
+
+		incompatibleEnchantments = new ArrayList<>();
+		supportedItems = new ArrayList<>();
 	}
 
 }

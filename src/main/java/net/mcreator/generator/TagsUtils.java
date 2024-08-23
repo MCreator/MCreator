@@ -58,7 +58,9 @@ public class TagsUtils {
 
 		String name = GeneratorTokens.replaceTokens(workspace,
 				rawName.replace("@namespace", tagElement.getMinecraftNamespace(workspace))
-						.replace("@name", tagElement.getName()).replace("@folder", tagElement.type().getFolder()));
+						.replace("@name", tagElement.getName())
+						.replace("@folder_pre21", tagElement.type().getPre21Folder())
+						.replace("@folder", tagElement.type().getFolder()));
 
 		File tagFile = new File(name);
 		if (workspace.getFolderManager().isFileInWorkspace(tagFile)) {

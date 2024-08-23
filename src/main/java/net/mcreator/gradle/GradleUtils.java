@@ -38,7 +38,7 @@ public class GradleUtils {
 
 	private static final Logger LOG = LogManager.getLogger(GradleUtils.class);
 
-	private static ProjectConnection getGradleProjectConnection(Workspace workspace) {
+	public static ProjectConnection getGradleProjectConnection(Workspace workspace) {
 		updateMCreatorBuildFile(workspace);
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
@@ -55,8 +55,8 @@ public class GradleUtils {
 		return environment;
 	}
 
-	public static BuildLauncher getGradleTaskLauncher(Workspace workspace, String... tasks) {
-		BuildLauncher retval = getGradleProjectConnection(workspace).newBuild().forTasks(tasks)
+	public static BuildLauncher getGradleTaskLauncher(ProjectConnection projectConnection, String... tasks) {
+		BuildLauncher retval = projectConnection.newBuild().forTasks(tasks)
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
 						"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
 
@@ -126,14 +126,21 @@ public class GradleUtils {
 	}
 
 	public static void cleanupEnvironment(Map<String, String> environment) {
-		environment.remove("_JAVA_OPTIONS");
-		environment.remove("GRADLE_USER_HOME");
-		environment.remove("GRADLE_OPTS");
+		// General Java environment variables
 		environment.remove("JAVA_HOME");
-		environment.remove("JDK_HOME");
 		environment.remove("JRE_HOME");
+		environment.remove("JDK_HOME");
 		environment.remove("CLASSPATH");
+		environment.remove("_JAVA_OPTIONS");
+		environment.remove("JAVA_OPTS");
 		environment.remove("JAVA_TOOL_OPTIONS");
+		environment.remove("JAVACMD");
+		environment.remove("JDK_JAVA_OPTIONS");
+
+		// Gradle-specific environment variables
+		environment.remove("GRADLE_HOME");
+		environment.remove("GRADLE_OPTS");
+		environment.remove("GRADLE_USER_HOME");
 	}
 
 }

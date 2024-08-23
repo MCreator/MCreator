@@ -1,34 +1,36 @@
+- NONE:
+  readable_name: No legacy material
 - ROCK:
-  texture: STONE
+  readable_name: Basedrum noteblock instrument
 - WOOD:
-  texture: PLANKS#0
+  readable_name: Base noteblock instrument, ignited by lava
 - WATER:
-  texture: WATER
+  readable_name: Liquid (water)
 - LAVA:
-  texture: LAVA
+  readable_name: Liquid (lava)
 - LEAVES:
-  texture: LEAVES
+  readable_name: Ignited by lava (leaves)
 - TALL_PLANTS:
-  texture: DOUBLE_PLANT#0
+  readable_name: Ignited by lava (plants)
 - CLOTH:
-  texture: WOOL#0
+  readable_name: Ignited by lava (cloth)
 - SAND:
-  texture: SAND#0
+  readable_name: Snare noteblock instrument
 - CARPET:
-  texture: CARPET#3
+  readable_name: Ignited by lava (carpet)
 - GLASS:
-  texture: GLASS
+  readable_name: Hat noteblock instrument
 - TNT:
-  texture: TNT
+  readable_name: Ignited by lava (TNT)
 - AIR:
-  texture: AIR
+  readable_name: Air
 - STRUCTURE_VOID:
-  texture: STRUCTURE_VOID
+  readable_name: Air (structure void)
 - OCEAN_PLANT:
-  texture: KELP_PLANT
+  readable_name: Basedrum noteblock instrument
 - BUBBLE_COLUMN:
-  texture: BUBBLE_COLUMN
+  readable_name: Liquid (bubble column)
 - BAMBOO_SAPLING:
-  texture: BAMBOO_SAPLING
+  readable_name: Ignited by lava (bamboo sapling)
 - BAMBOO:
-  texture: BAMBOO
+  readable_name: Ignited by lava (bamboo)
