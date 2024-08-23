@@ -38,4 +38,18 @@ public class TrackingFileIO {
 		path.delete();
 	}
 
+	public static void emptyDirectory(@Nullable IGeneratorProvider generatorProvider, File path) {
+		if (generatorProvider != null)
+			generatorProvider.getGenerator().trackFile(path);
+		FileIO.emptyDirectory(path);
+	}
+
+	public static void copyFile(@Nullable IGeneratorProvider generatorProvider, File from, File to) {
+		if (generatorProvider != null) {
+			generatorProvider.getGenerator().trackFile(from);
+			generatorProvider.getGenerator().trackFile(to);
+		}
+		FileIO.copyFile(from, to);
+	}
+
 }

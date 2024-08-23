@@ -45,8 +45,12 @@ public class GradleFileTracker {
 	}
 
 	public void notifyDaemonsAboutChangedPaths() {
-		projectConnection.notifyDaemonsAboutChangedPaths(changedFiles);
-		changedFiles.clear();
+		try {
+			projectConnection.notifyDaemonsAboutChangedPaths(changedFiles);
+		} catch (Exception ignored) {
+		} finally {
+			changedFiles.clear();
+		}
 	}
 
 }
