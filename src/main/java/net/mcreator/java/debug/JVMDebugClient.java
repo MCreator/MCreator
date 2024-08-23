@@ -29,8 +29,8 @@ import com.sun.jdi.request.ClassPrepareRequest;
 import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.CancellationToken;
+import org.gradle.tooling.ConfigurableLauncher;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class JVMDebugClient {
 
 	private final List<JVMEventListener> eventListeners = new ArrayList<>();
 
-	public void init(BuildLauncher task, CancellationToken token) {
+	public void init(ConfigurableLauncher<?> task, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
 

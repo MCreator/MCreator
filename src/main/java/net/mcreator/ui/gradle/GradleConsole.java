@@ -72,6 +72,8 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
+	public static final String GRADLE_SYNC_TASK = "@sync";
+
 	private static final Pattern ANSI_REMOVER = Pattern.compile("\u001B\\[[;\\d]*m");
 
 	private static final Color COLOR_TASK_START = new Color(0xBBD9D0);
@@ -283,13 +285,19 @@ public class GradleConsole extends JPanel {
 		exec(command, null, progressListener, jvmDebugClient);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
 			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
+		final var commandTokens = command.split(" ");
+		final var commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
+		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
+		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
+
 		ref.consoleTab.repaint();
 		ref.statusBar.reloadGradleIndicator();
-		ref.statusBar.setGradleMessage("Gradle: " + command);
+
 		stateListeners.forEach(listener -> listener.taskStarted(command));
 
 		StringBuffer taskOut = new StringBuffer();
@@ -298,7 +306,13 @@ public class GradleConsole extends JPanel {
 		pan.clearConsole();
 		searchBar.reinstall(pan);
 
-		append("Executing Gradle task: " + command, COLOR_TASK_START);
+		if (isGradleSync) {
+			append("Executing Gradle synchronization tasks", COLOR_TASK_START);
+			ref.statusBar.setGradleMessage("Gradle sync");
+		} else {
+			append("Executing Gradle task: " + command, COLOR_TASK_START);
+			ref.statusBar.setGradleMessage("Gradle: " + command);
+		}
 
 		String java_home = GradleUtils.getJavaHome();
 
@@ -337,21 +351,21 @@ public class GradleConsole extends JPanel {
 			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
-		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
+		var projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
 
-		String[] commandTokens = command.split(" ");
-		String[] commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
-		List<String> arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--"))
-				.collect(Collectors.toList());
-
-		BuildLauncher task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
-
-		if (optionalDebugClient != null) {
-			this.debugClient = optionalDebugClient;
-			this.debugClient.init(task, cancellationSource.token());
-			ref.getDebugPanel().startDebug(this.debugClient);
+		ConfigurableLauncher<?> task;
+		if (isGradleSync) {
+			task = GradleUtils.getGradleSyncLauncher(projectConnection);
 		} else {
-			this.debugClient = null;
+			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
+
+			if (optionalDebugClient != null) {
+				this.debugClient = optionalDebugClient;
+				this.debugClient.init(task, cancellationSource.token());
+				ref.getDebugPanel().startDebug(this.debugClient);
+			} else {
+				this.debugClient = null;
+			}
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -460,7 +474,7 @@ public class GradleConsole extends JPanel {
 			task.addProgressListener(progressListener);
 		}
 
-		task.run(new ResultHandler<>() {
+		ResultHandler<Void> resultHandler = new ResultHandler<>() {
 			@Override public void onComplete(Void result) {
 				SwingUtilities.invokeLater(() -> {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
@@ -602,7 +616,14 @@ public class GradleConsole extends JPanel {
 				// reload mods view to display errors
 				ref.mv.reloadElementsInCurrentTab();
 			}
-		});
+		};
+
+		if (task instanceof BuildLauncher buildLauncher) {
+			buildLauncher.run(resultHandler);
+		} else {
+			BuildActionExecuter<?> buildLauncher = (BuildActionExecuter<?>) task;
+			((BuildActionExecuter<Void>) buildLauncher).run(resultHandler);
+		}
 	}
 
 	public int getStatus() {
