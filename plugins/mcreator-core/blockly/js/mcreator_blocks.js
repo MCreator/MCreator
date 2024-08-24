@@ -291,6 +291,20 @@ Blockly.Blocks['math_from_text'] = {
     }
 };
 
+Blockly.Blocks['text_index_of'] = {
+    init: function () {
+        this.appendValueInput('check').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.check"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.in"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_index_of.from"));
+        this.setInputsInline(true);
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks['text_contains'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
