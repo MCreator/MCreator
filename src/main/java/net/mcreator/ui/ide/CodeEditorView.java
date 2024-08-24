@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -577,7 +578,7 @@ public class CodeEditorView extends ViewBase {
 
 	public void saveCode() {
 		savingMCreatorModElementWarning();
-		FileIO.writeStringToFile(te.getText(), fileWorkingOn);
+		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
 		if (cl != null)
 			cl.stateChanged(new ChangeEvent(this));

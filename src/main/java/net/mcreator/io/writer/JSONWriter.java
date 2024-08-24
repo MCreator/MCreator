@@ -22,10 +22,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.mcreator.io.FileIO;
+import net.mcreator.io.TrackingFileIO;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
 public class JSONWriter {
@@ -34,8 +36,8 @@ public class JSONWriter {
 
 	public static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
-	public static void writeJSONToFile(String srcjson, File file) {
-		FileIO.writeStringToFile(formatJSON(srcjson), file);
+	public static void writeJSONToFile(@Nullable Workspace workspace, String srcjson, File file) {
+		TrackingFileIO.writeFile(workspace, formatJSON(srcjson), file);
 	}
 
 	public static String formatJSON(String srcjson) {

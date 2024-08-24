@@ -38,7 +38,8 @@ public class GradleUtils {
 	private static final Logger LOG = LogManager.getLogger(GradleUtils.class);
 
 	public static ProjectConnection getGradleProjectConnection(Workspace workspace) {
-		updateMCreatorBuildFile(workspace);
+		updateMCreatorBuildFile(workspace); // update mcreator.gradle file if needed
+		workspace.getGenerator().notifyDaemonsAboutChangedPaths(); // notify gradle daemons about changed paths
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
 
