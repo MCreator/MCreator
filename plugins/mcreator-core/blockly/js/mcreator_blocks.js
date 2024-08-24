@@ -393,6 +393,22 @@ Blockly.Blocks['text_replace'] = {
     }
 };
 
+Blockly.Blocks['text_replace_regex'] = {
+    init: function () {
+        this.appendValueInput('what').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_replace.replace_regex"));
+        this.appendValueInput('with').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_replace.with"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_replace.of"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
 Blockly.Blocks['text_format_number'] = {
     init: function () {
         this.appendValueInput('number').setCheck('Number')
