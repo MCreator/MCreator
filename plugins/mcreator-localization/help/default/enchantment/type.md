@@ -1,1 +1,0 @@
-This property will define which item type your enchantment can be applied (in the enchanting table only).

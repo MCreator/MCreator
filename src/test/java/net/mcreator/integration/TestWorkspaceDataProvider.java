@@ -154,6 +154,11 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("testmod:testdamage");
 			workspace.getTagElements().get(tag).add("~testmod:testdamage2");
+
+			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("testmod:testenchantment");
+			workspace.getTagElements().get(tag).add("~testmod:testenchantment2");
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
@@ -950,7 +955,7 @@ public class TestWorkspaceDataProvider {
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.onEntityWalksOn = new Procedure("procedure11");
 			plant.onHitByProjectile = new Procedure("procedure12");
-			plant.placingCondition = _true ? null : new Procedure("condition2");
+			plant.placingCondition = emptyLists ? null : new Procedure("condition2");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
@@ -1123,8 +1128,7 @@ public class TestWorkspaceDataProvider {
 			potionEffect.color = Color.magenta;
 			potionEffect.icon = new TextureHolder(modElement.getWorkspace(), "effect1");
 			potionEffect.isInstant = !_true;
-			potionEffect.mobEffectCategory = getRandomItem(random,
-					new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
+			potionEffect.mobEffectCategory = getRandomItem(random, new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.onStarted = new Procedure("procedure1");
@@ -1398,32 +1402,36 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.rarity = getRandomItem(random, new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
-			enchantment.type = getRandomString(random,
-					ElementUtil.loadEnchantmentTypes().stream().map(DataListEntry::getName).toList());
+			enchantment.supportedSlots = getRandomItem(random,
+					new String[] { "any", "mainhand", "offhand", "hand", "feet", "legs", "chest", "head", "armor",
+							"body" });
+			enchantment.weight = 42;
+			enchantment.anvilCost = 32;
 			enchantment.maxLevel = 45;
 			enchantment.damageModifier = 3;
 			enchantment.isTreasureEnchantment = _true;
-			enchantment.isAllowedOnBooks = !_true;
 			enchantment.isCurse = _true;
 			enchantment.canGenerateInLootTables = !_true;
 			enchantment.canVillagerTrade = _true;
-			enchantment.compatibleItems = new ArrayList<>();
-			if (!emptyLists) {
-				enchantment.compatibleItems = new ArrayList<>(blocksAndItemsAndTags.stream()
-						.skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-						.limit(blocksAndItemsAndTags.size() / 4)
-						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-				enchantment.excludeEnchantments = _true;
+			enchantment.supportedItems = new ArrayList<>();
+			if (_true) {
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.WOODEN_PICKAXE"));
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.IRON_HELMET"));
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "Items.CRIMSON_DOOR"));
+			} else {
+				enchantment.supportedItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft:enchantable/fishing"));
 			}
-			enchantment.compatibleEnchantments = new ArrayList<>();
+			enchantment.incompatibleEnchantments = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleEnchantments.addAll(
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
-								.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-										e.getName())).toList());
-				enchantment.excludeItems = _true;
+				if (_true) {
+					enchantment.incompatibleEnchantments.addAll(
+							ElementUtil.loadAllEnchantments(modElement.getWorkspace()).stream()
+									.map(e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+											e.getName())).toList());
+				} else {
+					enchantment.incompatibleEnchantments.add(new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
+							"#minecraft:non_treasure"));
+				}
 			}
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {

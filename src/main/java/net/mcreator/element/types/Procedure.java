@@ -68,11 +68,12 @@ public class Procedure extends GeneratableElement {
 
 	public List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
-		List<?> dependenciesList = (List<?>) getModElement().getMetadata("dependencies");
-		for (Object depobj : dependenciesList) {
-			Dependency dependency = WorkspaceFileManager.gson.fromJson(
-					WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
-			dependencies.add(dependency);
+		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
+			for (Object depobj : dependenciesList) {
+				Dependency dependency = WorkspaceFileManager.gson.fromJson(
+						WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
+				dependencies.add(dependency);
+			}
 		}
 
 		int idx = dependencies.indexOf(new Dependency("z", "number"));

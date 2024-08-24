@@ -1,3 +1,3 @@
-Bu paremetre, asmaları değiştirmek için kullanılan bloğu kontrol eder.
+Bu paremetre, sarmaşıkları değiştirmek için kullanılan bloğu kontrol eder.
 
 Sarmaşıkların olmaması için hava bloğunu seçin.

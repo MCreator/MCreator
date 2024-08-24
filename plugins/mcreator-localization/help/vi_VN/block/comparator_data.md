@@ -1,0 +1,1 @@
+Tích tham số này nếu bạn muốn khối hoạt đông với các mạch so sánh.

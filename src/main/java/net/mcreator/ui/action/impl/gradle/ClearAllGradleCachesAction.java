@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -86,15 +87,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			try {
 				mcreator.getGenerator().generateBase();
 
-				String tasks = "build";
-
-				if (mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
-					tasks = mcreator.getGeneratorConfiguration().getGradleTaskFor("setup_task") + (regenerateCodeFlag ?
-							"" :
-							" build");
-				}
-
-				mcreator.getGradleConsole().exec(tasks, result -> {
+				mcreator.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, result -> {
 					ProgressDialog progressDialogSecondStage = new ProgressDialog(mcreator,
 							L10N.t("dialog.reload_gradle_project.title"));
 

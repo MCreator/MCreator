@@ -141,6 +141,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
+		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
+
 		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		featureProcedure.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),

@@ -120,6 +120,7 @@ public class Dependency implements Comparable<Dependency> {
 			case "dimensiontype" -> new Color(0x609963);
 			case "cmdcontext" -> new Color(0x8C5BA5);
 			case "damagesource" -> new Color(0x996086);
+			case "enchantment" -> new Color(0x486E46);
 			default -> Color.white;
 		};
 	}

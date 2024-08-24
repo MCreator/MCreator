@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +77,9 @@ import java.util.stream.Collectors;
 			return element.getMCItems().stream()
 					.anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
 		else {
-			generator.getLogger().warn("Failed to determine mod element for: {}", elementName);
+			generator.getLogger()
+					.warn("({}) Failed to determine mod element for: {}", TraceUtil.tryToFindMCreatorInvoker(),
+							elementName);
 			return false;
 		}
 	}
@@ -96,7 +99,9 @@ import java.util.stream.Collectors;
 		if (element != null)
 			return element.getRegistryName();
 
-		generator.getLogger().warn("Failed to determine registry name for: {}", modElement);
+		generator.getLogger()
+				.warn("({}) Failed to determine registry name for: {}", TraceUtil.tryToFindMCreatorInvoker(),
+						modElement);
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -106,7 +111,8 @@ import java.util.stream.Collectors;
 			return getResourceLocationForModElement(element);
 		}
 
-		generator.getLogger().warn("Failed to determine resource location for mod element: {}", modElement);
+		generator.getLogger().warn("({}) Failed to determine resource location for mod element: {}",
+				TraceUtil.tryToFindMCreatorInvoker(), modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -121,6 +127,10 @@ import java.util.stream.Collectors;
 
 		// otherwise we use a normal registry name
 		return generator.getWorkspaceSettings().getModID() + ":" + element.getRegistryName();
+	}
+
+	public String getGeneratorFlavor() {
+		return generator.getGeneratorConfiguration().getGeneratorFlavor().name();
 	}
 
 	public Workspace getWorkspace() {
