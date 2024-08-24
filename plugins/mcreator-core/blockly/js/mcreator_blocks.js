@@ -319,6 +319,20 @@ Blockly.Blocks['text_contains'] = {
     }
 };
 
+Blockly.Blocks['text_matches'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_contains.in"));
+        this.appendValueInput('contains').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_matches.check"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
 Blockly.Blocks['text_starts_with'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')

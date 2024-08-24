@@ -138,6 +138,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TextReplaceRegex());
 		blockGenerators.add(new TextFormatNumber());
 		blockGenerators.add(new TextContains());
+		blockGenerators.add(new TextMatches());
 		blockGenerators.add(new TextSubstring());
 		blockGenerators.add(new TextJoinBlock());
 		blockGenerators.add(new TextLengthBlock());
