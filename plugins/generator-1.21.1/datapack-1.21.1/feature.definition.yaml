@@ -2,6 +2,7 @@ templates:
   - template: feature/configured_feature.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
+    condition: hasConfiguredFeature()
   - template: feature/placed_feature.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
