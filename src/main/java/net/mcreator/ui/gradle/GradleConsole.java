@@ -289,6 +289,8 @@ public class GradleConsole extends JPanel {
 			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
+		LOG.info("Executing Gradle task: {}", command);
+
 		final var commandTokens = command.split(" ");
 		final var commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());

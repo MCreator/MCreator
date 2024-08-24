@@ -19,6 +19,8 @@
 
 package net.mcreator.gradle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GradleFileTracker {
+
+	private static final Logger LOG = LogManager.getLogger("Gradle File Tracker");
 
 	private final ProjectConnection projectConnection;
 
@@ -47,7 +51,9 @@ public class GradleFileTracker {
 	public void notifyDaemonsAboutChangedPaths() {
 		try {
 			projectConnection.notifyDaemonsAboutChangedPaths(changedFiles);
-		} catch (Exception ignored) {
+			LOG.debug("Notified Gradle about {} changed paths", changedFiles.size());
+		} catch (Exception e) {
+			LOG.warn("Failed to notify Gradle about changed paths", e);
 		} finally {
 			changedFiles.clear();
 		}

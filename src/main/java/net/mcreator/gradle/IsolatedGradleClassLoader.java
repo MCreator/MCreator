@@ -19,6 +19,8 @@
 
 package net.mcreator.gradle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.ProjectConnection;
 import org.jboss.forge.roaster._shade.org.eclipse.core.runtime.FileLocator;
 
@@ -27,6 +29,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class IsolatedGradleClassLoader {
+
+	private static final Logger LOG = LogManager.getLogger(IsolatedGradleClassLoader.class);
 
 	private static URLClassLoader classLoader;
 
@@ -39,6 +43,7 @@ public class IsolatedGradleClassLoader {
 				URL actionRootUrl = FileLocator.resolve(compatClassloader.getResource(""));
 				urls = new URL[] { actionRootUrl };
 			} catch (IOException e) {
+				LOG.warn("Failed to resolve classloader root URL", e);
 				urls = new URL[] {};
 			}
 			classLoader = new URLClassLoader(urls, tapiClassloader);
