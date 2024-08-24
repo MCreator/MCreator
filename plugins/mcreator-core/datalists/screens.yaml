@@ -86,13 +86,13 @@
 - Options
 - OptionsSounds
 - Pack
-- Realms32bitWarning
 - Realms
 - RecoverWorldData
 - ReportPlayer
 - ReportReasonSelection
 - ServerList
 - ServerReconfig
+- ServerLinks
 - Settings
 - ShareToLan
 - SkinReport
@@ -105,7 +105,7 @@
 - VideoSettings
 - Warning
 - Win
-- WithNarratorSettings
 - Working
 - WorldLoadProgress
 - WorldSelection
+- FontOptions

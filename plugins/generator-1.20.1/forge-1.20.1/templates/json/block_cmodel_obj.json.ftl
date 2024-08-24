@@ -9,14 +9,14 @@
       <#if data.getTextureMap()??>,
         "textures": {
         <#list data.getTextureMap().entrySet() as texture>
-          "#${texture.getKey()}": "${modid}:block/${texture.getValue()}"<#sep>,
+          "#${texture.getKey()}": "${texture.getValue().format("%s:block/%s")}"<#sep>,
         </#list>
         }
       </#if>
     }
   },
   "textures": {
-    "particle": "${modid}:block/${data.particleTexture?has_content?then(data.particleTexture, data.texture)}"
+    "particle": "${data.getParticleTexture().format("%s:block/%s")}"
   },
   "render_type": "${data.getRenderType()}"
 }

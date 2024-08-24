@@ -26,7 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -34,7 +34,6 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -49,7 +48,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	private final VTextField title = new VTextField(28);
 	private final VTextField author = new VTextField(28);
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -60,7 +59,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(
@@ -127,8 +126,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		author.setText(painting.author);
 		width.setValue(painting.width);
 		height.setValue(painting.height);
-		texture.setTextureFromTextureName(
-				StringUtils.removeEnd(painting.texture, ".png")); // legacy, old workspaces stored name with extension
+		texture.setTexture(painting.texture);
 	}
 
 	@Override public Painting getElementFromGUI() {
@@ -137,7 +135,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
+		painting.texture = texture.getTextureHolder();
 		return painting;
 	}
 

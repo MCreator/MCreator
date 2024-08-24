@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -31,6 +32,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -104,8 +106,8 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public Map<String, String> getItemTextureMap() {
-		Map<String, String> textureMap = new HashMap<>();
+	public Map<String, TextureHolder> getItemTextureMap() {
+		Map<String, TextureHolder> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
 			if (element.getGeneratableElement() instanceof IItemWithTexture itemWithTexture) {
 				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture());
@@ -120,10 +122,8 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tab = tabElement.getCreativeTab();
-				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
-					if (!tabElement.getCreativeTabItems().isEmpty())
-						return true;
+				if (!tabElement.getCreativeTabs().isEmpty() && !tabElement.getCreativeTabItems().isEmpty()) {
+					return true;
 				}
 			}
 		}
@@ -142,19 +142,17 @@ import java.util.*;
 		// ModElement#getGeneratableElement that is not thread safe
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tabEntry = tabElement.getCreativeTab();
-				if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
-					String tab = tabEntry.getUnmappedValue();
-					List<MCItem> tabItems = tabElement.getCreativeTabItems();
-					if (tabItems != null && !tabItems.isEmpty()) {
+				List<MItemBlock> tabItems = tabElement.getCreativeTabItems().stream()
+						.map(e -> new MItemBlock(workspace, e.getName())).toList();
+				if (!tabItems.isEmpty()) {
+					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
+						String tab = tabEntry.getUnmappedValue();
 						if (!tabMap.containsKey(tab))
 							tabMap.put(tab, new ArrayList<>());
 
 						// If tab does not have custom order, add items to the end of the list
-						if (workspace.getCreativeTabsOrder().get(tab) == null) {
-							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-									.toList());
-						}
+						if (workspace.getCreativeTabsOrder().get(tab) == null)
+							tabMap.get(tab).addAll(tabItems);
 					}
 				}
 			}
@@ -195,8 +193,8 @@ import java.util.*;
 				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: {}",
-							t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
+					LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
+							TraceUtil.tryToFindMCreatorInvoker(), t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));

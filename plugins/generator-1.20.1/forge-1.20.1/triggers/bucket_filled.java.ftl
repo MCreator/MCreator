@@ -8,7 +8,6 @@
 			"z": "event.getEntity().getZ()",
 			"world": "event.getLevel()",
 			"itemstack": "event.getFilledBucket()",
-			"originalitemstack": "event.getEmptyBucket()",
 			"entity": "event.getEntity()",
 			"event": "event"
 			}/>

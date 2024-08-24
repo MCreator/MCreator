@@ -19,10 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.IWorkspaceDependent;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.ProjectileEntry;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -53,7 +50,7 @@ import java.util.*;
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
-	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 
 	@ModElementReference public Map<String, Procedure> customProperties;
@@ -61,7 +58,7 @@ import java.util.*;
 
 	public String name;
 	public String rarity;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;
@@ -98,6 +95,7 @@ import java.util.*;
 	// Ranged properties
 	public boolean enableRanged;
 	public boolean shootConstantly;
+	public boolean rangedItemChargesPower;
 	public ProjectileEntry projectile;
 	public Procedure onRangedItemUsed;
 	public Procedure rangedUseCondition;
@@ -118,6 +116,8 @@ import java.util.*;
 	public Item(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.customProperties = new LinkedHashMap<>();
 		this.states = new ArrayList<>();
 
@@ -129,25 +129,24 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
 	}
 
 	@Override public Model getItemModel() {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
 			return textured.getTextureMapping().getTextureMap();
 		return new HashMap<>();
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
-	@Override public String getTexture() {
+	@Override public TextureHolder getTexture() {
 		return texture;
 	}
 
@@ -221,7 +220,7 @@ import java.util.*;
 	public static class StateEntry implements IWorkspaceDependent {
 
 		public int renderType;
-		@TextureReference(TextureType.ITEM) public String texture;
+		@TextureReference(TextureType.ITEM) public TextureHolder texture;
 		public String customModelName;
 
 		public StateMap stateMap;
@@ -240,7 +239,7 @@ import java.util.*;
 			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
 		}
 
-		public Map<String, String> getTextureMap() {
+		public Map<String, TextureHolder> getTextureMap() {
 			if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
 				return textured.getTextureMapping().getTextureMap();
 			return null;

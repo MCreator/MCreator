@@ -40,7 +40,7 @@ public class PreferencesManager {
 
 	private static final File PREFERENCES_FILE = UserFolderManager.getFileFromUserFolder("userpreferences");
 
-	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 
 	/**
 	 * <p>Stores values when the preferences file is loaded</p>

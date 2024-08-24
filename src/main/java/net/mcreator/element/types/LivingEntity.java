@@ -41,6 +41,7 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -79,7 +80,7 @@ import java.util.*;
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
 	public String bossBarColor;
@@ -139,6 +140,7 @@ import java.util.*;
 	public Sound hurtSound;
 	public Sound deathSound;
 	public Sound stepSound;
+	public Sound raidCelebrationSound;
 
 	public List<PropertyDataWithValue<?>> entityDataEntries;
 
@@ -175,6 +177,7 @@ import java.util.*;
 	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
+	public int[] raidSpawnsCount;
 
 	private LivingEntity() {
 		this(null);
@@ -182,6 +185,8 @@ import java.util.*;
 
 	public LivingEntity(ModElement element) {
 		super(element);
+
+		this.creativeTabs = new ArrayList<>();
 
 		this.modelShadowSize = 0.5;
 		this.mobCreatureType = "UNDEFINED";
@@ -197,6 +202,8 @@ import java.util.*;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();
+
+		this.raidSpawnsCount = new int[] { 4, 3, 3, 4, 4, 4, 2 };
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -214,13 +221,15 @@ import java.util.*;
 			return List.of(BaseType.ENTITY);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(getModElement().getWorkspace(),
-				mobModelTexture, spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
+		return MinecraftImageGenerator.Preview.generateMobPreviewPicture(new ImageIcon(
+				getModElement().getWorkspace().getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(mobModelTexture), TextureType.ENTITY)
+						.getAbsolutePath()).getImage(), spawnEggBaseColor, spawnEggDotColor, hasSpawnEgg);
 	}
 
 	public boolean hasDrop() {

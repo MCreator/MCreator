@@ -30,13 +30,13 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -101,7 +101,8 @@ public class WYSIWYGEditor extends JPanel {
 	public final JComboBox<String> priority = new JComboBox<>(
 			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
-	public final VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
+	public TextureComboBox overlayBaseTexture;
+
 	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("screens"));
 
@@ -123,6 +124,8 @@ public class WYSIWYGEditor extends JPanel {
 		this.isNotOverlayType = isNotOverlayType;
 
 		editor.isNotOverlayType = isNotOverlayType;
+
+		overlayBaseTexture = new TextureComboBox(mcreator, TextureType.SCREEN);
 
 		spa1.setPreferredSize(new Dimension(60, 24));
 		spa2.setPreferredSize(new Dimension(60, 24));
@@ -375,8 +378,7 @@ public class WYSIWYGEditor extends JPanel {
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					Theme.current().getForegroundColor()));
 
-			overlayBaseTexture.addActionListener(e -> editor.repaint());
-			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
+			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
 
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/overlay_target"),
 					L10N.label("elementgui.gui.overlay_target")));
@@ -386,21 +388,9 @@ public class WYSIWYGEditor extends JPanel {
 					L10N.label("elementgui.gui.rendering_priority")));
 			ovst2.add(priority);
 
-			JButton importScreenTexture = new JButton(UIRES.get("18px.add"));
-			importScreenTexture.setToolTipText(L10N.t("elementgui.gui.import_overlay_base_texture"));
-			importScreenTexture.setOpaque(false);
-			importScreenTexture.setMargin(new Insets(0, 0, 0, 0));
-			importScreenTexture.addActionListener(e -> {
-				TextureImportDialogs.importMultipleTextures(mcreator, TextureType.SCREEN);
-				overlayBaseTexture.removeAllItems();
-				overlayBaseTexture.addItem("");
-				mcreator.getFolderManager().getTexturesList(TextureType.SCREEN)
-						.forEach(el -> overlayBaseTexture.addItem(el.getName()));
-			});
-
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/base_texture"),
 					L10N.label("elementgui.gui.overlay_base_texture")));
-			ovst2.add(PanelUtils.centerAndEastElement(overlayBaseTexture, importScreenTexture));
+			ovst2.add(overlayBaseTexture);
 
 			ovst.add(ovst2);
 			ovst.add(new JEmptyBox(2, 2));

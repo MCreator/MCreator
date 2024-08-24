@@ -1,0 +1,1 @@
+A textura da camada da armadura é a textura exibida no jogador quando ele a equipa.

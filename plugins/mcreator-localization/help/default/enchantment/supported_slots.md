@@ -1,0 +1,1 @@
+This parameter defines slot types that match with this enchantment type.

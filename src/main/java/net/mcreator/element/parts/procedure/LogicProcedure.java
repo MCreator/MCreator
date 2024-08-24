@@ -31,8 +31,8 @@ public class LogicProcedure extends RetvalProcedure<Boolean> {
 
 	protected static class GSONAdapter implements JsonDeserializer<LogicProcedure> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+				.setStrictness(Strictness.LENIENT).create();
 
 		@Override
 		public LogicProcedure deserialize(JsonElement jsonElement, Type type,

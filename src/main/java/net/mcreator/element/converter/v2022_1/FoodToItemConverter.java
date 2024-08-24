@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -49,12 +50,13 @@ public class FoodToItemConverter implements IConverter {
 
 			JsonObject food = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 			item.name = food.get("name").getAsString();
-			item.texture = food.get("texture").getAsString();
+			item.texture = new TextureHolder(workspace, food.get("texture").getAsString());
 			item.renderType = food.get("renderType").getAsInt();
 			if (food.get("customModelName") != null)
 				item.customModelName = food.get("customModelName").getAsString();
-			item.creativeTab = new TabEntry(workspace,
-					food.get("creativeTab").getAsJsonObject().get("value").getAsString());
+			JsonObject creativeTab = food.getAsJsonObject("creativeTab");
+			if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry"))
+				item.creativeTabs = List.of(new TabEntry(workspace, creativeTab.get("value").getAsString()));
 			if (food.get("rarity") != null)
 				item.rarity = food.get("rarity").getAsString();
 			List<String> specialInfo = new ArrayList<>();

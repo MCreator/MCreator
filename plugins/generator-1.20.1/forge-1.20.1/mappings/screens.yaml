@@ -58,7 +58,6 @@ ShareToLan: ShareToLanScreen
 SleepInMultiplayer: InBedChatScreen
 Stats: StatsScreen
 VideoSettings: VideoSettingsScreen
-WithNarratorSettings: SimpleOptionsSubScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen
@@ -95,7 +94,6 @@ Warning: WarningScreen
 ChatReport: ChatReportScreen
 ChatSelection: ChatSelectionScreen
 Realms: RealmsScreen
-Realms32bitWarning: Realms32bitWarningScreen
 DisconnectedRealms: DisconnectedRealmsScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 SocialInteractions: SocialInteractionsScreen

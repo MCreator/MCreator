@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.tools;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Armor;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -50,6 +51,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class ArmorPackMakerTool {
@@ -145,12 +147,12 @@ public class ArmorPackMakerTool {
 		armor.bodyName = name + " Chestplate";
 		armor.leggingsName = name + " Leggings";
 		armor.bootsName = name + " Boots";
-		armor.textureHelmet = name.toLowerCase(Locale.ENGLISH) + "_head";
-		armor.textureBody = name.toLowerCase(Locale.ENGLISH) + "_body";
-		armor.textureLeggings = name.toLowerCase(Locale.ENGLISH) + "_leggings";
-		armor.textureBoots = name.toLowerCase(Locale.ENGLISH) + "_boots";
+		armor.textureHelmet = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_head");
+		armor.textureBody = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_body");
+		armor.textureLeggings = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_leggings");
+		armor.textureBoots = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_boots");
 		armor.armorTextureFile = name.toLowerCase(Locale.ENGLISH);
-		armor.creativeTab = new TabEntry(workspace, "COMBAT");
+		armor.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
 		armor.toughness = 0;

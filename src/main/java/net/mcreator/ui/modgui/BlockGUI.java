@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -37,7 +36,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
-import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -80,15 +78,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
-	private TextureHolder texture;
-	private TextureHolder textureTop;
-	private TextureHolder textureLeft;
-	private TextureHolder textureFront;
-	private TextureHolder textureRight;
-	private TextureHolder textureBack;
+	private TextureSelectionButton texture;
+	private TextureSelectionButton textureTop;
+	private TextureSelectionButton textureLeft;
+	private TextureSelectionButton textureFront;
+	private TextureSelectionButton textureRight;
+	private TextureSelectionButton textureBack;
 
-	private TextureHolder itemTexture;
-	private TextureHolder particleTexture;
+	private TextureSelectionButton itemTexture;
+	private TextureSelectionButton particleTexture;
 
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private JBoundingBoxList boundingBoxList;
@@ -190,7 +188,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -207,7 +205,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
-	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
+
+	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
+			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+
+	private ProcedureSelector additionalHarvestCondition;
+
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
@@ -266,6 +269,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
+
+		material.setPrototypeDisplayValue(new DataListEntry.Dummy("No legacy material"));
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
@@ -341,6 +346,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+		additionalHarvestCondition = new ProcedureSelector(this.withEntry("block/event_additional_harvest_condition"),
+				mcreator, L10N.t("elementgui.block.event_additional_harvest_condition"),
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -350,7 +360,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasGravity.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
-			material.setEnabled(true);
 			connectedSides.setEnabled(true);
 			isWaterloggable.setEnabled(true);
 
@@ -372,7 +381,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					lightOpacity.setValue(0);
 				}
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
-				material.setEnabled(false);
 				renderType.setEnabled(false);
 				rotationMode.setEnabled(false);
 				hasTransparency.setEnabled(false);
@@ -381,7 +389,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				disableOffset.setEnabled(false);
 				boundingBoxList.setEnabled(false);
 
-				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
 				rotationMode.setSelectedIndex(0);
 				hasTransparency.setSelected(false);
@@ -434,16 +441,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel destal = new JPanel(new GridLayout(3, 4));
 		destal.setOpaque(false);
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
-		textureTop = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(true);
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
+				true);
+		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
+				true);
 
-		textureLeft = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureFront = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureRight = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBack = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
-		itemTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
@@ -471,11 +480,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		textureLeft.setActionListener(event -> {
 			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
 					|| textureFront.hasTexture() || textureRight.hasTexture())) {
-				texture.setTextureFromTextureName(textureLeft.getID());
-				textureTop.setTextureFromTextureName(textureLeft.getID());
-				textureBack.setTextureFromTextureName(textureLeft.getID());
-				textureFront.setTextureFromTextureName(textureLeft.getID());
-				textureRight.setTextureFromTextureName(textureLeft.getID());
+				texture.setTexture(textureLeft.getTextureHolder());
+				textureTop.setTexture(textureLeft.getTextureHolder());
+				textureBack.setTexture(textureLeft.getTextureHolder());
+				textureFront.setTexture(textureLeft.getTextureHolder());
+				textureRight.setTexture(textureLeft.getTextureHolder());
 			}
 		});
 
@@ -671,13 +680,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
-				L10N.label("elementgui.block.material")));
-		selp.add(material);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -723,8 +728,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
 
-		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("BUILDING_BLOCKS"));
-		creativeTab.addPopupMenuListener(new ComboBoxFullWidthPopup());
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
+				L10N.label("elementgui.block.material")));
+		selp.add(material);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -750,9 +756,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.harvest_tool")));
 		selp3.add(destroyTool);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/harvest_level"),
-				L10N.label("elementgui.block.harvest_level")));
-		selp3.add(breakHarvestLevel);
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
+				L10N.label("elementgui.block.vanilla_tool_tier")));
+		selp3.add(vanillaToolTier);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
@@ -867,10 +873,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-		selp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
 
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -885,8 +887,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.setOpaque(false);
 		soundProperties.setOpaque(false);
 
+		JComponent selpWrap = PanelUtils.centerAndSouthElement(selp3, additionalHarvestCondition);
+		selpWrap.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selp3, soundProperties))));
+				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1311,6 +1319,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
+		additionalHarvestCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
@@ -1321,8 +1330,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
 				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
 						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
-
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
@@ -1341,14 +1348,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	@Override public void openInEditingMode(Block block) {
-		itemTexture.setTextureFromTextureName(block.itemTexture);
-		particleTexture.setTextureFromTextureName(block.particleTexture);
-		texture.setTextureFromTextureName(block.texture);
-		textureTop.setTextureFromTextureName(block.textureTop);
-		textureLeft.setTextureFromTextureName(block.textureLeft);
-		textureFront.setTextureFromTextureName(block.textureFront);
-		textureRight.setTextureFromTextureName(block.textureRight);
-		textureBack.setTextureFromTextureName(block.textureBack);
+		itemTexture.setTexture(block.itemTexture);
+		particleTexture.setTexture(block.particleTexture);
+		texture.setTexture(block.texture);
+		textureTop.setTexture(block.textureTop);
+		textureLeft.setTexture(block.textureLeft);
+		textureFront.setTexture(block.textureFront);
+		textureRight.setTexture(block.textureRight);
+		textureBack.setTexture(block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
@@ -1387,13 +1394,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		specialInformation.setSelectedProcedure(block.specialInformation);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
+		additionalHarvestCondition.setSelectedProcedure(block.additionalHarvestCondition);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
 		hasGravity.setSelected(block.hasGravity);
 		isWaterloggable.setSelected(block.isWaterloggable);
 		emissiveRendering.setSelected(block.emissiveRendering);
 		tickRandomly.setSelected(block.tickRandomly);
-		creativeTab.setSelectedItem(block.creativeTab);
+		creativeTabs.setListElements(block.creativeTabs);
 		destroyTool.setSelectedItem(block.destroyTool);
 		soundOnStep.setSelectedItem(block.soundOnStep);
 		breakSound.setSound(block.breakSound);
@@ -1404,7 +1412,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
 		luminance.setValue(block.luminance);
-		breakHarvestLevel.setValue(block.breakHarvestLevel);
+		vanillaToolTier.setSelectedItem(block.vanillaToolTier);
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
@@ -1502,7 +1510,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isWaterloggable = isWaterloggable.isSelected();
 		block.emissiveRendering = emissiveRendering.isSelected();
 		block.tickRandomly = tickRandomly.isSelected();
-		block.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		block.creativeTabs = creativeTabs.getListElements();
 		block.destroyTool = (String) destroyTool.getSelectedItem();
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
@@ -1533,9 +1541,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.stepSound = stepSound.getSound();
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
-		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
+		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
+		block.additionalHarvestCondition = additionalHarvestCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();
@@ -1572,14 +1581,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		block.texture = texture.getID();
-		block.itemTexture = itemTexture.getID();
-		block.particleTexture = particleTexture.getID();
-		block.textureTop = textureTop.getID();
-		block.textureLeft = textureLeft.getID();
-		block.textureFront = textureFront.getID();
-		block.textureRight = textureRight.getID();
-		block.textureBack = textureBack.getID();
+		block.texture = texture.getTextureHolder();
+		block.itemTexture = itemTexture.getTextureHolder();
+		block.particleTexture = particleTexture.getTextureHolder();
+		block.textureTop = textureTop.getTextureHolder();
+		block.textureLeft = textureLeft.getTextureHolder();
+		block.textureFront = textureFront.getTextureHolder();
+		block.textureRight = textureRight.getTextureHolder();
+		block.textureBack = textureBack.getTextureHolder();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getEntries();

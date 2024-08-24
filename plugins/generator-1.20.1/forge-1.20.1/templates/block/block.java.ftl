@@ -137,7 +137,7 @@ public class ${name}Block extends
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
-				|| (data.blockBase?has_content && !data.isFullCube())>
+				|| (data.blockBase?has_content && !data.isFullCube() && data.offsetType != "NONE")>
 			.dynamicShape()
 		</#if>
 		<#if data.offsetType != "NONE">
@@ -463,20 +463,16 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#-- For harvest levels <= 3, we use vanilla tags (netherite already does need custom handing) -->
-	<#if data.requiresCorrectTool && (data.breakHarvestLevel > 3)>
+	<#if hasProcedure(data.additionalHarvestCondition)>
 	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
-		<#-- If item is TieredItem, we check by level to be compatible with int harvest levels -->
-		if(player.getInventory().getSelected().getItem() instanceof
-				<#if data.destroyTool == "pickaxe">PickaxeItem
-				<#elseif data.destroyTool == "axe">AxeItem
-				<#elseif data.destroyTool == "shovel">ShovelItem
-				<#elseif data.destroyTool == "hoe">HoeItem
-				<#else>TieredItem</#if> tieredItem)
-			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
-		<#-- in other cases (not TieredItem), we resort to default tier sorting and checking using tags -->
-		else
-			return super.canHarvestBlock(state, world, pos, player);
+		return super.canHarvestBlock(state, world, pos, player) && <@procedureCode data.additionalHarvestCondition, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"entity": "player",
+			"world": "player.level()",
+			"blockstate": "state"
+		}, false/>;
 	}
 	</#if>
 

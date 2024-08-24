@@ -100,6 +100,14 @@ public class StructureToFeatureConverter implements IConverter {
 			int spawnXOffset = definition.has("spawnXOffset") ? definition.get("spawnXOffset").getAsInt() : 0;
 			int spawnYOffset = definition.has("spawnHeightOffset") ? definition.get("spawnHeightOffset").getAsInt() : 0;
 			int spawnZOffset = definition.has("spawnZOffset") ? definition.get("spawnZOffset").getAsInt() : 0;
+
+			if (spawnLocation.equals("Ground"))
+				spawnYOffset -= 1; // Old ground structures were 1 block lower (#4917)
+
+			spawnXOffset = Math.max(-47, Math.min(47, spawnXOffset));
+			spawnYOffset = Math.max(-47, Math.min(47, spawnYOffset));
+			spawnZOffset = Math.max(-47, Math.min(47, spawnZOffset));
+
 			boolean randomlyRotateStructure =
 					!definition.has("randomlyRotateStructure") || definition.get("randomlyRotateStructure")
 							.getAsBoolean();

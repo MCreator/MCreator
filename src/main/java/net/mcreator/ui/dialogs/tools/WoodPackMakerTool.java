@@ -19,10 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -52,6 +49,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class WoodPackMakerTool {
@@ -158,17 +156,16 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		woodBlock.name = name + " Wood";
 		woodBlock.material = new Material(workspace, "WOOD");
-		woodBlock.texture = woodTextureName;
+		woodBlock.texture = new TextureHolder(workspace, woodTextureName);
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
 		woodBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
-		woodBlock.breakHarvestLevel = 0;
 		woodBlock.flammability = (int) Math.round(5 * factor);
 		woodBlock.rotationMode = 5; // log rotation
-		woodBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, woodBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -176,22 +173,21 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		logBlock.name = name + " Log";
 		logBlock.material = new Material(workspace, "WOOD");
-		logBlock.texture = logTextureName;
-		logBlock.textureTop = logTextureName;
-		logBlock.textureBack = woodTextureName;
-		logBlock.textureFront = woodTextureName;
-		logBlock.textureLeft = woodTextureName;
-		logBlock.textureRight = woodTextureName;
+		logBlock.texture = new TextureHolder(workspace, logTextureName);
+		logBlock.textureTop = new TextureHolder(workspace, logTextureName);
+		logBlock.textureBack = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureFront = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureLeft = new TextureHolder(workspace, woodTextureName);
+		logBlock.textureRight = new TextureHolder(workspace, woodTextureName);
 		logBlock.renderType = 10; // normal
 		logBlock.customModelName = "Normal";
 		logBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
-		logBlock.breakHarvestLevel = 0;
 		logBlock.flammability = (int) Math.round(5 * factor);
 		logBlock.rotationMode = 5; // log rotation
-		logBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, logBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -199,16 +195,15 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
 		planksBlock.name = name + " Planks";
 		planksBlock.material = new Material(workspace, "WOOD");
-		planksBlock.texture = planksTextureName;
+		planksBlock.texture = new TextureHolder(workspace, planksTextureName);
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
 		planksBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
-		planksBlock.breakHarvestLevel = 0;
 		planksBlock.flammability = (int) Math.round(5 * factor);
-		planksBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -217,14 +212,13 @@ public class WoodPackMakerTool {
 		leavesBlock.name = name + " Leaves";
 		leavesBlock.blockBase = "Leaves";
 		leavesBlock.material = new Material(workspace, "LEAVES");
-		leavesBlock.texture = leavesTextureName;
+		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
-		leavesBlock.breakHarvestLevel = 0;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
-		leavesBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
+		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -233,16 +227,15 @@ public class WoodPackMakerTool {
 		stairsBlock.name = name + " Stairs";
 		stairsBlock.blockBase = "Stairs";
 		stairsBlock.material = new Material(workspace, "WOOD");
-		stairsBlock.texture = planksTextureName;
-		stairsBlock.textureTop = planksTextureName;
-		stairsBlock.textureFront = planksTextureName;
+		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		stairsBlock.hardness = 3 * factor;
 		stairsBlock.resistance = 2 * factor;
-		stairsBlock.breakHarvestLevel = 0;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 		stairsBlock.lightOpacity = 0;
-		stairsBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stairsBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -251,16 +244,15 @@ public class WoodPackMakerTool {
 		slabBlock.name = name + " Slab";
 		slabBlock.blockBase = "Slab";
 		slabBlock.material = new Material(workspace, "WOOD");
-		slabBlock.texture = planksTextureName;
-		slabBlock.textureTop = planksTextureName;
-		slabBlock.textureFront = planksTextureName;
+		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
+		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
+		slabBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
-		slabBlock.breakHarvestLevel = 0;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 		slabBlock.lightOpacity = 0;
-		slabBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, slabBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -269,14 +261,13 @@ public class WoodPackMakerTool {
 		fenceBlock.name = name + " Fence";
 		fenceBlock.blockBase = "Fence";
 		fenceBlock.material = new Material(workspace, "WOOD");
-		fenceBlock.texture = planksTextureName;
+		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
-		fenceBlock.breakHarvestLevel = 0;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 		fenceBlock.lightOpacity = 0;
-		fenceBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -285,14 +276,13 @@ public class WoodPackMakerTool {
 		fenceGateBlock.name = name + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
 		fenceGateBlock.material = new Material(workspace, "WOOD");
-		fenceGateBlock.texture = planksTextureName;
+		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
-		fenceGateBlock.breakHarvestLevel = 0;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 		fenceGateBlock.lightOpacity = 0;
-		fenceGateBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceGateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -301,14 +291,13 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.name = name + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.material = new Material(workspace, "WOOD");
-		pressurePlateBlock.texture = planksTextureName;
+		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		pressurePlateBlock.hardness = 2 * factor;
 		pressurePlateBlock.resistance = 3 * factor;
-		pressurePlateBlock.breakHarvestLevel = 0;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
-		pressurePlateBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pressurePlateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -317,14 +306,13 @@ public class WoodPackMakerTool {
 		buttonBlock.name = name + " Button";
 		buttonBlock.blockBase = "Button";
 		buttonBlock.material = new Material(workspace, "WOOD");
-		buttonBlock.texture = planksTextureName;
+		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		buttonBlock.hardness = 2 * factor;
 		buttonBlock.resistance = 3 * factor;
-		buttonBlock.breakHarvestLevel = 0;
 		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
-		buttonBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
 
 		//Recipes

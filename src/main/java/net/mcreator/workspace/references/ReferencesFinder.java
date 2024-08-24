@@ -22,6 +22,7 @@ package net.mcreator.workspace.references;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -38,6 +39,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.*;
 import java.util.List;
 import java.util.Map;
@@ -94,11 +96,37 @@ public class ReferencesFinder {
 					return ref != null && ref.value() == type;
 				}, (a, t) -> {
 					TextureReference ref = a.getAnnotation(TextureReference.class);
-					if (!Set.of(ref.defaultValues()).contains(t)) {
+					if (!Set.of(ref.defaultValues()).contains(t) && t.indexOf(':') == -1) {
 						for (String template : ref.files()) {
 							String file = template.isEmpty() ? t : template.formatted(t);
 							if (workspace.getFolderManager()
 									.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
+								return true;
+						}
+					}
+					return false;
+				}) ||
+				anyValueMatches(ge, TextureHolder.class, e -> {
+					TextureReference ref = e.getAnnotation(TextureReference.class);
+					return ref != null && ref.value() == type;
+				}, (a, t) -> {
+					TextureReference ref = a.getAnnotation(TextureReference.class);
+					String textureName = t.getRawTextureName();
+					// Because TextureHolder isCustomObject true, we need to repeat validIf condition because it is skipped for custom objects
+					if ((ref != null && ref.value() == type) && !Set.of(ref.defaultValues()).contains(textureName) && textureName.indexOf(':') == -1) {
+						for (String template : ref.files()) {
+							File toLookup;
+							if (template.isEmpty()) {
+								try {
+									toLookup = t.toFile(type);
+								} catch (IOException e) {
+									return false;
+								}
+							} else {
+								toLookup = workspace.getFolderManager()
+										.getTextureFile(FilenameUtilsPatched.removeExtension(template.formatted(t)), type);
+							}
+							if (toLookup.equals(texture))
 								return true;
 						}
 					}
@@ -115,7 +143,7 @@ public class ReferencesFinder {
 					ResourceReference ref = e.getAnnotation(ResourceReference.class);
 					return ref != null && ref.value().equals("model");
 				}, (a, t) ->
-					model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)
+					model.equals(t) || TexturedModel.getModelTextureMapVariations(workspace, model).contains(t)
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());

@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
@@ -92,7 +93,16 @@ public class RegenerateCodeAction extends GradleAction {
 					modElementFiles.forEach(File::delete);
 			}
 
-			// delete all non mod element related files from code base package
+			List<GeneratorTemplate> templates = mcreator.getGenerator().getModBaseGeneratorTemplatesList(false);
+			for (GeneratorTemplate template : templates) {
+				GeneratorFile generatorFile = template.toGeneratorFile(FileIO.readFileToString(template.getFile()));
+				// preserve base mod element files that have user code blocks with content
+				if (!UserCodeProcessor.getUserCodeBlocks(generatorFile.contents(), generatorFile.getUsercodeComment())
+						.isEmpty())
+					toBePreserved.add(template.getFile());
+			}
+
+			// delete all non-mod element related files from code base package
 			File[] files = FileIO.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
 			for (File a : files) {
 				if (!FileIO.isFileOnFileList(toBePreserved,

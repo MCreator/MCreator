@@ -25,6 +25,12 @@
     "inputs": [
       "amount",
       "item"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

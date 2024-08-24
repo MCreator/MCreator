@@ -76,10 +76,10 @@ public abstract class ProcedureConverter implements IConverter {
 				.getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
-		procedure.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
-				.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
-						null :
-						blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
+		procedure.getModElement().putMetadata("dependencies", blocklyToJava.getDependencies());
+		procedure.getModElement().putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+				null :
+				blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
 	}
 
 }

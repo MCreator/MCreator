@@ -83,6 +83,15 @@
 - adventure/salvage_sherd
 - adventure/trim_with_all_exclusive_armor_patterns
 - adventure/trim_with_any_armor_pattern
+- adventure/brush_armadillo
+- adventure/blowback
+- adventure/crafters_crafting_crafters
+- adventure/lighten_up
+- adventure/minecraft_trials_edition
+- adventure/overoverkill
+- adventure/revaulting
+- adventure/under_lock_and_key
+- adventure/who_needs_rockets
 - husbandry/root
 - husbandry/allay_deliver_cake_to_note_block
 - husbandry/allay_deliver_item_to_player
@@ -109,3 +118,6 @@
 - husbandry/tame_an_animal
 - husbandry/wax_off
 - husbandry/wax_on
+- husbandry/remove_wolf_armor
+- husbandry/repair_wolf_armor
+- husbandry/whole_pack

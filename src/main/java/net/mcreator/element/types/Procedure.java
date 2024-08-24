@@ -68,11 +68,12 @@ public class Procedure extends GeneratableElement {
 
 	public List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
-		List<?> dependenciesList = (List<?>) getModElement().getMetadata("dependencies");
-		for (Object depobj : dependenciesList) {
-			Dependency dependency = WorkspaceFileManager.gson.fromJson(
-					WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
-			dependencies.add(dependency);
+		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
+			for (Object depobj : dependenciesList) {
+				Dependency dependency = WorkspaceFileManager.gson.fromJson(
+						WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
+				dependencies.add(dependency);
+			}
 		}
 
 		int idx = dependencies.indexOf(new Dependency("z", "number"));
@@ -120,16 +121,15 @@ public class Procedure extends GeneratableElement {
 
 			if (!this.skipDependencyRegeneration) {
 				// we update the dependency list of the procedure
-				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
-						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
-								null :
-								blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
+				this.getModElement().putMetadata("dependencies", blocklyToJava.getDependencies());
+				this.getModElement().putMetadata("return_type", blocklyToJava.getReturnType() == null ?
+						null :
+						blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
 			}
 
 			additionalData.put("dependencies", reloadDependencies());
 			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
 			additionalData.put("return_type", blocklyToJava.getReturnType());
-			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 			additionalData.put("procedureblocks", blocklyToJava.getUsedBlocks());
 

@@ -31,8 +31,8 @@ public class NumberProcedure extends RetvalProcedure<Double> {
 
 	protected static class GSONAdapter implements JsonDeserializer<NumberProcedure> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+				.setStrictness(Strictness.LENIENT).create();
 
 		@Override
 		public NumberProcedure deserialize(JsonElement jsonElement, Type type,

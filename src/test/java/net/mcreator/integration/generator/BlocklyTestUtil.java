@@ -262,6 +262,9 @@ public class BlocklyTestUtil {
 		case "arrowProjectile":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "configuredfeature":
+			return ElementUtil.loadAllConfiguredFeatures(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		default: {
 			if (datalist.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(

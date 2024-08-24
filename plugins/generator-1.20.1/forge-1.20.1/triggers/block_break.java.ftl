@@ -3,7 +3,6 @@
 	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"xpAmount": "event.getExpToDrop()",
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
 			"z": "event.getPos().getZ()",

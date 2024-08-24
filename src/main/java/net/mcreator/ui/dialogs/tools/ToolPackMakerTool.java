@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.tools;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -54,6 +55,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class ToolPackMakerTool {
@@ -192,10 +194,10 @@ public class ToolPackMakerTool {
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = name + " Pickaxe";
-		pickaxeTool.texture = pickaxeTextureName;
+		pickaxeTool.texture = new TextureHolder(workspace, pickaxeTextureName);
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
-		pickaxeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		pickaxeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 		pickaxeTool.attackSpeed = (double) Math.round(1.2f * factor);
 
@@ -203,10 +205,10 @@ public class ToolPackMakerTool {
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = name + " Axe";
-		axeTool.texture = axeTextureName;
+		axeTool.texture = new TextureHolder(workspace, axeTextureName);
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
-		axeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		axeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 		axeTool.attackSpeed = (double) Math.round(0.9f * factor);
@@ -215,9 +217,9 @@ public class ToolPackMakerTool {
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = name + " Sword";
-		swordTool.texture = swordTextureName;
+		swordTool.texture = new TextureHolder(workspace, swordTextureName);
 		swordTool.toolType = "Sword";
-		swordTool.creativeTab = new TabEntry(mcreator.getWorkspace(), "COMBAT");
+		swordTool.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		swordTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
@@ -227,10 +229,10 @@ public class ToolPackMakerTool {
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = name + " Shovel";
-		shovelTool.texture = shovelTextureName;
+		shovelTool.texture = new TextureHolder(workspace, shovelTextureName);
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
-		shovelTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		shovelTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 		shovelTool.damageVsEntity = (double) Math.round(4.5f * factor);
 		shovelTool.attackSpeed = (double) Math.round(1.0f * factor);
@@ -239,10 +241,10 @@ public class ToolPackMakerTool {
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = name + " Hoe";
-		hoeTool.texture = hoeTextureName;
+		hoeTool.texture = new TextureHolder(workspace, hoeTextureName);
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
-		hoeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		hoeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
 		hoeTool.damageVsEntity = (double) Math.round(1.0f * factor);
 
@@ -299,7 +301,15 @@ public class ToolPackMakerTool {
 
 	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool,
 			FolderElement folder) {
-		tool.harvestLevel = (int) Math.round(2 * factor);
+		if (factor < 0.5) {
+			tool.blockDropsTier = "WOOD";
+		} else if (factor < 1) {
+			tool.blockDropsTier = "STONE";
+		} else if (factor == 1) {
+			tool.blockDropsTier = "IRON";
+		} else {
+			tool.blockDropsTier = "DIAMOND";
+		}
 		tool.efficiency = (double) Math.round(6.0f * Math.pow(factor, 0.6));
 		tool.enchantability = (int) Math.round(14 * factor);
 		tool.damageVsEntity = (double) Math.round(4.0f * factor);

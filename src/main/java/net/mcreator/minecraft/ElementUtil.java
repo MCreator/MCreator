@@ -205,10 +205,6 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors");
 	}
 
-	public static List<DataListEntry> loadEnchantmentTypes() {
-		return DataListLoader.loadDataList("enchantmenttypes");
-	}
-
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
@@ -335,6 +331,13 @@ public class ElementUtil {
 		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
+	}
+
+	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE));
+		retval.addAll(DataListLoader.loadDataList("configuredfeatures"));
+		return retval;
 	}
 
 	public static List<DataListEntry> loadStepSounds() {

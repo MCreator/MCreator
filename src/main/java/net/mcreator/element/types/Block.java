@@ -51,12 +51,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
-	@TextureReference(TextureType.BLOCK) public String texture;
-	@TextureReference(TextureType.BLOCK) public String textureTop;
-	@TextureReference(TextureType.BLOCK) public String textureLeft;
-	@TextureReference(TextureType.BLOCK) public String textureFront;
-	@TextureReference(TextureType.BLOCK) public String textureRight;
-	@TextureReference(TextureType.BLOCK) public String textureBack;
+	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureLeft;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureFront;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureRight;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 	public int renderType;
 	@Nonnull public String customModelName;
 	public int rotationMode;
@@ -64,8 +64,8 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
-	@TextureReference(TextureType.ITEM) public String itemTexture;
-	@TextureReference(TextureType.BLOCK) public String particleTexture;
+	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
 
@@ -85,7 +85,7 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
@@ -132,7 +132,8 @@ import java.util.stream.Collectors;
 
 	public int luminance;
 	public boolean unbreakable;
-	public int breakHarvestLevel;
+	public String vanillaToolTier;
+	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;
 
@@ -192,6 +193,8 @@ import java.util.stream.Collectors;
 	public Block(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -204,6 +207,7 @@ import java.util.stream.Collectors;
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
+		this.vanillaToolTier = "NONE";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -265,15 +269,15 @@ import java.util.stream.Collectors;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
@@ -326,13 +330,13 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getMainTexture() {
-		return getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage();
+		return texture.getImage(TextureType.BLOCK);
 	}
 
-	private Image getTextureWithFallback(String textureName) {
-		if (textureName.isEmpty())
+	private Image getTextureWithFallback(TextureHolder texture) {
+		if (texture.isEmpty())
 			return getMainTexture();
-		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
+		return texture.getImage(TextureType.BLOCK);
 	}
 
 	@Override public String getRenderType() {
@@ -346,14 +350,41 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-			baseTypes.add(BaseType.FEATURE);
+		if (generateFeature) {
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
+			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
+				baseTypes.add(BaseType.FEATURE);
+		}
 
 		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public TextureHolder textureTop() {
+		return textureTop == null || textureTop.isEmpty() ? texture : textureTop;
+	}
+
+	public TextureHolder textureLeft() {
+		return textureLeft == null || textureLeft.isEmpty() ? texture : textureLeft;
+	}
+
+	public TextureHolder textureFront() {
+		return textureFront == null || textureFront.isEmpty() ? texture : textureFront;
+	}
+
+	public TextureHolder textureRight() {
+		return textureRight == null || textureRight.isEmpty() ? texture : textureRight;
+	}
+
+	public TextureHolder textureBack() {
+		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+
+	public TextureHolder getParticleTexture() {
+		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
 	}
 
 }

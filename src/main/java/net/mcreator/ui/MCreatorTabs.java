@@ -207,8 +207,11 @@ public class MCreatorTabs {
 
 	public Tab showTabOrGetExisting(Object identifier, boolean notify) {
 		Tab existing = null;
-		if (this.current != null && !this.current.equals(this.previous))
+		if (this.current != null && !this.current.equals(this.previous)) {
 			this.previous = this.current;
+			if (this.previous.tabHiddenListener != null)
+				this.previous.tabHiddenListener.tabHidden(this.previous);
+		}
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier)) {
 				cardLayout.show(container, identifier.toString());
@@ -292,6 +295,7 @@ public class MCreatorTabs {
 		private TabClosedListener tabClosedListener;
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
+		private TabHiddenListener tabHiddenListener;
 
 		private Color inactiveColor = Theme.current().getAltBackgroundColor();
 		private Color activeColor = Theme.current().getInterfaceAccentColor();
@@ -456,6 +460,10 @@ public class MCreatorTabs {
 			this.tabShownListener = tabShownListener;
 		}
 
+		public void setTabHiddenListener(TabHiddenListener tabHiddenListener) {
+			this.tabHiddenListener = tabHiddenListener;
+		}
+
 		public JPanel getContent() {
 			return content;
 		}
@@ -477,6 +485,10 @@ public class MCreatorTabs {
 
 	public interface TabShownListener {
 		void tabShown(Tab tab);
+	}
+
+	public interface TabHiddenListener {
+		void tabHidden(Tab tab);
 	}
 
 	public interface TabClosedListener {

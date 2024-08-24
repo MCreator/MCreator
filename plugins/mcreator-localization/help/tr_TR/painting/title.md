@@ -1,0 +1,1 @@
+Bu parametre resmin başlığını tanımlar.

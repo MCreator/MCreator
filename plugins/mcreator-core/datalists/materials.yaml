@@ -1,100 +1,36 @@
+- NONE:
+  readable_name: No legacy material
 - ROCK:
-  texture: STONE
-- EARTH:
-  texture: DIRT
-- GRASS:
-  texture: GRASS
+  readable_name: Basedrum noteblock instrument
 - WOOD:
-  texture: PLANKS#0
-- IRON:
-  texture: IRON_BLOCK
-- ANVIL:
-  texture: ANVIL
+  readable_name: Base noteblock instrument, ignited by lava
 - WATER:
-  texture: WATER
+  readable_name: Liquid (water)
 - LAVA:
-  texture: LAVA
+  readable_name: Liquid (lava)
 - LEAVES:
-  texture: LEAVES
-- PLANTS:
-  texture: RED_FLOWER#0
+  readable_name: Ignited by lava (leaves)
 - TALL_PLANTS:
-  texture: DOUBLE_PLANT#0
-- SPONGE:
-  texture: SPONGE
+  readable_name: Ignited by lava (plants)
 - CLOTH:
-  texture: WOOL#0
-- FIRE:
-  texture: FIRE
+  readable_name: Ignited by lava (cloth)
 - SAND:
-  texture: SAND#0
-- MISCELLANEOUS:
-  texture: END_GATEWAY
+  readable_name: Snare noteblock instrument
 - CARPET:
-  texture: CARPET#3
+  readable_name: Ignited by lava (carpet)
 - GLASS:
-  texture: GLASS
+  readable_name: Hat noteblock instrument
 - TNT:
-  texture: TNT
-- ICE:
-  texture: ICE
-- PACKED_ICE:
-  texture: PACKED_ICE
-- SNOW:
-  texture: SNOW
-- CRAFTED_SNOW:
-  texture: SNOWBALL
-- CACTUS:
-  texture: CACTUS
-- CLAY:
-  texture: CLAY
-- GOURD:
-  texture: PUMPKIN
-- DRAGON_EGG:
-  texture: DRAGON_EGG
-- PORTAL:
-  texture: PORTAL
-- CAKE:
-  texture: CAKE
-- WEB:
-  texture: WEB
+  readable_name: Ignited by lava (TNT)
 - AIR:
-  texture: AIR
+  readable_name: Air
 - STRUCTURE_VOID:
-  texture: STRUCTURE_VOID
+  readable_name: Air (structure void)
 - OCEAN_PLANT:
-  texture: KELP_PLANT
-- SEA_GRASS:
-  texture: SEAGRASS
+  readable_name: Basedrum noteblock instrument
 - BUBBLE_COLUMN:
-  texture: BUBBLE_COLUMN
-- SHULKER:
-  texture: PURPLE_SHULKER_BOX
+  readable_name: Liquid (bubble column)
 - BAMBOO_SAPLING:
-  texture: BAMBOO_SAPLING
+  readable_name: Ignited by lava (bamboo sapling)
 - BAMBOO:
-  texture: BAMBOO
-- BARRIER:
-  texture: BARRIER
-- PISTON:
-  texture: PISTON
-- NETHER_WOOD:
-  texture: CRIMSON_STEM
-- NETHER_PLANTS:
-  texture: NETHER_WART
-- SCULK:
-  texture: SCULK_SENSOR
-- MOSS_BLOCK:
-  texture: MOSS_BLOCK
-- AMETHYST:
-  texture: AMETHYST_BLOCK
-- POWDER_SNOW:
-  texture: POWDER_SNOW
-- BUILDABLE_GLASS:
-  texture: REDSTONE_LAMP
-- FROGSPAWN:
-  texture: FROGSPAWN
-- FROGLIGHT:
-  texture: OCHRE_FROGLIGHT
-- DECORATED_POT:
-  texture: DECORATED_POT
+  readable_name: Ignited by lava (bamboo)

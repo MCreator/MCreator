@@ -19,10 +19,12 @@
 
 package net.mcreator.element.converter.v2024_1;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
@@ -44,6 +46,14 @@ public class TagModElementConverter implements IConverter {
 				String name = definition.get("name").getAsString();
 				String namespace = definition.get("namespace").getAsString();
 
+				// Check if name contains upper-case letters
+				if (name.chars().anyMatch(Character::isUpperCase)) {
+					LOG.warn(
+							"Tag element name contains upper-case letters (likely from old ore dictionary system): {} - converting to lower-case",
+							name);
+					name = RegistryNameFixer.fromCamelCase(name);
+				}
+
 				TagElement tagElement = new TagElement(type, namespace + ":" + name);
 				if (!workspace.getTagElements().containsKey(tagElement)) {
 					workspace.addTagElement(tagElement);
@@ -56,6 +66,7 @@ public class TagModElementConverter implements IConverter {
 					case FUNCTIONS -> definition.getAsJsonArray("functions");
 					case BIOMES -> definition.getAsJsonArray("biomes");
 					case DAMAGE_TYPES -> definition.getAsJsonArray("damageTypes");
+					default -> new JsonArray(); // Other tag types did not exist before FV 60
 				}) {
 					workspace.getTagElements().get(tagElement).add(type == TagType.FUNCTIONS ?
 							value.getAsString() :

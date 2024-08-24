@@ -47,12 +47,12 @@ import java.util.stream.Collectors;
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
-	@TextureReference(TextureType.BLOCK) public String texture;
-	@TextureReference(TextureType.BLOCK) public String textureBottom;
+	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureBottom;
 	@Nonnull public String customModelName;
 
-	@TextureReference(TextureType.ITEM) public String itemTexture;
-	@TextureReference(TextureType.BLOCK) public String particleTexture;
+	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -71,7 +71,7 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public double hardness;
 	public double resistance;
 	public int luminance;
@@ -140,6 +140,8 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
@@ -175,7 +177,7 @@ import java.util.stream.Collectors;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
@@ -183,12 +185,11 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.BLOCK).getImage(), 32);
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.BLOCK), 32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	public boolean isBlockTinted() {
@@ -210,9 +211,12 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-			baseTypes.add(BaseType.FEATURE);
+		if (generateFeature) {
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
+			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
+				baseTypes.add(BaseType.FEATURE);
+		}
 
 		if (hasTileEntity)
 			baseTypes.add(BaseType.BLOCKENTITY);
@@ -226,6 +230,14 @@ import java.util.stream.Collectors;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return providedMCItems();
+	}
+
+	public TextureHolder textureBottom() {
+		return textureBottom == null || textureBottom.isEmpty() ? texture : textureBottom;
+	}
+
+	public TextureHolder getParticleTexture() {
+		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
 	}
 
 }

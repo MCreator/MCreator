@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
@@ -48,14 +49,14 @@ public class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 
-	public static final Gson gson = new GsonBuilder().setLenient().setPrettyPrinting()
+	public static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
 			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
 			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
 			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
 
 	private DataSavedListener dataSavedListener;
 
-	private final ScheduledExecutorService dataSaveExecutor = Executors.newScheduledThreadPool(1);
+	private final ScheduledExecutorService dataSaveExecutor;
 	private ScheduledFuture<?> lastSchedule;
 
 	private final File workspaceFile;
@@ -71,6 +72,13 @@ public class WorkspaceFileManager implements Closeable {
 
 		this.folderManager = new WorkspaceFolderManager(workspaceFile, workspace);
 		this.modElementManager = new ModElementManager(workspace);
+
+		this.dataSaveExecutor = Executors.newScheduledThreadPool(1, runnable -> {
+			Thread thread = new Thread(runnable);
+			thread.setName("Workspace-File-Manager");
+			thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+			return thread;
+		});
 
 		// start autosave scheduler
 		lastSchedule = dataSaveExecutor.schedule(new SaveTask(this),
@@ -90,12 +98,12 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	@Override public void close() {
-		saveWorkspaceDirectlyAndWait(); // save workspace to FS
 		lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
+		saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
 	}
 
 	public void saveWorkspaceDirectlyAndWait() {
-		LOG.info("Saving the workspace by direct request!");
+		LOG.info("Saving the workspace by direct request");
 
 		// set changed flag so the saving happens in all cases (this is a direct save request)
 		workspace.markDirty();
@@ -108,7 +116,7 @@ public class WorkspaceFileManager implements Closeable {
 		new SaveTask(this).run(); // this run will save the workspace and schedule new save task too
 	}
 
-	private void saveWorkspaceIfChanged() {
+	private synchronized void saveWorkspaceIfChanged() {
 		MCREvent.event(new WorkspaceSavedEvent.CalledSavingMethod(workspace));
 
 		if (!workspace.isDirty()) // if the workspace file was not changed, we do not perform save
@@ -118,7 +126,7 @@ public class WorkspaceFileManager implements Closeable {
 		if (workspacestring != null && !workspacestring.isEmpty()) {
 			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
 
-			// first we backup workspace file
+			// first we back up workspace file
 			rotateWorkspaceFileBackup();
 
 			// We do an "atomic" write to the FS
@@ -175,7 +183,7 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void createNewWorkspaceFileBackup() {
-		// if workspace file exists so we can back it up, we backup it
+		// if workspace file exists, so we can back it up, we back it up
 		if (workspaceFile.isFile()) {
 			File backupFile = new File(folderManager.getWorkspaceBackupsCacheDir(),
 					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
@@ -191,13 +199,7 @@ public class WorkspaceFileManager implements Closeable {
 		void dataSaved();
 	}
 
-	@SuppressWarnings("ClassCanBeRecord") private static class SaveTask implements Runnable {
-
-		private final WorkspaceFileManager fileManager;
-
-		private SaveTask(WorkspaceFileManager fileManager) {
-			this.fileManager = fileManager;
-		}
+	private record SaveTask(WorkspaceFileManager fileManager) implements Runnable {
 
 		@Override public void run() {
 			fileManager.saveWorkspaceIfChanged();

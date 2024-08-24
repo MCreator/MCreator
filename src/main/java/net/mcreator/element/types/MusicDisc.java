@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -34,15 +35,17 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
+@SuppressWarnings("unused") public class MusicDisc extends GeneratableElement
+		implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
 	public String rarity;
-	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	public String description;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
@@ -65,20 +68,20 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	public MusicDisc(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
 		this.rarity = "RARE";
 	}
 
-	@Override public String getTexture() {
+	@Override public TextureHolder getTexture() {
 		return texture;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

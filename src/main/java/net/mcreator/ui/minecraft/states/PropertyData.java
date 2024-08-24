@@ -334,8 +334,8 @@ import java.util.stream.Collectors;
 	 */
 	static class GSONAdapter implements JsonSerializer<PropertyData<?>>, JsonDeserializer<PropertyData<?>> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+				.setStrictness(Strictness.LENIENT).create();
 
 		@Override public PropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

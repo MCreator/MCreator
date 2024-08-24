@@ -1,6 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: lts
-buildfileversion: 47.2.0
+buildfileversion: 47.3.0
+subversion: 1.0 # force setup re-run to update Gradle wrapper to work with Java 21
 
 import:
   - datapack-1.20.1
@@ -8,11 +9,10 @@ import:
 java_models:
   key: mojmap-1.20.x
   compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
-  setup_task: eclipse
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
@@ -43,6 +43,10 @@ particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
+
+# vanilla resources
+vanilla_block_textures_dir: "client-extra.jar!/assets/minecraft/textures/block"
+vanilla_item_textures_dir: "client-extra.jar!/assets/minecraft/textures/item"
 
 base_templates:
   - template: modbase/mod.java.ftl
@@ -80,12 +84,13 @@ base_templates:
 sources_setup_tasks:
   - task: copy_models
     type: JAVA_viatemplate
+    cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
 tags:
   template: tags.json.ftl
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:
   format: json

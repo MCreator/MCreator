@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -41,10 +42,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -53,23 +51,26 @@ import java.util.Map;
 
 	public int renderType;
 	public int blockingRenderType;
-	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public TabEntry creativeTab;
-	public int harvestLevel;
+	public List<TabEntry> creativeTabs;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
 	public double damageVsEntity;
 	public int usageCount;
-	@ModElementReference public List<MItemBlock> blocksAffected;
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
+
+	public String blockDropsTier;
+	public Procedure additionalDropCondition;
+
+	@ModElementReference public List<MItemBlock> blocksAffected;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -90,14 +91,17 @@ import java.util.Map;
 	public Tool(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.attackSpeed = 2.8;
 
 		this.blockingModelName = "Normal blocking";
+
+		this.blockDropsTier = "WOOD";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(
-				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
 	}
 
 	@Override public Model getItemModel() {
@@ -118,14 +122,14 @@ import java.util.Map;
 		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
 	}
 
-	@Override public Map<String, String> getTextureMap() {
+	@Override public Map<String, TextureHolder> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();
 	}
 
-	public Map<String, String> getBlockingTextureMap() {
+	public Map<String, TextureHolder> getBlockingTextureMap() {
 		Model model = getBlockingModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
@@ -149,11 +153,11 @@ import java.util.Map;
 		}
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
-	@Override public String getTexture() {
+	@Override public TextureHolder getTexture() {
 		return texture;
 	}
 

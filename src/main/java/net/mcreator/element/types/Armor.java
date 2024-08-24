@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -40,27 +41,28 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
-	@TextureReference(TextureType.ITEM) public String textureHelmet;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureHelmet;
 	public boolean enableBody;
-	@TextureReference(TextureType.ITEM) public String textureBody;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureBody;
 	public boolean enableLeggings;
-	@TextureReference(TextureType.ITEM) public String textureLeggings;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureLeggings;
 	public boolean enableBoots;
-	@TextureReference(TextureType.ITEM) public String textureBoots;
+	@TextureReference(TextureType.ITEM) public TextureHolder textureBoots;
 
 	public Procedure onHelmetTick;
 	public Procedure onBodyTick;
 	public Procedure onLeggingsTick;
 	public Procedure onBootsTick;
 
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
@@ -135,6 +137,8 @@ import java.util.*;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
 		this.leggingsModelName = "Default";
@@ -151,15 +155,15 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		ArrayList<File> armorPieces = new ArrayList<>();
+		List<Image> armorPieces = new ArrayList<>();
 		if (enableHelmet)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureHelmet, TextureType.ITEM));
+			armorPieces.add(textureHelmet.getImage(TextureType.ITEM));
 		if (enableBody)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBody, TextureType.ITEM));
+			armorPieces.add(textureBody.getImage(TextureType.ITEM));
 		if (enableLeggings)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureLeggings, TextureType.ITEM));
+			armorPieces.add(textureLeggings.getImage(TextureType.ITEM));
 		if (enableBoots)
-			armorPieces.add(getModElement().getFolderManager().getTextureFile(textureBoots, TextureType.ITEM));
+			armorPieces.add(textureBoots.getImage(TextureType.ITEM));
 
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
@@ -238,7 +242,7 @@ import java.util.*;
 		};
 	}
 
-	public Map<String, String> getItemModelTextureMap(String part) {
+	public Map<String, TextureHolder> getItemModelTextureMap(String part) {
 		Model model = switch (part) {
 			case "helmet" -> getHelmetItemModel();
 			case "body" -> getBodyItemModel();
@@ -251,7 +255,7 @@ import java.util.*;
 		return new HashMap<>();
 	}
 
-	public String getItemTextureFor(String part) {
+	public TextureHolder getItemTextureFor(String part) {
 		return switch (part) {
 			case "helmet" -> textureHelmet;
 			case "body" -> textureBody;
@@ -361,16 +365,16 @@ import java.util.*;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return switch (suffix) {
-			case "helmet" -> workspace.getFolderManager().getTextureImageIcon(textureHelmet, TextureType.ITEM);
-			case "body" -> workspace.getFolderManager().getTextureImageIcon(textureBody, TextureType.ITEM);
-			case "legs" -> workspace.getFolderManager().getTextureImageIcon(textureLeggings, TextureType.ITEM);
-			case "boots" -> workspace.getFolderManager().getTextureImageIcon(textureBoots, TextureType.ITEM);
+			case "helmet" -> textureHelmet.getImageIcon(TextureType.ITEM);
+			case "body" -> textureBody.getImageIcon(TextureType.ITEM);
+			case "legs" -> textureLeggings.getImageIcon(TextureType.ITEM);
+			case "boots" -> textureBoots.getImageIcon(TextureType.ITEM);
 			default -> null;
 		};
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 }

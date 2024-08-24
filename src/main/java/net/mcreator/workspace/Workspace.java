@@ -25,6 +25,7 @@ import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -249,15 +250,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);
 		if (tagFile != null) {
-			tagFile.delete();
+			TrackingFileIO.deleteFile(this, tagFile);
 		}
 
 		markDirty();
 	}
 
 	public void removeSoundElement(SoundElement element) {
-		element.getFiles()
-				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg").delete());
+		element.getFiles().forEach(file -> TrackingFileIO.deleteFile(this,
+				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
 	}
@@ -292,6 +293,29 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		generator.close();
 		fileManager.close();
+	}
+
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o instanceof Workspace other) {
+			try {
+				return getWorkspaceFolder().getCanonicalPath().equals(other.getWorkspaceFolder().getCanonicalPath());
+			} catch (Exception ignored) {
+				return getWorkspaceFolder().getAbsolutePath().equals(other.getWorkspaceFolder().getAbsolutePath());
+			}
+		}
+
+		return false;
+	}
+
+	@Override public int hashCode() {
+		try {
+			return getWorkspaceFolder().getCanonicalPath().hashCode();
+		} catch (Exception ignored) {
+			return getWorkspaceFolder().getAbsolutePath().hashCode();
+		}
 	}
 
 	@Override public String toString() {
@@ -423,7 +447,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						retval.getWorkspaceSettings().setCurrentGenerator(selectedGenerator.getGeneratorName());
 
 						retval.generator = new Generator(retval);
-						retval.regenerateRequired = true;
+						retval.requireRegenerate();
 
 						WorkspaceGeneratorSetup.requestSetup(retval);
 					} else {
@@ -492,7 +516,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
 			retval.generator = new Generator(retval);
-			retval.regenerateRequired = true;
+			retval.requireRegenerate();
 
 			WorkspaceGeneratorSetup.requestSetup(retval);
 		} else {
@@ -520,6 +544,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		LOG.info("Created new workspace with workspace file {}, modid: {}, generator: {}", workspaceFile,
 				workspaceSettings.getModID(), workspaceSettings.getCurrentGenerator());
 		return retval;
+	}
+
+	public void requireRegenerate() {
+		this.regenerateRequired = true;
 	}
 
 	public boolean isRegenerateRequired() {

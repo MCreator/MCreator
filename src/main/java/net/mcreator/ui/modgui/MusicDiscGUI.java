@@ -19,22 +19,19 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.MusicDisc;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
-import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.TabListField;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -57,7 +54,7 @@ import java.net.URISyntaxException;
 
 public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
-	private TextureHolder texture;
+	private TextureSelectionButton texture;
 
 	private StringListProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
@@ -69,7 +66,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private LogicProcedureSelector glowCondition;
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -122,7 +119,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
 
@@ -160,9 +157,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.disc_analog_output")));
 		subpane2.add(analogOutput);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		subpane2.add(creativeTab);
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		subpane2.add(creativeTabs);
 
 		JPanel subpane3 = new JPanel(new BorderLayout(0, 2));
 		subpane3.setOpaque(false);
@@ -231,8 +228,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		specialInformation.refreshListKeepSelected();
 
 		glowCondition.refreshListKeepSelected();
-
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -245,7 +240,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		name.setText(musicDisc.name);
 		rarity.setSelectedItem(musicDisc.rarity);
 		description.setText(musicDisc.description);
-		texture.setTextureFromTextureName(musicDisc.texture);
+		texture.setTexture(musicDisc.texture);
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(musicDisc.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(musicDisc.onCrafted);
@@ -254,7 +249,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInUseTick.setSelectedProcedure(musicDisc.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
 		specialInformation.setSelectedProcedure(musicDisc.specialInformation);
-		creativeTab.setSelectedItem(musicDisc.creativeTab);
+		creativeTabs.setListElements(musicDisc.creativeTabs);
 		glowCondition.setSelectedProcedure(musicDisc.glowCondition);
 		music.setSound(musicDisc.music);
 		lengthInTicks.setValue(musicDisc.lengthInTicks);
@@ -266,7 +261,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.name = name.getText();
 		musicDisc.rarity = (String) rarity.getSelectedItem();
 		musicDisc.description = description.getText();
-		musicDisc.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		musicDisc.creativeTabs = creativeTabs.getListElements();
 		musicDisc.glowCondition = glowCondition.getSelectedProcedure();
 		musicDisc.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		musicDisc.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
@@ -276,7 +271,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		musicDisc.specialInformation = specialInformation.getSelectedProcedure();
-		musicDisc.texture = texture.getID();
+		musicDisc.texture = texture.getTextureHolder();
 		musicDisc.music = music.getSound();
 		musicDisc.lengthInTicks = (int) lengthInTicks.getValue();
 		musicDisc.analogOutput = (int) analogOutput.getValue();

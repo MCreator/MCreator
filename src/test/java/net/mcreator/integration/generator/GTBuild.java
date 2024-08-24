@@ -29,7 +29,8 @@ public class GTBuild {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace)
 			throws GradleConnectionException, IllegalStateException {
-		BuildLauncher buildLauncher = GradleUtils.getGradleTaskLauncher(workspace, "build");
+		BuildLauncher buildLauncher = GradleUtils.getGradleTaskLauncher(
+				GradleUtils.getGradleProjectConnection(workspace), "build");
 
 		StringBuilder sb = new StringBuilder();
 

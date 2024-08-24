@@ -31,8 +31,8 @@ public class StringProcedure extends RetvalProcedure<String> {
 
 	protected static class GSONAdapter implements JsonDeserializer<StringProcedure> {
 
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
+				.setStrictness(Strictness.LENIENT).create();
 
 		@Override
 		public StringProcedure deserialize(JsonElement jsonElement, Type type,

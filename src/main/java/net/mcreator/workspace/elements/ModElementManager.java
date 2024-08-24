@@ -21,6 +21,7 @@ package net.mcreator.workspace.elements;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.Strictness;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
@@ -63,7 +64,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
 						new GeneratableElement.GSONAdapter(this.workspace)).disableHtmlEscaping().setPrettyPrinting()
-				.setLenient();
+				.setStrictness(Strictness.LENIENT);
 		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
 		this.gson = gsonBuilder.create();
@@ -205,10 +206,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 	public void storeModElementPicture(GeneratableElement element) {
 		try {
 			BufferedImage modImage = element.generateModElementPicture();
-			if (modImage != null)
-				FileIO.writeImageToPNGFile(modImage,
-						new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-								element.getModElement().getName() + ".png"));
+			File modImageFile = new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+					element.getModElement().getName() + ".png");
+			if (modImage != null) {
+				FileIO.writeImageToPNGFile(modImage, modImageFile);
+			} else if (modImageFile.isFile()) {
+				// If there is no preview image generated, we revert back to default one
+				modImageFile.delete();
+			}
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
 		}

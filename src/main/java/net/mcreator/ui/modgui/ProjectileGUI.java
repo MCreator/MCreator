@@ -28,19 +28,16 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -51,11 +48,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -71,7 +66,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
-	private final VComboBox<String> customModelTexture = new SearchableComboBox<>();
+
+	private TextureComboBox customModelTexture;
 
 	private ProcedureSelector onHitsBlock;
 	private ProcedureSelector onHitsPlayer;
@@ -101,9 +97,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.t("elementgui.projectile.event_flying_tick"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 
-		customModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		customModelTexture.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		customModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
+
 		model.setPreferredSize(new Dimension(400, 42));
 		model.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(model, 16);
@@ -128,23 +123,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.model")));
 		propertiesPanel.add(model);
 
-		JButton importEntityTexture = new JButton(UIRES.get("18px.add"));
-		importEntityTexture.setToolTipText(L10N.t("elementgui.projectile.model_tooltip"));
-		importEntityTexture.setOpaque(false);
-		importEntityTexture.addActionListener(e -> {
-			TextureImportDialogs.importMultipleTextures(mcreator, TextureType.ENTITY);
-			customModelTexture.removeAllItems();
-			customModelTexture.addItem("");
-			List<File> textures = mcreator.getFolderManager().getTexturesList(TextureType.ENTITY);
-			for (File element : textures)
-				if (element.getName().endsWith(".png"))
-					customModelTexture.addItem(element.getName());
-		});
-
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model_texture"),
 				L10N.label("elementgui.projectile.model_texture")));
-		ComponentUtils.deriveFont(customModelTexture, 16);
-		propertiesPanel.add(PanelUtils.centerAndEastElement(customModelTexture, importEntityTexture));
+		propertiesPanel.add(customModelTexture);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
@@ -184,11 +165,12 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
-				if (customModelTexture.getSelectedItem() == null || customModelTexture.getSelectedItem().isEmpty())
+				if (!customModelTexture.hasTexture())
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.projectile.error_custom_model_needs_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
+
 		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
 
 		page1group.addValidationElement(projectileItem);
@@ -211,9 +193,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		onHitsEntity.refreshListKeepSelected();
 		onFlyingTick.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(customModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.filter(s -> s.endsWith(".png")).collect(Collectors.toList())), "");
+		customModelTexture.reload();
 
 		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Collections.singletonList(modelDefault),
 				Model.getModels(mcreator.getWorkspace()).stream()
@@ -229,7 +209,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		damage.setValue(projectile.damage);
 		knockback.setValue(projectile.knockback);
 		igniteFire.setSelected(projectile.igniteFire);
-		customModelTexture.setSelectedItem(projectile.customModelTexture);
+		customModelTexture.setTextureFromTextureName(projectile.customModelTexture);
 		onHitsBlock.setSelectedProcedure(projectile.onHitsBlock);
 		onHitsEntity.setSelectedProcedure(projectile.onHitsEntity);
 		onHitsPlayer.setSelectedProcedure(projectile.onHitsPlayer);
@@ -250,7 +230,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.damage = (double) damage.getValue();
 		projectile.knockback = (int) knockback.getValue();
 		projectile.entityModel = (Objects.requireNonNull(model.getSelectedItem())).getReadableName();
-		projectile.customModelTexture = customModelTexture.getSelectedItem();
+		projectile.customModelTexture = customModelTexture.getTextureName();
 		projectile.onHitsBlock = onHitsBlock.getSelectedProcedure();
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();
 		projectile.onHitsPlayer = onHitsPlayer.getSelectedProcedure();

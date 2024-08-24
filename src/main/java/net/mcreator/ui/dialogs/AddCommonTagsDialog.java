@@ -48,6 +48,7 @@ public class AddCommonTagsDialog {
 		JPanel biomeTags = new JPanel(new GridLayout(0, 1, 2, 2));
 		JPanel functionTags = new JPanel(new GridLayout(0, 1, 2, 2));
 		JPanel damageTypeTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel enchantmentTags = new JPanel(new GridLayout(0, 1, 2, 2));
 
 		JTabbedPane tabPanel = new JTabbedPane();
 
@@ -57,6 +58,7 @@ public class AddCommonTagsDialog {
 		tabPanel.add(L10N.t("tag.type.biomes"), makePage(biomeTags));
 		tabPanel.add(L10N.t("tag.type.functions"), makePage(functionTags));
 		tabPanel.add(L10N.t("tag.type.damage_types"), makePage(damageTypeTags));
+		tabPanel.add(L10N.t("tag.type.enchantments"), makePage(enchantmentTags));
 
 		dialog.add("Center", tabPanel);
 
@@ -67,6 +69,7 @@ public class AddCommonTagsDialog {
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
 
+		//@formatter:off
 		callables.add(addTag(mcreator, blockTags, "dirt", "minecraft", TagType.BLOCKS, true));
 		callables.add(addTag(mcreator, blockTags, "logs", "minecraft", TagType.BLOCKS, true));
 		callables.add(addTag(mcreator, blockTags, "fences", "minecraft", TagType.BLOCKS, false));
@@ -90,6 +93,9 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, itemTags, "planks", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "flowers", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "enchantable/weapon", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "enchantable/mining", "minecraft", TagType.ITEMS, false));
 
 		callables.add(addTag(mcreator, entityTags, "arrows", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "impact_projectiles", "minecraft", TagType.ENTITIES, false));
@@ -119,9 +125,13 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_armor", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_cooldown", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_effects", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(
-				addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_shield", "minecraft", TagType.DAMAGE_TYPES, false));
+
+		callables.add(addTag(mcreator, enchantmentTags, "curse", "minecraft", TagType.ENCHANTMENTS, false));
+		callables.add(addTag(mcreator, enchantmentTags, "treasure", "minecraft", TagType.ENCHANTMENTS, false));
+		callables.add(addTag(mcreator, enchantmentTags, "tradeable", "minecraft", TagType.ENCHANTMENTS, false));
+		//@formatter:on
 
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -151,7 +161,7 @@ public class AddCommonTagsDialog {
 
 		JCheckBox box = new JCheckBox("<html><kbd>" + namespace + ":" + name + "</kbd><small><br>" + L10N.t(
 				"dialog.tools.inject_tags.tag." + type.name().toLowerCase(Locale.ENGLISH) + "." + namespace + "."
-						+ name));
+						+ name.replace("/", ".")));
 		box.setSelected(checked);
 
 		JPanel wrap = new JPanel(new GridLayout());
