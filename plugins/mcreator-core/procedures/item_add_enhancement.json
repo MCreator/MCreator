@@ -34,6 +34,12 @@
     "inputs": [
       "level",
       "item"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

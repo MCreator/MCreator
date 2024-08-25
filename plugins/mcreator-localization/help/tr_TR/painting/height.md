@@ -1,0 +1,1 @@
+Bu parametre, bu resmin ne kadar yüksek olacağını (blok birimleri cinsinden) kontrol eder.

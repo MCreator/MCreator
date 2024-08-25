@@ -1,0 +1,1 @@
+Bloğunuza uygulanan parlama efektinin olması için (magma bloğuna benzer) bu özelliği işaretleyin.
