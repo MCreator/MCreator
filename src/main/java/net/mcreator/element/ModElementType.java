@@ -19,13 +19,13 @@
 
 package net.mcreator.element;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Locale;
 
@@ -38,11 +38,10 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	private final String readableName;
 	private final String description;
-	private final Character shortcut;
-	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
+	@Nullable private final Character shortcut;
 
-	public ModElementType(String registryName, Character shortcut, ModElementGUIProvider<GE> modElementGUIProvider,
-			Class<? extends GE> modElementStorageClass) {
+	public ModElementType(String registryName, @Nullable Character shortcut,
+			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.registryName = registryName;
 		this.shortcut = shortcut;
 
@@ -64,7 +63,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		return registryName.toLowerCase(Locale.ENGLISH) + "s";
 	}
 
-	public Character getShortcut() {
+	@Nullable public Character getShortcut() {
 		return shortcut;
 	}
 
@@ -86,14 +85,6 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public Class<? extends GE> getModElementStorageClass() {
 		return modElementStorageClass;
-	}
-
-	public GeneratorStats.CoverageStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(GeneratorStats.CoverageStatus status) {
-		this.status = status;
 	}
 
 	@Override public String toString() {

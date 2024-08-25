@@ -20,6 +20,7 @@ package net.mcreator.plugin.modapis;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-								   boolean requiredWhenEnabled) {}
+								   @Nullable Map<String, String> resource_paths, boolean requiredWhenEnabled) {}

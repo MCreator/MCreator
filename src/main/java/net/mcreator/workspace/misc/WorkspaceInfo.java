@@ -32,6 +32,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -192,8 +193,8 @@ import java.util.*;
 				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: {}",
-							t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
+					LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
+							TraceUtil.tryToFindMCreatorInvoker(), t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));

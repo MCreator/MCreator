@@ -57,6 +57,8 @@ public abstract class AbstractFolderStructure {
 
 		if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.19.3")) < 0) {
 			return new Pre1193FolderStructure(workspace);
+		} else if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.21")) < 0) {
+			return new Pre1210FolderStructure(workspace);
 		}
 
 		// if we fail to detect suitable folder structure, we just use the current folder structure

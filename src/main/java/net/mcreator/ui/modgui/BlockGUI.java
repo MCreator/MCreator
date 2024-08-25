@@ -31,6 +31,7 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -271,6 +272,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
+		material.setPrototypeDisplayValue(new DataListEntry.Dummy("No legacy material"));
+
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
 
@@ -362,7 +365,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasGravity.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
-			material.setEnabled(true);
 			connectedSides.setEnabled(true);
 			isWaterloggable.setEnabled(true);
 
@@ -384,7 +386,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					lightOpacity.setValue(0);
 				}
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
-				material.setEnabled(false);
 				renderType.setEnabled(false);
 				rotationMode.setEnabled(false);
 				hasTransparency.setEnabled(false);
@@ -393,7 +394,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				disableOffset.setEnabled(false);
 				boundingBoxList.setEnabled(false);
 
-				material.setSelectedItem("LEAVES");
 				renderType.setSelectedItem(singleTexture);
 				rotationMode.setSelectedIndex(0);
 				hasTransparency.setSelected(false);
@@ -689,10 +689,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
-				L10N.label("elementgui.block.material")));
-		selp.add(material);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
 		selp.add(creativeTabs);
@@ -740,6 +736,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
+				L10N.label("elementgui.block.material")));
+		selp.add(material);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
