@@ -61,6 +61,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -361,6 +363,20 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 		recentListMenu.add(openInSystemExplorer);
+
+		recentListMenu.addPopupMenuListener(new PopupMenuListener() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				recentsList.setSelectedIndex(recentsList.locationToIndex(recentsList.getMousePosition()));
+			}
+
+			@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
 
 		return recentListMenu;
 	}
