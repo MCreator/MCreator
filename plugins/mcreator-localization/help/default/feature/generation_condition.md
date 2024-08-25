@@ -2,4 +2,4 @@ Add a procedure with logic return value to have more conditions for the generati
 
 This condition is checked AFTER the placement modifiers in the feature builder.
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+Keep in mind some procedure blocks might not work correctly in this trigger during early world generation.

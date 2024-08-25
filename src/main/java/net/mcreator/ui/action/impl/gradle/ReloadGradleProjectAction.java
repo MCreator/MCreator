@@ -20,6 +20,7 @@ package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 
 public class ReloadGradleProjectAction extends GradleAction {
@@ -33,30 +34,27 @@ public class ReloadGradleProjectAction extends GradleAction {
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
 				progressDialog.addProgressUnit(p1);
 
-				String task = actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("setup_task");
-				if (task == null)
-					task = "clean";
-
 				actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
 
-				actionRegistry.getMCreator().getGradleConsole().exec(task + " --refresh-dependencies", finished -> {
-					p1.markStateOk();
+				actionRegistry.getMCreator().getGradleConsole()
+						.exec(GradleConsole.GRADLE_SYNC_TASK + " --refresh-dependencies", finished -> {
+							p1.markStateOk();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-							L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
-					progressDialog.addProgressUnit(p2);
+							ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+									L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
+							progressDialog.addProgressUnit(p2);
 
-					new Thread(() -> {
-						try {
-							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
-							p2.markStateOk();
-							progressDialog.hideDialog();
-						} catch (Exception e) {
-							p2.markStateError();
-							progressDialog.hideDialog();
-						}
-					}, "GradleProjectCacheReload").start();
-				});
+							new Thread(() -> {
+								try {
+									actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
+									p2.markStateOk();
+									progressDialog.hideDialog();
+								} catch (Exception e) {
+									p2.markStateError();
+									progressDialog.hideDialog();
+								}
+							}, "GradleProjectCacheReload").start();
+						});
 			}, "ReloadGradleProject").start();
 			progressDialog.setVisible(true);
 		});

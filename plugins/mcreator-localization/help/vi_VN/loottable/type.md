@@ -1,1 +1,1 @@
-Tham số này xác định bảng loot bạn tạo thuộc loại nào.
+Tham số này xác định bảng lợi phẩm bạn tạo thuộc loại nào.

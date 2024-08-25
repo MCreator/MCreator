@@ -35,10 +35,6 @@
     {
       "name": "pz",
       "type": "number"
-    },
-    {
-      "name": "xpAmount",
-      "type": "number"
     }
   ],
   "cancelable": "true",

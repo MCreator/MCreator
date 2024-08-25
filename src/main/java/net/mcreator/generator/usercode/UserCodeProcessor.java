@@ -51,17 +51,9 @@ public class UserCodeProcessor {
 		return newCode;
 	}
 
-	public static String processUserCode(@Nullable String currentCode, String newCode, String lineCommentStart) {
-		// If the current code is null, we can return the new code
-		if (currentCode == null || currentCode.isBlank())
-			return newCode;
-
+	private static String processUserCode(@Nullable String currentCode, String newCode, String lineCommentStart) {
 		// If the new code does not contain user code blocks, we can return the new code
 		if (!newCode.contains(USER_CODE_BLOCK_START) || !newCode.contains(USER_CODE_BLOCK_END))
-			return newCode;
-
-		// If the current code does not contain user code blocks, we can return the new code
-		if (!currentCode.contains(USER_CODE_BLOCK_START) || !currentCode.contains(USER_CODE_BLOCK_END))
 			return newCode;
 
 		Map<String, String> userCodeBlocks = getUserCodeBlocks(currentCode, lineCommentStart);
@@ -73,7 +65,15 @@ public class UserCodeProcessor {
 		return updateUserBlocks(newCode, userCodeBlocks, lineCommentStart);
 	}
 
-	private static Map<String, String> getUserCodeBlocks(String code, String lineCommentStart) {
+	public static Map<String, String> getUserCodeBlocks(String code, String lineCommentStart) {
+		// If the current code is null, we can return the new code
+		if (code == null || code.isBlank())
+			return Map.of();
+
+		// If the current code does not contain user code blocks, we can return the new code
+		if (!code.contains(USER_CODE_BLOCK_START) || !code.contains(USER_CODE_BLOCK_END))
+			return Map.of();
+
 		Map<String, String> userCodeBlocks = new HashMap<>();
 
 		try (BufferedReader reader = new BufferedReader(new StringReader(code))) {

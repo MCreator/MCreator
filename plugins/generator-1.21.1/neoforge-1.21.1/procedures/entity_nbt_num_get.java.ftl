@@ -1,0 +1,1 @@
+(${input$entity}.getPersistentData().getDouble(${input$tagName}))

@@ -44,12 +44,10 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel pane = new JPanel(new BorderLayout());
+		JPanel pane = new JPanel(new BorderLayout(0, 0));
 		pane.setOpaque(false);
 
 		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
-
-		pane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
 		pane.add(villagerTradeProfessions);
 		addPage(pane, false);

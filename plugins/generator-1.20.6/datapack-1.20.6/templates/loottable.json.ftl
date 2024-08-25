@@ -33,14 +33,16 @@
                   {
                     "condition": "minecraft:match_tool",
                     "predicate": {
-                      "enchantments": [
-                        {
-                          "enchantment": "minecraft:silk_touch",
-                          "levels": {
-                            "min": 1
+                      "predicates": {
+                        "minecraft:enchantments": [
+                          {
+                            "enchantment": "minecraft:silk_touch",
+                            "levels": {
+                              "min": 1
+                            }
                           }
-                        }
-                      ]
+                        ]
+                      }
                     }
                   }
                 ],
@@ -50,16 +52,18 @@
                     "condition": "minecraft:inverted",
                     "term": {
                       "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "enchantments": [
-                          {
-                            "enchantment": "minecraft:silk_touch",
-                            "levels": {
-                              "min": 1
-                            }
+                        "predicate": {
+                          "predicates": {
+                            "minecraft:enchantments": [
+                              {
+                                "enchantment": "minecraft:silk_touch",
+                                "levels": {
+                                  "min": 1
+                                }
+                              }
+                            ]
                           }
-                        ]
-                      }
+                        }
                     }
                   }
                 ],

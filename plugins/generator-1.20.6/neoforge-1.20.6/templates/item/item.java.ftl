@@ -35,8 +35,6 @@
 
 package ${package}.item;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
-
 <#compress>
 public class ${name}Item extends Item {
 

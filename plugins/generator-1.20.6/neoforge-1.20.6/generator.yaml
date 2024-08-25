@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 20.6.117
+buildfileversion: 20.6.119
 
 import:
   - datapack-1.20.6
@@ -8,11 +8,10 @@ import:
 java_models:
   key: mojmap-1.20.x
   compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
-  setup_task: idePostSync
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
@@ -30,6 +29,7 @@ import_formatter:
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
     Iterables: com.google.common.collect
+    Attributes: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -54,8 +54,8 @@ armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
-vanilla_block_textures_dir: "client-1.20.6-client-extra.jar!/assets/minecraft/textures/block"
-vanilla_item_textures_dir: "client-1.20.6-client-extra.jar!/assets/minecraft/textures/item"
+vanilla_block_textures_dir: ".*-client-extra.jar!/assets/minecraft/textures/block"
+vanilla_item_textures_dir: ".*-client-extra.jar!/assets/minecraft/textures/item"
 
 base_templates:
   - template: modbase/mod.java.ftl
@@ -99,7 +99,7 @@ sources_setup_tasks:
 
 tags:
   template: tags.json.ftl
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:
   format: json

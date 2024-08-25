@@ -29,6 +29,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A texture created or imported as a resource of a workspace.
+ */
 public final class CustomTexture extends Texture {
 
 	private final File textureFile;
@@ -60,6 +63,13 @@ public final class CustomTexture extends Texture {
 		}
 	}
 
+	/**
+	 * Scans the workspace and collects all the available custom textures of a certain type.
+	 *
+	 * @param workspace The workspace to collect icons for.
+	 * @param type      The type of the textures to collect.
+	 * @return The list of custom textures available in the provided workspace.
+	 */
 	public static List<Texture> getTexturesOfType(Workspace workspace, TextureType type) {
 		List<File> customTextureFiles;
 		if (type == TextureType.ARMOR) {
