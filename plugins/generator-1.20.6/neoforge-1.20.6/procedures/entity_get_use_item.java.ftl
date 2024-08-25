@@ -1,1 +1,0 @@
-/*@ItemStack*/(${input$entity} instanceof LivingEntity _entUseItem${cbi} ? _entUseItem${cbi}.getUseItem() : ItemStack.EMPTY)
