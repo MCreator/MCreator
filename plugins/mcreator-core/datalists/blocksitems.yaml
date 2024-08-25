@@ -2937,6 +2937,11 @@
   type: block
   texture: OBSERVER
 
+- Blocks.CRAFTER:
+  readable_name: "Crafter"
+  type: block
+  texture: CRAFTER
+
 - Blocks.HOPPER:
   readable_name: "Hopper"
   type: block
@@ -3880,11 +3885,6 @@
   readable_name: "Decorated Pot"
   type: block
   texture: DECORATED_POT
-
-- Blocks.CRAFTER:
-  readable_name: "Crafter"
-  type: block
-  texture: CRAFTER
 
 - Blocks.TRIAL_SPAWNER:
   readable_name: "Trial Spawner"
