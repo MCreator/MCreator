@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber(value = {Dist.CLIENT}) public class ${name}Procedure {
-	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+	@SubscribeEvent public static void onRightClick(PlayerInteractEvent.RightClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
@@ -10,13 +10,15 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
+		if (event.getHand() != event.getEntity().getUsedItemHand())
+			return;
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}
 
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 	public static record ${name}Message() implements CustomPacketPayload {
-		public static final Type<${name}Message> TYPE = new Type<>(new ResourceLocation(${JavaModName}.MODID, "procedure_${registryname}"));
+		public static final Type<${name}Message> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "procedure_${registryname}"));
 
 		public static final StreamCodec<RegistryFriendlyByteBuf, ${name}Message> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, ${name}Message message) -> {},
