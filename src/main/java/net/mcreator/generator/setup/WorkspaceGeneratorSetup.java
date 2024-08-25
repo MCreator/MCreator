@@ -21,6 +21,7 @@ package net.mcreator.generator.setup;
 import freemarker.template.Template;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.folders.AbstractFolderStructure;
 import net.mcreator.generator.template.InlineTemplatesHandler;
@@ -63,14 +64,14 @@ public class WorkspaceGeneratorSetup {
 		}
 
 		// delete gradle dirs if present
-		if (new File(workspace.getWorkspaceFolder(), ".gradle/").isDirectory()) {
-			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), ".gradle/"));
-			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "build/"));
-		}
+		FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), ".gradle/"));
+		FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "build/"));
+		FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "lib/"));
 
-		// delete lib dir if present (we need new up-to-date libs)
-		if (new File(workspace.getWorkspaceFolder(), "lib/").isDirectory()) {
-			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "lib/"));
+		// attempt to delete AT files if Java (so outdated ATs are not applied during generator setup)
+		// they will be regenerated with next workspace build
+		if (newGenerator.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/accesstransformer.cfg"));
 		}
 
 		// delete generator base files

@@ -19,6 +19,7 @@
 package net.mcreator.generator.mapping;
 
 import net.mcreator.generator.GeneratorTokens;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -69,12 +70,14 @@ public class NameMapper {
 			return origName;
 
 		Object skip_prefixes = mapping.get("_bypass_prefix");
-		if (skip_prefixes instanceof String && origName.startsWith((String) skip_prefixes)) {
-			return origName;
-		} else if (skip_prefixes instanceof List) {
-			for (Object skip_prefix : (List<?>) skip_prefixes) {
-				if (skip_prefix instanceof String && origName.startsWith((String) skip_prefix))
-					return origName;
+		if (skip_prefixes instanceof String skipPrefix && origName.startsWith(skipPrefix)) {
+			return origName.replace(skipPrefix + "mod:",
+					skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
+		} else if (skip_prefixes instanceof List<?> skipPrefixesList) {
+			for (Object skip_prefix : skipPrefixesList) {
+				if (skip_prefix instanceof String skipPrefix && origName.startsWith(skipPrefix))
+					return origName.replace(skipPrefix + "mod:",
+							skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
 			}
 		}
 
@@ -99,7 +102,8 @@ public class NameMapper {
 						retval = retval.replace("@registryname", element.getRegistryName())
 								.replace("@REGISTRYNAME", element.getRegistryNameUpper());
 					} else {
-						LOG.warn("Failed to determine registry name for: {}", origName);
+						LOG.warn("({}) Failed to determine registry name for: {}", TraceUtil.tryToFindMCreatorInvoker(),
+								origName);
 						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
 								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH));
 					}

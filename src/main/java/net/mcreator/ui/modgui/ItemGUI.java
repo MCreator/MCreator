@@ -75,7 +75,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
+	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
 	private final VTextField name = new VTextField(20);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 

@@ -153,6 +153,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		return super.keyPressed(key, b, c);
 	}
 
+	<#if data.getComponentsOfType("TextField")?has_content>
+	@Override public void resize(Minecraft minecraft, int width, int height) {
+		<#list data.getComponentsOfType("TextField") as component>
+		String ${component.getName()}Value = ${component.getName()}.getValue();
+		</#list>
+		super.resize(minecraft, width, height);
+		<#list data.getComponentsOfType("TextField") as component>
+		${component.getName()}.setValue(${component.getName()}Value);
+		</#list>
+	}
+	</#if>
+
 	@Override protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>
 			<#if hasProcedure(component.displayCondition)>

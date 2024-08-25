@@ -72,7 +72,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		main.add("Center", PanelUtils.centerAndSouthElement(editor, events, 0, 2));
 		main.add("East", editor.sidebar);
 
-		addPage(ComponentUtils.applyPadding(main, 5, true, true, true, true));
+		addPage(main);
 	}
 
 	@Override public void reloadDataLists() {
