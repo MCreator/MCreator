@@ -2937,6 +2937,11 @@
   type: block
   texture: OBSERVER
 
+- Blocks.CRAFTER:
+  readable_name: "Crafter"
+  type: block
+  texture: CRAFTER
+
 - Blocks.HOPPER:
   readable_name: "Hopper"
   type: block
@@ -3880,11 +3885,6 @@
   readable_name: "Decorated Pot"
   type: block
   texture: DECORATED_POT
-
-- Blocks.CRAFTER:
-  readable_name: "Crafter"
-  type: block
-  texture: CRAFTER
 
 - Blocks.TRIAL_SPAWNER:
   readable_name: "Trial Spawner"
@@ -5915,6 +5915,16 @@
   type: item
   texture: TOTEM_OF_UNDYING
 
+- Items.TRIAL_KEY:
+  readable_name: "Trial Key"
+  type: item
+  texture: TRIAL_KEY
+
+- Items.OMINOUS_TRIAL_KEY:
+  readable_name: "Ominous Trial Key"
+  type: item
+  texture: OMINOUS_TRIAL_KEY
+
 - Items.LEAD:
   readable_name: "Leash"
   type: item
@@ -6094,6 +6104,11 @@
   readable_name: "Trident"
   type: item
   texture: TRIDENT
+
+- Items.MACE:
+  readable_name: "Mace"
+  type: item
+  texture: MACE
 
 - Items.LEATHER_HELMET:
   readable_name: "Leather Helmet"
@@ -7213,6 +7228,11 @@
   type: item
   texture: DRAGON_BREATH
 
+- Items.OMINOUS_BOTTLE:
+  readable_name: "Ominous Bottle"
+  type: item
+  texture: OMINOUS_BOTTLE
+
 - Items.SPIDER_EYE:
   readable_name: "Spider Eye"
   type: item
@@ -7232,6 +7252,11 @@
   readable_name: "Blaze Powder"
   type: item
   texture: BLAZE_POWDER
+
+- Items.BREEZE_ROD:
+  readable_name: "Breeze Rod"
+  type: item
+  texture: BREEZE_ROD
 
 - Items.MAGMA_CREAM:
   readable_name: "Magma Cream"
@@ -7694,11 +7719,6 @@
   type: item
   texture: WRITTEN_BOOK
 
-- Items.MACE:
-  readable_name: "Mace"
-  type: item
-  texture: MACE
-
 - Items.ENCHANTED_BOOK:
   readable_name: "Enchanted Book"
   type: item
@@ -8120,23 +8140,3 @@
   readable_name: "Snort Pottery Sherd"
   type: item
   texture: SNORT_POTTERY_SHERD
-
-- Items.TRIAL_KEY:
-  readable_name: "Trial Key"
-  type: item
-  texture: TRIAL_KEY
-
-- Items.OMINOUS_TRIAL_KEY:
-  readable_name: "Ominous Trial Key"
-  type: item
-  texture: OMINOUS_TRIAL_KEY
-
-- Items.OMINOUS_BOTTLE:
-  readable_name: "Ominous Bottle"
-  type: item
-  texture: OMINOUS_BOTTLE
-
-- Items.BREEZE_ROD:
-  readable_name: "Breeze Rod"
-  type: item
-  texture: BREEZE_ROD
