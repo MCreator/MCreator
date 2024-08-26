@@ -1583,6 +1583,16 @@ public class TestWorkspaceDataProvider {
 			feature.featurexml = Feature.XML_BASE;
 			feature.skipPlacement = !_true;
 			return feature;
+		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
+			Attribute attribute = new Attribute(modElement);
+			attribute.name = modElement.getName();
+			attribute.defaultValue = 127.53;
+			attribute.minValue = 24.42;
+			attribute.maxValue = 200d;
+			attribute.persists = _true;
+			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "Player"));
+			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "LivingEntity"));
+			return attribute;
 		}
 		return null;
 	}
