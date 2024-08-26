@@ -1,1 +1,0 @@
-${input$entity}.getPersistentData().putString(${input$tagName}, ${input$tagValue});
