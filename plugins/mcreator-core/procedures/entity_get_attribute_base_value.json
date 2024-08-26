@@ -12,7 +12,7 @@
     }
   ],
   "inputsInline": true,
-  "output": "Boolean",
+  "output": "Number",
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
     "group": "attributes",
