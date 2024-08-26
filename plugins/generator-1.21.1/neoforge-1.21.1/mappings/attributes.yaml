@@ -1,9 +1,6 @@
 _default: Attributes.ARMOR.getDelegate()
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template:
-  - "@NAME"
-  - "@JavaModNameAttributes.@REGISTRYNAME.getDelegate()"
-  - "@modid:@registryname"
+_mcreator_map_template: "@JavaModNameAttributes.@REGISTRYNAME.getDelegate()"
 ARMOR: Attributes.ARMOR.getDelegate()
 ARMOR_TOUGHNESS: Attributes.ARMOR_TOUGHNESS.getDelegate()
 ATTACK_DAMAGE: Attributes.ATTACK_DAMAGE.getDelegate()
@@ -23,3 +20,16 @@ NAMETAG_RENDER_DISTANCE: NeoForgeMod.NAMETAG_DISTANCE.getDelegate()
 STEP_HEIGHT: Attributes.STEP_HEIGHT.getDelegate()
 BLOCK_REACH: Attributes.BLOCK_INTERACTION_RANGE.getDelegate()
 ENTITY_REACH: Attributes.ENTITY_INTERACTION_RANGE.getDelegate()
+BURNING_TIME: Attributes.BURNING_TIME.getDelegate()
+EXPLOSION_KNOCKBACK_RESISTANCE: Attributes.EXPLOSION_KNOCKBACK_RESISTANCE.getDelegate()
+FALL_DAMAGE_MULTIPLIER: Attributes.FALL_DAMAGE_MULTIPLIER.getDelegate()
+MAX_ABSORPTION: Attributes.MAX_ABSORPTION.getDelegate()
+MINING_EFFICIENCY: Attributes.MINING_EFFICIENCY.getDelegate()
+MOVEMENT_EFFICIENCY: Attributes.MOVEMENT_EFFICIENCY.getDelegate()
+OXYGEN_BONUS: Attributes.OXYGEN_BONUS.getDelegate()
+SAFE_FALL_DISTANCE: Attributes.SAFE_FALL_DISTANCE.getDelegate()
+SCALE: Attributes.SCALE.getDelegate()
+SNEAKING_SPEED: Attributes.SNEAKING_SPEED.getDelegate()
+SUBMERGED_MINING_SPEED: Attributes.SUBMERGED_MINING_SPEED.getDelegate()
+SWEEPING_DAMAGE_RATIO: Attributes.SWEEPING_DAMAGE_RATIO.getDelegate()
+WATER_MOVEMENT_EFFICIENCY: Attributes.WATER_MOVEMENT_EFFICIENCY.getDelegate()

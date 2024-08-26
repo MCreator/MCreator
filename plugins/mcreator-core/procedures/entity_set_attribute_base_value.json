@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "attribute",
+      "datalist": "attribute"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "group": "attributes",
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "fields": [
+      "attribute"
+    ],
+    "inputs": [
+      "value",
+      "entity"
+    ]
+  }
+}

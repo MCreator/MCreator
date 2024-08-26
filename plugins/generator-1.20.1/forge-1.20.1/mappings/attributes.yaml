@@ -1,9 +1,6 @@
 _default: Attributes.ARMOR.get()
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template:
-  - "@NAME"
-  - "@JavaModNameAttributes.@REGISTRYNAME.get()"
-  - "@modid:@registryname"
+_mcreator_map_template: "@JavaModNameAttributes.@REGISTRYNAME.get()"
 ARMOR: Attributes.ARMOR.get()
 ARMOR_TOUGHNESS: Attributes.ARMOR_TOUGHNESS.get()
 ATTACK_DAMAGE: Attributes.ATTACK_DAMAGE.get()
