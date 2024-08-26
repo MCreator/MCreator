@@ -1003,7 +1003,7 @@ import java.util.stream.Collectors;
 		IElement mu = list.getSelectedValue();
 		if (mu instanceof ModElement modElement && !NamespacedGeneratableElement.class.isAssignableFrom(
 				modElement.getType().getModElementStorageClass())) {
-			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, modElement);
 			if (modified != null)
 				mcreator.getWorkspace().markDirty();
 		} else {

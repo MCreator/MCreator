@@ -67,10 +67,6 @@ public interface ModElementChangedListener
 		case SoundSelector soundSelector -> soundSelector.addSoundSelectedListener(this);
 		case JItemListField<?> listField -> listField.addChangeListener(this);
 		case JStringListField stringList -> stringList.addChangeListener(this);
-		case JEntriesList entriesList -> entriesList.addEntryRegisterListener(c -> {
-			registerUI(c);
-			modElementChanged();
-		});
 		case AbstractButton button -> button.addActionListener(this);
 		case JSpinner spinner -> spinner.addChangeListener(this);
 		case JComboBox<?> comboBox -> comboBox.addItemListener(this);
@@ -80,6 +76,11 @@ public interface ModElementChangedListener
 			if (!isGenericComponent(component)) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
+			} else if (component instanceof JEntriesList entriesList) {
+				entriesList.addEntryRegisterListener(c -> {
+					registerUI(c);
+					modElementChanged();
+				});
 			}
 
 			for (Component subComponent : component.getComponents()) {

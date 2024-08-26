@@ -213,6 +213,17 @@ public final class BlocklyJavascriptBridge {
 			case "configuredfeature" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "configured_features");
+			case "global_triggers" -> {
+				String[] selectedEntry = openDataListEntrySelector(
+						w -> ext_triggers.entrySet().stream().map(entry ->
+								(DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{ setReadableName(entry.getValue()); }}).toList(),
+						"global_trigger");
+				// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
+				if (selectedEntry[0].isEmpty()) {
+					selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
+				}
+				yield selectedEntry;
+			}
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
@@ -249,10 +260,6 @@ public final class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public String t(String key) {
 		return L10N.t(key);
-	}
-
-	@SuppressWarnings("unused") public String getGlobalTriggers() {
-		return new Gson().toJson(ext_triggers, Map.class);
 	}
 
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
@@ -363,6 +370,9 @@ public final class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
+		case "global_triggers" -> {
+			return ext_triggers.get(value);
+		}
 		default -> {
 			return "";
 		}

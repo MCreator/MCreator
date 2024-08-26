@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
@@ -32,7 +33,10 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.resources.ExternalTexture;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -113,24 +117,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
-						if (workspace.get().getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
-							CountDownLatch latch = new CountDownLatch(1);
+						GradleDaemonUtils.stopAllDaemons(workspace.get());
 
-							GradleDaemonUtils.stopAllDaemons(workspace.get());
-
-							new MCreator(null, workspace.get()).getGradleConsole()
-									.exec(workspace.get().getGeneratorConfiguration().getGradleTaskFor("setup_task"),
-											taskResult -> {
-												if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
-													workspace.get().getGenerator().reloadGradleCaches();
-												} else {
-													fail("Gradle MDK setup failed!");
-												}
-												latch.countDown();
-											});
-							latch.await();
-						}
+						CountDownLatch latch = new CountDownLatch(1);
+						new MCreator(null, workspace.get()).getGradleConsole()
+								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
+									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
+										workspace.get().getGenerator().reloadGradleCaches();
+									} else {
+										fail("Gradle MDK setup failed!");
+									}
+									latch.countDown();
+								});
+						latch.await();
 					}));
+
+					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing texture references system",
+								() -> assertFalse(ExternalTexture.getTexturesOfType(workspace.get(), TextureType.BLOCK)
+										.isEmpty())));
+					}
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Base generation",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
@@ -169,19 +175,26 @@ import static org.junit.jupiter.api.Assertions.*;
 							generator + " - Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
 
-					tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports",
-							() -> {
-								try (Stream<Path> entries = Files.walk(
-										workspace.get().getGenerator().getSourceRoot().toPath())) {
-									ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
-											entries.filter(Files::isRegularFile).map(Path::toFile)
-													.collect(Collectors.toList()), null);
-								}
-							}));
+					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
+							== GeneratorFlavor.BaseLanguage.JAVA) {
+						tests.add(DynamicTest.dynamicTest(
+								generator + " - Reformatting the code and organising imports", () -> {
+									try (Stream<Path> entries = Files.walk(
+											workspace.get().getGenerator().getSourceRoot().toPath())) {
+										ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
+												entries.filter(Files::isRegularFile).map(Path::toFile)
+														.collect(Collectors.toList()), null);
+									}
+								}));
 
-					// Verify Java files
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
-							() -> GTBuild.runTest(LOG, generator, workspace.get())));
+						// Verify if MinecraftCodeProvider failed to load any code
+						tests.add(DynamicTest.dynamicTest(generator + " - Making sure code provider works",
+								() -> assertFalse(workspace.get().checkFailingGradleDependenciesAndClear())));
+
+						// Verify Java files
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
+								() -> GTBuild.runTest(LOG, generator, workspace.get())));
+					}
 
 					// Verify JSON files
 					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
@@ -206,8 +219,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						// If png extension is present twice, something is wrong with resource path handling somewhere
 						assertFalse(contents.contains(".png.png"));
 
-						// If there is any resource patch containing more than one colon, it is invalid
+						// If there is any resource path containing more than one colon, it is invalid
 						assertFalse(contents.contains("\"([^\":]*:){2,}[^\":]*\""));
+
+						// If there is any resource path that is tag and contains invalid characters, it is invalid
+						assertFalse(contents.contains("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\""));
 
 						try {
 							new GsonBuilder().setStrictness(Strictness.STRICT).create()
