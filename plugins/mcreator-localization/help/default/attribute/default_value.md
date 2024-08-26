@@ -1,0 +1,1 @@
+This is the attribute's default value. The attribute will have this value until something in the game (procedure or command) changes it.
