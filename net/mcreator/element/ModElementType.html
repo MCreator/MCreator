@@ -282,14 +282,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShortcut()" class="member-name-link">getShortcut</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../generator/GeneratorStats.CoverageStatus.html" title="enum class in net.mcreator.generator">GeneratorStats.CoverageStatus</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatus()" class="member-name-link">getStatus</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStatus(net.mcreator.generator.GeneratorStats.CoverageStatus)" class="member-name-link">setStatus</a><wbr>(<a href="../generator/GeneratorStats.CoverageStatus.html" title="enum class in net.mcreator.generator">GeneratorStats.CoverageStatus</a>&nbsp;status)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -533,6 +527,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.Character,net.mcreator.element.ModElementType.ModElementGUIProvider,java.lang.Class)">
 <h3>ModElementType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ModElementType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;registryName,
+ @Nullable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;shortcut,
  <a href="ModElementType.ModElementGUIProvider.html" title="interface in net.mcreator.element">ModElementType.ModElementGUIProvider</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementGUIProvider,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;&nbsp;modElementStorageClass)</span></div>
@@ -561,7 +556,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getShortcut()">
 <h3>getShortcut</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a></span>&nbsp;<span class="element-name">getShortcut</span>()</div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a></span>&nbsp;<span class="element-name">getShortcut</span>()</div>
 </section>
 </li>
 <li>
@@ -594,18 +590,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getModElementStorageClass()">
 <h3>getModElementStorageClass</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;</span>&nbsp;<span class="element-name">getModElementStorageClass</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getStatus()">
-<h3>getStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../generator/GeneratorStats.CoverageStatus.html" title="enum class in net.mcreator.generator">GeneratorStats.CoverageStatus</a></span>&nbsp;<span class="element-name">getStatus</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setStatus(net.mcreator.generator.GeneratorStats.CoverageStatus)">
-<h3>setStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStatus</span><wbr><span class="parameters">(<a href="../generator/GeneratorStats.CoverageStatus.html" title="enum class in net.mcreator.generator">GeneratorStats.CoverageStatus</a>&nbsp;status)</span></div>
 </section>
 </li>
 <li>

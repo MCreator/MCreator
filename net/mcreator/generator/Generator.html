@@ -228,16 +228,22 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#loadOrCreateGradleCaches()" class="member-name-link">loadOrCreateGradleCaches</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadGradleCaches()" class="member-name-link">reloadGradleCaches</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifyDaemonsAboutChangedPaths()" class="member-name-link">notifyDaemonsAboutChangedPaths</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeElementFilesAndWorkspaceLinks(net.mcreator.element.GeneratableElement)" class="member-name-link">removeElementFilesAndWorkspaceLinks</a><wbr>(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadGradleCaches()" class="member-name-link">reloadGradleCaches</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runResourceSetupTasks()" class="member-name-link">runResourceSetupTasks</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeElementFilesAndWorkspaceLinks(net.mcreator.element.GeneratableElement)" class="member-name-link">removeElementFilesAndWorkspaceLinks</a><wbr>(<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGradleCache(net.mcreator.generator.GeneratorGradleCache)" class="member-name-link">setGradleCache</a><wbr>(<a href="GeneratorGradleCache.html" title="class in net.mcreator.generator">GeneratorGradleCache</a>&nbsp;generatorGradleCache)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runResourceSetupTasks()" class="member-name-link">runResourceSetupTasks</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGradleCache(net.mcreator.generator.GeneratorGradleCache)" class="member-name-link">setGradleCache</a><wbr>(<a href="GeneratorGradleCache.html" title="class in net.mcreator.generator">GeneratorGradleCache</a>&nbsp;generatorGradleCache)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#trackFile(java.io.File)" class="member-name-link">trackFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -483,6 +489,18 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <h3>getGradleProjectConnection</h3>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.gradle.tooling.ProjectConnection</span>&nbsp;<span class="element-name">getGradleProjectConnection</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="trackFile(java.io.File)">
+<h3>trackFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">trackFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="notifyDaemonsAboutChangedPaths()">
+<h3>notifyDaemonsAboutChangedPaths</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">notifyDaemonsAboutChangedPaths</span>()</div>
 </section>
 </li>
 <li>
