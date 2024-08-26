@@ -1,0 +1,25 @@
+_default: Attributes.ARMOR.get()
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@NAME"
+  - "@JavaModNameAttributes.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+ARMOR: Attributes.ARMOR.get()
+ARMOR_TOUGHNESS: Attributes.ARMOR_TOUGHNESS.get()
+ATTACK_DAMAGE: Attributes.ATTACK_DAMAGE.get()
+ATTACK_KNOCKBACK: Attributes.ATTACK_KNOCKBACK.get()
+ATTACK_SPEED: Attributes.ATTACK_SPEED.get()
+FLYING_SPEED: Attributes.FLYING_SPEED.get()
+FOLLOW_RANGE: Attributes.FOLLOW_RANGE.get()
+JUMP_STRENGTH: Attributes.JUMP_STRENGTH.get()
+KNOCKBACK_RESISTANCE: Attributes.KNOCKBACK_RESISTANCE.get()
+LUCK: Attributes.LUCK.get()
+MAX_HEALTH: Attributes.MAX_HEALTH.get()
+MOVEMENT_SPEED: Attributes.MOVEMENT_SPEED.get()
+SPAWN_REINFORCEMENTS_CHANCE: Attributes.SPAWN_REINFORCEMENTS_CHANCE.get()
+SWIM_SPEED: ForgeMod.SWIM_SPEED.get()
+ENTITY_GRAVITY: ForgeMod.ENTITY_GRAVITY.get()
+NAMETAG_RENDER_DISTANCE: ForgeMod.NAMETAG_DISTANCE.get()
+STEP_HEIGHT: ForgeMod.STEP_HEIGHT_ADDITION.get()
+BLOCK_REACH: ForgeMod.BLOCK_REACH.get()
+ENTITY_REACH: ForgeMod.ENTITY_REACH.get()

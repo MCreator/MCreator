@@ -1,0 +1,25 @@
+_default: Attributes.ARMOR.getDelegate()
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@NAME"
+  - "@JavaModNameAttributes.@REGISTRYNAME.getDelegate()"
+  - "@modid:@registryname"
+ARMOR: Attributes.ARMOR.getDelegate()
+ARMOR_TOUGHNESS: Attributes.ARMOR_TOUGHNESS.getDelegate()
+ATTACK_DAMAGE: Attributes.ATTACK_DAMAGE.getDelegate()
+ATTACK_KNOCKBACK: Attributes.ATTACK_KNOCKBACK.getDelegate()
+ATTACK_SPEED: Attributes.ATTACK_SPEED.getDelegate()
+FLYING_SPEED: Attributes.FLYING_SPEED.getDelegate()
+FOLLOW_RANGE: Attributes.FOLLOW_RANGE.getDelegate()
+JUMP_STRENGTH: Attributes.JUMP_STRENGTH.getDelegate()
+KNOCKBACK_RESISTANCE: Attributes.KNOCKBACK_RESISTANCE.getDelegate()
+LUCK: Attributes.LUCK.getDelegate()
+MAX_HEALTH: Attributes.MAX_HEALTH.getDelegate()
+MOVEMENT_SPEED: Attributes.MOVEMENT_SPEED.getDelegate()
+SPAWN_REINFORCEMENTS_CHANCE: Attributes.SPAWN_REINFORCEMENTS_CHANCE.getDelegate()
+SWIM_SPEED: NeoForgeMod.SWIM_SPEED.getDelegate()
+ENTITY_GRAVITY: Attributes.GRAVITY.getDelegate()
+NAMETAG_RENDER_DISTANCE: NeoForgeMod.NAMETAG_DISTANCE.getDelegate()
+STEP_HEIGHT: Attributes.STEP_HEIGHT.getDelegate()
+BLOCK_REACH: Attributes.BLOCK_INTERACTION_RANGE.getDelegate()
+ENTITY_REACH: Attributes.ENTITY_INTERACTION_RANGE.getDelegate()
