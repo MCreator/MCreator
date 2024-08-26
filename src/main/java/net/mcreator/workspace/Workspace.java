@@ -25,6 +25,7 @@ import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -249,15 +250,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);
 		if (tagFile != null) {
-			tagFile.delete();
+			TrackingFileIO.deleteFile(this, tagFile);
 		}
 
 		markDirty();
 	}
 
 	public void removeSoundElement(SoundElement element) {
-		element.getFiles()
-				.forEach(file -> new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg").delete());
+		element.getFiles().forEach(file -> TrackingFileIO.deleteFile(this,
+				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
 	}

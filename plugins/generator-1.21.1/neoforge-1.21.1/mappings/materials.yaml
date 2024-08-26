@@ -2,6 +2,7 @@
 # Parameters already controlled by other UI elements (e.g. replaceable, redstone conductor, push reaction)
 # are not covered here and should be manually ported by the user.
 _default: ""
+NONE: ""
 AIR: .air()
 STRUCTURE_VOID: .air()
 CARPET: .ignitedByLava()

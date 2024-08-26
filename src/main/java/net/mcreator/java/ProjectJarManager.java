@@ -22,6 +22,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +83,7 @@ public class ProjectJarManager extends JarManager {
 	private List<GeneratorGradleCache.ClasspathEntry> loadClassPathJARs(Generator generator) {
 		List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
 
-		ProjectConnection projectConnection = generator.getGradleProjectConnection();
+		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(generator.getWorkspace());
 		if (projectConnection != null) {
 			try {
 				EclipseProject project = projectConnection.getModel(EclipseProject.class);

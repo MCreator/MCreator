@@ -72,6 +72,8 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
+	public static final String GRADLE_SYNC_TASK = "@sync";
+
 	private static final Pattern ANSI_REMOVER = Pattern.compile("\u001B\\[[;\\d]*m");
 
 	private static final Color COLOR_TASK_START = new Color(0xBBD9D0);
@@ -266,30 +268,37 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void exec(String command) {
-		exec(command, null);
+		execImpl(command, null, null, null);
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener) {
-		exec(command, null, taskSpecificListener);
+		execImpl(command, taskSpecificListener, null, null);
 	}
 
 	public void exec(String command, @Nullable ProgressListener progressListener,
 			@Nullable GradleTaskFinishedListener taskSpecificListener) {
-		exec(command, taskSpecificListener, progressListener, null);
+		execImpl(command, taskSpecificListener, progressListener, null);
 	}
 
-	public void exec(String command, @Nullable ProgressListener progressListener,
-			@Nullable JVMDebugClient jvmDebugClient) {
-		exec(command, null, progressListener, jvmDebugClient);
+	public void exec(String command, @Nullable JVMDebugClient jvmDebugClient) {
+		execImpl(command, null, null, jvmDebugClient);
 	}
 
-	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
+	@SuppressWarnings("unchecked")
+	private void execImpl(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
 			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
+		LOG.info("Executing Gradle task: {}", command);
+
+		final var commandTokens = command.split(" ");
+		final var commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
+		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
+		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
+
 		ref.consoleTab.repaint();
 		ref.statusBar.reloadGradleIndicator();
-		ref.statusBar.setGradleMessage("Gradle: " + command);
+
 		stateListeners.forEach(listener -> listener.taskStarted(command));
 
 		StringBuffer taskOut = new StringBuffer();
@@ -298,7 +307,13 @@ public class GradleConsole extends JPanel {
 		pan.clearConsole();
 		searchBar.reinstall(pan);
 
-		append("Executing Gradle task: " + command, COLOR_TASK_START);
+		if (isGradleSync) {
+			append("Executing Gradle synchronization tasks", COLOR_TASK_START);
+			ref.statusBar.setGradleMessage("Gradle sync");
+		} else {
+			append("Executing Gradle task: " + command, COLOR_TASK_START);
+			ref.statusBar.setGradleMessage("Gradle: " + command);
+		}
 
 		String java_home = GradleUtils.getJavaHome();
 
@@ -337,19 +352,21 @@ public class GradleConsole extends JPanel {
 			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
-		String[] commandTokens = command.split(" ");
-		String[] commands = Arrays.stream(commandTokens).filter(e -> !e.contains("--")).toArray(String[]::new);
-		List<String> arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--"))
-				.collect(Collectors.toList());
+		var projectConnection = GradleUtils.getGradleProjectConnection(ref.getWorkspace());
 
-		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
-
-		if (optionalDebugClient != null) {
-			this.debugClient = optionalDebugClient;
-			this.debugClient.init(task, cancellationSource.token());
-			ref.getDebugPanel().startDebug(this.debugClient);
+		ConfigurableLauncher<?> task;
+		if (isGradleSync) {
+			task = GradleUtils.getGradleSyncLauncher(projectConnection);
 		} else {
-			this.debugClient = null;
+			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
+
+			if (optionalDebugClient != null) {
+				this.debugClient = optionalDebugClient;
+				this.debugClient.init(task, cancellationSource.token());
+				ref.getDebugPanel().startDebug(this.debugClient);
+			} else {
+				this.debugClient = null;
+			}
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -445,6 +462,8 @@ public class GradleConsole extends JPanel {
 					return;
 				if (line.startsWith("SLF4J: "))
 					return;
+				if (line.startsWith("Cannot inject duplicate file mcp/client/Start.class"))
+					return;
 
 				append(line, COLOR_STDERR);
 			}
@@ -456,7 +475,7 @@ public class GradleConsole extends JPanel {
 			task.addProgressListener(progressListener);
 		}
 
-		task.run(new ResultHandler<>() {
+		ResultHandler<Void> resultHandler = new ResultHandler<>() {
 			@Override public void onComplete(Void result) {
 				SwingUtilities.invokeLater(() -> {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
@@ -481,7 +500,7 @@ public class GradleConsole extends JPanel {
 								LOG.warn("Gradle task suggested re-run. Attempting re-running task: {}", command);
 
 								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener, progressListener, debugClient);
+								execImpl(command, taskSpecificListener, progressListener, debugClient);
 
 								return;
 							}
@@ -598,7 +617,14 @@ public class GradleConsole extends JPanel {
 				// reload mods view to display errors
 				ref.mv.reloadElementsInCurrentTab();
 			}
-		});
+		};
+
+		if (task instanceof BuildLauncher buildLauncher) {
+			buildLauncher.run(resultHandler);
+		} else {
+			BuildActionExecuter<?> buildLauncher = (BuildActionExecuter<?>) task;
+			((BuildActionExecuter<Void>) buildLauncher).run(resultHandler);
+		}
 	}
 
 	public int getStatus() {

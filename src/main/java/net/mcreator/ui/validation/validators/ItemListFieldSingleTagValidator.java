@@ -19,8 +19,11 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.Validator;
 
 import java.util.List;
@@ -34,12 +37,24 @@ public class ItemListFieldSingleTagValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		List<?> listElements = holder.getListElements();
-
-		if (listElements.size() > 1) {
-			for (Object object : listElements) {
-				if (object.toString().startsWith("#"))
-					return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+		if (holder instanceof MCItemListField mcItemListField) {
+			List<MItemBlock> listElements = mcItemListField.getListElements();
+			if (listElements.size() > 1) {
+				for (MItemBlock object : listElements) {
+					MCItem dle = object.getDataListEntry().isPresent() ?
+							(MCItem) object.getDataListEntry().get() :
+							null;
+					if (object.toString().startsWith("TAG:") || (dle != null && !dle.hasNoSubtypes()))
+						return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+				}
+			}
+		} else {
+			List<?> listElements = holder.getListElements();
+			if (listElements.size() > 1) {
+				for (Object object : listElements) {
+					if (object.toString().startsWith("#"))
+						return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+				}
 			}
 		}
 

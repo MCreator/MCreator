@@ -1,1 +1,1 @@
-Başarının ismi eğer bu başarı için herhangi bir ebeveyn (kök) başarı seçilmediyse, başarı ağacının ismi olacaktır.
+Başarımın adı. Eğer bir üst öğesi (kök başarımı) yoksa o zaman yolun adı olacaktır.
