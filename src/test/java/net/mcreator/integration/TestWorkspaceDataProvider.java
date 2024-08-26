@@ -1590,6 +1590,7 @@ public class TestWorkspaceDataProvider {
 			attribute.minValue = 24.42;
 			attribute.maxValue = 200d;
 			attribute.persists = _true;
+			attribute.entities = new ArrayList<>();
 			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "Player"));
 			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "LivingEntity"));
 			return attribute;
