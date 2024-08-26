@@ -1591,8 +1591,8 @@ public class TestWorkspaceDataProvider {
 			attribute.maxValue = 200d;
 			attribute.persists = _true;
 			attribute.entities = new ArrayList<>();
-			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "Player"));
-			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "LivingEntity"));
+			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "EntityPlayer"));
+			attribute.entities.add(new EntityEntry(modElement.getWorkspace(), "EntityLiving"));
 			return attribute;
 		}
 		return null;
