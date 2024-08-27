@@ -88,11 +88,6 @@ public class ProgressDialog extends MCreatorDialog {
 			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
 			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
 			panes.setBorder(BorderFactory.createEmptyBorder(5 + 20, 10, 5, 3));
-
-			titleLabel.setText(title);
-			titleLabel.setBorder(BorderFactory.createEmptyBorder(7, 10, 2, 10));
-			titleLabel.setForeground(Theme.current().getAltForegroundColor());
-			add("North", PanelUtils.westAndEastElement(new JEmptyBox(), titleLabel));
 		}
 
 		progressUnits.setCellRenderer(new Render());
