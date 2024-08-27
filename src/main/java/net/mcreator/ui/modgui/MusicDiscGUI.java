@@ -61,7 +61,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 	private final VTextField description = new VTextField(20);
 
-	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 0, 20 * 3600, 1));
+	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner analogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private LogicProcedureSelector glowCondition;
