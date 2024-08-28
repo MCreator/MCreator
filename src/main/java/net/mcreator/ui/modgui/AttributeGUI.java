@@ -112,7 +112,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	protected AggregatedValidationResult validatePage(int page) {
 		if ((double) minMaxValue.getMinValue() > (double) defaultValue.getValue())
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_lower_than_min"));
+			return new AggregatedValidationResult.FAIL(L10N.t("default_lower_than_min"));
 		else if ((double) minMaxValue.getMaxValue() < (double) defaultValue.getValue())
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_higher_than_max"));
 		return new AggregatedValidationResult(page1group);
