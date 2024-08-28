@@ -1,6 +1,4 @@
 _default: Attributes.ARMOR.getDelegate()
-_mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@JavaModNameAttributes.@REGISTRYNAME.getDelegate()"
 ARMOR: Attributes.ARMOR.getDelegate()
 ARMOR_TOUGHNESS: Attributes.ARMOR_TOUGHNESS.getDelegate()
 ATTACK_DAMAGE: Attributes.ATTACK_DAMAGE.getDelegate()
