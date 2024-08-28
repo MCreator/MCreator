@@ -48,7 +48,7 @@ package ${package}.init;
 		<#list attributes as attribute>
 			<#assign condition = "">
 			<#list attribute.entities as entity>
-				<#if entity.getUnmappedValue() != "EntityZombie" && generator.map(entity.getUnmappedValue(), "entities", 1) == "EntityType.ZOMBIE">
+				<#if entity == "AmbientCreature" || entity == "Animal" || entity == "Monster" || entity == "AbstractGolem" || entity == "Mob" || entity == "WaterAnimal" || entity == "LivingEntity">
 					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
 				<#else>
 					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
