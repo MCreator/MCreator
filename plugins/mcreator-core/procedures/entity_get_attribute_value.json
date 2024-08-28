@@ -8,7 +8,7 @@
     {
       "type": "field_data_list_selector",
       "name": "attribute",
-      "datalist": "attribute"
+      "datalist": "attributes"
     }
   ],
   "inputsInline": true,
