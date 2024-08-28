@@ -1,64 +1,38 @@
 - ARMOR:
   readable_name: "Armor"
 - ARMOR_TOUGHNESS:
-  readable_name: "Armor toughness"
+  readable_name: "Armor Toughness"
 - ATTACK_DAMAGE:
-  readable_name: "Attack damage"
+  readable_name: "Attack Damage"
 - ATTACK_KNOCKBACK:
-  readable_name: "Attack knockback"
+  readable_name: "Attack Knockback"
 - ATTACK_SPEED:
   readable_name: "Attack speed"
 - FLYING_SPEED:
-  readable_name: "Flying speed"
+  readable_name: "Flying Speed"
 - FOLLOW_RANGE:
-  readable_name: "Follow range"
+  readable_name: "Follow Range"
 - JUMP_STRENGTH:
-  readable_name: "Jump strength"
+  readable_name: "Horse Jump Strength"
 - KNOCKBACK_RESISTANCE:
-  readable_name: "Knockback resistance"
+  readable_name: "Knockback Resistance"
 - LUCK:
   readable_name: "Luck"
 - MAX_HEALTH:
-  readable_name: "Max health"
+  readable_name: "Max Health"
 - MOVEMENT_SPEED:
-  readable_name: "Movement speed"
+  readable_name: "Movement Speed"
 - SPAWN_REINFORCEMENTS_CHANCE:
-  readable_name: "Spawn reiforcements chance"
+  readable_name: "Spawn Reiforcements Chance"
 - SWIM_SPEED:
-  readable_name: "Swim speed"
+  readable_name: "Swim Speed"
 - ENTITY_GRAVITY:
-  readable_name: "Entity gravity"
+  readable_name: "Entity Gravity"
 - STEP_HEIGHT:
-  readable_name: "Step height addition"
+  readable_name: "Step Height Addition"
 - NAMETAG_RENDER_DISTANCE:
-  readable_name: "Nametag render distance"
+  readable_name: "Nametag Render Distance"
 - BLOCK_REACH:
-  readable_name: "Block reach"
+  readable_name: "Block Reach"
 - ENTITY_REACH:
-  readable_name: "Entity reach"
-- BURNING_TIME:
-  readable_name: "Burning time"
-- EXPLOSION_KNOCKBACK_RESISTANCE:
-  readable_name: "Explosion knockback resistance"
-- FALL_DAMAGE_MULTIPLIER:
-  readable_name: "Fall damage multiplier"
-- MAX_ABSORPTION:
-  readable_name: "Max absorption"
-- MINING_EFFICIENCY:
-  readable_name: "Mining efficiency"
-- MOVEMENT_EFFICIENCY:
-  readable_name: "Movement efficiency"
-- OXYGEN_BONUS:
-  readable_name: "Oxygen bonus"
-- SAFE_FALL_DISTANCE:
-  readable_name: "Safe fall distance"
-- SCALE:
-  readable_name: "Scale"
-- SNEAKING_SPEED:
-  readable_name: "Sneaking speed"
-- SUBMERGED_MINING_SPEED:
-  readable_name: "Submerged mining speed"
-- SWEEPING_DAMAGE_RATIO:
-  readable_name: "Sweeping damage ratio"
-- WATER_MOVEMENT_EFFICIENCY:
-  readable_name: "Water movement efficiency"
+  readable_name: "Entity Reach"
