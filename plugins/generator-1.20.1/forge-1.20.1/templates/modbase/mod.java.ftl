@@ -36,7 +36,6 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}Fluids.REGISTRY.register(bus);
 			${JavaModName}FluidTypes.REGISTRY.register(bus);
 		</#if>
-		<#if w.hasElementsOfType("attribute")>${JavaModName}Attributes.REGISTRY.register(bus);</#if>
 
 		// Start of user code block mod init
 		// End of user code block mod init

@@ -1,1 +1,0 @@
-If enabled, the attribute's value with persist after the player's death. Does not have an effect on non-player entities.
