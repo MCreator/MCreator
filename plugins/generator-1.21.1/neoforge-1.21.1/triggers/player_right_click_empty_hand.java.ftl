@@ -17,7 +17,7 @@
 	}
 
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
-	public static record ${name}Message() implements CustomPacketPayload {
+	public record ${name}Message() implements CustomPacketPayload {
 		public static final Type<${name}Message> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "procedure_${registryname}"));
 
 		public static final StreamCodec<RegistryFriendlyByteBuf, ${name}Message> STREAM_CODEC = StreamCodec.of(
