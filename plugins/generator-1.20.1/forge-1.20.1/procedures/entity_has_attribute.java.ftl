@@ -1,1 +1,1 @@
-(entity instanceof LivingEntity livingEntity${cbi} && livingEntity${cbi}.getAttributes().hasAttribute(${generator.map(field$attribute, "attributes")}))
+(entity instanceof LivingEntity _livingEntity${cbi} && _livingEntity${cbi}.getAttributes().hasAttribute(${generator.map(field$attribute, "attributes")}))
