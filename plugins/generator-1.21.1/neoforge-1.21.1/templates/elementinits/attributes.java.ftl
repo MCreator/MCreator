@@ -37,46 +37,46 @@
 package ${package}.init;
 
 @EventBusSubscriber (bus = EventBusSubscriber.Bus.MOD) public class ${JavaModName}Attributes {
-	public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, ${JavaModName}.MODID);
+    public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, ${JavaModName}.MODID);
 
-	<#list attributes as attribute>
-		public static final DeferredHolder<Attribute, Attribute>${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}", () -> (new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue})).setSyncable(true));
-	</#list>
+    <#list attributes as attribute>
+        public static final DeferredHolder<Attribute, Attribute>${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}", () -> (new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue})).setSyncable(true));
+    </#list>
 
-	@SubscribeEvent
-	public static void addAttributes(EntityAttributeModificationEvent event) {
-		<#list attributes as attribute>
-			<#assign condition = "">
-			<#list attribute.entities as entity>
-				<#if entity == "AmbientCreature" || entity == "Animal" || entity == "Monster" || entity == "AbstractGolem" || entity == "Mob" || entity == "WaterAnimal" || entity == "LivingEntity">
-					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
-				<#else>
-					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
-				</#if>
-			</#list>
-			<#if condition != "">
-				event.getTypes().forEach((e) -> {
-					Class<? extends Entity> baseClass = e.getBaseClass();
-					if(${condition?keep_after("|| ")}) {
-						event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
-					}
-				});
-			</#if>
-		</#list>
-	}
+    @SubscribeEvent
+    public static void addAttributes(EntityAttributeModificationEvent event) {
+        <#list attributes as attribute>
+        	<#assign condition = "">
+            <#list attribute.entities as entity>
+            	<#if entity == "AmbientCreature" || entity == "Animal" || entity == "Monster" || entity == "AbstractGolem" || entity == "Mob" || entity == "WaterAnimal" || entity == "LivingEntity">
+                	<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
+                <#else>
+            		event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
+            	</#if>
+            </#list>
+            <#if condition != "">
+                event.getTypes().forEach((e) -> {
+                    Class<? extends Entity> baseClass = e.getBaseClass();
+                    if(${condition?keep_after("|| ")}) {
+                        event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
+                    }
+                });
+            </#if>
+        </#list>
+    }
 
-	<#if attributes?filter(a -> a.persists && a.entities?seq_contains("Player"))?size != 0>
-	@EventBusSubscriber
-	private class PersistentAttributes {
-		@SubscribeEvent
-		public static void playerClone(PlayerEvent.Clone event) {
-			Player oldPlayer = event.getOriginal();
-			Player newPlayer = event.getEntity();
-			<#list attributes?filter(a -> a.persists = true && a.entities?seq_contains("Player")) as attribute>
-				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.getDelegate()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.getDelegate()).getBaseValue());
-			</#list>
-		}
-	}
-	</#if>
+    <#if attributes?filter(a -> a.persists && a.entities?seq_contains("Player"))?size != 0>
+    @EventBusSubscriber
+    private class PersistentAttributes {
+    	@SubscribeEvent
+        public static void playerClone(PlayerEvent.Clone event) {
+            Player oldPlayer = event.getOriginal();
+            Player newPlayer = event.getEntity();
+            <#list attributes?filter(a -> a.persists = true && a.entities?seq_contains("Player")) as attribute>
+                newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.getDelegate()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.getDelegate()).getBaseValue());
+            </#list>
+        }
+    }
+    </#if>
 }
 <#-- @formatter:on -->
