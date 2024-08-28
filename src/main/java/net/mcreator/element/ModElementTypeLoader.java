@@ -35,6 +35,7 @@ public class ModElementTypeLoader {
 		//@formatter:off
 		ModElementType.ADVANCEMENT = register(new ModElementType<>("achievement", 'h', AchievementGUI::new, Achievement.class));
 		ModElementType.ARMOR = register(new ModElementType<>("armor", 'a', ArmorGUI::new, Armor.class));
+		ModElementType.ATTRIBUTE = register(new ModElementType<>("attribute", null, AttributeGUI::new, Attribute.class));
 		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class));
 		ModElementType.BLOCK = register(new ModElementType<>("block", 'b', BlockGUI::new, Block.class));
 		ModElementType.COMMAND = register(new ModElementType<>("command", 'c', CommandGUI::new, Command.class));
