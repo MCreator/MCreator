@@ -1,1 +1,0 @@
-This parameter controls the minimum and maximum values the attribute's value can be set to.
