@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity livingEntity${cbi} ? livingEntity${cbi}.getAttribute(${generator.map(field$attribute, "attributes")}).getBaseValue() : 0)
+(${input$entity} instanceof LivingEntity livingEntity${cbi} && livingEntity${cbi}.getAttributes().hasAttribute(${generator.map(field$attribute, "attributes")}) ? livingEntity${cbi}.getAttribute(${generator.map(field$attribute, "attributes")}).getBaseValue() : 0)
