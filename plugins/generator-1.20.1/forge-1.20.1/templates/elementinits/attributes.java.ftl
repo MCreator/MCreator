@@ -36,7 +36,8 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber (bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Attributes {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${JavaModName}Attributes {
 	public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ${JavaModName}.MODID);
 
 	<#list attributes as attribute>
