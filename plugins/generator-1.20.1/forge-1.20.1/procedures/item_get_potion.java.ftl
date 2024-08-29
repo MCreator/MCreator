@@ -1,1 +1,1 @@
-/*@ItemStack*/(PotionUtils.setPotion(Items.${field$type}, ${generator.map(field$potion, "potions")}))
+/*@ItemStack*/(PotionUtils.setPotion(Items.${field$type}.getDefaultInstance(), ${generator.map(field$potion, "potions")}))
