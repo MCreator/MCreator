@@ -69,7 +69,7 @@ public class ${JavaModName}Blocks {
 		</#if>
 	</#list>
 
-	<#assign chunks = blocks?chunk(2000)>
+	<#assign chunks = blocks?chunk(2500)>
 	<#assign chunks_num = chunks?size>
 	<#list chunks as sub_blocks>
 	public static void register<#if chunks_num == 1>(IEventBus modEventBus)<#else>${sub_blocks?index}()</#if> {

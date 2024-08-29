@@ -62,13 +62,35 @@ public class ${JavaModName}Blocks {
 
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
-				REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}PortalBlock());
+            public static RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
-			public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
+			public static RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
+
+	<#assign chunks = blocks?chunk(2500)>
+	<#assign chunks_num = chunks?size>
+	<#list chunks as sub_blocks>
+	public static void register<#if chunks_num == 1>(IEventBus modEventBus)<#else>${sub_blocks?index}()</#if> {
+		<#list sub_blocks as block>
+			<#if block.getModElement().getTypeString() == "dimension">
+        	    ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+					REGISTRY.register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
+			<#else>
+				${block.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+			</#if>
+		</#list>
+		<#if chunks_num == 1>REGISTRY.register(modEventBus);</#if>
+	}
+	</#list>
+
+	<#if chunks_num gt 1>
+	public static void register(IEventBus modEventBus) {
+		<#list 0..chunks_num-1 as i>register${i}();</#list>
+		REGISTRY.register(modEventBus);
+	}
+	</#if>
 
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
