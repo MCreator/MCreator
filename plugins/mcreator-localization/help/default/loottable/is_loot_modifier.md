@@ -1,0 +1,1 @@
+If this setting is enabled, the contents of the loot table will be added to the contents of the loot table specified in the text field below.

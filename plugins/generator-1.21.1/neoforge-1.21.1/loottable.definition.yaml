@@ -2,3 +2,13 @@ templates:
   - template: loottable.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/loot_table/@[getName()].json"
+  - template: loottable/loot_modifier.json.ftl
+    writer: json
+    condition: isLootModifier
+    name: "@MODDATAROOT/loot_modifiers/@registryname.json"
+
+global_templates:
+  - template: loottable/loot_modifier_entries.json.ftl
+    writer: json
+    condition: "${w.getGElementsOfType('loottable')?filter(e -> e.isLootModifier)?size != 0}"
+    name: "@RESROOT/data/neoforge/loot_modifiers/global_loot_modifiers.json"

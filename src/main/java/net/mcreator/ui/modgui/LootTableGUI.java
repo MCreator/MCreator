@@ -28,7 +28,9 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -50,7 +52,12 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
 					"Barter" });
 
+	private final JCheckBox isLootModifier = L10N.checkbox("elementgui.common.enable");
+	private final VTextField lootTableModified = new VTextField(15);
+
 	private JLootTablePoolsList lootTablePools;
+
+	private final ValidationGroup validationGroup = new ValidationGroup();
 
 	public LootTableGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -79,6 +86,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.addItem("entities/chicken");
 		name.addItem("gameplay/fishing");
 		name.setEditable(true);
+		validationGroup.addValidationElement(name);
 
 		if (isEditingMode()) {
 			name.setEnabled(false);
@@ -125,9 +133,32 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
+		JPanel modifierPanel = new JPanel(new GridLayout(2, 2, 10, 2));
+		modifierPanel.setOpaque(false);
+
+		modifierPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/is_loot_modifier"),
+				L10N.label("elementgui.loot_table.is_loot_modifier")));
+		modifierPanel.add(isLootModifier);
+
+		modifierPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/loot_table_modified"),
+				L10N.label("elementgui.loot_table.loot_table_modified")));
+		modifierPanel.add(lootTableModified);
+
+		JPanel eastPanel = new JPanel(new BorderLayout());
+		eastPanel.setOpaque(false);
+		eastPanel.add(PanelUtils.centerInPanel(modifierPanel));
+
+		isLootModifier.addActionListener((e) -> lootTableModified.setEnabled(isLootModifier.isSelected()));
+		lootTableModified.setEnabled(isLootModifier.isSelected());
+
+		lootTableModified.setValidator(new RegistryNameValidator(lootTableModified,
+				L10N.t("elementgui.loot_table.invalid_loot_table")).setValidChars(Arrays.asList('_', '/', ':')));
+		lootTableModified.enableRealtimeValidation();
+		validationGroup.addValidationElement(lootTableModified);
+
 		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
+		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, PanelUtils.centerAndEastElement(northPanel, eastPanel)), lootTablePools));
 		addPage(pane3, false);
 
 		// add first pool
@@ -141,7 +172,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
+		return new AggregatedValidationResult(validationGroup);
 	}
 
 	@Override public void openInEditingMode(LootTable loottable) {
@@ -149,6 +180,10 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		namespace.setSelectedItem(loottable.namespace);
 		name.getEditor().setItem(loottable.name);
+
+		isLootModifier.setSelected(loottable.isLootModifier);
+		lootTableModified.setText(loottable.lootTableModified);
+		lootTableModified.setEnabled(loottable.isLootModifier);
 
 		lootTablePools.setEntries(loottable.pools);
 	}
@@ -160,6 +195,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		loottable.namespace = (String) namespace.getSelectedItem();
 		loottable.name = name.getEditor().getItem().toString();
+
+		loottable.isLootModifier = isLootModifier.isSelected();
+		loottable.lootTableModified = lootTableModified.getText();
 
 		loottable.pools = lootTablePools.getEntries();
 
