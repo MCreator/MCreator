@@ -1330,8 +1330,8 @@ public class TestWorkspaceDataProvider {
 			lootTable.type = getRandomItem(random,
 					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
 
+			lootTable.isLootModifier = !emptyLists;
 			if (!emptyLists) {
-				lootTable.isLootModifier = true;
 				lootTable.type = "Chest";
 				lootTable.lootTableModified = "minecraft:chests/spawn_bonus_chest";
 			}

@@ -39,7 +39,7 @@ package ${package}.init;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ${JavaModName}LootModifiers {
 
-    private class AddTableLootModifier extends LootModifier {
+    public static class AddTableLootModifier extends LootModifier {
         public static final Supplier<Codec<AddTableLootModifier>> CODEC = Suppliers.memoize(
                 () -> RecordCodecBuilder.create(instance -> codecStart(instance)
                         .and(ResourceLocation.CODEC.fieldOf("table").forGetter(m -> m.lootTable))
