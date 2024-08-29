@@ -40,7 +40,7 @@ package ${package}.init;
 public class ${JavaModName}LootModifiers {
 
     private class AddTableLootModifier extends LootModifier {
-        public static final Supplier<Codec<${JavaModName}LootTableModifier>> CODEC = Suppliers.memoize(
+        public static final Supplier<Codec<AddTableLootModifier>> CODEC = Suppliers.memoize(
                 () -> RecordCodecBuilder.create(instance -> codecStart(instance)
                         .and(ResourceLocation.CODEC.fieldOf("table").forGetter(m -> m.lootTable))
                         .apply(instance, AddTableLootModifier::new)
