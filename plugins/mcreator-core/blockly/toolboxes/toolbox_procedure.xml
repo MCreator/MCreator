@@ -58,9 +58,9 @@
         <block type="text_length"/>
         <block type="text_index_of">
             <value name="from">
-                <block type="math_number">
+                <shadow type="math_number">
                     <field name="NUM">0</field>
-                </block>
+                </shadow>
             </value>
         </block>
         <block type="text_is_empty"/>
