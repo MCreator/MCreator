@@ -1131,6 +1131,9 @@ public class TestWorkspaceDataProvider {
 			potionEffect.mobEffectCategory = getRandomItem(random, new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
+			potionEffect.isCuredByMilk = !_true;
+			potionEffect.isProtectedByTotem = !_true;
+			potionEffect.isCuredbyHoney = _true;
 			potionEffect.onStarted = new Procedure("procedure1");
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");
