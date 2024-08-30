@@ -80,19 +80,28 @@ import java.util.List;
 
 			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
+			this.getModElement().putMetadata("skip_configured_feature",
+							blocklyToFeature.getFeatureType().equals("configured_feature_reference") ? true : null);
 		};
 	}
 
 	public boolean hasGenerationConditions() {
-		return generateCondition != null;
+		return generateCondition != null && hasConfiguredFeature();
 	}
 
 	public boolean hasPlacedFeature() {
 		return !skipPlacement;
 	}
 
+	public boolean hasConfiguredFeature() {
+		return this.getModElement().getMetadata("skip_configured_feature") == null;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.CONFIGUREDFEATURE));
+		List<BaseType> baseTypes = new ArrayList<>();
+
+		if (hasConfiguredFeature())
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
