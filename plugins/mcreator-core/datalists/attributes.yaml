@@ -62,3 +62,5 @@
   readable_name: "Sweeping damage ratio"
 - WATER_MOVEMENT_EFFICIENCY:
   readable_name: "Water movement efficiency"
+- BLOCK_BREAK_SPEED:
+  readable_name: "Block break speed"
