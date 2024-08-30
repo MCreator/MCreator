@@ -22,19 +22,16 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public class EntityListField extends SpawnableEntityListField {
+public class EntityListField extends JItemListField<EntityEntry> {
 
 	public EntityListField(MCreator mcreator) {
-		super(mcreator);
-	}
-
-	public EntityListField(MCreator mcreator, boolean allowTags) {
-		super(mcreator, allowTags);
+		super(mcreator, false);
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
