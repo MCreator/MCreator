@@ -23,7 +23,7 @@
 - MOVEMENT_SPEED:
   readable_name: "Movement speed"
 - SPAWN_REINFORCEMENTS_CHANCE:
-  readable_name: "Spawn reiforcements chance"
+  readable_name: "Spawn reinforcements chance"
 - SWIM_SPEED:
   readable_name: "Swim speed"
 - ENTITY_GRAVITY:
