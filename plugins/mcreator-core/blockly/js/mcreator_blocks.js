@@ -322,7 +322,7 @@ Blockly.Blocks['text_contains'] = {
 Blockly.Blocks['text_matches'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_contains.in"));
+            .appendField(javabridge.t("blockly.block.text_matches.in"));
         this.appendValueInput('contains').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_matches.check"));
         this.setInputsInline(true);
@@ -410,11 +410,11 @@ Blockly.Blocks['text_replace'] = {
 Blockly.Blocks['text_replace_regex'] = {
     init: function () {
         this.appendValueInput('what').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_replace.replace_regex"));
+            .appendField(javabridge.t("blockly.block.replace_regex.replace"));
         this.appendValueInput('with').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_replace.with"));
+            .appendField(javabridge.t("blockly.block.replace_regex.with"));
         this.appendValueInput('text').setCheck('String')
-            .appendField(javabridge.t("blockly.block.text_replace.of"));
+            .appendField(javabridge.t("blockly.block.replace_regex.of"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
