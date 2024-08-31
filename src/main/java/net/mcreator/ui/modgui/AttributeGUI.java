@@ -37,6 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
+	
 	private final VTextField name = new VTextField(20);
 	private final JSpinner defaultValue = new JSpinner(new SpinnerNumberModel(0.0, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0);

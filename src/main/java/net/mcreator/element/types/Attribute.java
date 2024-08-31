@@ -26,7 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.util.List;
 
 public class Attribute extends GeneratableElement {
-	
+
 	public String name;
 	public Double minValue;
 	public Double maxValue;
