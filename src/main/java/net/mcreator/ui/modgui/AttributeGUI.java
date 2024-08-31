@@ -52,7 +52,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	}
 
 	protected void initGUI() {
-
 		JPanel pane1 = new JPanel(new BorderLayout());
 		JPanel pane2 = new JPanel(new GridLayout(5, 2, 5, 3));
 
