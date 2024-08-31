@@ -63,15 +63,15 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
 		defaultValue.setPreferredSize(new Dimension(20, 20));
 
-		pane2.add(HelpUtils.wrapWithHelpButton(withEntry("common/gui_name"), L10N.label("elementgui.attribute.name")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.attribute.name")));
 		pane2.add(name);
-		pane2.add(HelpUtils.wrapWithHelpButton(withEntry("attribute/default_value"), L10N.label("elementgui.attribute.default_value")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/default_value"), L10N.label("elementgui.attribute.default_value")));
 		pane2.add(defaultValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(withEntry("attribute/min_max_value"), L10N.label("elementgui.attribute.min_max_value")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"), L10N.label("elementgui.attribute.min_max_value")));
 		pane2.add(minMaxValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(withEntry("attribute/persists"), L10N.label("elementgui.attribute.persists")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/persists"), L10N.label("elementgui.attribute.persists")));
 		pane2.add(persists);
-		pane2.add(HelpUtils.wrapWithHelpButton(withEntry("attribute/entities"), L10N.label("elementgui.attribute.entities")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"), L10N.label("elementgui.attribute.entities")));
 		pane2.add(entities);
 
 		pane1.add(PanelUtils.totalCenterInPanel(pane2));
