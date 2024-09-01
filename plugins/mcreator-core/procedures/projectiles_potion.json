@@ -4,8 +4,8 @@
       "type": "field_dropdown",
       "name": "potionType",
       "options": [
-        ["Splash potion", "SPLASH_POTION"],
-        ["Lingering potion", "LINGERING_POTION"]
+        ["Splash", "SPLASH_POTION"],
+        ["Lingering", "LINGERING_POTION"]
       ]
     },
     {
