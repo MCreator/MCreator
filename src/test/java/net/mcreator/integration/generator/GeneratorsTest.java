@@ -37,7 +37,6 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.ExternalTexture;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -97,23 +96,9 @@ import static org.junit.jupiter.api.Assertions.*;
 						// create temporary directory
 						File workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
 
-						LOG.info("[{}] Test workspace folder: {}", generator, workspaceDir);
-
-						// we create a new workspace
-						WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-						workspaceSettings.setVersion("1.0.0");
-						workspaceSettings.setDescription("Test mod");
-						workspaceSettings.setAuthor("Unit tests");
-						workspaceSettings.setLicense("GPL 3.0");
-						workspaceSettings.setWebsiteURL("https://mcreator.net/");
-						workspaceSettings.setUpdateURL("https://mcreator.net/");
-						workspaceSettings.setModPicture("example");
-						workspaceSettings.setModName("Test mod");
-						workspaceSettings.setCurrentGenerator(generator);
-						workspace.set(Workspace.createWorkspace(new File(workspaceDir, "test_mod.mcreator"),
-								workspaceSettings));
-
-						TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace.get());
+						workspace.set(
+								TestWorkspaceDataProvider.createTestWorkspace(workspaceDir, generatorConfiguration,
+										true, false, random));
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
@@ -144,7 +129,7 @@ import static org.junit.jupiter.api.Assertions.*;
 							() -> workspace.get().getGenerator().runResourceSetupTasks()));
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
-							() -> GTSampleElements.provideAndGenerateSampleElements(random, workspace.get())));
+							() -> TestWorkspaceDataProvider.provideAndGenerateSampleElements(random, workspace.get())));
 					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
 							() -> GTModElements.runTest(LOG, generator, random, workspace.get())));
 
@@ -177,8 +162,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
 							== GeneratorFlavor.BaseLanguage.JAVA) {
-						tests.add(DynamicTest.dynamicTest(
-								generator + " - Reformatting the code and organising imports", () -> {
+						tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising imports",
+								() -> {
 									try (Stream<Path> entries = Files.walk(
 											workspace.get().getGenerator().getSourceRoot().toPath())) {
 										ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),

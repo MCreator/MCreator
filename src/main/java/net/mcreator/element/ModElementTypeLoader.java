@@ -20,16 +20,14 @@
 package net.mcreator.element;
 
 import net.mcreator.element.types.*;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.ui.modgui.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ModElementTypeLoader {
 
-	public static final List<ModElementType<?>> REGISTRY = new ArrayList<>();
+	private static final Set<ModElementType<?>> REGISTRY = new HashSet<>();
 
 	public static void loadModElements() {
 		//@formatter:off
@@ -94,8 +92,8 @@ public class ModElementTypeLoader {
 		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
 	}
 
-	public static Set<ModElementType<?>> getModElementTypes() {
-		return new HashSet<>(REGISTRY);
+	public static Set<ModElementType<?>> getModElementTypes(GeneratorConfiguration generatorConfiguration) {
+		return Collections.unmodifiableSet(REGISTRY);
 	}
 
 }

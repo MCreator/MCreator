@@ -332,7 +332,7 @@ public class Generator implements IGenerator, Closeable {
 				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 
 		// Add mod element type specific global files (eg. registries for mod elements)
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.getModElementTypes(generatorConfiguration)) {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, performFSTasks,
 					templateID);
 

@@ -59,7 +59,7 @@ public class GeneratorStats {
 		this.procedureTriggers = new HashSet<>();
 
 		// determine supported mod element types
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.getModElementTypes(generatorConfiguration)) {
 			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
 			if (definition != null) {
 				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {
@@ -200,6 +200,12 @@ public class GeneratorStats {
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
+	}
+
+	public List<ModElementType<?>> getSupportedModElementTypes() {
+		return modElementTypeCoverageInfo.entrySet().stream().filter(e -> e.getValue() != CoverageStatus.NONE)
+				.map(Map.Entry::getKey).sorted(Comparator.comparing(ModElementType::getReadableName))
+				.collect(Collectors.toList());
 	}
 
 	public Map<String, Double> getCoverageInfo() {

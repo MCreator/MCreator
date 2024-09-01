@@ -41,10 +41,12 @@ public class DefinitionsProvider {
 
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
-	public DefinitionsProvider(String generatorName) {
+	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
+		final String generatorName = generatorConfiguration.getGeneratorName();
+
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
 
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.getModElementTypes(generatorConfiguration)) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");
