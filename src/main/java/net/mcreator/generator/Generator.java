@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
@@ -332,7 +331,7 @@ public class Generator implements IGenerator, Closeable {
 				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 
 		// Add mod element type specific global files (eg. registries for mod elements)
-		for (ModElementType<?> type : ModElementTypeLoader.getModElementTypes(generatorConfiguration)) {
+		for (ModElementType<?> type : generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()) {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, performFSTasks,
 					templateID);
 

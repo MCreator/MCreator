@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,7 +47,7 @@ public class DefinitionsProvider {
 
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
 
-		for (ModElementType<?> type : ModElementTypeLoader.getModElementTypes(generatorConfiguration)) {
+		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");
@@ -84,6 +85,10 @@ public class DefinitionsProvider {
 
 	public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
 		return global_cache.get(baseType);
+	}
+
+	public Map<ModElementType<?>, Map<?, ?>> getModElementDefinitions() {
+		return Collections.unmodifiableMap(cache);
 	}
 
 }
