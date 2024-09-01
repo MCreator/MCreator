@@ -1,0 +1,59 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "target",
+      "check": "BlockPredicate"
+    },
+    {
+      "type": "input_value",
+      "name": "radius",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "half_height",
+      "value": 1,
+      "min": 0,
+      "max": 4
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "fallback",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "inputsInline": false,
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "disk_feature_validator",
+    "add_image_to_bsp_inputs"
+  ],
+  "mutator": "disk_feature_mutator",
+  "mcreator": {
+    "group": "featureDisk",
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"fallback\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"target\"><block type=\"block_predicate_matching_blocks\"><field name=\"x\">0</field><field name=\"y\">0</field><field name=\"z\">0</field><value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">dirt</field></block></value></block></value>",
+      "<value name=\"radius\"><block type=\"int_provider_uniform\"><field name=\"min\">2</field><field name=\"max\">3</field></block></value>",
+      "<value name=\"rule0\"><block type=\"disk_rule\"><value name=\"if_true\"><block type=\"block_predicate_is_air\"></block></value><value name=\"then\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value></block></value>"
+    ],
+    "inputs": [
+      "target",
+      "radius",
+      "fallback"
+    ],
+    "repeating_inputs": [
+      "rule"
+    ],
+    "fields": [
+      "half_height"
+    ]
+  }
+}

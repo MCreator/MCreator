@@ -106,6 +106,14 @@ feature_underwater_magma:
   - UnderwaterMagmaFeature
   - UnderwaterMagmaConfiguration
   - "minecraft:underwater_magma"
+feature_disk_simple:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_disk:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration

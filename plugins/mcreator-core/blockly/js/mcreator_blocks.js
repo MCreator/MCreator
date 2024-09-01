@@ -580,6 +580,11 @@ registerSimpleMutatorContainer(
 registerSimpleMutatorInput(
         'feature_block_column_mutator_input', 'blockly.block.feature_block_column_mutator.input', '#888888');
 
+// Mutator blocks for disk feature mixin
+registerSimpleMutatorContainer(
+        'feature_disk_mutator_container', 'blockly.block.feature_disk_mutator.container', '#888888');
+registerSimpleMutatorInput('feature_disk_mutator_input', 'blockly.block.feature_disk_mutator.input', '#888888');
+
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];
 

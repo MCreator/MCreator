@@ -1,0 +1,49 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "target",
+      "check": "BlockPredicate"
+    },
+    {
+      "type": "input_value",
+      "name": "radius",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "half_height",
+      "value": 1,
+      "min": 0,
+      "max": 4
+    }
+  ],
+  "inputsInline": false,
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "disk_feature_validator",
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"target\"><block type=\"block_predicate_matching_blocks\"><field name=\"x\">0</field><field name=\"y\">0</field><field name=\"z\">0</field><value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">dirt</field></block></value></block></value>",
+      "<value name=\"radius\"><block type=\"int_provider_uniform\"><field name=\"min\">2</field><field name=\"max\">3</field></block></value>"
+    ],
+    "inputs": [
+      "block",
+      "target",
+      "radius"
+    ],
+    "fields": [
+      "half_height"
+    ]
+  }
+}

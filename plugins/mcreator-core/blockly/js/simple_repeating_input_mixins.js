@@ -249,3 +249,13 @@ Blockly.Extensions.registerMutator('feature_block_column_mutator', simpleRepeati
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['feature_block_column_mutator_input']);
+
+// Mutator for disk feature rules
+Blockly.Extensions.registerMutator('disk_feature_mutator', simpleRepeatingInputMixin(
+        'feature_disk_mutator_container', 'feature_disk_mutator_input', 'rule',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('DiskRule').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.feature_disk_mutator.try' : 'blockly.block.feature_disk_mutator.else_try'));
+        }),
+    undefined, ['feature_disk_mutator_input']);
