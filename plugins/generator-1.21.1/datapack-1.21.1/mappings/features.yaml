@@ -98,6 +98,10 @@ feature_spring:
   - SpringFeature
   - SpringConfiguration
   - "minecraft:spring_feature"
+feature_underwater_magma:
+  - UnderwaterMagmaFeature
+  - UnderwaterMagmaConfiguration
+  - "minecraft:underwater_magma"
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration
