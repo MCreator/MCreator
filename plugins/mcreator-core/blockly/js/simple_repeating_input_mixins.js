@@ -240,3 +240,12 @@ Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatin
                 .appendField(new Blockly.FieldTextInput('value'), 'value' + index);
         }, false, ['property', 'value'], false),
     undefined, ['blockstate_selector_mutator_input']);
+
+// Mutator for repeating block column layers
+Blockly.Extensions.registerMutator('feature_block_column_mutator', simpleRepeatingInputMixin(
+        'feature_block_column_mutator_container', 'feature_block_column_mutator_input', 'layer',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('BlockColumnLayer').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['feature_block_column_mutator_input']);

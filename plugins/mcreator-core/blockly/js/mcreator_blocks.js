@@ -574,6 +574,12 @@ registerSimpleMutatorContainer(
 registerSimpleMutatorInput(
     'blockstate_selector_mutator_input', 'blockly.block.blockstate_selector_mutator.input', 60, true);
 
+// Mutator blocks for column feature mixin
+registerSimpleMutatorContainer(
+        'feature_block_column_mutator_container', 'blockly.block.feature_block_column_mutator.container', '#888888');
+registerSimpleMutatorInput(
+        'feature_block_column_mutator_input', 'blockly.block.feature_block_column_mutator.input', '#888888');
+
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];
 

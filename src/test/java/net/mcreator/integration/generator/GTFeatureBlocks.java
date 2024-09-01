@@ -182,6 +182,17 @@ public class GTFeatureBlocks {
 							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
 						</block></value></block></xml>
 						""".formatted(testXML);
+				// Block column layers are tested with the "Block column" feature
+				case "BlockColumnLayer" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_block_column">
+							<mutation inputs="1"></mutation>
+						    <value name="allowed_placement"><block type="block_predicate_is_air"></block></value>
+						    <field name="direction">DOWN</field><field name="prioritize_tip">FALSE</field>
+							<value name="layer0">%s</value>
+						</block></value></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->

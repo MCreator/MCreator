@@ -74,6 +74,10 @@ feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
   - "minecraft:block_column"
+feature_block_column:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - "minecraft:block_column"
 feature_geode_simple:
   - GeodeFeature
   - GeodeConfiguration
