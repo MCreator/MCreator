@@ -59,20 +59,17 @@ public class GeneratorStats {
 		this.procedureTriggers = new HashSet<>();
 
 		// determine supported mod element types
-		for (Map.Entry<ModElementType<?>, Map<?, ?>> typeDefinition : generatorConfiguration.getDefinitionsProvider()
-				.getModElementDefinitions().entrySet()) {
-			if (typeDefinition.getValue().containsKey("field_inclusions") || typeDefinition.getValue()
-					.containsKey("field_exclusions")) {
-				modElementTypeCoverageInfo.put(typeDefinition.getKey(), CoverageStatus.PARTIAL);
-			} else {
-				modElementTypeCoverageInfo.put(typeDefinition.getKey(), CoverageStatus.FULL);
-			}
-		}
-
-		// fill in missing mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
-			if (!modElementTypeCoverageInfo.containsKey(type))
+			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
+			if (definition != null) {
+				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {
+					modElementTypeCoverageInfo.put(type, CoverageStatus.PARTIAL);
+				} else {
+					modElementTypeCoverageInfo.put(type, CoverageStatus.FULL);
+				}
+			} else {
 				modElementTypeCoverageInfo.put(type, CoverageStatus.NONE);
+			}
 		}
 
 		Map<String, LinkedHashMap<String, DataListEntry>> datalistchache = DataListLoader.getCache();
