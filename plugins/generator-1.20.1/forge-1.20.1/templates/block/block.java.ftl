@@ -79,9 +79,9 @@ public class ${name}Block extends
 	<#list data.customProperties as prop>
 			<#assign propName = prop.property.getName().replace("CUSTOM:", "")>
 			<#if prop.property.getClass().getSimpleName().equals("LogicType")>
-				public static final BooleanProperty ${propName} = BooleanProperty.create("${propName?lower_case}");
+				public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
 			<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
-				public static final IntegerProperty ${propName} = IntegerProperty.create("${propName?lower_case}", ${prop.property.getMin()}, ${prop.property.getMax()});
+				public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property.getMin()}, ${prop.property.getMax()});
 			</#if>
 	</#list>
 
@@ -205,7 +205,7 @@ public class ${name}Block extends
 	    	.setValue(AXIS, Direction.Axis.Y)
 	    	</#if>
 			<#list data.customProperties as prop>
-				.setValue(${prop.property.getName().replace("CUSTOM:", "")},
+				.setValue(${prop.property.getName().replace("CUSTOM:", "")?upper_case},
 					<#if prop.property.getClass().getSimpleName().equals("LogicType")>
 						false
 					<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
@@ -291,7 +291,7 @@ public class ${name}Block extends
 			</#if>
 		</#if>
 		<#list data.customProperties as prop>
-				<#assign props += [prop.property.getName().replace("CUSTOM:", "")]>
+				<#assign props += [prop.property.getName().replace("CUSTOM:", "")?upper_case]>
 		</#list>
 		<#if data.isWaterloggable>
 			<#assign props += ["WATERLOGGED"]>
@@ -351,7 +351,7 @@ public class ${name}Block extends
 
 	<#macro initCustomBlockStateProperties>
 		<#list data.customProperties as prop>
-			.setValue(${prop.property.getName().replace("CUSTOM:", "")},
+			.setValue(${prop.property.getName().replace("CUSTOM:", "")?upper_case},
 				<#if prop.property.getClass().getSimpleName().equals("LogicType")>
 					false
 				<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>

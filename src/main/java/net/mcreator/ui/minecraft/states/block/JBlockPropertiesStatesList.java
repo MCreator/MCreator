@@ -138,7 +138,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				String propertyName = "CUSTOM:" + name.getText().toUpperCase(Locale.ROOT);
+				String propertyName = "CUSTOM:" + name.getText();
 				if ("Logic".equals(type.getSelectedItem())) {
 					addPropertiesEntry(new PropertyData.LogicType(propertyName));
 					dialog.setVisible(false);

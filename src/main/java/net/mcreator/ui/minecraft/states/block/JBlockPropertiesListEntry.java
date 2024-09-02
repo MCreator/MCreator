@@ -48,7 +48,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		nameLabel = new JLabel(data.getName());
+		nameLabel = new JLabel(data.getName().replace("CUSTOM:", ""));
 		nameLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		nameLabel.setPreferredSize(new Dimension(0, 28));
 		ComponentUtils.deriveFont(nameLabel, 16);
