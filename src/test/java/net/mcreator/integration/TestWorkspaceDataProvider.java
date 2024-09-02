@@ -1172,6 +1172,15 @@ public class TestWorkspaceDataProvider {
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.enablePitch = !_true;
+			block.customProperties = new ArrayList<>();
+			if (!emptyLists) {
+				Block.PropertyEntry propEntry = new Block.PropertyEntry();
+				propEntry.property = new PropertyData.LogicType("bool_prop");
+				block.customProperties.add(propEntry);
+				propEntry = new Block.PropertyEntry();
+				propEntry.property = new PropertyData.IntegerType("int_prop", 3, 7);
+				block.customProperties.add(propEntry);
+			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
