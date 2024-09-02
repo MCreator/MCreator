@@ -43,8 +43,6 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,15 +64,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
-
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-
-		mcreator = new MCreator(null, workspace);
+		mcreator = new MCreator(null,
+				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, false, null));
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
