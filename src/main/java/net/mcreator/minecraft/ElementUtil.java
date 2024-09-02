@@ -264,10 +264,6 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
 	}
 
-	public static List<DataListEntry> loadAllAttributes(Workspace workspace) {
-		return loadDataListAndElements(workspace, "attributes", false, null, "attribute");
-	}
-
 	/**
 	 * Returns list of blocks attached to a POI for this workspace
 	 *

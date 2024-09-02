@@ -213,9 +213,6 @@ public final class BlocklyJavascriptBridge {
 			case "configuredfeature" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "configured_features");
-			case "attribute" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllAttributes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"attribute");
 			case "global_triggers" -> {
 				String[] selectedEntry = openDataListEntrySelector(
 						w -> ext_triggers.entrySet().stream().map(entry ->
