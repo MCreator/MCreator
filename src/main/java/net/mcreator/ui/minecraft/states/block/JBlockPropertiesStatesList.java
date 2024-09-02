@@ -84,10 +84,6 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		scrollProperties.getVerticalScrollBar().setUnitIncrement(15);
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
-		scrollProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
