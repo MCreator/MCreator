@@ -20,11 +20,12 @@
 package net.mcreator.integration.workspace;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.generator.*;
+import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.LocalizationUtils;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -32,7 +33,6 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Model;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -64,28 +64,19 @@ import static org.junit.jupiter.api.Assertions.*;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
+		workspace = TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random);
 
-		LOG.info("Generating sample elements");
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(type)
-					!= GeneratorStats.CoverageStatus.NONE) {
-				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
-					workspace.addModElement(e.getModElement());
-					workspace.getModElementManager().storeModElement(e);
+		for (ModElementType<?> type : workspace.getGeneratorConfiguration().getGeneratorStats()
+				.getSupportedModElementTypes()) {
+			TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
+				workspace.addModElement(e.getModElement());
+				workspace.getModElementManager().storeModElement(e);
 
-					// generate I18N keys for testLocalizationKeyUsagesSearch() to check later
-					LocalizationUtils.generateLocalizationKeys(workspace.getGenerator(), e,
-							(List<?>) generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type)
-									.get("localizationkeys"));
-				});
-			}
+				// generate I18N keys for testLocalizationKeyUsagesSearch() to check later
+				LocalizationUtils.generateLocalizationKeys(workspace.getGenerator(), e,
+						(List<?>) generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type)
+								.get("localizationkeys"));
+			});
 		}
 	}
 

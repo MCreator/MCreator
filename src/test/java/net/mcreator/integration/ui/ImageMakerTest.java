@@ -23,13 +23,12 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.IntegrationTestSetup;
+import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.imageeditor.*;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,13 +50,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
-
-		mcreator = new MCreator(null, workspace);
+		mcreator = new MCreator(null,
+				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, false, false, null));
 	}
 
 	@Test public void testImageMaker() throws Throwable {
