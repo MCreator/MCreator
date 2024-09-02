@@ -77,12 +77,12 @@ public class ${name}Block extends
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
 	<#list data.customProperties as prop>
-			<#assign propName = prop.property.getName().replace("CUSTOM:", "")>
-			<#if prop.property.getClass().getSimpleName().equals("LogicType")>
-				public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
-			<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
-				public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property.getMin()}, ${prop.property.getMax()});
-			</#if>
+		<#assign propName = prop.property.getName().replace("CUSTOM:", "")>
+		<#if prop.property.getClass().getSimpleName().equals("LogicType")>
+			public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
+		<#elseif prop.property.getClass().getSimpleName().equals("IntegerType")>
+			public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property.getMin()}, ${prop.property.getMax()});
+		</#if>
 	</#list>
 
 	<#macro blockProperties>
@@ -291,7 +291,7 @@ public class ${name}Block extends
 			</#if>
 		</#if>
 		<#list data.customProperties as prop>
-				<#assign props += [prop.property.getName().replace("CUSTOM:", "")?upper_case]>
+			<#assign props += [prop.property.getName().replace("CUSTOM:", "")?upper_case]>
 		</#list>
 		<#if data.isWaterloggable>
 			<#assign props += ["WATERLOGGED"]>
