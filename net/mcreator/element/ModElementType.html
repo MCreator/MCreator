@@ -253,9 +253,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;element)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a><wbr>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#coveredOn(net.mcreator.generator.GeneratorFlavor...)" class="member-name-link">coveredOn</a><wbr>(<a href="../generator/GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>...&nbsp;supportedFlavors)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../generator/GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCoveredFlavors()" class="member-name-link">getCoveredFlavors</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method returns the list of flavors that this element type is covered on.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -590,6 +598,30 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getModElementStorageClass()">
 <h3>getModElementStorageClass</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;</span>&nbsp;<span class="element-name">getModElementStorageClass</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="coveredOn(net.mcreator.generator.GeneratorFlavor...)">
+<h3>coveredOn</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;<a href="ModElementType.html" title="type parameter in ModElementType">GE</a>&gt;</span>&nbsp;<span class="element-name">coveredOn</span><wbr><span class="parameters">(<a href="../generator/GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>...&nbsp;supportedFlavors)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getCoveredFlavors()">
+<h3>getCoveredFlavors</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</span>&nbsp;<span class="element-name">getCoveredFlavors</span>()</div>
+<div class="block">This method returns the list of flavors that this element type is covered on.
+ Covered means that this MET is expected to be supported by the returned flavors.
+ <p>
+ Generator definitions of flavors not returned here can still support this MET
+ by defining the MET definition.
+ <p>
+ The use of this return value is for generator selector to show red cross on
+ METs that certain flavor should support, but doesn't.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>List of covered flavors, if not set, all flavors are covered</dd>
+</dl>
 </section>
 </li>
 <li>

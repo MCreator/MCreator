@@ -112,6 +112,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="GeneratorFlavor.BaseLanguage.html" class="type-name-link" title="enum class in net.mcreator.generator">GeneratorFlavor.BaseLanguage</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="GeneratorFlavor.GamePlatform.html" class="type-name-link" title="enum class in net.mcreator.generator">GeneratorFlavor.GamePlatform</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-java.lang.Enum">Nested classes/interfaces inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a></h2>
@@ -156,7 +159,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#OFFICIAL_FLAVORS" class="member-name-link">OFFICIAL_FLAVORS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Official flavors are flavors that MCreator supports in its core.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#SPECIAL_FLAVORS" class="member-name-link">SPECIAL_FLAVORS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.</div>
+</div>
 </div>
 </section>
 </li>
@@ -171,8 +181,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GeneratorFlavor.BaseLanguage.html" title="enum class in net.mcreator.generator">GeneratorFlavor.BaseLanguage</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseLanguage()" class="member-name-link">getBaseLanguage</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#allBut(net.mcreator.generator.GeneratorFlavor...)" class="member-name-link">allBut</a><wbr>(<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>...&nbsp;flavors)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#baseLanguage(net.mcreator.generator.GeneratorFlavor.BaseLanguage)" class="member-name-link">baseLanguage</a><wbr>(<a href="GeneratorFlavor.BaseLanguage.html" title="enum class in net.mcreator.generator">GeneratorFlavor.BaseLanguage</a>&nbsp;baseLanguage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#gamePlatform(net.mcreator.generator.GeneratorFlavor.GamePlatform)" class="member-name-link">gamePlatform</a><wbr>(<a href="GeneratorFlavor.GamePlatform.html" title="enum class in net.mcreator.generator">GeneratorFlavor.GamePlatform</a>&nbsp;gamePlatform)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GeneratorFlavor.BaseLanguage.html" title="enum class in net.mcreator.generator">GeneratorFlavor.BaseLanguage</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseLanguage()" class="member-name-link">getBaseLanguage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GeneratorFlavor.GamePlatform.html" title="enum class in net.mcreator.generator">GeneratorFlavor.GamePlatform</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGamePlatform()" class="member-name-link">getGamePlatform</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIcon()" class="member-name-link">getIcon</a>()</code></div>
@@ -268,6 +290,14 @@ the order they are declared.</div>
 <section class="detail" id="OFFICIAL_FLAVORS">
 <h3>OFFICIAL_FLAVORS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</span>&nbsp;<span class="element-name">OFFICIAL_FLAVORS</span></div>
+<div class="block">Official flavors are flavors that MCreator supports in its core.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SPECIAL_FLAVORS">
+<h3>SPECIAL_FLAVORS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>&gt;</span>&nbsp;<span class="element-name">SPECIAL_FLAVORS</span></div>
+<div class="block">Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.</div>
 </section>
 </li>
 </ul>
@@ -316,9 +346,33 @@ not permitted.)</div>
 </section>
 </li>
 <li>
+<section class="detail" id="getGamePlatform()">
+<h3>getGamePlatform</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="GeneratorFlavor.GamePlatform.html" title="enum class in net.mcreator.generator">GeneratorFlavor.GamePlatform</a></span>&nbsp;<span class="element-name">getGamePlatform</span>()</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getIcon()">
 <h3>getIcon</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></span>&nbsp;<span class="element-name">getIcon</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="gamePlatform(net.mcreator.generator.GeneratorFlavor.GamePlatform)">
+<h3>gamePlatform</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</span>&nbsp;<span class="element-name">gamePlatform</span><wbr><span class="parameters">(<a href="GeneratorFlavor.GamePlatform.html" title="enum class in net.mcreator.generator">GeneratorFlavor.GamePlatform</a>&nbsp;gamePlatform)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="baseLanguage(net.mcreator.generator.GeneratorFlavor.BaseLanguage)">
+<h3>baseLanguage</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</span>&nbsp;<span class="element-name">baseLanguage</span><wbr><span class="parameters">(<a href="GeneratorFlavor.BaseLanguage.html" title="enum class in net.mcreator.generator">GeneratorFlavor.BaseLanguage</a>&nbsp;baseLanguage)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="allBut(net.mcreator.generator.GeneratorFlavor...)">
+<h3>allBut</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>[]</span>&nbsp;<span class="element-name">allBut</span><wbr><span class="parameters">(<a href="GeneratorFlavor.html" title="enum class in net.mcreator.generator">GeneratorFlavor</a>...&nbsp;flavors)</span></div>
 </section>
 </li>
 </ul>
