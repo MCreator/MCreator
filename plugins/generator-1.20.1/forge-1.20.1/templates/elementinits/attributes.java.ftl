@@ -66,14 +66,14 @@ public class ${JavaModName}Attributes {
 		</#list>
 	}
 
-	<#if attributes?filter(a -> a.persists && a.entities?seq_contains("Player"))?size != 0>
+	<#if attributes?filter(a -> a.entities?seq_contains("Player"))?size != 0>
 	@Mod.EventBusSubscriber
-	private class PersistentAttributes {
+	private class PlayerAttributes {
 		@SubscribeEvent
 		public static void playerClone(PlayerEvent.Clone event) {
 			Player oldPlayer = event.getOriginal();
 			Player newPlayer = event.getEntity();
-			<#list attributes?filter(a -> a.persists = true && a.entities?seq_contains("Player")) as attribute>
+			<#list attributes?filter(a -> a.entities?seq_contains("Player")) as attribute>
 				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
 			</#list>
 		}

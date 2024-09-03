@@ -41,8 +41,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final VTextField name = new VTextField(20);
 	private final JSpinner defaultValue = new JSpinner(new SpinnerNumberModel(0.0, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0);
-	private final JCheckBox persists = L10N.checkbox("elementgui.common.enable");
-
 	private final EntityListField entities = new EntityListField(mcreator);
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -54,11 +52,10 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	protected void initGUI() {
 		JPanel pane1 = new JPanel(new BorderLayout());
-		JPanel pane2 = new JPanel(new GridLayout(5, 2, 5, 3));
+		JPanel pane2 = new JPanel(new GridLayout(4, 2, 5, 3));
 
 		pane1.setOpaque(false);
 		pane2.setOpaque(false);
-		persists.setOpaque(false);
 
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
 		defaultValue.setPreferredSize(new Dimension(20, 20));
@@ -69,8 +66,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		pane2.add(defaultValue);
 		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"), L10N.label("elementgui.attribute.min_max_value")));
 		pane2.add(minMaxValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/persists"), L10N.label("elementgui.attribute.persists")));
-		pane2.add(persists);
 		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"), L10N.label("elementgui.attribute.entities")));
 		pane2.add(entities);
 
@@ -93,7 +88,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		defaultValue.setValue(attribute.defaultValue);
 		minMaxValue.setMinValue(attribute.minValue);
 		minMaxValue.setMaxValue(attribute.maxValue);
-		persists.setSelected(attribute.persists);
 		entities.setListElements(attribute.entities);
 	}
 
@@ -104,7 +98,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.defaultValue = (Double) defaultValue.getValue();
 		attribute.minValue = (Double) minMaxValue.getMinValue();
 		attribute.maxValue = (Double) minMaxValue.getMaxValue();
-		attribute.persists = persists.isSelected();
 		attribute.entities = entities.getListElements();
 
 		return attribute;

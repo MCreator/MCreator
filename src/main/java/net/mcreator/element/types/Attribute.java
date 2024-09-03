@@ -31,7 +31,6 @@ public class Attribute extends GeneratableElement {
 	public Double minValue;
 	public Double maxValue;
 	public Double defaultValue;
-	public Boolean persists;
 	public List<EntityEntry> entities;
 
 	private Attribute() {
