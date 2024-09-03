@@ -28,6 +28,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
@@ -39,8 +40,8 @@ import java.awt.*;
 public class AttributeGUI extends ModElementGUI<Attribute> {
 	
 	private final VTextField name = new VTextField(20);
-	private final JSpinner defaultValue = new JSpinner(new SpinnerNumberModel(0.0, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0));
-	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MIN_VALUE, Double.MAX_VALUE, 1.0);
+	private final JSpinner defaultValue = new JSpinner(new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
+	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 	private final EntityListField entities = new EntityListField(mcreator);
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -74,6 +75,14 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.attribute.needs_name")));
 		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
+
+		entities.setValidator(() -> {
+			if (entities.getListElements().isEmpty())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.attribute.needs_entity"));
+			return Validator.ValidationResult.PASSED;
+		});
+		page1group.addValidationElement(entities);
 
 		addPage(pane1);
 
