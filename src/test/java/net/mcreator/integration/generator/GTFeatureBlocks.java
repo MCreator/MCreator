@@ -199,7 +199,7 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature"><block type="feature_disk">
 							<mutation inputs="1"></mutation>
-							<value name="fallback"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="fallback"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
 							<value name="target"><block type="block_predicate_is_air"></block></value>
 							<value name="radius"><block type="int_provider_constant"><field name="value">4</field></block></value>
 							<field name="half_height">1</field>
