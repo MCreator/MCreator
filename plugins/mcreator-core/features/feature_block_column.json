@@ -30,7 +30,7 @@
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
       "<value name=\"allowed_placement\"><block type=\"block_predicate_is_air\"></block></value>",
-      "<value name=\"layer0\"><block type=\"block_column_layer\"><value name=\"height\"><block type=\"int_provider_constant\"><field name=\"value\">3</field></block></value><value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value></block></value>"
+      "<value name=\"layer0\"><block type=\"block_column_layer\"><value name=\"height\"><block type=\"int_provider_constant\"><field name=\"value\">3</field></block></value><value name=\"block\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value></block></value>"
     ],
     "inputs": [
       "allowed_placement"

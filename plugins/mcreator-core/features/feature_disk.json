@@ -39,10 +39,10 @@
     "toolbox_id": "advancedfeatures",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
-      "<value name=\"fallback\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"fallback\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"target\"><block type=\"block_predicate_matching_blocks\"><field name=\"x\">0</field><field name=\"y\">0</field><field name=\"z\">0</field><value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">dirt</field></block></value></block></value>",
       "<value name=\"radius\"><block type=\"int_provider_uniform\"><field name=\"min\">2</field><field name=\"max\">3</field></block></value>",
-      "<value name=\"rule0\"><block type=\"disk_rule\"><value name=\"if_true\"><block type=\"block_predicate_is_air\"></block></value><value name=\"then\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value></block></value>"
+      "<value name=\"rule0\"><block type=\"disk_rule\"><value name=\"if_true\"><block type=\"block_predicate_is_air\"></block></value><value name=\"then\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value></block></value>"
     ],
     "inputs": [
       "target",
