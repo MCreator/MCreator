@@ -38,9 +38,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
-	
+
 	private final VTextField name = new VTextField(20);
-	private final JSpinner defaultValue = new JSpinner(new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
+	private final JSpinner defaultValue = new JSpinner(
+			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 	private final EntityListField entities = new EntityListField(mcreator);
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -51,9 +52,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		super.finalizeGUI();
 	}
 
-	protected void initGUI() {
+	@Override protected void initGUI() {
 		JPanel pane1 = new JPanel(new BorderLayout());
-		JPanel pane2 = new JPanel(new GridLayout(4, 2, 5, 3));
+		JPanel pane2 = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		pane1.setOpaque(false);
 		pane2.setOpaque(false);
@@ -61,13 +62,18 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
 		defaultValue.setPreferredSize(new Dimension(20, 20));
 
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"), L10N.label("elementgui.attribute.name")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.attribute.name")));
 		pane2.add(name);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/default_value"), L10N.label("elementgui.attribute.default_value")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/default_value"),
+				L10N.label("elementgui.attribute.default_value")));
 		pane2.add(defaultValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"), L10N.label("elementgui.attribute.min_max_value")));
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"),
+				L10N.label("elementgui.attribute.min_max_value")));
 		pane2.add(minMaxValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"), L10N.label("elementgui.attribute.entities")));
+
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"),
+				L10N.label("elementgui.attribute.entities")));
 		pane2.add(entities);
 
 		pane1.add(PanelUtils.totalCenterInPanel(pane2));
@@ -92,7 +98,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		}
 	}
 
-	public void openInEditingMode(Attribute attribute) {
+	@Override public void openInEditingMode(Attribute attribute) {
 		name.setText(attribute.name);
 		defaultValue.setValue(attribute.defaultValue);
 		minMaxValue.setMinValue(attribute.minValue);
@@ -100,23 +106,24 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		entities.setListElements(attribute.entities);
 	}
 
-	public Attribute getElementFromGUI() {
+	@Override public Attribute getElementFromGUI() {
 		Attribute attribute = new Attribute(modElement);
 
 		attribute.name = name.getText();
 		attribute.defaultValue = (Double) defaultValue.getValue();
-		attribute.minValue = (Double) minMaxValue.getMinValue();
-		attribute.maxValue = (Double) minMaxValue.getMaxValue();
+		attribute.minValue = minMaxValue.getMinValue();
+		attribute.maxValue = minMaxValue.getMaxValue();
 		attribute.entities = entities.getListElements();
 
 		return attribute;
 	}
 
-	protected AggregatedValidationResult validatePage(int page) {
-		if ((double) minMaxValue.getMinValue() > (double) defaultValue.getValue())
+	@Override protected AggregatedValidationResult validatePage(int page) {
+		if (minMaxValue.getMinValue() > (double) defaultValue.getValue())
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_lower_than_min"));
-		else if ((double) minMaxValue.getMaxValue() < (double) defaultValue.getValue())
+		else if (minMaxValue.getMaxValue() < (double) defaultValue.getValue())
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_higher_than_max"));
 		return new AggregatedValidationResult(page1group);
 	}
+
 }
