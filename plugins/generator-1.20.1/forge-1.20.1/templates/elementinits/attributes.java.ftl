@@ -38,21 +38,22 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ${JavaModName}Attributes {
+
 	public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, ${JavaModName}.MODID);
 
 	<#list attributes as attribute>
-		public static final RegistryObject<Attribute> ${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}", () -> (new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue})).setSyncable(true));
+	public static final RegistryObject<Attribute> ${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}",
+		() -> new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setSyncable(true));
 	</#list>
 
-	@SubscribeEvent
-	public static void addAttributes(EntityAttributeModificationEvent event) {
+	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
 			<#assign condition = "">
 			<#list attribute.entities as entity>
-				<#if entity.getUnmappedValue() != "EntityZombie" && generator.map(entity.getUnmappedValue(), "entities", 1) == "EntityType.ZOMBIE">
-					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
-				<#else>
+				<#if entity.getDataListEntryType() == "spawnable">
 					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.get());
+				<#else>
+					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
 				</#if>
 			</#list>
 			<#if condition != "">
@@ -67,17 +68,16 @@ public class ${JavaModName}Attributes {
 	}
 
 	<#if attributes?filter(a -> a.entities?seq_contains("Player"))?size != 0>
-	@Mod.EventBusSubscriber
-	private class PlayerAttributes {
-		@SubscribeEvent
-		public static void playerClone(PlayerEvent.Clone event) {
+	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
+		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
 			Player oldPlayer = event.getOriginal();
 			Player newPlayer = event.getEntity();
 			<#list attributes?filter(a -> a.entities?seq_contains("Player")) as attribute>
-				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
+			newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
 			</#list>
 		}
 	}
 	</#if>
+
 }
 <#-- @formatter:on -->

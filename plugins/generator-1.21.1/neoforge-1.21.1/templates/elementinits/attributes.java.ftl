@@ -38,28 +38,29 @@ package ${package}.init;
 
 @EventBusSubscriber (bus = EventBusSubscriber.Bus.MOD)
 public class ${JavaModName}Attributes {
+
 	public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, ${JavaModName}.MODID);
 
 	<#list attributes as attribute>
-		public static final DeferredHolder<Attribute, Attribute> ${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}", () -> (new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue})).setSyncable(true));
+	public static final DeferredHolder<Attribute, Attribute> ${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}",
+		() -> new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setSyncable(true));
 	</#list>
 
-	@SubscribeEvent
-	public static void addAttributes(EntityAttributeModificationEvent event) {
+	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
 			<#assign condition = "">
 			<#list attribute.entities as entity>
-				<#if entity.getUnmappedValue() != "EntityZombie" && generator.map(entity.getUnmappedValue(), "entities", 1) == "EntityType.ZOMBIE">
-					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
+				<#if entity.getDataListEntryType() == "spawnable">
+					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()});
 				<#else>
-					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
+					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
 				</#if>
 			</#list>
 			<#if condition != "">
 				event.getTypes().forEach((e) -> {
 					Class<? extends Entity> baseClass = e.getBaseClass();
 					if(${condition?keep_after("|| ")}) {
-						event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.getDelegate());
+						event.add(e, ${attribute.getModElement().getRegistryNameUpper()});
 					}
 				});
 			</#if>
