@@ -39,4 +39,12 @@ public class EntityEntry extends MappableElement {
 		this(owner, name.getName());
 	}
 
+	@Override public String getDataListEntryType() {
+		String value = getUnmappedValue();
+		if (value != null && value.startsWith("CUSTOM:"))
+			return "spawnable";
+
+		return super.getDataListEntryType();
+	}
+
 }
