@@ -102,6 +102,14 @@ feature_root_system:
   - RootSystemFeature
   - RootSystemConfiguration
   - "minecraft:root_system"
+feature_vegetation_patch:
+  - VegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:vegetation_patch"
+feature_waterlogged_vegetation_patch:
+  - WaterloggedVegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:waterlogged_vegetation_patch"
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration
