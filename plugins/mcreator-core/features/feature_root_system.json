@@ -1,0 +1,138 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "root_radius",
+      "value": 3,
+      "min": 1,
+      "max": 64,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "root_column_max_height",
+      "value": 100,
+      "min": 1,
+      "max": 4096,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "root_state_provider",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "root_placement_attempts",
+      "value": 20,
+      "min": 1,
+      "max": 256,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_input",
+      "name": "root_replaceable",
+      "text": "azalea_root_replaceable"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "feature",
+      "check": [
+        "Feature",
+        "PlacedFeature"
+      ]
+    },
+    {
+      "type": "field_number",
+      "name": "required_vertical_space_for_tree",
+      "value": 3,
+      "min": 1,
+      "max": 64,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "allowed_vertical_water_for_tree",
+      "value": 2,
+      "min": 1,
+      "max": 64,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "allowed_tree_position",
+      "check": "BlockPredicate"
+    },
+    {
+      "type": "field_number",
+      "name": "hanging_root_radius",
+      "value": 3,
+      "min": 1,
+      "max": 64,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "hanging_roots_vertical_span",
+      "value": 2,
+      "min": 0,
+      "max": 16,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "hanging_root_placement_attempts",
+      "value": 20,
+      "min": 1,
+      "max": 256,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "hanging_root_state_provider",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "inputsInline": false,
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "root_system_tag_fields_validator",
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<value name=\"root_state_provider\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"feature\"><block type=\"configured_feature_reference\"></block></value>",
+      "<value name=\"allowed_tree_position\"><block type=\"block_predicate_is_air\"></block></value>",
+      "<value name=\"hanging_root_state_provider\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
+    ],
+    "inputs": [
+      "root_state_provider",
+      "feature",
+      "allowed_tree_position",
+      "hanging_root_state_provider"
+    ],
+    "fields": [
+      "root_radius",
+      "root_column_max_height",
+      "root_placement_attempts",
+      "root_replaceable",
+      "required_vertical_space_for_tree",
+      "allowed_vertical_water_for_tree",
+      "hanging_root_radius",
+      "hanging_roots_vertical_span",
+      "hanging_root_placement_attempts"
+    ]
+  }
+}

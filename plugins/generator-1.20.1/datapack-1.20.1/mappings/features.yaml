@@ -98,6 +98,10 @@ feature_spring:
   - SpringFeature
   - SpringConfiguration
   - "minecraft:spring_feature"
+feature_root_system:
+  - RootSystemFeature
+  - RootSystemConfiguration
+  - "minecraft:root_system"
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration
