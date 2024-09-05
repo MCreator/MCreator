@@ -30,9 +30,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -351,6 +349,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					wysiwygEditor.editCurrentlySelectedComponent();
 				} else {
 					wysiwygEditor.list.setSelectedValue(component, true);
+					wysiwygEditor.list.requestFocus();
 				}
 			} else {
 				wysiwygEditor.list.clearSelection();

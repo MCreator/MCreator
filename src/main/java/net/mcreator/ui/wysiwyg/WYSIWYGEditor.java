@@ -43,6 +43,8 @@ import net.mcreator.util.ArrayListListModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -163,6 +165,12 @@ public class WYSIWYGEditor extends JPanel {
 				if (evt.getClickCount() == 2) {
 					editComponent.doClick();
 				}
+			}
+		});
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE)
+					editor.removeMode();
 			}
 		});
 
