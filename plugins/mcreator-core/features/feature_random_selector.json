@@ -1,0 +1,46 @@
+{
+  "args0": [
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "default",
+      "check": [
+        "Feature",
+        "PlacedFeature"
+      ]
+    }
+  ],
+  "inputsInline": false,
+  "mutator": "random_feature_selector_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "<value name=\"default\"><block type=\"configured_feature_reference\"></block></value>",
+      "~<value name=\"feature0\"><block type=\"feature_no_op\"></block></value>",
+      "~<value name=\"feature1\"><block type=\"feature_no_op\"></block></value>"
+    ],
+    "inputs": [
+      "default"
+    ],
+    "repeating_inputs": [
+      "feature"
+    ],
+    "repeating_fields": [
+      {
+        "name": "chance",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_number",
+          "value": 0.5,
+          "min": 0,
+          "max": 1
+        }
+      }
+    ]
+  }
+}

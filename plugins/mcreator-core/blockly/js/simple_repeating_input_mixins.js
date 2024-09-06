@@ -240,3 +240,17 @@ Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatin
                 .appendField(new Blockly.FieldTextInput('value'), 'value' + index);
         }, false, ['property', 'value'], false),
     undefined, ['blockstate_selector_mutator_input']);
+
+// Mutator for random feature selector
+Blockly.Extensions.registerMutator('random_feature_selector_mutator', simpleRepeatingInputMixin(
+        'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(['Feature', 'PlacedFeature'])
+                .setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.feature_random_selector.with_chance' : 'blockly.block.feature_random_selector.else_with_chance'
+                ))
+                .appendField(new Blockly.FieldNumber(0.5, 0, 1), 'chance' + index)
+                .appendField(javabridge.t('blockly.block.feature_random_selector.select_feature'))
+        }, true, ['chance']),
+    undefined, ['feature_simple_random_mutator_input']);
