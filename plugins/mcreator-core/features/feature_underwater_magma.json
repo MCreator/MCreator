@@ -28,7 +28,7 @@
       "max": 1
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "Feature",
   "colour": 0,
   "mcreator": {
