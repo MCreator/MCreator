@@ -1,0 +1,1 @@
+O som de ambientação é constantemente tocado no bioma.
