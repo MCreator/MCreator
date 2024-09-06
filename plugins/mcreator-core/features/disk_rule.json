@@ -13,7 +13,7 @@
   ],
   "inputsInline": true,
   "output": "DiskRule",
-  "colour": "#888888",
+  "colour": "290",
   "extensions": [
     "add_image_to_bsp_inputs"
   ],

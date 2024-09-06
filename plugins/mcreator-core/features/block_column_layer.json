@@ -17,7 +17,7 @@
   ],
   "inputsInline": true,
   "output": "BlockColumnLayer",
-  "colour": "#888888",
+  "colour": "265",
   "mcreator": {
     "group": "featureBlockColumn",
     "toolbox_id": "advancedfeatures",
