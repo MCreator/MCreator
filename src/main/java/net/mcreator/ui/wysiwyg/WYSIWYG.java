@@ -58,6 +58,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	public boolean showGrid = false;
 
 	@Nullable private GUIComponent selected;
+	@Nullable private GUIComponent lastDeleted;
 
 	private int ox, oy;
 	private int ow, oh;
@@ -119,8 +120,17 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	void removeMode() {
 		wysiwygEditor.components.remove(selected);
+		lastDeleted = selected;
 		selected = null;
 		repaint();
+	}
+
+	void redoMode(){
+		if (lastDeleted != null) {
+			selected = lastDeleted;
+			addComponent(lastDeleted);
+			lastDeleted = null;
+		}
 	}
 
 	public void addComponent(GUIComponent component) {

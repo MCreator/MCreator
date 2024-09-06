@@ -169,8 +169,11 @@ public class WYSIWYGEditor extends JPanel {
 		});
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE)
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					editor.removeMode();
+				} else if (e.getKeyCode() == KeyEvent.VK_Z && e.isControlDown()){
+					editor.redoMode();
+				}
 			}
 		});
 
@@ -480,13 +483,13 @@ public class WYSIWYGEditor extends JPanel {
 		this.opening = opening;
 	}
 
+	public List<GUIComponent> getComponentList() {
+		return components;
+	}
+
 	public void setComponentList(List<GUIComponent> components) {
 		this.components.clear();
 		this.components.addAll(components);
-	}
-
-	public List<GUIComponent> getComponentList() {
-		return components;
 	}
 
 	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<Object> {
