@@ -113,7 +113,7 @@
     "toolbox_id": "advancedfeatures",
     "toolbox_init": [
       "<value name=\"root_state_provider\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
-      "<value name=\"feature\"><block type=\"configured_feature_reference\"></block></value>",
+      "<value name=\"feature\"><block type=\"configured_feature_reference\"><field name=\"feature\">azalea_tree</field></block></value>",
       "<value name=\"allowed_tree_position\"><block type=\"block_predicate_is_air\"></block></value>",
       "<value name=\"hanging_root_state_provider\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
     ],

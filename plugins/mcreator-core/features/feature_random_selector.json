@@ -20,7 +20,7 @@
     "toolbox_id": "advancedfeatures",
     "toolbox_init": [
       "<mutation inputs=\"2\"></mutation>",
-      "<value name=\"default\"><block type=\"configured_feature_reference\"></block></value>",
+      "<value name=\"default\"><block type=\"feature_no_op\"></block></value>",
       "~<value name=\"feature0\"><block type=\"feature_no_op\"></block></value>",
       "~<value name=\"feature1\"><block type=\"feature_no_op\"></block></value>"
     ],

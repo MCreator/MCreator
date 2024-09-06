@@ -97,7 +97,7 @@
     "toolbox_init": [
       "<value name=\"depth\"><block type=\"int_provider_constant\"><field name=\"value\">3</field></block></value>",
       "<value name=\"xz_radius\"><block type=\"int_provider_uniform\"><field name=\"min\">4</field><field name=\"max\">7</field></block></value>",
-      "<value name=\"vegetation_feature\"><block type=\"configured_feature_reference\"></block></value>",
+      "<value name=\"vegetation_feature\"><block type=\"configured_feature_reference\"><field name=\"feature\">dripleaf</field></block></value>",
       "<value name=\"ground_state\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
     ],
     "inputs": [
