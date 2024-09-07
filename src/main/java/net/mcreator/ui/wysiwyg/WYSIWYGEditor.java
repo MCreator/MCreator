@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.wysiwyg.*;
@@ -92,14 +93,22 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(
+			new String[] { L10N.t("elementgui.gui.without_slots"), L10N.t("elementgui.gui.with_slots") });
 
 	private boolean opening = false;
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final JComboBox<String> priority = new JComboBox<>(
-			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final TranslatedComboBox priority = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("NORMAL", "elementgui.gui.priority_normal"),
+			Map.entry("HIGH", "elementgui.gui.priority_high"),
+			Map.entry("HIGHEST", "elementgui.gui.priority_highest"),
+			Map.entry("LOW", "elementgui.gui.priority_low"),
+			Map.entry("LOWEST", "elementgui.gui.priority_lowest")
+			//@formatter:on
+	);
 
 	public TextureComboBox overlayBaseTexture;
 
