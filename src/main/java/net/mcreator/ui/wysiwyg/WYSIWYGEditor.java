@@ -368,6 +368,9 @@ public class WYSIWYGEditor extends JPanel {
 							if (component instanceof Slot)
 								deathNote.add(component);
 						}
+						if (!deathNote.isEmpty()){
+							editor.setLastDeleted(deathNote.toArray(new GUIComponent[0]));
+						}
 						tmplist.removeAll(deathNote);
 						components.clear();
 						components.addAll(tmplist);
