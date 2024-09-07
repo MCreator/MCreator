@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.wysiwyg;
 
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
@@ -41,16 +42,15 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
+import net.mcreator.util.GSONClone;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WYSIWYGEditor extends JPanel {
 
@@ -483,7 +483,15 @@ public class WYSIWYGEditor extends JPanel {
 
 	public void setComponentList(List<GUIComponent> components) {
 		this.components.clear();
-		this.components.addAll(components);
+		for (GUIComponent component : components) {
+			GUIComponent copy = GSONClone.clone(component, component.getClass());
+			copy.uuid = UUID.randomUUID(); // init UUID for deserialized component
+			// Populate workspace-dependant fields with workspace reference
+			IWorkspaceDependent.processWorkspaceDependentObjects(copy,
+					workspaceDependent -> workspaceDependent.setWorkspace(mcreator.getWorkspace()));
+
+			this.components.add(copy);
+		}
 	}
 
 	public List<GUIComponent> getComponentList() {
