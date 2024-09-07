@@ -20,7 +20,6 @@ package net.mcreator.ui.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.SizedComponent;
-import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.component.zoompane.IZoomable;
 import net.mcreator.ui.component.zoompane.JZoomPane;
@@ -31,16 +30,13 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class WYSIWYG extends JComponent implements MouseMotionListener, MouseListener, IZoomable {
 
@@ -62,7 +58,6 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	public boolean showGrid = false;
 
 	@Nullable private GUIComponent selected;
-	@Nullable private GUIComponent[] lastDeleted;
 
 	private int ox, oy;
 	private int ow, oh;
@@ -123,25 +118,9 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	void removeMode() {
-		if (selected != null) {
-			wysiwygEditor.components.remove(selected);
-			selected = null;
-			repaint();
-		}
-	}
-
-	void redoMode(){
-		if (lastDeleted != null) {
-			// if the mode is GuiWithoutSlots and the lastDeleted is slot , we will change it to GuiWithSlots.
-			if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 0 && Stream.of(lastDeleted).anyMatch(a->a instanceof Slot)){
-				wysiwygEditor.getGUITypeSelector().setSelectedIndex(1);
-			}
-			selected = lastDeleted[0];
-			for (GUIComponent component : lastDeleted) {
-				addComponent(component);
-			}
-			lastDeleted = null;
-		}
+		wysiwygEditor.components.remove(selected);
+		selected = null;
+		repaint();
 	}
 
 	public void addComponent(GUIComponent component) {
@@ -370,6 +349,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					wysiwygEditor.editCurrentlySelectedComponent();
 				} else {
 					wysiwygEditor.list.setSelectedValue(component, true);
+					wysiwygEditor.list.requestFocus();
 				}
 			} else {
 				wysiwygEditor.list.clearSelection();
@@ -483,10 +463,6 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		owner.setCursor(Cursor.getDefaultCursor());
 
 		repaint();
-	}
-
-	void setLastDeleted(@Nullable GUIComponent[] lastDeleted){
-		this.lastDeleted = lastDeleted;
 	}
 
 }
