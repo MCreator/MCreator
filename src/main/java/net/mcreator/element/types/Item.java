@@ -97,6 +97,7 @@ import java.util.*;
 	public boolean shootConstantly;
 	public boolean rangedItemChargesPower;
 	public ProjectileEntry projectile;
+	public boolean projectileDisableAmmoCheck;
 	public Procedure onRangedItemUsed;
 	public Procedure rangedUseCondition;
 
