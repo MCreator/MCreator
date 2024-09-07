@@ -43,8 +43,6 @@ import net.mcreator.util.ArrayListListModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -167,33 +165,9 @@ public class WYSIWYGEditor extends JPanel {
 				}
 			}
 		});
-		list.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					removeComponent.doClick();
-				} else if (e.getKeyCode() == KeyEvent.VK_Z && e.isControlDown()){
-					editor.redoMode();
-				} else if (e.getKeyCode() == KeyEvent.VK_SHIFT){
-					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				}
-			}
-
-			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_SHIFT){
-					// multiple select mode
-					list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				}
-			}
-		});
 
 		moveComponent.addActionListener(event -> editor.moveMode());
-		removeComponent.addActionListener(e -> {
-			editor.setLastDeleted(list.getSelectedValuesList().toArray(new GUIComponent[0]));
-			for (GUIComponent component : list.getSelectedValuesList()){
-				editor.setSelectedComponent(component);
-				editor.removeMode();
-			}
-		});
+		removeComponent.addActionListener(e -> editor.removeMode());
 
 		moveComponentUp.addActionListener(e -> {
 			boolean mu = components.moveUp(list.getSelectedIndex());
@@ -368,9 +342,6 @@ public class WYSIWYGEditor extends JPanel {
 							if (component instanceof Slot)
 								deathNote.add(component);
 						}
-						if (!deathNote.isEmpty()){
-							editor.setLastDeleted(deathNote.toArray(new GUIComponent[0]));
-						}
 						tmplist.removeAll(deathNote);
 						components.clear();
 						components.addAll(tmplist);
@@ -501,13 +472,13 @@ public class WYSIWYGEditor extends JPanel {
 		this.opening = opening;
 	}
 
-	public List<GUIComponent> getComponentList() {
-		return components;
-	}
-
 	public void setComponentList(List<GUIComponent> components) {
 		this.components.clear();
 		this.components.addAll(components);
+	}
+
+	public List<GUIComponent> getComponentList() {
+		return components;
 	}
 
 	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<Object> {
