@@ -24,6 +24,7 @@ import net.mcreator.element.types.Projectile;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -63,6 +64,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner damage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
 	private final JSpinner knockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
+	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
+	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
@@ -112,7 +115,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
@@ -122,6 +125,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model"),
 				L10N.label("elementgui.projectile.model")));
 		propertiesPanel.add(model);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
+				L10N.label("elementgui.projectile.bounding_box")));
+		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model_texture"),
 				L10N.label("elementgui.projectile.model_texture")));
@@ -153,6 +160,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
+
+		modelWidth.setPreferredSize(new Dimension(85, 41));
+		modelHeight.setPreferredSize(new Dimension(85, 41));
 
 		JPanel events = new JPanel(new GridLayout(2, 2, 5, 5));
 		events.setOpaque(false);
@@ -210,6 +220,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		knockback.setValue(projectile.knockback);
 		igniteFire.setSelected(projectile.igniteFire);
 		customModelTexture.setTextureFromTextureName(projectile.customModelTexture);
+		modelWidth.setValue(projectile.modelWidth);
+		modelHeight.setValue(projectile.modelHeight);
 		onHitsBlock.setSelectedProcedure(projectile.onHitsBlock);
 		onHitsEntity.setSelectedProcedure(projectile.onHitsEntity);
 		onHitsPlayer.setSelectedProcedure(projectile.onHitsPlayer);
@@ -230,6 +242,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.damage = (double) damage.getValue();
 		projectile.knockback = (int) knockback.getValue();
 		projectile.entityModel = (Objects.requireNonNull(model.getSelectedItem())).getReadableName();
+		projectile.modelWidth = (double) modelWidth.getValue();
+		projectile.modelHeight = (double) modelHeight.getValue();
 		projectile.customModelTexture = customModelTexture.getTextureName();
 		projectile.onHitsBlock = onHitsBlock.getSelectedProcedure();
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();
