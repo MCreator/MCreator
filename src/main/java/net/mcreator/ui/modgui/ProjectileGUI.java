@@ -126,13 +126,13 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.model")));
 		propertiesPanel.add(model);
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
-				L10N.label("elementgui.projectile.bounding_box")));
-		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight));
-
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model_texture"),
 				L10N.label("elementgui.projectile.model_texture")));
 		propertiesPanel.add(customModelTexture);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
+				L10N.label("elementgui.projectile.bounding_box")));
+		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
