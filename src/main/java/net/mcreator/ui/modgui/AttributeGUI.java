@@ -44,6 +44,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
+	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public AttributeGUI(MCreator mcreator, ModElement element, boolean editingMode) {
@@ -54,7 +55,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	@Override protected void initGUI() {
 		JPanel pane1 = new JPanel(new BorderLayout());
-		JPanel pane2 = new JPanel(new GridLayout(4, 2, 5, 2));
+		JPanel pane2 = new JPanel(new GridLayout(5, 2, 5, 2));
 
 		pane1.setOpaque(false);
 		pane2.setOpaque(false);
@@ -72,18 +73,24 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.min_max_value")));
 		pane2.add(minMaxValue);
 
+		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_all_entities"),
+				L10N.label("elementgui.attribute.add_to_all_entities")));
+		pane2.add(addToAllEntities);
+
 		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"),
 				L10N.label("elementgui.attribute.entities")));
 		pane2.add(entities);
 
 		pane1.add(PanelUtils.totalCenterInPanel(pane2));
 
+		addToAllEntities.addActionListener((e) -> entities.setEnabled(!addToAllEntities.isSelected()));
+
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.attribute.needs_name")));
 		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
 
 		entities.setValidator(() -> {
-			if (entities.getListElements().isEmpty())
+			if (entities.getListElements().isEmpty() && !addToAllEntities.isSelected())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.attribute.needs_entity"));
 			return Validator.ValidationResult.PASSED;
@@ -103,7 +110,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		defaultValue.setValue(attribute.defaultValue);
 		minMaxValue.setMinValue(attribute.minValue);
 		minMaxValue.setMaxValue(attribute.maxValue);
+		addToAllEntities.setSelected(attribute.addToAllEntities);
 		entities.setListElements(attribute.entities);
+		entities.setEnabled(!attribute.addToAllEntities);
 	}
 
 	@Override public Attribute getElementFromGUI() {
@@ -113,6 +122,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.defaultValue = (Double) defaultValue.getValue();
 		attribute.minValue = minMaxValue.getMinValue();
 		attribute.maxValue = minMaxValue.getMaxValue();
+		attribute.addToAllEntities = addToAllEntities.isSelected();
 		attribute.entities = entities.getListElements();
 
 		return attribute;

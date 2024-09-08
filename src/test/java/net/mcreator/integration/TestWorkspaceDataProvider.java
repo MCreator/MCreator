@@ -1600,9 +1600,12 @@ public class TestWorkspaceDataProvider {
 			attribute.minValue = 24.42;
 			attribute.maxValue = 200d;
 			attribute.entities = new ArrayList<>();
-			attribute.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
-					.map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
-					.toList());
+			if (!emptyLists) {
+				attribute.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream().map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
+						.toList());
+			} else {
+				attribute.addToAllEntities = true;
+			}
 			return attribute;
 		}
 		return null;

@@ -48,16 +48,18 @@ public class ${JavaModName}Attributes {
 
 	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
-			List.of(
-			<#list attribute.entities as entity>
-				${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>,
-			</#list>
-			).stream()
-			.filter(DefaultAttributes::hasSupplier)
-			.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
-			.collect(Collectors.toList()).forEach((e) -> {
-				event.add(e, ${attribute.getModElement().getRegistryNameUpper()});
-			});
+			<#if attribute.addToAllEntities>
+				event.getTypes().forEach((e) -> event.add(e, ${attribute.getModElement().getRegistryNameUpper()}));
+			<#else>
+				List.of(
+				<#list attribute.entities as entity>
+					${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>,
+				</#list>
+				).stream()
+				.filter(DefaultAttributes::hasSupplier)
+				.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+				.collect(Collectors.toList()).forEach((e) -> event.add(e, ${attribute.getModElement().getRegistryNameUpper()}));
+			</#if>
 		</#list>
 	}
 
