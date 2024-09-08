@@ -44,7 +44,7 @@ package ${package}.init;
 				<#if entity.isCustomModel()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), <#if entity.visualScale != 1>render -> new ThrownItemRenderer<>(render, ${entity.visualScale}f, true)<#else>ThrownItemRenderer::new</#if>);
 				</#if>
 			<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);

@@ -34,6 +34,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -65,6 +66,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	private final JSpinner knockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
 	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
+	private final JSpinner visualScale = new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01));
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
@@ -132,6 +134,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
 				L10N.label("elementgui.projectile.bounding_box")));
 		propertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2, modelWidth, modelHeight));
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/visual_scale"),
+				L10N.label("elementgui.living_entity.visual_scale")));
+		propertiesPanel.add(visualScale);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
@@ -218,6 +223,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		customModelTexture.setTextureFromTextureName(projectile.customModelTexture);
 		modelWidth.setValue(projectile.modelWidth);
 		modelHeight.setValue(projectile.modelHeight);
+		visualScale.setValue(projectile.visualScale);
 		onHitsBlock.setSelectedProcedure(projectile.onHitsBlock);
 		onHitsEntity.setSelectedProcedure(projectile.onHitsEntity);
 		onHitsPlayer.setSelectedProcedure(projectile.onHitsPlayer);
@@ -241,6 +247,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.modelWidth = (double) modelWidth.getValue();
 		projectile.modelHeight = (double) modelHeight.getValue();
 		projectile.customModelTexture = customModelTexture.getTextureName();
+		projectile.visualScale = (double) visualScale.getValue();
 		projectile.onHitsBlock = onHitsBlock.getSelectedProcedure();
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();
 		projectile.onHitsPlayer = onHitsPlayer.getSelectedProcedure();
