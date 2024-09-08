@@ -19,6 +19,7 @@
 
 package net.mcreator.element;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -27,6 +28,8 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class ModElementType<GE extends GeneratableElement> {
@@ -39,6 +42,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	private final String readableName;
 	private final String description;
 	@Nullable private final Character shortcut;
+
+	@Nullable private List<GeneratorFlavor> coveredFlavors;
 
 	public ModElementType(String registryName, @Nullable Character shortcut,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
@@ -85,6 +90,30 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public Class<? extends GE> getModElementStorageClass() {
 		return modElementStorageClass;
+	}
+
+	public ModElementType<GE> coveredOn(GeneratorFlavor... supportedFlavors) {
+		this.coveredFlavors = List.of(supportedFlavors);
+		return this;
+	}
+
+	/**
+	 * This method returns the list of flavors that this element type is covered on.
+	 * Covered means that this MET is expected to be supported by the returned flavors.
+	 * <p>
+	 * Generator definitions of flavors not returned here can still support this MET
+	 * by defining the MET definition.
+	 * <p>
+	 * The use of this return value is for generator selector to show red cross on
+	 * METs that certain flavor should support, but doesn't.
+	 *
+	 * @return List of covered flavors, if not set, all flavors are covered
+	 */
+	public List<GeneratorFlavor> getCoveredFlavors() {
+		return coveredFlavors != null ?
+				coveredFlavors :
+				Arrays.stream(GeneratorFlavor.values()).filter(e -> !GeneratorFlavor.SPECIAL_FLAVORS.contains(e))
+						.toList();
 	}
 
 	@Override public String toString() {

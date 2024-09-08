@@ -1,0 +1,1 @@
+Esta condição define se a peça da armadura vai tornar piglins neutros, como a armadura de ouro.

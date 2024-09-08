@@ -1,0 +1,3 @@
+[
+    ".yRot = (Mth.sin(ageInTicks * 0.6F) * 0.6F);"
+]

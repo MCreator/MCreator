@@ -28,3 +28,6 @@
 - BREWING: # not ideal name, but kept for backward compatibility with old workspace and instead added readable_name
   texture: WOOL#9
   readable_name: Colored Blocks
+- OP_BLOCKS:
+  texture: COMMAND_BLOCK
+  readable_name: Operator Items

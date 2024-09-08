@@ -19,10 +19,8 @@
 package net.mcreator.workspace;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
@@ -62,10 +60,8 @@ public class WorkspaceUtils {
 		// Check if all required METs are present
 		Set<String> workspaceRequiredMETs = workspace.getModElements().stream().map(ModElement::getTypeString)
 				.collect(Collectors.toSet());
-		Set<String> generatorSupportedMETs = ModElementTypeLoader.getModElementTypes().stream()
-				.filter(e -> generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo().get(e)
-						!= GeneratorStats.CoverageStatus.NONE).map(ModElementType::getRegistryName)
-				.collect(Collectors.toSet());
+		Set<String> generatorSupportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()
+				.stream().map(ModElementType::getRegistryName).collect(Collectors.toSet());
 		generatorSupportedMETs.addAll(ConverterRegistry.getConvertibleModElementTypes());
 		Set<String> missingMETs = workspaceRequiredMETs.stream().filter(e -> !generatorSupportedMETs.contains(e))
 				.collect(Collectors.toSet());
