@@ -24,7 +24,6 @@ import net.mcreator.element.types.Projectile;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -132,7 +131,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
 				L10N.label("elementgui.projectile.bounding_box")));
-		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight));
+		propertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2, modelWidth, modelHeight));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
@@ -160,9 +159,6 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
-
-		modelWidth.setPreferredSize(new Dimension(230, 41));
-		modelHeight.setPreferredSize(new Dimension(230, 41));
 
 		JPanel events = new JPanel(new GridLayout(2, 2, 5, 5));
 		events.setOpaque(false);
