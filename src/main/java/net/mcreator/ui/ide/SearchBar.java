@@ -133,11 +133,4 @@ public class SearchBar extends JToolBar {
 		}
 	}
 
-	@Override public Component add(Component component) {
-		component.setForeground(new Color(0xE2E2E2));
-		if (component instanceof JComponent)
-			((JComponent) component).setOpaque(false);
-		return super.add(component);
-	}
-
 }

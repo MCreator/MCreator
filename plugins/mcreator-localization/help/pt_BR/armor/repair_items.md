@@ -1,0 +1,1 @@
+O parâmetro de itens de reparo define quais itens podem ser usados para reparar a armadura numa bigorna.

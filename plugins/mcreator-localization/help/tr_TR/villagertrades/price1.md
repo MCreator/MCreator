@@ -1,0 +1,1 @@
+Ticaretin gerektirdiği ilk öğe.

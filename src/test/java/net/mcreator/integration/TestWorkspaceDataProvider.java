@@ -1065,6 +1065,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			item.shootConstantly = emptyLists;
 			item.rangedItemChargesPower = !item.shootConstantly;
+			item.projectileDisableAmmoCheck = _true;
 			item.onRangedItemUsed = new Procedure("procedure4");
 			item.rangedUseCondition = new Procedure("condition1");
 			return item;

@@ -100,7 +100,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 	@Override public Overlay getElementFromGUI() {
 		Overlay overlay = new Overlay(modElement);
-		overlay.priority = (String) editor.priority.getSelectedItem();
+		overlay.priority = editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getTextureName();
 		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();
