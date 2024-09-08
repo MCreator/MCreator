@@ -161,8 +161,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
 
-		modelWidth.setPreferredSize(new Dimension(85, 41));
-		modelHeight.setPreferredSize(new Dimension(85, 41));
+		modelWidth.setPreferredSize(new Dimension(230, 41));
+		modelHeight.setPreferredSize(new Dimension(230, 41));
 
 		JPanel events = new JPanel(new GridLayout(2, 2, 5, 5));
 		events.setOpaque(false);
