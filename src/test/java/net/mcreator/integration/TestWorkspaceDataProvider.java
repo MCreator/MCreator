@@ -1105,6 +1105,7 @@ public class TestWorkspaceDataProvider {
 			projectile.customModelTexture = "";
 			projectile.modelWidth = 0.4;
 			projectile.modelHeight = 1.3;
+			projectile.visualScale = 4;
 			projectile.onHitsBlock = new Procedure("procedure1");
 			projectile.onHitsEntity = new Procedure("procedure2");
 			projectile.onHitsPlayer = new Procedure("procedure3");
