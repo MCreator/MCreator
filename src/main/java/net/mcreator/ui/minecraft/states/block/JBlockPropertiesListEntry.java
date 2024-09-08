@@ -82,15 +82,16 @@ public class JBlockPropertiesListEntry extends JPanel {
 				L10N.label("elementgui.block.custom_property.values")));
 
 		defValuePane.setOpaque(false);
-		defValuePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_default_value"),
-				L10N.label("elementgui.block.custom_property.default")));
 
 		JPanel line = new JPanel(new BorderLayout());
 		line.setLayout(new BoxLayout(line, BoxLayout.X_AXIS));
 		line.add(namePane);
 		line.add(typePane);
 		line.add(boundsPane);
-		line.add(defValuePane);
+		line.add(PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_default_value"),
+						L10N.label("elementgui.block.custom_property.default")),
+				PanelUtils.join(FlowLayout.LEFT, defValuePane)));
 
 		remove.setText(L10N.t("elementgui.block.custom_property.remove"));
 		remove.addActionListener(e -> listPanel.removeProperty(this));
