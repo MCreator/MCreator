@@ -63,12 +63,12 @@ public class ${JavaModName}Attributes {
 		</#list>
 	}
 
-	<#if attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer"))?size != 0>
+	<#if attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer") || a.addToAllEntities)?size != 0>
 	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
 		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
 			Player oldPlayer = event.getOriginal();
 			Player newPlayer = event.getEntity();
-			<#list attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer")) as attribute>
+			<#list attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer") || a.addToAllEntities) as attribute>
 				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
 			</#list>
 		}
