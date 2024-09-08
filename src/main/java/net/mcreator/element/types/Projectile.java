@@ -57,8 +57,15 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public Procedure onHitsEntity;
 	public Procedure onFlyingTick;
 
+	private Projectile() {
+		this(null);
+	}
+
 	public Projectile(ModElement element) {
 		super(element);
+
+		this.modelWidth = 0.5f;
+		this.modelHeight = 0.5f;
 	}
 
 	@Override @Nullable public Model getEntityModel() {
