@@ -33,6 +33,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -118,6 +119,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		CardLayout cards = new CardLayout();
 		JPanel bounds = new JPanel(cards);
+		bounds.setPreferredSize(new Dimension(0, 28));
 		bounds.add("Logic", new JEmptyBox());
 		bounds.add("Integer", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
 				integerBounds));
@@ -156,7 +158,9 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private JBlockPropertiesListEntry addPropertiesEntry(PropertyData<?> data) {
-		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList, data);
+		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
+		if (data != null) // complete initialization if property data is supplied
+			pe.setProperty(new PropertyDataWithValue<>(data, null));
 		registerEntryUI(pe);
 		return pe;
 	}
@@ -173,7 +177,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(List<Block.PropertyEntry> properties) {
-		properties.forEach(entry -> addPropertiesEntry(entry.property).setEntry(entry));
+		properties.forEach(entry -> addPropertiesEntry(null).setEntry(entry));
 	}
 
 }

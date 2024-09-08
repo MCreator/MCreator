@@ -33,6 +33,7 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -394,7 +395,11 @@ import java.util.stream.Collectors;
 
 	public static class PropertyEntry {
 
-		public PropertyData<?> property;
+		public PropertyDataWithValue<?> data;
+
+		public PropertyData<?> property() {
+			return data.property();
+		}
 
 	}
 

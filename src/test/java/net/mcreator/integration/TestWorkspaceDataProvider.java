@@ -1175,10 +1175,10 @@ public class TestWorkspaceDataProvider {
 			block.customProperties = new ArrayList<>();
 			if (!emptyLists) {
 				Block.PropertyEntry propEntry = new Block.PropertyEntry();
-				propEntry.property = new PropertyData.LogicType("bool_prop");
+				propEntry.data = new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true);
 				block.customProperties.add(propEntry);
 				propEntry = new Block.PropertyEntry();
-				propEntry.property = new PropertyData.IntegerType("int_prop", 3, 7);
+				propEntry.data = new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4);
 				block.customProperties.add(propEntry);
 			}
 			block.hardness = 2.3;
