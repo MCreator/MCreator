@@ -48,22 +48,16 @@ public class ${JavaModName}Attributes {
 
 	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
-			<#assign condition = "">
+			List.of(
 			<#list attribute.entities as entity>
-				<#if entity.getDataListEntryType() == "spawnable">
-					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()});
-				<#else>
-					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
-				</#if>
+				${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>,
 			</#list>
-			<#if condition != "">
-				event.getTypes().forEach((e) -> {
-					Class<? extends Entity> baseClass = e.getBaseClass();
-					if(${condition?keep_after("|| ")}) {
-						event.add(e, ${attribute.getModElement().getRegistryNameUpper()});
-					}
-				});
-			</#if>
+			).stream()
+			.filter(DefaultAttributes::hasSupplier)
+			.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+			.collect(Collectors.toList()).forEach((e) -> {
+				event.add(e, ${attribute.getModElement().getRegistryNameUpper()});
+			});
 		</#list>
 	}
 

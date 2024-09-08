@@ -25,7 +25,7 @@ import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.EntityListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -43,7 +43,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
-	private final EntityListField entities = new EntityListField(mcreator);
+	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public AttributeGUI(MCreator mcreator, ModElement element, boolean editingMode) {

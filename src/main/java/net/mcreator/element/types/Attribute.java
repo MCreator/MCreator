@@ -22,6 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Attribute extends GeneratableElement {
 	public Double minValue;
 	public Double maxValue;
 	public Double defaultValue;
-	public List<EntityEntry> entities;
+	@ModElementReference public List<EntityEntry> entities;
 
 	private Attribute() {
 		this(null);

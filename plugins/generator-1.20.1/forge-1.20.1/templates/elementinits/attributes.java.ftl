@@ -48,32 +48,26 @@ public class ${JavaModName}Attributes {
 
 	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
-			<#assign condition = "">
+			List.of(
 			<#list attribute.entities as entity>
-				<#if entity.getDataListEntryType() == "spawnable">
-					event.add(${generator.map(entity.getUnmappedValue(), "entities", 1)}, ${attribute.getModElement().getRegistryNameUpper()}.get());
-				<#else>
-					<#assign condition += "|| baseClass.isAssignableFrom(${entity}.class)">
-				</#if>
+				${generator.map(entity.getUnmappedValue(), "entities", 1)}<#sep>,
 			</#list>
-			<#if condition != "">
-				event.getTypes().forEach((e) -> {
-					Class<? extends Entity> baseClass = e.getBaseClass();
-					if(${condition?keep_after("|| ")}) {
-						event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.get());
-					}
-				});
-			</#if>
+			).stream()
+			.filter(DefaultAttributes::hasSupplier)
+			.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+			.collect(Collectors.toList()).forEach((e) -> {
+				event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.get());
+			});
 		</#list>
 	}
 
-	<#if attributes?filter(a -> a.entities?seq_contains("Player"))?size != 0>
+	<#if attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer"))?size != 0>
 	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
 		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {
 			Player oldPlayer = event.getOriginal();
 			Player newPlayer = event.getEntity();
-			<#list attributes?filter(a -> a.entities?seq_contains("Player")) as attribute>
-			newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
+			<#list attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer")) as attribute>
+				newPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).setBaseValue(oldPlayer.getAttribute(${attribute.getModElement().getRegistryNameUpper()}.get()).getBaseValue());
 			</#list>
 		}
 	}
