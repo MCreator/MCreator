@@ -49,7 +49,7 @@ public class ${JavaModName}Attributes {
 	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
 		<#list attributes as attribute>
 			<#if attribute.addToAllEntities>
-				event.getTypes().forEach((e) -> event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.get()));
+				event.getTypes().forEach(entity -> event.add(entity, ${attribute.getModElement().getRegistryNameUpper()}.get()));
 			<#else>
 				List.of(
 				<#list attribute.entities as entity>
