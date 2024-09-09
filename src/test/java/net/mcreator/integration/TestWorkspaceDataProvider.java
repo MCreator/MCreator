@@ -1602,7 +1602,8 @@ public class TestWorkspaceDataProvider {
 			attribute.maxValue = 200d;
 			attribute.entities = new ArrayList<>();
 			if (!emptyLists) {
-				attribute.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream().map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
+				attribute.entities.addAll(ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace()).stream()
+						.map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
 						.toList());
 			} else {
 				attribute.addToAllEntities = true;

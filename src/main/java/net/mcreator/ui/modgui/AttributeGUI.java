@@ -54,34 +54,29 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel pane1 = new JPanel(new BorderLayout());
-		JPanel pane2 = new JPanel(new GridLayout(5, 2, 5, 2));
-
+		JPanel pane1 = new JPanel(new GridLayout(5, 2, 5, 2));
 		pane1.setOpaque(false);
-		pane2.setOpaque(false);
 
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
 		defaultValue.setPreferredSize(new Dimension(20, 20));
 
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.attribute.name")));
-		pane2.add(name);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/default_value"),
+		pane1.add(name);
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/default_value"),
 				L10N.label("elementgui.attribute.default_value")));
-		pane2.add(defaultValue);
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"),
+		pane1.add(defaultValue);
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"),
 				L10N.label("elementgui.attribute.min_max_value")));
-		pane2.add(minMaxValue);
+		pane1.add(minMaxValue);
 
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_all_entities"),
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_all_entities"),
 				L10N.label("elementgui.attribute.add_to_all_entities")));
-		pane2.add(addToAllEntities);
+		pane1.add(addToAllEntities);
 
-		pane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"),
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"),
 				L10N.label("elementgui.attribute.entities")));
-		pane2.add(entities);
-
-		pane1.add(PanelUtils.totalCenterInPanel(pane2));
+		pane1.add(entities);
 
 		addToAllEntities.addActionListener((e) -> entities.setEnabled(!addToAllEntities.isSelected()));
 
@@ -97,7 +92,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		});
 		page1group.addValidationElement(entities);
 
-		addPage(pane1);
+		addPage(PanelUtils.totalCenterInPanel(pane1));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
