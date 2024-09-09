@@ -28,8 +28,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ConditionalItemListFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -84,12 +84,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
 
-		entities.setValidator(() -> {
-			if (entities.getListElements().isEmpty() && !addToAllEntities.isSelected())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.attribute.needs_entity"));
-			return Validator.ValidationResult.PASSED;
-		});
+		entities.setValidator(
+				new ConditionalItemListFieldValidator(entities, L10N.t("elementgui.attribute.needs_entity"),
+						addToAllEntities, false));
 		page1group.addValidationElement(entities);
 
 		addPage(PanelUtils.totalCenterInPanel(pane1));
