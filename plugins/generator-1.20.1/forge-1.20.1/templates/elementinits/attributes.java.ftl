@@ -58,7 +58,7 @@ public class ${JavaModName}Attributes {
 				).stream()
 				.filter(DefaultAttributes::hasSupplier)
 				.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
-				.collect(Collectors.toList()).forEach((e) -> event.add(e, ${attribute.getModElement().getRegistryNameUpper()}.get()));
+				.collect(Collectors.toList()).forEach(entity -> event.add(entity, ${attribute.getModElement().getRegistryNameUpper()}.get()));
 			</#if>
 		</#list>
 	}
