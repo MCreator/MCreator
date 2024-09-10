@@ -1,0 +1,1 @@
+Bu parametre, bu blok kırıldığında kaç tane düşen eşya veya blok düşüreceğini kontrol eder.

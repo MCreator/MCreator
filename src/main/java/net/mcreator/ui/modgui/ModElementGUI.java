@@ -41,6 +41,7 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -51,6 +52,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
@@ -333,6 +335,18 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				toolBarLeft.add(codeViewer);
 			}
 
+			try {
+				URI helpURI = this.contextURL();
+				if (helpURI != null) {
+					JButton help = L10N.button("common.help");
+					help.setMargin(new Insets(1, 40, 1, 40));
+					toolBarLeft.add(help);
+					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+				}
+			} catch (URISyntaxException e) {
+				LOG.warn("Failed to create help context", e);
+			}
+
 			add("North",
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
@@ -388,6 +402,18 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				});
 
 				toolBarLeft.add(codeViewer);
+			}
+
+			try {
+				URI helpURI = this.contextURL();
+				if (helpURI != null) {
+					JButton help = L10N.button("common.help");
+					help.setMargin(new Insets(1, 40, 1, 40));
+					toolBarLeft.add(help);
+					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+				}
+			} catch (URISyntaxException e) {
+				LOG.warn("Failed to create help context", e);
 			}
 
 			add("North",

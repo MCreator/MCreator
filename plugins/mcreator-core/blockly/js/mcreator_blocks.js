@@ -31,8 +31,7 @@ Blockly.Blocks['event_trigger'] = {
             .appendField(javabridge.t("blockly.block.event_trigger.line1"));
         this.appendDummyInput()
             .appendField(javabridge.t("blockly.block.event_trigger.line2"))
-            .appendField(new Blockly.FieldDropdown(
-                jsonToBlocklyDropDownArray(javabridge.getGlobalTriggers())), 'trigger');
+            .appendField(new FieldDataListSelector('global_triggers'), 'trigger');
         this.setNextStatement(true);
         this.setStyle('hat_blocks');
         this.setColour(90);
@@ -292,12 +291,40 @@ Blockly.Blocks['math_from_text'] = {
     }
 };
 
+Blockly.Blocks['text_index_of'] = {
+    init: function () {
+        this.appendValueInput('check').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.check"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.in"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_index_of.from"));
+        this.setInputsInline(true);
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks['text_contains'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_contains.in"));
         this.appendValueInput('contains').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_contains.check"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+Blockly.Blocks['text_matches'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_matches.in"));
+        this.appendValueInput('contains').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_matches.check"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
@@ -372,6 +399,22 @@ Blockly.Blocks['text_replace'] = {
             .appendField(javabridge.t("blockly.block.text_replace.with"));
         this.appendValueInput('text').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_replace.of"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['text_replace_regex'] = {
+    init: function () {
+        this.appendValueInput('what').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.replace"));
+        this.appendValueInput('with').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.with"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.of"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);

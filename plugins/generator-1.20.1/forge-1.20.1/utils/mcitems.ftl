@@ -74,7 +74,7 @@
     <#if !mappedBlocks??>
         <#return "Ingredient.EMPTY">
     <#elseif mappedBlocks?size == 1>
-        <#return mappedMCItemToIngredient(mappedBlocks[0])>
+        <#return mappedMCItemToIngredient(mappedBlocks?first)>
     <#else>
         <#assign itemsOnly = true>
 

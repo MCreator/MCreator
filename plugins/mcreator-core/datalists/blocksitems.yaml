@@ -254,6 +254,71 @@
   type: block
   texture: TUFF
 
+- Blocks.TUFF_SLAB:
+  readable_name: "Tuff Slab"
+  type: block
+  texture: TUFF_SLAB
+
+- Blocks.TUFF_STAIRS:
+  readable_name: "Tuff Stairs"
+  type: block
+  texture: TUFF_STAIRS
+
+- Blocks.TUFF_WALL:
+  readable_name: "Tuff Wall"
+  type: block
+  texture: TUFF_WALL
+
+- Blocks.POLISHED_TUFF:
+  readable_name: "Polished Tuff"
+  type: block
+  texture: POLISHED_TUFF
+
+- Blocks.POLISHED_TUFF_SLAB:
+  readable_name: "Polished Tuff Slab"
+  type: block
+  texture: POLISHED_TUFF_SLAB
+
+- Blocks.POLISHED_TUFF_STAIRS:
+  readable_name: "Polished Tuff Stairs"
+  type: block
+  texture: POLISHED_TUFF_STAIRS
+
+- Blocks.POLISHED_TUFF_WALL:
+  readable_name: "Polished Tuff Wall"
+  type: block
+  texture: POLISHED_TUFF_WALL
+
+- Blocks.CHISELED_TUFF:
+  readable_name: "Chiseled Tuff"
+  type: block
+  texture: CHISELED_TUFF
+
+- Blocks.TUFF_BRICKS:
+  readable_name: "Tuff Bricks"
+  type: block
+  texture: TUFF_BRICKS
+
+- Blocks.TUFF_BRICK_SLAB:
+  readable_name: "Tuff Brick Slab"
+  type: block
+  texture: TUFF_BRICK_SLAB
+
+- Blocks.TUFF_BRICK_STAIRS:
+  readable_name: "Tuff Brick Stairs"
+  type: block
+  texture: TUFF_BRICK_STAIRS
+
+- Blocks.TUFF_BRICK_WALL:
+  readable_name: "Tuff Brick Wall"
+  type: block
+  texture: TUFF_BRICK_WALL
+
+- Blocks.CHISELED_TUFF_BRICKS:
+  readable_name: "Chiseled Tuff Bricks"
+  type: block
+  texture: CHISELED_TUFF_BRICKS
+
 - Blocks.CALCITE:
   readable_name: "Calcite"
   type: block
@@ -782,6 +847,46 @@
   readable_name: "Cut Copper"
   type: block
   texture: CUT_COPPER
+
+- Blocks.OXIDIZED_CHISELED_COPPER:
+  readable_name: "Oxidized Chiseled Copper"
+  type: block
+  texture: OXIDIZED_CHISELED_COPPER
+
+- Blocks.WEATHERED_CHISELED_COPPER:
+  readable_name: "Weathered Chiseled Copper"
+  type: block
+  texture: WEATHERED_CHISELED_COPPER
+
+- Blocks.EXPOSED_CHISELED_COPPER:
+  readable_name: "Exposed Chiseled Copper"
+  type: block
+  texture: EXPOSED_CHISELED_COPPER
+
+- Blocks.CHISELED_COPPER:
+  readable_name: "Chiseled Copper"
+  type: block
+  texture: CHISELED_COPPER
+
+- Blocks.WAXED_OXIDIZED_CHISELED_COPPER:
+  readable_name: "Waxed Oxidized Chiseled Copper"
+  type: block
+  texture: WAXED_OXIDIZED_CHISELED_COPPER
+
+- Blocks.WAXED_WEATHERED_CHISELED_COPPER:
+  readable_name: "Waxed Weathered Chiseled Copper"
+  type: block
+  texture: WAXED_WEATHERED_CHISELED_COPPER
+
+- Blocks.WAXED_EXPOSED_CHISELED_COPPER:
+  readable_name: "Waxed Exposed Chiseled Copper"
+  type: block
+  texture: WAXED_EXPOSED_CHISELED_COPPER
+
+- Blocks.WAXED_CHISELED_COPPER:
+  readable_name: "Waxed Chiseled Copper"
+  type: block
+  texture: WAXED_CHISELED_COPPER
 
 - Blocks.EXPOSED_CUT_COPPER:
   readable_name: "Exposed Cut Copper"
@@ -2377,6 +2482,46 @@
   type: block
   texture: IRON_DOOR
 
+- Blocks.COPPER_DOOR:
+  readable_name: "Copper Door"
+  type: block
+  texture: COPPER_DOOR
+
+- Blocks.EXPOSED_COPPER_DOOR:
+  readable_name: "Exposed Copper Door"
+  type: block
+  texture: EXPOSED_COPPER_DOOR
+
+- Blocks.OXIDIZED_COPPER_DOOR:
+  readable_name: "Oxidized Copper Door"
+  type: block
+  texture: OXIDIZED_COPPER_DOOR
+
+- Blocks.WEATHERED_COPPER_DOOR:
+  readable_name: "Weathered Copper Door"
+  type: block
+  texture: WEATHERED_COPPER_DOOR
+
+- Blocks.WAXED_COPPER_DOOR:
+  readable_name: "Waxed Copper Door"
+  type: block
+  texture: WAXED_COPPER_DOOR
+
+- Blocks.WAXED_EXPOSED_COPPER_DOOR:
+  readable_name: "Waxed Exposed Copper Door"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_DOOR
+
+- Blocks.WAXED_OXIDIZED_COPPER_DOOR:
+  readable_name: "Waxed Oxidized Copper Door"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_DOOR
+
+- Blocks.WAXED_WEATHERED_COPPER_DOOR:
+  readable_name: "Waxed Weathered Copper Door"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_DOOR
+
 - Blocks.TRAPDOOR:
   readable_name: "Oak Trapdoor"
   type: block
@@ -2436,6 +2581,126 @@
   readable_name: "Iron Trapdoor"
   type: block
   texture: IRON_TRAPDOOR
+
+- Blocks.COPPER_TRAPDOOR:
+  readable_name: "Copper Trapdoor"
+  type: block
+  texture: COPPER_TRAPDOOR
+
+- Blocks.EXPOSED_COPPER_TRAPDOOR:
+  readable_name: "Exposed Copper Trapdoor"
+  type: block
+  texture: EXPOSED_COPPER_TRAPDOOR
+
+- Blocks.OXIDIZED_COPPER_TRAPDOOR:
+  readable_name: "Oxidized Copper Trapdoor"
+  type: block
+  texture: OXIDIZED_COPPER_TRAPDOOR
+
+- Blocks.WEATHERED_COPPER_TRAPDOOR:
+  readable_name: "Weathered Copper Trapdoor"
+  type: block
+  texture: WEATHERED_COPPER_TRAPDOOR
+
+- Blocks.WAXED_COPPER_TRAPDOOR:
+  readable_name: "Waxed Copper Trapdoor"
+  type: block
+  texture: WAXED_COPPER_TRAPDOOR
+
+- Blocks.WAXED_EXPOSED_COPPER_TRAPDOOR:
+  readable_name: "Waxed Exposed Copper Trapdoor"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_TRAPDOOR
+
+- Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR:
+  readable_name: "Waxed Oxidized Copper Trapdoor"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_TRAPDOOR
+
+- Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR:
+  readable_name: "Waxed Weathered Copper Trapdoor"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_TRAPDOOR
+
+- Blocks.COPPER_GRATE:
+  readable_name: "Copper Grate"
+  type: block
+  texture: COPPER_GRATE
+
+- Blocks.EXPOSED_COPPER_GRATE:
+  readable_name: "Exposed Copper Grate"
+  type: block
+  texture: EXPOSED_COPPER_GRATE
+
+- Blocks.WEATHERED_COPPER_GRATE:
+  readable_name: "Weathered Copper Grate"
+  type: block
+  texture: WEATHERED_COPPER_GRATE
+
+- Blocks.OXIDIZED_COPPER_GRATE:
+  readable_name: "Oxidized Copper Grate"
+  type: block
+  texture: OXIDIZED_COPPER_GRATE
+
+- Blocks.WAXED_COPPER_GRATE:
+  readable_name: "Waxed Copper Grate"
+  type: block
+  texture: WAXED_COPPER_GRATE
+
+- Blocks.WAXED_EXPOSED_COPPER_GRATE:
+  readable_name: "Waxed Exposed Copper Grate"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_GRATE
+
+- Blocks.WAXED_WEATHERED_COPPER_GRATE:
+  readable_name: "Waxed Weathered Copper Grate"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_GRATE
+
+- Blocks.WAXED_OXIDIZED_COPPER_GRATE:
+  readable_name: "Waxed Oxidized Copper Grate"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_GRATE
+
+- Blocks.COPPER_BULB:
+  readable_name: "Copper Bulb"
+  type: block
+  texture: COPPER_BULB
+
+- Blocks.EXPOSED_COPPER_BULB:
+  readable_name: "Exposed Copper Bulb"
+  type: block
+  texture: EXPOSED_COPPER_BULB
+
+- Blocks.WEATHERED_COPPER_BULB:
+  readable_name: "Weathered Copper Bulb"
+  type: block
+  texture: WEATHERED_COPPER_BULB
+
+- Blocks.OXIDIZED_COPPER_BULB:
+  readable_name: "Oxidized Copper Bulb"
+  type: block
+  texture: OXIDIZED_COPPER_BULB
+
+- Blocks.WAXED_COPPER_BULB:
+  readable_name: "Waxed Copper Bulb"
+  type: block
+  texture: WAXED_COPPER_BULB
+
+- Blocks.WAXED_EXPOSED_COPPER_BULB:
+  readable_name: "Waxed Exposed Copper Bulb"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_BULB
+
+- Blocks.WAXED_WEATHERED_COPPER_BULB:
+  readable_name: "Waxed Weathered Copper Bulb"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_BULB
+
+- Blocks.WAXED_OXIDIZED_COPPER_BULB:
+  readable_name: "Waxed Oxidized Copper Bulb"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_BULB
 
 - Blocks.LADDER:
   readable_name: "Ladder"
@@ -2671,6 +2936,11 @@
   readable_name: "Observer"
   type: block
   texture: OBSERVER
+
+- Blocks.CRAFTER:
+  readable_name: "Crafter"
+  type: block
+  texture: CRAFTER
 
 - Blocks.HOPPER:
   readable_name: "Hopper"
@@ -3615,6 +3885,21 @@
   readable_name: "Decorated Pot"
   type: block
   texture: DECORATED_POT
+
+- Blocks.TRIAL_SPAWNER:
+  readable_name: "Trial Spawner"
+  type: block
+  texture: TRIAL_SPAWNER
+
+- Blocks.VAULT:
+  readable_name: "Vault"
+  type: block
+  texture: VAULT
+
+- Blocks.HEAVY_CORE:
+  readable_name: "Heavy Core"
+  type: block
+  texture: HEAVY_CORE
 
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
@@ -5369,12 +5654,6 @@
   type: item
   texture: DYE#19
 
-- Items.COAL:
-  readable_name: "Any Coal"
-  type: item
-  texture: COAL
-  subtypes: true
-
 - Items.COAL#0:
   readable_name: "Coal"
   type: item
@@ -5621,10 +5900,30 @@
   type: item
   texture: PIGLIN_BANNER_PATTERN
 
+- Items.FLOW_BANNER_PATTERN:
+  readable_name: "Flow Banner Pattern"
+  type: item
+  texture: FLOW_BANNER_PATTERN
+
+- Items.GUSTER_BANNER_PATTERN:
+  readable_name: "Guster Banner Pattern"
+  type: item
+  texture: GUSTER_BANNER_PATTERN
+
 - Items.TOTEM_OF_UNDYING:
   readable_name: "Totem of Undying"
   type: item
   texture: TOTEM_OF_UNDYING
+
+- Items.TRIAL_KEY:
+  readable_name: "Trial Key"
+  type: item
+  texture: TRIAL_KEY
+
+- Items.OMINOUS_TRIAL_KEY:
+  readable_name: "Ominous Trial Key"
+  type: item
+  texture: OMINOUS_TRIAL_KEY
 
 - Items.LEAD:
   readable_name: "Leash"
@@ -5805,6 +6104,11 @@
   readable_name: "Trident"
   type: item
   texture: TRIDENT
+
+- Items.MACE:
+  readable_name: "Mace"
+  type: item
+  texture: MACE
 
 - Items.LEATHER_HELMET:
   readable_name: "Leather Helmet"
@@ -6744,12 +7048,6 @@
   type: item
   texture: GLOW_BERRIES
 
-- Items.FISH:
-  readable_name: "Any Fish"
-  type: item
-  texture: FISH
-  subtypes: true
-
 - Items.FISH#0:
   readable_name: "Raw Fish"
   type: item
@@ -6769,12 +7067,6 @@
   readable_name: "Pufferfish"
   type: item
   texture: FISH#3
-
-- Items.COOKED_FISH:
-  readable_name: "Any Cooked Fish"
-  type: item
-  texture: COOKED_FISH
-  subtypes: true
 
 - Items.COOKED_FISH#0:
   readable_name: "Cooked Fish"
@@ -6936,6 +7228,11 @@
   type: item
   texture: DRAGON_BREATH
 
+- Items.OMINOUS_BOTTLE:
+  readable_name: "Ominous Bottle"
+  type: item
+  texture: OMINOUS_BOTTLE
+
 - Items.SPIDER_EYE:
   readable_name: "Spider Eye"
   type: item
@@ -6955,6 +7252,11 @@
   readable_name: "Blaze Powder"
   type: item
   texture: BLAZE_POWDER
+
+- Items.BREEZE_ROD:
+  readable_name: "Breeze Rod"
+  type: item
+  texture: BREEZE_ROD
 
 - Items.MAGMA_CREAM:
   readable_name: "Magma Cream"
@@ -7131,6 +7433,16 @@
   readable_name: "Cod Spawn Egg"
   type: item
   texture: COD_SPAWN_EGG
+
+- Items.BOGGED_SPAWN_EGG:
+  readable_name: "Bogged Spawn Egg"
+  type: item
+  texture: BOGGED_SPAWN_EGG
+
+- Items.BREEZE_SPAWN_EGG:
+  readable_name: "Breeze Spawn Egg"
+  type: item
+  texture: BREEZE_SPAWN_EGG
 
 - Items.DOLPHIN_SPAWN_EGG:
   readable_name: "Dolphin Spawn Egg"
@@ -7382,6 +7694,11 @@
   type: item
   texture: FIRE_CHARGE
 
+- Items.WIND_CHARGE:
+  readable_name: "Wind Charge"
+  type: item
+  texture: WIND_CHARGE
+
 - Items.SNOWBALL:
   readable_name: "Snowball"
   type: item
@@ -7435,6 +7752,24 @@
   type: item
   texture: RECORD_CHIRP
   description: "C418 - chirp"
+
+- Items.RECORD_CREATOR:
+  readable_name: "Music Disc"
+  type: item
+  texture: RECORD_CREATOR
+  description: "Creator"
+
+- Items.RECORD_CREATOR_MUSIC_BOX:
+  readable_name: "Music Disc"
+  type: item
+  texture: RECORD_CREATOR_MUSIC_BOX
+  description: "Creator Music Box"
+
+- Items.RECORD_PRECIPICE:
+  readable_name: "Music Disc"
+  type: item
+  texture: RECORD_PRECIPICE
+  description: "Precipice"
 
 - Items.RECORD_FAR:
   readable_name: "Music Disc"
@@ -7681,6 +8016,16 @@
   type: item
   texture: HOST_ARMOR_TRIM
 
+- Items.FLOW_ARMOR_TRIM:
+  readable_name: "Flow Armor Trim Smithing Template"
+  type: item
+  texture: FLOW_ARMOR_TRIM_SMITHING_TEMPLATE
+
+- Items.BOLT_ARMOR_TRIM:
+  readable_name: "Bolt Armor Trim Smithing Template"
+  type: item
+  texture: BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
+
 - Items.ANGLER_POTTERY_SHERD:
   readable_name: "Angler Pottery Sherd"
   type: item
@@ -7720,6 +8065,21 @@
   readable_name: "Explorer Pottery Sherd"
   type: item
   texture: EXPLORER_POTTERY_SHERD
+
+- Items.FLOW_POTTERY_SHERD:
+  readable_name: "Flow Pottery Sherd"
+  type: item
+  texture: FLOW_POTTERY_SHERD
+
+- Items.GUSTER_POTTERY_SHERD:
+  readable_name: "Guster Pottery Sherd"
+  type: item
+  texture: GUSTER_POTTERY_SHERD
+
+- Items.SCRAPE_POTTERY_SHERD:
+  readable_name: "Scrape Pottery Sherd"
+  type: item
+  texture: SCRAPE_POTTERY_SHERD
 
 - Items.FRIEND_POTTERY_SHERD:
   readable_name: "Friend Pottery Sherd"

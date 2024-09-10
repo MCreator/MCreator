@@ -61,6 +61,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -132,9 +134,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			if (file != null) {
 				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
 				if (workspaceDir != null) {
-					File workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
+					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 					if (workspaceFile != null)
-						workspaceOpenListener.workspaceOpened(workspaceFile);
+						workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 				}
 			}
 		});
@@ -238,6 +240,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
+		recentsList.setComponentPopupMenu(getRightClickMenu());
+
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recentsList.addMouseListener(new MouseAdapter() {
@@ -310,6 +314,71 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentPanel.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 			centerComponent.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 		}
+	}
+
+	private JPopupMenu getRightClickMenu() {
+		JPopupMenu recentListMenu = new JPopupMenu();
+
+		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
+		openSelectedWorkspace.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+			}
+		});
+		recentListMenu.add(openSelectedWorkspace);
+
+		recentListMenu.addSeparator();
+
+		JMenuItem deleteFromRecentList = new JMenuItem(
+				L10N.t("dialog.workspace_selector.delete_workspace.recent_list"));
+		deleteFromRecentList.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				removeRecentWorkspace(recentsList.getSelectedValue());
+				reloadRecents();
+			}
+		});
+		recentListMenu.add(deleteFromRecentList);
+
+		JMenuItem deleteFromFolder = new JMenuItem(L10N.t("dialog.workspace_selector.delete_workspace.workspace"));
+		deleteFromFolder.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
+						L10N.t("dialog.workspace_selector.delete_workspace.confirmation",
+								recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (m == 0) {
+					FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+					reloadRecents();
+				}
+			}
+		});
+		recentListMenu.add(deleteFromFolder);
+
+		recentListMenu.addSeparator();
+
+		JMenuItem openInSystemExplorer = new JMenuItem(L10N.t("action.open_workspace_folder"));
+		openInSystemExplorer.addActionListener(a -> {
+			if (recentsList.getSelectedValue() != null) {
+				DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
+			}
+		});
+		recentListMenu.add(openInSystemExplorer);
+
+		recentListMenu.addPopupMenuListener(new PopupMenuListener() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				recentsList.setSelectedIndex(recentsList.locationToIndex(recentsList.getMousePosition()));
+			}
+
+			@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
+
+		return recentListMenu;
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
@@ -470,13 +539,31 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				"dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
-		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
-			if (news != null) {
-				nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
-						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
-						news[0], 43));
+		newsFuture.whenComplete((news, throwable) -> {
+			SwingUtilities.invokeLater(() -> {
+				if (news != null) {
+					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+							news[0], 43));
+					nov.addMouseListener(new MouseAdapter() {
+						@Override public void mouseClicked(MouseEvent en) {
+							DesktopUtils.browseSafe(news[1]);
+						}
+					});
+				} else {
+					nov.setText("");
+				}
+			});
 
-				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+			ImageIcon newsIcon;
+			if (news != null && news[3] != null && !news[3].isBlank()) {
+				newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60, null);
+			} else {
+				newsIcon = null;
+			}
+
+			SwingUtilities.invokeLater(() -> {
+				if (news != null && PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
 					String id = news[4];
 
 					// Do not show notification the first time
@@ -488,11 +575,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						String link = news[1];
 						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
 								"<br>");
-						ImageIcon newsIcon = null;
-						if (news[3] != null && !news[3].isBlank()) {
-							newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60,
-									null);
-						}
 						addNotification(title, newsIcon, description,
 								new NotificationsRenderer.ActionButton(L10N.t("notification.news.read_more"), e -> {
 									DesktopUtils.browseSafe(link);
@@ -501,16 +583,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
 					}
 				}
-			} else {
-				nov.setText("");
-			}
-			nov.addMouseListener(new MouseAdapter() {
-				@Override public void mouseClicked(MouseEvent en) {
-					if (news != null)
-						DesktopUtils.browseSafe(news[1]);
-				}
 			});
-		}));
+		});
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
@@ -523,24 +597,31 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		lab2.setIcon(new EmptyIcon(48, 48));
 		JComponent motwpan = PanelUtils.westAndEastElement(lab3, lab2);
 		motwpan.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		motwFuture.whenComplete((motw, throwable) -> SwingUtilities.invokeLater(() -> {
-			motwpan.addMouseListener(new MouseAdapter() {
-				@Override public void mouseClicked(MouseEvent arg0) {
-					if (motw != null)
-						DesktopUtils.browseSafe(motw[1]);
+		motwFuture.whenComplete((motw, throwable) -> {
+			ImageIcon imageIcon;
+			if (motw != null)
+				imageIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true);
+			else {
+				imageIcon = null;
+			}
+
+			SwingUtilities.invokeLater(() -> {
+				motwpan.addMouseListener(new MouseAdapter() {
+					@Override public void mouseClicked(MouseEvent arg0) {
+						if (motw != null)
+							DesktopUtils.browseSafe(motw[1]);
+					}
+				});
+				if (motw != null) {
+					lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+							motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+					lab2.setIcon(imageIcon);
+				} else {
+					lab3.setText("");
 				}
 			});
-			if (motw != null) {
-				lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
-						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
-						motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-			} else {
-				lab3.setText("");
-			}
-			ImageIcon defaultIcon;
-			if (motw != null && (defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
-				lab2.setIcon(defaultIcon);
-		}));
+		});
 
 		JComponent south = PanelUtils.westAndEastElement(nov, motwpan, 20, 20);
 		south.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));

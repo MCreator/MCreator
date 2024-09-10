@@ -1,2 +1,0 @@
-<#include "mcitems.ftl">
-/*@ItemStack*/(EnchantmentHelper.enchantItem(FeatureFlagSet.of(FeatureFlags.VANILLA), RandomSource.create(), ${mappedMCItemToItemStackCode(input$item, 1)}, ${opt.toInt(input$levels)}, ${input$treasure}))

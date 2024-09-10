@@ -45,7 +45,7 @@ public class TagsUtils {
 									.apply(workspace, TagElement.getEntryName(e))).toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
-					JSONWriter.writeJSONToFile(json, tagFile);
+					JSONWriter.writeJSONToFile(workspace, json, tagFile);
 				} catch (TemplateGeneratorException e) {
 					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}
@@ -58,7 +58,9 @@ public class TagsUtils {
 
 		String name = GeneratorTokens.replaceTokens(workspace,
 				rawName.replace("@namespace", tagElement.getMinecraftNamespace(workspace))
-						.replace("@name", tagElement.getName()).replace("@folder", tagElement.type().getFolder()));
+						.replace("@name", tagElement.getName())
+						.replace("@folder_pre21", tagElement.type().getPre21Folder())
+						.replace("@folder", tagElement.type().getFolder()));
 
 		File tagFile = new File(name);
 		if (workspace.getFolderManager().isFileInWorkspace(tagFile)) {

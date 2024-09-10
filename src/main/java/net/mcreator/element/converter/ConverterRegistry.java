@@ -56,6 +56,9 @@ import net.mcreator.element.converter.v2024_2.PotionEffectCategoryConverter;
 import net.mcreator.element.converter.v2024_2.HarvestLevelProceduresRemover;
 import net.mcreator.element.converter.v2024_2.ItemsCreativeTabsConverter;
 import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
+import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
+import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
+import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -175,7 +178,9 @@ public class ConverterRegistry {
 			new ProcedureArrowProjectileFixer(),
 			new ProcedureCustomDamageRemover(),
 			new CallProcedureAtBlockConverter(),
-			new HarvestLevelProceduresRemover()
+			new HarvestLevelProceduresRemover(),
+			new PlantTypeProcedureRemover(),
+			new WorldDependencyAdder()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
@@ -205,6 +210,9 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ToolHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter()
+		));
+		put(ModElementType.ENCHANTMENT, List.of(
+			new EnchantmentDefinitionConverter()
 		));
 	}};
 	//@formatter:on

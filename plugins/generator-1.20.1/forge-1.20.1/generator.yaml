@@ -9,11 +9,10 @@ import:
 java_models:
   key: mojmap-1.20.x
   compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+  requested_key_words: [ModelPart, ~ModelRenderer, ~(ResourceLocation.]
 
 # gradle task definitions
 gradle:
-  setup_task: eclipse
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
@@ -26,6 +25,7 @@ import_formatter:
     Nullable: javax.annotation
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
+    Attributes: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -91,7 +91,7 @@ sources_setup_tasks:
 
 tags:
   template: tags.json.ftl
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/data/@namespace/tags/@folder_pre21/@name.json"
 
 language_file:
   format: json

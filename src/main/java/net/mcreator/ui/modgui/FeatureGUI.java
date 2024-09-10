@@ -141,6 +141,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
+		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
+
 		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		featureProcedure.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -175,7 +177,13 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.features.missing_placement")));
+			} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
+					.equals("configured_feature_reference")) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.features.placement_required")));
 			}
+
+			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));

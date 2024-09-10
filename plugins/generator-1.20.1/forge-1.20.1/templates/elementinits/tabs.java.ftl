@@ -70,9 +70,11 @@ public class ${JavaModName}Tabs {
 	@SubscribeEvent public static void buildTabContentsVanilla(BuildCreativeModeTabContentsEvent tabData) {
 		<#list vanillaTabs as tabName>
 			<#if !tabName?is_first>else </#if>if (tabData.getTabKey() == ${generator.map(tabName, "tabs")}) {
+				<#if tabName == "OP_BLOCKS">if (tabData.hasPermissions()) {</#if>
 				<#list tabMap.get(tabName) as tabElement>
 				tabData.accept(${mappedMCItemToItem(tabElement)});
 				</#list>
+				<#if tabName == "OP_BLOCKS">}</#if>
 			}
 		</#list>
 	}

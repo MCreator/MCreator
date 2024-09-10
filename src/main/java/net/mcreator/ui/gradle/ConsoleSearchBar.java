@@ -29,7 +29,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -39,10 +38,14 @@ public class ConsoleSearchBar extends JToolBar {
 	private final JCheckBox cb3 = L10N.checkbox("dialog.console_search.match");
 	private final JLabel results = L10N.label("dialog.console_search.no_result");
 
-	private Highlighter hilite;
+	private Highlighter highlighter;
 
 	private DocumentListener dos;
 	private KeyAdapter keyAdapter;
+
+	private int index = 0;
+	private int max = 0;
+	private String oldSearch = "";
 
 	ConsoleSearchBar() {
 		setFloatable(false);
@@ -61,7 +64,7 @@ public class ConsoleSearchBar extends JToolBar {
 	}
 
 	public void reinstall(ConsolePane consolePane) {
-		hilite = consolePane.getHighlighter();
+		highlighter = consolePane.getHighlighter();
 		Document doc = consolePane.getDocument();
 
 		doc.removeDocumentListener(dos);
@@ -69,15 +72,15 @@ public class ConsoleSearchBar extends JToolBar {
 
 		doc.addDocumentListener(dos = new DocumentListener() {
 			@Override public void insertUpdate(DocumentEvent e) {
-				updateSearch(consolePane, doc, hilite);
+				updateSearch(consolePane, doc);
 			}
 
 			@Override public void removeUpdate(DocumentEvent e) {
-				updateSearch(consolePane, doc, hilite);
+				updateSearch(consolePane, doc);
 			}
 
 			@Override public void changedUpdate(DocumentEvent e) {
-				updateSearch(consolePane, doc, hilite);
+				updateSearch(consolePane, doc);
 			}
 		});
 
@@ -91,66 +94,72 @@ public class ConsoleSearchBar extends JToolBar {
 					ConsoleSearchBar.this.setVisible(false);
 				}
 
-				updateSearch(consolePane, doc, hilite);
+				updateSearch(consolePane, doc);
 			}
 		});
 	}
 
-	private int index = 0;
-	private String oldSearch = "";
-
-	private void updateSearch(ConsolePane pan, Document doc, Highlighter hilite) {
-		removeHighlights(hilite);
+	private void updateSearch(ConsolePane pan, Document doc) {
+		removeHighlights();
 
 		String searchFor = jtf1.getText();
 
 		if (!oldSearch.equals(searchFor)) {
+			max = 0;
 			index = 0;
 		}
 		oldSearch = searchFor;
 
 		if (searchFor.isEmpty()) {
-			results.setText("No results");
+			markNoResults();
 			return;
 		}
 
 		try {
+			if (index >= max && max > 0)
+				index = 0;
+
 			int pos = 0;
 			int findLength = searchFor.length();
-			int max = -1;
+			max = 0;
 			while (pos + findLength <= doc.getLength()) {
 				String match = doc.getText(pos, findLength);
 				if ((match.equals(searchFor) && cb3.isSelected()) || (match.equalsIgnoreCase(searchFor)
 						&& !cb3.isSelected())) {
-					max++;
 					if (max == index) {
 						pan.setSelectionStart(pos);
 						pan.setSelectionEnd(pos + findLength);
 						pan.getCaret().setSelectionVisible(true);
 					}
-					hilite.addHighlight(pos, pos + findLength, highlightPainter);
+					max++;
+					highlighter.addHighlight(pos, pos + findLength, highlightPainter);
+					pos += findLength;
+				} else {
+					pos++;
 				}
-				pos++;
 			}
 
-			if (max > 0)
-				results.setText(index + " out of " + max);
-			else if (max == 0)
-				results.setText("No results");
-
-			if (index >= max && max >= 0) {
-				index = 0;
+			if (max > 0) {
+				results.setText((index + 1) + " out of " + max);
+			} else if (max == 0) {
+				markNoResults();
 			}
 		} catch (Exception ignored) {
-			results.setText("No results");
+			markNoResults();
 		}
 	}
 
-	private void removeHighlights(Highlighter hilite) {
-		Highlighter.Highlight[] hilites = hilite.getHighlights();
-		for (Highlighter.Highlight hilite1 : hilites) {
-			if (hilite1.getPainter() instanceof SearchResultHighlightPainter) {
-				hilite.removeHighlight(hilite1);
+	private void markNoResults() {
+		index = max = 0;
+		results.setText("No results");
+		removeHighlights();
+	}
+
+	private void removeHighlights() {
+		Highlighter.Highlight[] hilites = highlighter.getHighlights();
+		for (Highlighter.Highlight highlight : hilites) {
+			if (highlight.getPainter() instanceof SearchResultHighlightPainter) {
+				highlighter.removeHighlight(highlight);
 			}
 		}
 	}
@@ -162,15 +171,8 @@ public class ConsoleSearchBar extends JToolBar {
 			jtf1.requestFocus();
 			jtf1.requestFocusInWindow();
 		} else {
-			removeHighlights(hilite);
+			removeHighlights();
 		}
-	}
-
-	@Override public Component add(Component component) {
-		component.setForeground(new Color(0xE2E2E2));
-		if (component instanceof JComponent)
-			((JComponent) component).setOpaque(false);
-		return super.add(component);
 	}
 
 	private final Highlighter.HighlightPainter highlightPainter = new SearchResultHighlightPainter();
