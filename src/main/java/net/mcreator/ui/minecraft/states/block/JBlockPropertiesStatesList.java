@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
-import net.mcreator.element.types.Block;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -43,6 +42,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JBlockPropertiesStatesList extends JEntriesList {
 
@@ -160,7 +160,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private JBlockPropertiesListEntry addPropertiesEntry(PropertyData<?> data) {
 		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
 		if (data != null) // complete initialization if property data is supplied
-			pe.setProperty(new PropertyDataWithValue<>(data, null));
+			pe.setEntry(new PropertyDataWithValue<>(data, null));
 		registerEntryUI(pe);
 		return pe;
 	}
@@ -172,11 +172,11 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertyEntries.repaint();
 	}
 
-	public List<Block.PropertyEntry> getProperties() {
-		return propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).toList();
+	public List<PropertyDataWithValue<?>> getProperties() {
+		return propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).collect(Collectors.toList());
 	}
 
-	public void setProperties(List<Block.PropertyEntry> properties) {
+	public void setProperties(List<PropertyDataWithValue<?>> properties) {
 		properties.forEach(entry -> addPropertiesEntry(null).setEntry(entry));
 	}
 

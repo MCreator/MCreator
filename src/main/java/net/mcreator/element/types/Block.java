@@ -32,7 +32,6 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -81,7 +80,7 @@ import java.util.stream.Collectors;
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
 
-	public List<PropertyEntry> customProperties;
+	public List<PropertyDataWithValue<?>> customProperties;
 
 	public String name;
 	public StringListProcedure specialInformation;
@@ -391,16 +390,6 @@ import java.util.stream.Collectors;
 
 	public TextureHolder getParticleTexture() {
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
-	}
-
-	public static class PropertyEntry {
-
-		public PropertyDataWithValue<?> data;
-
-		public PropertyData<?> property() {
-			return data.property();
-		}
-
 	}
 
 }

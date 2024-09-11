@@ -1174,12 +1174,9 @@ public class TestWorkspaceDataProvider {
 			block.enablePitch = !_true;
 			block.customProperties = new ArrayList<>();
 			if (!emptyLists) {
-				Block.PropertyEntry propEntry = new Block.PropertyEntry();
-				propEntry.data = new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true);
-				block.customProperties.add(propEntry);
-				propEntry = new Block.PropertyEntry();
-				propEntry.data = new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4);
-				block.customProperties.add(propEntry);
+				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
+				block.customProperties.add(
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;

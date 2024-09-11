@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
-import net.mcreator.element.types.Block;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -114,17 +113,11 @@ public class JBlockPropertiesListEntry extends JPanel {
 		return data;
 	}
 
-	@SuppressWarnings("unchecked") public Block.PropertyEntry getEntry() {
-		Block.PropertyEntry entry = new Block.PropertyEntry();
-		entry.data = new PropertyDataWithValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
-		return entry;
+	@SuppressWarnings("unchecked") public PropertyDataWithValue<?> getEntry() {
+		return new PropertyDataWithValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
 	}
 
-	public void setEntry(Block.PropertyEntry entry) {
-		setProperty(entry.data);
-	}
-
-	public void setProperty(PropertyDataWithValue<?> prop) {
+	public void setEntry(PropertyDataWithValue<?> prop) {
 		data = prop.property();
 		nameLabel.setText(data.getName().replace("CUSTOM:", ""));
 		nameLabel.setToolTipText(nameLabel.getText());
