@@ -1,4 +1,6 @@
 _default: Attributes.MAX_HEALTH
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@JavaModNameAttributes.@REGISTRYNAME.get()"
 MAX_HEALTH: Attributes.MAX_HEALTH
 FOLLOW_RANGE: Attributes.FOLLOW_RANGE
 KNOCKBACK_RESISTANCE: Attributes.KNOCKBACK_RESISTANCE
