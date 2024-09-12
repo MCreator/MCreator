@@ -58,6 +58,8 @@ public class ArrayListListModel<T> extends AbstractListModel<T> implements List<
 
 	@Override public boolean remove(Object o) {
 		int location = list.indexOf(o);
+		if (location == -1)
+			return false;
 		boolean remove = list.remove(o);
 		fireIntervalRemoved(this, location, location);
 		return remove;

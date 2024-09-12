@@ -314,8 +314,8 @@ e -> {
 <#if hasProcedure(component.displayCondition)>
 {
 	@Override public void renderWidget(GuiGraphics guiGraphics, int gx, int gy, float ticks) {
-		if (<@procedureOBJToConditionCode component.displayCondition/>)
-			super.renderWidget(guiGraphics, gx, gy, ticks);
+		this.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+		super.renderWidget(guiGraphics, gx, gy, ticks);
 	}
 }
 </#if>

@@ -56,12 +56,14 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 					ConverterUtils.findSuitableModElementName(workspace,
 							input.getModElement().getName() + "Projectile"), ModElementType.PROJECTILE));
 
+			boolean hasAmmoItem = rangedItem.get("ammoItem") != null && !rangedItem.get("ammoItem").getAsJsonObject().get("value")
+					.getAsString().isEmpty();
+
 			if (rangedItem.get("bulletItemTexture") != null && !rangedItem.get("bulletItemTexture").getAsJsonObject()
 					.get("value").getAsString().isEmpty())
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItem.get("bulletItemTexture").getAsJsonObject().get("value").getAsString());
-			else if (rangedItem.get("ammoItem") != null && !rangedItem.get("ammoItem").getAsJsonObject().get("value")
-					.getAsString().isEmpty())
+			else if (hasAmmoItem)
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItem.get("ammoItem").getAsJsonObject().get("value").getAsString());
 			else
@@ -163,6 +165,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			}
 
 			item.enableRanged = true;
+			item.projectileDisableAmmoCheck = !hasAmmoItem;
 			item.shootConstantly = rangedItem.get("shootConstantly").getAsBoolean();
 			item.projectile = new ProjectileEntry(workspace, "CUSTOM:" + projectile.getModElement().getName());
 			item.enableMeleeDamage = rangedItem.get("enableMeleeDamage").getAsBoolean();

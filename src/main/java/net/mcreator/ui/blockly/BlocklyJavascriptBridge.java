@@ -373,9 +373,7 @@ public final class BlocklyJavascriptBridge {
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}
-		default -> {
-			return "";
-		}
+		default -> datalist = type;
 		}
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
 				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
