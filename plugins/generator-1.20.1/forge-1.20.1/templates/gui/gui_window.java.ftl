@@ -133,6 +133,26 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
+		<#list data.getComponentsOfType("Sprite") as component>
+			<#if component.spriteDirection == "Horizontal">
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+						0, 0,
+						<@getSpriteDisplayedSize component "width"/>, ${component.getHeight(w.getWorkspace())},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
+			<#else>
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+						0, 0,
+						${component.getWidth(w.getWorkspace())}, <@getSpriteDisplayedSize component "height"/>,
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
+			</#if>
+		</#list>
+
 		RenderSystem.disableBlend();
 	}
 
@@ -290,5 +310,17 @@ e -> {
 	}
 }
 </#if>
+</#macro>
+
+<#macro getSpriteDisplayedSize component dim>
+	<#if hasProcedure(component.spriteDisplayedSize)>
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteDisplayedSize/>, 0, <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>)
+	<#else>
+		<#if dim == "width">
+			${component.getWidth(w.getWorkspace())}
+		<#else>
+			${component.getHeight(w.getWorkspace())}
+		</#if>
+	</#if>
 </#macro>
 <#-- @formatter:on -->

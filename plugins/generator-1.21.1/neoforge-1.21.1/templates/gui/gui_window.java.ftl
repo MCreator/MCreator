@@ -136,6 +136,26 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
+		<#list data.getComponentsOfType("Sprite") as component>
+			<#if component.spriteDirection == "Horizontal">
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+						0, 0,
+						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+						<@getSpriteDisplayedSize component "width"/>, ${component.getHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
+			<#else>
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+						0, 0,
+						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+						${component.getWidth(w.getWorkspace())}, <@getSpriteDisplayedSize component "height"/>);
+				<#if hasProcedure(component.displayCondition)>}</#if>
+			</#if>
+		</#list>
+
 		RenderSystem.disableBlend();
 	}
 
@@ -319,5 +339,17 @@ e -> {
 	}
 }
 </#if>
+</#macro>
+
+<#macro getSpriteDisplayedSize component dim>
+	<#if hasProcedure(component.spriteDisplayedSize)>
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteDisplayedSize/>, 0, <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>)
+	<#else>
+		<#if dim == "width">
+			${component.getWidth(w.getWorkspace())}
+		<#else>
+			${component.getHeight(w.getWorkspace())}
+		</#if>
+	</#if>
 </#macro>
 <#-- @formatter:on -->

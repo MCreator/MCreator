@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -129,6 +130,11 @@ import java.util.*;
 		}
 
 		return false;
+	}
+
+	public boolean hasSprite() {
+		return !workspace.getModElements().stream().map(ModElement::getGeneratableElement)
+				.filter(ge -> ge instanceof IGUI gui && !gui.getComponentsOfType("Sprite").isEmpty()).toList().isEmpty();
 	}
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {

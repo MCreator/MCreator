@@ -87,6 +87,26 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>}</#if>
             </#list>
 
+        		<#list data.getComponentsOfType("Sprite") as component>
+        			<#if component.spriteDirection == "Horizontal">
+        				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+        						0, 0,
+        						<@calculatePosition component/>,
+        						<@getSpriteDisplayedSize component "width"/>, ${component.getHeight(w.getWorkspace())});
+        				<#if hasProcedure(component.displayCondition)>}</#if>
+        			<#else>
+        				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+        						0, 0,
+        						<@calculatePosition component/>,
+        						${component.getWidth(w.getWorkspace())}, <@getSpriteDisplayedSize component "height"/>);
+        				<#if hasProcedure(component.displayCondition)>}</#if>
+        			</#if>
+        		</#list>
+
             <#list data.getComponentsOfType("Label") as component>
                 <#if hasProcedure(component.displayCondition)>
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
@@ -165,6 +185,18 @@ package ${package}.client.screens;
 		w / 2 + ${component.x - (213 - x_offset)}, h - ${240 - (component.y + y_offset)}
 	<#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
 		w - ${427 - (component.x + x_offset)}, h - ${240 - (component.y + y_offset)}
+	</#if>
+</#macro>
+
+<#macro getSpriteDisplayedSize component dim>
+	<#if hasProcedure(component.spriteDisplayedSize)>
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteDisplayedSize/>, 0, <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>)
+	<#else>
+		<#if dim == "width">
+			${component.getWidth(w.getWorkspace())}
+		<#else>
+			${component.getHeight(w.getWorkspace())}
+		</#if>
 	</#if>
 </#macro>
 <#-- @formatter:on -->
