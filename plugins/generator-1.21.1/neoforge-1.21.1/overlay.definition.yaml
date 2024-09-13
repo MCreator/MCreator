@@ -5,7 +5,7 @@ templates:
 global_templates:
   - template: json/gui_sprite.json.ftl
     name: "@RESROOT/assets/minecraft/atlases/gui.json"
-    condition: hasSprite()
+    condition: "${w.getGElementsOfType('overlay')?filter(e -> !e.getComponentsOfType('Sprite').isEmpty())?size != 0}"
 
 localizationkeys:
   - fromlist: data.getFixedTextLabels()

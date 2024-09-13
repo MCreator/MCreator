@@ -17,7 +17,7 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
   - template: json/gui_sprite.json.ftl
     name: "@RESROOT/assets/minecraft/atlases/gui.json"
-    condition: hasSprite()
+    condition: "${w.getGElementsOfType('gui')?filter(e -> !e.getComponentsOfType('Sprite').isEmpty())?size != 0}"
 
 localizationkeys:
   - fromlist: data.getFixedTextLabels()
