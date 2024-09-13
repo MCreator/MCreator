@@ -118,47 +118,11 @@ tasks.register('exportMac') {
     }
 }
 
+// Utility functions below
+
 static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
-
-void makeDMG(File directory, File outputDMGFile, String volumeName) {
-    if (Os.isFamily(Os.FAMILY_MAC)) {
-        exec {
-            commandLine 'create-dmg',
-                    '--volname', volumeName,
-                    '--volicon', 'platform/mac/volume.icns',
-                    '--background', 'platform/mac/diskimage.png',
-                    '--window-pos', '200', '120',
-                    '--window-size', '480', '325',
-                    '--icon-size', '100',
-                    '--icon', 'MCreator.app', '145', '121',
-                    '--hide-extension', 'MCreator.app',
-                    '--text-size', '10',
-                    '--app-drop-link', '337', '121',
-                    '--eula', 'LICENSE.txt',
-                    '--format', 'ULMO',
-                    outputDMGFile,
-                    directory
-        }
-    } else {
-        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: outputDMGFile)
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: volumeName)
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: directory)
-        }
-    }
-}
-
-// Utility functions below
 
 void signAndNotarizeAPP(File appDirectory) {
     // Sign native libraries
@@ -266,5 +230,41 @@ static void zipJar(File folder, File outputFile) {
             }
         }
         zipOutputStream.close()
+    }
+}
+
+void makeDMG(File directory, File outputDMGFile, String volumeName) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        exec {
+            commandLine 'create-dmg',
+                    '--volname', volumeName,
+                    '--volicon', 'platform/mac/volume.icns',
+                    '--background', 'platform/mac/diskimage.png',
+                    '--window-pos', '200', '120',
+                    '--window-size', '480', '325',
+                    '--icon-size', '100',
+                    '--icon', 'MCreator.app', '145', '121',
+                    '--hide-extension', 'MCreator.app',
+                    '--text-size', '10',
+                    '--app-drop-link', '337', '121',
+                    '--eula', 'LICENSE.txt',
+                    '--format', 'ULMO',
+                    outputDMGFile,
+                    directory
+        }
+    } else {
+        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: outputDMGFile)
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: volumeName)
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: directory)
+        }
     }
 }
