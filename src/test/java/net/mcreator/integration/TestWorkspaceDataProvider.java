@@ -575,9 +575,9 @@ public class TestWorkspaceDataProvider {
 			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2"),
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition3"),
-					new Procedure("number1")));
+					new Procedure("number1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition4"),
-					new Procedure("number2")));
+					new Procedure("number2"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false,
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(
