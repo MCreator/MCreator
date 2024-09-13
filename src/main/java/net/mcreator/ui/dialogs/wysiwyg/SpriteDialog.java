@@ -22,7 +22,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Sprite;
-import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -35,7 +34,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.util.Map;
 
 public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 	public SpriteDialog(WYSIWYGEditor editor, @Nullable Sprite sprite) {
@@ -49,13 +47,17 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
-		TranslatedComboBox spriteDirection = new TranslatedComboBox(
-				Map.entry("Horizontal", "dialog.gui.sprite_direction_horizontal"),
-				Map.entry("Vertical", "dialog.gui.sprite_direction_vertical"));
+
+		JSpinner spriteWidth = new JSpinner(new SpinnerNumberModel(16, 0, Integer.MAX_VALUE, 1));
+		JSpinner spriteHeight = new JSpinner(new SpinnerNumberModel(16, 0, Integer.MAX_VALUE, 1));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector));
-		options.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_direction"),
-				L10N.label("dialog.gui.sprite_direction")), spriteDirection));
+		options.add(PanelUtils.join(
+				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_size"), L10N.label("dialog.gui.sprite_size")),
+				PanelUtils.gridElements(1, 2,
+						PanelUtils.join(L10N.label("dialog.gui.sprite_width"), spriteWidth),
+						PanelUtils.join(L10N.label("dialog.gui.sprite_height"), spriteHeight))
+		));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
@@ -70,14 +72,14 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		ProcedureSelector spriteDisplayedSize = new ProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/sprite_displayed_size"), editor.mcreator,
-				L10N.t("dialog.gui.sprite_displayed_size"), ProcedureSelector.Side.CLIENT, false,
+		ProcedureSelector spriteIndex = new ProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator,
+				L10N.t("dialog.gui.sprite_index"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		spriteDisplayedSize.refreshList();
+		spriteIndex.refreshList();
 
-		options.add(PanelUtils.gridElements(1, 2, 5, 5, displayCondition, spriteDisplayedSize));
+		options.add(PanelUtils.gridElements(1, 2, 5, 5, displayCondition, spriteIndex));
 
 		add("Center", options);
 
@@ -91,9 +93,10 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		if (sprite != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setTextureFromTextureName(sprite.sprite);
-			spriteDirection.setSelectedItem(sprite.spriteDirection);
+			spriteWidth.setValue(sprite.spriteWidth);
+			spriteHeight.setValue(sprite.spriteHeight);
 			displayCondition.setSelectedProcedure(sprite.displayCondition);
-			spriteDisplayedSize.setSelectedProcedure(sprite.spriteDisplayedSize);
+			spriteIndex.setSelectedProcedure(sprite.spriteIndex);
 			anchor.setSelectedItem(sprite.anchorPoint);
 		}
 
@@ -102,8 +105,8 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			setVisible(false);
 			if (textureSelector.hasTexture()) {
 				if (sprite == null) {
-					Sprite component = new Sprite(0, 0, textureSelector.getTextureName(), spriteDirection.getSelectedItem(),
-							displayCondition.getSelectedProcedure(), spriteDisplayedSize.getSelectedProcedure());
+					Sprite component = new Sprite(0, 0, textureSelector.getTextureName(), (int) spriteWidth.getValue(), (int) spriteHeight.getValue(),
+							displayCondition.getSelectedProcedure(), spriteIndex.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					setEditingComponent(component);
@@ -113,8 +116,8 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				} else {
 					int idx = editor.components.indexOf(sprite);
 					editor.components.remove(sprite);
-					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(), spriteDirection.getSelectedItem(),
-							displayCondition.getSelectedProcedure(), spriteDisplayedSize.getSelectedProcedure());
+					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(), (int) spriteWidth.getValue(), (int) spriteHeight.getValue(),
+							displayCondition.getSelectedProcedure(), spriteIndex.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						spriteNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, spriteNew);
