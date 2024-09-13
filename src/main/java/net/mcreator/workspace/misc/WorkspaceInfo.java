@@ -132,11 +132,6 @@ import java.util.*;
 		return false;
 	}
 
-	public boolean hasSprite() {
-		return !workspace.getModElements().stream().map(ModElement::getGeneratableElement)
-				.filter(ge -> ge instanceof IGUI gui && !gui.getComponentsOfType("Sprite").isEmpty()).toList().isEmpty();
-	}
-
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).toList();
