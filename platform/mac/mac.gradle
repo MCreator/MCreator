@@ -165,12 +165,15 @@ void signAndNotarizeAPP(File appDirectory) {
     def libraries = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && (it.name.endsWith('.dylib') || it.name.endsWith('.jnilib')) }
     libraries.each { signFile(it) }
 
-    // Sign the app
-    signFile(appDirectory)
-
     // Sign the natives in the JAR files (excluding JavaFX as they are already signed)
     def jarFiles = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.jar') && !it.name.contains("javafx") }
     jarFiles.each { signNativesInJarFile(it) }
+
+    // Sign the main binary
+    signFile(new File(appDirectory, "Contents/MacOS/mcreator"))
+
+    // Finally, after others are signed, sign the app
+    signFile(appDirectory)
 
     // Notarize provided app
     if (Os.isFamily(Os.FAMILY_MAC) && System.getenv('MACOS_CERTIFICATE_NAME') != null) {
@@ -239,6 +242,7 @@ void signNativesInJarFile(File file) {
         println("Zipping $file back as natives were found and signed")
 
         // Zip JAR back with signed natives, if any were found
+        file.delete() // Delete the original JAR first
         zipJar(tempDir, file)
     }
 
