@@ -139,7 +139,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
 						<@getSpriteByIndex component "width"/>, 0,
 						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
@@ -147,7 +147,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>}</#if>
 			<#else>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
 						0, <@getSpriteByIndex component "height"/>,
 						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},

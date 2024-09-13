@@ -574,9 +574,9 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2"),
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
-			components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition3"),
+			components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition1"),
 					new Procedure("number1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
-			components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition4"),
+			components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition2"),
 					new Procedure("number2"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false,
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
@@ -618,8 +618,8 @@ public class TestWorkspaceDataProvider {
 
 				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition3"), new Procedure("number1")));
-				components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition4"), new Procedure("number2")));
+				components.add(new Sprite(25, 30, "sprite2", 16, 16, new Procedure("condition3"), new Procedure("number3")));
+				components.add(new Sprite(30, 35, "sprite3", 32, 16, new Procedure("condition4"), new Procedure("number4")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, _true, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));

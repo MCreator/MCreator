@@ -90,7 +90,7 @@ package ${package}.client.screens;
         		<#list data.getComponentsOfType("Sprite") as component>
         			<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
         				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
         						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
         						<@getSpriteByIndex component "width"/>, 0,
         						<@calculatePosition component/>,
@@ -98,7 +98,7 @@ package ${package}.client.screens;
         				<#if hasProcedure(component.displayCondition)>}</#if>
         			<#else>
         				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:${component.sprite?remove_ending(".png")}"),
+        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
         						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
         						0, <@getSpriteByIndex component "height"/>,
         						<@calculatePosition component/>,
