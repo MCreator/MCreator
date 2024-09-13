@@ -1,1 +1,0 @@
-If specified, the height/width (according to the sprite direction) in pixels will set to this value, otherwise the sprite height/width will set to the texture height/width

@@ -1,0 +1,1 @@
+Specifies the index of the sprite to be displayed.
