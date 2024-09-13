@@ -614,8 +614,8 @@ public class TestWorkspaceDataProvider {
 
 				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
-				components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition3"), new NumberProcedure("procedure1", 0)));
-				components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition4"), new NumberProcedure("procedure2", 0)));
+				components.add(new Sprite(25, 30, "sprite1", 16, 16, new Procedure("condition3"), new NumberProcedure("number1", 0)));
+				components.add(new Sprite(30, 35, "sprite2", 32, 16, new Procedure("condition4"), new NumberProcedure("number2", 0)));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, _true, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));
