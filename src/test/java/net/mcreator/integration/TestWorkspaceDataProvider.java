@@ -306,7 +306,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
-			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armorTexture");
+			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armor_texture");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 		}
@@ -841,7 +841,7 @@ public class TestWorkspaceDataProvider {
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
-			armor.armorTextureFile = "armorTexture";
+			armor.armorTextureFile = "armor_texture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
@@ -2177,7 +2177,7 @@ public class TestWorkspaceDataProvider {
 		workspaceSettings.setAuthor("Unit tests");
 		workspaceSettings.setLicense("GPL 3.0");
 		workspaceSettings.setWebsiteURL("https://mcreator.net/");
-		workspaceSettings.setUpdateURL("https://mcreator.net/");
+		workspaceSettings.setUpdateURL("");
 		workspaceSettings.setModPicture("example");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
