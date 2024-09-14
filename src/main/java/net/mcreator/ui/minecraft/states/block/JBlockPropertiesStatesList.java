@@ -48,14 +48,14 @@ import java.util.stream.Collectors;
 
 public class JBlockPropertiesStatesList extends JEntriesList {
 
-	private final Map<?, ?> blockBaseProperties;
-	private final List<String> forbiddenProperties = new ArrayList<>();
-
 	private final List<JBlockPropertiesListEntry> propertiesList = new ArrayList<>();
 
 	private final JPanel propertyEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+
+	private final Map<?, ?> blockBaseProperties;
+	private final List<String> forbiddenProperties = new ArrayList<>();
 	private String blockBase;
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui, ModElement modElement) {
