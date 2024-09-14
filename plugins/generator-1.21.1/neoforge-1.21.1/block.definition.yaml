@@ -388,6 +388,19 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+block_base_properties:
+  _default: [axis, face, facing, waterlogged]
+  Stairs: [half, shape]
+  Slab: [type]
+  Fence: [north, south, west, east]
+  Wall: [up, north, south, west, east]
+  TrapDoor: [half, open]
+  Pane: [north, south, west, east]
+  Door: [half, hinge, open]
+  FenceGate: [in_wall, open]
+  PressurePlate: [powered]
+  Button: [powered]
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
