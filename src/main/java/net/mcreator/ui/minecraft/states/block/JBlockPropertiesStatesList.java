@@ -60,8 +60,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui, ModElement modElement) {
 		super(mcreator, new BorderLayout(0, 10), gui);
-		this.blockBaseProperties = (Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
-				.getDefinitionsProvider().getModElementDefinition(modElement.getType()).get("block_base_properties");
+		this.blockBaseProperties = Objects.requireNonNullElse(
+				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+				Collections.emptyMap());
 		if (this.blockBaseProperties.get("_default") instanceof List<?> commonProps) {
 			for (Object commonProp : commonProps)
 				forbiddenProperties.add(commonProp.toString());
@@ -208,8 +210,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		for (JBlockPropertiesListEntry entry : propertiesList) {
 			if (forbiddenProperties.contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
 				entry.setBorder(
-						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 2),
-								BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
+								BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 				validationResult = new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.block.custom_properties.error_overrides_block_base"));
 			} else {
