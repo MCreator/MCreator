@@ -179,6 +179,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Verify Java files
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
+
+						if (generatorConfiguration.getGradleTaskFor("run_server") != null) {
+							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
+									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
+						}
 					}
 
 					// Verify JSON files
