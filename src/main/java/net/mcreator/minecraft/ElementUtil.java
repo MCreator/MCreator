@@ -49,8 +49,12 @@ public class ElementUtil {
 	 * @param type The type that the entry has to match
 	 * @return A predicate that checks if the type matches the parameter
 	 */
-	public static Predicate<DataListEntry> typeMatches(String type) {
-		return e -> type.equals(e.getType());
+	public static Predicate<DataListEntry> typeMatches(String... type) {
+		if (type.length == 1) {
+			return e -> type[0].equals(e.getType());
+		} else {
+			return e -> Arrays.asList(type).contains(e.getType());
+		}
 	}
 
 	/**
@@ -285,7 +289,7 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName());
+				return VariableTypeLoader.BuiltInTypes.LOGIC.getName().equals(modelement.getMetadata("type"));
 			return false;
 		});
 
@@ -297,7 +301,7 @@ public class ElementUtil {
 	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
 			if (modelement.getType() == ModElementType.GAMERULE)
-				return modelement.getMetadata("type").equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName());
+				return VariableTypeLoader.BuiltInTypes.NUMBER.getName().equals(modelement.getMetadata("type"));
 			return false;
 		});
 
