@@ -55,13 +55,13 @@ import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -306,18 +306,26 @@ public class TestWorkspaceDataProvider {
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
-			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armorTexture");
+			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armor_texture");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 		}
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			byte[] emptyNbtStucture;
+			try {
+				emptyNbtStucture = IOUtils.resourceToByteArray("/empty.nbt");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+			FileIO.writeBytesToFile(emptyNbtStucture,
+					new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
@@ -841,7 +849,7 @@ public class TestWorkspaceDataProvider {
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
-			armor.armorTextureFile = "armorTexture";
+			armor.armorTextureFile = "armor_texture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
@@ -1095,6 +1103,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = "Default";
 			projectile.customModelTexture = "";
+			projectile.modelWidth = 0.4;
+			projectile.modelHeight = 1.3;
 			projectile.onHitsBlock = new Procedure("procedure1");
 			projectile.onHitsEntity = new Procedure("procedure2");
 			projectile.onHitsPlayer = new Procedure("procedure3");
@@ -2183,7 +2193,7 @@ public class TestWorkspaceDataProvider {
 		workspaceSettings.setAuthor("Unit tests");
 		workspaceSettings.setLicense("GPL 3.0");
 		workspaceSettings.setWebsiteURL("https://mcreator.net/");
-		workspaceSettings.setUpdateURL("https://mcreator.net/");
+		workspaceSettings.setUpdateURL("");
 		workspaceSettings.setModPicture("example");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());

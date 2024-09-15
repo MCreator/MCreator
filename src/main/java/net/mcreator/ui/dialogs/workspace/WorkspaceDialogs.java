@@ -41,7 +41,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -260,8 +260,8 @@ public class WorkspaceDialogs {
 			});
 
 			modName.setValidator(new Validator() {
-				private final Validator parent = new TextFieldValidatorJSON(modName,
-						L10N.t("dialog.workspace_settings.mod_name.invalid"), false);
+				private final Validator parent = new TextFieldValidator(modName,
+						L10N.t("dialog.workspace_settings.mod_name.invalid"));
 
 				@Override public ValidationResult validate() {
 					if (modName.getText().matches(".*\\d+.*"))
@@ -272,27 +272,18 @@ public class WorkspaceDialogs {
 				}
 			});
 
-			version.setValidator(
-					new TextFieldValidatorJSON(version, L10N.t("dialog.workspace_settings.version.error"), false) {
-						@Override public ValidationResult validate() {
-							try {
-								ModuleDescriptor.Version.parse(version.getText());
-							} catch (Exception e) {
-								return new ValidationResult(ValidationResultType.ERROR,
-										L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
-							}
+			version.setValidator(new TextFieldValidator(version, L10N.t("dialog.workspace_settings.version.error")) {
+				@Override public ValidationResult validate() {
+					try {
+						ModuleDescriptor.Version.parse(version.getText());
+					} catch (Exception e) {
+						return new ValidationResult(ValidationResultType.ERROR,
+								L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
+					}
 
-							return super.validate();
-						}
-					});
-
-			description.setValidator(
-					new TextFieldValidatorJSON(description, L10N.t("dialog.workspace_settings.description.error"),
-							true));
-			author.setValidator(
-					new TextFieldValidatorJSON(author, L10N.t("dialog.workspace_settings.author.error"), true));
-			websiteURL.setValidator(
-					new TextFieldValidatorJSON(author, L10N.t("dialog.workspace_settings.website.error"), true));
+					return super.validate();
+				}
+			});
 
 			((AbstractDocument) modID.getDocument()).setDocumentFilter(new DocumentFilter() {
 				@Override
@@ -339,9 +330,6 @@ public class WorkspaceDialogs {
 			validationGroup.addValidationElement(modName);
 			validationGroup.addValidationElement(modID);
 			validationGroup.addValidationElement(version);
-			validationGroup.addValidationElement(description);
-			validationGroup.addValidationElement(websiteURL);
-			validationGroup.addValidationElement(author);
 
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
@@ -430,13 +418,6 @@ public class WorkspaceDialogs {
 				descriptionSettings.add(license);
 
 				_basicSettings.add(new JEmptyBox(5, 5));
-
-				credits.setValidator(
-						new TextFieldValidatorJSON(credits, L10N.t("dialog.workspace_settings.credits.error"), true));
-				credits.enableRealtimeValidation();
-
-				validationGroup.addValidationElement(credits);
-
 			}
 
 			validationGroup.addValidationElement(packageName);

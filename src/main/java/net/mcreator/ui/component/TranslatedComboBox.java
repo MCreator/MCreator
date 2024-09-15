@@ -27,25 +27,23 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TranslatedComboBox extends VComboBox<String> {
 
 	@SafeVarargs public TranslatedComboBox(Map.Entry<String, String>... entries) {
 		final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 		for (Map.Entry<String, String> entry : entries) {
-			map.put(entry.getKey(), entry.getValue());
+			map.put(entry.getKey(), L10N.t(entry.getValue()));
 		}
 		map.forEach((key, value) -> super.addItem(key));
 		setRenderer(new BasicComboBoxRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
-				String translationKey = map.get(value.toString());
-				if (translationKey != null) {
-					return super.getListCellRendererComponent(list, L10N.t(translationKey), index, isSelected,
-							cellHasFocus);
-				}
-				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				String translatedEntryString = map.get(value.toString());
+				return super.getListCellRendererComponent(list,
+						Objects.requireNonNullElse(translatedEntryString, value), index, isSelected, cellHasFocus);
 			}
 		});
 	}
