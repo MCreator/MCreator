@@ -55,13 +55,13 @@ import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -312,12 +312,20 @@ public class TestWorkspaceDataProvider {
 		}
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			byte[] emptyNbtStucture;
+			try {
+				emptyNbtStucture = IOUtils.resourceToByteArray("/empty.nbt");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+			FileIO.writeBytesToFile(emptyNbtStucture,
+					new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(new byte[0],
+			FileIO.writeBytesToFile(emptyNbtStucture,
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
