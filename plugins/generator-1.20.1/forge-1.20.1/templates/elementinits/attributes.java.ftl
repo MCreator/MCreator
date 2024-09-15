@@ -59,11 +59,14 @@ public class ${JavaModName}Attributes {
 				.filter(DefaultAttributes::hasSupplier)
 				.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
 				.collect(Collectors.toList()).forEach(entity -> event.add(entity, ${attribute.getModElement().getRegistryNameUpper()}.get()));
+				<#if attribute.addToPlayers>
+					event.add(EntityType.PLAYER, ${attribute.getModElement().getRegistryNameUpper()}.get());
+				</#if>
 			</#if>
 		</#list>
 	}
 
-	<#assign playerAttributes = attributes?filter(a -> a.entities?seq_contains("Player") || a.entities?seq_contains("ServerPlayer") || a.addToAllEntities)>
+	<#assign playerAttributes = attributes?filter(a -> a.addToPlayers || a.addToAllEntities)>
 	<#if playerAttributes?size != 0>
 	@Mod.EventBusSubscriber public static class PlayerAttributesSync {
 		@SubscribeEvent public static void playerClone(PlayerEvent.Clone event) {

@@ -59,6 +59,9 @@ public class ${JavaModName}Attributes {
 				.filter(DefaultAttributes::hasSupplier)
 				.map(entityType -> (EntityType<? extends LivingEntity>) entityType)
 				.collect(Collectors.toList()).forEach(entity -> event.add(entity, ${attribute.getModElement().getRegistryNameUpper()}));
+				<#if attribute.addToPlayers>
+					event.add(EntityType.PLAYER, ${attribute.getModElement().getRegistryNameUpper()});
+				</#if>
 			</#if>
 		</#list>
 	}

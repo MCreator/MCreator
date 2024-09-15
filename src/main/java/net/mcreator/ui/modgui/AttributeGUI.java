@@ -45,6 +45,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public AttributeGUI(MCreator mcreator, ModElement element, boolean editingMode) {
@@ -54,7 +55,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel pane1 = new JPanel(new GridLayout(5, 2, 5, 2));
+		JPanel pane1 = new JPanel(new GridLayout(6, 2, 5, 2));
 		pane1.setOpaque(false);
 
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
@@ -73,12 +74,18 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_all_entities"),
 				L10N.label("elementgui.attribute.add_to_all_entities")));
 		pane1.add(addToAllEntities);
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_players"),
+				L10N.label("elementgui.attribute.add_to_players")));
+		pane1.add(addToPlayers);
 
 		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/entities"),
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> entities.setEnabled(!addToAllEntities.isSelected()));
+		addToAllEntities.addActionListener((e) -> {
+			addToPlayers.setEnabled(!addToAllEntities.isSelected());
+			entities.setEnabled(!addToAllEntities.isSelected());
+		});
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.attribute.needs_name")));
 		name.enableRealtimeValidation();
@@ -86,7 +93,12 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 		entities.setValidator(
 				new ConditionalItemListFieldValidator(entities, L10N.t("elementgui.attribute.needs_entity"),
-						addToAllEntities, false));
+						new JCheckBox() {
+							@Override
+							public boolean isSelected() {
+								return addToAllEntities.isSelected() || addToPlayers.isSelected();
+							}
+						}, false));
 		page1group.addValidationElement(entities);
 
 		addPage(PanelUtils.totalCenterInPanel(pane1));
@@ -103,6 +115,8 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		minMaxValue.setMinValue(attribute.minValue);
 		minMaxValue.setMaxValue(attribute.maxValue);
 		addToAllEntities.setSelected(attribute.addToAllEntities);
+		addToPlayers.setSelected(attribute.addToPlayers);
+		addToPlayers.setEnabled(!attribute.addToAllEntities);
 		entities.setListElements(attribute.entities);
 		entities.setEnabled(!attribute.addToAllEntities);
 	}
@@ -115,6 +129,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.minValue = minMaxValue.getMinValue();
 		attribute.maxValue = minMaxValue.getMaxValue();
 		attribute.addToAllEntities = addToAllEntities.isSelected();
+		attribute.addToPlayers = addToPlayers.isSelected();
 		attribute.entities = entities.getListElements();
 
 		return attribute;
