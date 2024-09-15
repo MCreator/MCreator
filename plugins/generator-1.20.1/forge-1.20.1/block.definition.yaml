@@ -389,7 +389,6 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
 block_base_properties:
-  _default: [axis, face, facing, waterlogged]
   Stairs: [half, shape]
   Slab: [type]
   Fence: [north, south, west, east]

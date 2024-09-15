@@ -212,7 +212,7 @@ public class ${name}Block extends
 	    	.setValue(AXIS, Direction.Axis.Y)
 	    	</#if>
 			<#list data.customProperties as prop>
-				.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
+			.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
 			</#list>
 	    	<#if data.isWaterloggable>
 	    	.setValue(WATERLOGGED, false)
@@ -349,7 +349,7 @@ public class ${name}Block extends
 
 	<#macro initCustomBlockStateProperties>
 		<#list data.customProperties as prop>
-			.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
+		.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
 		</#list>
 	</#macro>
 
