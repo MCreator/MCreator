@@ -33,10 +33,12 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,16 +48,27 @@ import java.util.stream.Collectors;
 
 public class JBlockPropertiesStatesList extends JEntriesList {
 
-	private final static List<String> hardCodedProperties = List.of("axis", "face", "facing", "waterlogged");
-
 	private final List<JBlockPropertiesListEntry> propertiesList = new ArrayList<>();
 
 	private final JPanel propertyEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
 
-	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
+	private final Map<?, ?> blockBaseProperties;
+	private final List<String> forbiddenProperties = new ArrayList<>();
+	private String blockBase;
+
+	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui, ModElement modElement) {
 		super(mcreator, new BorderLayout(0, 10), gui);
+		this.blockBaseProperties = Objects.requireNonNullElse(
+				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+				Collections.emptyMap());
+		if (this.blockBaseProperties.get("_default") instanceof List<?> commonProps) {
+			for (Object commonProp : commonProps)
+				forbiddenProperties.add(commonProp.toString());
+		}
+
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
 
@@ -110,7 +123,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		VTextField name = new VTextField(20);
 		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> propertiesList.stream().map(e -> e.getPropertyData().getName()), hardCodedProperties,
+				() -> propertiesList.stream().map(e -> e.getPropertyData().getName()), forbiddenProperties,
 				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
 		name.enableRealtimeValidation();
 		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer" });
@@ -172,12 +185,40 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertyEntries.repaint();
 	}
 
+	public void updateBlockBase(String blockBase) {
+		if (this.blockBase != null && blockBaseProperties.get(this.blockBase) instanceof List<?> props) {
+			for (Object prop : props)
+				forbiddenProperties.remove(prop.toString());
+		}
+		this.blockBase = blockBase;
+		if (this.blockBase != null && blockBaseProperties.get(this.blockBase) instanceof List<?> newProps) {
+			for (Object newProp : newProps)
+				forbiddenProperties.add(newProp.toString());
+		}
+	}
+
 	public List<PropertyDataWithValue<?>> getProperties() {
 		return propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).collect(Collectors.toList());
 	}
 
 	public void setProperties(List<PropertyDataWithValue<?>> properties) {
 		properties.forEach(entry -> addPropertiesEntry(null).setEntry(entry));
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
+		for (JBlockPropertiesListEntry entry : propertiesList) {
+			if (forbiddenProperties.contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
+				entry.setBorder(
+						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
+								BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+				validationResult = new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.block.custom_properties.error_overrides_block_base"));
+			} else {
+				entry.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			}
+		}
+		return validationResult;
 	}
 
 }

@@ -278,6 +278,7 @@ public class ${name}Block extends
 
 	<#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		<#assign props = []>
 		<#if data.rotationMode == 5>
 			<#assign props += ["AXIS"]>
@@ -302,7 +303,7 @@ public class ${name}Block extends
 		boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 		</#if>
 		<#if data.rotationMode != 3>
-		return this.defaultBlockState()
+		return super.getStateForPlacement(context)
 			<#if data.rotationMode == 1>
 			    <#if data.enablePitch>
 			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
@@ -321,7 +322,7 @@ public class ${name}Block extends
 			</#if>;
 		<#elseif data.rotationMode == 3>
 	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-	        return this.defaultBlockState()
+	        return super.getStateForPlacement(context)
 	    		<#if data.enablePitch>
 	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
 	    		    .setValue(FACING, context.getHorizontalDirection())
@@ -333,7 +334,7 @@ public class ${name}Block extends
 	    		.setValue(WATERLOGGED, flag)
 	    		</#if>;
 
-	    return this.defaultBlockState()
+	    return super.getStateForPlacement(context)
 	    	<#if data.enablePitch>
 	    	    .setValue(FACE, AttachFace.WALL)
 	    	</#if>

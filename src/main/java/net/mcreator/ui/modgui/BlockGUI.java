@@ -354,7 +354,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this);
+		blockStates = new JBlockPropertiesStatesList(mcreator, this, modElement);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		blockBase.addActionListener(e -> {
@@ -429,6 +429,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
+			blockStates.updateBlockBase(blockBase.getSelectedItem());
 		});
 
 		renderType.addActionListener(e -> updateTextureOptions());
@@ -1349,10 +1350,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
 		else if (page == 2)
+			return blockStates.getValidationResult();
+		else if (page == 3)
 			return new AggregatedValidationResult(page3group);
-		else if (page == 4)
+		else if (page == 5)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 7)
+		else if (page == 8)
 			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
