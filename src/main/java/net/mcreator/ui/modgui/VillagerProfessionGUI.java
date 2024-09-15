@@ -36,6 +36,7 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -117,7 +118,9 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 						() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace()).stream()
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
-								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(this::isEditingMode));
+								.map(DataListEntry::getName).toList(),
+						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty()).setIsPresentOnList(
+						this::isEditingMode));
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 
