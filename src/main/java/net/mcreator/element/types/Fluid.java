@@ -151,7 +151,7 @@ import java.util.List;
 
 	@Override public List<MCItem> providedMCItems() {
 		ArrayList<MCItem> retval = new ArrayList<>();
-		retval.add(new MCItem.Custom(this.getModElement(), null, "block", "Block"));
+		retval.add(new MCItem.Custom(this.getModElement(), null, "block_without_item", "Block"));
 		if (this.generateBucket)
 			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
 		return retval;
