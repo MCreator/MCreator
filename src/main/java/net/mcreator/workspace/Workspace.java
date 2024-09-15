@@ -510,8 +510,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
 			// Call generator cleanup for switch before new generator is set for the workspace
-			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
-					Generator.GENERATOR_CACHE.get(generatorConfiguration.getGeneratorName()));
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval, generatorConfiguration);
 
 			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 

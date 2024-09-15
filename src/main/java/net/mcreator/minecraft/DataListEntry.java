@@ -22,6 +22,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -77,11 +78,11 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	public String getReadableName() {
 		if (readableName == null) {
 			if (name.startsWith("CUSTOM:")) {
-				return StringUtils.machineToReadableName(name.replace("CUSTOM:", ""));
+				return WordUtils.capitalizeFully(StringUtils.machineToReadableName(name.replace("CUSTOM:", "")));
 			} else if (name.startsWith("TAG:")) {
 				return name;
 			} else {
-				return StringUtils.machineToReadableName(name);
+				return WordUtils.capitalizeFully(StringUtils.machineToReadableName(name));
 			}
 		}
 		return readableName;

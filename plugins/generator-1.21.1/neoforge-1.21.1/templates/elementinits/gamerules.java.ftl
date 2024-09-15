@@ -53,11 +53,11 @@ public class ${JavaModName}GameRules {
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 		 ${gamerule.getModElement().getRegistryNameUpper()} =
-				GameRules.register("${thelper.lowercaseFirstLetter(gamerule.getModElement().getName())}",
+				GameRules.register("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}",
 				GameRules.Category.${gamerule.category}, GameRules.IntegerValue.create(${gamerule.defaultValueNumber}));
 		<#else>
 		${gamerule.getModElement().getRegistryNameUpper()} =
-				GameRules.register("${thelper.lowercaseFirstLetter(gamerule.getModElement().getName())}",
+				GameRules.register("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}",
 				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>

@@ -73,10 +73,11 @@ import java.util.stream.Collectors;
 
 	public boolean isBlock(String elementName) {
 		ModElement element = getWorkspace().getModElementByName(getElementPlainName(elementName));
-		if (element != null)
-			return element.getMCItems().stream()
-					.anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
-		else {
+		if (element != null) {
+			return element.getMCItems().stream().anyMatch(
+					e -> e.getName().equals(elementName) && (e.getType().equals("block") || e.getType()
+							.equals("block_without_item")));
+		} else {
 			generator.getLogger()
 					.warn("({}) Failed to determine mod element for: {}", TraceUtil.tryToFindMCreatorInvoker(),
 							elementName);

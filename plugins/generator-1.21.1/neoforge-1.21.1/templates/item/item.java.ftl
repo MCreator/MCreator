@@ -281,6 +281,9 @@ public class ${name}Item extends Item {
 
 	<#if data.enableRanged>
 	private ItemStack findAmmo(Player player) {
+		<#if data.projectileDisableAmmoCheck>
+		return new ItemStack(${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
+		<#else>
 		ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, e -> e.getItem() == ${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
 		if(stack == ItemStack.EMPTY) {
 			for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -292,6 +295,7 @@ public class ${name}Item extends Item {
 			}
 		}
 		return stack;
+		</#if>
 	}
 	</#if>
 }

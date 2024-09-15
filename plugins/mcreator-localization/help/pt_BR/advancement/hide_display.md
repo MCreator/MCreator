@@ -1,0 +1,1 @@
+Marque este parâmetro para ocultar a conquista na aba de conquistas até que seja concluída.

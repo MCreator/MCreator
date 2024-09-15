@@ -76,7 +76,7 @@ public class GTFeatureBlocks {
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
 			feature.restrictionBiomes = new ArrayList<>();
-			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
+			feature.generateCondition = null;
 
 			if (featureBlock.getType()
 					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the empty feature
@@ -182,6 +182,20 @@ public class GTFeatureBlocks {
 							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
 						</block></value></block></xml>
 						""".formatted(testXML);
+				// Count providers are tested with the "Placement count" feature, but clamped so valid input is provided
+				case "IntProvider" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_no_op"></block></value>
+							<next><block type="placement_count"><value name="count">
+								<block type="int_provider_clamped">
+						 			<field name="min">0</field>
+						 			<field name="max">100</field>
+						 			<value name="toClamp">%s</value>
+						 		</block>
+							</value></block></next>
+						</block></xml>
+						""".formatted(testXML);
 				// Block column layers are tested with the "Block column" feature
 				case "BlockColumnLayer" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
@@ -210,7 +224,6 @@ public class GTFeatureBlocks {
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
 						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
-				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
 				default -> {
 					LOG.warn("[{}] Skipping feature block of unrecognized type: {}", generatorName,
 							featureBlock.getMachineName());
