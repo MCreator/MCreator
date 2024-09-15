@@ -145,7 +145,7 @@ import java.util.*;
 	@Override public List<MCItem> providedMCItems() {
 		ArrayList<MCItem> retval = new ArrayList<>();
 		if (this.enablePortal)
-			retval.add(new MCItem.Custom(this.getModElement(), "portal", "block", "Portal block"));
+			retval.add(new MCItem.Custom(this.getModElement(), "portal", "block_without_item", "Portal block"));
 		if (this.hasIgniter())
 			retval.add(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
 		return retval;

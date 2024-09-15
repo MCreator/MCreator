@@ -51,6 +51,12 @@ import java.util.List;
 	public Procedure generateCondition;
 	@BlocklyXML("features") public String featurexml;
 
+	private transient Boolean hasConfiguredFeature = null;
+
+	private Feature() {
+		this(null);
+	}
+
 	public Feature(ModElement element) {
 		super(element);
 
@@ -80,9 +86,23 @@ import java.util.List;
 
 			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
-			this.getModElement().putMetadata("skip_configured_feature",
-							blocklyToFeature.getFeatureType().equals("configured_feature_reference") ? true : null);
+			this.hasConfiguredFeature = !blocklyToFeature.getFeatureType().equals("configured_feature_reference");
 		};
+	}
+
+	public boolean hasConfiguredFeature() {
+		if (hasConfiguredFeature == null) {
+			try {
+				var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
+						this.featurexml, this.getModElement().getGenerator()
+						.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()));
+				this.hasConfiguredFeature = !blocklyToFeature.getFeatureType().equals("configured_feature_reference");
+			} catch (Exception e) {
+				return true; // Exception happened, so we don't cache the result
+			}
+		}
+
+		return hasConfiguredFeature;
 	}
 
 	public boolean hasGenerationConditions() {
@@ -91,10 +111,6 @@ import java.util.List;
 
 	public boolean hasPlacedFeature() {
 		return !skipPlacement;
-	}
-
-	public boolean hasConfiguredFeature() {
-		return this.getModElement().getMetadata("skip_configured_feature") == null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

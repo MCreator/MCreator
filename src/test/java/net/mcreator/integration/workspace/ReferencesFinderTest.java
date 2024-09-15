@@ -158,13 +158,13 @@ import static org.junit.jupiter.api.Assertions.*;
 				.anyMatch(e -> e.contains("Exampleoverlay")));
 
 		section = TextureType.ARMOR;
-		texture = workspace.getFolderManager().getTextureFile("armorTexture_layer_1", section);
+		texture = workspace.getFolderManager().getTextureFile("armor_texture_layer_1", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplearmor")));
-		texture = workspace.getFolderManager().getTextureFile("armorTexture_layer_2", section);
+		texture = workspace.getFolderManager().getTextureFile("armor_texture_layer_2", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplearmor")));
-		texture = workspace.getFolderManager().getTextureFile("armorTexture", section);
+		texture = workspace.getFolderManager().getTextureFile("armor_texture", section);
 		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplearmor")));
 	}

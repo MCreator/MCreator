@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.wysiwyg;
 
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
@@ -28,6 +29,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.wysiwyg.*;
@@ -40,16 +42,17 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
+import net.mcreator.util.GSONClone;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WYSIWYGEditor extends JPanel {
 
@@ -92,14 +95,22 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(
+			new String[] { L10N.t("elementgui.gui.without_slots"), L10N.t("elementgui.gui.with_slots") });
 
 	private boolean opening = false;
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final JComboBox<String> priority = new JComboBox<>(
-			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final TranslatedComboBox priority = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("NORMAL", "elementgui.gui.priority_normal"),
+			Map.entry("HIGH", "elementgui.gui.priority_high"),
+			Map.entry("HIGHEST", "elementgui.gui.priority_highest"),
+			Map.entry("LOW", "elementgui.gui.priority_low"),
+			Map.entry("LOWEST", "elementgui.gui.priority_lowest")
+			//@formatter:on
+	);
 
 	public TextureComboBox overlayBaseTexture;
 
@@ -163,6 +174,12 @@ public class WYSIWYGEditor extends JPanel {
 				if (evt.getClickCount() == 2) {
 					editComponent.doClick();
 				}
+			}
+		});
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE)
+					editor.removeMode();
 			}
 		});
 
@@ -474,7 +491,15 @@ public class WYSIWYGEditor extends JPanel {
 
 	public void setComponentList(List<GUIComponent> components) {
 		this.components.clear();
-		this.components.addAll(components);
+		for (GUIComponent component : components) {
+			GUIComponent copy = GSONClone.clone(component, component.getClass());
+			copy.uuid = UUID.randomUUID(); // init UUID for deserialized component
+			// Populate workspace-dependant fields with workspace reference
+			IWorkspaceDependent.processWorkspaceDependentObjects(copy,
+					workspaceDependent -> workspaceDependent.setWorkspace(mcreator.getWorkspace()));
+
+			this.components.add(copy);
+		}
 	}
 
 	public List<GUIComponent> getComponentList() {

@@ -66,7 +66,7 @@ public class Procedure extends GeneratableElement {
 		return dependencies;
 	}
 
-	public List<Dependency> reloadDependencies() {
+	private List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
 		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
 			for (Object depobj : dependenciesList) {

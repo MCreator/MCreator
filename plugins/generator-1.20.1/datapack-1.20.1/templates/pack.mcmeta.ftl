@@ -1,6 +1,6 @@
 {
     "pack": {
         "pack_format": 15,
-        "description": "${settings.getDescription()!""}"
+        "description": "${JavaConventions.escapeStringForJava(settings.getDescription())!""}"
     }
 }

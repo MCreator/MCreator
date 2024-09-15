@@ -3,12 +3,12 @@
 {
     "type": "minecraft:stonecutting",
     <#if data.group?has_content>"group": "${data.group}",</#if>
-    "count": ${data.recipeRetstackSize},
     "ingredient": {
         ${mappedMCItemToItemObjectJSON(data.stoneCuttingInputStack)}
     },
     "result": {
-        ${mappedMCItemToItemObjectJSON(data.stoneCuttingReturnStack, "id")}
+        ${mappedMCItemToItemObjectJSON(data.stoneCuttingReturnStack, "id")},
+        "count": ${data.recipeRetstackSize}
     }
 }
 <#-- @formatter:on -->

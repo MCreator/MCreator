@@ -19,6 +19,7 @@
 package net.mcreator.generator.mapping;
 
 import net.mcreator.element.parts.IWorkspaceDependent;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.workspace.Workspace;
@@ -75,10 +76,25 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		return value;
 	}
 
-	public boolean canProperlyMap() {
-		String mapped = mapper.getMapping(value);
-		return !mapped.contains("@") && !mapped.contains(
-				NameMapper.UNKNOWN_ELEMENT); // if there are still @tokens, we failed to map some values
+	/**
+	 * @return true if the value exists in the workspace. Always returns true for vanilla elements,
+	 * even if they are not supported in the selected Minecraft version. Returns false if the element is empty.
+	 */
+	public boolean isValidReference() {
+		if (value == null || value.isEmpty())
+			return false;
+
+		if (value.startsWith("CUSTOM:")) {
+			Workspace workspace = getWorkspace();
+			if (workspace == null) {
+				return false;
+			}
+			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
+			if (!retval)
+				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
+			return retval;
+		}
+		return true;
 	}
 
 	public Optional<DataListEntry> getDataListEntry() {
@@ -90,6 +106,15 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		}
 
 		return Optional.empty();
+	}
+
+	public String getDataListEntryType() {
+		Optional<DataListEntry> dataListEntry = getDataListEntry();
+		if (dataListEntry.isPresent()) {
+			String type = dataListEntry.get().getType();
+			return type != null ? type : "";
+		}
+		return "";
 	}
 
 	/**
