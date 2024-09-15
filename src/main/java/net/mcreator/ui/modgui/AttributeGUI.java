@@ -93,12 +93,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 		entities.setValidator(
 				new ConditionalItemListFieldValidator(entities, L10N.t("elementgui.attribute.needs_entity"),
-						new JCheckBox() {
-							@Override
-							public boolean isSelected() {
-								return addToAllEntities.isSelected() || addToPlayers.isSelected();
-							}
-						}, false));
+						() -> addToAllEntities.isSelected() || addToPlayers.isSelected(), false));
 		page1group.addValidationElement(entities);
 
 		addPage(PanelUtils.totalCenterInPanel(pane1));
@@ -116,8 +111,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		minMaxValue.setMaxValue(attribute.maxValue);
 		addToAllEntities.setSelected(attribute.addToAllEntities);
 		addToPlayers.setSelected(attribute.addToPlayers);
-		addToPlayers.setEnabled(!attribute.addToAllEntities);
 		entities.setListElements(attribute.entities);
+
+		addToPlayers.setEnabled(!attribute.addToAllEntities);
 		entities.setEnabled(!attribute.addToAllEntities);
 	}
 
