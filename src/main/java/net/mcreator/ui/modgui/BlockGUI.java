@@ -357,7 +357,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, modElement);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
-		blockBase.addActionListener(e -> {
+		blockBase.addItemListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
 			boundingBoxList.setEnabled(true);
@@ -429,7 +429,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
-			blockStates.updateBlockBase(blockBase.getSelectedItem());
+			blockStates.updateProvidedProperties("blockBase", blockBase.getSelectedItem());
 		});
 
 		renderType.addActionListener(e -> updateTextureOptions());
@@ -594,7 +594,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
-		rotationMode.addActionListener(e -> {
+		enablePitch.addChangeListener(
+				e -> blockStates.updateProvidedProperties("enablePitch", enablePitch.isSelected()));
+		rotationMode.addItemListener(e -> {
+			blockStates.updateProvidedProperties("rotationMode", rotationMode.getSelectedIndex());
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
 			if (!enablePitch.isEnabled())
 				enablePitch.setSelected(false);
@@ -872,11 +875,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		isWaterloggable.addActionListener(e -> {
+		isWaterloggable.addChangeListener(e -> {
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
 			if (isWaterloggable.isSelected()) {
 				hasGravity.setSelected(false);
 			}
+			blockStates.updateProvidedProperties("waterloggable", isWaterloggable.isSelected());
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(

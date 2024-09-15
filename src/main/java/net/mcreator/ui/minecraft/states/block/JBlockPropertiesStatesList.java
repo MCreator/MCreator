@@ -54,9 +54,19 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
 
+	@SuppressWarnings("Java9CollectionFactory")
+	private static final Map<String, List<String>> specialProperties = Collections.unmodifiableMap(new HashMap<>() {{
+		put("rotationMode:1", List.of("facing"));
+		put("rotationMode:2", List.of("facing"));
+		put("rotationMode:3", List.of("facing"));
+		put("rotationMode:4", List.of("facing"));
+		put("rotationMode:5", List.of("axis"));
+		put("enablePitch", List.of("face"));
+		put("waterloggable", List.of("waterlogged"));
+	}});
 	private final Map<?, ?> blockBaseProperties;
+	private final Map<String, Object> cachedSpecialValues = new HashMap<>();
 	private final List<String> forbiddenProperties = new ArrayList<>();
-	private String blockBase;
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui, ModElement modElement) {
 		super(mcreator, new BorderLayout(0, 10), gui);
@@ -181,15 +191,32 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertyEntries.repaint();
 	}
 
-	public void updateBlockBase(String blockBase) {
-		if (this.blockBase != null && blockBaseProperties.get(this.blockBase) instanceof List<?> props) {
-			for (Object prop : props)
-				forbiddenProperties.remove(prop.toString());
-		}
-		this.blockBase = blockBase;
-		if (this.blockBase != null && blockBaseProperties.get(this.blockBase) instanceof List<?> newProps) {
-			for (Object newProp : newProps)
-				forbiddenProperties.add(newProp.toString());
+	public void updateProvidedProperties(String parameter, Object value) {
+		if (value instanceof Boolean check) {
+			if (specialProperties.containsKey(parameter)) {
+				if (check)
+					forbiddenProperties.addAll(specialProperties.get(parameter));
+				else
+					forbiddenProperties.removeAll(specialProperties.get(parameter));
+			}
+		} else if (parameter.equals("blockBase")) {
+			String cachedValue = (String) cachedSpecialValues.get(parameter);
+			if (cachedValue != null && blockBaseProperties.get(cachedValue) instanceof List<?> props) {
+				for (Object prop : props)
+					forbiddenProperties.remove(prop.toString());
+			}
+			cachedSpecialValues.put(parameter, value);
+			if (value != null && blockBaseProperties.get(value) instanceof List<?> newProps) {
+				for (Object newProp : newProps)
+					forbiddenProperties.add(newProp.toString());
+			}
+		} else {
+			Object cachedValue = cachedSpecialValues.get(parameter);
+			if (cachedValue != null && specialProperties.containsKey(parameter + ":" + cachedValue))
+				forbiddenProperties.removeAll(specialProperties.get(parameter + ":" + cachedValue));
+			cachedSpecialValues.put(parameter, value);
+			if (value != null && specialProperties.containsKey(parameter + ":" + value))
+				forbiddenProperties.addAll(specialProperties.get(parameter + ":" + value));
 		}
 	}
 
