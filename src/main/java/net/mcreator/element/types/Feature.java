@@ -51,6 +51,10 @@ import java.util.List;
 	public Procedure generateCondition;
 	@BlocklyXML("features") public String featurexml;
 
+	private Feature() {
+		this(null);
+	}
+
 	public Feature(ModElement element) {
 		super(element);
 
