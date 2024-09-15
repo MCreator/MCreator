@@ -1613,7 +1613,7 @@ public class TestWorkspaceDataProvider {
 				attribute.entities.addAll(ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace()).stream()
 						.map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
 						.toList());
-				attribute.addToPlayers = true;
+				attribute.addToPlayers = _true;
 			} else {
 				attribute.addToAllEntities = true;
 			}
