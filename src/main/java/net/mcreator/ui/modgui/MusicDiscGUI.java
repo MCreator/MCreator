@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
@@ -51,6 +52,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
@@ -58,7 +60,14 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private StringListProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 	private final VTextField description = new VTextField(20);
 
 	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
@@ -259,7 +268,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	@Override public MusicDisc getElementFromGUI() {
 		MusicDisc musicDisc = new MusicDisc(modElement);
 		musicDisc.name = name.getText();
-		musicDisc.rarity = (String) rarity.getSelectedItem();
+		musicDisc.rarity = rarity.getSelectedItem();
 		musicDisc.description = description.getText();
 		musicDisc.creativeTabs = creativeTabs.getListElements();
 		musicDisc.glowCondition = glowCondition.getSelectedProcedure();
