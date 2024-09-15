@@ -64,10 +64,6 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
 				Collections.emptyMap());
-		if (this.blockBaseProperties.get("_default") instanceof List<?> commonProps) {
-			for (Object commonProp : commonProps)
-				forbiddenProperties.add(commonProp.toString());
-		}
 
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
@@ -213,7 +209,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
 								BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 				validationResult = new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.block.custom_properties.error_overrides_block_base"));
+						L10N.t("elementgui.block.custom_properties.error_overrides_provided"));
 			} else {
 				entry.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			}

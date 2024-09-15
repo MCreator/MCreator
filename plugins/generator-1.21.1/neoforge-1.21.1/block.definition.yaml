@@ -389,16 +389,16 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
 block_base_properties:
-  Stairs: [half, shape]
-  Slab: [type]
-  Fence: [north, south, west, east]
-  Wall: [up, north, south, west, east]
-  TrapDoor: [half, open]
-  Pane: [north, south, west, east]
-  Door: [half, hinge, open]
-  FenceGate: [in_wall, open]
+  Stairs: [facing, half, shape, waterlogged]
+  Slab: [type, waterlogged]
+  Fence: [north, south, west, east, waterlogged]
+  Wall: [up, north, south, west, east, waterlogged]
+  TrapDoor: [facing, half, open, powered, waterlogged]
+  Pane: [north, south, west, east, waterlogged]
+  Door: [facing, half, hinge, open, powered]
+  FenceGate: [in_wall, open, powered]
   PressurePlate: [powered]
-  Button: [powered]
+  Button: [facing, face, powered]
 
 localizationkeys:
   - key: block.@modid.@registryname
