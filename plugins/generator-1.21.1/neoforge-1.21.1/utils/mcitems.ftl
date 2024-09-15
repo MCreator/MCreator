@@ -320,7 +320,7 @@
                     </#if>
                     <#list ge.customProperties as prop>
                         <#assign properties += [{"name": prop.property().getName().replace("CUSTOM:", ""), "value": prop.value()}] />
-                    </#if>
+                    </#list>
                 </#if>
             </#if>
 
