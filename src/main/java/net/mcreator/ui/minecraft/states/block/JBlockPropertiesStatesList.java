@@ -65,6 +65,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
 
+		propertyEntries.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
 
