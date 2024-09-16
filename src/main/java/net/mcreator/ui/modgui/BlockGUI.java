@@ -459,7 +459,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
 
-
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -467,10 +466,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
 		sbbp2.setOpaque(false);
 
-		JPanel sbbp22 = PanelUtils.totalCenterInPanel(textures);
+		JPanel modelSettings = new JPanel(new GridLayout(1, 2, 0, 2));
+		modelSettings.setOpaque(false);
+		modelSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
+		modelSettings.add(renderType);
+
+		renderType.setPreferredSize(new Dimension(300, 42));
+
+		JComponent sbbp22 = PanelUtils.northAndCenterElement(modelSettings, PanelUtils.totalCenterInPanel(textures), 15,
+				15);
+
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_textures"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.block_textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
 		JPanel topnbot = new JPanel(new BorderLayout());
@@ -492,33 +501,37 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(blockBase, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
-		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
-		transparencySettings.setOpaque(false);
+		JPanel visualRenderingSettings = new JPanel(new GridLayout(6, 2, 0, 2));
+		visualRenderingSettings.setOpaque(false);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
 				L10N.label("elementgui.block.has_trasparency")));
-		transparencySettings.add(hasTransparency);
+		visualRenderingSettings.add(hasTransparency);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
 				L10N.label("elementgui.block.transparency_type")));
-		transparencySettings.add(transparencyType);
+		visualRenderingSettings.add(transparencyType);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
-		transparencySettings.add(connectedSides);
+		visualRenderingSettings.add(connectedSides);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
 				L10N.label("elementgui.block.fluid_overlay")));
-		transparencySettings.add(displayFluidOverlay);
+		visualRenderingSettings.add(displayFluidOverlay);
+
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
+				L10N.label("elementgui.common.tint_type")));
+		visualRenderingSettings.add(tintType);
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.block.is_item_tinted")));
+		visualRenderingSettings.add(isItemTinted);
 
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(4, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
 		rent.setOpaque(false);
-
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
-		rent.add(renderType);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
 				L10N.label("elementgui.block.rotation_mode")));
@@ -532,7 +545,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_waterloggable")));
 		rent.add(isWaterloggable);
 
-		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -544,34 +556,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				enablePitch.setSelected(false);
 		});
 
-		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
-		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
-				L10N.label("elementgui.common.tint_type")));
-		tintPanel.add(tintType);
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
-				L10N.label("elementgui.block.is_item_tinted")));
-		tintPanel.add(isItemTinted);
-
-		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
+		topnbot.add("South", txblock4);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.builtin_states"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
-		transparencySettings.setBorder(BorderFactory.createTitledBorder(
+		visualRenderingSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.transparency"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_tint"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.visual_rendering"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
 		render.add(rent);
-		render.add(transparencySettings);
+		render.add(visualRenderingSettings);
 		render.add(txblock3);
 
 		render.setOpaque(false);
