@@ -354,7 +354,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this, modElement);
+		blockStates = new JBlockPropertiesStatesList(mcreator, this);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		blockBase.addItemListener(e -> {

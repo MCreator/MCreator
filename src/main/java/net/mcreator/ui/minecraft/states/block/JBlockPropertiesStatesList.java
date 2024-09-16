@@ -38,7 +38,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,25 +55,29 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	@SuppressWarnings("Java9CollectionFactory")
 	private static final Map<String, List<String>> specialProperties = Collections.unmodifiableMap(new HashMap<>() {{
-		put("rotationMode:1", List.of("facing"));
-		put("rotationMode:2", List.of("facing"));
-		put("rotationMode:3", List.of("facing"));
-		put("rotationMode:4", List.of("facing"));
-		put("rotationMode:5", List.of("axis"));
+		put("rotationMode=1", List.of("facing"));
+		put("rotationMode=2", List.of("facing"));
+		put("rotationMode=3", List.of("facing"));
+		put("rotationMode=4", List.of("facing"));
+		put("rotationMode=5", List.of("axis"));
 		put("enablePitch", List.of("face"));
 		put("waterloggable", List.of("waterlogged"));
+		put("blockBase=Stairs", List.of("facing", "half", "shape", "waterlogged"));
+		put("blockBase=Slab", List.of("type", "waterlogged"));
+		put("blockBase=Fence", List.of("north", "south", "west", "east", "waterlogged"));
+		put("blockBase=Wall", List.of("up", "north", "south", "west", "east", "waterlogged"));
+		put("blockBase=TrapDoor", List.of("facing", "half", "open", "powered", "waterlogged"));
+		put("blockBase=Pane", List.of("north", "south", "west", "east", "waterlogged"));
+		put("blockBase=Door", List.of("facing", "half", "hinge", "open", "powered"));
+		put("blockBase=FenceGate", List.of("in_wall", "open", "powered"));
+		put("blockBase=PressurePlate", List.of("powered"));
+		put("blockBase=Button", List.of("facing", "face", "powered"));
 	}});
-	private final Map<?, ?> blockBaseProperties;
 	private final Map<String, Object> cachedSpecialValues = new HashMap<>();
 	private final List<String> forbiddenProperties = new ArrayList<>();
 
-	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui, ModElement modElement) {
+	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(0, 10), gui);
-		this.blockBaseProperties = Objects.requireNonNullElse(
-				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
-				Collections.emptyMap());
-
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
 
@@ -199,24 +202,13 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 				else
 					forbiddenProperties.removeAll(specialProperties.get(parameter));
 			}
-		} else if (parameter.equals("blockBase")) {
-			String cachedValue = (String) cachedSpecialValues.get(parameter);
-			if (cachedValue != null && blockBaseProperties.get(cachedValue) instanceof List<?> props) {
-				for (Object prop : props)
-					forbiddenProperties.remove(prop.toString());
-			}
-			cachedSpecialValues.put(parameter, value);
-			if (value != null && blockBaseProperties.get(value) instanceof List<?> newProps) {
-				for (Object newProp : newProps)
-					forbiddenProperties.add(newProp.toString());
-			}
 		} else {
 			Object cachedValue = cachedSpecialValues.get(parameter);
-			if (cachedValue != null && specialProperties.containsKey(parameter + ":" + cachedValue))
-				forbiddenProperties.removeAll(specialProperties.get(parameter + ":" + cachedValue));
+			if (cachedValue != null && specialProperties.containsKey(parameter + "=" + cachedValue))
+				forbiddenProperties.removeAll(specialProperties.get(parameter + "=" + cachedValue));
 			cachedSpecialValues.put(parameter, value);
-			if (value != null && specialProperties.containsKey(parameter + ":" + value))
-				forbiddenProperties.addAll(specialProperties.get(parameter + ":" + value));
+			if (value != null && specialProperties.containsKey(parameter + "=" + value))
+				forbiddenProperties.addAll(specialProperties.get(parameter + "=" + value));
 		}
 	}
 
