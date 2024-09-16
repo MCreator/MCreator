@@ -34,23 +34,21 @@ public class Sprite extends GUIComponent {
 
 	@TextureReference(TextureType.SCREEN) public String sprite;
 
-	// Each sprite width and height
-	public int spriteWidth, spriteHeight;
+	public int spritesCount;
 
 	public Procedure displayCondition;
 	public Procedure spriteIndex;
 
-	public Sprite(int x, int y, String sprite, int spriteWidth, int spriteHeight, Procedure displayCondition, Procedure spriteIndex) {
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, Procedure spriteIndex) {
 		super(x, y);
 		this.sprite = sprite;
-		this.spriteWidth = spriteWidth;
-		this.spriteHeight = spriteHeight;
+		this.spritesCount = spritesCount;
 		this.displayCondition = displayCondition;
 		this.spriteIndex = spriteIndex;
 	}
 
-	public Sprite(int x, int y, String sprite, int spriteWidth, int spriteHeight, Procedure displayCondition, Procedure spriteIndex, AnchorPoint anchorPoint) {
-		this(x, y, sprite, spriteWidth, spriteHeight, displayCondition, spriteIndex);
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, Procedure spriteIndex, AnchorPoint anchorPoint) {
+		this(x, y, sprite, spritesCount, displayCondition, spriteIndex);
 		this.anchorPoint = anchorPoint;
 	}
 
@@ -60,7 +58,8 @@ public class Sprite extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		java.awt.Image actualImage = this.getImage(wysiwygEditor.mcreator.getWorkspace());
-		java.awt.Image firstSprite = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(0, 0, spriteWidth, spriteHeight));
+		java.awt.Image firstSprite = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(0, 0,
+				this.getWidth(wysiwygEditor.mcreator.getWorkspace()), this.getHeight(wysiwygEditor.mcreator.getWorkspace())));
 
 		int cw = firstSprite.getWidth(null);
 		int ch = firstSprite.getHeight(null);
@@ -77,11 +76,17 @@ public class Sprite extends GUIComponent {
 	}
 
 	@Override public int getWidth(Workspace workspace) {
-		return spriteWidth; // Return each sprite width
+		int width = getImage(workspace).getWidth(null);
+		int height = getImage(workspace).getHeight(null);
+
+		return width > height ? width / spritesCount : width;
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		return spriteHeight; // Return each sprite height
+		int width = getImage(workspace).getWidth(null);
+		int height = getImage(workspace).getHeight(null);
+
+		return width < height ? height / spritesCount : height;
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {

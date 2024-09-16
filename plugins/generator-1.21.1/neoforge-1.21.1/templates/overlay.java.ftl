@@ -94,7 +94,7 @@ package ${package}.client.screens;
         						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
         						<@getSpriteByIndex component "width"/>, 0,
         						<@calculatePosition component/>,
-        						${component.spriteWidth}, ${component.spriteHeight});
+        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
         				<#if hasProcedure(component.displayCondition)>}</#if>
         			<#else>
         				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
@@ -102,7 +102,7 @@ package ${package}.client.screens;
         						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
         						0, <@getSpriteByIndex component "height"/>,
         						<@calculatePosition component/>,
-        						${component.getTextureWidth(w.getWorkspace())}, ${component.spriteHeight});
+        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
         				<#if hasProcedure(component.displayCondition)>}</#if>
         			</#if>
         		</#list>
@@ -190,7 +190,7 @@ package ${package}.client.screens;
 
 <#macro getSpriteByIndex component dim>
 	<#if hasProcedure(component.spriteIndex)>
-		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.spriteWidth}<#else>${component.spriteHeight}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace())}</#if>)
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace())}</#if>)
 	<#else>
 		0
 	</#if>

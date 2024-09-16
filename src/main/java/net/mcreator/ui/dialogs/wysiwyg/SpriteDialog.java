@@ -48,16 +48,11 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
 
-		JSpinner spriteWidth = new JSpinner(new SpinnerNumberModel(16, 0, Integer.MAX_VALUE, 1));
-		JSpinner spriteHeight = new JSpinner(new SpinnerNumberModel(16, 0, Integer.MAX_VALUE, 1));
+		JSpinner spritesCount = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector));
-		options.add(PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_size"), L10N.label("dialog.gui.sprite_size")),
-				PanelUtils.gridElements(1, 2,
-						PanelUtils.join(L10N.label("dialog.gui.sprite_width"), spriteWidth),
-						PanelUtils.join(L10N.label("dialog.gui.sprite_height"), spriteHeight))
-		));
+		options.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
+						L10N.label("dialog.gui.sprite_count")), spritesCount));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
@@ -93,8 +88,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		if (sprite != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			textureSelector.setTextureFromTextureName(sprite.sprite);
-			spriteWidth.setValue(sprite.spriteWidth);
-			spriteHeight.setValue(sprite.spriteHeight);
+			spritesCount.setValue(sprite.spritesCount);
 			displayCondition.setSelectedProcedure(sprite.displayCondition);
 			spriteIndex.setSelectedProcedure(sprite.spriteIndex);
 			anchor.setSelectedItem(sprite.anchorPoint);
@@ -105,7 +99,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			setVisible(false);
 			if (textureSelector.hasTexture()) {
 				if (sprite == null) {
-					Sprite component = new Sprite(0, 0, textureSelector.getTextureName(), (int) spriteWidth.getValue(), (int) spriteHeight.getValue(),
+					Sprite component = new Sprite(0, 0, textureSelector.getTextureName(), (int) spritesCount.getValue(),
 							displayCondition.getSelectedProcedure(), spriteIndex.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
@@ -116,7 +110,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				} else {
 					int idx = editor.components.indexOf(sprite);
 					editor.components.remove(sprite);
-					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(), (int) spriteWidth.getValue(), (int) spriteHeight.getValue(),
+					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(), (int) spritesCount.getValue(),
 							displayCondition.getSelectedProcedure(), spriteIndex.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						spriteNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();

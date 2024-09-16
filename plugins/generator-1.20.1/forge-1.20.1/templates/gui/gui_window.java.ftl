@@ -139,7 +139,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
 						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 						<@getSpriteByIndex component "width"/>, 0,
-						${component.spriteWidth}, ${component.spriteHeight},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
 			<#else>
@@ -147,7 +147,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
 						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 						0, <@getSpriteByIndex component "height"/>,
-						${component.spriteWidth}, ${component.spriteHeight},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
 			</#if>
@@ -314,7 +314,7 @@ e -> {
 
 <#macro getSpriteByIndex component dim>
 	<#if hasProcedure(component.spriteIndex)>
-		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.spriteWidth}<#else>${component.spriteHeight}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace())}</#if>)
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace())}</#if>)
 	<#else>
 		0
 	</#if>
