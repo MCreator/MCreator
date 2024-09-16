@@ -234,4 +234,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 		}
 	}
 
+	@Test public void testAddBlockPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddBlockPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test")),
+						List::of));
+	}
+
 }

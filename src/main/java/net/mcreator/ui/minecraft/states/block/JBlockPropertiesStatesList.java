@@ -25,6 +25,7 @@ import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.AddBlockPropertyDialog;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -114,57 +115,12 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void createPropertiesEntry() {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("elementgui.block.custom_properties.add.title"),
-				true);
-
-		VTextField name = new VTextField(20);
-		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> propertiesList.stream().map(e -> e.getPropertyData().getName()), nonUserProvidedProperties.get(),
-				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
-		name.enableRealtimeValidation();
-		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer" });
-
-		JMinMaxSpinner integerBounds = new JMinMaxSpinner(0, 1, 0, Integer.MAX_VALUE, 1);
-
-		CardLayout cards = new CardLayout();
-		JPanel bounds = new JPanel(cards);
-		bounds.setPreferredSize(new Dimension(0, 28));
-		bounds.add("Logic", new JEmptyBox());
-		bounds.add("Integer", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
-				integerBounds));
-		type.addActionListener(e -> cards.show(bounds, (String) type.getSelectedItem()));
-
-		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		dialog.getRootPane().setDefaultButton(ok);
-
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				String propertyName = "CUSTOM:" + name.getText();
-				if ("Logic".equals(type.getSelectedItem())) {
-					addPropertiesEntry(new PropertyDataWithValue<>(new PropertyData.LogicType(propertyName), null));
-					dialog.setVisible(false);
-				} else if ("Integer".equals(type.getSelectedItem())) {
-					addPropertiesEntry(new PropertyDataWithValue<>(
-							new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
-									integerBounds.getIntMaxValue()), null));
-					dialog.setVisible(false);
-				}
-			}
-		});
-		cancel.addActionListener(e -> dialog.setVisible(false));
-
-		JPanel main = new JPanel(new GridLayout(0, 1, 0, 2));
-		main.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-		main.add(PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.name"), name));
-		main.add(PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.type"), type));
-		main.add(bounds);
-
-		dialog.getContentPane().add("Center", main);
-		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
-		dialog.pack();
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showDialog(mcreator,
+				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				nonUserProvidedProperties);
+		if (newEntry != null) {
+			addPropertiesEntry(newEntry);
+		}
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
