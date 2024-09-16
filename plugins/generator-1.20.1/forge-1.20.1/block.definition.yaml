@@ -393,10 +393,12 @@ block_base_properties:
   Slab: [type, waterlogged]
   Fence: [north, south, west, east, waterlogged]
   Wall: [up, north, south, west, east, waterlogged]
+  Leaves: [distance, persistent, waterlogged]
   TrapDoor: [facing, half, open, powered, waterlogged]
   Pane: [north, south, west, east, waterlogged]
   Door: [facing, half, hinge, open, powered]
   FenceGate: [in_wall, open, powered]
+  EndRod: [facing]
   PressurePlate: [powered]
   Button: [facing, face, powered]
 
