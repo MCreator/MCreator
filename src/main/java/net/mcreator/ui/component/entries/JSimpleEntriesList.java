@@ -70,8 +70,8 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 				entry.reloadDataLists();
 				entryList.add(entry);
 				entry.setEnabled(isEnabled());
-				registerEntryUI(entry);
 				entry.setEntry(e);
+				registerEntryUI(entry);
 			}
 		});
 	}
