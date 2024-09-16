@@ -37,6 +37,7 @@ public class GradleSection extends PreferencesSection {
 	public final IntegerEntry xms;
 	public final IntegerEntry xmx;
 	public final BooleanEntry offline;
+	public final BooleanEntry useJavaCompilerEnglish;
 
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -46,6 +47,7 @@ public class GradleSection extends PreferencesSection {
 		xms = addEntry(new IntegerEntry("Xms", Math.min(1024, MAX_RAM), 128, MAX_RAM));
 		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
+		useJavaCompilerEnglish = addEntry(new BooleanEntry("useJavaCompilerEnglish",true));
 	}
 
 	@Override public String getSectionKey() {
