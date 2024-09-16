@@ -39,6 +39,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -72,12 +73,6 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		addProperty.setText(L10N.t("elementgui.block.custom_properties.add"));
 		addProperty.addActionListener(e -> createPropertiesEntry());
 
-		JPanel basePane = new JPanel(new GridLayout());
-		basePane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.custom_properties_states"), 0, 0, basePane.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
@@ -91,13 +86,20 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		scrollProperties.getVerticalScrollBar().setUnitIncrement(15);
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
-		JPanel left = new JPanel(new BorderLayout());
-		left.setOpaque(false);
-		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
-				HelpUtils.helpButton(gui.withEntry("block/block_states"))));
-		left.add("Center", scrollProperties);
-		basePane.add(left);
 
+		JPanel mainContent = new JPanel(new BorderLayout());
+		mainContent.setOpaque(false);
+		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
+				HelpUtils.helpButton(gui.withEntry("block/block_states"))));
+		mainContent.add("Center", scrollProperties);
+
+		JPanel basePane = new JPanel(new GridLayout());
+		basePane.setOpaque(false);
+		basePane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.custom_properties_states"), 0, 0, basePane.getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+		basePane.add(mainContent);
 		add("Center", basePane);
 	}
 
@@ -140,11 +142,12 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				String propertyName = "CUSTOM:" + name.getText();
 				if ("Logic".equals(type.getSelectedItem())) {
-					addPropertiesEntry(new PropertyData.LogicType(propertyName));
+					addPropertiesEntry(new PropertyDataWithValue<>(new PropertyData.LogicType(propertyName), null));
 					dialog.setVisible(false);
 				} else if ("Integer".equals(type.getSelectedItem())) {
-					addPropertiesEntry(new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
-							integerBounds.getIntMaxValue()));
+					addPropertiesEntry(new PropertyDataWithValue<>(
+							new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
+									integerBounds.getIntMaxValue()), null));
 					dialog.setVisible(false);
 				}
 			}
@@ -164,12 +167,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		dialog.setVisible(true);
 	}
 
-	private JBlockPropertiesListEntry addPropertiesEntry(PropertyData<?> data) {
+	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
 		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
-		if (data != null) // complete initialization if property data is supplied
-			pe.setEntry(new PropertyDataWithValue<>(data, null));
+		pe.setEntry(data);
 		registerEntryUI(pe);
-		return pe;
 	}
 
 	void removeProperty(JBlockPropertiesListEntry entry) {
@@ -184,7 +185,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setProperties(List<PropertyDataWithValue<?>> properties) {
-		properties.forEach(entry -> addPropertiesEntry(null).setEntry(entry));
+		properties.forEach(this::addPropertiesEntry);
 	}
 
 	public AggregatedValidationResult getValidationResult() {
