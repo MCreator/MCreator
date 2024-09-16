@@ -221,7 +221,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
+
 	private JBlockPropertiesStatesList blockStates;
+	private Map<?, ?> blockBaseProperties;
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
@@ -354,10 +356,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this, modElement);
+		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+		blockBaseProperties = Objects.requireNonNullElse(
+				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+				Collections.emptyMap());
 
-		blockBase.addItemListener(e -> {
+		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
 			boundingBoxList.setEnabled(true);
@@ -429,7 +435,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
-			blockStates.updateProvidedProperties("blockBase", blockBase.getSelectedItem());
 		});
 
 		renderType.addActionListener(e -> updateTextureOptions());
@@ -594,10 +599,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
-		enablePitch.addChangeListener(
-				e -> blockStates.updateProvidedProperties("enablePitch", enablePitch.isSelected()));
-		rotationMode.addItemListener(e -> {
-			blockStates.updateProvidedProperties("rotationMode", rotationMode.getSelectedIndex());
+		rotationMode.addActionListener(e -> {
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
 			if (!enablePitch.isEnabled())
 				enablePitch.setSelected(false);
@@ -875,12 +877,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		isWaterloggable.addChangeListener(e -> {
+		isWaterloggable.addActionListener(e -> {
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
 			if (isWaterloggable.isSelected()) {
 				hasGravity.setSelected(false);
 			}
-			blockStates.updateProvidedProperties("waterloggable", isWaterloggable.isSelected());
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(
@@ -1228,6 +1229,27 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 
 		updateSoundType();
+	}
+
+	private List<String> nonUserProvidedProperties() {
+		List<String> props = new ArrayList<>();
+		String selBlockBase = blockBase.getSelectedItem();
+		if (selBlockBase != null && blockBaseProperties.get(selBlockBase) instanceof List<?> blockBaseProps) {
+			for (Object blockBaseProp : blockBaseProps)
+				props.add(blockBaseProp.toString());
+			return props;
+		}
+		int modeIndex = rotationMode.getSelectedIndex();
+		if (modeIndex == 5) {
+			props.add("axis");
+		} else if (modeIndex != 0) {
+			props.add("facing");
+			if ((modeIndex == 1 || modeIndex == 3) && enablePitch.isSelected())
+				props.add("face");
+		}
+		if (isWaterloggable.isSelected())
+			props.add("waterlogged");
+		return props;
 	}
 
 	private void refreshFieldsTileEntity() {
