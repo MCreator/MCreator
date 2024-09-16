@@ -55,7 +55,10 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.*;
+import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -78,12 +81,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
-	private TextureSelectionButton texture;
-	private TextureSelectionButton textureTop;
-	private TextureSelectionButton textureLeft;
-	private TextureSelectionButton textureFront;
-	private TextureSelectionButton textureRight;
-	private TextureSelectionButton textureBack;
+	private BlockTexturesSelector textures;
 
 	private TextureSelectionButton itemTexture;
 	private TextureSelectionButton particleTexture;
@@ -438,61 +436,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane8.setOpaque(false);
 
-		JPanel destal = new JPanel(new GridLayout(3, 4));
-		destal.setOpaque(false);
-
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
-		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
-
-		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
-		texture.setOpaque(false);
-		textureTop.setOpaque(false);
-		textureLeft.setOpaque(false);
-		textureFront.setOpaque(false);
-		textureRight.setOpaque(false);
-		textureBack.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
-
-		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));
-		destal.add(new JLabel());
-		destal.add(new JLabel());
-
-		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255),
-				L10N.t("elementgui.block.texture_place_left_overlay")));
-		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.texture_place_front_side")));
-		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.texture_place_right")));
-		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
-
-		textureLeft.setActionListener(event -> {
-			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
-					|| textureFront.hasTexture() || textureRight.hasTexture())) {
-				texture.setTexture(textureLeft.getTextureHolder());
-				textureTop.setTexture(textureLeft.getTextureHolder());
-				textureBack.setTexture(textureLeft.getTextureHolder());
-				textureFront.setTexture(textureLeft.getTextureHolder());
-				textureRight.setTexture(textureLeft.getTextureHolder());
-			}
-		});
-
-		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
-				L10N.t("elementgui.block.texture_place_bottom_main")));
-		destal.add(new JLabel());
-		destal.add(new JLabel());
 
 		JPanel txblock4 = new JPanel(new BorderLayout());
 		txblock4.setOpaque(false);
@@ -508,14 +459,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
-
-		JPanel sbbp22 = PanelUtils.totalCenterInPanel(destal);
-
-		sbbp2.setOpaque(false);
 
 		plantsGrowOn.setOpaque(false);
 
+		textures = new BlockTexturesSelector(mcreator);
+
+		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
+		sbbp2.setOpaque(false);
+
+		JPanel sbbp22 = PanelUtils.totalCenterInPanel(textures);
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_textures"), 0, 0, getFont().deriveFont(12.0f),
@@ -523,7 +475,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel topnbot = new JPanel(new BorderLayout());
 		topnbot.setOpaque(false);
-
 		topnbot.add("Center", sbbp22);
 
 		JComponent txblock3 = PanelUtils.gridElements(1, 1, specialInformation);
@@ -1172,9 +1123,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.pullElementUp(genPanel), 25, 0);
 		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
-		texture.setValidator(new TileHolderValidator(texture));
-
-		page1group.addValidationElement(texture);
+		page1group.addValidationElement(textures);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
@@ -1243,31 +1192,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateTextureOptions() {
-		texture.setFlipUV(false);
-		textureTop.setFlipUV(false);
-		textureTop.setVisible(false);
-		textureLeft.setVisible(false);
-		textureFront.setVisible(false);
-		textureRight.setVisible(false);
-		textureBack.setVisible(false);
-
 		if (normal.equals(renderType.getSelectedItem())) {
-			texture.setFlipUV(true);
-			textureTop.setFlipUV(true);
-			textureTop.setVisible(true);
-			textureLeft.setVisible(true);
-			textureFront.setVisible(true);
-			textureRight.setVisible(true);
-			textureBack.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.ALL);
 		} else if (grassBlock.equals(renderType.getSelectedItem())) {
-			textureTop.setVisible(true);
-			textureLeft.setVisible(true);
-			textureFront.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.GRASS);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
-			textureTop.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.TOP_BOTTOM);
 		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
-			textureTop.setVisible(true);
-			textureFront.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.TOP_BOTTOM_SIDES);
+		} else {
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
 		}
 	}
 
@@ -1350,12 +1284,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTexture(block.itemTexture);
 		particleTexture.setTexture(block.particleTexture);
-		texture.setTexture(block.texture);
-		textureTop.setTexture(block.textureTop);
-		textureLeft.setTexture(block.textureLeft);
-		textureFront.setTexture(block.textureFront);
-		textureRight.setTexture(block.textureRight);
-		textureBack.setTexture(block.textureBack);
+		textures.setTextures(block.texture, block.textureTop, block.textureLeft, block.textureFront, block.textureRight,
+				block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
@@ -1581,14 +1511,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		block.texture = texture.getTextureHolder();
+		block.texture = textures.getTexture();
+		block.textureTop = textures.getTextureTop();
+		block.textureLeft = textures.getTextureLeft();
+		block.textureFront = textures.getTextureFront();
+		block.textureRight = textures.getTextureRight();
+		block.textureBack = textures.getTextureBack();
 		block.itemTexture = itemTexture.getTextureHolder();
 		block.particleTexture = particleTexture.getTextureHolder();
-		block.textureTop = textureTop.getTextureHolder();
-		block.textureLeft = textureLeft.getTextureHolder();
-		block.textureFront = textureFront.getTextureHolder();
-		block.textureRight = textureRight.getTextureHolder();
-		block.textureBack = textureBack.getTextureHolder();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getEntries();
