@@ -1,1 +1,0 @@
-This parameter specifies the width and height of each sprite.
