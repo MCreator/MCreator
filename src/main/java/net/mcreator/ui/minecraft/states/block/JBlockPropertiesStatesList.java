@@ -41,14 +41,15 @@ import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JBlockPropertiesStatesList extends JEntriesList {
 
-	private final Supplier<List<String>> nonUserProvidedProperties;
+	private final Supplier<Collection<String>> nonUserProvidedProperties;
 
 	private final List<JBlockPropertiesListEntry> propertiesList = new ArrayList<>();
 
@@ -57,9 +58,9 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui,
-			Supplier<List<String>> nonUserProvidedProperties) {
+			Supplier<Collection<String>> nonUserProvidedProperties) {
 		super(mcreator, new BorderLayout(0, 10), gui);
-		this.nonUserProvidedProperties = Objects.requireNonNullElse(nonUserProvidedProperties, List::of);
+		this.nonUserProvidedProperties = nonUserProvidedProperties;
 
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));

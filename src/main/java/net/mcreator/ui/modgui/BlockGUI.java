@@ -223,7 +223,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
 	private JBlockPropertiesStatesList blockStates;
-	private Map<?, ?> blockBaseProperties;
+	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
+			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+			Collections.emptyMap());
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
@@ -358,10 +361,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
-		blockBaseProperties = Objects.requireNonNullElse(
-				(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-						.getModElementDefinition(modElement.getType()).get("block_base_properties"),
-				Collections.emptyMap());
 
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
@@ -1231,8 +1230,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 	}
 
-	private List<String> nonUserProvidedProperties() {
-		List<String> props = new ArrayList<>();
+	private Collection<String> nonUserProvidedProperties() {
+		Set<String> props = new HashSet<>();
 		String selBlockBase = blockBase.getSelectedItem();
 		if (selBlockBase != null && blockBaseProperties.get(selBlockBase) instanceof List<?> blockBaseProps) {
 			for (Object blockBaseProp : blockBaseProps)
