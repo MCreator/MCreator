@@ -122,17 +122,13 @@ public class JBlockPropertiesListEntry extends JPanel {
 		nameLabel.setToolTipText(nameLabel.getText());
 		typeLabel.setText(getTypeString(data));
 
-		updatePropertyValues(prop);
-	}
-
-	private void updatePropertyValues(PropertyDataWithValue<?> data) {
 		defaultValuePane.removeAll();
 		boundsPane.removeAll();
 
-		defaultValuePane.add(defaultValue = data.property().getComponent(mcreator, data.value()));
+		defaultValuePane.add(defaultValue = data.getComponent(mcreator, prop.value()));
 		defaultValue.setEnabled(isEnabled());
 
-		switch (data.property()) {
+		switch (data) {
 		case PropertyData.LogicType ignored -> boundsPane.add("Center",
 				PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("false, true"), 16)));
 		case PropertyData.IntegerType intProp -> {
