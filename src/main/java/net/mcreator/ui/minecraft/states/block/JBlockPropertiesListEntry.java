@@ -41,7 +41,9 @@ public class JBlockPropertiesListEntry extends JPanel {
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final JLabel nameLabel = new JLabel(), typeLabel = new JLabel();
-	private final JPanel boundsPane, defValuePane = new JPanel(new BorderLayout());
+	private final JPanel boundsPane = new JPanel(new BorderLayout(0, 0));
+
+	private final JPanel defaultValuePane = new JPanel(new BorderLayout(0, 0));
 	private JComponent defaultValue;
 
 	public JBlockPropertiesListEntry(JBlockPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
@@ -57,7 +59,6 @@ public class JBlockPropertiesListEntry extends JPanel {
 		ComponentUtils.deriveFont(nameLabel, 16);
 
 		JPanel namePane = new JPanel(new BorderLayout());
-		namePane.setOpaque(false);
 		namePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_name"),
 				L10N.label("elementgui.block.custom_property.name")));
 		namePane.add("Center", nameLabel);
@@ -68,29 +69,26 @@ public class JBlockPropertiesListEntry extends JPanel {
 		ComponentUtils.deriveFont(typeLabel, 16);
 
 		JPanel typePane = new JPanel(new BorderLayout());
-		typePane.setOpaque(false);
 		typePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_type"),
 				L10N.label("elementgui.block.custom_property.type")));
 		typePane.add("Center", typeLabel);
 		typePane.setPreferredSize(new Dimension(160, 0));
 
-		boundsPane = new JPanel(new BorderLayout());
-		boundsPane.setOpaque(false);
-		boundsPane.setPreferredSize(new Dimension(350, 0));
-		boundsPane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_values"),
+		JPanel boundsPaneWrapper = new JPanel(new BorderLayout());
+		boundsPaneWrapper.setPreferredSize(new Dimension(350, 0));
+		boundsPaneWrapper.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_values"),
 				L10N.label("elementgui.block.custom_property.values")));
+		boundsPaneWrapper.add("Center", boundsPane);
 
-		defValuePane.setOpaque(false);
-
-		JPanel line = new JPanel(new BorderLayout());
+		JPanel line = new JPanel();
 		line.setLayout(new BoxLayout(line, BoxLayout.X_AXIS));
 		line.add(namePane);
 		line.add(typePane);
-		line.add(boundsPane);
+		line.add(boundsPaneWrapper);
 		line.add(PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_default_value"),
 						L10N.label("elementgui.block.custom_property.default")),
-				PanelUtils.join(FlowLayout.LEFT, defValuePane)));
+				PanelUtils.join(FlowLayout.LEFT, defaultValuePane)));
 
 		remove.setText(L10N.t("elementgui.block.custom_property.remove"));
 		remove.addActionListener(e -> listPanel.removeProperty(this));
@@ -107,6 +105,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 		super.setEnabled(enabled);
 
 		remove.setEnabled(enabled);
+		defaultValue.setEnabled(enabled);
 	}
 
 	public PropertyData<?> getPropertyData() {
@@ -126,35 +125,34 @@ public class JBlockPropertiesListEntry extends JPanel {
 		updatePropertyValues(prop);
 	}
 
-	private String getTypeString(PropertyData<?> data) {
+	private void updatePropertyValues(PropertyDataWithValue<?> data) {
+		defaultValuePane.removeAll();
+		boundsPane.removeAll();
+
+		defaultValuePane.add(defaultValue = data.property().getComponent(mcreator, data.value()));
+		defaultValue.setEnabled(isEnabled());
+
+		switch (data.property()) {
+		case PropertyData.LogicType ignored -> boundsPane.add("Center",
+				PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("false, true"), 16)));
+		case PropertyData.IntegerType intProp -> {
+			JMinMaxSpinner boundsInt = new JMinMaxSpinner(intProp.getMin(), intProp.getMax(), 0, Integer.MAX_VALUE, 1);
+			boundsInt.setPreferredSize(new Dimension(300, 28));
+			boundsInt.setEnabled(false);
+			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsInt));
+			defaultValue.setPreferredSize(new Dimension(120, 28));
+		}
+		default -> {
+		}
+		}
+	}
+
+	private static String getTypeString(PropertyData<?> data) {
 		return switch (data) {
 			case PropertyData.LogicType ignored -> "Logic";
 			case PropertyData.IntegerType ignored -> "Integer";
 			case null, default -> "Unknown";
 		};
-	}
-
-	private void updatePropertyValues(PropertyDataWithValue<?> data) {
-		defValuePane.add(defaultValue = data.property().getComponent(mcreator, data.value()));
-		defaultValue.setEnabled(isEnabled());
-
-		switch (data.property()) {
-		case PropertyData.LogicType ignored -> {
-			boundsPane.add("Center",
-					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("false, true"), 16)));
-			defaultValue.setOpaque(false);
-		}
-		case PropertyData.IntegerType intProp -> {
-			JMinMaxSpinner boundsInt = new JMinMaxSpinner(intProp.getMin(), intProp.getMax(), 0, Integer.MAX_VALUE, 1);
-			boundsInt.setPreferredSize(new Dimension(300, 22));
-			boundsInt.setEnabled(false);
-			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsInt));
-			defaultValue.setPreferredSize(new Dimension(120, 28));
-			defaultValue.setOpaque(false);
-		}
-		default -> {
-		}
-		}
 	}
 
 }
