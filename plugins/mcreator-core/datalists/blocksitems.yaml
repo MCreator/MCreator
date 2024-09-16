@@ -3411,7 +3411,7 @@
 
 - Blocks.END_PORTAL:
   readable_name: "End Portal Block"
-  type: block
+  type: block_without_item
   texture: END_PORTAL
 
 - Blocks.END_PORTAL_FRAME:
@@ -3659,7 +3659,7 @@
 
 - Blocks.PORTAL:
   readable_name: "Nether Portal Block"
-  type: block
+  type: block_without_item
   texture: PORTAL
   other:
     poi: true

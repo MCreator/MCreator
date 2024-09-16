@@ -29,6 +29,8 @@ public class MCItemHolderValidator implements Validator {
 	private JToggleButton requirement;
 	private final MCItemHolder holder;
 
+	private boolean acceptAir = true;
+
 	public MCItemHolderValidator(MCItemHolder holder) {
 		this.holder = holder;
 	}
@@ -38,8 +40,14 @@ public class MCItemHolderValidator implements Validator {
 		this.requirement = requirement;
 	}
 
+	public MCItemHolderValidator considerAirAsEmpty() {
+		this.acceptAir = false;
+		return this;
+	}
+
 	@Override public ValidationResult validate() {
-		if (holder.containsItemOrAir() || (requirement != null && !requirement.isSelected()))
+		if ((acceptAir ? holder.containsItemOrAir() : holder.containsItem()) || (requirement != null
+				&& !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,

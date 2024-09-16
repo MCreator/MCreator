@@ -76,7 +76,7 @@ public class MCItemHolder extends JButton implements IValidable {
 	}
 
 	public void setBlock(MItemBlock mItemBlock) {
-		if (mItemBlock != null) {
+		if (mItemBlock != null && mItemBlock.isValidReference()) {
 			setIcon(new ImageIcon(ImageUtils.resizeAA(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), mItemBlock.getUnmappedValue()).getImage(),
 					25)));
