@@ -48,6 +48,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -219,6 +220,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
+	private JBlockPropertiesStatesList blockStates;
+	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
+			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+			Collections.emptyMap());
+
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
 
@@ -350,6 +357,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
+		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
+		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
@@ -433,6 +443,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel pane8 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane9 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
+		JPanel bsPane = new JPanel(new BorderLayout(10, 10));
 
 		pane8.setOpaque(false);
 
@@ -602,6 +613,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
+
+		bsPane.setOpaque(false);
+		bsPane.add("Center", blockStates);
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1148,6 +1162,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
+		addPage(L10N.t("elementgui.block.page_states"), bsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
@@ -1161,6 +1176,27 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 
 		updateSoundType();
+	}
+
+	private Collection<String> nonUserProvidedProperties() {
+		Set<String> props = new HashSet<>();
+		String selBlockBase = blockBase.getSelectedItem();
+		if (selBlockBase != null && blockBaseProperties.get(selBlockBase) instanceof List<?> blockBaseProps) {
+			for (Object blockBaseProp : blockBaseProps)
+				props.add(blockBaseProp.toString());
+			return props;
+		}
+		int modeIndex = rotationMode.getSelectedIndex();
+		if (modeIndex == 5) {
+			props.add("axis");
+		} else if (modeIndex != 0) {
+			props.add("facing");
+			if ((modeIndex == 1 || modeIndex == 3) && enablePitch.isSelected())
+				props.add("face");
+		}
+		if (isWaterloggable.isSelected())
+			props.add("waterlogged");
+		return props;
 	}
 
 	private void refreshFieldsTileEntity() {
@@ -1272,10 +1308,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
 		else if (page == 2)
+			return blockStates.getValidationResult();
+		else if (page == 3)
 			return new AggregatedValidationResult(page3group);
-		else if (page == 4)
+		else if (page == 5)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 7)
+		else if (page == 8)
 			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
@@ -1288,6 +1326,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
+		blockStates.setProperties(block.customProperties);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1432,6 +1471,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.guiBoundTo = guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
+		block.customProperties = blockStates.getProperties();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();

@@ -1183,6 +1183,12 @@ public class TestWorkspaceDataProvider {
 			}
 			block.rotationMode = new int[] { 0, 1, 4, 5 }[valueIndex];
 			block.enablePitch = !_true;
+			block.customProperties = new ArrayList<>();
+			if (!emptyLists) {
+				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
+				block.customProperties.add(
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
+			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;

@@ -165,6 +165,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
 	}
 
+	@Test public void testAddBlockPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddBlockPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test")),
+						List::of));
+	}
+
 	@Test public void testStateEditorDialog() throws Throwable {
 		List<PropertyData<?>> testProps = new ArrayList<>();
 		testProps.add(new PropertyData.LogicType("logic"));
