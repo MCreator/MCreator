@@ -171,6 +171,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 						List::of));
 	}
 
+	@Test public void testAddEntityPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddEntityPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test"))));
+	}
+
 	@Test public void testStateEditorDialog() throws Throwable {
 		List<PropertyData<?>> testProps = new ArrayList<>();
 		testProps.add(new PropertyData.LogicType("logic"));

@@ -22,6 +22,7 @@ package net.mcreator.ui.component.entries;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 	 * @param userAction Whether this method was triggered by user action in UI.
 	 * @return A new entry to be added to this list, {@code null} to cancel entry creation.
 	 */
-	protected abstract T newEntry(JPanel parent, List<T> entryList, boolean userAction);
+	@Nullable protected abstract T newEntry(JPanel parent, List<T> entryList, boolean userAction);
 
 	@Override public final List<U> getEntries() {
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();
