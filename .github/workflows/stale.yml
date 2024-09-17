@@ -34,4 +34,4 @@ jobs:
           stale-issue-label: stale
           stale-pr-label: stale
           exempt-issue-labels: official, on hold
-          exempt-pr-labels: official, on hold
+          exempt-pr-labels: official, on hold, community review
