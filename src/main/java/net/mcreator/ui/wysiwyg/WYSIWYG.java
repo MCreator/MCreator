@@ -436,6 +436,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					wysiwygEditor.mcreator.getWorkspace())) {
 				if (ey >= component.getY() && ey <= component.getY() + component.getHeight(
 						wysiwygEditor.mcreator.getWorkspace())) {
+					if (component.locked) continue;
 					return component;
 				}
 			}

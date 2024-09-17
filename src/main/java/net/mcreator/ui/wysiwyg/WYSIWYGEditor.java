@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
 import net.mcreator.util.GSONClone;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,6 +82,7 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton removeComponent = new JButton(UIRES.get("18px.remove"));
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
+	private final JButton lockComponent = new JButton(UIRES.get("16px.lock"));
 
 	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
 	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
@@ -155,17 +157,19 @@ public class WYSIWYGEditor extends JPanel {
 		list.addListSelectionListener(event -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
-				moveComponent.setEnabled(true);
+				moveComponent.setEnabled(!list.getSelectedValue().locked);
 				editComponent.setEnabled(true);
 				removeComponent.setEnabled(true);
 				moveComponentUp.setEnabled(true);
 				moveComponentDown.setEnabled(true);
+				lockComponent.setEnabled(true);
 			} else {
 				moveComponent.setEnabled(false);
 				editComponent.setEnabled(false);
 				removeComponent.setEnabled(false);
 				moveComponentUp.setEnabled(false);
 				moveComponentDown.setEnabled(false);
+				lockComponent.setEnabled(false);
 			}
 		});
 
@@ -197,6 +201,13 @@ public class WYSIWYGEditor extends JPanel {
 				list.setSelectedIndex(list.getSelectedIndex() + 1);
 		});
 
+		lockComponent.addActionListener(e -> {
+			GUIComponent component = list.getSelectedValue();
+			component.locked = !component.locked;
+			moveComponent.setEnabled(!component.locked);
+			list.repaint();
+		});
+
 		editComponent.addActionListener(e -> editCurrentlySelectedComponent());
 
 		list.setOpaque(false);
@@ -226,17 +237,20 @@ public class WYSIWYGEditor extends JPanel {
 		removeComponent.setToolTipText((L10N.t("elementgui.gui.remove_component")));
 		moveComponentUp.setToolTipText((L10N.t("elementgui.gui.move_component_up")));
 		moveComponentDown.setToolTipText((L10N.t("elementgui.gui.move_component_down")));
+		lockComponent.setToolTipText(L10N.t("elementgui.gui.lock_component"));
 
 		moveComponent.setMargin(new Insets(1, 1, 1, 1));
 		removeComponent.setMargin(new Insets(1, 1, 1, 1));
 		editComponent.setMargin(new Insets(1, 1, 1, 1));
 		moveComponentUp.setMargin(new Insets(1, 1, 1, 1));
 		moveComponentDown.setMargin(new Insets(1, 1, 1, 1));
+		lockComponent.setMargin(new Insets(1, 1, 1, 1));
 
 		bar2.add(moveComponent);
 		bar2.add(moveComponentUp);
 		bar2.add(moveComponentDown);
 		bar2.add(editComponent);
+		bar2.add(lockComponent);
 		bar2.add(removeComponent);
 
 		comppan.add("North", bar2);
@@ -323,6 +337,7 @@ public class WYSIWYGEditor extends JPanel {
 		removeComponent.setEnabled(false);
 		moveComponentUp.setEnabled(false);
 		moveComponentDown.setEnabled(false);
+		lockComponent.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
@@ -506,10 +521,10 @@ public class WYSIWYGEditor extends JPanel {
 		return components;
 	}
 
-	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<Object> {
+	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<GUIComponent> {
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<? extends GUIComponent> list, GUIComponent value, int index,
+				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
 				setForeground(Theme.current().getBackgroundColor());
 				setBackground(Theme.current().getForegroundColor());
@@ -517,6 +532,19 @@ public class WYSIWYGEditor extends JPanel {
 			} else {
 				setForeground(Theme.current().getForegroundColor());
 				setOpaque(false);
+			}
+
+			if (value.locked) {
+				setHorizontalTextPosition(JLabel.LEFT);
+				ImageIcon icon = UIRES.get("16px.lock");
+
+				if (isSelected) {
+					icon = ImageUtils.colorize(icon, Theme.current().getBackgroundColor(), true);
+				}
+
+				setIcon(icon);
+			} else {
+				setIcon(null);
 			}
 
 			setOpaque(isSelected);
