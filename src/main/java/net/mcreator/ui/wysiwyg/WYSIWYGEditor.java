@@ -522,6 +522,12 @@ public class WYSIWYGEditor extends JPanel {
 	}
 
 	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<GUIComponent> {
+
+		public GUIComponentRenderer() {
+			setBorder(null);
+			setHorizontalTextPosition(JLabel.LEFT);
+		}
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends GUIComponent> list, GUIComponent value, int index,
 				boolean isSelected, boolean cellHasFocus) {
@@ -535,20 +541,15 @@ public class WYSIWYGEditor extends JPanel {
 			}
 
 			if (value.locked) {
-				setHorizontalTextPosition(JLabel.LEFT);
 				ImageIcon icon = UIRES.get("16px.lock");
-
-				if (isSelected) {
+				if (isSelected)
 					icon = ImageUtils.colorize(icon, Theme.current().getBackgroundColor(), true);
-				}
-
 				setIcon(icon);
 			} else {
 				setIcon(null);
 			}
 
 			setOpaque(isSelected);
-			setBorder(null);
 			setText(value.toString());
 			return this;
 		}
