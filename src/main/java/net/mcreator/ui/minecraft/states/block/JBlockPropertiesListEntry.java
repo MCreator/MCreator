@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JStringListField;
@@ -141,11 +142,15 @@ public class JBlockPropertiesListEntry extends JPanel {
 		}
 		case PropertyData.StringType stringProp -> {
 			JStringListField boundsString = new JStringListField(mcreator, null);
-			boundsString.setPreferredSize(new Dimension(300, 34));
+			boundsString.setPreferredSize(new Dimension(300, 28));
+			boundsString.hideButtons();
+			boundsString.disableItemCentering();
 			boundsString.setEnabled(false);
 			boundsString.setTextList(List.of(stringProp.getArrayData()));
+			boundsString.setBorder(
+					new FlatLineBorder(new Insets(2, 2, 2, 2), UIManager.getColor("Component.borderColor")));
 			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsString));
-			defaultValue.setPreferredSize(new Dimension(120, 28));
+			defaultValue.setPreferredSize(new Dimension(180, 28));
 		}
 		default -> {
 		}
