@@ -1,1 +1,1 @@
-This parameter specifies the number of sprites of the selected texture.
+This parameter specifies the number of sprites in the selected texture.
