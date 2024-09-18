@@ -225,6 +225,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel pager = new JPanel();
 			pager.setOpaque(false);
 			pager.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+			pager.addMouseWheelListener(e -> {
+				if (e.getWheelRotation() > 0)
+					split.next();
+				else
+					split.back();
+				pagers.get(split.getPage()).setSelected(true);
+			});
+
 			pager.add(back);
 			pager.add(new JLabel(UIRES.get("separator")));
 
