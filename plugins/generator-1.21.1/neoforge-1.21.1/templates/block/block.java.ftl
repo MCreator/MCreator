@@ -213,16 +213,7 @@ public class ${name}Block extends
 	    	<#elseif data.rotationMode == 5>
 	    	.setValue(AXIS, Direction.Axis.Y)
 	    	</#if>
-			<#list data.customProperties as prop>
-				<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
-				.setValue(${propName?upper_case},
-					<#if prop.property().getClass().getSimpleName().equals("StringType")>
-					${StringUtils.snakeToCamel(propName)}Property.${prop.value()?upper_case}
-					<#else>
-					${prop.value()}
-					</#if>
-				)
-			</#list>
+			<@initCustomBlockStateProperties />
 	    	<#if data.isWaterloggable>
 	    	.setValue(WATERLOGGED, false)
 	    	</#if>
@@ -721,8 +712,7 @@ public class ${name}Block extends
 				this.name = name;
 			}
 
-			@Override
-			public String getSerializedName() {
+			@Override public String getSerializedName() {
 				return this.name;
 			}
 		}
