@@ -27,6 +27,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -34,30 +35,35 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 	public SpriteDialog(WYSIWYGEditor editor, @Nullable Sprite sprite) {
 		super(editor, sprite);
-		setSize(660, 250);
+		setSize(820, 170);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.sprite_title"));
 
-		JPanel options = new JPanel();
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		JPanel pane = new JPanel();
+		pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
+
+		JPanel options = new JPanel(new BorderLayout());
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
 
 		JSpinner spritesCount = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		spritesCount.setPreferredSize(new Dimension(80, spritesCount.getPreferredSize().height));
 
-		options.add(PanelUtils.join(L10N.label("dialog.gui.image_texture"), textureSelector));
-		options.add(PanelUtils.join(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
-						L10N.label("dialog.gui.sprite_count")), spritesCount));
+		options.add("Center", PanelUtils.centerAndSouthElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
+				PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
+						L10N.label("dialog.gui.sprite_count")), spritesCount)));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 		if (!editor.isNotOverlayType) {
-			options.add(PanelUtils.join(L10N.label("dialog.gui.anchor"), anchor));
+			options.add("South", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
 		}
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
@@ -67,16 +73,28 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		ProcedureSelector spriteIndex = new ProcedureSelector(
+		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, (int) spritesCount.getValue() - 1, 1);
+		JSpinner spinner = new JSpinner(model);
+
+		final int[] previousSpritesCount = { (int) spritesCount.getValue() };
+		spritesCount.addChangeListener(e -> {
+			model.setMaximum((int) spritesCount.getValue() - 1);
+
+			int currentSpritesCount = (int) spritesCount.getValue();
+			if (previousSpritesCount[0] > currentSpritesCount)
+				model.setValue((int) model.getValue() - 1);
+			previousSpritesCount[0] = currentSpritesCount;
+		});
+
+		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator,
 				L10N.t("dialog.gui.sprite_index"), ProcedureSelector.Side.CLIENT, false,
-				VariableTypeLoader.BuiltInTypes.NUMBER,
+				spinner, 80,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		spriteIndex.refreshList();
 
-		options.add(PanelUtils.gridElements(1, 2, 5, 5, displayCondition, spriteIndex));
-
-		add("Center", options);
+		add("East", PanelUtils.northAndCenterElement(displayCondition, PanelUtils.centerInPanel(spriteIndex)));
+		add("Center", PanelUtils.join(FlowLayout.LEFT, options));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 

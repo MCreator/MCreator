@@ -192,7 +192,11 @@ package ${package}.client.screens;
 	<#if hasProcedure(component.spriteIndex)>
 		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace())}</#if>)
 	<#else>
-		0
+		<#if dim == "width">
+			${component.getWidth(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+		<#else>
+			${component.getHeight(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+		</#if>
 	</#if>
 </#macro>
 <#-- @formatter:on -->

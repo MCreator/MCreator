@@ -19,6 +19,7 @@
 
 package net.mcreator.element.parts.gui;
 
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -37,9 +38,9 @@ public class Sprite extends GUIComponent {
 	public int spritesCount;
 
 	public Procedure displayCondition;
-	public Procedure spriteIndex;
+	public NumberProcedure spriteIndex;
 
-	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, Procedure spriteIndex) {
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, NumberProcedure spriteIndex) {
 		super(x, y);
 		this.sprite = sprite;
 		this.spritesCount = spritesCount;
@@ -47,7 +48,7 @@ public class Sprite extends GUIComponent {
 		this.spriteIndex = spriteIndex;
 	}
 
-	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, Procedure spriteIndex, AnchorPoint anchorPoint) {
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, NumberProcedure spriteIndex, AnchorPoint anchorPoint) {
 		this(x, y, sprite, spritesCount, displayCondition, spriteIndex);
 		this.anchorPoint = anchorPoint;
 	}
@@ -58,13 +59,29 @@ public class Sprite extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		java.awt.Image actualImage = this.getImage(wysiwygEditor.mcreator.getWorkspace());
-		java.awt.Image firstSprite = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(0, 0,
-				this.getWidth(wysiwygEditor.mcreator.getWorkspace()), this.getHeight(wysiwygEditor.mcreator.getWorkspace())));
 
-		int cw = firstSprite.getWidth(null);
-		int ch = firstSprite.getHeight(null);
+		Workspace workspace = wysiwygEditor.mcreator.getWorkspace();
+		int width = this.getWidth(workspace);
+		int height = this.getHeight(workspace);
+		Rectangle r;
 
-		g.drawImage(firstSprite, cx, cy, cw, ch, wysiwygEditor);
+		if (spriteIndex.getName() == null) {
+			int index = spriteIndex.getFixedValue().intValue();
+			if (actualImage.getWidth(null) > actualImage.getHeight(null)) {
+				r = new Rectangle(width * index, 0, width, height);
+			} else {
+				r = new Rectangle(0, height * index, width, height);
+			}
+		} else {
+			r = new Rectangle(0, 0, width, height);
+		}
+
+		java.awt.Image sprite = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), r);
+
+		int cw = sprite.getWidth(null);
+		int ch = sprite.getHeight(null);
+
+		g.drawImage(sprite, cx, cy, cw, ch, wysiwygEditor);
 	}
 
 	@SuppressWarnings("unused") public int getTextureWidth(Workspace workspace) {
