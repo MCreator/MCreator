@@ -22,6 +22,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
@@ -52,16 +53,20 @@ public class AddBlockPropertyDialog {
 				() -> currentEntries.stream().map(PropertyData::getName), nonUserProvidedProperties.get(),
 				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
 		name.enableRealtimeValidation();
-		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer" });
+		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "String" });
 
 		JMinMaxSpinner integerBounds = new JMinMaxSpinner(0, 1, 0, Integer.MAX_VALUE, 1);
+		JStringListField stringBounds = new JStringListField(mcreator, e -> new RegistryNameValidator(e,
+				L10N.t("elementgui.block.custom_properties.add.value"))).setUniqueEntries(true);
 
 		CardLayout cards = new CardLayout();
 		JPanel bounds = new JPanel(cards);
-		bounds.setPreferredSize(new Dimension(0, 28));
+		bounds.setPreferredSize(new Dimension(0, 34));
 		bounds.add("Logic", new JEmptyBox());
 		bounds.add("Integer", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
 				integerBounds));
+		bounds.add("String", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
+				stringBounds));
 		type.addActionListener(e -> cards.show(bounds, (String) type.getSelectedItem()));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
@@ -80,6 +85,18 @@ public class AddBlockPropertyDialog {
 							new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
 									integerBounds.getIntMaxValue()), null));
 					dialog.setVisible(false);
+				} else if ("String".equals(type.getSelectedItem())) {
+					List<String> textList = stringBounds.getTextList();
+					if (!textList.isEmpty()) {
+						result.set(new PropertyDataWithValue<>(
+								new PropertyData.StringType(propertyName, textList.toArray(String[]::new)), null));
+						dialog.setVisible(false);
+					} else {
+						JOptionPane.showMessageDialog(dialog,
+								L10N.t("elementgui.block.custom_properties.add.error_invalid_values"),
+								L10N.t("elementgui.block.custom_properties.add.error_invalid_values.title"),
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});

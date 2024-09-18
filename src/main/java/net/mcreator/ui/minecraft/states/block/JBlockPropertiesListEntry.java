@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -138,6 +139,14 @@ public class JBlockPropertiesListEntry extends JPanel {
 			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsInt));
 			defaultValue.setPreferredSize(new Dimension(120, 28));
 		}
+		case PropertyData.StringType stringProp -> {
+			JStringListField boundsString = new JStringListField(mcreator, null);
+			boundsString.setPreferredSize(new Dimension(300, 34));
+			boundsString.setEnabled(false);
+			boundsString.setTextList(List.of(stringProp.getArrayData()));
+			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsString));
+			defaultValue.setPreferredSize(new Dimension(120, 28));
+		}
 		default -> {
 		}
 		}
@@ -147,6 +156,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 		return switch (data) {
 			case PropertyData.LogicType ignored -> "Logic";
 			case PropertyData.IntegerType ignored -> "Integer";
+			case PropertyData.StringType ignored -> "String";
 			case null, default -> "Unknown";
 		};
 	}
