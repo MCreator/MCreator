@@ -53,7 +53,7 @@ public class AddBlockPropertyDialog {
 				() -> currentEntries.stream().map(PropertyData::getName), nonUserProvidedProperties.get(),
 				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
 		name.enableRealtimeValidation();
-		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "String" });
+		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "Enum" });
 
 		JMinMaxSpinner integerBounds = new JMinMaxSpinner(0, 1, 0, Integer.MAX_VALUE, 1);
 		JStringListField stringBounds = new JStringListField(mcreator, e -> new RegistryNameValidator(e,
@@ -65,7 +65,7 @@ public class AddBlockPropertyDialog {
 		bounds.add("Logic", new JEmptyBox());
 		bounds.add("Integer", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
 				integerBounds));
-		bounds.add("String", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
+		bounds.add("Enum", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
 				stringBounds));
 		type.addActionListener(e -> cards.show(bounds, (String) type.getSelectedItem()));
 
@@ -85,7 +85,7 @@ public class AddBlockPropertyDialog {
 							new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
 									integerBounds.getIntMaxValue()), null));
 					dialog.setVisible(false);
-				} else if ("String".equals(type.getSelectedItem())) {
+				} else if ("Enum".equals(type.getSelectedItem())) {
 					List<String> textList = stringBounds.getTextList();
 					if (!textList.isEmpty()) {
 						result.set(new PropertyDataWithValue<>(

@@ -156,7 +156,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 		return switch (data) {
 			case PropertyData.LogicType ignored -> "Logic";
 			case PropertyData.IntegerType ignored -> "Integer";
-			case PropertyData.StringType ignored -> "String";
+			case PropertyData.StringType ignored -> "Enum";
 			case null, default -> "Unknown";
 		};
 	}
