@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly.data;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
@@ -169,7 +170,10 @@ import java.util.Objects;
 		return blocklyJSON.getAsJsonObject().get("message0").getAsString();
 	}
 
-	public String getOutputTypeForTests() {
+	/**
+	 * @return Output type String in Blockly format. Null if the block is not an output block.
+	 */
+	public String getOutputType() {
 		if (type == IBlockGenerator.BlockType.OUTPUT) {
 			JsonElement output = blocklyJSON.getAsJsonObject().get("output");
 			if (output.isJsonArray()) {
@@ -180,6 +184,23 @@ import java.util.Objects;
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * @param fieldName Field name to get type of
+	 * @return Field type String in Blockly format. Null if the field does not exist, or we can't determine its type.
+	 */
+	public String getFieldType(String fieldName) {
+		if (blocklyJSON.getAsJsonObject().has("args0")) {
+			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+			for (int i = 0; i < args0.size(); i++) {
+				JsonObject arg = args0.get(i).getAsJsonObject();
+				if (arg.has("name") && arg.get("name").getAsString().equals(fieldName) && arg.has("type")) {
+					return arg.get("type").getAsString();
+				}
+			}
+		}
+		return null;
 	}
 
 	String getGroupEstimate() {

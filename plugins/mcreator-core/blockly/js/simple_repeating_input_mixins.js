@@ -241,6 +241,25 @@ Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatin
         }, false, ['property', 'value'], false),
     undefined, ['blockstate_selector_mutator_input']);
 
+// Mutator for repeating block column layers
+Blockly.Extensions.registerMutator('feature_block_column_mutator', simpleRepeatingInputMixin(
+        'feature_block_column_mutator_container', 'feature_block_column_mutator_input', 'layer',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('BlockColumnLayer').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['feature_block_column_mutator_input']);
+
+// Mutator for disk feature rules
+Blockly.Extensions.registerMutator('disk_feature_mutator', simpleRepeatingInputMixin(
+        'feature_disk_mutator_container', 'feature_disk_mutator_input', 'rule',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('DiskRule').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.feature_disk_mutator.try' : 'blockly.block.feature_disk_mutator.else_try'));
+        }),
+    undefined, ['feature_disk_mutator_input']);
+
 // Mutator for random feature selector
 Blockly.Extensions.registerMutator('random_feature_selector_mutator', simpleRepeatingInputMixin(
         'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
