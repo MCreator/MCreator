@@ -1188,6 +1188,9 @@ public class TestWorkspaceDataProvider {
 				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
+				block.customProperties.add(new PropertyDataWithValue<>(
+						new PropertyData.StringType("enum_prop", new String[] { "logic", "integer", "string" }),
+						"string"));
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;

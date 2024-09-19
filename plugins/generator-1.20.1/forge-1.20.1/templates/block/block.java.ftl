@@ -82,6 +82,8 @@ public class ${name}Block extends
 			public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
 		<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
 			public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
+		<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+			public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
 		</#if>
 	</#list>
 
@@ -203,9 +205,7 @@ public class ${name}Block extends
 	    	<#elseif data.rotationMode == 5>
 	    	.setValue(AXIS, Direction.Axis.Y)
 	    	</#if>
-			<#list data.customProperties as prop>
-			.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
-			</#list>
+			<@initCustomBlockStateProperties />
 	    	<#if data.isWaterloggable>
 	    	.setValue(WATERLOGGED, false)
 	    	</#if>
@@ -345,7 +345,14 @@ public class ${name}Block extends
 
 	<#macro initCustomBlockStateProperties>
 		<#list data.customProperties as prop>
-		.setValue(${prop.property().getName().replace("CUSTOM:", "")?upper_case}, ${prop.value()})
+			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
+			.setValue(${propName?upper_case},
+				<#if prop.property().getClass().getSimpleName().equals("StringType")>
+				${StringUtils.snakeToCamel(propName)}Property.${prop.value()?upper_case}
+				<#else>
+				${prop.value()}
+				</#if>
+			)
 		</#list>
 	</#macro>
 
@@ -686,6 +693,26 @@ public class ${name}Block extends
 		}
 		</#if>
 	</#if>
+
+	<#list data.customProperties as prop>
+		<#if prop.property.getClass().getSimpleName().equals("StringType")>
+		private enum ${StringUtils.snakeToCamel(propName)}Property implements StringRepresentable {
+			<#list prop.property.getArrayData() as value>
+			${value?upper_case}("${value}")<#sep>,
+			</#list>;
+
+			private final String name;
+
+			private ${StringUtils.snakeToCamel(propName)}Property(String name) {
+				this.name = name;
+			}
+
+			@Override public String getSerializedName() {
+				return this.name;
+			}
+		}
+		</#if>
+	</#list>
 
 }
 </#compress>
