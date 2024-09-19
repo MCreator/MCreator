@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
 import net.mcreator.util.GSONClone;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -82,7 +83,7 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton removeComponent = new JButton(UIRES.get("18px.remove"));
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
-	private final JButton lockComponent = new JButton(UIRES.get("16px.lock"));
+	private final JButton lockComponent = new JButton(UIRES.get("18px.lock"));
 
 	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
 	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
@@ -525,7 +526,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		public GUIComponentRenderer() {
 			setBorder(null);
-			setHorizontalTextPosition(JLabel.LEFT);
+			setHorizontalTextPosition(JLabel.RIGHT);
 		}
 
 		@Override
@@ -541,7 +542,7 @@ public class WYSIWYGEditor extends JPanel {
 			}
 
 			if (value.locked) {
-				ImageIcon icon = UIRES.get("16px.lock");
+				ImageIcon icon = IconUtils.resize(UIRES.get("18px.lock"), 16);
 				if (isSelected)
 					icon = ImageUtils.colorize(icon, Theme.current().getBackgroundColor(), true);
 				setIcon(icon);
