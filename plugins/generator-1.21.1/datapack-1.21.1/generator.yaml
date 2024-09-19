@@ -12,6 +12,7 @@ res_root: "@SRCROOT"
 mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 # specific resource folders
 structures_dir: "@MODDATAROOT/structures"
