@@ -1,0 +1,1 @@
+Bir oyuncu bloğu yok etmeye başladığında bir prosedürü tetikler.

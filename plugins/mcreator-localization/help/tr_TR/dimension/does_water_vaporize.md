@@ -1,0 +1,1 @@
+Bu parametre boyutun içindeki suyu devre dışı bırakacaktır. Böyle bir boyuta su yerleştirildiğinde, anında kaybolur, böylece su yerleştirmek mümkün olmaz.

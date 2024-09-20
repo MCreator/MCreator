@@ -1,0 +1,1 @@
+Dönen değer "evet" olduğu sürece bu model katmanı görünür durumdadır.
