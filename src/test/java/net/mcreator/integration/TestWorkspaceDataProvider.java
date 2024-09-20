@@ -1186,11 +1186,17 @@ public class TestWorkspaceDataProvider {
 			block.customProperties = new ArrayList<>();
 			if (!emptyLists) {
 				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
+				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop2"), _true));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
+				block.customProperties.add(
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop2", 0, 123), 63));
 				block.customProperties.add(new PropertyDataWithValue<>(
 						new PropertyData.StringType("enum_prop", new String[] { "logic", "integer", "string" }),
 						"string"));
+				block.customProperties.add(new PropertyDataWithValue<>(
+						new PropertyData.StringType("enum_prop_two", new String[] { "value1", "value2", "value3" }),
+						"value3"));
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
