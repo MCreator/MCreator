@@ -1,0 +1,1 @@
+Bu, bir varlık bu blokta yürüdüğünde çalınan sestir.
