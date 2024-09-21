@@ -20,7 +20,6 @@ package net.mcreator.ui.action.impl.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -32,7 +31,10 @@ import net.mcreator.util.FilenameUtilsPatched;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class StructureImportActions {
 
@@ -95,8 +97,7 @@ public class StructureImportActions {
 					if (sch.isFile()) {
 						FileIO.copyFile(sch,
 								new File(actionRegistry.getMCreator().getFolderManager().getStructuresDir(),
-										Transliteration.transliterateString(sch.getName()).toLowerCase(Locale.ENGLISH)
-												.replace(" ", "_")));
+										RegistryNameFixer.fix(sch.getName())));
 					}
 				}
 				actionRegistry.getMCreator().mv.resourcesPan.workspacePanelStructures.reloadElements();

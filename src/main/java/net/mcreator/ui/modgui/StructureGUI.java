@@ -21,8 +21,8 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -129,8 +129,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		importnbt.addActionListener(e -> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
 			if (sch != null) {
-				String strname = Transliteration.transliterateString(sch.getName().toLowerCase(Locale.ENGLISH))
-						.replace(" ", "_");
+				String strname = RegistryNameFixer.fix(sch.getName().toLowerCase(Locale.ENGLISH));
 				FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(), strname));
 				structureSelector.removeAllItems();
 				mcreator.getFolderManager().getStructureList().forEach(structureSelector::addItem);

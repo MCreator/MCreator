@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.parts.TextureHolder;
-import net.mcreator.io.Transliteration;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -40,7 +40,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -90,7 +89,7 @@ public class TextureMappingDialog {
 								}
 							});
 					if (mapping != null) {
-						mapping = Transliteration.transliterateString(mapping.toLowerCase(Locale.ENGLISH));
+						mapping = RegistryNameFixer.fix(mapping);
 						Map<String, TextureHolder> textureMap = new HashMap<>();
 						for (String texture : finalTexturesList)
 							textureMap.put(texture, new TextureHolder(mcreator.getWorkspace(), ""));
