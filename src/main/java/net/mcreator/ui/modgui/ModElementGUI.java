@@ -165,6 +165,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				return true;
 			});
 
+			this.tabIn.setTabClosedListener(tab -> onViewClosed());
+
 			retval = this;
 		} else {
 			retval = (ViewBase) existing.getContent();
@@ -630,6 +632,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	protected boolean allowCodePreview() {
 		return true;
+	}
+
+	public void onViewClosed() {
+		if (this instanceof IBlocklyPanelHolder holder) {
+			holder.closeBlocklyPanels();
+		}
 	}
 
 	public void reloadDataLists() {
