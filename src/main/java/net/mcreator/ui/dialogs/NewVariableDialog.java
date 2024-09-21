@@ -19,11 +19,13 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.io.Transliteration;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -39,11 +41,11 @@ public class NewVariableDialog {
 			OptionPaneValidatior variableNameValidator, Collection<VariableType> supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
-		VTextField textField = new VTextField(25);
-		textField.setPreferredSize(new Dimension(200, 28));
-		textField.enableRealtimeValidation();
-		variableNameValidator.setValidatedComponent(textField);
-		textField.setValidator(variableNameValidator);
+		VTextField variableName = new VTextField(25);
+		variableName.setPreferredSize(new Dimension(200, 28));
+		variableName.enableRealtimeValidation();
+		variableNameValidator.setValidatedComponent(variableName);
+		variableName.setValidator(variableNameValidator);
 
 		JComboBox<VariableType> type = new JComboBox<>(supportedTypes.toArray(new VariableType[0]));
 
@@ -53,7 +55,7 @@ public class NewVariableDialog {
 
 		JPanel data = new JPanel(new GridLayout(showScope ? 3 : 2, 2, 5, 5));
 		data.add(L10N.label("dialog.variables.variable_name"));
-		data.add(textField);
+		data.add(variableName);
 		data.add(L10N.label("dialog.variables.variable_type"));
 		data.add(type);
 
@@ -81,12 +83,12 @@ public class NewVariableDialog {
 		int option = JOptionPane.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION
-				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+				&& variableName.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
 			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
 					((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
-				VariableElement element = new VariableElement(Transliteration.transliterateString(textField.getText()));
+				VariableElement element = new VariableElement(StringUtils.snakeToCamel(RegistryNameFixer.fix(Transliteration.transliterateString(variableName.getText()))));
 				element.setType((VariableType) type.getSelectedItem());
 				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				if (showScope)

@@ -52,7 +52,7 @@ public class Transliteration {
 				if (isASCII(element))
 					transliterated_stripped.append(element);
 
-			transliterated = transliterated_stripped.toString();
+			transliterated = transliterated_stripped.toString().trim();
 
 			return transliterated;
 		}
