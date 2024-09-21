@@ -1626,6 +1626,22 @@ public class TestWorkspaceDataProvider {
 			feature.featurexml = Feature.XML_BASE;
 			feature.skipPlacement = !_true;
 			return feature;
+		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
+			Attribute attribute = new Attribute(modElement);
+			attribute.name = modElement.getName();
+			attribute.defaultValue = 127.53;
+			attribute.minValue = 24.42;
+			attribute.maxValue = 200d;
+			attribute.entities = new ArrayList<>();
+			if (!emptyLists) {
+				attribute.entities.addAll(ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace()).stream()
+						.map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))
+						.toList());
+				attribute.addToPlayers = _true;
+			} else {
+				attribute.addToAllEntities = true;
+			}
+			return attribute;
 		}
 		return null;
 	}
