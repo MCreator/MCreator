@@ -305,12 +305,13 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	@Override public void close() {
 		if (webEngine != null) {
-			ThreadUtil.runOnFxThread(() -> {
+			// Ensure that the web engine is not closed during the initialization
+			addTaskToRunAfterLoaded(() -> ThreadUtil.runOnFxThread(() -> {
 				// Free resources of the web engine (kill JS, load empty page and finally free the reference)
 				webEngine.setJavaScriptEnabled(false);
 				webEngine.load("");
 				webEngine = null;
-			});
+			}));
 		}
 	}
 
