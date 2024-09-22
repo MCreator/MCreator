@@ -28,8 +28,6 @@ import net.mcreator.preferences.entries.HiddenEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
-import java.io.File;
-
 public class HiddenSection extends PreferencesSection {
 
 	public final PreferencesEntry<IconSize> workspaceModElementIconSize;
@@ -37,7 +35,7 @@ public class HiddenSection extends PreferencesSection {
 	public final IntegerEntry projectTreeSplitPos;
 	public final BooleanEntry workspaceSortAscending;
 	public final PreferencesEntry<SortType> workspaceSortOrder;
-	public final PreferencesEntry<File> java_home;
+	public final StringEntry java_home;
 	public final StringEntry uiTheme;
 	public final BooleanEntry enableJavaPlugins;
 	public final StringEntry lastWebsiteNewsRead;
@@ -66,15 +64,7 @@ public class HiddenSection extends PreferencesSection {
 				return PreferencesManager.gson.toJsonTree(value, SortType.class);
 			}
 		});
-		java_home = addEntry(new HiddenEntry<>("java_home", null) {
-			@Override public void setValueFromJsonElement(JsonElement object) {
-				this.value = new File(object.getAsString());
-			}
-
-			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, File.class);
-			}
-		});
+		java_home = addEntry(new StringEntry("java_home",""));
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
 		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
