@@ -53,7 +53,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value,IconSize.class);
+				return PreferencesManager.gson.toJsonTree(value, IconSize.class);
 			}
 		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
@@ -65,7 +65,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value,SortType.class);
+				return PreferencesManager.gson.toJsonTree(value, SortType.class);
 			}
 		});
 		java_home = addEntry(new HiddenEntry<>("java_home", null) {
@@ -74,7 +74,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				if (value != null){
+				if (value != null) {
 					return new JsonPrimitive(value.getAbsolutePath());
 				} else {
 					return JsonNull.INSTANCE;
