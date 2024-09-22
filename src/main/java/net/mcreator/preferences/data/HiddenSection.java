@@ -20,6 +20,8 @@
 package net.mcreator.preferences.data;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
@@ -37,7 +39,7 @@ public class HiddenSection extends PreferencesSection {
 	public final IntegerEntry projectTreeSplitPos;
 	public final BooleanEntry workspaceSortAscending;
 	public final PreferencesEntry<SortType> workspaceSortOrder;
-	public final HiddenEntry<File> java_home;
+	public final PreferencesEntry<File> java_home;
 	public final StringEntry uiTheme;
 	public final BooleanEntry enableJavaPlugins;
 	public final StringEntry lastWebsiteNewsRead;
@@ -51,7 +53,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.name());
+				return PreferencesManager.gson.toJsonTree(value,IconSize.class);
 			}
 		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
@@ -63,17 +65,20 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.name());
+				return PreferencesManager.gson.toJsonTree(value,SortType.class);
 			}
 		});
-		java_home = addEntry(new HiddenEntry<File>("java_home", null) {
+		java_home = addEntry(new HiddenEntry<>("java_home", null) {
 			@Override public void setValueFromJsonElement(JsonElement object) {
 				this.value = new File(object.getAsString());
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree((value == null) ? null : value.getAbsolutePath(),
-						String.class);
+				if (value != null){
+					return new JsonPrimitive(value.getAbsolutePath());
+				} else {
+					return JsonNull.INSTANCE;
+				}
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
