@@ -61,7 +61,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, SortType.class);
+				return PreferencesManager.gson.toJsonTree(value);
 			}
 		});
 		java_home = addEntry(new StringEntry("java_home",""));
