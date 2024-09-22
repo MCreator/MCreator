@@ -49,7 +49,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.toString(),String.class);
+				return PreferencesManager.gson.toJsonTree(value.name(),String.class);
 			}
 		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
@@ -61,7 +61,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.toString(),String.class);
+				return PreferencesManager.gson.toJsonTree(value.name(),String.class);
 			}
 		});
 		java_home = addEntry(new StringEntry("java_home",""));
