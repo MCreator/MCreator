@@ -66,7 +66,7 @@ public class HiddenSection extends PreferencesSection {
 				return PreferencesManager.gson.toJsonTree(value.name());
 			}
 		});
-		java_home = addEntry(new HiddenEntry<File>("java_home",null){
+		java_home = addEntry(new HiddenEntry<File>("java_home", null) {
 			@Override public void setValueFromJsonElement(JsonElement object) {
 				this.value = new File(object.getAsString());
 			}
