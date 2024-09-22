@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -88,7 +87,7 @@ public class NewVariableDialog {
 			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
 					((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
-				VariableElement element = new VariableElement(StringUtils.snakeToCamel(RegistryNameFixer.fix(Transliteration.transliterateString(variableName.getText()))));
+				VariableElement element = new VariableElement(StringUtils.snakeToCamel(RegistryNameFixer.fix(variableName.getText())));
 				element.setType((VariableType) type.getSelectedItem());
 				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				if (showScope)
