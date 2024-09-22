@@ -29,6 +29,7 @@ import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
 import java.io.File;
+import java.util.Objects;
 
 public class HiddenSection extends PreferencesSection {
 
@@ -72,7 +73,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.getAbsolutePath());
+				return PreferencesManager.gson.toJsonTree(Objects.toString(value));
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
