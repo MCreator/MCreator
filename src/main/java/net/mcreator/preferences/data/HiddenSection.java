@@ -49,7 +49,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, IconSize.class);
+				return PreferencesManager.gson.toJsonTree(value.toString());
 			}
 		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
