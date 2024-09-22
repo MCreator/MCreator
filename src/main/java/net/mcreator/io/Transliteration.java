@@ -34,11 +34,12 @@ public class Transliteration {
 		boolean pureASCII = true;
 
 		char[] chars = source.toCharArray();
-		for (char c : chars)
+		for (char c : chars) {
 			if (!isASCII(c)) {
 				pureASCII = false;
 				break;
 			}
+		}
 
 		if (pureASCII) {
 			return source;
@@ -47,9 +48,11 @@ public class Transliteration {
 			char[] transliterated_chars = transliterated.toCharArray();
 			StringBuilder transliterated_stripped = new StringBuilder();
 
-			for (char element : transliterated_chars)
-				if (isASCII(element))
+			for (char element : transliterated_chars) {
+				if (isASCII(element)) {
 					transliterated_stripped.append(element);
+				}
+			}
 
 			transliterated = transliterated_stripped.toString();
 

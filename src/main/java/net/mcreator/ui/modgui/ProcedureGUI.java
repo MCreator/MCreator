@@ -382,7 +382,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					new OptionPaneValidatior() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
-							String variableName = Transliteration.transliterateString(((VTextField) component).getText());
+							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
 								if (variableName.equals(nameinrow))

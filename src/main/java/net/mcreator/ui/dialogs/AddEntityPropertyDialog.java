@@ -62,7 +62,7 @@ public class AddEntityPropertyDialog {
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				String property = Transliteration.transliterateString(name.getText());
+				String property = name.getText();
 				if ("Integer".equals(type.getSelectedItem())) {
 					entry.set(new PropertyDataWithValue<>(new PropertyData.IntegerType(property), null));
 				} else if ("Logic".equals(type.getSelectedItem())) {
