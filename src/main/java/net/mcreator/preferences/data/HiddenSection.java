@@ -28,6 +28,8 @@ import net.mcreator.preferences.entries.HiddenEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
+import java.io.File;
+
 public class HiddenSection extends PreferencesSection {
 
 	public final PreferencesEntry<IconSize> workspaceModElementIconSize;
@@ -35,7 +37,7 @@ public class HiddenSection extends PreferencesSection {
 	public final IntegerEntry projectTreeSplitPos;
 	public final BooleanEntry workspaceSortAscending;
 	public final PreferencesEntry<SortType> workspaceSortOrder;
-	public final StringEntry java_home;
+	public final HiddenEntry<File> java_home;
 	public final StringEntry uiTheme;
 	public final BooleanEntry enableJavaPlugins;
 	public final StringEntry lastWebsiteNewsRead;
@@ -49,7 +51,7 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.name(),String.class);
+				return PreferencesManager.gson.toJsonTree(value.name());
 			}
 		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
@@ -61,10 +63,18 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value.name(),String.class);
+				return PreferencesManager.gson.toJsonTree(value.name());
 			}
 		});
-		java_home = addEntry(new StringEntry("java_home",""));
+		java_home = addEntry(new HiddenEntry<File>("java_home",null){
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = new File(object.getAsString());
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value.getAbsolutePath());
+			}
+		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
 		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
