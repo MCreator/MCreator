@@ -72,7 +72,8 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree((value==null)?null:value.getAbsolutePath(),String.class);
+				return PreferencesManager.gson.toJsonTree((value == null) ? null : value.getAbsolutePath(),
+						String.class);
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
