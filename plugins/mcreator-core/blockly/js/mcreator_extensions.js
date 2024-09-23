@@ -190,6 +190,10 @@ Blockly.Extensions.register('tag_input_field_validator', validateResourceLocatio
 Blockly.Extensions.register('geode_tag_fields_validator',
     validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
 
+Blockly.Extensions.register('root_system_tag_fields_validator', validateResourceLocationFields('root_replaceable'));
+
+Blockly.Extensions.register('vegetation_patch_tag_fields_validator', validateResourceLocationFields('replaceable'));
+
 Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
     {
         onchange: function (e) {
