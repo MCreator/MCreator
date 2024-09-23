@@ -23,6 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
@@ -47,7 +48,7 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public double power;
 	public double damage;
 	public int knockback;
-	public double visualScale;
+	public NumberProcedure visualScale;
 	public String entityModel;
 	@TextureReference(TextureType.ENTITY) public String customModelTexture;
 

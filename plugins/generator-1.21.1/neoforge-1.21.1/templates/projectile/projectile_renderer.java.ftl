@@ -55,6 +55,21 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		super.render(entityIn, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
 	}
 
+	<#if (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
+	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float f) {
+		<#if hasProcedure(data.visualScale)>
+			Level world = entity.level();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
+			poseStack.scale(scale, scale, scale);
+		<#elseif data.visualScale?? && data.visualScale.getFixedValue() != 1>
+			poseStack.scale(${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f);
+		</#if>
+	}
+	</#if>
+
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
 		return texture;
 	}

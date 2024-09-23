@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-
+<#include "../procedures.java.ftl">
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
@@ -44,7 +44,13 @@ package ${package}.init;
 				<#if entity.isCustomModel()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), <#if entity.visualScale != 1>render -> new ThrownItemRenderer<>(render, ${entity.visualScale}f, true)<#else>ThrownItemRenderer::new</#if>);
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), <#if hasProcedure(entity.visualScale)>render -> new ThrownItemRenderer<>(render, (float) <@procedureCode entity.visualScale, {
+                                                                                                                                                                                                        				"x": "${entity.getModElement()}Entity.getX()",
+                                                                                                                                                                                                      					"y": "${entity.getModElement()}Entity.getY()",
+                                                                                                                                                                                                             			"z": "${entity.getModElement()}Entity.getZ()",
+                                                                                                                                                                                                             			"world": "${entity.getModElement()}Entity.level()",
+                                                                                                                                                                                                             			"entity": "${entity.getModElement()}Entity"
+                                                                                                                                                                                                             		}, false/>, true)<#elseif entity.visualScale?? && entity.visualScale.getFixedValue() != 1>render -> new ThrownItemRenderer<>(render, ${entity.visualScale.getFixedValue()}f, true)<#else>ThrownItemRenderer::new</#if>);
 				</#if>
 			<#else>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
