@@ -1,0 +1,1 @@
+Büyünüzün ganimet tablolarında oluşmasını istiyorsanız bu seçeneği işaretleyin.

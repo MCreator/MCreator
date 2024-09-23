@@ -1,0 +1,1 @@
+Bu parametre, bu yiyeceği yiyen varlığın envanterine hangi öğenin eklenmesi gerektiğini tanımlar.

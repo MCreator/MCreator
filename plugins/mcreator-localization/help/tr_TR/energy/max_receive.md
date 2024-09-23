@@ -1,0 +1,1 @@
+Bu değer, enerji elementinin (blok, öge, ...) başka bir enerji elementinden alabileceği maksimum enerji değeridir.

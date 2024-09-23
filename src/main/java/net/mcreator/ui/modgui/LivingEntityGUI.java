@@ -251,9 +251,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private JModelLayerList modelLayers;
 
-	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator()
-			.getGeneratorConfiguration().getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
-			.get("unmodifiable_ai_bases");
+	private final List<?> unmodifiableAIBases = Objects.requireNonNullElse(
+			(List<?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases"),
+			Collections.emptyList());
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

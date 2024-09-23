@@ -20,6 +20,8 @@
 package net.mcreator.preferences.data;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
@@ -72,7 +74,11 @@ public class HiddenSection extends PreferencesSection {
 			}
 
 			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, File.class);
+				if (value != null) {
+					return new JsonPrimitive(value.getAbsolutePath());
+				} else {
+					return JsonNull.INSTANCE;
+				}
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));

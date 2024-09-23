@@ -23,7 +23,6 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Feature;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
@@ -86,7 +85,7 @@ public class GTFeatureBlocks {
 						<value name="feature"><block type="feature_no_op"></block></value>
 						<next>%s</next></block></xml>""".formatted(testXML);
 			} else {
-				switch (featureBlock.getOutputTypeForTests()) {
+				switch (featureBlock.getOutputType()) {
 				case "Feature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
@@ -195,6 +194,30 @@ public class GTFeatureBlocks {
 						 		</block>
 							</value></block></next>
 						</block></xml>
+						""".formatted(testXML);
+				// Block column layers are tested with the "Block column" feature
+				case "BlockColumnLayer" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_block_column">
+							<mutation inputs="1"></mutation>
+							<value name="allowed_placement"><block type="block_predicate_is_air"></block></value>
+							<field name="direction">DOWN</field><field name="prioritize_tip">FALSE</field>
+							<value name="layer0">%s</value>
+						</block></value></block></xml>
+						""".formatted(testXML);
+				// Disk rules are tested with the "Disk rule" feature
+				case "DiskRule" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_disk">
+							<mutation inputs="1"></mutation>
+							<value name="fallback"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
+							<value name="target"><block type="block_predicate_is_air"></block></value>
+							<value name="radius"><block type="int_provider_constant"><field name="value">4</field></block></value>
+							<field name="half_height">1</field>
+							<value name="rule0">%s</value>
+						</block></value></block></xml>
 						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);

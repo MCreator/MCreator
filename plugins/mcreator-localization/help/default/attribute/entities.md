@@ -1,0 +1,1 @@
+Entities selected here will have this attribute present and set at its default value when spawned.

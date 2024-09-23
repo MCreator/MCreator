@@ -26,6 +26,7 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
@@ -84,11 +85,19 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		if (value == null || value.isEmpty())
 			return false;
 
+		Workspace workspace = getWorkspace();
+		if (workspace == null) {
+			return false;
+		}
+		return validateReference(value, workspace);
+	}
+
+	/**
+	 * @return true if the value exists in the workspace. Always returns true for vanilla elements,
+	 * even if they are not supported in the selected Minecraft version.
+	 */
+	public static boolean validateReference(@Nonnull String value, @Nonnull Workspace workspace) {
 		if (value.startsWith("CUSTOM:")) {
-			Workspace workspace = getWorkspace();
-			if (workspace == null) {
-				return false;
-			}
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval)
 				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);

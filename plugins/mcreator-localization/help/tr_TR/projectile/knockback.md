@@ -1,0 +1,1 @@
+Sayı ne kadar yüksekse, vurulan varlık cisim tarafından o kadar uzağa itilecektir.

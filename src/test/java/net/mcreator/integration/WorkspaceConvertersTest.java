@@ -124,6 +124,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 						// test if UI validation is error free
 						UITestUtil.testIfValidationPasses(modElementGUI, false);
+
+						// close mod element GUI
+						modElementGUI.onViewClosed();
 					}
 				}
 

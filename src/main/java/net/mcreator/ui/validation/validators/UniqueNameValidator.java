@@ -22,6 +22,7 @@ package net.mcreator.ui.validation.validators;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class UniqueNameValidator implements Validator {
 	private final Supplier<Stream<String>> otherNames;
 	private Supplier<Boolean> isPresentOnList;
 	private boolean ignoreCase;
-	private final List<String> forbiddenNames;
+	private final Collection<String> forbiddenNames;
 
 	private final Validator extraValidator;
 
@@ -64,7 +65,7 @@ public class UniqueNameValidator implements Validator {
 	 * @param extraValidator   The main validator for the holder.
 	 */
 	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
-			List<String> forbiddenNames, Validator extraValidator) {
+			Collection<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
