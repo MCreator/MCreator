@@ -122,7 +122,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(11, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
