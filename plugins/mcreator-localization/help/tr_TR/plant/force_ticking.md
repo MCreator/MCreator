@@ -1,0 +1,1 @@
+Bazı bitki türleri doğal olarak işaretlenirken bazıları işaretlenmez. Tüm durumlarda işaretlemeyi zorlamak için bu parametreyi işaretleyin.

@@ -1,0 +1,1 @@
+Sıvınızın ışık değerini ayarlayın. Değerin 0 olarak ayarlanması ışığı devre dışı bırakacaktır.
