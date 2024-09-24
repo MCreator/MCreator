@@ -1,1 +1,1 @@
-اسم ادونسمنت. If it has not parent (root advancement) then it will be the name of the path.
+اسم ادونسمنت. اگر هیچ والدی ندارد (ادونسمنت ریشه) پس اسم مسیر خواهد بود.
