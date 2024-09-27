@@ -42,14 +42,12 @@ import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.minecraft.ServerUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.Logger;
-import org.gradle.tooling.BuildLauncher;
-import org.gradle.tooling.CancellationToken;
-import org.gradle.tooling.CancellationTokenSource;
-import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.*;
 
 public class GTServerRun {
 
-	private static void appendToStringBuilder(Logger LOG, StringBuilder sb, String s, CancellationTokenSource cancellationSource) {
+	private static void appendToStringBuilder(Logger LOG, StringBuilder sb, String s,
+			CancellationTokenSource cancellationSource) {
 		if (s.contains("/DEBUG]"))
 			return; // Skip DEBUG prints
 
@@ -57,7 +55,7 @@ public class GTServerRun {
 		sb.append(System.lineSeparator());
 
 		// If we detect the server has fully started, stop the server execution
-		if (s.contains("For help, type \"help\"") || s.contains("Enabled Gametest Namespaces")) {
+		if (didServerStart(s)) {
 			cancellationSource.cancel();
 		}
 
@@ -75,8 +73,10 @@ public class GTServerRun {
 		CancellationToken token = cancellationSource.token();
 		buildLauncher.withCancellationToken(token);
 
-		buildLauncher.setStandardError(new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
-		buildLauncher.setStandardOutput(new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
+		buildLauncher.setStandardError(
+				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
+		buildLauncher.setStandardOutput(
+				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
 
 		try {
 			if (!ServerUtil.isEULAAccepted(workspace))
@@ -85,16 +85,26 @@ public class GTServerRun {
 			buildLauncher.run();
 
 			// If the server run failed, or crashed, throw an exception
-			String result = sb.toString();
-			if (!token.isCancellationRequested() || result.contains("---- Minecraft Crash Report ----")) {
+			if (!token.isCancellationRequested() || didRunFail(sb.toString())) {
 				throw new Exception("Server run failed with error");
 			}
+		} catch (BuildCancelledException e) {
+			if (didRunFail(sb.toString()))
+				throw new Exception("Server run failed with error");
 		} catch (Exception e) {
 			LOG.error("Server run failed for {} generator with log:\n{}", generatorName, sb, e);
 			throw e;
 		}
 
-		LOG.info("[{}] Gradle build OK", generatorName);
+		LOG.info("[{}] Gradle server run OK", generatorName);
+	}
+
+	private static boolean didRunFail(String result) {
+		return result.contains("---- Minecraft Crash Report ----");
+	}
+
+	private static boolean didServerStart(String result) {
+		return result.contains("For help, type \"help\"") || result.contains("Enabled Gametest Namespaces");
 	}
 
 }
