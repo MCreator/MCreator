@@ -23,6 +23,7 @@ import freemarker.template.TemplateException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -130,6 +131,7 @@ public class TemplateGenerator {
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: {}", templateName, e);
+			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException();
 		}
 	}
@@ -150,6 +152,7 @@ public class TemplateGenerator {
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
+			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException();
 		}
 	}
@@ -169,6 +172,7 @@ public class TemplateGenerator {
 					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
 			} catch (Exception e) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Failed to parse hardcoded variables", e);
 			}
 		}
