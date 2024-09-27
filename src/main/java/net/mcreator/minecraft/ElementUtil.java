@@ -94,7 +94,8 @@ public class ElementUtil {
 	/**
 	 * Loads all items (also blocks if they have item representation), but without those
 	 * that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
-	 * so only oak wood, cherry wood, ... are loaded, without wildcard wood element
+	 * so only oak wood, cherry wood, ... are loaded, without wildcard wood element.
+	 * This will not load blocks without item representation (example fire, water, ...).
 	 *
 	 * @return All Blocks and Items from both Minecraft and custom elements with or without metadata
 	 */
@@ -110,7 +111,8 @@ public class ElementUtil {
 
 	/**
 	 * Loads all items (also blocks if they have item representation), including elements
-	 * that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
+	 * that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...).
+	 * This will not load blocks without item representation (example fire, water, ...).
 	 *
 	 * @return All Blocks and Items from both Minecraft and custom elements with or without metadata
 	 */
@@ -155,7 +157,8 @@ public class ElementUtil {
 	/**
 	 * Loads all items (also blocks if they have item representation), including those
 	 * that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
-	 * This list also provides potions from both Minecraft elements and mod elements
+	 * This list also provides potions from both Minecraft elements and mod elements.
+	 * This will not load blocks without item representation (example fire, water, ...).
 	 *
 	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
 	 */
@@ -169,7 +172,8 @@ public class ElementUtil {
 	 * Loads all items (also blocks if they have item representation), without those
 	 * that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
 	 * so only oak wood, cherry wood, ... are loaded, without wildcard wood element
-	 * This list also provides potions from both Minecraft elements and mod elements
+	 * This list also provides potions from both Minecraft elements and mod elements.
+	 * This will not load blocks without item representation (example fire, water, ...).
 	 *
 	 * @return All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata
 	 */

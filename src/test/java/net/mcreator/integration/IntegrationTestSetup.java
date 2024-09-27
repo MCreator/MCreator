@@ -40,6 +40,7 @@ import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.UTF8Forcer;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
@@ -71,6 +72,8 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * ******************************/
 		LoggingSystem.init();
 
+		TestUtil.enterTestingMode();
+
 		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
 
@@ -97,11 +100,8 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * END: Launcher.java emulation
 		 * ****************************/
 
-		// Reduce autosave interval for tests
+		// Increase autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
-
-		// Gradle's builds are RAM intensive, so we may need more RAM
-		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
 
 		// Disable native file choosers for tests due to threading issues
 		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
@@ -136,7 +136,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
-		L10N.enterTestingMode();
 
 		// may be needed to generate icons for MCItems (e.g. generation of potion icons)
 		ImageMakerTexturesCache.init();

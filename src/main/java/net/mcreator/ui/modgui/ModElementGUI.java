@@ -42,6 +42,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -467,6 +468,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		if (exclusions != null && inclusions != null) { // can't exclude and include together
 			LOG.warn("Field exclusions and inclusions can not be used at the same time. Skipping them.");
+			TestUtil.failIfTestingEnvironment();
 		} else if ((exclusions != null && !exclusions.isEmpty()) || (inclusions != null && !inclusions.isEmpty())) {
 			Map<Container, List<Component>> includedComponents = new HashMap<>();
 			for (String entry : Objects.requireNonNullElse(exclusions, inclusions)) {
@@ -501,6 +503,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
 					LOG.warn("Failed to access component: {}", entry, e);
+					TestUtil.failIfTestingEnvironment();
 				}
 			}
 
@@ -517,6 +520,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 								UnsupportedComponent.markUnsupported(obj);
 						} catch (IllegalAccessException e) {
 							LOG.warn("Failed to access component", e);
+							TestUtil.failIfTestingEnvironment();
 						}
 					}
 				});

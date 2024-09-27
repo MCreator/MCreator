@@ -35,7 +35,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.util.Locale;
 
 public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
@@ -77,9 +76,9 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_size")));
 
 		options.add(PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"),
-						hoveredTextureSelector)));
+				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector),
+				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.hovered_image_texture"), hoveredTextureSelector),
+				2, 2));
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
