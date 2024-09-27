@@ -39,7 +39,7 @@ minecraft {
             // Parse JVM arguments from gradle.properties
             def jvmArgsFromProperties = project.findProperty('org.gradle.jvmargs')
             if (jvmArgsFromProperties) {
-                jvmArgs += jvmArgsFromProperties.split('\\s+' as Closure)
+                jvmArgs += jvmArgsFromProperties.split('\\s+')
             }
 
             mods {
