@@ -65,6 +65,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -346,6 +347,10 @@ public class TestWorkspaceDataProvider {
 		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		List<TabEntry> tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		// Also prepare list of blocks that are "worldgen-safe"
+		List<MCItem> worldgenBlocks = Stream.of("Blocks.STONE", "Blocks.DIRT", "Blocks.DIAMOND_BLOCK",
+						"Blocks.EMERALD_BLOCK", "Blocks.SANDSTONE", "Blocks.WOOL#0")
+				.map(n -> new MCItem(new DataListEntry.Dummy(n))).toList();
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
@@ -380,11 +385,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
-			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, worldgenBlocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocks).getName());
+					getRandomMCItem(random, worldgenBlocks).getName());
 			biome.underwaterBlock = new MItemBlock(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomMCItem(random, blocks).getName());
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
@@ -712,8 +717,8 @@ public class TestWorkspaceDataProvider {
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocks).getName());
-			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+					getRandomMCItem(random, worldgenBlocks).getName());
+			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, worldgenBlocks).getName());
 			dimension.whenPortaTriggerlUsed = emptyLists ?
 					new Procedure("actionresulttype1") :
 					new Procedure("procedure1");
@@ -1186,7 +1191,8 @@ public class TestWorkspaceDataProvider {
 			block.customProperties = new ArrayList<>();
 			if (!emptyLists) {
 				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
-				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop2"), _true));
+				block.customProperties.add(
+						new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop2"), _true));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
 				block.customProperties.add(
@@ -2134,7 +2140,7 @@ public class TestWorkspaceDataProvider {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE);
 				me.putMetadata("return_type", "ACTIONRESULTTYPE");
 				me.putMetadata("dependencies",
@@ -2150,7 +2156,7 @@ public class TestWorkspaceDataProvider {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE);
 				me.putMetadata("return_type", "ENTITY");
 				me.putMetadata("dependencies",

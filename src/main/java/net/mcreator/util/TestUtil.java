@@ -37,4 +37,8 @@ public class TestUtil {
 		}
 	}
 
+	public static boolean isRunningInGitHubActions() {
+		return "true".equals(System.getenv("GITHUB_ACTIONS"));
+	}
+
 }
