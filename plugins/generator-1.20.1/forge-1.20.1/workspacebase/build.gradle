@@ -36,6 +36,12 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
+            // Parse JVM arguments from gradle.properties
+            def jvmArgsFromProperties = project.findProperty('org.gradle.jvmargs')
+            if (jvmArgsFromProperties) {
+                jvmArgs += jvmArgsFromProperties.split('\\s+' as Closure)
+            }
+
             mods {
                 examplemod {
                     source sourceSets.main
