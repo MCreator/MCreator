@@ -1923,22 +1923,22 @@
 
 - Blocks.TORCH:
   readable_name: "Torch"
-  type: block
+  type: block_without_item
   texture: TORCH
 
 - Blocks.WALL_TORCH:
   readable_name: "Wall Torch"
-  type: block
+  type: block_without_item
   texture: TORCH
 
 - Blocks.SOUL_TORCH:
   readable_name: "Soul Torch"
-  type: block
+  type: block_without_item
   texture: SOUL_TORCH
 
 - Blocks.SOUL_WALL_TORCH:
   readable_name: "Soul Wall Torch"
-  type: block
+  type: block_without_item
   texture: SOUL_TORCH
 
 - Blocks.FIRE:
@@ -2259,57 +2259,57 @@
 
 - Blocks.WALL_SIGN:
   readable_name: "Oak Wall Sign"
-  type: block
+  type: block_without_item
   texture: WALL_SIGN
 
 - Blocks.SPRUCE_WALL_SIGN:
   readable_name: "Spruce Wall Sign"
-  type: block
+  type: block_without_item
   texture: SPRUCE_WALL_SIGN
 
 - Blocks.BIRCH_WALL_SIGN:
   readable_name: "Birch Wall Sign"
-  type: block
+  type: block_without_item
   texture: BIRCH_WALL_SIGN
 
 - Blocks.ACACIA_WALL_SIGN:
   readable_name: "Acacia Wall Sign"
-  type: block
+  type: block_without_item
   texture: ACACIA_WALL_SIGN
 
 - Blocks.JUNGLE_WALL_SIGN:
   readable_name: "Jungle Wall Sign"
-  type: block
+  type: block_without_item
   texture: JUNGLE_WALL_SIGN
 
 - Blocks.DARK_OAK_WALL_SIGN:
   readable_name: "Dark Oak Wall Sign"
-  type: block
+  type: block_without_item
   texture: DARK_OAK_WALL_SIGN
 
 - Blocks.CRIMSON_WALL_SIGN:
   readable_name: "Crimson Wall Sign"
-  type: block
+  type: block_without_item
   texture: CRIMSON_WALL_SIGN
 
 - Blocks.WARPED_WALL_SIGN:
   readable_name: "Warped Wall Sign"
-  type: block
+  type: block_without_item
   texture: WARPED_WALL_SIGN
 
 - Blocks.MANGROVE_WALL_SIGN:
   readable_name: "Mangrove Wall Sign"
-  type: block
+  type: block_without_item
   texture: MANGROVE_WALL_SIGN
 
 - Blocks.CHERRY_WALL_SIGN:
   readable_name: "Cherry Wall Sign"
-  type: block
+  type: block_without_item
   texture: CHERRY_WALL_SIGN
 
 - Blocks.BAMBOO_WALL_SIGN:
   readable_name: "Bamboo Wall Sign"
-  type: block
+  type: block_without_item
   texture: BAMBOO_WALL_SIGN
 
 - Blocks.OAK_HANGING_SIGN:
@@ -2369,57 +2369,57 @@
 
 - Blocks.OAK_WALL_HANGING_SIGN:
   readable_name: "Oak Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: OAK_WALL_HANGING_SIGN
 
 - Blocks.SPRUCE_WALL_HANGING_SIGN:
   readable_name: "Spruce Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: SPRUCE_WALL_HANGING_SIGN
 
 - Blocks.BIRCH_WALL_HANGING_SIGN:
   readable_name: "Birch Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: BIRCH_WALL_HANGING_SIGN
 
 - Blocks.ACACIA_WALL_HANGING_SIGN:
   readable_name: "Acacia Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: ACACIA_WALL_HANGING_SIGN
 
 - Blocks.JUNGLE_WALL_HANGING_SIGN:
   readable_name: "Jungle Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: JUNGLE_WALL_HANGING_SIGN
 
 - Blocks.DARK_OAK_WALL_HANGING_SIGN:
   readable_name: "Dark Oak Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: DARK_OAK_WALL_HANGING_SIGN
 
 - Blocks.CRIMSON_WALL_HANGING_SIGN:
   readable_name: "Crimson Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: CRIMSON_WALL_HANGING_SIGN
 
 - Blocks.WARPED_WALL_HANGING_SIGN:
   readable_name: "Warped Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: WARPED_WALL_HANGING_SIGN
 
 - Blocks.MANGROVE_WALL_HANGING_SIGN:
   readable_name: "Mangrove Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: MANGROVE_WALL_HANGING_SIGN
 
 - Blocks.CHERRY_WALL_HANGING_SIGN:
   readable_name: "Cherry Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: CHERRY_WALL_HANGING_SIGN
 
 - Blocks.BAMBOO_WALL_HANGING_SIGN:
   readable_name: "Bamboo Wall Hanging Sign"
-  type: block
+  type: block_without_item
   texture: BAMBOO_WALL_HANGING_SIGN
 
 - Blocks.OAK_DOOR:
@@ -2874,12 +2874,12 @@
 
 - Blocks.REDSTONE_TORCH:
   readable_name: "Redstone Torch"
-  type: block
+  type: block_without_item
   texture: REDSTONE_TORCH
 
 - Blocks.REDSTONE_WALL_TORCH:
   readable_name: "Redstone Wall Torch"
-  type: block
+  type: block_without_item
   texture: REDSTONE_TORCH
 
 - Blocks.UNLIT_REDSTONE_TORCH:
@@ -3969,37 +3969,37 @@
 
 - Blocks.SKELETON_WALL_SKULL:
   readable_name: "Skeleton Wall Skull"
-  type: block
+  type: block_without_item
   texture: SKULL#0
 
 - Blocks.WITHER_SKELETON_WALL_SKULL:
   readable_name: "Wither Skeleton Wall Skull"
-  type: block
+  type: block_without_item
   texture: SKULL#1
 
 - Blocks.ZOMBIE_WALL_HEAD:
   readable_name: "Zombie Wall Head"
-  type: block
+  type: block_without_item
   texture: SKULL#2
 
 - Blocks.PLAYER_WALL_HEAD:
   readable_name: "Player Wall Head"
-  type: block
+  type: block_without_item
   texture: SKULL#3
 
 - Blocks.CREEPER_WALL_HEAD:
   readable_name: "Creeper Wall Head"
-  type: block
+  type: block_without_item
   texture: SKULL#4
 
 - Blocks.DRAGON_WALL_HEAD:
   readable_name: "Dragon Wall Head"
-  type: block
+  type: block_without_item
   texture: SKULL#5
 
 - Blocks.PIGLIN_WALL_HEAD:
   readable_name: "Piglin Wall Head"
-  type: block
+  type: block_without_item
   texture: PIGLIN_HEAD
 
 - Blocks.WOOL:
@@ -4925,87 +4925,87 @@
 
 - Blocks.WALL_BANNER:
   readable_name: "Wall Banner"
-  type: block
+  type: block_without_item
   texture: WALL_BANNER
 
 - Blocks.WHITE_WALL_BANNER:
   readable_name: "White Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#15
 
 - Blocks.ORANGE_WALL_BANNER:
   readable_name: "Orange Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#14
 
 - Blocks.MAGENTA_WALL_BANNER:
   readable_name: "Magenta Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#13
 
 - Blocks.LIGHT_BLUE_WALL_BANNER:
   readable_name: "Light Blue Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#12
 
 - Blocks.YELLOW_WALL_BANNER:
   readable_name: "Yellow Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#11
 
 - Blocks.LIME_WALL_BANNER:
   readable_name: "Lime Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#10
 
 - Blocks.PINK_WALL_BANNER:
   readable_name: "Pink Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#9
 
 - Blocks.GRAY_WALL_BANNER:
   readable_name: "Gray Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#8
 
 - Blocks.LIGHT_GRAY_WALL_BANNER:
   readable_name: "Light Gray Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#7
 
 - Blocks.CYAN_WALL_BANNER:
   readable_name: "Cyan Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#6
 
 - Blocks.PURPLE_WALL_BANNER:
   readable_name: "Purple Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#5
 
 - Blocks.BLUE_WALL_BANNER:
   readable_name: "Blue Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#4
 
 - Blocks.BROWN_WALL_BANNER:
   readable_name: "Brown Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#3
 
 - Blocks.GREEN_WALL_BANNER:
   readable_name: "Green Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#2
 
 - Blocks.RED_WALL_BANNER:
   readable_name: "Red Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#1
 
 - Blocks.BLACK_WALL_BANNER:
   readable_name: "Black Wall Banner"
-  type: block
+  type: block_without_item
   texture: BANNER_WALL#0
 
 - Blocks.BARRIER:
@@ -5245,52 +5245,52 @@
 
 - Blocks.DEAD_TUBE_CORAL_WALL_FAN:
   readable_name: "Dead Tube Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: DEAD_TUBE_CORAL_WALL_FAN
 
 - Blocks.DEAD_BRAIN_CORAL_WALL_FAN:
   readable_name: "Dead Brain Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: DEAD_BRAIN_CORAL_WALL_FAN
 
 - Blocks.DEAD_BUBBLE_CORAL_WALL_FAN:
   readable_name: "Dead Bubble Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: DEAD_BUBBLE_CORAL_WALL_FAN
 
 - Blocks.DEAD_FIRE_CORAL_WALL_FAN:
   readable_name: "Dead Fire Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: DEAD_FIRE_CORAL_WALL_FAN
 
 - Blocks.DEAD_HORN_CORAL_WALL_FAN:
   readable_name: "Dead Horn Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: DEAD_HORN_CORAL_WALL_FAN
 
 - Blocks.TUBE_CORAL_WALL_FAN:
   readable_name: "Tube Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: TUBE_CORAL_WALL_FAN
 
 - Blocks.BRAIN_CORAL_WALL_FAN:
   readable_name: "Brain Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: BRAIN_CORAL_WALL_FAN
 
 - Blocks.BUBBLE_CORAL_WALL_FAN:
   readable_name: "Bubble Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: BUBBLE_CORAL_WALL_FAN
 
 - Blocks.FIRE_CORAL_WALL_FAN:
   readable_name: "Fire Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: FIRE_CORAL_WALL_FAN
 
 - Blocks.HORN_CORAL_WALL_FAN:
   readable_name: "Horn Coral Wall Fan"
-  type: block
+  type: block_without_item
   texture: HORN_CORAL_WALL_FAN
 
 - Blocks.DRIED_KELP_BLOCK:
@@ -5510,7 +5510,7 @@
 
 - Blocks.BIG_DRIPLEAF_STEM:
   readable_name: "Big Dripleaf Stem"
-  type: block
+  type: block_without_item
   texture: BIG_DRIPLEAF_STEM
 
 - Blocks.SMALL_DRIPLEAF:
@@ -7908,6 +7908,21 @@
   readable_name: "Honey Bottle"
   type: item
   texture: HONEY_BOTTLE
+
+- Items.TORCH:
+  readable_name: "Torch"
+  type: item
+  texture: TORCH
+
+- Items.REDSTONE_TORCH:
+  readable_name: "Redstone Torch"
+  type: item
+  texture: REDSTONE_TORCH
+
+- Items.SOUL_TORCH:
+  readable_name: "Soul Torch"
+  type: item
+  texture: SOUL_TORCH
 
 - Items.GOAT_HORN:
   readable_name: "Goat Horn"
