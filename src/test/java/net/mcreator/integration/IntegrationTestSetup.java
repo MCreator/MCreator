@@ -103,9 +103,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// Increase autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 
-		// Gradle's builds are RAM intensive, so we may need more RAM
-		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
-
 		// Disable native file choosers for tests due to threading issues
 		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
 
