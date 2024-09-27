@@ -46,9 +46,9 @@ import org.gradle.tooling.*;
 
 public class GTServerRun {
 
-	private static void appendToStringBuilder(Logger LOG, StringBuilder sb, String s,
+	private static void appendToStringBuilder(StringBuilder sb, String s,
 			CancellationTokenSource cancellationSource) {
-		if (s.contains("/DEBUG]"))
+		if (s.contains("/DEBUG]") || s.contains("Downloading: "))
 			return; // Skip DEBUG prints
 
 		sb.append(s);
@@ -58,8 +58,6 @@ public class GTServerRun {
 		if (didServerStart(s)) {
 			cancellationSource.cancel();
 		}
-
-		LOG.info(s); // TODO: Remove this line after the PR is finalized
 	}
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) throws Exception {
@@ -74,9 +72,9 @@ public class GTServerRun {
 		buildLauncher.withCancellationToken(token);
 
 		buildLauncher.setStandardError(
-				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
+				new OutputStreamEventHandler(line -> appendToStringBuilder(sb, line, cancellationSource)));
 		buildLauncher.setStandardOutput(
-				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
+				new OutputStreamEventHandler(line -> appendToStringBuilder(sb, line, cancellationSource)));
 
 		try {
 			if (!ServerUtil.isEULAAccepted(workspace))
