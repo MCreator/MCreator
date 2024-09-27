@@ -31,6 +31,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.preferences.data.GradleSection;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.component.ConsolePane;
@@ -102,6 +103,9 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 
 		// Increase autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
+
+		// Gradle's builds are RAM intensive, so we may need more RAM
+		PreferencesManager.PREFERENCES.gradle.xmx.set(GradleSection.MAX_RAM);
 
 		// Disable native file choosers for tests due to threading issues
 		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
