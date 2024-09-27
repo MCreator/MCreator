@@ -1,16 +1,16 @@
 - Blocks.AIR:
   readable_name: "Air"
-  type: block
+  type: block_without_item
   texture: AIR
 
 - Blocks.VOID_AIR:
   readable_name: "Void Air"
-  type: block
+  type: block_without_item
   texture: VOID_AIR
 
 - Blocks.CAVE_AIR:
   readable_name: "Cave Air"
-  type: block
+  type: block_without_item
   texture: CAVE_AIR
 
 - Blocks.STONE:
@@ -590,27 +590,27 @@
 
 - Blocks.FLOWING_WATER:
   readable_name: "Water"
-  type: block
+  type: block_without_item
   texture: FLOWING_WATER
 
 - Blocks.WATER:
   readable_name: "Water Still"
-  type: block
+  type: block_without_item
   texture: WATER
 
 - Blocks.BUBBLE_COLUMN:
   readable_name: "Bubble Column"
-  type: block
+  type: block_without_item
   texture: BUBBLE_COLUMN
 
 - Blocks.FLOWING_LAVA:
   readable_name: "Lava"
-  type: block
+  type: block_without_item
   texture: FLOWING_LAVA
 
 - Blocks.LAVA:
   readable_name: "Lava Still"
-  type: block
+  type: block_without_item
   texture: LAVA
 
 - Blocks.MAGMA:
@@ -1726,12 +1726,12 @@
 
 - Blocks.PISTON_HEAD:
   readable_name: "Piston Head"
-  type: block
+  type: block_without_item
   texture: PISTON_HEAD
 
 - Blocks.PISTON_EXTENSION:
   readable_name: "Piston Extension"
-  type: block
+  type: block_without_item
   texture: PISTON_EXTENSION
 
 - Blocks.YELLOW_FLOWER:
@@ -1943,12 +1943,12 @@
 
 - Blocks.FIRE:
   readable_name: "Fire"
-  type: block
+  type: block_without_item
   texture: FIRE
 
 - Blocks.SOUL_FIRE:
   readable_name: "Soul Fire"
-  type: block
+  type: block_without_item
   texture: SOUL_FIRE
 
 - Blocks.LANTERN:
@@ -2859,7 +2859,7 @@
 
 - Blocks.TRIPWIRE:
   readable_name: "Tripwire"
-  type: block
+  type: block_without_item
   texture: TRIPWIRE
 
 - Blocks.DAYLIGHT_DETECTOR:
@@ -2889,7 +2889,7 @@
 
 - Blocks.REDSTONE_WIRE:
   readable_name: "Redstone"
-  type: block
+  type: block_without_item
   texture: REDSTONE_WIRE
 
 - Blocks.UNPOWERED_REPEATER:
@@ -3016,7 +3016,7 @@
 
 - Blocks.POWDER_SNOW:
   readable_name: "Powder Snow"
-  type: block
+  type: block_without_item
   texture: POWDER_SNOW
 
 - Blocks.ICE:
@@ -3031,7 +3031,7 @@
 
 - Blocks.FROSTED_ICE:
   readable_name: "Frosted Ice"
-  type: block
+  type: block_without_item
   texture: FROSTED_ICE
 
 - Blocks.BLUE_ICE:
@@ -3322,12 +3322,12 @@
 
 - Blocks.MELON_STEM:
   readable_name: "Melon Stem"
-  type: block
+  type: block_without_item
   texture: MELON_STEM
 
 - Blocks.ATTACHED_MELON_STEM:
   readable_name: "Attached Melon Stem"
-  type: block
+  type: block_without_item
   texture: ATTACHED_MELON_STEM
 
 - Blocks.PUMPKIN:
@@ -3347,17 +3347,17 @@
 
 - Blocks.PUMPKIN_STEM:
   readable_name: "Pumpkin Stem"
-  type: block
+  type: block_without_item
   texture: PUMPKIN_STEM
 
 - Blocks.ATTACHED_PUMPKIN_STEM:
   readable_name: "Attached Pumpkin Stem"
-  type: block
+  type: block_without_item
   texture: ATTACHED_PUMPKIN_STEM
 
 - Blocks.SWEET_BERRY_BUSH:
   readable_name: "Sweet Berry Bush"
-  type: block
+  type: block_without_item
   texture: SWEET_BERRIES
 
 - Blocks.VINE:
@@ -3389,24 +3389,24 @@
 
 - Blocks.CAULDRON:
   readable_name: "Cauldron"
-  type: block
+  type: block_without_item
   texture: CAULDRON
   other:
     poi: true
 
 - Blocks.WATER_CAULDRON:
   readable_name: "Water Cauldron"
-  type: block
+  type: block_without_item
   texture: WATER_CAULDRON
 
 - Blocks.LAVA_CAULDRON:
   readable_name: "Lava Cauldron"
-  type: block
+  type: block_without_item
   texture: LAVA_CAULDRON
 
 - Blocks.POWDER_SNOW_CAULDRON:
   readable_name: "Powder Snow Cauldron"
-  type: block
+  type: block_without_item
   texture: POWDER_SNOW_CAULDRON
 
 - Blocks.END_PORTAL:
@@ -3421,7 +3421,7 @@
 
 - Blocks.END_GATEWAY:
   readable_name: "End Gateway"
-  type: block
+  type: block_without_item
   texture: END_GATEWAY
 
 - Blocks.END_STONE:
@@ -3476,7 +3476,7 @@
 
 - Blocks.BEETROOTS:
   readable_name: "Beetroot"
-  type: block
+  type: block_without_item
   texture: BEETROOTS
 
 - Blocks.CHORUS_PLANT:
@@ -3654,7 +3654,7 @@
 
 - Blocks.COCOA:
   readable_name: "Cocoa Block"
-  type: block
+  type: block_without_item
   texture: COCOA
 
 - Blocks.PORTAL:
@@ -3713,172 +3713,172 @@
 
 - Blocks.POTTED_OAK_SAPLING:
   readable_name: "Potted Oak Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_OAK_SAPLING
 
 - Blocks.POTTED_SPRUCE_SAPLING:
   readable_name: "Potted Spruce Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_SPRUCE_SAPLING
 
 - Blocks.POTTED_BIRCH_SAPLING:
   readable_name: "Potted Birch Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_BIRCH_SAPLING
 
 - Blocks.POTTED_JUNGLE_SAPLING:
   readable_name: "Potted Jungle Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_JUNGLE_SAPLING
 
 - Blocks.POTTED_ACACIA_SAPLING:
   readable_name: "Potted Acacia Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_ACACIA_SAPLING
 
 - Blocks.POTTED_DARK_OAK_SAPLING:
   readable_name: "Potted Dark Oak Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_DARK_OAK_SAPLING
 
 - Blocks.POTTED_MANGROVE_PROPAGULE:
   readable_name: "Potted Mangrove Propagule"
-  type: block
+  type: block_without_item
   texture: POTTED_MANGROVE_PROPAGULE
 
 - Blocks.POTTED_FERN:
   readable_name: "Potted Fern"
-  type: block
+  type: block_without_item
   texture: POTTED_FERN
 
 - Blocks.POTTED_DANDELION:
   readable_name: "Potted Dandelion"
-  type: block
+  type: block_without_item
   texture: POTTED_DANDELION
 
 - Blocks.POTTED_POPPY:
   readable_name: "Potted Poppy"
-  type: block
+  type: block_without_item
   texture: POTTED_POPPY
 
 - Blocks.POTTED_BLUE_ORCHID:
   readable_name: "Potted Blue Orchid"
-  type: block
+  type: block_without_item
   texture: POTTED_BLUE_ORCHID
 
 - Blocks.POTTED_ALLIUM:
   readable_name: "Potted Allium"
-  type: block
+  type: block_without_item
   texture: POTTED_ALLIUM
 
 - Blocks.POTTED_AZURE_BLUET:
   readable_name: "Potted Azure Bluet"
-  type: block
+  type: block_without_item
   texture: POTTED_AZURE_BLUET
 
 - Blocks.POTTED_RED_TULIP:
   readable_name: "Potted Red Tulip"
-  type: block
+  type: block_without_item
   texture: POTTED_RED_TULIP
 
 - Blocks.POTTED_ORANGE_TULIP:
   readable_name: "Potted Orange Tulip"
-  type: block
+  type: block_without_item
   texture: POTTED_ORANGE_TULIP
 
 - Blocks.POTTED_WHITE_TULIP:
   readable_name: "Potted White Tulip"
-  type: block
+  type: block_without_item
   texture: POTTED_WHITE_TULIP
 
 - Blocks.POTTED_PINK_TULIP:
   readable_name: "Potted Pink Tulip"
-  type: block
+  type: block_without_item
   texture: POTTED_PINK_TULIP
 
 - Blocks.POTTED_OXEYE_DAISY:
   readable_name: "Potted Oxeye Daisy"
-  type: block
+  type: block_without_item
   texture: POTTED_OXEYE_DAISY
 
 - Blocks.POTTED_CORNFLOWER:
   readable_name: "Potted Cornflower"
-  type: block
+  type: block_without_item
   texture: POTTED_CORNFLOWER
 
 - Blocks.POTTED_LILY_OF_THE_VALLEY:
   readable_name: "Potted Lily Of The Valley"
-  type: block
+  type: block_without_item
   texture: POTTED_LILY_OF_THE_VALLEY
 
 - Blocks.POTTED_WITHER_ROSE:
   readable_name: "Potted Wither Rose"
-  type: block
+  type: block_without_item
   texture: POTTED_WITHER_ROSE
 
 - Blocks.POTTED_RED_MUSHROOM:
   readable_name: "Potted Red Mushroom"
-  type: block
+  type: block_without_item
   texture: POTTED_RED_MUSHROOM
 
 - Blocks.POTTED_BROWN_MUSHROOM:
   readable_name: "Potted Brown Mushroom"
-  type: block
+  type: block_without_item
   texture: POTTED_BROWN_MUSHROOM
 
 - Blocks.POTTED_DEAD_BUSH:
   readable_name: "Potted Dead Bush"
-  type: block
+  type: block_without_item
   texture: POTTED_DEAD_BUSH
 
 - Blocks.POTTED_CACTUS:
   readable_name: "Potted Cactus"
-  type: block
+  type: block_without_item
   texture: POTTED_CACTUS
 
 - Blocks.POTTED_BAMBOO:
   readable_name: "Potted Bamboo"
-  type: block
+  type: block_without_item
   texture: POTTED_BAMBOO
 
 - Blocks.POTTED_CRIMSON_FUNGUS:
   readable_name: "Potted Crimson Fungus"
-  type: block
+  type: block_without_item
   texture: POTTED_CRIMSON_FUNGUS
 
 - Blocks.POTTED_WARPED_FUNGUS:
   readable_name: "Potted Warped Fungus"
-  type: block
+  type: block_without_item
   texture: POTTED_WARPED_FUNGUS
 
 - Blocks.POTTED_CRIMSON_ROOTS:
   readable_name: "Potted Crimson Roots"
-  type: block
+  type: block_without_item
   texture: POTTED_CRIMSON_ROOTS
 
 - Blocks.POTTED_WARPED_ROOTS:
   readable_name: "Potted Warped Roots"
-  type: block
+  type: block_without_item
   texture: POTTED_WARPED_ROOTS
 
 - Blocks.POTTED_AZALEA_BUSH:
   readable_name: "Potted Azalea Bush"
-  type: block
+  type: block_without_item
   texture: POTTED_AZALEA_BUSH
 
 - Blocks.POTTED_FLOWERING_AZALEA_BUSH:
   readable_name: "Potted Flowering Azalea Bush"
-  type: block
+  type: block_without_item
   texture: POTTED_FLOWERING_AZALEA_BUSH
 
 - Blocks.POTTED_CHERRY_SAPLING:
   readable_name: "Potted Cherry Sapling"
-  type: block
+  type: block_without_item
   texture: POTTED_CHERRY_SAPLING
 
 - Blocks.POTTED_TORCHFLOWER:
   readable_name: "Potted Torchflower"
-  type: block
+  type: block_without_item
   texture: POTTED_TORCHFLOWER
 
 - Blocks.DECORATED_POT:
@@ -3903,22 +3903,22 @@
 
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
-  type: block
+  type: block_without_item
   texture: CARROTS
 
 - Blocks.POTATOES:
   readable_name: "Potatoes Plant Block"
-  type: block
+  type: block_without_item
   texture: POTATOES
 
 - Blocks.TORCHFLOWER_CROP:
   readable_name: "Torchflower Crop"
-  type: block
+  type: block_without_item
   texture: TORCHFLOWER_CROP
 
 - Blocks.PITCHER_CROP:
   readable_name: "Pitcher Crop"
-  type: block
+  type: block_without_item
   texture: PITCHER_CROP
 
 - Blocks.HAY_BLOCK:
@@ -5055,7 +5055,7 @@
 
 - Blocks.KELP_PLANT:
   readable_name: "Kelp Plant"
-  type: block
+  type: block_without_item
   texture: KELP_PLANT
 
 - Blocks.SEAGRASS:
@@ -5065,7 +5065,7 @@
 
 - Blocks.TALL_SEAGRASS:
   readable_name: "Tall Seagrass"
-  type: block
+  type: block_without_item
   texture: TALL_SEAGRASS
 
 - Blocks.SEA_PICKLE:
@@ -5085,7 +5085,7 @@
 
 - Blocks.BAMBOO_SAPLING:
   readable_name: "Bamboo Sapling"
-  type: block
+  type: block_without_item
   texture: BAMBOO_SAPLING
 
 - Blocks.BAMBOO:
@@ -5448,7 +5448,7 @@
 
 - Blocks.WEEPING_VINES_PLANT:
   readable_name: "Weeping Vines Plant"
-  type: block
+  type: block_without_item
   texture: WEEPING_VINES
 
 - Blocks.TWISTING_VINES:
@@ -5458,7 +5458,7 @@
 
 - Blocks.TWISTING_VINES_PLANT:
   readable_name: "Twisting Vines Plant"
-  type: block
+  type: block_without_item
   texture: TWISTING_VINES
 
 - Blocks.CRIMSON_ROOTS:
@@ -5480,12 +5480,12 @@
 
 - Blocks.CAVE_VINES:
   readable_name: "Cave Vines"
-  type: block
+  type: block_without_item
   texture: CAVE_VINES
 
 - Blocks.CAVE_VINES_PLANT:
   readable_name: "Cave Vines Plant"
-  type: block
+  type: block_without_item
   texture: CAVE_VINES_PLANT
 
 - Blocks.SPORE_BLOSSOM:
@@ -6929,93 +6929,93 @@
 
 - Blocks.CANDLE_CAKE:
   readable_name: "Any Candle Cake"
-  type: block
+  type: block_without_item
   subtypes: true
   texture: CANDLE_CAKE
 
 - Blocks.CANDLE_CAKE#0:
   readable_name: "Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#0
 
 - Blocks.CANDLE_CAKE#1:
   readable_name: "White Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#1
 
 - Blocks.CANDLE_CAKE#2:
   readable_name: "Orange Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#2
 
 - Blocks.CANDLE_CAKE#3:
   readable_name: "Magenta Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#3
 
 - Blocks.CANDLE_CAKE#4:
   readable_name: "Light Blue Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#4
 
 - Blocks.CANDLE_CAKE#5:
   readable_name: "Yellow Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#5
 
 - Blocks.CANDLE_CAKE#6:
   readable_name: "Lime Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#6
 
 - Blocks.CANDLE_CAKE#7:
   readable_name: "Pink Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#7
 
 - Blocks.CANDLE_CAKE#8:
   readable_name: "Gray Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#8
 
 - Blocks.CANDLE_CAKE#9:
   readable_name: "Light Gray Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#9
 
 - Blocks.CANDLE_CAKE#10:
   readable_name: "Cyan Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#10
 
 - Blocks.CANDLE_CAKE#11:
   readable_name: "Purple Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#11
 
 - Blocks.CANDLE_CAKE#12:
   readable_name: "Blue Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#12
 
 - Blocks.CANDLE_CAKE#13:
   readable_name: "Brown Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#13
 
 - Blocks.CANDLE_CAKE#14:
   readable_name: "Green Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#14
 
 - Blocks.CANDLE_CAKE#15:
   readable_name: "Red Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#15
 
 - Blocks.CANDLE_CAKE#16:
   readable_name: "Black Candle Cake"
-  type: block
+  type: block_without_item
   texture: CANDLE_CAKE#16
 
 - Items.BED:
