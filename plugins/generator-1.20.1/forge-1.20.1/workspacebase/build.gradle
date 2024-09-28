@@ -36,11 +36,6 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            def gradleJvmArgs = gradle.startParameter.jvmArgs
-            if (gradleJvmArgs && !gradleJvmArgs.isEmpty()) {
-                jvmArgs += gradleJvmArgs
-            }
-
             mods {
                 examplemod {
                     source sourceSets.main
