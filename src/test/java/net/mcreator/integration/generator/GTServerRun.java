@@ -40,13 +40,14 @@ package net.mcreator.integration.generator;
 import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.minecraft.ServerUtil;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.*;
 
 public class GTServerRun {
 
-	private static void appendToStringBuilder(StringBuilder sb, String s,
+	private static void appendToStringBuilder(Logger LOG, StringBuilder sb, String s,
 			CancellationTokenSource cancellationSource) {
 		if (s.contains("/DEBUG]") || s.contains("Downloading: "))
 			return; // Skip DEBUG prints
@@ -57,6 +58,10 @@ public class GTServerRun {
 		// If we detect the server has fully started, stop the server execution
 		if (didServerStart(s)) {
 			cancellationSource.cancel();
+		}
+
+		if (!TestUtil.isRunningInGitHubActions()) {
+			LOG.info("[Minecraft Server] {}", s);
 		}
 	}
 
@@ -72,9 +77,9 @@ public class GTServerRun {
 		buildLauncher.withCancellationToken(token);
 
 		buildLauncher.setStandardError(
-				new OutputStreamEventHandler(line -> appendToStringBuilder(sb, line, cancellationSource)));
+				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
 		buildLauncher.setStandardOutput(
-				new OutputStreamEventHandler(line -> appendToStringBuilder(sb, line, cancellationSource)));
+				new OutputStreamEventHandler(line -> appendToStringBuilder(LOG, sb, line, cancellationSource)));
 
 		try {
 			if (!ServerUtil.isEULAAccepted(workspace))
