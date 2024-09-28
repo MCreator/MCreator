@@ -182,8 +182,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
 
-						if (generatorConfiguration.getGradleTaskFor("run_server") != null
-								&& !TestUtil.isRunningInGitHubActions()) {
+						if (generatorConfiguration.getGradleTaskFor("run_server") != null) {
 							if (!TestUtil.isRunningInGitHubActions() || generatorConfiguration.equals(
 									GeneratorConfiguration.getLatestGeneratorForBaseLanguage(
 											Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA))) {
