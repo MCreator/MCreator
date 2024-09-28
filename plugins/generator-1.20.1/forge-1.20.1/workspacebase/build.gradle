@@ -18,19 +18,15 @@ minecraft {
 
     runs {
         client {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
         }
 
         server {
+        }
+
+        configureEach {
+            java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().findAll { it.startsWith('-Xm') }
+                    .each { jvmArgs.add(it) }
+
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'

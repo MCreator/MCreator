@@ -20,6 +20,9 @@ neoForge {
         }
 
         configureEach {
+            java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().findAll { it.startsWith('-Xm') }
+                    .each { jvmArguments.add(it) }
+
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
         }
