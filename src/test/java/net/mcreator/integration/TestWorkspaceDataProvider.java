@@ -348,8 +348,8 @@ public class TestWorkspaceDataProvider {
 		List<TabEntry> tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		// Also prepare list of blocks that are "worldgen-safe"
-		List<MCItem> worldgenBlocks = Stream.of("Blocks.STONE", "Blocks.DIRT", "Blocks.DIAMOND_BLOCK",
-						"Blocks.EMERALD_BLOCK", "Blocks.SANDSTONE", "Blocks.WOOL#0")
+		List<MCItem> worldgenBlocks = Stream.of("Blocks.STONE#0", "Blocks.DIRT#0", "Blocks.DIAMOND_BLOCK",
+						"Blocks.EMERALD_BLOCK", "Blocks.SANDSTONE#0", "Blocks.WOOL#0", "Blocks.LEAVES#1")
 				.map(n -> new MCItem(new DataListEntry.Dummy(n))).toList();
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
