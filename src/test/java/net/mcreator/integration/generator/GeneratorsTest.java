@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
@@ -182,13 +181,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
 
-						if (generatorConfiguration.getGradleTaskFor("run_server") != null) {
-							if (!TestUtil.isRunningInGitHubActions() || generatorConfiguration.equals(
-									GeneratorConfiguration.getLatestGeneratorForBaseLanguage(
-											Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA))) {
-								tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
-										() -> GTServerRun.runTest(LOG, generator, workspace.get())));
-							}
+						// We only run server tests if we are not in GitHub Actions (their workers are too slow for this)
+						if (generatorConfiguration.getGradleTaskFor("run_server") != null
+								&& !TestUtil.isRunningInGitHubActions()) {
+							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
+									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
 						}
 					}
 
