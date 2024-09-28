@@ -100,9 +100,14 @@ public class BlocklyBlockCodeGenerator {
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
 							&& !element.getTextContent().isEmpty()) {
+						boolean shouldValidate = true;
+						if (element.hasAttribute("datalist")) {
+							String datalist = element.getAttribute("datalist");
+							if ("sound".equals(datalist))
+								shouldValidate = false;
+						}
 						String fieldValue = element.getTextContent();
-						// If field contains value that we should potentially validate, we do so
-						if (fieldValue.startsWith("CUSTOM:")) {
+						if (shouldValidate && fieldValue.startsWith("CUSTOM:")) {
 							String fieldType = toolboxBlock.getFieldType(fieldName);
 							if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 									fieldType) || "field_mcitem_selector".equals(fieldType)) {
@@ -243,8 +248,8 @@ public class BlocklyBlockCodeGenerator {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
 						if (fieldValue != null && !fieldValue.isEmpty()) {
-							// If field contains value that we should potentially validate, we do so
-							if (fieldValue.startsWith("CUSTOM:")) {
+							boolean shouldValidate = !("sound".equals(fieldEntry.getDataList()));
+							if (shouldValidate && fieldValue.startsWith("CUSTOM:")) {
 								String fieldType = fieldEntry.getFieldType();
 								if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 										fieldType) || "field_mcitem_selector".equals(fieldType)) {
