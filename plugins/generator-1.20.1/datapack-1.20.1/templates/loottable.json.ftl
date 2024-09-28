@@ -1,4 +1,7 @@
 <#include "mcitems.ftl">
+<#function hasToolContext>
+    <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
+</#function>
 {
   "type": "minecraft:${data.type?lower_case?replace(" ", "_")}",
   "pools": [
@@ -28,7 +31,7 @@
                 "type": "minecraft:${entry.type}",
                 "name": "${mappedMCItemToRegistryName(entry.item)}",
                 "weight": ${entry.weight},
-                <#if entry.silkTouchMode == 1>
+                <#if entry.silkTouchMode == 1 && hasToolContext()>
                 "conditions": [
                   {
                     "condition": "minecraft:match_tool",
@@ -44,7 +47,7 @@
                     }
                   }
                 ],
-                <#elseif entry.silkTouchMode == 2>
+                <#elseif entry.silkTouchMode == 2 && hasToolContext()>
                 "conditions": [
                   {
                     "condition": "minecraft:inverted",
@@ -87,7 +90,7 @@
                       "function": "minecraft:explosion_decay"
                     }
                     </#if>
-                    <#if entry.affectedByFortune>
+                    <#if entry.affectedByFortune && hasToolContext()>
                     ,{
                       "function": "minecraft:apply_bonus",
                       "enchantment": "minecraft:fortune",
