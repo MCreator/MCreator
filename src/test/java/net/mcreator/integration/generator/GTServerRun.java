@@ -58,9 +58,6 @@ public class GTServerRun {
 		if (didServerStart(s)) {
 			cancellationSource.cancel();
 		}
-
-		// TODO: remove this
-		System.out.println(s);
 	}
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) throws Exception {
