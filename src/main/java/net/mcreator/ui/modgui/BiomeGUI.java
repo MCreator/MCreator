@@ -531,8 +531,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page3group.addValidationElement(treeBranch);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
-		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
-		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
+		groundBlock.setValidator(new MCItemHolderValidator(groundBlock).considerAirAsEmpty());
+		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock).considerAirAsEmpty());
 		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
 
