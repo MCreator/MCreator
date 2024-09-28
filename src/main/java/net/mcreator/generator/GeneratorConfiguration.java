@@ -54,6 +54,13 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				.sorted().findFirst().orElse(null);
 	}
 
+	@Nullable
+	public static GeneratorConfiguration getLatestGeneratorForBaseLanguage(
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor.BaseLanguage baseLanguage) {
+		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor().getBaseLanguage() == baseLanguage)
+				.min((a, b) -> b.getGeneratorMinecraftVersion().compareTo(a.getGeneratorMinecraftVersion())).orElse(null);
+	}
+
 	private Map<?, ?> generatorConfig;
 	private final String generatorName;
 

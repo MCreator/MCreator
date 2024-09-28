@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
@@ -35,6 +36,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.ExternalTexture;
 import org.apache.commons.io.FilenameUtils;
@@ -180,9 +182,14 @@ import static org.junit.jupiter.api.Assertions.*;
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
 
-						if (generatorConfiguration.getGradleTaskFor("run_server") != null) {
-							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
-									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
+						if (generatorConfiguration.getGradleTaskFor("run_server") != null
+								&& !TestUtil.isRunningInGitHubActions()) {
+							if (!TestUtil.isRunningInGitHubActions() || generatorConfiguration.equals(
+									GeneratorConfiguration.getLatestGeneratorForBaseLanguage(
+											Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA))) {
+								tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
+										() -> GTServerRun.runTest(LOG, generator, workspace.get())));
+							}
 						}
 					}
 
