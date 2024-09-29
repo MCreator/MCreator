@@ -77,13 +77,24 @@ public class ${name}Block extends
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
 	<#list data.customProperties as prop>
-		<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
-		<#if prop.property().getClass().getSimpleName().equals("LogicType")>
-			public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
-		<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
-			public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
-		<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
-			public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
+		<#if prop.property().getName().startsWith("CUSTOM:")>
+			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
+			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
+				public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
+			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
+				public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
+			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+				public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
+			</#if>
+		<#else>
+			<#assign propName = prop.property().getName()>
+			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
+				public static final BooleanProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
+				public static final IntegerProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+				public static final EnumProperty<${generator.map(propName, "blockstateproperties", 2)}> ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			</#if>
 		</#if>
 	</#list>
 
@@ -349,10 +360,14 @@ public class ${name}Block extends
 
 	<#macro initCustomBlockStateProperties>
 		<#list data.customProperties as prop>
-			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
-			.setValue(${propName?upper_case},
+			<#assign propName = prop.property().getName()>
+			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
-				${StringUtils.snakeToCamel(propName)}Property.${prop.value()?upper_case}
+					<#if propName.startsWith("CUSTOM:")>
+					${StringUtils.snakeToCamel(propName.replace("CUSTOM:", ""))}Property.${prop.value()?upper_case}
+					<#else>
+					${generator.map(propName, "blockstateproperties", 2)}.${prop.value()}
+					</#if>
 				<#else>
 				${prop.value()}
 				</#if>
@@ -700,7 +715,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#list data.customProperties as prop>
-		<#if prop.property().getClass().getSimpleName().equals("StringType")>
+		<#if prop.property().getName().startsWith("CUSTOM:") && prop.property().getClass().getSimpleName().equals("StringType")>
 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
 		private enum ${propClassName}Property implements StringRepresentable {
 			<#list prop.property.getArrayData() as value>

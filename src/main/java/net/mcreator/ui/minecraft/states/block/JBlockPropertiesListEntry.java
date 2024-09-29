@@ -35,9 +35,11 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class JBlockPropertiesListEntry extends JPanel {
 
+	private final JBlockPropertiesStatesList listPanel;
 	private final MCreator mcreator;
 	private PropertyData<?> data;
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
@@ -51,6 +53,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 	public JBlockPropertiesListEntry(JBlockPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
 			List<JBlockPropertiesListEntry> propertiesList) {
 		super(new BorderLayout(20, 5));
+		this.listPanel = listPanel;
 		this.mcreator = listPanel.getMCreator();
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -120,7 +123,12 @@ public class JBlockPropertiesListEntry extends JPanel {
 
 	public void setEntry(PropertyDataWithValue<?> prop) {
 		data = prop.property();
-		nameLabel.setText(data.getName().replace("CUSTOM:", ""));
+
+		if (data.getName().startsWith("CUSTOM:"))
+			nameLabel.setText(data.getName().replace("CUSTOM:", ""));
+		else
+			nameLabel.setText(Objects.requireNonNullElse(listPanel.propertyRegistryName(data), data.getName()));
+
 		nameLabel.setToolTipText(nameLabel.getText());
 		typeLabel.setText(getTypeString(data));
 

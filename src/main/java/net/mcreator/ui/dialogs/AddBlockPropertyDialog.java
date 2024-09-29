@@ -39,19 +39,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class AddBlockPropertyDialog {
 
 	@Nullable
-	public static PropertyDataWithValue<?> showDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
+	public static PropertyDataWithValue<?> showDialog(MCreator mcreator, Supplier<Stream<String>> currentEntries,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("elementgui.block.custom_properties.add.title"),
 				true);
 
 		VTextField name = new VTextField(24);
 		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> currentEntries.stream().map(PropertyData::getName), nonUserProvidedProperties.get(),
-				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
+				currentEntries, nonUserProvidedProperties.get(), new RegistryNameValidator(name,
+				L10N.t("elementgui.block.custom_properties.add.input"))).setIsPresentOnList(false));
 		name.enableRealtimeValidation();
 		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "Enum" });
 
