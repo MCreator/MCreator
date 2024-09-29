@@ -50,6 +50,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -167,8 +168,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testAddBlockPropertyDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> AddBlockPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test")),
-						List::of));
+				() -> AddBlockPropertyDialog.showDialog(mcreator, () -> Stream.of("test", "property"), List::of));
 	}
 
 	@Test public void testAddEntityPropertyDialog() throws Throwable {
