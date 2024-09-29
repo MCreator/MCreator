@@ -1122,6 +1122,7 @@ public class TestWorkspaceDataProvider {
 				entry1.effect = new EffectEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
 				entry1.duration = 3600;
+				entry1.infinite = _true;
 				entry1.amplifier = 1;
 				entry1.ambient = !_true;
 				entry1.showParticles = !_true;
@@ -1131,6 +1132,7 @@ public class TestWorkspaceDataProvider {
 				entry2.effect = new EffectEntry(modElement.getWorkspace(),
 						getRandomDataListEntry(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
 				entry2.duration = 7200;
+				entry2.infinite = !_true;
 				entry2.amplifier = 0;
 				entry2.ambient = _true;
 				entry2.showParticles = _true;
