@@ -52,12 +52,17 @@ import java.util.List;
 	public static class CustomEffectEntry {
 		public EffectEntry effect;
 		public int duration;
+		public boolean infinite;
 		public int amplifier;
 		public boolean ambient;
 		public boolean showParticles;
 
 		public int getAmplifier() {
 			return amplifier;
+		}
+
+		public int getDuration() {
+			return infinite ? -1 : duration;
 		}
 
 		public boolean doesShowParticles() {
