@@ -24,6 +24,7 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.locale.LocaleRegistration;
 import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
@@ -44,8 +45,6 @@ public class L10N {
 	private static ResourceBundle rb_en;
 
 	private static Map<Locale, LocaleRegistration> supportedLocales;
-
-	private static boolean isTestingEnvironment = false;
 
 	private static Locale selectedLocale = null;
 
@@ -131,13 +130,6 @@ public class L10N {
 		return getLocaleString().split("_")[0].replace("iw", "he");
 	}
 
-	/**
-	 * Test mode will make JVM crash with runtime exception if translation key is not found when requested
-	 */
-	public static void enterTestingMode() {
-		isTestingEnvironment = true;
-	}
-
 	public static String t(String key, Object... parameters) {
 		return t_impl(rb, key, parameters);
 	}
@@ -155,7 +147,7 @@ public class L10N {
 		else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description")))
 			return null;
-		else if (isTestingEnvironment)
+		else if (TestUtil.isTestingEnvironment())
 			throw new RuntimeException("Failed to load any translation for key: " + key);
 		else if (key.startsWith("blockly.") || key.startsWith("trigger.") || key.startsWith(GeneratorSelector.covpfx))
 			return null;

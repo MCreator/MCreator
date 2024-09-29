@@ -35,6 +35,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.ExternalTexture;
 import org.apache.commons.io.FilenameUtils;
@@ -179,6 +180,13 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Verify Java files
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
+
+						// We only run server tests if we are not in GitHub Actions (their workers are too slow for this)
+						if (generatorConfiguration.getGradleTaskFor("run_server") != null
+								&& !TestUtil.isRunningInGitHubActions()) {
+							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
+									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
+						}
 					}
 
 					// Verify JSON files

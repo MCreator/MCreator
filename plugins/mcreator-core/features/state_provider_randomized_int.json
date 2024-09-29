@@ -43,8 +43,9 @@
       "state_provider_int_property_warning"
     ],
     "toolbox_init": [
+      "~<value name=\"source\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\">Blocks.WHEAT</field></block></value>",
       "<value name=\"source\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
-      "<value name=\"value\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
+      "<value name=\"value\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>",
     ]
   }
 }

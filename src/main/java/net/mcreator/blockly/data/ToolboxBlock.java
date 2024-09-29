@@ -190,13 +190,30 @@ import java.util.Objects;
 	 * @param fieldName Field name to get type of
 	 * @return Field type String in Blockly format. Null if the field does not exist, or we can't determine its type.
 	 */
-	public String getFieldType(String fieldName) {
+	@Nullable public String getFieldType(String fieldName) {
 		if (blocklyJSON.getAsJsonObject().has("args0")) {
 			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 			for (int i = 0; i < args0.size(); i++) {
 				JsonObject arg = args0.get(i).getAsJsonObject();
 				if (arg.has("name") && arg.get("name").getAsString().equals(fieldName) && arg.has("type")) {
 					return arg.get("type").getAsString();
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param fieldName Field name to get data list of
+	 * @return Field data list in JSON format. Null if the field does not exist, or the type of field does not specify a data list.
+	 */
+	@Nullable public String getFieldDataList(String fieldName) {
+		if (blocklyJSON.getAsJsonObject().has("args0")) {
+			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+			for (int i = 0; i < args0.size(); i++) {
+				JsonObject arg = args0.get(i).getAsJsonObject();
+				if (arg.has("name") && arg.get("name").getAsString().equals(fieldName) && arg.has("datalist")) {
+					return arg.get("datalist").getAsString();
 				}
 			}
 		}

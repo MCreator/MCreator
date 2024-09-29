@@ -186,7 +186,11 @@ public class BlocklyTestUtil {
 			processed++;
 		}
 		case "field_input", "field_javaname" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+			String value = "test";
+			if (arg.has("text")) {
+				value = arg.get("text").getAsString();
+			}
+			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
 		case "field_dropdown" -> {

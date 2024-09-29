@@ -65,6 +65,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -346,6 +347,10 @@ public class TestWorkspaceDataProvider {
 		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		List<TabEntry> tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		// Also prepare list of blocks that are "worldgen-safe"
+		List<MCItem> worldgenBlocks = Stream.of("Blocks.STONE#0", "Blocks.DIRT#0", "Blocks.DIAMOND_BLOCK",
+						"Blocks.EMERALD_BLOCK", "Blocks.SANDSTONE#0", "Blocks.WOOL#0", "Blocks.LEAVES#1")
+				.map(n -> new MCItem(new DataListEntry.Dummy(n))).toList();
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
 			Achievement achievement = new Achievement(modElement);
@@ -380,11 +385,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
-			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+			biome.groundBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, worldgenBlocks).getName());
 			biome.undergroundBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocks).getName());
+					getRandomMCItem(random, worldgenBlocks).getName());
 			biome.underwaterBlock = new MItemBlock(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomMCItem(random, blocks).getName());
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
 			biome.vanillaTreeType = getRandomItem(random,
 					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 							"Mega spruce trees" });
@@ -712,8 +717,8 @@ public class TestWorkspaceDataProvider {
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocks).getName());
-			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+					getRandomMCItem(random, worldgenBlocks).getName());
+			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, worldgenBlocks).getName());
 			dimension.whenPortaTriggerlUsed = emptyLists ?
 					new Procedure("actionresulttype1") :
 					new Procedure("procedure1");
@@ -745,8 +750,8 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("none", "beard_thin", "beard_box", "bury", "encapsulate"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
-			structure.spacing = 14;
-			structure.separation = 6;
+			structure.spacing = 17;
+			structure.separation = 9;
 			if (_true) {
 				structure.restrictionBiomes.addAll(
 						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
@@ -933,8 +938,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 			plant.dropAmount = 4;
 			plant.useLootTableForDrops = !_true;
-			plant.frequencyOnChunks = 13;
-			plant.patchSize = 46;
+			plant.frequencyOnChunks = 4;
+			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
 			plant.generationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.flammability = 5;
@@ -1316,8 +1321,8 @@ public class TestWorkspaceDataProvider {
 				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
-			block.frequencyPerChunks = 6;
-			block.frequencyOnChunk = 7;
+			block.frequencyPerChunks = 3;
+			block.frequencyOnChunk = 2;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
 			if (!emptyLists) {
@@ -2142,7 +2147,7 @@ public class TestWorkspaceDataProvider {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE);
 				me.putMetadata("return_type", "ACTIONRESULTTYPE");
 				me.putMetadata("dependencies",
@@ -2158,7 +2163,7 @@ public class TestWorkspaceDataProvider {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 1; i++) {
+			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE);
 				me.putMetadata("return_type", "ENTITY");
 				me.putMetadata("dependencies",

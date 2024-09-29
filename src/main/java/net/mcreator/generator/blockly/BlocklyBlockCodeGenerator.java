@@ -101,12 +101,13 @@ public class BlocklyBlockCodeGenerator {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
 							&& !element.getTextContent().isEmpty()) {
 						String fieldValue = element.getTextContent();
-						// If field contains value that we should potentially validate, we do so
 						if (fieldValue.startsWith("CUSTOM:")) {
 							String fieldType = toolboxBlock.getFieldType(fieldName);
 							if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 									fieldType) || "field_mcitem_selector".equals(fieldType)) {
-								if (!MappableElement.validateReference(fieldValue, master.getWorkspace())) {
+								boolean shouldValidate = !("sound".equals(toolboxBlock.getFieldDataList(fieldName)));
+								if (shouldValidate && !MappableElement.validateReference(fieldValue,
+										master.getWorkspace())) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											L10N.t("blockly.errors.invalid_reference", fieldName, type,
 													fieldValue.replaceFirst("CUSTOM:", ""))));
@@ -243,12 +244,13 @@ public class BlocklyBlockCodeGenerator {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
 						if (fieldValue != null && !fieldValue.isEmpty()) {
-							// If field contains value that we should potentially validate, we do so
 							if (fieldValue.startsWith("CUSTOM:")) {
 								String fieldType = fieldEntry.getFieldType();
 								if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 										fieldType) || "field_mcitem_selector".equals(fieldType)) {
-									if (!MappableElement.validateReference(fieldValue, master.getWorkspace())) {
+									boolean shouldValidate = !("sound".equals(fieldEntry.getDataList()));
+									if (shouldValidate && !MappableElement.validateReference(fieldValue,
+											master.getWorkspace())) {
 										master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 												L10N.t("blockly.errors.invalid_reference", fieldName + i, type,
 														fieldValue.replaceFirst("CUSTOM:", ""))));

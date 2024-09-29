@@ -18,19 +18,12 @@ minecraft {
 
     runs {
         client {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
         }
 
         server {
+        }
+
+        configureEach {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'

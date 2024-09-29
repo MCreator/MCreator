@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.data;
+package net.mcreator.util;
 
-import com.google.gson.JsonObject;
+public class TestUtil {
 
-import javax.annotation.Nullable;
+	private static boolean isTestingEnvironment = false;
 
-public record RepeatingField(String name, @Nullable JsonObject field_definition) {
-
-	public String getFieldType() {
-		if (field_definition != null && field_definition.has("type")) {
-			return field_definition.get("type").getAsString();
-		}
-		return null;
+	public static void enterTestingMode() {
+		isTestingEnvironment = true;
 	}
 
-	public String getDataList() {
-		if (field_definition != null && field_definition.has("datalist")) {
-			return field_definition.get("datalist").getAsString();
+	public static boolean isTestingEnvironment() {
+		return isTestingEnvironment;
+	}
+
+	public static void failIfTestingEnvironment() {
+		if (isTestingEnvironment) {
+			throw new RuntimeException();
 		}
-		return null;
+	}
+
+	public static boolean isRunningInGitHubActions() {
+		return "true".equals(System.getenv("GITHUB_ACTIONS"));
 	}
 
 }
