@@ -210,14 +210,14 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadBlocksAndItemsAndTags(net.mcreator.workspace.Workspace)" class="member-name-link">loadBlocksAndItemsAndTags</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Loads all items (also blocks if they have item representation), including elements
- that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)</div>
+ that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadBlocksAndItemsAndTagsAndPotions(net.mcreator.workspace.Workspace)" class="member-name-link">loadBlocksAndItemsAndTagsAndPotions</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Loads all items (also blocks if they have item representation), including those
  that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
- This list also provides potions from both Minecraft elements and mod elements</div>
+ This list also provides potions from both Minecraft elements and mod elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadBlocksAndTags(net.mcreator.workspace.Workspace)" class="member-name-link">loadBlocksAndTags</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
@@ -336,7 +336,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">loadBlocksAndItems</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 <div class="block">Loads all items (also blocks if they have item representation), but without those
  that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
- so only oak wood, cherry wood, ... are loaded, without wildcard wood element</div>
+ so only oak wood, cherry wood, ... are loaded, without wildcard wood element.
+ This will not load blocks without item representation (example fire, water, ...).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>All Blocks and Items from both Minecraft and custom elements with or without metadata</dd>
@@ -348,7 +349,8 @@ loadScripts(document, 'script');</script>
 <h3>loadBlocksAndItemsAndTags</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">loadBlocksAndItemsAndTags</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 <div class="block">Loads all items (also blocks if they have item representation), including elements
- that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)</div>
+ that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...).
+ This will not load blocks without item representation (example fire, water, ...).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>All Blocks and Items from both Minecraft and custom elements with or without metadata</dd>
@@ -385,7 +387,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">loadBlocksAndItemsAndTagsAndPotions</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 <div class="block">Loads all items (also blocks if they have item representation), including those
  that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
- This list also provides potions from both Minecraft elements and mod elements</div>
+ This list also provides potions from both Minecraft elements and mod elements.
+ This will not load blocks without item representation (example fire, water, ...).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata</dd>
@@ -399,7 +402,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Loads all items (also blocks if they have item representation), without those
  that are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
  so only oak wood, cherry wood, ... are loaded, without wildcard wood element
- This list also provides potions from both Minecraft elements and mod elements</div>
+ This list also provides potions from both Minecraft elements and mod elements.
+ This will not load blocks without item representation (example fire, water, ...).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>All Blocks and Items and Potions from both Minecraft and custom elements with or without metadata</dd>
