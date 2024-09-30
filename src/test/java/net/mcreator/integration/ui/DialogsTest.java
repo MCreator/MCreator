@@ -167,8 +167,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testAddBlockPropertyDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> AddBlockPropertyDialog.showDialog(mcreator, () -> Stream.of("test", "property"), List::of));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddBlockPropertyDialog.showDialog(mcreator,
+				() -> Stream.of("CUSTOM:test", "CUSTOM:property", "ENABLED"), List::of));
 	}
 
 	@Test public void testAddEntityPropertyDialog() throws Throwable {

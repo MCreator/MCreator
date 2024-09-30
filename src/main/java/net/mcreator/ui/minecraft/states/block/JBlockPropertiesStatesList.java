@@ -175,14 +175,14 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
-		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
-		pe.setEntry(data);
-		registerEntryUI(pe);
 		if (!data.property().getName().startsWith("CUSTOM:")) {
 			DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.property().getName());
 			if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
 				registryNames.put(data.property().getName(), (String) other.get("registry_name"));
 		}
+		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
+		pe.setEntry(data);
+		registerEntryUI(pe);
 	}
 
 	void removeProperty(JBlockPropertiesListEntry entry) {
