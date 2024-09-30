@@ -83,7 +83,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
-	private final JSpinner size = new JSpinner(new SpinnerNumberModel(1, 0, 7, 1));
+	private final JSpinner size = new JSpinner(new SpinnerNumberModel(1, 0, 20, 1));
 	private final JSpinner maxDistanceFromCenter = new JSpinner(new SpinnerNumberModel(64, 1, 128, 1));
 	private JJigsawPoolsList jigsaw;
 
