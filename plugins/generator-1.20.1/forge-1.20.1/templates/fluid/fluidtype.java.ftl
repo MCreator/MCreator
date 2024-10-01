@@ -65,8 +65,11 @@ public class ${name}FluidType extends FluidType {
 
 	@Override public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 		consumer.accept(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${data.textureStill.format("%s:block/%s")}"),
-				FLOWING_TEXTURE = new ResourceLocation("${data.textureFlowing.format("%s:block/%s")}");
+			private static final ResourceLocation STILL_TEXTURE = new ResourceLocation("${data.textureStill.format("%s:block/%s")}");
+			private static final ResourceLocation FLOWING_TEXTURE = new ResourceLocation("${data.textureFlowing.format("%s:block/%s")}");
+			<#if data.textureRenderOverlay?has_content>
+			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = new ResourceLocation("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
+			</#if>
 
 				@Override public ResourceLocation getStillTexture() {
 					return STILL_TEXTURE;
@@ -75,6 +78,12 @@ public class ${name}FluidType extends FluidType {
 				@Override public ResourceLocation getFlowingTexture() {
 					return FLOWING_TEXTURE;
 				}
+
+				<#if data.textureRenderOverlay?has_content>
+				@Override public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+					return RENDER_OVERLAY_TEXTURE;
+				}
+				</#if>
 
 				<#if data.isFluidTinted()>
 				@Override public int getTintColor() {

@@ -64,6 +64,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private TextureSelectionButton textureStill;
 	private TextureSelectionButton textureFlowing;
+	private TextureSelectionButton textureRenderOverlay;
 
 	private final VTextField name = new VTextField(18);
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
@@ -170,9 +171,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureStill.setOpaque(false);
 		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
+		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		textureRenderOverlay.setOpaque(false);
 
 		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
+		destalx.add(ComponentUtils.squareAndBorder(textureRenderOverlay, L10N.t("elementgui.fluid.texture_render_overlay")));
 
 		JPanel destal = new JPanel(new GridLayout(10, 2, 5, 2));
 		destal.setOpaque(false);
@@ -435,6 +439,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	@Override public void openInEditingMode(Fluid fluid) {
 		textureStill.setTexture(fluid.textureStill);
 		textureFlowing.setTexture(fluid.textureFlowing);
+		textureRenderOverlay.setTexture(fluid.textureRenderOverlay);
 		name.setText(fluid.name);
 		bucketName.setText(fluid.bucketName);
 		canMultiply.setSelected(fluid.canMultiply);
@@ -488,6 +493,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.bucketName = bucketName.getText();
 		fluid.textureFlowing = textureFlowing.getTextureHolder();
 		fluid.textureStill = textureStill.getTextureHolder();
+		fluid.textureRenderOverlay = textureRenderOverlay.getTextureHolder();
 		fluid.canMultiply = canMultiply.isSelected();
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();

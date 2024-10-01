@@ -51,6 +51,7 @@ import java.util.List;
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureStill;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureFlowing;
+	@TextureReference(TextureType.OTHER) public TextureHolder textureRenderOverlay;
 
 	public String tintType;
 

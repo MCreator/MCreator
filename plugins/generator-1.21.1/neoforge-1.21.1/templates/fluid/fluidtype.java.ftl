@@ -65,8 +65,11 @@ package ${package}.fluid.types;
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
 		event.registerFluidType(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}"),
-				FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
+			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}");
+			private static final ResourceLocation FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
+			<#if data.textureRenderOverlay?has_content>
+			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = ResourceLocation.parse("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
+			</#if>
 
 				@Override public ResourceLocation getStillTexture() {
 					return STILL_TEXTURE;
@@ -75,6 +78,12 @@ package ${package}.fluid.types;
 				@Override public ResourceLocation getFlowingTexture() {
 					return FLOWING_TEXTURE;
 				}
+
+				<#if data.textureRenderOverlay?has_content>
+				@Override public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+					return RENDER_OVERLAY_TEXTURE;
+				}
+				</#if>
 
 				<#if data.isFluidTinted()>
 				@Override public int getTintColor() {
