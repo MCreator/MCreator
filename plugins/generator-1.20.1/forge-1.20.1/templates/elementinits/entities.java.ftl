@@ -67,6 +67,9 @@ package ${package}.init;
 		</#if>
 	</#list>
 
+	// Start of user code block custom entities
+	// End of user code block custom entities
+
 	private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
