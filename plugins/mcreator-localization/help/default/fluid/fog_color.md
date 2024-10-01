@@ -1,0 +1,1 @@
+This parameter determines the color of the fluid fog.
