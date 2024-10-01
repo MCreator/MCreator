@@ -118,7 +118,7 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '33.3.0-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.1'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.16'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.10.2'

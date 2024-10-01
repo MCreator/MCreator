@@ -1190,19 +1190,20 @@ public class TestWorkspaceDataProvider {
 			block.enablePitch = !_true;
 			block.customProperties = new ArrayList<>();
 			if (!emptyLists) {
-				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop"), _true));
 				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.LogicType("bool_prop2"), _true));
+						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop"), _true));
 				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop", 3, 7), 4));
+						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop2"), !_true));
 				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.IntegerType("int_prop2", 0, 123), 63));
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop", 3, 7), 4));
+				block.customProperties.add(
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop2", 0, 123), 63));
 				block.customProperties.add(new PropertyDataWithValue<>(
-						new PropertyData.StringType("enum_prop", new String[] { "logic", "integer", "string" }),
+						new PropertyData.StringType("CUSTOM:enum_prop", new String[] { "logic", "integer", "string" }),
 						"string"));
 				block.customProperties.add(new PropertyDataWithValue<>(
-						new PropertyData.StringType("enum_prop_two", new String[] { "value1", "value2", "value3" }),
-						"value3"));
+						new PropertyData.StringType("CUSTOM:enum_prop_two",
+								new String[] { "value1", "value2", "value3" }), "value3"));
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
