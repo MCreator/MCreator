@@ -118,6 +118,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private ProcedureSelector flowCondition;
 	private ProcedureSelector beforeReplacingBlock;
 
+	private final ValidationGroup texturesValidationGroup = new ValidationGroup();
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public FluidGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -161,22 +162,39 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		fluidtype.setRenderer(new ItemTexturesComboBoxRenderer());
 
-		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		pane3.setOpaque(false);
+		JPanel visualsPage = new JPanel(new BorderLayout(10, 10));
+		visualsPage.setOpaque(false);
 
-		JPanel destalx = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		destalx.setOpaque(false);
+		JPanel mainTextures = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		mainTextures.setOpaque(false);
 
 		textureStill = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureStill.setOpaque(false);
 		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureFlowing.setOpaque(false);
-		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+
+		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
+		mainTextures.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
+
+		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER), 32);
 		textureRenderOverlay.setOpaque(false);
 
-		destalx.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
-		destalx.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
-		destalx.add(ComponentUtils.squareAndBorder(textureRenderOverlay, L10N.t("elementgui.fluid.texture_render_overlay")));
+		JPanel visualSettings = new JPanel(new GridLayout(1, 2, 5, 2));
+		visualSettings.setOpaque(false);
+
+		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/render_overlay_texture"),
+				L10N.label("elementgui.fluid.texture_render_overlay")));
+		visualSettings.add(PanelUtils.centerInPanel(textureRenderOverlay));
+
+		visualSettings.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.fluid.visual_settings"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+
+		visualsPage.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(mainTextures, visualSettings)));
+
+		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		pane3.setOpaque(false);
 
 		JPanel destal = new JPanel(new GridLayout(10, 2, 5, 2));
 		destal.setOpaque(false);
@@ -292,7 +310,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
 		fluidBucketProperties.setOpaque(false);
-		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
+		pane3.add(PanelUtils.totalCenterInPanel(fluidBucketProperties));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
@@ -392,11 +410,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		textureStill.setValidator(new TileHolderValidator(textureStill));
 		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
+
+		texturesValidationGroup.addValidationElement(textureStill);
+		texturesValidationGroup.addValidationElement(textureFlowing);
+
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
 		name.enableRealtimeValidation();
-
-		page1group.addValidationElement(textureStill);
-		page1group.addValidationElement(textureFlowing);
 		page1group.addValidationElement(name);
 
 		bucketName.setValidator(new TextFieldValidator(bucketName, L10N.t("elementgui.fluid.error_bucket_needs_name")));
@@ -404,7 +423,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		page1group.addValidationElement(bucketName);
 
-		addPage(L10N.t("elementgui.fluid.page_visual_and_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_visual"), visualsPage);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
@@ -432,6 +452,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
+			return new AggregatedValidationResult(texturesValidationGroup);
+		else if (page == 1)
 			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
 	}
