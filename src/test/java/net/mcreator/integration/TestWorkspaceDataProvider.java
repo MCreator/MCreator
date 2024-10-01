@@ -511,6 +511,11 @@ public class TestWorkspaceDataProvider {
 			fluid.name = modElement.getName();
 			fluid.textureFlowing = new TextureHolder(modElement.getWorkspace(), "test");
 			fluid.textureStill = new TextureHolder(modElement.getWorkspace(), "test2");
+			fluid.textureRenderOverlay = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "other0");
+			fluid.hasFog = _true;
+			fluid.fogColor = emptyLists ? null : Color.red;
+			fluid.fogStartDistance = new NumberProcedure(emptyLists ? null : "number1", 8);
+			fluid.fogEndDistance = new NumberProcedure(emptyLists ? null : "number2", 16);
 			fluid.canMultiply = _true;
 			fluid.flowRate = 8;
 			fluid.levelDecrease = 2;
