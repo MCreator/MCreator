@@ -95,6 +95,7 @@ public class ${name}FluidType extends FluidType {
 
 					public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
 						Entity entity = camera.getEntity();
+						Level world = entity.level();
 						RenderSystem.setShaderFogShape(FogShape.SPHERE);
 						RenderSystem.setShaderFogStart(
 							<#if hasProcedure(data.fogStartDistance)>

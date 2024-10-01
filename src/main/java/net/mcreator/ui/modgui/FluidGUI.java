@@ -137,12 +137,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	@Override protected void initGUI() {
 		fogStartDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_start_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_start_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.05)), 180,
-				Dependency.fromString("entity:entity"));
+				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01)), 180,
+				Dependency.fromString("world:world/entity:entity"));
 		fogEndDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_end_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_end_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(64, -1024, 1024, 0.05)), 180,
-				Dependency.fromString("entity:entity"));
+				new JSpinner(new SpinnerNumberModel(64, -1024, 1024, 0.01)), 180,
+				Dependency.fromString("world:world/entity:entity"));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.fluid.when_added"),
