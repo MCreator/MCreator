@@ -97,6 +97,9 @@ UNSTABLE:
 VINE_END:
   - BlockStateProperties.VINE_END
   - vine_end
+WATERLOGGED:
+  - BlockStateProperties.WATERLOGGED
+  - waterlogged
 UP:
   - BlockStateProperties.UP
   - up
@@ -198,6 +201,35 @@ STAGE:
   - BlockStateProperties.STAGE
   - stage
 
+FACING:
+  - BlockStateProperties.FACING
+  - facing
+  - Direction
+FACING_HOPPER:
+  - BlockStateProperties.FACING_HOPPER
+  - facing
+  - Direction
+HORIZONTAL_FACING:
+  - BlockStateProperties.HORIZONTAL_FACING
+  - facing
+  - Direction
+VERTICAL_DIRECTION:
+  - BlockStateProperties.VERTICAL_DIRECTION
+  - vertical_direction
+  - Direction
+AXIS:
+  - BlockStateProperties.AXIS
+  - axis
+  - Direction.Axis
+HORIZONTAL_AXIS:
+  - BlockStateProperties.HORIZONTAL_AXIS
+  - axis
+  - Direction.Axis
+
+ATTACH_FACE:
+  - BlockStateProperties.ATTACH_FACE
+  - face
+  - AttachFace
 BAMBOO_LEAVES:
   - BlockStateProperties.BAMBOO_LEAVES
   - leaves

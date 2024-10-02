@@ -34,6 +34,8 @@
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
 
+<#assign blockpropvalues = fp.file("utils/blockpropertyvalues.json")?eval_json/>
+
 package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -362,7 +364,7 @@ public class ${name}Block extends
 					<#if propName.startsWith("CUSTOM:")>
 					${StringUtils.snakeToCamel(propName.replace("CUSTOM:", ""))}Property.${prop.value()?upper_case}
 					<#else>
-					${generator.map(propName, "blockstateproperties", 2)}.${prop.value()}
+					${generator.map(propName, "blockstateproperties", 2)}.${blockpropvalues[propName][prop.value()]}
 					</#if>
 				<#else>
 				${prop.value()}

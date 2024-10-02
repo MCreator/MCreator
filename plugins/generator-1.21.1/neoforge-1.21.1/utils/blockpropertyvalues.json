@@ -1,0 +1,209 @@
+﻿{
+  "FACING": {
+    "down": "DOWN",
+    "up": "UP",
+    "north": "NORTH",
+    "south": "SOUTH",
+    "west": "WEST",
+    "east": "EAST"
+  },
+  "FACING_HOPPER": {
+    "down": "DOWN",
+    "north": "NORTH",
+    "south": "SOUTH",
+    "west": "WEST",
+    "east": "EAST"
+  },
+  "HORIZONTAL_FACING": {
+    "north": "NORTH",
+    "south": "SOUTH",
+    "west": "WEST",
+    "east": "EAST"
+  },
+  "VERTICAL_DIRECTION": {
+    "down": "DOWN",
+    "up": "UP"
+  },
+  "AXIS": {
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "HORIZONTAL_AXIS": {
+    "x": "X",
+    "y": "Y"
+  },
+  "ATTACH_FACE": {
+    "floor": "FLOOR",
+    "wall": "WALL",
+    "ceiling": "CEILING"
+  },
+  "BAMBOO_LEAVES": {
+    "none": "NONE",
+    "small": "SMALL",
+    "large": "LARGE"
+  },
+  "BED_PART": {
+    "head": "HEAD",
+    "foot": "FOOT"
+  },
+  "BELL_ATTACHMENT": {
+    "floor": "FLOOR",
+    "ceiling": "CEILING",
+    "single_wall": "SINGLE_WALL",
+    "double_wall": "DOUBLE_WALL"
+  },
+  "CHEST_TYPE": {
+    "single": "SINGLE",
+    "left": "LEFT",
+    "right": "RIGHT"
+  },
+  "DOOR_HINGE": {
+    "left": "LEFT",
+    "right": "RIGHT"
+  },
+  "DOUBLE_BLOCK_HALF": {
+    "upper": "UPPER",
+    "lower": "LOWER"
+  },
+  "DRIPSTONE_THICKNESS": {
+    "tip_merge": "TIP_MERGE",
+    "tip": "TIP",
+    "frustum": "FRUSTUM",
+    "middle": "MIDDLE",
+    "base": "BASE"
+  },
+  "HALF": {
+    "top": "TOP",
+    "bottom": "BOTTOM"
+  },
+  "MODE_COMPARATOR": {
+    "compare": "COMPARE",
+    "subtract": "SUBTRACT"
+  },
+  "NOTEBLOCK_INSTRUMENT": {
+    "harp": "HARP",
+    "basedrum": "BASEDRUM",
+    "snare": "SNARE",
+    "hat": "HAT",
+    "bass": "BASS",
+    "flute": "FLUTE",
+    "bell": "BELL",
+    "guitar": "GUITAR",
+    "chime": "CHIME",
+    "xylophone": "XYLOPHONE",
+    "iron_xylophone": "IRON_XYLOPHONE",
+    "cow_bell": "COW_BELL",
+    "didgeridoo": "DIDGERIDOO",
+    "bit": "BIT",
+    "banjo": "BANJO",
+    "pling": "PLING"
+  },
+  "ORIENTATION": {
+    "down_east": "DOWN_EAST",
+    "down_north": "DOWN_NORTH",
+    "down_south": "DOWN_SOUTH",
+    "down_west": "DOWN_WEST",
+    "up_east": "UP_EAST",
+    "up_north": "UP_NORTH",
+    "up_south": "UP_SOUTH",
+    "up_west": "UP_WEST",
+    "west_up": "WEST_UP",
+    "east_up": "EAST_UP",
+    "north_up": "NORTH_UP",
+    "south_up": "SOUTH_UP"
+  },
+  "PISTON_TYPE": {
+    "normal": "DEFAULT",
+    "sticky": "STICKY"
+  },
+  "RAIL_SHAPE": {
+    "north_south": "NORTH_SOUTH",
+    "east_west": "EAST_WEST",
+    "ascending_east": "ASCENDING_EAST",
+    "ascending_west": "ASCENDING_WEST",
+    "ascending_north": "ASCENDING_NORTH",
+    "ascending_south": "ASCENDING_SOUTH",
+    "south_east": "SOUTH_EAST",
+    "south_west": "SOUTH_WEST",
+    "north_west": "NORTH_WEST",
+    "north_east": "NORTH_EAST"
+  },
+  "RAIL_SHAPE_STRAIGHT": {
+    "north_south": "NORTH_SOUTH",
+    "east_west": "EAST_WEST",
+    "ascending_east": "ASCENDING_EAST",
+    "ascending_west": "ASCENDING_WEST",
+    "ascending_north": "ASCENDING_NORTH",
+    "ascending_south": "ASCENDING_SOUTH"
+  },
+  "SCULK_SENSOR_PHASE": {
+    "inactive": "INACTIVE",
+    "active": "ACTIVE",
+    "cooldown": "COOLDOWN"
+  },
+  "SLAB_TYPE": {
+    "top": "TOP",
+    "bottom": "BOTTOM",
+    "double": "DOUBLE"
+  },
+  "STAIRS_SHAPE": {
+    "straight": "STRAIGHT",
+    "inner_left": "INNER_LEFT",
+    "inner_right": "INNER_RIGHT",
+    "outer_left": "OUTER_LEFT",
+    "outer_right": "OUTER_RIGHT"
+  },
+  "STRUCTUREBLOCK_MODE": {
+    "save": "SAVE",
+    "load": "LOAD",
+    "corner": "CORNER",
+    "data": "DATA"
+  },
+  "TILT": {
+    "none": "NONE",
+    "unstable": "UNSTABLE",
+    "partial": "PARTIAL",
+    "full": "FULL"
+  },
+  "NORTH_WALL": {
+    "none": "NONE",
+    "low": "LOW",
+    "tall": "TALL"
+  },
+  "SOUTH_WALL": {
+    "none": "NONE",
+    "low": "LOW",
+    "tall": "TALL"
+  },
+  "WEST_WALL": {
+    "none": "NONE",
+    "low": "LOW",
+    "tall": "TALL"
+  },
+  "EAST_WALL": {
+    "none": "NONE",
+    "low": "LOW",
+    "tall": "TALL"
+  },
+  "NORTH_REDSTONE": {
+    "up": "UP",
+    "side": "SIDE",
+    "none": "NONE"
+  },
+  "SOUTH_REDSTONE": {
+    "up": "UP",
+    "side": "SIDE",
+    "none": "NONE"
+  },
+  "WEST_REDSTONE": {
+    "up": "UP",
+    "side": "SIDE",
+    "none": "NONE"
+  },
+  "EAST_REDSTONE": {
+    "up": "UP",
+    "side": "SIDE",
+    "none": "NONE"
+  }
+}
