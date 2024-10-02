@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
 public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private final Supplier<Collection<String>> nonUserProvidedProperties;
-	private final Map<String, String> registryNames = new HashMap<>();
 
 	private final List<JBlockPropertiesListEntry> propertiesList = new ArrayList<>();
 
@@ -116,8 +115,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	String propertyRegistryName(PropertyData<?> data) {
-		String name = data.getName();
-		return !name.startsWith("CUSTOM:") ? registryNames.get(name) : name.replace("CUSTOM:", "");
+		DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.getName());
+		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
+			return (String) other.get("registry_name");
+		return data.getName().replace("CUSTOM:", "");
 	}
 
 	private void createPropertiesEntry() {
@@ -134,15 +135,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 				w -> DataListLoader.loadDataList("blockstateproperties"),
 				L10N.t("elementgui.block.custom_properties.add_existing"),
 				L10N.t("elementgui.block.custom_properties.add_existing.message"));
-		if (property == null)
+		if (property == null || !(property.getOther() instanceof Map<?, ?> other) || other.get("registry_name") == null)
 			return;
 
-		String registryName;
-		if (property.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
-			registryName = (String) other.get("registry_name");
-		else
-			return;
-
+		String registryName = (String) other.get("registry_name");
 		for (JBlockPropertiesListEntry p : propertiesList) {
 			if (registryName.equals(propertyRegistryName(p.getPropertyData()))) {
 				JOptionPane.showMessageDialog(mcreator,
@@ -152,8 +148,6 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 				return;
 			}
 		}
-
-		registryNames.put(property.getName(), registryName);
 
 		PropertyData<?> newProp;
 		switch (property.getType()) {
@@ -175,11 +169,6 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
-		if (!data.property().getName().startsWith("CUSTOM:")) {
-			DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.property().getName());
-			if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
-				registryNames.put(data.property().getName(), (String) other.get("registry_name"));
-		}
 		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
 		pe.setEntry(data);
 		registerEntryUI(pe);
