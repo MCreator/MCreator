@@ -31,7 +31,7 @@
   },
   "HORIZONTAL_AXIS": {
     "x": "X",
-    "y": "Y"
+    "z": "Z"
   },
   "ATTACH_FACE": {
     "floor": "FLOOR",

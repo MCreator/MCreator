@@ -391,8 +391,9 @@
 
 - FACING:
   readable_name: FACING
-  type: Direction
+  type: Enum
   other:
+    registry_name: facing
     values:
       - down
       - up
@@ -402,8 +403,9 @@
       - east
 - FACING_HOPPER:
   readable_name: FACING_HOPPER
-  type: Direction
+  type: Enum
   other:
+    registry_name: facing
     values:
       - down
       - north
@@ -412,8 +414,9 @@
       - east
 - HORIZONTAL_FACING:
   readable_name: HORIZONTAL_FACING
-  type: Direction
+  type: Enum
   other:
+    registry_name: facing
     values:
       - north
       - south
@@ -421,14 +424,15 @@
       - east
 - VERTICAL_DIRECTION:
   readable_name: VERTICAL_DIRECTION
-  type: Direction
+  type: Enum
   other:
+    registry_name: facing
     values:
       - down
       - up
 - AXIS:
   readable_name: AXIS
-  type: Direction
+  type: Enum
   other:
     registry_name: axis
     values:
@@ -437,16 +441,16 @@
       - z
 - HORIZONTAL_AXIS:
   readable_name: HORIZONTAL_AXIS
-  type: Direction
+  type: Enum
   other:
     registry_name: axis
     values:
       - x
-      - y
+      - z
 
 - ATTACH_FACE:
   readable_name: ATTACH_FACE
-  type: String
+  type: Enum
   other:
     registry_name: face
     values:
@@ -455,7 +459,7 @@
       - ceiling
 - BAMBOO_LEAVES:
   readable_name: BAMBOO_LEAVES
-  type: String
+  type: Enum
   other:
     registry_name: leaves
     values:
@@ -464,7 +468,7 @@
       - large
 - BED_PART:
   readable_name: BED_PART
-  type: String
+  type: Enum
   other:
     registry_name: part
     values:
@@ -472,7 +476,7 @@
       - foot
 - BELL_ATTACHMENT:
   readable_name: BELL_ATTACHMENT
-  type: String
+  type: Enum
   other:
     registry_name: attachment
     values:
@@ -482,7 +486,7 @@
       - double_wall
 - CHEST_TYPE:
   readable_name: CHEST_TYPE
-  type: String
+  type: Enum
   other:
     registry_name: type
     values:
@@ -491,7 +495,7 @@
       - right
 - DOOR_HINGE:
   readable_name: DOOR_HINGE
-  type: String
+  type: Enum
   other:
     registry_name: hinge
     values:
@@ -499,7 +503,7 @@
       - right
 - DOUBLE_BLOCK_HALF:
   readable_name: DOUBLE_BLOCK_HALF
-  type: String
+  type: Enum
   other:
     registry_name: half
     values:
@@ -507,7 +511,7 @@
       - lower
 - DRIPSTONE_THICKNESS:
   readable_name: DRIPSTONE_THICKNESS
-  type: String
+  type: Enum
   other:
     registry_name: thickness
     values:
@@ -518,7 +522,7 @@
       - base
 - HALF:
   readable_name: HALF
-  type: String
+  type: Enum
   other:
     registry_name: half
     values:
@@ -526,7 +530,7 @@
       - bottom
 - MODE_COMPARATOR:
   readable_name: MODE_COMPARATOR
-  type: String
+  type: Enum
   other:
     registry_name: mode
     values:
@@ -534,7 +538,7 @@
       - subtract
 - NOTEBLOCK_INSTRUMENT:
   readable_name: NOTEBLOCK_INSTRUMENT
-  type: String
+  type: Enum
   other:
     registry_name: instrument
     values:
@@ -556,7 +560,7 @@
       - pling
 - ORIENTATION:
   readable_name: ORIENTATION
-  type: String
+  type: Enum
   other:
     registry_name: orientation
     values:
@@ -574,7 +578,7 @@
       - south_up
 - PISTON_TYPE:
   readable_name: PISTON_TYPE
-  type: String
+  type: Enum
   other:
     registry_name: type
     values:
@@ -582,7 +586,7 @@
       - sticky
 - RAIL_SHAPE:
   readable_name: RAIL_SHAPE
-  type: String
+  type: Enum
   other:
     registry_name: shape
     values:
@@ -598,7 +602,7 @@
       - north_east
 - RAIL_SHAPE_STRAIGHT:
   readable_name: RAIL_SHAPE_STRAIGHT
-  type: String
+  type: Enum
   other:
     registry_name: shape
     values:
@@ -610,7 +614,7 @@
       - ascending_south
 - SCULK_SENSOR_PHASE:
   readable_name: SCULK_SENSOR_PHASE
-  type: String
+  type: Enum
   other:
     registry_name: sculk_sensor_phase
     values:
@@ -619,7 +623,7 @@
       - cooldown
 - SLAB_TYPE:
   readable_name: SLAB_TYPE
-  type: String
+  type: Enum
   other:
     registry_name: type
     values:
@@ -628,7 +632,7 @@
       - double
 - STAIRS_SHAPE:
   readable_name: STAIRS_SHAPE
-  type: String
+  type: Enum
   other:
     registry_name: shape
     values:
@@ -639,7 +643,7 @@
       - outer_right
 - STRUCTUREBLOCK_MODE:
   readable_name: STRUCTUREBLOCK_MODE
-  type: String
+  type: Enum
   other:
     registry_name: mode
     values:
@@ -649,7 +653,7 @@
       - data
 - TILT:
   readable_name: TILT
-  type: String
+  type: Enum
   other:
     registry_name: tilt
     values:
@@ -659,7 +663,7 @@
       - full
 - NORTH_WALL:
   readable_name: NORTH_WALL
-  type: String
+  type: Enum
   other:
     registry_name: north
     values:
@@ -668,7 +672,7 @@
       - tall
 - SOUTH_WALL:
   readable_name: SOUTH_WALL
-  type: String
+  type: Enum
   other:
     registry_name: south
     values:
@@ -677,7 +681,7 @@
       - tall
 - WEST_WALL:
   readable_name: WEST_WALL
-  type: String
+  type: Enum
   other:
     registry_name: west
     values:
@@ -686,7 +690,7 @@
       - tall
 - EAST_WALL:
   readable_name: EAST_WALL
-  type: String
+  type: Enum
   other:
     registry_name: east
     values:
@@ -695,7 +699,7 @@
       - tall
 - NORTH_REDSTONE:
   readable_name: NORTH_REDSTONE
-  type: String
+  type: Enum
   other:
     registry_name: north
     values:
@@ -704,7 +708,7 @@
       - none
 - SOUTH_REDSTONE:
   readable_name: SOUTH_REDSTONE
-  type: String
+  type: Enum
   other:
     registry_name: south
     values:
@@ -713,7 +717,7 @@
       - none
 - WEST_REDSTONE:
   readable_name: WEST_REDSTONE
-  type: String
+  type: Enum
   other:
     registry_name: west
     values:
@@ -722,7 +726,7 @@
       - none
 - EAST_REDSTONE:
   readable_name: EAST_REDSTONE
-  type: String
+  type: Enum
   other:
     registry_name: east
     values:

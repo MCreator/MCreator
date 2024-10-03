@@ -157,7 +157,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 			int max = Integer.parseInt((String) other.get("max"));
 			newProp = new PropertyData.IntegerType(property.getName(), min, max);
 		}
-		case "String" -> {
+		case "Enum" -> {
 			String[] data = ((List<?>) other.get("values")).stream().map(Object::toString).toArray(String[]::new);
 			newProp = new PropertyData.StringType(property.getName(), data);
 		}
