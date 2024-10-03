@@ -114,17 +114,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertyEntries.setEnabled(enabled);
 	}
 
-	String propertyRegistryName(PropertyData<?> data) {
-		DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.getName());
-		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
-			return (String) other.get("registry_name");
-		return data.getName().replace("CUSTOM:", "");
-	}
-
 	private void createPropertiesEntry() {
 		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showDialog(mcreator,
-				() -> propertiesList.stream().map(e -> propertyRegistryName(e.getPropertyData()))
-						.filter(Objects::nonNull), nonUserProvidedProperties);
+				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				nonUserProvidedProperties);
 		if (newEntry != null) {
 			addPropertiesEntry(newEntry);
 		}
@@ -140,7 +133,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		String registryName = (String) other.get("registry_name");
 		for (JBlockPropertiesListEntry p : propertiesList) {
-			if (registryName.equals(propertyRegistryName(p.getPropertyData()))) {
+			if (registryName.equals(p.getPropertyData().getRegistryName("blockstateproperties"))) {
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
 						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
@@ -192,7 +185,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
 		for (JBlockPropertiesListEntry entry : propertiesList) {
-			String regName = propertyRegistryName(entry.getPropertyData());
+			String regName = entry.getPropertyData().getRegistryName("blockstateproperties");
 			if (regName == null || nonUserProvidedProperties.get().stream().anyMatch(regName::equalsIgnoreCase)) {
 				entry.setBorder(
 						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
