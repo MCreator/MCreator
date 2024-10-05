@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,10 +123,12 @@ public class JBlockPropertiesListEntry extends JPanel {
 	public void setEntry(PropertyDataWithValue<?> prop) {
 		data = prop.property();
 
-		if (data.getName().startsWith("CUSTOM:"))
+		if (data.getName().startsWith("CUSTOM:")) {
 			nameLabel.setText(data.getName().replace("CUSTOM:", ""));
-		else
+			nameLabel.setIcon(IconUtils.resize(UIRES.get("mod"), 18, 18));
+		} else {
 			nameLabel.setText(Objects.requireNonNullElse(data.getRegistryName("blockstateproperties"), data.getName()));
+		}
 
 		nameLabel.setToolTipText(nameLabel.getText());
 		typeLabel.setText(getTypeString(data));
