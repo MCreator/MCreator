@@ -91,10 +91,12 @@ import java.util.stream.Collectors;
 	 * @return Registry name associated with this property.
 	 */
 	public final String getRegistryName(String dataList) {
+		if (name.startsWith("CUSTOM:"))
+			return name.replace("CUSTOM:", "");
 		DataListEntry dle = DataListLoader.loadDataMap(dataList).get(name);
 		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
 			return (String) other.get("registry_name");
-		return name.replace("CUSTOM:", "");
+		return name;
 	}
 
 	/**
