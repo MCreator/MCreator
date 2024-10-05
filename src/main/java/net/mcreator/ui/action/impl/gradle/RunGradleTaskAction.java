@@ -17,12 +17,13 @@
  */
 
 package net.mcreator.ui.action.impl.gradle;
-
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public class RunGradleTaskAction extends GradleAction {
 
@@ -30,7 +31,7 @@ public class RunGradleTaskAction extends GradleAction {
 		super(actionRegistry, L10N.t("action.gradle.run_gradle_task"), e -> {
 			JPanel bas = new JPanel(new BorderLayout(5, 5));
 			bas.add("North", L10N.label("action.gradle.run_gradle_task.dialog.instructions"));
-TranslatedComboBox ba = new TranslatedComboBox(Map.entry("build","dialog.gradle.run_gradle_task.options.build"),Map.entry("tasks","dialog.gradle.run_gradle_task.options.tasks"), Map.entry("clean","dialog.gradle.run_gradle_task.options.clean"));
+			TranslatedComboBox ba = new TranslatedComboBox(Map.entry("build","dialog.gradle.run_gradle_task.options.build"),Map.entry("tasks","dialog.gradle.run_gradle_task.options.tasks"), Map.entry("clean","dialog.gradle.run_gradle_task.options.clean"));
 			ba.setEditable(true);
 			bas.add("Center", ba);
 			int retval = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(), bas,
