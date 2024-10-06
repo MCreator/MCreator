@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -37,13 +39,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class AddBlockPropertyDialog {
 
 	@Nullable
-	public static PropertyDataWithValue<?> showDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
+	public static PropertyDataWithValue<?> showCreateDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("elementgui.block.custom_properties.add.title"),
 				true);
@@ -115,6 +118,53 @@ public class AddBlockPropertyDialog {
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 
+		return result.get();
+	}
+
+	public static PropertyDataWithValue<?> showImportDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
+			Supplier<Collection<String>> nonUserProvidedProperties) {
+		DataListEntry property = DataListSelectorDialog.openSelectorDialog(mcreator,
+				w -> DataListLoader.loadDataList("blockstateproperties"),
+				L10N.t("elementgui.block.custom_properties.add_existing"),
+				L10N.t("elementgui.block.custom_properties.add_existing.message"));
+		if (property == null || !(property.getOther() instanceof Map<?, ?> other) || other.get("registry_name") == null)
+			return null;
+
+		String registryName = (String) other.get("registry_name");
+		for (PropertyData<?> p : currentEntries) {
+			if (registryName.equals(p.getRegistryName("blockstateproperties"))) {
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
+						JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+		for (String s : nonUserProvidedProperties.get()) {
+			if (registryName.equals(s)) {
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
+						JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+
+		AtomicReference<PropertyDataWithValue<?>> result = new AtomicReference<>(null);
+		switch (property.getType()) {
+		case "Logic" -> result.set(new PropertyDataWithValue<>(new PropertyData.LogicType(property.getName()), null));
+		case "Integer" -> {
+			int min = Integer.parseInt((String) other.get("min"));
+			int max = Integer.parseInt((String) other.get("max"));
+			result.set(new PropertyDataWithValue<>(new PropertyData.IntegerType(property.getName(), min, max), null));
+		}
+		case "Enum" -> {
+			String[] data = ((List<?>) other.get("values")).stream().map(Object::toString).toArray(String[]::new);
+			result.set(new PropertyDataWithValue<>(new PropertyData.StringType(property.getName(), data), null));
+		}
+		case null, default -> {
+		}
+		}
 		return result.get();
 	}
 

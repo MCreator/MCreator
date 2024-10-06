@@ -19,21 +19,17 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddBlockPropertyDialog;
-import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
@@ -115,7 +111,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void createPropertiesEntry() {
-		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showDialog(mcreator,
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showCreateDialog(mcreator,
 				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
 				nonUserProvidedProperties);
 		if (newEntry != null) {
@@ -124,41 +120,12 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void addPropertyFromDataList() {
-		DataListEntry property = DataListSelectorDialog.openSelectorDialog(mcreator,
-				w -> DataListLoader.loadDataList("blockstateproperties"),
-				L10N.t("elementgui.block.custom_properties.add_existing"),
-				L10N.t("elementgui.block.custom_properties.add_existing.message"));
-		if (property == null || !(property.getOther() instanceof Map<?, ?> other) || other.get("registry_name") == null)
-			return;
-
-		String registryName = (String) other.get("registry_name");
-		for (JBlockPropertiesListEntry p : propertiesList) {
-			if (registryName.equals(p.getPropertyData().getRegistryName("blockstateproperties"))) {
-				JOptionPane.showMessageDialog(mcreator,
-						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
-						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showImportDialog(mcreator,
+				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				nonUserProvidedProperties);
+		if (newEntry != null) {
+			addPropertiesEntry(newEntry);
 		}
-
-		PropertyData<?> newProp;
-		switch (property.getType()) {
-		case "Logic" -> newProp = new PropertyData.LogicType(property.getName());
-		case "Integer" -> {
-			int min = Integer.parseInt((String) other.get("min"));
-			int max = Integer.parseInt((String) other.get("max"));
-			newProp = new PropertyData.IntegerType(property.getName(), min, max);
-		}
-		case "Enum" -> {
-			String[] data = ((List<?>) other.get("values")).stream().map(Object::toString).toArray(String[]::new);
-			newProp = new PropertyData.StringType(property.getName(), data);
-		}
-		case null, default -> {
-			return;
-		}
-		}
-		addPropertiesEntry(new PropertyDataWithValue<>(newProp, null));
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
