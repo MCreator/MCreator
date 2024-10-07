@@ -50,8 +50,9 @@ public class AddBlockPropertyDialog {
 
 		VTextField name = new VTextField(24);
 		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> currentEntries.stream().map(PropertyData::getName), nonUserProvidedProperties.get(),
-				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input"))));
+				() -> currentEntries.stream().map(e -> e.getName().replace("CUSTOM:", "")),
+				nonUserProvidedProperties.get(), new RegistryNameValidator(name,
+				L10N.t("elementgui.block.custom_properties.add.input"))).setIsPresentOnList(false));
 		name.enableRealtimeValidation();
 		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "Enum" });
 
