@@ -4,6 +4,7 @@
   "children": {
     "part1": {
       "loader": "neoforge:obj",
+      "render_type": "${data.getRenderType()}",
       "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
       "emissive_ambient": true
       <#if data.getTextureMap()??>,
