@@ -712,7 +712,7 @@ public class ${name}Block extends
 	<#list data.customProperties as prop>
 		<#if prop.property().getName().startsWith("CUSTOM:") && prop.property().getClass().getSimpleName().equals("StringType")>
 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
-		private enum ${propClassName}Property implements StringRepresentable {
+		public enum ${propClassName}Property implements StringRepresentable {
 			<#list prop.property.getArrayData() as value>
 			${value?upper_case}("${value}")<#sep>,
 			</#list>;
