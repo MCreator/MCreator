@@ -20,6 +20,8 @@
 package net.mcreator.ui.minecraft.states.block;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JStringListField;
@@ -36,6 +38,7 @@ import net.mcreator.util.image.IconUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class JBlockPropertiesListEntry extends JPanel {
@@ -112,6 +115,15 @@ public class JBlockPropertiesListEntry extends JPanel {
 		defaultValue.setEnabled(enabled);
 	}
 
+	public static String propertyRegistryName(PropertyData<?> data) {
+		if (data.getName().startsWith("CUSTOM:"))
+			return data.getName().replace("CUSTOM:", "");
+		DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.getName());
+		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
+			return (String) other.get("registry_name");
+		return data.getName();
+	}
+
 	public PropertyData<?> getPropertyData() {
 		return data;
 	}
@@ -127,7 +139,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 			nameLabel.setText(data.getName().replace("CUSTOM:", ""));
 			nameLabel.setIcon(IconUtils.resize(UIRES.get("mod"), 18, 18));
 		} else {
-			nameLabel.setText(Objects.requireNonNullElse(data.getRegistryName("blockstateproperties"), data.getName()));
+			nameLabel.setText(Objects.requireNonNullElse(propertyRegistryName(data), data.getName()));
 		}
 
 		nameLabel.setToolTipText(nameLabel.getText());

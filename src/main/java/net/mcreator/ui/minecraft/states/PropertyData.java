@@ -21,8 +21,6 @@ package net.mcreator.ui.minecraft.states;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
@@ -83,20 +81,6 @@ import java.util.stream.Collectors;
 	 */
 	@SuppressWarnings("unused") public final String getPrefixedName(String prefix) {
 		return !name.startsWith("CUSTOM:") ? name : "CUSTOM:" + prefix + name.substring(7);
-	}
-
-	/**
-	 * Attempts to load registry name associated with data list entry with the name of this property.
-	 *
-	 * @return Registry name associated with this property.
-	 */
-	public final String getRegistryName(String dataList) {
-		if (name.startsWith("CUSTOM:"))
-			return name.replace("CUSTOM:", "");
-		DataListEntry dle = DataListLoader.loadDataMap(dataList).get(name);
-		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get("registry_name") != null)
-			return (String) other.get("registry_name");
-		return name;
 	}
 
 	/**

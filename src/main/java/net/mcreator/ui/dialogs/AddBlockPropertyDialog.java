@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.minecraft.states.block.JBlockPropertiesListEntry;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -53,7 +54,7 @@ public class AddBlockPropertyDialog {
 
 		VTextField name = new VTextField(24);
 		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> currentEntries.stream().map(e -> e.getRegistryName("blockstateproperties")),
+				() -> currentEntries.stream().map(JBlockPropertiesListEntry::propertyRegistryName),
 				nonUserProvidedProperties.get(), new RegistryNameValidator(name,
 				L10N.t("elementgui.block.custom_properties.add.input"))).setIsPresentOnList(false));
 		name.enableRealtimeValidation();
@@ -132,7 +133,7 @@ public class AddBlockPropertyDialog {
 
 		String registryName = (String) other.get("registry_name");
 		for (PropertyData<?> p : currentEntries) {
-			if (registryName.equals(p.getRegistryName("blockstateproperties"))) {
+			if (registryName.equals(JBlockPropertiesListEntry.propertyRegistryName(p))) {
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
 						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
