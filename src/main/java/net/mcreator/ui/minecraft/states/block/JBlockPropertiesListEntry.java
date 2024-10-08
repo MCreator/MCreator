@@ -66,9 +66,9 @@ public class JBlockPropertiesListEntry extends JPanel {
 		ComponentUtils.deriveFont(nameLabel, 16);
 
 		JPanel namePane = new JPanel(new BorderLayout());
-		namePane.add("North" , HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_name"),
+		namePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_name"),
 				L10N.label("elementgui.block.custom_property.name")));
-		namePane.add("Center" , nameLabel);
+		namePane.add("Center", nameLabel);
 		namePane.setPreferredSize(new Dimension(240, 0));
 
 		typeLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -76,16 +76,16 @@ public class JBlockPropertiesListEntry extends JPanel {
 		ComponentUtils.deriveFont(typeLabel, 16);
 
 		JPanel typePane = new JPanel(new BorderLayout());
-		typePane.add("North" , HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_type"),
+		typePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_type"),
 				L10N.label("elementgui.block.custom_property.type")));
-		typePane.add("Center" , typeLabel);
+		typePane.add("Center", typeLabel);
 		typePane.setPreferredSize(new Dimension(160, 0));
 
 		JPanel boundsPaneWrapper = new JPanel(new BorderLayout());
 		boundsPaneWrapper.setPreferredSize(new Dimension(350, 0));
-		boundsPaneWrapper.add("North" , HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_values"),
+		boundsPaneWrapper.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("block/custom_property_values"),
 				L10N.label("elementgui.block.custom_property.values")));
-		boundsPaneWrapper.add("Center" , boundsPane);
+		boundsPaneWrapper.add("Center", boundsPane);
 
 		JPanel line = new JPanel();
 		line.setLayout(new BoxLayout(line, BoxLayout.X_AXIS));
@@ -99,8 +99,8 @@ public class JBlockPropertiesListEntry extends JPanel {
 
 		remove.setText(L10N.t("elementgui.block.custom_property.remove"));
 		remove.addActionListener(e -> listPanel.removeProperty(this));
-		add("West" , line);
-		add("East" , PanelUtils.pullElementUp(remove));
+		add("West", line);
+		add("East", PanelUtils.pullElementUp(remove));
 
 		propertiesList.add(this);
 		propertyEntries.add(this);
@@ -117,7 +117,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 
 	@Nonnull public static String propertyRegistryName(PropertyData<?> data) {
 		if (data.getName().startsWith("CUSTOM:"))
-			return data.getName().replace("CUSTOM:" , "");
+			return data.getName().replace("CUSTOM:", "");
 		DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.getName());
 		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get(
 				"registry_name") instanceof String registryName)
@@ -151,13 +151,13 @@ public class JBlockPropertiesListEntry extends JPanel {
 		defaultValue.setEnabled(isEnabled());
 
 		switch (data) {
-		case PropertyData.LogicType ignored -> boundsPane.add("Center" ,
+		case PropertyData.LogicType ignored -> boundsPane.add("Center",
 				PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("false, true"), 16)));
 		case PropertyData.IntegerType intProp -> {
 			JMinMaxSpinner boundsInt = new JMinMaxSpinner(intProp.getMin(), intProp.getMax(), 0, Integer.MAX_VALUE, 1);
 			boundsInt.setPreferredSize(new Dimension(300, 28));
 			boundsInt.setEnabled(false);
-			boundsPane.add("Center" , PanelUtils.join(FlowLayout.LEFT, boundsInt));
+			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsInt));
 			defaultValue.setPreferredSize(new Dimension(120, 28));
 		}
 		case PropertyData.StringType stringProp -> {
@@ -169,7 +169,7 @@ public class JBlockPropertiesListEntry extends JPanel {
 			boundsString.setTextList(List.of(stringProp.getArrayData()));
 			boundsString.setBorder(
 					new FlatLineBorder(new Insets(2, 2, 2, 2), UIManager.getColor("Component.borderColor")));
-			boundsPane.add("Center" , PanelUtils.join(FlowLayout.LEFT, boundsString));
+			boundsPane.add("Center", PanelUtils.join(FlowLayout.LEFT, boundsString));
 			defaultValue.setPreferredSize(new Dimension(180, 28));
 		}
 		default -> {
