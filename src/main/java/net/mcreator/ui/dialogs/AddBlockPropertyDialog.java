@@ -151,22 +151,7 @@ public class AddBlockPropertyDialog {
 			}
 		}
 
-		AtomicReference<PropertyDataWithValue<?>> result = new AtomicReference<>(null);
-		switch (property.getType()) {
-		case "Logic" -> result.set(new PropertyDataWithValue<>(new PropertyData.LogicType(property.getName()), null));
-		case "Integer" -> {
-			int min = Integer.parseInt((String) other.get("min"));
-			int max = Integer.parseInt((String) other.get("max"));
-			result.set(new PropertyDataWithValue<>(new PropertyData.IntegerType(property.getName(), min, max), null));
-		}
-		case "Enum" -> {
-			String[] data = ((List<?>) other.get("values")).stream().map(Object::toString).toArray(String[]::new);
-			result.set(new PropertyDataWithValue<>(new PropertyData.StringType(property.getName(), data), null));
-		}
-		case null, default -> {
-		}
-		}
-		return result.get();
+		return JBlockPropertiesListEntry.fromDataListEntry(property);
 	}
 
 }
