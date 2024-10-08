@@ -46,6 +46,7 @@ import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -1194,7 +1195,6 @@ public class TestWorkspaceDataProvider {
 						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop"), _true));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop2"), !_true));
-				block.customProperties.add(new PropertyDataWithValue<>(new PropertyData.LogicType("ENABLED"), _true));
 				if (_true) {
 					block.customProperties.add(
 							new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:waterlogged"), false));
@@ -1203,16 +1203,42 @@ public class TestWorkspaceDataProvider {
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop", 3, 7), 4));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop2", 0, 123), 63));
-				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.IntegerType("LEVEL", 0, 15), 5));
 				block.customProperties.add(new PropertyDataWithValue<>(
 						new PropertyData.StringType("CUSTOM:enum_prop", new String[] { "logic", "integer", "string" }),
 						"string"));
 				block.customProperties.add(new PropertyDataWithValue<>(
 						new PropertyData.StringType("CUSTOM:enum_prop_two",
 								new String[] { "value1", "value2", "value3" }), "value3"));
-				block.customProperties.add(new PropertyDataWithValue<>(
-						new PropertyData.StringType("HALF", new String[] { "top", "bottom" }), "top"));
+
+				Set<String> usedRegistryNames = new HashSet<>();
+				for (DataListEntry entry : DataListLoader.loadDataMap("blockstateproperties").values()) {
+					Map<?, ?> other = (Map<?, ?>) entry.getOther();
+					PropertyDataWithValue<?> property = BlockStatePropertyUtils.fromDataListEntry(entry);
+					if (property != null) {
+						String registryName = BlockStatePropertyUtils.propertyRegistryName(property.property());
+						if (List.of("axis", "facing", "face", "waterlogged").contains(registryName) || usedRegistryNames.contains(registryName))
+							continue;
+						switch (property.property()) {
+						case PropertyData.LogicType logicType ->
+								block.customProperties.add(new PropertyDataWithValue<>(logicType, random.nextBoolean()));
+						case PropertyData.IntegerType integerType -> {
+							int min = Integer.parseInt((String) other.get("min"));
+							int max = Integer.parseInt((String) other.get("max"));
+							block.customProperties.add(
+									new PropertyDataWithValue<>(integerType, random.nextInt(max - min) + min));
+						}
+						case PropertyData.StringType stringType -> {
+							String[] data = ((List<?>) other.get("values")).stream().map(Object::toString)
+									.toArray(String[]::new);
+							block.customProperties.add(
+									new PropertyDataWithValue<>(stringType, data[random.nextInt(data.length)]));
+						}
+						default -> {
+						}
+						}
+						usedRegistryNames.add(registryName);
+					}
+				}
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
