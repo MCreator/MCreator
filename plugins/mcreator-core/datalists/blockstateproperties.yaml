@@ -48,11 +48,6 @@
   type: Logic
   other:
     registry_name: drag
-- DUSTED:
-  readable_name: DUSTED
-  type: Logic
-  other:
-    registry_name: dusted
 - ENABLED:
   readable_name: ENABLED
   type: Logic
@@ -158,11 +153,6 @@
   type: Logic
   other:
     registry_name: unstable
-- VINE_END:
-  readable_name: VINE_END
-  type: Logic
-  other:
-    registry_name: vine_end
 - WATERLOGGED:
   readable_name: WATERLOGGED
   type: Logic
@@ -276,6 +266,13 @@
     registry_name: distance
     min: 1
     max: 7
+- DUSTED:
+  readable_name: DUSTED
+  type: Logic
+  other:
+    registry_name: dusted
+    min: 0
+    max: 3
 - EGGS:
   readable_name: EGGS
   type: Integer

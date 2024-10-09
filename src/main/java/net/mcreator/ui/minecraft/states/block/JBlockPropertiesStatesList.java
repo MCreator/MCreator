@@ -152,8 +152,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
 		for (JBlockPropertiesListEntry entry : propertiesList) {
-			String regName = BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData());
-			if (nonUserProvidedProperties.get().stream().anyMatch(regName::equalsIgnoreCase)) {
+			if (nonUserProvidedProperties.get().contains(
+					BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(
 						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
 								BorderFactory.createEmptyBorder(4, 4, 4, 4)));

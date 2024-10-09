@@ -1,3 +1,4 @@
+_default: ""
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached
@@ -28,9 +29,6 @@ DISARMED:
 DRAG:
   - BlockStateProperties.DRAG
   - drag
-DUSTED:
-  - BlockStateProperties.DUSTED
-  - dusted
 ENABLED:
   - BlockStateProperties.ENABLED
   - enabled
@@ -94,9 +92,6 @@ TRIGGERED:
 UNSTABLE:
   - BlockStateProperties.UNSTABLE
   - unstable
-VINE_END:
-  - BlockStateProperties.VINE_END
-  - vine_end
 WATERLOGGED:
   - BlockStateProperties.WATERLOGGED
   - waterlogged
@@ -152,6 +147,9 @@ DELAY:
 DISTANCE:
   - BlockStateProperties.DISTANCE
   - distance
+DUSTED:
+  - BlockStateProperties.DUSTED
+  - dusted
 EGGS:
   - BlockStateProperties.EGGS
   - eggs
