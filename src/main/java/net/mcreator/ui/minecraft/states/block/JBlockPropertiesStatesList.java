@@ -21,30 +21,22 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddBlockPropertyDialog;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -58,6 +50,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private final JPanel propertyEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+	private final TechnicalButton addExisting = new TechnicalButton(UIRES.get("16px.add"));
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
@@ -73,6 +66,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		addProperty.setText(L10N.t("elementgui.block.custom_properties.add"));
 		addProperty.addActionListener(e -> createPropertiesEntry());
+		addExisting.setText(L10N.t("elementgui.block.custom_properties.add_existing"));
+		addExisting.addActionListener(e -> addPropertyFromDataList());
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
@@ -90,8 +85,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		JPanel mainContent = new JPanel(new BorderLayout());
 		mainContent.setOpaque(false);
-		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
-				HelpUtils.helpButton(gui.withEntry("block/block_states"))));
+		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5), addExisting,
+				new JEmptyBox(5, 5), HelpUtils.helpButton(gui.withEntry("block/block_states"))));
 		mainContent.add("Center", scrollProperties);
 
 		JPanel basePane = new JPanel(new GridLayout());
@@ -108,6 +103,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		super.setEnabled(enabled);
 
 		addProperty.setEnabled(enabled);
+		addExisting.setEnabled(enabled);
 
 		propertiesList.forEach(e -> e.setEnabled(enabled));
 
@@ -115,7 +111,16 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void createPropertiesEntry() {
-		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showDialog(mcreator,
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showCreateDialog(mcreator,
+				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				nonUserProvidedProperties);
+		if (newEntry != null) {
+			addPropertiesEntry(newEntry);
+		}
+	}
+
+	private void addPropertyFromDataList() {
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showImportDialog(mcreator,
 				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
 				nonUserProvidedProperties);
 		if (newEntry != null) {
@@ -147,7 +152,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
 		for (JBlockPropertiesListEntry entry : propertiesList) {
-			if (nonUserProvidedProperties.get().contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
+			if (nonUserProvidedProperties.get().contains(
+					BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(
 						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
 								BorderFactory.createEmptyBorder(4, 4, 4, 4)));
