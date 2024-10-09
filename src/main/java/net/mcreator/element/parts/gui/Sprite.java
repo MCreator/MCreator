@@ -40,7 +40,8 @@ public class Sprite extends GUIComponent {
 	public Procedure displayCondition;
 	public NumberProcedure spriteIndex;
 
-	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, NumberProcedure spriteIndex) {
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition,
+			NumberProcedure spriteIndex) {
 		super(x, y);
 		this.sprite = sprite;
 		this.spritesCount = spritesCount;
@@ -48,7 +49,8 @@ public class Sprite extends GUIComponent {
 		this.spriteIndex = spriteIndex;
 	}
 
-	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition, NumberProcedure spriteIndex, AnchorPoint anchorPoint) {
+	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition,
+			NumberProcedure spriteIndex, AnchorPoint anchorPoint) {
 		this(x, y, sprite, spritesCount, displayCondition, spriteIndex);
 		this.anchorPoint = anchorPoint;
 	}
@@ -76,12 +78,7 @@ public class Sprite extends GUIComponent {
 			r = new Rectangle(0, 0, width, height);
 		}
 
-		java.awt.Image sprite = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), r);
-
-		int cw = sprite.getWidth(null);
-		int ch = sprite.getHeight(null);
-
-		g.drawImage(sprite, cx, cy, cw, ch, wysiwygEditor);
+		g.drawImage(ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), r), cx, cy, width, height, wysiwygEditor);
 	}
 
 	@SuppressWarnings("unused") public int getTextureWidth(Workspace workspace) {
