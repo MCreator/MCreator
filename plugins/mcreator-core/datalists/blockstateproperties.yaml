@@ -268,7 +268,7 @@
     max: 7
 - DUSTED:
   readable_name: DUSTED
-  type: Logic
+  type: Integer
   other:
     registry_name: dusted
     min: 0
