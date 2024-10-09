@@ -85,6 +85,26 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>}</#if>
             </#list>
 
+						<#list data.getComponentsOfType("Sprite") as component>
+							<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+								<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+									event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+										<@calculatePosition component/>,
+										<@getSpriteByIndex component "width"/>, 0,
+										${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+										${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+								<#if hasProcedure(component.displayCondition)>}</#if>
+							<#else>
+								<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+									event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+										<@calculatePosition component/>,
+										0, <@getSpriteByIndex component "height"/>,
+										${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+										${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+								<#if hasProcedure(component.displayCondition)>}</#if>
+							</#if>
+						</#list>
+
             <#list data.getComponentsOfType("Label") as component>
                 <#if hasProcedure(component.displayCondition)>
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
@@ -138,6 +158,18 @@ package ${package}.client.screens;
 		w / 2 + ${component.x - (213 - x_offset)}, h - ${240 - (component.y + y_offset)}
 	<#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
 		w - ${427 - (component.x + x_offset)}, h - ${240 - (component.y + y_offset)}
+	</#if>
+</#macro>
+
+<#macro getSpriteByIndex component dim>
+	<#if hasProcedure(component.spriteIndex)>
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace()) - component.getWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace()) - component.getHeight(w.getWorkspace())}</#if>)
+	<#else>
+		<#if dim == "width">
+			${component.getWidth(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+		<#else>
+			${component.getHeight(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
+		</#if>
 	</#if>
 </#macro>
 <#-- @formatter:on -->
