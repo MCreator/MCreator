@@ -34,7 +34,8 @@
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
 
-<#assign filteredCustomProperties = data.customProperties?filter(e -> e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
+<#assign filteredCustomProperties = data.customProperties?filter(e ->
+	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
 
 package ${package}.block;
 
