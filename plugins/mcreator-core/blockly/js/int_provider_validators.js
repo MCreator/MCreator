@@ -114,3 +114,7 @@ Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProvider
 Blockly.Extensions.register('azalea_tree_feature_validator', validateIntProviderInputs(['bend_length', 1, 64]));
 
 Blockly.Extensions.register('cherry_tree_feature_validator', validateIntProviderInputs(['branch_count', 1, 3], ['branch_length', 2, 16]));
+
+Blockly.Extensions.register('disk_feature_validator', validateIntProviderInputs(['radius', 0, 8]));
+
+Blockly.Extensions.register('vegetation_patch_feature_validator', validateIntProviderInputs(['depth', 1, 128]));

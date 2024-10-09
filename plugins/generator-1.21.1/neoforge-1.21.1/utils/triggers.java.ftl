@@ -26,8 +26,8 @@
 
 <#macro onEntitySwing procedure="">
 <#if hasProcedure(procedure)>
-@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-	boolean retval = super.onEntitySwing(itemstack, entity);
+@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity, InteractionHand hand) {
+	boolean retval = super.onEntitySwing(itemstack, entity, hand);
 	<@procedureCode procedure, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",

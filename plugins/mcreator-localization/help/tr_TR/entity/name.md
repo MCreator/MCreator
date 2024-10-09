@@ -1,0 +1,1 @@
+Mob ismi ölüm mesajlarında kullanılır, oyun içi menülerde ve görsel isim gösteriminin mümkün olduğu diğer yerlerde gösterilir.

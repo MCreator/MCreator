@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -36,9 +37,15 @@ public class MCItemBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
+			String textContent = element.getTextContent();
+			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.mcitem_broken_reference", textContent.replaceFirst("CUSTOM:", ""))));
+			}
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
-				dataModel.put("block", new MItemBlock(master.getWorkspace(), element.getTextContent()));
+				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
 				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemblock.json.ftl", dataModel);
 				master.append(code);
 			}

@@ -1,0 +1,1 @@
+Portal çerçevesi bloğu, portal etkinleştirilmişse boyut için portal çerçevesi oluşturmak için kullanılan bloktur.

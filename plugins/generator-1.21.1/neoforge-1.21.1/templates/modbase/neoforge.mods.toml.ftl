@@ -1,28 +1,28 @@
 modLoader="javafml"
 loaderVersion="[4,)"
-license="${settings.getLicense()}"
+license="${JavaConventions.escapeStringForJava(settings.getLicense())}"
 
 [[mods]]
 modId="${settings.getModID()}"
 version="${settings.getCleanVersion()}"
-displayName="${settings.getModName()}"
+displayName="${JavaConventions.escapeStringForJava(settings.getModName())}"
 <#if settings.getUpdateURL()?has_content>
-updateJSONURL="${settings.getUpdateURL()}"
+updateJSONURL="${JavaConventions.escapeStringForJava(settings.getUpdateURL())}"
 </#if>
 <#if settings.getWebsiteURL()?has_content>
-displayURL="${settings.getWebsiteURL()}"
+displayURL="${JavaConventions.escapeStringForJava(settings.getWebsiteURL())}"
 </#if>
 <#if settings.getModPicture()?has_content>
 logoFile="logo.png"
 </#if>
 <#if settings.getCredits()?has_content>
-credits="${settings.getCredits()}"
+credits="${JavaConventions.escapeStringForJava(settings.getCredits())}"
 </#if>
 <#if settings.getAuthor()?has_content>
-authors="${settings.getAuthor()}"
+authors="${JavaConventions.escapeStringForJava(settings.getAuthor())}"
 </#if>
 <#if settings.getDescription()?has_content>
-description="${settings.getDescription()}"
+description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
 </#if>
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"

@@ -19,7 +19,6 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;
@@ -123,8 +122,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
 					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-							() -> Transliteration.transliterateString(name.getText()),
-							() -> TableUtil.getColumnContents(elements, 0).stream(),
+							name::getText, () -> TableUtil.getColumnContents(elements, 0).stream(),
 							new JavaMemberNameValidator(name, false));
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
@@ -196,7 +194,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						@Override public ValidationResult validate(JComponent component) {
 							UniqueNameValidator validator = new UniqueNameValidator(
 									L10N.t("workspace.variables.variable_name"),
-									() -> Transliteration.transliterateString(((VTextField) component).getText()),
+									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
 									new JavaMemberNameValidator((VTextField) component, false));
 							validator.setIsPresentOnList(false);
@@ -260,8 +258,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
-						VariableElement element = new VariableElement(
-								Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
+						VariableElement element = new VariableElement((String) elements.getValueAt(i, 0));
 						element.setType(elementType);
 						element.setValue(elements.getValueAt(i, 3));
 						element.setScope((VariableType.Scope) elements.getValueAt(i, 2));

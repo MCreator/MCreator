@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -52,8 +51,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"),
-				() -> Transliteration.transliterateString(nameField.getText()),
-				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
 				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);

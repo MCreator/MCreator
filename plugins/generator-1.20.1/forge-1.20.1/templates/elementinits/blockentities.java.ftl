@@ -46,6 +46,9 @@ public class ${JavaModName}BlockEntities {
 			${blockentity.getModElement().getName()}BlockEntity::new);
 	</#list>
 
+	// Start of user code block custom block entities
+	// End of user code block custom block entities
+
 	private static RegistryObject<BlockEntityType<?>> register(String registryname, RegistryObject<Block> block, BlockEntityType.BlockEntitySupplier<?> supplier) {
 		return REGISTRY.register(registryname, () -> BlockEntityType.Builder.of(supplier, block.get()).build(null));
 	}

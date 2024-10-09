@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
@@ -86,7 +85,7 @@ public class NewVariableDialog {
 			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
 					((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
-				VariableElement element = new VariableElement(Transliteration.transliterateString(textField.getText()));
+				VariableElement element = new VariableElement(textField.getText());
 				element.setType((VariableType) type.getSelectedItem());
 				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				if (showScope)

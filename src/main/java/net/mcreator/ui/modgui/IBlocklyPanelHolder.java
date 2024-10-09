@@ -48,4 +48,8 @@ public interface IBlocklyPanelHolder {
 
 	}
 
+	default void closeBlocklyPanels() {
+		getBlocklyPanels().forEach(BlocklyPanel::close);
+	}
+
 }

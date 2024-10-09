@@ -1,0 +1,1 @@
+Menzilli öğe kullanıldığında, seçilen prosedür tetiklenecektir.

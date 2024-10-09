@@ -130,6 +130,9 @@ import static org.junit.jupiter.api.Assertions.*;
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
 
+				// close mod element GUI
+				modElementGUI.onViewClosed();
+
 				// Check if all workspace fields are not null after reading from GUI
 				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
 						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));

@@ -48,6 +48,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -55,7 +56,10 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.*;
+import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -78,12 +82,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
-	private TextureSelectionButton texture;
-	private TextureSelectionButton textureTop;
-	private TextureSelectionButton textureLeft;
-	private TextureSelectionButton textureFront;
-	private TextureSelectionButton textureRight;
-	private TextureSelectionButton textureBack;
+	private BlockTexturesSelector textures;
 
 	private TextureSelectionButton itemTexture;
 	private TextureSelectionButton particleTexture;
@@ -221,6 +220,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
+	private JBlockPropertiesStatesList blockStates;
+	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
+			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
+			Collections.emptyMap());
+
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
 
@@ -352,6 +357,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
+		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
+		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+
 		blockBase.addActionListener(e -> {
 			renderType.setEnabled(true);
 			disableOffset.setEnabled(true);
@@ -435,64 +443,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel pane8 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane9 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
+		JPanel bsPane = new JPanel(new BorderLayout(10, 10));
 
 		pane8.setOpaque(false);
-
-		JPanel destal = new JPanel(new GridLayout(3, 4));
-		destal.setOpaque(false);
-
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
-		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
-
-		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
-		texture.setOpaque(false);
-		textureTop.setOpaque(false);
-		textureLeft.setOpaque(false);
-		textureFront.setOpaque(false);
-		textureRight.setOpaque(false);
-		textureBack.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
-
-		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));
-		destal.add(new JLabel());
-		destal.add(new JLabel());
-
-		destal.add(ComponentUtils.squareAndBorder(textureLeft, new Color(126, 196, 255),
-				L10N.t("elementgui.block.texture_place_left_overlay")));
-		destal.add(ComponentUtils.squareAndBorder(textureFront, L10N.t("elementgui.block.texture_place_front_side")));
-		destal.add(ComponentUtils.squareAndBorder(textureRight, L10N.t("elementgui.block.texture_place_right")));
-		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
-
-		textureLeft.setActionListener(event -> {
-			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
-					|| textureFront.hasTexture() || textureRight.hasTexture())) {
-				texture.setTexture(textureLeft.getTextureHolder());
-				textureTop.setTexture(textureLeft.getTextureHolder());
-				textureBack.setTexture(textureLeft.getTextureHolder());
-				textureFront.setTexture(textureLeft.getTextureHolder());
-				textureRight.setTexture(textureLeft.getTextureHolder());
-			}
-		});
-
-		destal.add(new JLabel());
-		destal.add(ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
-				L10N.t("elementgui.block.texture_place_bottom_main")));
-		destal.add(new JLabel());
-		destal.add(new JLabel());
 
 		JPanel txblock4 = new JPanel(new BorderLayout());
 		txblock4.setOpaque(false);
@@ -508,22 +470,31 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
 
+		plantsGrowOn.setOpaque(false);
+
+		textures = new BlockTexturesSelector(mcreator);
+
 		JPanel sbbp2 = new JPanel(new BorderLayout(1, 5));
-
-		JPanel sbbp22 = PanelUtils.totalCenterInPanel(destal);
-
 		sbbp2.setOpaque(false);
 
-		plantsGrowOn.setOpaque(false);
+		JPanel modelSettings = new JPanel(new GridLayout(1, 2, 0, 2));
+		modelSettings.setOpaque(false);
+		modelSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
+		modelSettings.add(renderType);
+
+		renderType.setPreferredSize(new Dimension(300, 42));
+
+		JComponent sbbp22 = PanelUtils.northAndCenterElement(modelSettings, PanelUtils.totalCenterInPanel(textures), 15,
+				15);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_textures"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.block_textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
 		JPanel topnbot = new JPanel(new BorderLayout());
 		topnbot.setOpaque(false);
-
 		topnbot.add("Center", sbbp22);
 
 		JComponent txblock3 = PanelUtils.gridElements(1, 1, specialInformation);
@@ -541,33 +512,37 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(blockBase, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
-		JPanel transparencySettings = new JPanel(new GridLayout(4, 2, 0, 2));
-		transparencySettings.setOpaque(false);
+		JPanel visualRenderingSettings = new JPanel(new GridLayout(6, 2, 0, 2));
+		visualRenderingSettings.setOpaque(false);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
 				L10N.label("elementgui.block.has_trasparency")));
-		transparencySettings.add(hasTransparency);
+		visualRenderingSettings.add(hasTransparency);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
 				L10N.label("elementgui.block.transparency_type")));
-		transparencySettings.add(transparencyType);
+		visualRenderingSettings.add(transparencyType);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
-		transparencySettings.add(connectedSides);
+		visualRenderingSettings.add(connectedSides);
 
-		transparencySettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fluid_overlay"),
 				L10N.label("elementgui.block.fluid_overlay")));
-		transparencySettings.add(displayFluidOverlay);
+		visualRenderingSettings.add(displayFluidOverlay);
+
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
+				L10N.label("elementgui.common.tint_type")));
+		visualRenderingSettings.add(tintType);
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
+				L10N.label("elementgui.block.is_item_tinted")));
+		visualRenderingSettings.add(isItemTinted);
 
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
 
-		JPanel rent = new JPanel(new GridLayout(4, 2, 0, 2));
+		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
 		rent.setOpaque(false);
-
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"), L10N.label("elementgui.block.model")));
-		rent.add(renderType);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
 				L10N.label("elementgui.block.rotation_mode")));
@@ -581,7 +556,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_waterloggable")));
 		rent.add(isWaterloggable);
 
-		renderType.setPreferredSize(new Dimension(320, 42));
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -593,34 +567,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				enablePitch.setSelected(false);
 		});
 
-		JPanel tintPanel = new JPanel(new GridLayout(2, 2, 0, 2));
-		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tint_type"),
-				L10N.label("elementgui.common.tint_type")));
-		tintPanel.add(tintType);
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
-				L10N.label("elementgui.block.is_item_tinted")));
-		tintPanel.add(isItemTinted);
-
-		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
+		topnbot.add("South", txblock4);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.builtin_states"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
-		transparencySettings.setBorder(BorderFactory.createTitledBorder(
+		visualRenderingSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.transparency"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_tint"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.visual_rendering"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
 		render.add(rent);
-		render.add(transparencySettings);
+		render.add(visualRenderingSettings);
 		render.add(txblock3);
 
 		render.setOpaque(false);
@@ -652,6 +613,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
+
+		bsPane.setOpaque(false);
+		bsPane.add("Center", blockStates);
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1172,9 +1136,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.pullElementUp(genPanel), 25, 0);
 		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
-		texture.setValidator(new TileHolderValidator(texture));
-
-		page1group.addValidationElement(texture);
+		page1group.addValidationElement(textures);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
@@ -1200,6 +1162,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
+		addPage(L10N.t("elementgui.block.page_states"), bsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
@@ -1213,6 +1176,27 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 
 		updateSoundType();
+	}
+
+	private Collection<String> nonUserProvidedProperties() {
+		Set<String> props = new HashSet<>();
+		String selBlockBase = blockBase.getSelectedItem();
+		if (selBlockBase != null && blockBaseProperties.get(selBlockBase) instanceof List<?> blockBaseProps) {
+			for (Object blockBaseProp : blockBaseProps)
+				props.add(blockBaseProp.toString());
+			return props;
+		}
+		int modeIndex = rotationMode.getSelectedIndex();
+		if (modeIndex == 5) {
+			props.add("axis");
+		} else if (modeIndex != 0) {
+			props.add("facing");
+			if ((modeIndex == 1 || modeIndex == 3) && enablePitch.isSelected())
+				props.add("face");
+		}
+		if (isWaterloggable.isSelected())
+			props.add("waterlogged");
+		return props;
 	}
 
 	private void refreshFieldsTileEntity() {
@@ -1243,31 +1227,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void updateTextureOptions() {
-		texture.setFlipUV(false);
-		textureTop.setFlipUV(false);
-		textureTop.setVisible(false);
-		textureLeft.setVisible(false);
-		textureFront.setVisible(false);
-		textureRight.setVisible(false);
-		textureBack.setVisible(false);
-
 		if (normal.equals(renderType.getSelectedItem())) {
-			texture.setFlipUV(true);
-			textureTop.setFlipUV(true);
-			textureTop.setVisible(true);
-			textureLeft.setVisible(true);
-			textureFront.setVisible(true);
-			textureRight.setVisible(true);
-			textureBack.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.ALL);
 		} else if (grassBlock.equals(renderType.getSelectedItem())) {
-			textureTop.setVisible(true);
-			textureLeft.setVisible(true);
-			textureFront.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.GRASS);
 		} else if ("Pane".equals(blockBase.getSelectedItem()) || "Door".equals(blockBase.getSelectedItem())) {
-			textureTop.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.TOP_BOTTOM);
 		} else if ("Stairs".equals(blockBase.getSelectedItem()) || "Slab".equals(blockBase.getSelectedItem())) {
-			textureTop.setVisible(true);
-			textureFront.setVisible(true);
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.TOP_BOTTOM_SIDES);
+		} else {
+			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
 		}
 	}
 
@@ -1339,10 +1308,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
 		else if (page == 2)
+			return blockStates.getValidationResult();
+		else if (page == 3)
 			return new AggregatedValidationResult(page3group);
-		else if (page == 4)
+		else if (page == 5)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 7)
+		else if (page == 8)
 			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
@@ -1350,15 +1321,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTexture(block.itemTexture);
 		particleTexture.setTexture(block.particleTexture);
-		texture.setTexture(block.texture);
-		textureTop.setTexture(block.textureTop);
-		textureLeft.setTexture(block.textureLeft);
-		textureFront.setTexture(block.textureFront);
-		textureRight.setTexture(block.textureRight);
-		textureBack.setTexture(block.textureBack);
+		textures.setTextures(block.texture, block.textureTop, block.textureLeft, block.textureFront, block.textureRight,
+				block.textureBack);
 		guiBoundTo.setSelectedItem(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
+		blockStates.setProperties(block.customProperties);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1503,6 +1471,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.guiBoundTo = guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
+		block.customProperties = blockStates.getProperties();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -1581,14 +1550,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		block.texture = texture.getTextureHolder();
+		block.texture = textures.getTexture();
+		block.textureTop = textures.getTextureTop();
+		block.textureLeft = textures.getTextureLeft();
+		block.textureFront = textures.getTextureFront();
+		block.textureRight = textures.getTextureRight();
+		block.textureBack = textures.getTextureBack();
 		block.itemTexture = itemTexture.getTextureHolder();
 		block.particleTexture = particleTexture.getTextureHolder();
-		block.textureTop = textureTop.getTextureHolder();
-		block.textureLeft = textureLeft.getTextureHolder();
-		block.textureFront = textureFront.getTextureHolder();
-		block.textureRight = textureRight.getTextureHolder();
-		block.textureBack = textureBack.getTextureHolder();
 
 		block.disableOffset = disableOffset.isSelected();
 		block.boundingBoxes = boundingBoxList.getEntries();

@@ -74,6 +74,10 @@ feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
   - "minecraft:block_column"
+feature_block_column:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - "minecraft:block_column"
 feature_geode_simple:
   - GeodeFeature
   - GeodeConfiguration
@@ -98,6 +102,34 @@ feature_spring:
   - SpringFeature
   - SpringConfiguration
   - "minecraft:spring_feature"
+feature_underwater_magma:
+  - UnderwaterMagmaFeature
+  - UnderwaterMagmaConfiguration
+  - "minecraft:underwater_magma"
+feature_disk_simple:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_disk:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_root_system:
+  - RootSystemFeature
+  - RootSystemConfiguration
+  - "minecraft:root_system"
+feature_vegetation_patch:
+  - VegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:vegetation_patch"
+feature_waterlogged_vegetation_patch:
+  - WaterloggedVegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:waterlogged_vegetation_patch"
+feature_random_selector:
+  - RandomSelectorFeature
+  - RandomFeatureConfiguration
+  - "minecraft:random_selector"
 feature_tree_simple:
   - TreeFeature
   - TreeConfiguration
