@@ -307,4 +307,11 @@ import java.util.*;
 		}
 	}
 
+	public static class PlayableAnimation {
+
+		public String animation;
+		public LogicProcedure playCondition;
+
+	}
+
 }
