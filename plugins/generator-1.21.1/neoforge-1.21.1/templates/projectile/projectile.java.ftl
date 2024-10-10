@@ -81,6 +81,26 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		}
 	}
 
+	<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+	@Nullable @Override protected EntityHitResult findHitEntity(Vec3 projectilePosition, Vec3 deltaPosition) {
+		double d0 = Double.MAX_VALUE;
+		Entity entity = null;
+		AABB lookupBox = this.getBoundingBox().expandTowards(deltaPosition).inflate(1.0D);
+		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
+			if (entity1 == this.getOwner() && this.tickCount < 50) continue;
+			AABB aabb = entity1.getBoundingBox();
+			if (aabb.intersects(lookupBox)) {
+				double d1 = projectilePosition.distanceToSqr(projectilePosition);
+				if (d1 < d0) {
+					entity = entity1;
+					d0 = d1;
+				}
+			}
+		}
+		return entity == null ? null : new EntityHitResult(entity);
+	}
+	</#if>
+
 	<#if hasProcedure(data.onHitsPlayer)>
 	@Override public void playerTouch(Player entity) {
 		super.playerTouch(entity);
