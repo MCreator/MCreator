@@ -74,6 +74,8 @@ import java.util.*;
 	@ModElementReference @TextureReference(TextureType.ENTITY) @ResourceReference("model")
 	public List<ModelLayerEntry> modelLayers;
 
+	@ModElementReference @ResourceReference("animation") public List<PlayableAnimation> animations;
+
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
 
@@ -309,7 +311,7 @@ import java.util.*;
 
 	public static class PlayableAnimation {
 
-		public String animation;
+		public Animation animation;
 		public LogicProcedure playCondition;
 
 	}
