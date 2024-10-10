@@ -120,11 +120,11 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override public void tick() {
 		super.tick();
 
-        AABB bounding_box = new AABB(this.position(), this.position().add(this.getDeltaMovement()).inflate(${entity.modelWidth}f / 2, ${entity.modelHeight}f / 2, ${entity.modelWidth}f / 2));
-        List<Entity> entities = this.level().getEntities(this, bounding_box, entity -> !(entity instanceof ${name}Entity) && entity.isAlive() && entity.isPickable());
+        AABB boundingBox = new AABB(this.position(), this.position().add(this.getDeltaMovement()).inflate(${data.modelWidth}f / 2, ${data.modelHeight}f / 2, ${data.modelWidth}f / 2));
+        List<Entity> entities = this.level().getEntities(this, boundingBox, entity -> !(entity instanceof ${name}Entity) && entity.isAlive() && entity.isPickable());
 
         for (Entity entity : entities) {
-        	if (entity.getBoundingBox().intersects(bounding_box)) {
+        	if (entity.getBoundingBox().intersects(boundingBox)) {
         		if (entity instanceof Player plr_ && plr_.getAbilities().invulnerable)
         			continue;
         	this.onHit(new EntityHitResult(entity));
