@@ -52,7 +52,8 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
 
-		JSpinner spritesCount = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		SpinnerNumberModel spritesCountModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+		JSpinner spritesCount = new JSpinner(spritesCountModel);
 		spritesCount.setPreferredSize(new Dimension(80, spritesCount.getPreferredSize().height));
 
 		options.add("Center", PanelUtils.centerAndSouthElement(
@@ -84,6 +85,20 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			if (previousSpritesCount[0] > currentSpritesCount)
 				model.setValue((int) model.getValue() - 1);
 			previousSpritesCount[0] = currentSpritesCount;
+		});
+
+		textureSelector.getComboBox().addActionListener(e -> {
+			if (textureSelector.getTexture() != null) {
+				ImageIcon selectedTexture = textureSelector.getTexture().getTextureIcon(editor.mcreator.getWorkspace());
+				int maximum = Math.max(selectedTexture.getIconWidth(), selectedTexture.getIconHeight());
+
+				spritesCountModel.setMaximum(maximum);
+				if (maximum < spritesCountModel.getNumber().intValue())
+					spritesCountModel.setValue(maximum);
+
+				if (model.getNumber().intValue() > maximum)
+					model.setValue(maximum - 1);
+			}
 		});
 
 		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
