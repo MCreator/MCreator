@@ -40,7 +40,7 @@ import java.awt.*;
 public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 	public SpriteDialog(WYSIWYGEditor editor, @Nullable Sprite sprite) {
 		super(editor, sprite);
-		setSize(820, 170);
+		setSize(680, 170);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.sprite_title"));
@@ -56,9 +56,9 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		spritesCount.setPreferredSize(new Dimension(80, spritesCount.getPreferredSize().height));
 
 		options.add("Center", PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
-						L10N.label("dialog.gui.sprite_count")), spritesCount)));
+				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector),
+				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
+						L10N.label("dialog.gui.sprite_count")), spritesCount), 5, 5));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
