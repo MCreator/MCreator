@@ -79,11 +79,11 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 		final int[] previousSpritesCount = { (int) spritesCount.getValue() };
 		spritesCount.addChangeListener(e -> {
-			model.setMaximum((int) spritesCount.getValue() - 1);
-
 			int currentSpritesCount = (int) spritesCount.getValue();
-			if (previousSpritesCount[0] > currentSpritesCount)
-				model.setValue((int) model.getValue() - 1);
+
+			model.setMaximum(currentSpritesCount - 1);
+			if (previousSpritesCount[0] > currentSpritesCount && model.getNumber().intValue() == previousSpritesCount[0] - 1)
+				model.setValue(model.getNumber().intValue() - 1);
 			previousSpritesCount[0] = currentSpritesCount;
 		});
 
