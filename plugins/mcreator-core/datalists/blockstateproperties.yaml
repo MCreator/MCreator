@@ -261,7 +261,7 @@
     min: 0
     max: 3
 - AGE_4:
-  readable_name: AGE_3
+  readable_name: AGE_4
   type: Integer
   other:
     registry_name: age
