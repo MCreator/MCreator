@@ -138,7 +138,8 @@ public class ${name}Item extends Item {
 
 	<@addSpecialInformation data.specialInformation/>
 
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || ((hasProcedure(data.onStoppedUsing) || !data.isFood) && (data.useDuration > 0)) || data.enableRanged>
+	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
 		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
@@ -161,7 +162,7 @@ public class ${name}Item extends Item {
 				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
 				entity.startUsingItem(hand);
 			}
-		<#elseif (hasProcedure(data.onStoppedUsing) || !data.isFood) && (data.useDuration > 0)>
+		<#elseif shouldExplicitlyCallStartUsing>
 			entity.startUsingItem(hand);
 		</#if>
 
