@@ -118,7 +118,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			@Override public void keyReleased(KeyEvent keyEvent) {
 				super.keyReleased(keyEvent);
 				if (jtf1.getText().trim().length() >= 3) {
-					if (!searchInAction && Character.isLetterOrDigit(keyEvent.getKeyChar())) {
+					if (!searchInAction) {
 						new Thread(() -> {
 							searchInAction = true;
 							mods.setFilter(jtf1.getText().trim());
