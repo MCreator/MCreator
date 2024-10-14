@@ -44,12 +44,12 @@ import java.util.Objects;
 
 public class LootTableGUI extends ModElementGUI<LootTable> {
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod" , "minecraft" });
+	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Block" , "Entity" , "Generic" , "Chest" , "Fishing" , "Empty" , "Advancement reward" ,
-					"Gift" , "Barter" });
+			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
+					"Barter" });
 
 	private JLootTablePoolsList lootTablePools;
 
