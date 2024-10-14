@@ -23,6 +23,36 @@
   type: Logic
   other:
     registry_name: can_summon
+- CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_0_occupied
+- CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_1_occupied
+- CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_2_occupied
+- CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_3_occupied
+- CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_4_occupied
+- CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_5_occupied
 - CONDITIONAL:
   readable_name: CONDITIONAL
   type: Logic
@@ -78,6 +108,21 @@
   type: Logic
   other:
     registry_name: has_book
+- HAS_BOTTLE_0:
+  readable_name: HAS_BOTTLE_0
+  type: Logic
+  other:
+    registry_name: has_bottle_0
+- HAS_BOTTLE_1:
+  readable_name: HAS_BOTTLE_1
+  type: Logic
+  other:
+    registry_name: has_bottle_1
+- HAS_BOTTLE_2:
+  readable_name: HAS_BOTTLE_2
+  type: Logic
+  other:
+    registry_name: has_bottle_2
 - HAS_RECORD:
   readable_name: HAS_RECORD
   type: Logic
@@ -108,6 +153,11 @@
   type: Logic
   other:
     registry_name: occupied
+- OMINOUS:
+  readable_name: OMINOUS
+  type: Logic
+  other:
+    registry_name: ominous
 - OPEN:
   readable_name: OPEN
   type: Logic
@@ -210,6 +260,13 @@
     registry_name: age
     min: 0
     max: 3
+- AGE_4:
+  readable_name: AGE_3
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 4
 - AGE_5:
   readable_name: AGE_5
   type: Integer
@@ -278,6 +335,13 @@
   type: Integer
   other:
     registry_name: eggs
+    min: 1
+    max: 4
+- FLOWER_AMOUNT:
+  readable_name: FLOWER_AMOUNT
+  type: Integer
+  other:
+    registry_name: flower_amount
     min: 1
     max: 4
 - HATCH:
@@ -658,6 +722,28 @@
       - unstable
       - partial
       - full
+- TRIAL_SPAWNER_STATE:
+  readable_name: TRIAL_SPAWNER_STATE
+  type: Enum
+  other:
+    registry_name: trial_spawner_state
+    values:
+      - inactive
+      - waiting_for_players
+      - active
+      - waiting_for_reward_ejection
+      - ejecting_reward
+      - cooldown
+- VAULT_STATE:
+  readable_name: VAULT_STATE
+  type: Enum
+  other:
+    registry_name: vault_state
+    values:
+      - inactive
+      - active
+      - unlocking
+      - ejecting
 - NORTH_WALL:
   readable_name: NORTH_WALL
   type: Enum

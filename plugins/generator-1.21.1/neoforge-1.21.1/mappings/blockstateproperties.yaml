@@ -14,6 +14,24 @@ BOTTOM:
 CAN_SUMMON:
   - BlockStateProperties.CAN_SUMMON
   - can_summon
+CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
+  - slot_0_occupied
+CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
+  - slot_1_occupied
+CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
+  - slot_2_occupied
+CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
+  - slot_3_occupied
+CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
+  - slot_4_occupied
+CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
+  - slot_5_occupied
 CONDITIONAL:
   - BlockStateProperties.CONDITIONAL
   - conditional
@@ -47,6 +65,15 @@ HANGING:
 HAS_BOOK:
   - BlockStateProperties.HAS_BOOK
   - has_book
+HAS_BOTTLE_0:
+  - BlockStateProperties.HAS_BOTTLE_0
+  - has_bottle_0
+HAS_BOTTLE_1:
+  - BlockStateProperties.HAS_BOTTLE_1
+  - has_bottle_1
+HAS_BOTTLE_2:
+  - BlockStateProperties.HAS_BOTTLE_2
+  - has_bottle_2
 HAS_RECORD:
   - BlockStateProperties.HAS_RECORD
   - has_record
@@ -65,6 +92,9 @@ LOCKED:
 OCCUPIED:
   - BlockStateProperties.OCCUPIED
   - occupied
+OMINOUS:
+  - BlockStateProperties.OMINOUS
+  - ominous
 OPEN:
   - BlockStateProperties.OPEN
   - open
@@ -123,6 +153,9 @@ AGE_2:
 AGE_3:
   - BlockStateProperties.AGE_3
   - age
+AGE_4:
+  - BlockStateProperties.AGE_4
+  - age
 AGE_5:
   - BlockStateProperties.AGE_5
   - age
@@ -153,6 +186,9 @@ DUSTED:
 EGGS:
   - BlockStateProperties.EGGS
   - eggs
+FLOWER_AMOUNT:
+  - BlockStateProperties.FLOWER_AMOUNT
+  - flower_amount
 HATCH:
   - BlockStateProperties.HATCH
   - hatch
@@ -304,6 +340,14 @@ TILT:
   - BlockStateProperties.TILT
   - tilt
   - Tilt
+TRIAL_SPAWNER_STATE:
+  - BlockStateProperties.TRIAL_SPAWNER_STATE
+  - trial_spawner_state
+  - TrialSpawnerState
+VAULT_STATE:
+  - BlockStateProperties.VAULT_STATE
+  - vault_state
+  - VaultState
 NORTH_WALL:
   - BlockStateProperties.NORTH_WALL
   - north
