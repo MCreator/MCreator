@@ -362,7 +362,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		biomesInDimension.setValidator(
 				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
 		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock).considerAirAsEmpty());
-		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock).considerAirAsEmpty());
+		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 
 		page2group.addValidationElement(biomesInDimension);
 		page2group.addValidationElement(mainFillerBlock);
