@@ -41,30 +41,38 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 	public SpriteDialog(WYSIWYGEditor editor, @Nullable Sprite sprite) {
 		super(editor, sprite);
-		setSize(680, 170);
+		setSize(650, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.sprite_title"));
 
-		JPanel options = new JPanel(new BorderLayout());
+		setLayout(new BorderLayout(5, 5));
+
+		JPanel options = new JPanel(new BorderLayout(2, 2));
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
 
 		SpinnerNumberModel spritesCountModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 		JSpinner spritesCount = new JSpinner(spritesCountModel);
-		spritesCount.setPreferredSize(new Dimension(80, spritesCount.getPreferredSize().height));
 
-		options.add("Center", PanelUtils.centerAndSouthElement(
-				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.westAndCenterElement(
-						HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
-								L10N.label("dialog.gui.sprite_count")), spritesCount), 5, 5));
+		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, (int) spritesCount.getValue() - 1, 1);
+		JSpinner spinner = new JSpinner(model);
 
-		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
-		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
-		if (!editor.isNotOverlayType) {
-			options.add("South", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
-		}
+		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator, L10N.t("dialog.gui.sprite_index"),
+				ProcedureSelector.Side.CLIENT, false, spinner, 80,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+		spriteIndex.refreshList();
+
+		JPanel opts = new JPanel(new GridLayout(2, 2, 2, 2));
+
+		opts.add(L10N.label("dialog.gui.image_texture"));
+		opts.add(textureSelector);
+		opts.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
+				L10N.label("dialog.gui.sprite_count")));
+		opts.add(spritesCount);
+
+		options.add("Center", PanelUtils.centerAndSouthElement(opts, spriteIndex, 2, 2));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/sprite_display_condition"), editor.mcreator,
@@ -72,9 +80,6 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
-
-		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, (int) spritesCount.getValue() - 1, 1);
-		JSpinner spinner = new JSpinner(model);
 
 		final int[] previousSpritesCount = { (int) spritesCount.getValue() };
 		spritesCount.addChangeListener(e -> {
@@ -101,14 +106,14 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			}
 		});
 
-		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator, L10N.t("dialog.gui.sprite_index"),
-				ProcedureSelector.Side.CLIENT, false, spinner, 80,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		spriteIndex.refreshList();
+		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
+		if (!editor.isNotOverlayType) {
+			options.add("South", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
+		}
 
-		add("East", PanelUtils.northAndCenterElement(displayCondition, PanelUtils.centerInPanel(spriteIndex)));
-		add("Center", PanelUtils.join(FlowLayout.LEFT, options));
+		add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(options, PanelUtils.pullElementUp(displayCondition), 10, 10)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
