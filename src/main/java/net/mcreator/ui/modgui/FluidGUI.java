@@ -141,7 +141,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 		fogEndDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_end_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_end_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(64, -1024, 1024, 0.01)), 180,
+				new JSpinner(new SpinnerNumberModel(48, -1024, 1024, 0.01)), 180,
 				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
