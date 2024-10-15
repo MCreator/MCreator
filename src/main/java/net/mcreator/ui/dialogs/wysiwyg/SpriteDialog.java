@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
+
 	public SpriteDialog(WYSIWYGEditor editor, @Nullable Sprite sprite) {
 		super(editor, sprite);
 		setSize(680, 170);
@@ -58,8 +59,9 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 		options.add("Center", PanelUtils.centerAndSouthElement(
 				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.westAndCenterElement(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
-						L10N.label("dialog.gui.sprite_count")), spritesCount), 5, 5));
+				PanelUtils.westAndCenterElement(
+						HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("gui/sprite_count"),
+								L10N.label("dialog.gui.sprite_count")), spritesCount), 5, 5));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
@@ -82,7 +84,8 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			int currentSpritesCount = (int) spritesCount.getValue();
 
 			model.setMaximum(currentSpritesCount - 1);
-			if (previousSpritesCount[0] > currentSpritesCount && model.getNumber().intValue() == previousSpritesCount[0] - 1)
+			if (previousSpritesCount[0] > currentSpritesCount
+					&& model.getNumber().intValue() == previousSpritesCount[0] - 1)
 				model.setValue(model.getNumber().intValue() - 1);
 			previousSpritesCount[0] = currentSpritesCount;
 		});
@@ -102,9 +105,8 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		});
 
 		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator,
-				L10N.t("dialog.gui.sprite_index"), ProcedureSelector.Side.CLIENT, false,
-				spinner, 80,
+				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator, L10N.t("dialog.gui.sprite_index"),
+				ProcedureSelector.Side.CLIENT, false, spinner, 80,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		spriteIndex.refreshList();
 
@@ -143,8 +145,9 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				} else {
 					int idx = editor.components.indexOf(sprite);
 					editor.components.remove(sprite);
-					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(), (int) spritesCount.getValue(),
-							displayCondition.getSelectedProcedure(), spriteIndex.getSelectedProcedure());
+					Sprite spriteNew = new Sprite(sprite.getX(), sprite.getY(), textureSelector.getTextureName(),
+							(int) spritesCount.getValue(), displayCondition.getSelectedProcedure(),
+							spriteIndex.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						spriteNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, spriteNew);
@@ -155,4 +158,5 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 
 		setVisible(true);
 	}
+
 }
