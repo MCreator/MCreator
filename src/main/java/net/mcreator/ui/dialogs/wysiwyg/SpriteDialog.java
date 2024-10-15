@@ -46,9 +46,6 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.sprite_title"));
 
-		JPanel pane = new JPanel();
-		pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
-
 		JPanel options = new JPanel(new BorderLayout());
 
 		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
