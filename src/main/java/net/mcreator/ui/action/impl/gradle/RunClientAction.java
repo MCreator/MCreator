@@ -22,7 +22,7 @@ import net.mcreator.minecraft.BedrockUtils;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.MinecraftOptionsUtils;
+import net.mcreator.minecraft.MinecraftOptionsUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
