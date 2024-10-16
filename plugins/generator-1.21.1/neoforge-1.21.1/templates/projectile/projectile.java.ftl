@@ -87,7 +87,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		Entity entity = null;
 		AABB lookupBox = this.getBoundingBox().expandTowards(deltaPosition).inflate(1.0D);
 		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
-			if (entity1 == this.getOwner() && this.tickCount < 50) continue;
+			if (entity1 == this.getOwner()) continue;
 			AABB aabb = entity1.getBoundingBox();
 			if (aabb.intersects(lookupBox)) {
 				double d1 = projectilePosition.distanceToSqr(projectilePosition);
