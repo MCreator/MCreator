@@ -27,6 +27,7 @@ import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -63,6 +64,7 @@ public interface ModElementChangedListener
 
 		switch (component) {
 		case MCItemHolder itemHolder -> itemHolder.addBlockSelectedListener(this);
+		case TextureSelectionButton textureSelectionButton -> textureSelectionButton.addTextureSelectedListener(this);
 		case JColor jcolor -> jcolor.addColorSelectedListener(this);
 		case SoundSelector soundSelector -> soundSelector.addSoundSelectedListener(this);
 		case JItemListField<?> listField -> listField.addChangeListener(this);
