@@ -42,7 +42,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 	public TooltipDialog(WYSIWYGEditor editor, @Nullable Tooltip tooltip) {
 		super(editor, tooltip);
 		setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
-		setSize(580, 195);
+		setSize(580, 215);
 		setLocationRelativeTo(editor.mcreator);
 
 		JTextField textField = new JTextField();
@@ -70,7 +70,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), tooltipText));
 
-		add("Center", PanelUtils.centerInPanel(displayCondition));
+		add("Center", PanelUtils.totalCenterInPanel(displayCondition));
 
 		setTitle(L10N.t("dialog.gui.add_tooltip"));
 
