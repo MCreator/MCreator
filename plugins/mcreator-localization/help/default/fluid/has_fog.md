@@ -1,0 +1,1 @@
+If this option is enabled, the fluid will display a fog while the player is submerged.
