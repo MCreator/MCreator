@@ -1,0 +1,6 @@
+_default: EntityClassification.MONSTER
+monster: EntityClassification.MONSTER
+creature: EntityClassification.CREATURE
+ambient: EntityClassification.AMBIENT
+waterCreature: EntityClassification.WATER_CREATURE
+misc: EntityClassification.MISC

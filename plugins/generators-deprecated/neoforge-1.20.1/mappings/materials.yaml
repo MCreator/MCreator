@@ -1,0 +1,54 @@
+# This is backwards-compatibility mapping for materials that no longer exist.
+# Parameters already controlled by other UI elements (e.g. replaceable, redstone conductor, push reaction)
+# are not covered here and should be manually ported by the user.
+_default: ""
+AIR: .air()
+STRUCTURE_VOID: .air()
+PORTAL:
+CARPET: .ignitedByLava()
+PLANTS:
+OCEAN_PLANT: .instrument(NoteBlockInstrument.BASEDRUM)
+TALL_PLANTS: .ignitedByLava()
+NETHER_PLANTS:
+SEA_GRASS:
+WATER: .liquid()
+BUBBLE_COLUMN: .liquid()
+LAVA: .liquid()
+SNOW:
+FIRE:
+MISCELLANEOUS:
+WEB:
+SCULK:
+BUILDABLE_GLASS:
+CLAY:
+EARTH:
+GRASS:
+PACKED_ICE:
+SAND: .instrument(NoteBlockInstrument.SNARE)
+SPONGE:
+SHULKER:
+WOOD: .ignitedByLava().instrument(NoteBlockInstrument.BASS)
+NETHER_WOOD:
+BAMBOO_SAPLING: .ignitedByLava()
+BAMBOO: .ignitedByLava()
+CLOTH: .ignitedByLava()
+TNT: .ignitedByLava()
+LEAVES: .ignitedByLava()
+GLASS: .instrument(NoteBlockInstrument.HAT)
+ICE:
+CACTUS:
+ROCK: .instrument(NoteBlockInstrument.BASEDRUM)
+IRON:
+CRAFTED_SNOW:
+ANVIL:
+BARRIER:
+PISTON:
+MOSS_BLOCK:
+GOURD:
+DRAGON_EGG:
+CAKE:
+AMETHYST:
+POWDER_SNOW:
+FROGSPAWN:
+FROGLIGHT:
+DECORATED_POT:

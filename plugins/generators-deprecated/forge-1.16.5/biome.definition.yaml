@@ -1,0 +1,9 @@
+templates:
+  - template: biome.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
+
+field_exclusions: [spawnBiomeNether, spawnInCaves]
+
+localizationkeys:
+  - key: biome.@modid.@registryname
+    mapto: name

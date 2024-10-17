@@ -1,0 +1,4 @@
+{
+    "feature": "${modid}:${registryname}",
+    "placement": []
+}

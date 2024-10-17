@@ -1,0 +1,14 @@
+_default: CreativeTabs.MISC
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "Tab@NAME.tab"
+No creative tab entry: null
+BUILDING_BLOCKS: CreativeTabs.BUILDING_BLOCKS
+DECORATIONS: CreativeTabs.DECORATIONS
+REDSTONE: CreativeTabs.REDSTONE
+TRANSPORTATION: CreativeTabs.TRANSPORTATION
+MISC: CreativeTabs.MISC
+FOOD: CreativeTabs.FOOD
+TOOLS: CreativeTabs.TOOLS
+COMBAT: CreativeTabs.COMBAT
+BREWING: CreativeTabs.BREWING
+MATERIALS: CreativeTabs.MATERIALS

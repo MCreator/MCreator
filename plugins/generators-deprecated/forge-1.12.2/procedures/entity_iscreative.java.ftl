@@ -1,0 +1,1 @@
+((entity instanceof EntityPlayer)?((EntityPlayer)entity).capabilities.isCreativeMode:false)

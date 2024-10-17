@@ -1,0 +1,1 @@
+if(entity instanceof EntityPlayer)((EntityPlayer)entity).getFoodStats().setFoodLevel((int)${input$foodlevel});

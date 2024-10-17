@@ -1,0 +1,1 @@
+NoiseThresholdCountPlacement.of(${field$threshold}, ${field$belowNoise}, ${field$aboveNoise}),

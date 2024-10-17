@@ -1,0 +1,7 @@
+templates:
+  - template: enchantment.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/enchantment/@NAMEEnchantment.java"
+
+localizationkeys:
+  - key: enchantment.@modid.@registryname
+    mapto: name

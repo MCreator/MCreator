@@ -1,0 +1,1 @@
+/*@ItemStack*/(itemstackiterator)

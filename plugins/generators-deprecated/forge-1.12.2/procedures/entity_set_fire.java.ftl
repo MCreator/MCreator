@@ -1,0 +1,1 @@
+entity.setFire((int)${input$seconds});

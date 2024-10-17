@@ -1,0 +1,10 @@
+templates:
+  - template: fluid.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/Block@NAME.java"
+  - template: json/fluid.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+
+localizationkeys:
+  - key: fluid.@registryname
+    mapto: name

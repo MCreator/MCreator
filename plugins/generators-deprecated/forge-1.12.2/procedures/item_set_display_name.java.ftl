@@ -1,0 +1,1 @@
+itemstack.setStackDisplayName(${input$displayname});

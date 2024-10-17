@@ -1,0 +1,6 @@
+templates:
+  - template: json/loottable.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/loot_tables/@[getName()].json"
+  - template: loottable.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/util/LootTable@NAME.java"

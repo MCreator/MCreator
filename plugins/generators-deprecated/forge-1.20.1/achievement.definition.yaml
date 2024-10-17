@@ -1,0 +1,10 @@
+templates:
+  - template: advancement.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/advancements/@registryname.json"
+
+localizationkeys:
+  - key: advancements.@registryname.title
+    mapto: achievementName
+  - key: advancements.@registryname.descr
+    mapto: achievementDescription

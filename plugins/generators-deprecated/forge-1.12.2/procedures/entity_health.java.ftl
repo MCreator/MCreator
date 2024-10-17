@@ -1,0 +1,1 @@
+((entity instanceof EntityLivingBase)?((EntityLivingBase)entity).getHealth():-1)

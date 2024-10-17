@@ -1,0 +1,37 @@
+templates:
+  - template: armor.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/Item@NAME.java"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableHelmet
+    deleteWhenConditionFalse: true
+    variables: "item=helmet"
+    name: "@MODASSETSROOT/models/item/@registrynamehelmet.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBody
+    deleteWhenConditionFalse: true
+    variables: "item=body"
+    name: "@MODASSETSROOT/models/item/@registrynamebody.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableLeggings
+    deleteWhenConditionFalse: true
+    variables: "item=leggings"
+    name: "@MODASSETSROOT/models/item/@registrynamelegs.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBoots
+    deleteWhenConditionFalse: true
+    variables: "item=boots"
+    name: "@MODASSETSROOT/models/item/@registrynameboots.json"
+
+localizationkeys:
+  - key: item.@registrynamehelmet.name
+    mapto: helmetName
+  - key: item.@registrynamebody.name
+    mapto: bodyName
+  - key: item.@registrynamelegs.name
+    mapto: leggingsName
+  - key: item.@registrynameboots.name
+    mapto: bootsName

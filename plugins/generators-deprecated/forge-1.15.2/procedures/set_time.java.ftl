@@ -1,0 +1,1 @@
+if(world instanceof World) world.getWorld().setDayTime((int) ${input$time});

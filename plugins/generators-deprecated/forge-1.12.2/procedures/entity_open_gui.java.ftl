@@ -1,0 +1,1 @@
+if(entity instanceof EntityPlayer)((EntityPlayer)entity).openGui(${JavaModName}.instance, Gui${(field$guiname)}.GUIID,world,x,y,z);

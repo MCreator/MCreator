@@ -1,0 +1,1 @@
+((entity instanceof EntityLivingBase)?((EntityLivingBase)entity).getTotalArmorValue():0)

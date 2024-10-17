@@ -1,0 +1,18 @@
+templates:
+  - template: potion.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/potion/Potion@NAME.java"
+
+localizationkeys:
+  - key: effect.@registryname
+    mapto: effectName
+  - key: potion.effect.@registryname
+    mapto: name
+  - key: splash_potion.effect.@registryname
+    mapto: name
+    prefix: "Splash "
+  - key: tipped_arrow.effect.@registryname
+    mapto: name
+    prefix: "Arrow of "
+  - key: lingering_potion.effect.@registryname
+    mapto: name
+    prefix: "Lingering "

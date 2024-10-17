@@ -1,0 +1,2 @@
+(((entity instanceof EntityPlayerMP)&&(entity.world instanceof WorldServer))?((EntityPlayerMP)entity).getAdvancements()
+        .getProgress(((WorldServer)entity.world).getAdvancementManager().getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}"))).isDone():false)

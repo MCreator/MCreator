@@ -1,0 +1,7 @@
+templates:
+  - template: keybind.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/keybind/KeyBinding@NAME.java"
+
+localizationkeys:
+  - key: key.mcreator.@registryname
+    mapto: keyBindingName

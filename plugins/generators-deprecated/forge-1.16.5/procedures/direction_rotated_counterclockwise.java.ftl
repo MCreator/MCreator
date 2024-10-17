@@ -1,0 +1,1 @@
+(${input$direction}.getAxis().isVertical() ? ${input$direction} : ${input$direction}.rotateYCCW())

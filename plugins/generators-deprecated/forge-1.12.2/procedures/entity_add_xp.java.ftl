@@ -1,0 +1,1 @@
+if(entity instanceof EntityPlayer)((EntityPlayer)entity).addExperience((int)${input$xpamount});

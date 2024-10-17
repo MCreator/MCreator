@@ -1,0 +1,1 @@
+(world.getDifficulty()==EnumDifficulty.${field$difficulty})

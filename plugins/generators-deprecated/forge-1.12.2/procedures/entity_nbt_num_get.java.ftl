@@ -1,0 +1,1 @@
+(entity.getEntityData().getDouble(${input$tagName}))

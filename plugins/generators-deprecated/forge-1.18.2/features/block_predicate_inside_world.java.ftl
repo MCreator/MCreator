@@ -1,0 +1,1 @@
+BlockPredicate.insideWorld(new Vec3i(${field$x},${field$y},${field$z}))

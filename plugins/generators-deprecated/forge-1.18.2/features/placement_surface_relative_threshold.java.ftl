@@ -1,0 +1,1 @@
+SurfaceRelativeThresholdFilter.of(Heightmap.Types.${field$heightmap}, ${field$min}, ${field$max}),

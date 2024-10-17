@@ -1,0 +1,1 @@
+/*@int*/(Mth.nextInt(new Random(), ${opt.toInt(input$min)}, ${opt.toInt(input$max)}))

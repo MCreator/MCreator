@@ -1,0 +1,1 @@
+RarityFilter.onAverageOnceEvery(${field$rarity}),

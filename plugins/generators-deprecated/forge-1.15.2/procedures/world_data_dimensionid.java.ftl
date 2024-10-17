@@ -1,0 +1,1 @@
+(world.getDimension().getType().getId())

@@ -1,0 +1,20 @@
+templates:
+  - template: rangeditem.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/rangeditem.json.ftl
+    writer: json
+    condition: "renderType #= 0"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: "renderType #= 1"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel_obj.json.ftl
+    writer: json
+    condition: "renderType #= 2"
+    variables: "type=item"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name

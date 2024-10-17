@@ -1,0 +1,22 @@
+# Gradle build system ignores
+.gradle/
+build/
+
+# Other IDE related folders
+.idea/
+.settings/
+
+# MCreator workspace
+.mcreator/
+
+# Minecraft client/server files
+run/
+
+# MCreator generator ignores
+src/main/resources/assets/*/models/custom
+src/main/resources/assets/*/models/item
+src/main/resources/assets/*/textures/blocks
+src/main/resources/assets/*/textures/items
+src/main/resources/assets/*/textures/models/armor
+src/main/resources/assets/*/textures/*.png
+src/main/resources/assets/*/sounds

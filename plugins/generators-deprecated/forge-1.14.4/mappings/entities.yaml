@@ -1,0 +1,330 @@
+_default:
+  - ZombieEntity
+  - ZOMBIE
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@NAMEEntity.CustomEntity"
+EntityAgeable: AgeableEntity
+EntityAmbientCreature: AmbientEntity
+EntityAnimal: AnimalEntity
+EntityAreaEffectCloud:
+  - AreaEffectCloudEntity
+  - AREA_EFFECT_CLOUD
+EntityArmorStand:
+  - ArmorStandEntity
+  - ARMOR_STAND
+EntityArrow:
+  - ArrowEntity
+  - ARROW
+EntityBat:
+  - BatEntity
+  - BAT
+EntityBlaze:
+  - BlazeEntity
+  - BLAZE
+EntityBoat:
+  - BoatEntity
+  - BOAT
+EntityCat:
+  - CatEntity
+  - CAT
+EntityCaveSpider:
+  - CaveSpiderEntity
+  - CAVE_SPIDER
+EntityChicken:
+  - ChickenEntity
+  - CHICKEN
+EntityCod:
+  - CodEntity
+  - COD
+EntityCow:
+  - CowEntity
+  - COW
+EntityCreature: CreatureEntity
+EntityCreeper:
+  - CreeperEntity
+  - CREEPER
+EntityDonkey:
+  - DonkeyEntity
+  - DONKEY
+EntityDolphin:
+  - DolphinEntity
+  - DOLPHIN
+EntityDragonFireball:
+  - DragonFireballEntity
+  - DRAGON_FIREBALL
+EntityDrowned:
+  - DrownedEntity
+  - DROWNED
+EntityElderGuardian:
+  - ElderGuardianEntity
+  - ELDER_GUARDIAN
+EntityEnderCrystal:
+  - EnderCrystalEntity
+  - END_CRYSTAL
+EntityDragon:
+  - EnderDragonEntity
+  - ENDER_DRAGON
+EntityEnderman:
+  - EndermanEntity
+  - ENDERMAN
+EntityEndermite:
+  - EndermiteEntity
+  - ENDERMITE
+EntityEvokerFangs:
+  - EvokerFangsEntity
+  - EVOKER_FANGS
+EntityEvoker:
+  - EvokerEntity
+  - EVOKER
+EntityXPOrb:
+  - ExperienceOrbEntity
+  - EXPERIENCE_ORB
+EntityEnderEye:
+  - EyeOfEnderEntity
+  - EYE_OF_ENDER
+EntityFallingBlock:
+  - FallingBlockEntity
+  - FALLING_BLOCK
+EntityFireworkRocket:
+  - FireworkRocketEntity
+  - FIREWORK_ROCKET
+EntityFox:
+  - FoxEntity
+  - FOX
+EntityFlying: FlyingEntity
+EntityGhast:
+  - GhastEntity
+  - GHAST
+EntityGiantZombie:
+  - GiantEntity
+  - GIANT
+EntityGuardian:
+  - GuardianEntity
+  - GUARDIAN
+EntityHanging: HangingEntity
+EntityGolem: GolemEntity
+EntityHorse:
+  - HorseEntity
+  - HORSE
+EntityHusk:
+  - HuskEntity
+  - HUSK
+EntityIllusionIllager:
+  - IllusionerEntity
+  - ILLUSIONER
+EntityItem:
+  - ItemEntity
+  - ITEM
+EntityItemFrame:
+  - ItemFrameEntity
+  - ITEM_FRAME
+EntityFireball:
+  - FireballEntity
+  - FIREBALL
+EntityLeashKnot:
+  - LeashKnotEntity
+  - LEASH_KNOT
+EntityLlama:
+  - LlamaEntity
+  - LLAMA
+EntityLlamaSpit:
+  - LlamaSpitEntity
+  - LLAMA_SPIT
+EntityLiving: LivingEntity
+EntityMagmaCube:
+  - MagmaCubeEntity
+  - MAGMA_CUBE
+EntityMinecart:
+  - MinecartEntity
+  - MINECART
+EntityMinecartChest:
+  - ChestMinecartEntity
+  - CHEST_MINECART
+EntityMinecartCommandBlock:
+  - MinecartCommandBlockEntity
+  - COMMAND_BLOCK_MINECART
+EntityMinecartContainer: ContainerMinecartEntity
+EntityMinecartFurnace:
+  - FurnaceMinecartEntity
+  - FURNACE_MINECART
+EntityMinecartHopper:
+  - HopperMinecartEntity
+  - HOPPER_MINECART
+EntityMinecartMobSpawner:
+  - SpawnerMinecartEntity
+  - SPAWNER_MINECART
+EntityMinecartTNT:
+  - TNTMinecartEntity
+  - TNT_MINECART
+EntityMob: MobEntity
+EntityMonster: MonsterEntity
+EntityMule:
+  - MuleEntity
+  - MULE
+EntityMooshroom:
+  - MooshroomEntity
+  - MOOSHROOM
+EntityOcelot:
+  - OcelotEntity
+  - OCELOT
+EntityPainting:
+  - PaintingEntity
+  - PAINTING
+EntityPanda:
+  - PandaEntity
+  - PANDA
+EntityParrot:
+  - ParrotEntity
+  - PARROT
+EntityPig:
+  - PigEntity
+  - PIG
+EntityPillager:
+  - PillagerEntity
+  - PILLAGER
+EntityPufferfish:
+  - PufferfishEntity
+  - PUFFERFISH
+EntityPigZombie:
+  - ZombiePigmanEntity
+  - ZOMBIE_PIGMAN
+EntityPolarBear:
+  - PolarBearEntity
+  - POLAR_BEAR
+EntityTNTPrimed:
+  - TNTEntity
+  - TNT
+EntityRabbit:
+  - RabbitEntity
+  - RABBIT
+EntitySalmon:
+  - SalmonEntity
+  - SALMON
+EntitySheep:
+  - SheepEntity
+  - SHEEP
+EntityShoulderRiding: ShoulderRidingEntity
+EntityShulker:
+  - ShulkerEntity
+  - SHULKER
+EntityShulkerBullet:
+  - ShulkerBulletEntity
+  - SHULKER_BULLET
+EntitySilverfish:
+  - SilverfishEntity
+  - SILVERFISH
+EntitySkeleton:
+  - SkeletonEntity
+  - SKELETON
+EntitySkeletonHorse:
+  - SkeletonHorseEntity
+  - SKELETON_HORSE
+EntitySlime:
+  - SlimeEntity
+  - SLIME
+EntitySmallFireball:
+  - SmallFireballEntity
+  - SMALL_FIREBALL
+EntitySnowman:
+  - SnowGolemEntity
+  - SNOW_GOLEM
+EntitySnowball:
+  - SnowballEntity
+  - SNOWBALL
+EntitySpectralArrow:
+  - SpectralArrowEntity
+  - SPECTRAL_ARROW
+EntitySpellcasterIllager: SpellcastingIllagerEntity
+EntitySpider:
+  - SpiderEntity
+  - SPIDER
+EntitySquid:
+  - SquidEntity
+  - SQUID
+EntityStray:
+  - StrayEntity
+  - STRAY
+EntityTraderLlama:
+  - TraderLlamaEntity
+  - TRADER_LLAMA
+EntityTameable: TameableEntity
+EntityThrowable: ThrowableEntity
+EntityTropicalFish:
+  - TropicalFishEntity
+  - TROPICAL_FISH
+EntityTurtle:
+  - TurtleEntity
+  - TURTLE
+EntityEgg:
+  - EggEntity
+  - EGG
+EntityEnderPearl:
+  - EnderPearlEntity
+  - ENDER_PEARL
+EntityExpBottle:
+  - ExperienceBottleEntity
+  - EXPERIENCE_BOTTLE
+EntityPotion:
+  - PotionEntity
+  - POTION
+EntityTrident:
+  - TridentEntity
+  - TRIDENT
+EntityVex:
+  - VexEntity
+  - VEX
+EntityVillager:
+  - VillagerEntity
+  - VILLAGER
+EntityIronGolem:
+  - IronGolemEntity
+  - IRON_GOLEM
+EntityVindicator:
+  - VindicatorEntity
+  - VINDICATOR
+EntityWaterMob: WaterMobEntity
+EntityWanderingTrader:
+  - WanderingTraderEntity
+  - WANDERING_TRADER
+EntityWitch:
+  - WitchEntity
+  - WITCH
+EntityWither:
+  - WitherEntity
+  - WITHER
+EntityWitherSkeleton:
+  - WitherSkeletonEntity
+  - WITHER_SKELETON
+EntityWitherSkull:
+  - WitherSkullEntity
+  - WITHER_SKULL
+EntityWolf:
+  - WolfEntity
+  - WOLF
+EntityZombie:
+  - ZombieEntity
+  - ZOMBIE
+EntityZombieHorse:
+  - ZombieHorseEntity
+  - ZOMBIE_HORSE
+EntityZombieVillager:
+  - ZombieVillagerEntity
+  - ZOMBIE_VILLAGER
+EntityPhantom:
+  - PhantomEntity
+  - PHANTOM
+EntityRavager:
+  - RavagerEntity
+  - RAVAGER
+EntityLightningBolt:
+  - LightningBoltEntity
+  - LIGHTNING_BOLT
+EntityPlayer:
+  - PlayerEntity
+  - PLAYER
+EntityPlayerMP:
+  - ServerPlayerEntity
+  - PLAYER
+EntityFishHook:
+  - FishingBobberEntity
+  - FISHING_BOBBER

@@ -1,0 +1,3 @@
+templates:
+  - template: structure.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/structure/@NAMEStructure.java"

@@ -1,0 +1,1 @@
+/*@ItemStack*/((entity instanceof EntityLivingBase)?((EntityLivingBase)entity).getHeldItemOffhand():ItemStack.EMPTY)

@@ -1,0 +1,39 @@
+templates:
+  - template: plant.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/Block@NAME.java"
+  - template: json/plant_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+  - template: json/block.json.ftl
+    condition: "renderType #= 12"
+    writer: json
+    variables: "model=cross;txname=cross"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_cmodel.json.ftl
+    condition: "renderType #= 2"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
+  - template: json/block_states.json.ftl
+    writer: json
+    condition: ["renderType #?= 10,11,12,2", "plantType %= normal"]
+    variables: "variant=type/=dandelion"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states_gplant.json.ftl
+    writer: json
+    condition: ["renderType #?= 10,11,12,2", "plantType %= growapable"]
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states_plant_obj.json.ftl
+    writer: json
+    condition: ["renderType #= 3", "plantType %= normal"]
+    variables: "variant=type/=dandelion"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states_gplant_obj.json.ftl
+    writer: json
+    condition: ["renderType #= 3", "plantType %= growapable"]
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+
+localizationkeys:
+  - key: tile.@registryname.name
+    mapto: name

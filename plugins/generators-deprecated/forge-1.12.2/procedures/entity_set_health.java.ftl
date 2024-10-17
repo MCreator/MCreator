@@ -1,0 +1,1 @@
+if(entity instanceof EntityLivingBase)((EntityLivingBase)entity).setHealth((float)${input$health});
