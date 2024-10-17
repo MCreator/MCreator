@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry> {
 
 	private final JSpinner duration = new JSpinner(new SpinnerNumberModel(3600, 1, 72000, 1));
+	private final JCheckBox infinite = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner amplifier = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JComboBox<String> effect = new JComboBox<>();
 	private final JCheckBox ambient = L10N.checkbox("elementgui.common.enable");
@@ -59,6 +60,11 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/duration"),
 				L10N.label("elementgui.potion.duration")));
 		line.add(duration);
+
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/infinite"),
+				L10N.label("elementgui.potion.infinite")));
+		line.add(infinite);
+		infinite.addActionListener(e -> duration.setEnabled(!infinite.isSelected()));
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/amplifier"),
 				L10N.label("elementgui.potion.amplifier")));
@@ -84,7 +90,8 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
-		duration.setEnabled(enabled);
+		duration.setEnabled(enabled && !infinite.isSelected());
+		infinite.setEnabled(enabled);
 		amplifier.setEnabled(enabled);
 		effect.setEnabled(enabled);
 		ambient.setEnabled(enabled);
@@ -95,6 +102,7 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 		Potion.CustomEffectEntry entry = new Potion.CustomEffectEntry();
 		entry.effect = new EffectEntry(workspace, (String) effect.getSelectedItem());
 		entry.duration = (int) duration.getValue();
+		entry.infinite = infinite.isSelected();
 		entry.amplifier = (int) amplifier.getValue();
 		entry.ambient = ambient.isSelected();
 		entry.showParticles = showParticles.isSelected();
@@ -104,9 +112,12 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 	@Override public void setEntry(Potion.CustomEffectEntry e) {
 		effect.setSelectedItem(e.effect.getUnmappedValue());
 		duration.setValue(e.duration);
+		infinite.setSelected(e.infinite);
 		amplifier.setValue(e.amplifier);
 		ambient.setSelected(e.ambient);
 		showParticles.setSelected(e.showParticles);
+
+		duration.setEnabled(!e.infinite);
 	}
 
 }
