@@ -2,42 +2,12 @@ _default: ""
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached
-BERRIES:
-  - BlockStateProperties.BERRIES
-  - berries
-BLOOM:
-  - BlockStateProperties.BLOOM
-  - bloom
 BOTTOM:
   - BlockStateProperties.BOTTOM
   - bottom
-CAN_SUMMON:
-  - BlockStateProperties.CAN_SUMMON
-  - can_summon
-CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
-  - slot_0_occupied
-CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
-  - slot_1_occupied
-CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
-  - slot_2_occupied
-CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
-  - slot_3_occupied
-CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
-  - slot_4_occupied
-CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
-  - slot_5_occupied
 CONDITIONAL:
   - BlockStateProperties.CONDITIONAL
   - conditional
-CRACKED:
-  - BlockStateProperties.CRACKED
-  - cracked
 DISARMED:
   - BlockStateProperties.DISARMED
   - disarmed
@@ -59,9 +29,6 @@ FALLING:
 HANGING:
   - BlockStateProperties.HANGING
   - hanging
-HAS_BOOK:
-  - BlockStateProperties.HAS_BOOK
-  - has_book
 HAS_BOTTLE_0:
   - BlockStateProperties.HAS_BOTTLE_0
   - has_bottle_0
@@ -74,6 +41,9 @@ HAS_BOTTLE_2:
 HAS_RECORD:
   - BlockStateProperties.HAS_RECORD
   - has_record
+HAS_BOOK:
+  - BlockStateProperties.HAS_BOOK
+  - has_book
 INVERTED:
   - BlockStateProperties.INVERTED
   - inverted
@@ -101,9 +71,6 @@ POWERED:
 SHORT:
   - BlockStateProperties.SHORT
   - short
-SHRIEKING:
-  - BlockStateProperties.SHRIEKING
-  - shrieking
 SIGNAL_FIRE:
   - BlockStateProperties.SIGNAL_FIRE
   - signal_fire
@@ -119,6 +86,26 @@ UNSTABLE:
 WATERLOGGED:
   - BlockStateProperties.WATERLOGGED
   - waterlogged
+BERRIES:
+  - BlockStateProperties.BERRIES
+  - berries
+BLOOM:
+  - BlockStateProperties.BLOOM
+  - bloom
+SHRIEKING:
+  - BlockStateProperties.SHRIEKING
+  - shrieking
+CAN_SUMMON:
+  - BlockStateProperties.CAN_SUMMON
+  - can_summon
+HORIZONTAL_AXIS:
+  - BlockStateProperties.HORIZONTAL_AXIS
+  - axis
+  - Direction.Axis
+AXIS:
+  - BlockStateProperties.AXIS
+  - axis
+  - Direction.Axis
 UP:
   - BlockStateProperties.UP
   - up
@@ -137,7 +124,81 @@ SOUTH:
 WEST:
   - BlockStateProperties.WEST
   - west
-
+FACING:
+  - BlockStateProperties.FACING
+  - facing
+  - Direction
+FACING_HOPPER:
+  - BlockStateProperties.FACING_HOPPER
+  - facing
+  - Direction
+HORIZONTAL_FACING:
+  - BlockStateProperties.HORIZONTAL_FACING
+  - facing
+  - Direction
+FLOWER_AMOUNT:
+  - BlockStateProperties.FLOWER_AMOUNT
+  - flower_amount
+ORIENTATION:
+  - BlockStateProperties.ORIENTATION
+  - orientation
+  - FrontAndTop
+ATTACH_FACE:
+  - BlockStateProperties.ATTACH_FACE
+  - face
+  - AttachFace
+BELL_ATTACHMENT:
+  - BlockStateProperties.BELL_ATTACHMENT
+  - attachment
+  - BellAttachType
+EAST_WALL:
+  - BlockStateProperties.EAST_WALL
+  - east
+  - WallSide
+NORTH_WALL:
+  - BlockStateProperties.NORTH_WALL
+  - north
+  - WallSide
+SOUTH_WALL:
+  - BlockStateProperties.SOUTH_WALL
+  - south
+  - WallSide
+WEST_WALL:
+  - BlockStateProperties.WEST_WALL
+  - west
+  - WallSide
+EAST_REDSTONE:
+  - BlockStateProperties.EAST_REDSTONE
+  - east
+  - RedstoneSide
+NORTH_REDSTONE:
+  - BlockStateProperties.NORTH_REDSTONE
+  - north
+  - RedstoneSide
+SOUTH_REDSTONE:
+  - BlockStateProperties.SOUTH_REDSTONE
+  - south
+  - RedstoneSide
+WEST_REDSTONE:
+  - BlockStateProperties.WEST_REDSTONE
+  - west
+  - RedstoneSide
+DOUBLE_BLOCK_HALF:
+  - BlockStateProperties.DOUBLE_BLOCK_HALF
+  - half
+  - DoubleBlockHalf
+HALF:
+  - BlockStateProperties.HALF
+  - half
+  - Half
+RAIL_SHAPE:
+  - BlockStateProperties.RAIL_SHAPE
+  - shape
+  - RailShape
+RAIL_SHAPE_STRAIGHT:
+  - BlockStateProperties.RAIL_SHAPE_STRAIGHT
+  - shape
+  - RailShape
 AGE_1:
   - BlockStateProperties.AGE_1
   - age
@@ -174,15 +235,9 @@ DELAY:
 DISTANCE:
   - BlockStateProperties.DISTANCE
   - distance
-DUSTED:
-  - BlockStateProperties.DUSTED
-  - dusted
 EGGS:
   - BlockStateProperties.EGGS
   - eggs
-FLOWER_AMOUNT:
-  - BlockStateProperties.FLOWER_AMOUNT
-  - flower_amount
 HATCH:
   - BlockStateProperties.HATCH
   - hatch
@@ -216,108 +271,42 @@ PICKLES:
 POWER:
   - BlockStateProperties.POWER
   - power
+STAGE:
+  - BlockStateProperties.STAGE
+  - stage
+STABILITY_DISTANCE:
+  - BlockStateProperties.STABILITY_DISTANCE
+  - distance
 RESPAWN_ANCHOR_CHARGES:
   - BlockStateProperties.RESPAWN_ANCHOR_CHARGES
   - charges
 ROTATION_16:
   - BlockStateProperties.ROTATION_16
   - rotation
-STABILITY_DISTANCE:
-  - BlockStateProperties.STABILITY_DISTANCE
-  - distance
-STAGE:
-  - BlockStateProperties.STAGE
-  - stage
-
-FACING:
-  - BlockStateProperties.FACING
-  - facing
-  - Direction
-FACING_HOPPER:
-  - BlockStateProperties.FACING_HOPPER
-  - facing
-  - Direction
-HORIZONTAL_FACING:
-  - BlockStateProperties.HORIZONTAL_FACING
-  - facing
-  - Direction
-VERTICAL_DIRECTION:
-  - BlockStateProperties.VERTICAL_DIRECTION
-  - vertical_direction
-  - Direction
-AXIS:
-  - BlockStateProperties.AXIS
-  - axis
-  - Direction.Axis
-HORIZONTAL_AXIS:
-  - BlockStateProperties.HORIZONTAL_AXIS
-  - axis
-  - Direction.Axis
-
-ATTACH_FACE:
-  - BlockStateProperties.ATTACH_FACE
-  - face
-  - AttachFace
-BAMBOO_LEAVES:
-  - BlockStateProperties.BAMBOO_LEAVES
-  - leaves
-  - BambooLeaves
 BED_PART:
   - BlockStateProperties.BED_PART
   - part
   - BedPart
-BELL_ATTACHMENT:
-  - BlockStateProperties.BELL_ATTACHMENT
-  - attachment
-  - BellAttachType
 CHEST_TYPE:
   - BlockStateProperties.CHEST_TYPE
   - type
   - ChestType
-DOOR_HINGE:
-  - BlockStateProperties.DOOR_HINGE
-  - hinge
-  - DoorHingeSide
-DOUBLE_BLOCK_HALF:
-  - BlockStateProperties.DOUBLE_BLOCK_HALF
-  - half
-  - DoubleBlockHalf
-DRIPSTONE_THICKNESS:
-  - BlockStateProperties.DRIPSTONE_THICKNESS
-  - thickness
-  - DripstoneThickness
-HALF:
-  - BlockStateProperties.HALF
-  - half
-  - Half
 MODE_COMPARATOR:
   - BlockStateProperties.MODE_COMPARATOR
   - mode
   - ComparatorMode
+DOOR_HINGE:
+  - BlockStateProperties.DOOR_HINGE
+  - hinge
+  - DoorHingeSide
 NOTEBLOCK_INSTRUMENT:
   - BlockStateProperties.NOTEBLOCK_INSTRUMENT
   - instrument
   - NoteBlockInstrument
-ORIENTATION:
-  - BlockStateProperties.ORIENTATION
-  - orientation
-  - FrontAndTop
 PISTON_TYPE:
   - BlockStateProperties.PISTON_TYPE
   - type
   - PistonType
-RAIL_SHAPE:
-  - BlockStateProperties.RAIL_SHAPE
-  - shape
-  - RailShape
-RAIL_SHAPE_STRAIGHT:
-  - BlockStateProperties.RAIL_SHAPE_STRAIGHT
-  - shape
-  - RailShape
-SCULK_SENSOR_PHASE:
-  - BlockStateProperties.SCULK_SENSOR_PHASE
-  - sculk_sensor_phase
-  - SculkSensorPhase
 SLAB_TYPE:
   - BlockStateProperties.SLAB_TYPE
   - type
@@ -330,39 +319,47 @@ STRUCTUREBLOCK_MODE:
   - BlockStateProperties.STRUCTUREBLOCK_MODE
   - mode
   - StructureMode
+BAMBOO_LEAVES:
+  - BlockStateProperties.BAMBOO_LEAVES
+  - leaves
+  - BambooLeaves
 TILT:
   - BlockStateProperties.TILT
   - tilt
   - Tilt
-NORTH_WALL:
-  - BlockStateProperties.NORTH_WALL
-  - north
-  - WallSide
-SOUTH_WALL:
-  - BlockStateProperties.SOUTH_WALL
-  - south
-  - WallSide
-WEST_WALL:
-  - BlockStateProperties.WEST_WALL
-  - west
-  - WallSide
-EAST_WALL:
-  - BlockStateProperties.EAST_WALL
-  - east
-  - WallSide
-NORTH_REDSTONE:
-  - BlockStateProperties.NORTH_REDSTONE
-  - north
-  - RedstoneSide
-SOUTH_REDSTONE:
-  - BlockStateProperties.SOUTH_REDSTONE
-  - south
-  - RedstoneSide
-WEST_REDSTONE:
-  - BlockStateProperties.WEST_REDSTONE
-  - west
-  - RedstoneSide
-EAST_REDSTONE:
-  - BlockStateProperties.EAST_REDSTONE
-  - east
-  - RedstoneSide
+VERTICAL_DIRECTION:
+  - BlockStateProperties.VERTICAL_DIRECTION
+  - vertical_direction
+  - Direction
+DRIPSTONE_THICKNESS:
+  - BlockStateProperties.DRIPSTONE_THICKNESS
+  - thickness
+  - DripstoneThickness
+SCULK_SENSOR_PHASE:
+  - BlockStateProperties.SCULK_SENSOR_PHASE
+  - sculk_sensor_phase
+  - SculkSensorPhase
+CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
+  - slot_0_occupied
+CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
+  - slot_1_occupied
+CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
+  - slot_2_occupied
+CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
+  - slot_3_occupied
+CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
+  - slot_4_occupied
+CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
+  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
+  - slot_5_occupied
+DUSTED:
+  - BlockStateProperties.DUSTED
+  - dusted
+CRACKED:
+  - BlockStateProperties.CRACKED
+  - cracked
