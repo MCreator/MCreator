@@ -1,0 +1,1 @@
+entity.world.removeEntity(entity);

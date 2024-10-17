@@ -1,0 +1,56 @@
+defaultvalue: 0
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: ${name}
+    set: ${name} = ${opt.removeParentheses(value)};
+  global_session:
+    init: public static double ${var.getName()} = ${var.getValue()};
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
+  global_world:
+    init: public double ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    get: ${JavaModName}Variables.WorldVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+  global_map:
+    init: public double ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    get: ${JavaModName}Variables.MapVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+  player_lifetime:
+    init: public double ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    get: |
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        double _setval = ${opt.removeParentheses(value)};
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(${entity});
+        });
+      }
+  player_persistent:
+    init: public double ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    get: |
+      ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
+        .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
+    set: |
+      {
+        double _setval = ${opt.removeParentheses(value)};
+        ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+          capability.${name} = _setval;
+          capability.syncPlayerVariables(${entity});
+        });
+      }

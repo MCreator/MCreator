@@ -1,0 +1,79 @@
+name: Minecraft Forge for @minecraft (@buildfileversion)
+basefeatures: [global_variables, model_json, model_obj, model_java, link, i18n, structures, textures, sounds]
+partial_support: [loottable, recipe]
+status: deprecated
+minecraft: 1.12.2
+flavor: forge
+buildfileversion: 14.23.5.2768
+
+start_id_map:
+  dimension: 2
+
+gradle:
+  setup_task: eclipse
+  run_client: runClient
+  run_server: runServer
+  export_file: "build/libs/modid-1.0.jar"
+
+source_root: "@WORKSPACEROOT/src/main/java"
+res_root: "@WORKSPACEROOT/src/main/resources"
+mod_assets_root: "@RESROOT/assets/@modid"
+mod_data_root: "@RESROOT/data/@modid"
+
+base_templates:
+  - template: modbase/modelements.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/Elements@JavaModName.java"
+  - template: modbase/mod.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
+    canLock: true
+  - template: modbase/iproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/IProxy@JavaModName.java"
+    canLock: true
+  - template: modbase/serverproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/ServerProxy@JavaModName.java"
+    canLock: true
+  - template: modbase/clientproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/ClientProxy@JavaModName.java"
+    canLock: true
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+  - template: modbase/pack.mcmeta.ftl
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
+  - template: modbase/mcmod.info.ftl
+    writer: json
+    name: "@RESROOT/mcmod.info"
+
+language_file:
+  format: keyvalue
+  root_folder: "@MODASSETSROOT/lang/"
+  langfile_name: "@langname.lang"
+
+resources_setup_tasks:
+  - task: sync_dir
+    from: "@TEXTURES_OTHER"
+    to: "@MODASSETSROOT/textures"
+  - task: sync_dir
+    from: "@TEXTURES_BLOCKS"
+    to: "@MODASSETSROOT/textures/blocks"
+  - task: sync_dir
+    from: "@TEXTURES_ITEMS"
+    to: "@MODASSETSROOT/textures/items"
+  - task: sync_dir
+    from: "@TEXTURES_ARMOR"
+    to: "@MODASSETSROOT/textures/models/armor"
+  - task: sync_dir
+    from: "@SOUNDS"
+    to: "@MODASSETSROOT/sounds"
+  - task: sync_dir
+    from: "@STRUCTURES"
+    to: "@MODASSETSROOT/structures"
+  - task: copy_models
+    type: OBJ
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

@@ -1,0 +1,1 @@
+this.tasks.addTask(${customBlockIndex+1},new EntityAIFollow(this,(float)${field$speed}, ${field$maxrange}, ${field$followarea}));

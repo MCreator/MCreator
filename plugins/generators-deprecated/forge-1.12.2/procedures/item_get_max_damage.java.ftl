@@ -1,0 +1,1 @@
+(itemstack.getMaxDamage())

@@ -1,0 +1,29 @@
+templates:
+  - template: feature/feature.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@NAMEFeature.java"
+    condition: hasGenerationConditions()
+  - template: json/feature_biome_modifier.json.ftl
+    writer: json
+    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+    condition: hasPlacedFeature()
+  - template: feature/configured_feature.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
+    condition: hasConfiguredFeature()
+  - template: feature/placed_feature.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+    condition: hasPlacedFeature()
+
+# Templates for custom structure feature
+global_templates:
+  - template: feature/structure_feature.java.ftl
+    writer: java
+    condition: "${w.getElementsOfType('feature')?filter(e -> e.getMetadata('has_nbt_structure')??)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/StructureFeature.java"
+    hidden: true
+  - template: feature/structure_feature_configuration.java.ftl
+    writer: java
+    condition: "${w.getElementsOfType('feature')?filter(e -> e.getMetadata('has_nbt_structure')??)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/configurations/StructureFeatureConfiguration.java"
+    hidden: true

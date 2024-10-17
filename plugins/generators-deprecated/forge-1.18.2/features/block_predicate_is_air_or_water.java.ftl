@@ -1,0 +1,1 @@
+BlockPredicate.ONLY_IN_AIR_OR_WATER_PREDICATE

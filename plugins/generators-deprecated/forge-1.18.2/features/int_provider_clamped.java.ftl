@@ -1,0 +1,1 @@
+ClampedInt.of(${input$toClamp}, ${field$min}, ${field$max})

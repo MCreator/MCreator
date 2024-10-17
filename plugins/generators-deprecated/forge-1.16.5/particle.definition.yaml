@@ -1,0 +1,6 @@
+templates:
+  - template: particle.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/particle/@NAMEParticle.java"
+  - template: json/particle.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/particles/@registryname.json"

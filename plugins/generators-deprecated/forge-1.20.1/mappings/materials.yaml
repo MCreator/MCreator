@@ -1,0 +1,22 @@
+# This is backwards-compatibility mapping for materials that no longer exist.
+# Parameters already controlled by other UI elements (e.g. replaceable, redstone conductor, push reaction)
+# are not covered here and should be manually ported by the user.
+_default: ""
+NONE: ""
+AIR: .air()
+STRUCTURE_VOID: .air()
+CARPET: .ignitedByLava()
+OCEAN_PLANT: .instrument(NoteBlockInstrument.BASEDRUM)
+TALL_PLANTS: .ignitedByLava()
+WATER: .liquid()
+BUBBLE_COLUMN: .liquid()
+LAVA: .liquid()
+SAND: .instrument(NoteBlockInstrument.SNARE)
+WOOD: .ignitedByLava().instrument(NoteBlockInstrument.BASS)
+BAMBOO_SAPLING: .ignitedByLava()
+BAMBOO: .ignitedByLava()
+CLOTH: .ignitedByLava()
+TNT: .ignitedByLava()
+LEAVES: .ignitedByLava()
+GLASS: .instrument(NoteBlockInstrument.HAT)
+ROCK: .instrument(NoteBlockInstrument.BASEDRUM)

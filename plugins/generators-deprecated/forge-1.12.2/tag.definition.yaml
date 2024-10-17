@@ -1,0 +1,7 @@
+templates:
+  - template: tag.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/util/OreDict@NAME.java"
+    condition: "type %= Items"
+  - template: tag.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/util/OreDict@NAME.java"
+    condition: "type %= Blocks"

@@ -1,0 +1,1 @@
+(${opt.removeParentheses(value)}).trim()

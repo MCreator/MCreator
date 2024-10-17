@@ -1,0 +1,1 @@
+entity.setCustomNameTag(${input$displayname});

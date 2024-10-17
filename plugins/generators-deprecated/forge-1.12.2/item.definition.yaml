@@ -1,0 +1,23 @@
+templates:
+  - template: item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/Item@NAME.java"
+  - template: json/item.json.ftl
+    writer: json
+    condition: "renderType #= 0"
+    exclude: "@MODASSETSROOT/blockstates/@registryname.json"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: "renderType #= 1"
+    exclude: "@MODASSETSROOT/blockstates/@registryname.json"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_cmodel_obj.json.ftl
+    writer: json
+    condition: "renderType #= 2"
+    variables: "type=item"
+    exclude: "@MODASSETSROOT/models/item/@registryname.json"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+
+localizationkeys:
+  - key: item.@registryname.name
+    mapto: name

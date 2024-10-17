@@ -1,0 +1,7 @@
+templates:
+  - template: mob.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/Entity@NAME.java"
+
+localizationkeys:
+  - key: entity.@registryname.name
+    mapto: mobName

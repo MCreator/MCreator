@@ -1,0 +1,1 @@
+(entity.canUseCommand((int) ${input$permissionlevel}, ""))

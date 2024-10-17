@@ -1,0 +1,1 @@
+entity.setPositionAndUpdate(${input$x},${input$y},${input$z});

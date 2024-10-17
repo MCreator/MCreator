@@ -1,0 +1,1 @@
+world.setWorldTime((int) ${input$time});

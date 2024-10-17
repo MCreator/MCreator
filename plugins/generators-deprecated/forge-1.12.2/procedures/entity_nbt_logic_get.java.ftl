@@ -1,0 +1,1 @@
+(entity.getEntityData().getBoolean(${input$tagName}))

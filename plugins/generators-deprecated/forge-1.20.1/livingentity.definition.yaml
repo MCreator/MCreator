@@ -1,0 +1,31 @@
+templates:
+  - template: livingentity/livingentity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: livingentity/livingentity_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
+  - template: livingentity/livingentity_projectile.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntityProjectile.java"
+    condition: hasCustomProjectile()
+  - template: json/spawn_egg.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_spawn_egg.json"
+    condition: hasSpawnEgg
+
+  - template: livingentity/entity_spawn_biome_modifier.json.ftl
+    writer: json
+    condition: spawnThisMob
+    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+
+unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
+
+tags:
+  - tag: ENTITIES:minecraft:raiders
+    condition: "${data.mobBehaviourType == 'Raider'}"
+
+localizationkeys:
+  - key: item.@modid.@registryname_spawn_egg
+    mapto: mobName
+    suffix: " Spawn Egg"
+    condition: hasSpawnEgg
+  - key: entity.@modid.@registryname
+    mapto: mobName

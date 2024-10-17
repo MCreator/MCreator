@@ -1,0 +1,1 @@
+this.tasks.addTask(${customBlockIndex+1},new EntityAIWander(this, ${field$speed}));

@@ -1,0 +1,3 @@
+{
+    "trigger": "minecraft:impossible"
+}

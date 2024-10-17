@@ -1,0 +1,1 @@
+BlockPredicate.not(${input$condition})

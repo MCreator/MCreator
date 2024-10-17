@@ -1,0 +1,13 @@
+templates:
+  - template: fluid.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: json/bucket.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
+
+localizationkeys:
+  - key: fluid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname_bucket
+    mapto: name
+    suffix: " Bucket"

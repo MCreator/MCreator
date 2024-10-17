@@ -1,0 +1,1 @@
+${input$entity}.setMotion(${input$vx},${input$vy},${input$vz});

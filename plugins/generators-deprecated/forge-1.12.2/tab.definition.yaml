@@ -1,0 +1,7 @@
+templates:
+  - template: tab.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/creativetab/Tab@NAME.java"
+
+localizationkeys:
+  - key: itemGroup.tab@registryname
+    mapto: name

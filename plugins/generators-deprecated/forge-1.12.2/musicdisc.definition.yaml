@@ -1,0 +1,12 @@
+templates:
+  - template: musicdisc.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/Item@NAME.java"
+  - template: json/item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+localizationkeys:
+  - key: item.@registryname.name
+    mapto: name
+  - key: item.record.@registryname.desc
+    mapto: description
