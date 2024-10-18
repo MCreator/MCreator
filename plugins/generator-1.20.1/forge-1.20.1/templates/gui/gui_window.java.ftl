@@ -134,23 +134,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Sprite") as component>
-			<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
-						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-						<@getSpriteByIndex component "width"/>, 0,
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
-			<#else>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
-						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-						0, <@getSpriteByIndex component "height"/>,
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
-			</#if>
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
+					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+						<@getSpriteByIndex component "width"/>, 0
+					<#else>
+						0, <@getSpriteByIndex component "height"/>
+					</#if>,
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+					${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
 		RenderSystem.disableBlend();

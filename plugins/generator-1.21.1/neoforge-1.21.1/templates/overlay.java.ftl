@@ -87,25 +87,19 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>}</#if>
             </#list>
 
-        		<#list data.getComponentsOfType("Sprite") as component>
-        			<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
-        				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
-        						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
-        						<@getSpriteByIndex component "width"/>, 0,
-        						<@calculatePosition component/>,
-        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-        				<#if hasProcedure(component.displayCondition)>}</#if>
-        			<#else>
-        				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-        					event.getGuiGraphics().blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
-        						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
-        						0, <@getSpriteByIndex component "height"/>,
-        						<@calculatePosition component/>,
-        						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-        				<#if hasProcedure(component.displayCondition)>}</#if>
-        			</#if>
-        		</#list>
+        	<#list data.getComponentsOfType("Sprite") as component>
+				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+					event.getGuiGraphics().blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
+						<@calculatePosition component/>,
+						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+							<@getSpriteByIndex component "width"/>, 0
+						<#else>
+							0, <@getSpriteByIndex component "height"/>
+						</#if>,
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
+        	</#list>
 
             <#list data.getComponentsOfType("Label") as component>
                 <#if hasProcedure(component.displayCondition)>

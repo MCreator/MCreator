@@ -137,23 +137,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Sprite") as component>
-			<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
-						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
-						<@getSpriteByIndex component "width"/>, 0,
-						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
-			<#else>
-				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					guiGraphics.blitSprite(ResourceLocation.parse("${modid}:screens/${component.sprite?remove_ending(".png")}"),
-						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())},
-						0, <@getSpriteByIndex component "height"/>,
-						this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-				<#if hasProcedure(component.displayCondition)>}</#if>
-			</#if>
+			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
+					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
+						<@getSpriteByIndex component "width"/>, 0
+					<#else>
+						0, <@getSpriteByIndex component "height"/>
+					</#if>,
+					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+					${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
+			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
 
 		RenderSystem.disableBlend();
