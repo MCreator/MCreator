@@ -343,7 +343,19 @@ e -> {
 
 <#macro getSpriteByIndex component dim>
 	<#if hasProcedure(component.spriteIndex)>
-		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> * <#if dim == "width">${component.getWidth(w.getWorkspace())}<#else>${component.getHeight(w.getWorkspace())}</#if>, 0, <#if dim == "width">${component.getTextureWidth(w.getWorkspace()) - component.getWidth(w.getWorkspace())}<#else>${component.getTextureHeight(w.getWorkspace()) - component.getHeight(w.getWorkspace())}</#if>)
+		Mth.clamp((int) <@procedureOBJToNumberCode component.spriteIndex/> *
+			<#if dim == "width">
+				${component.getWidth(w.getWorkspace())}
+			<#else>
+				${component.getHeight(w.getWorkspace())}
+			</#if>,
+			0,
+			<#if dim == "width">
+				${component.getTextureWidth(w.getWorkspace()) - component.getWidth(w.getWorkspace())}
+			<#else>
+				${component.getTextureHeight(w.getWorkspace()) - component.getHeight(w.getWorkspace())}
+			</#if>
+		)
 	<#else>
 		<#if dim == "width">
 			${component.getWidth(w.getWorkspace()) * component.spriteIndex.getFixedValue()}
