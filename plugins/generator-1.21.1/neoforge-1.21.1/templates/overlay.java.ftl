@@ -89,8 +89,7 @@ package ${package}.client.screens;
 
         	<#list data.getComponentsOfType("Sprite") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					event.getGuiGraphics().blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
-						<@calculatePosition component/>,
+					event.getGuiGraphics().blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"), <@calculatePosition component/>,
 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 							<@getSpriteByIndex component "width"/>, 0
 						<#else>
