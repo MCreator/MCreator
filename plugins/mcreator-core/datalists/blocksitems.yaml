@@ -1,6 +1,6 @@
 - Blocks.AIR:
   readable_name: "Air"
-  type: block_without_item
+  type: block
   texture: AIR
 
 - Blocks.VOID_AIR:
