@@ -196,6 +196,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			}
 
 			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+				this.root().getAllParts().forEach(ModelPart::resetPose);
 				<#list data.animations as animation>
 					<#if !animation.walking>
 						this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
