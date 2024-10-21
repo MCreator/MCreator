@@ -529,7 +529,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		animationsPane.add("Center", animations);
+		JComponent animationsList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_animations"),
+						L10N.label("elementgui.living_entity.model_animations")), animations);
+		animationsList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		animationsPane.add("Center", animationsList);
 
 		JPanel entityDataListPanel = new JPanel(new GridLayout());
 

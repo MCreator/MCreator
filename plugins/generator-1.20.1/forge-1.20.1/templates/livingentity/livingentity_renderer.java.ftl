@@ -197,7 +197,20 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 				<#list data.animations as animation>
-				this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks);
+					<#if !animation.walking>
+						this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
+					<#else>
+						<#if hasProcedure(animation.condition)>
+						if (<@procedureCode animation.condition, {
+							"x": "entity.getX()",
+							"y": "entity.getY()",
+							"z": "entity.getZ()",
+							"entity": "entity",
+							"world": "entity.level()"
+							}, false/>)
+						</#if>
+						this.animateWalk(${animation.animation}, limbSwing, limbSwingAmount, ${animation.speed}f, ${animation.amplitude}f);
+					</#if>
 				</#list>
 			}
 		};

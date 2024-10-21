@@ -74,7 +74,7 @@ import java.util.*;
 	@ModElementReference @TextureReference(TextureType.ENTITY) @ResourceReference("model")
 	public List<ModelLayerEntry> modelLayers;
 
-	@ModElementReference @ResourceReference("animation") public List<PlayableAnimation> animations;
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -311,10 +311,16 @@ import java.util.*;
 		}
 	}
 
-	public static class PlayableAnimation {
+	public static class AnimationEntry {
 
 		public Animation animation;
+		public double speed;
+
 		public Procedure condition;
+
+		// Walking animation only
+		public boolean walking;
+		public double amplitude;
 
 	}
 

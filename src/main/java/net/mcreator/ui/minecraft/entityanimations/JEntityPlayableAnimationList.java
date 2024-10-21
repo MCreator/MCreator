@@ -31,7 +31,7 @@ import javax.swing.*;
 import java.util.List;
 
 public class JEntityPlayableAnimationList extends
-		JSimpleEntriesList<JEntityPlayableAnimationListEntry, LivingEntity.PlayableAnimation> {
+		JSimpleEntriesList<JEntityPlayableAnimationListEntry, LivingEntity.AnimationEntry> {
 
 	public JEntityPlayableAnimationList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);

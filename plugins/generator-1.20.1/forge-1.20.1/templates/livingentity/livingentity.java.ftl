@@ -61,8 +61,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 	</#list>
 
+	<#assign hasPlayableAnimations = false>
 	<#list data.animations as animation>
-	public final AnimationState animationState${animation?index} = new AnimationState();
+		<#if !animation.walking>
+		public final AnimationState animationState${animation?index} = new AnimationState();
+		<#assign hasPlayableAnimations = true>
+		</#if>
 	</#list>
 
 	<#if data.isBoss>
@@ -607,18 +611,23 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	<#if data.animations?has_content>
+	<#if hasPlayableAnimations>
 	@Override public void tick() {
 		super.tick();
 		if (this.level().isClientSide()) {
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Entity entity = this;
-			Level world = this.level();
 			<#list data.animations as animation>
-				<#if hasProcedure(animation.condition)>
-				this.animationState${animation?index}.animateWhen(<@procedureOBJToConditionCode animation.condition/>, this.tickCount);
+				<#if !animation.walking>
+					<#if hasProcedure(animation.condition)>
+					this.animationState${animation?index}.animateWhen(<@procedureCode animation.condition, {
+						"x": "this.getX()",
+						"y": "this.getY()",
+						"z": "this.getZ()",
+						"entity": "this",
+						"world": "this.level()"
+					}, false/>, this.tickCount);
+					<#else>
+					this.animationState${animation?index}.animateWhen(true, this.tickCount);
+					</#if>
 				</#if>
 			</#list>
 		}

@@ -30,7 +30,6 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -42,7 +41,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEntity.PlayableAnimation>
+public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEntity.AnimationEntry>
 		implements IValidable {
 
 	private static final DataListEntry dummy = new DataListEntry.Dummy("No animation");
@@ -51,6 +50,11 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 
 	private final DataListComboBox animation;
 	private final ProcedureSelector condition;
+
+	private final JSpinner speed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
+	private final JSpinner amplitude = new JSpinner(new SpinnerNumberModel(2.5, 0, 1000, 0.1));
+
+	private final JCheckBox walking = new JCheckBox(L10N.t("elementgui.living_entity.animation_walking"));
 
 	public JEntityPlayableAnimationListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JEntityPlayableAnimationListEntry> entryList) {
@@ -62,8 +66,7 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 		condition = new ProcedureSelector(gui.withEntry("entity/condition_animation"), mcreator,
 				L10N.t("elementgui.living_entity.animation_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline()
-				.setDefaultName(L10N.t("elementgui.living_entity.animation_external_trigger"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		animation = new DataListComboBox(mcreator);
 
@@ -77,7 +80,21 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 		line.add(L10N.label("elementgui.living_entity.animation"));
 		line.add(animation);
 
+		line.add(L10N.label("elementgui.living_entity.animation_speed"));
+		line.add(speed);
+
 		line.add(condition);
+
+		line.add(walking);
+
+		line.add(L10N.label("elementgui.living_entity.animation_amplitude"));
+		line.add(amplitude);
+
+		amplitude.setEnabled(walking.isSelected());
+		walking.addActionListener(e -> amplitude.setEnabled(walking.isSelected()));
+
+		speed.setPreferredSize(new Dimension(100, 36));
+		amplitude.setPreferredSize(new Dimension(100, 36));
 	}
 
 	@Override public void reloadDataLists() {
@@ -90,18 +107,28 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 	@Override protected void setEntryEnabled(boolean enabled) {
 		animation.setEnabled(enabled);
 		condition.setEnabled(enabled);
+		speed.setEnabled(enabled);
+		walking.setEnabled(enabled);
+		amplitude.setEnabled(enabled && walking.isSelected());
 	}
 
-	@Override public LivingEntity.PlayableAnimation getEntry() {
-		LivingEntity.PlayableAnimation entry = new LivingEntity.PlayableAnimation();
+	@Override public LivingEntity.AnimationEntry getEntry() {
+		LivingEntity.AnimationEntry entry = new LivingEntity.AnimationEntry();
 		entry.animation = new Animation(mcreator.getWorkspace(), animation.getSelectedItem());
 		entry.condition = condition.getSelectedProcedure();
+		entry.speed = (double) speed.getValue();
+		entry.amplitude = (double) amplitude.getValue();
+		entry.walking = walking.isSelected();
 		return entry;
 	}
 
-	@Override public void setEntry(LivingEntity.PlayableAnimation e) {
+	@Override public void setEntry(LivingEntity.AnimationEntry e) {
 		animation.setSelectedItem(e.animation);
 		condition.setSelectedProcedure(e.condition);
+		speed.setValue(e.speed);
+		amplitude.setValue(e.amplitude);
+		walking.setSelected(e.walking);
+		amplitude.setEnabled(walking.isSelected());
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
