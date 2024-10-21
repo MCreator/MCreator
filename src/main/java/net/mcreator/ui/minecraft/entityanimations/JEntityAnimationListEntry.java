@@ -26,12 +26,11 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.IValidable;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
@@ -46,7 +45,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 	private final ProcedureSelector condition;
 
 	private final JSpinner speed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner amplitude = new JSpinner(new SpinnerNumberModel(2.5, 0, 1000, 0.1));
+	private final JSpinner amplitude = new JSpinner(new SpinnerNumberModel(1, 0, 1000, 0.1));
 
 	private final JCheckBox walking = new JCheckBox(L10N.t("elementgui.living_entity.animation_walking"));
 
@@ -64,17 +63,20 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 
 		animation = new DataListComboBox(mcreator);
 
-		line.add(L10N.label("elementgui.living_entity.animation"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation"),
+				L10N.label("elementgui.living_entity.animation")));
 		line.add(animation);
 
-		line.add(L10N.label("elementgui.living_entity.animation_speed"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation_speed"),
+				L10N.label("elementgui.living_entity.animation_speed")));
 		line.add(speed);
 
 		line.add(condition);
 
-		line.add(walking);
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation_walking"), walking));
 
-		line.add(L10N.label("elementgui.living_entity.animation_amplitude"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation_amplitude"),
+				L10N.label("elementgui.living_entity.animation_amplitude")));
 		line.add(amplitude);
 
 		amplitude.setEnabled(walking.isSelected());
