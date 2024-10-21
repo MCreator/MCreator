@@ -208,7 +208,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 							"z": "entity.getZ()",
 							"entity": "entity",
 							"world": "entity.level()"
-							}, false/>)
+						}, false/>)
 						</#if>
 						this.animateWalk(${animation.animation}, limbSwing, limbSwingAmount, ${animation.speed}f, ${animation.amplitude}f);
 					</#if>
