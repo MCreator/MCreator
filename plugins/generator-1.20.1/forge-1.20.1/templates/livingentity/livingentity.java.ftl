@@ -61,6 +61,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 	</#list>
 
+	<#list data.animations as animation>
+	public final AnimationState animationState${animation?index} = new AnimationState();
+	</#list>
+
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
 		ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
@@ -602,6 +606,24 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}/>
 	}
     </#if>
+
+	<#if data.animations?has_content>
+	@Override public void tick() {
+		super.tick();
+		if (this.level().isClientSide()) {
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			Entity entity = this;
+			Level world = this.level();
+			<#list data.animations as animation>
+				<#if hasProcedure(animation.condition)>
+				this.animationState${animation?index}.animateWhen(<@procedureOBJToConditionCode animation.condition/>, this.tickCount);
+				</#if>
+			</#list>
+		}
+	}
+	</#if>
 
 	<#if hasProcedure(data.onMobTickUpdate) || hasProcedure(data.boundingBoxScale)>
 	@Override public void baseTick() {

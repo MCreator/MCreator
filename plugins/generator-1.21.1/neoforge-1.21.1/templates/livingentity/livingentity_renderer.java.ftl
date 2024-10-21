@@ -38,52 +38,52 @@ package ${package}.client.renderer;
 <#assign model = "HumanoidModel">
 
 <#if data.mobModelName == "Chicken">
-	<#assign super = "super(context, new ChickenModel(context.bakeLayer(ModelLayers.CHICKEN)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.CHICKEN)">
 	<#assign model = "ChickenModel">
 <#elseif data.mobModelName == "Cod">
-	<#assign super = "super(context, new CodModel(context.bakeLayer(ModelLayers.COD)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.COD)">
 	<#assign model = "CodModel">
 <#elseif data.mobModelName == "Cow">
-	<#assign super = "super(context, new CowModel(context.bakeLayer(ModelLayers.COW)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.COW)">
 	<#assign model = "CowModel">
 <#elseif data.mobModelName == "Creeper">
-	<#assign super = "super(context, new CreeperModel(context.bakeLayer(ModelLayers.CREEPER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.CREEPER)">
 	<#assign model = "CreeperModel">
 <#elseif data.mobModelName == "Ghast">
-	<#assign super = "super(context, new GhastModel(context.bakeLayer(ModelLayers.GHAST)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.GHAST)">
 	<#assign model = "GhastModel">
 <#elseif data.mobModelName == "Ocelot">
-	<#assign super = "super(context, new OcelotModel(context.bakeLayer(ModelLayers.OCELOT)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.OCELOT)">
 	<#assign model = "OcelotModel">
 <#elseif data.mobModelName == "Pig">
-	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PIG)">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign super = "super(context, new PiglinModel(context.bakeLayer(ModelLayers.PIGLIN)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PIGLIN)">
 	<#assign model = "PiglinModel">
 <#elseif data.mobModelName == "Slime">
-	<#assign super = "super(context, new SlimeModel(context.bakeLayer(ModelLayers.SLIME)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SLIME)">
 	<#assign model = "SlimeModel">
 <#elseif data.mobModelName == "Salmon">
-	<#assign super = "super(context, new SalmonModel(context.bakeLayer(ModelLayers.SALMON)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SALMON)">
 	<#assign model = "SalmonModel">
 <#elseif data.mobModelName == "Spider">
-	<#assign super = "super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SPIDER)">
 	<#assign model = "SpiderModel">
 <#elseif data.mobModelName == "Villager">
-	<#assign super = "super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.VILLAGER)">
 	<#assign model = "VillagerModel">
 <#elseif data.mobModelName == "Silverfish">
-	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SILVERFISH)">
 	<#assign model = "SilverfishModel">
 <#elseif data.mobModelName == "Witch">
-	<#assign super = "super(context, new WitchModel(context.bakeLayer(ModelLayers.WITCH)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.WITCH)">
 	<#assign model = "WitchModel">
 <#elseif !data.isBuiltInModel()>
-	<#assign super = "super(context, new ${data.mobModelName}(context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)">
 	<#assign model = data.mobModelName>
 <#else>
-	<#assign super = "super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PLAYER)">
 	<#assign model = "HumanoidModel">
 	<#assign humanoid = true>
 </#if>
@@ -93,7 +93,11 @@ package ${package}.client.renderer;
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		${super}
+		<#if data.animations?has_content>
+		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
+		<#else>
+		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
+		</#if>
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
@@ -178,6 +182,36 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.isShakingCondition/>;
+	}
+	</#if>
+
+	<#if data.animations?has_content>
+	private static final class AnimatedModel extends ${model} {
+
+		private final ModelPart root;
+
+		private final HierarchicalModel animator = new HierarchicalModel<${name}Entity>() {
+			@Override public ModelPart root() {
+				return root;
+			}
+
+			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+				<#list data.animations as animation>
+				this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks);
+				</#list>
+			}
+		};
+
+		public AnimatedModel(ModelPart root) {
+			super(root);
+			this.root = root;
+		}
+
+		@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		}
+
 	}
 	</#if>
 

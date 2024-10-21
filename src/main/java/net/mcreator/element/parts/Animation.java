@@ -21,7 +21,10 @@ package net.mcreator.element.parts;
 
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
+
+import javax.annotation.Nonnull;
 
 public class Animation extends MappableElement {
 
@@ -31,6 +34,10 @@ public class Animation extends MappableElement {
 
 	public Animation(Workspace owner, String name) {
 		super(new NameMapper(owner, "animations"), name);
+	}
+
+	public Animation(@Nonnull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
 }

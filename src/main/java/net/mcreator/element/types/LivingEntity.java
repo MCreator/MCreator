@@ -206,6 +206,8 @@ import java.util.*;
 		this.modelLayers = new ArrayList<>();
 
 		this.raidSpawnsCount = new int[] { 4, 3, 3, 4, 4, 4, 2 };
+
+		this.animations = new ArrayList<>();
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -312,7 +314,7 @@ import java.util.*;
 	public static class PlayableAnimation {
 
 		public Animation animation;
-		public LogicProcedure playCondition;
+		public Procedure condition;
 
 	}
 
