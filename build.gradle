@@ -143,6 +143,14 @@ dependencies {
     macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'macos-arm64', ext: 'dylib'
     linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'linux-x86_64', ext: 'so'
 
+    // TODO: determine if it may make more sense to use JBR with JCEF bundled instead
+    implementation group: 'me.friwi', name: 'jcefmaven', version: '127.3.1'
+    implementation group: 'me.friwi', name: 'jcef-api', version: 'jcef-99c2f7a+cef-127.3.1+g6cbb30e+chromium-127.0.6533.100'
+    win64 group: 'me.friwi', name: 'jcef-natives-windows-amd64', version: 'jcef-99c2f7a+cef-127.3.1+g6cbb30e+chromium-127.0.6533.100'
+    macX64 group: 'me.friwi', name: 'jcef-natives-macos-amd64', version: 'jcef-99c2f7a+cef-127.3.1+g6cbb30e+chromium-127.0.6533.100'
+    macAarch64 group: 'me.friwi', name: 'jcef-natives-macos-arm64', version: 'jcef-99c2f7a+cef-127.3.1+g6cbb30e+chromium-127.0.6533.100'
+    linux64 group: 'me.friwi', name: 'jcef-natives-linux-amd64', version: 'jcef-99c2f7a+cef-127.3.1+g6cbb30e+chromium-127.0.6533.100'
+
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.2'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.2'
@@ -150,7 +158,7 @@ dependencies {
 
 javafx {
     version = '22.0.2'
-    modules = ['javafx.web', 'javafx.swing']
+    modules = ['javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
     // we provide natives during deployment or with SDK
 }

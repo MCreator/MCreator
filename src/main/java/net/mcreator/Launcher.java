@@ -25,7 +25,6 @@ import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
@@ -80,8 +79,6 @@ public class Launcher {
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 		Platform.setImplicitExit(false);
-
-		WebConsoleListener.registerLogger(LOG);
 
 		// check if proper version of MCreator per architecture is used
 		if (OS.getSystemBits() == OS.BIT32) {

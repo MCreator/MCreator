@@ -37,7 +37,6 @@ public class BlocklySection extends PreferencesSection {
 	public final IntegerEntry maxScale;
 	public final IntegerEntry minScale;
 	public final IntegerEntry scaleSpeed;
-	public final BooleanEntry legacyFont;
 	public final BooleanEntry transparentBackground;
 
 	BlocklySection(String preferencesIdentifier) {
@@ -54,7 +53,6 @@ public class BlocklySection extends PreferencesSection {
 		maxScale = addEntry(new IntegerEntry("maxScale", 100, 95, 200));
 		minScale = addEntry(new IntegerEntry("minScale", 40, 20, 95));
 		scaleSpeed = addEntry(new IntegerEntry("scaleSpeed", 105, 0, 200));
-		legacyFont = addEntry(new BooleanEntry("legacyFont", false));
 		transparentBackground = addEntry(new BooleanEntry("transparentBackground", false));
 	}
 

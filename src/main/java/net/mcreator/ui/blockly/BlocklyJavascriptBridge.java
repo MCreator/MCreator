@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.blockly;
 
-import com.google.gson.Gson;
 import javafx.application.Platform;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
@@ -43,6 +42,7 @@ import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cef.browser.CefBrowser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,7 +62,7 @@ public final class BlocklyJavascriptBridge {
 
 	private final Object NESTED_LOOP_KEY = new Object();
 
-	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent, CefBrowser browser) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}

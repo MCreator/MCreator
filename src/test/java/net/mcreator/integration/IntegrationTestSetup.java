@@ -33,7 +33,6 @@ import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.data.GradleSection;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
@@ -96,7 +95,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
-		WebConsoleListener.registerLogger(LOG);
 		/* ****************************
 		 * END: Launcher.java emulation
 		 * ****************************/
