@@ -338,15 +338,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
+			g.setColor(currentValidationResult.getValidationResultType().getColor());
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
 				WARNING_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(238, 229, 113));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				ERROR_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(204, 108, 108));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED) {
 				OK_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(79, 192, 121));
 			}
 
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR

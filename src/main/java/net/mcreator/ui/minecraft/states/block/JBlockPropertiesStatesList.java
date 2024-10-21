@@ -21,24 +21,18 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddBlockPropertyDialog;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -148,9 +142,9 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
 		for (JBlockPropertiesListEntry entry : propertiesList) {
 			if (nonUserProvidedProperties.get().contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
-				entry.setBorder(
-						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(204, 108, 108), 1),
-								BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+				entry.setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Validator.ValidationResultType.ERROR.getColor(), 1),
+						BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 				validationResult = new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.block.custom_properties.error_overrides_provided"));
 			} else {
