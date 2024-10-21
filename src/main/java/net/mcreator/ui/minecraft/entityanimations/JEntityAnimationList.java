@@ -25,15 +25,13 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.util.List;
 
-public class JEntityPlayableAnimationList extends
-		JSimpleEntriesList<JEntityPlayableAnimationListEntry, LivingEntity.AnimationEntry> {
+public class JEntityAnimationList extends JSimpleEntriesList<JEntityAnimationListEntry, LivingEntity.AnimationEntry> {
 
-	public JEntityPlayableAnimationList(MCreator mcreator, IHelpContext gui) {
+	public JEntityAnimationList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.living_entity.add_playable_animation"));
@@ -45,14 +43,9 @@ public class JEntityPlayableAnimationList extends
 	}
 
 	@Override
-	protected JEntityPlayableAnimationListEntry newEntry(JPanel parent, List<JEntityPlayableAnimationListEntry> entryList, boolean userAction) {
-		return new JEntityPlayableAnimationListEntry(mcreator, gui, parent, entryList);
-	}
-
-	public AggregatedValidationResult getValidationResult() {
-		AggregatedValidationResult validationResult = new AggregatedValidationResult();
-		entryList.forEach(validationResult::addValidationElement);
-		return validationResult;
+	protected JEntityAnimationListEntry newEntry(JPanel parent, List<JEntityAnimationListEntry> entryList,
+			boolean userAction) {
+		return new JEntityAnimationListEntry(mcreator, gui, parent, entryList);
 	}
 
 }

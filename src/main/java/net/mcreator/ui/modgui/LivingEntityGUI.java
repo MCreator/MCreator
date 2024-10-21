@@ -48,7 +48,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
-import net.mcreator.ui.minecraft.entityanimations.JEntityPlayableAnimationList;
+import net.mcreator.ui.minecraft.entityanimations.JEntityAnimationList;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -257,7 +257,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 					.getModElementDefinition(ModElementType.LIVINGENTITY).get("unmodifiable_ai_bases"),
 			Collections.emptyList());
 
-	private JEntityPlayableAnimationList animations;
+	private JEntityAnimationList animations;
 
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -408,7 +408,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		modelLayers = new JModelLayerList(mcreator, this);
 
-		animations = new JEntityPlayableAnimationList(mcreator, this);
+		animations = new JEntityAnimationList(mcreator, this);
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
@@ -980,8 +980,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			return new AggregatedValidationResult(mobModelTexture, mobName);
 		} else if (page == 1) {
 			return modelLayers.getValidationResult();
-		} else if (page == 2) {
-			return animations.getValidationResult();
 		} else if (page == 8) {
 			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
 					compileNote -> "Living entity AI builder: " + compileNote);

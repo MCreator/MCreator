@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft.entityanimations;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Animation;
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -33,18 +32,13 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collections;
 import java.util.List;
 
-public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEntity.AnimationEntry>
-		implements IValidable {
-
-	private static final DataListEntry dummy = new DataListEntry.Dummy("No animation");
+public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.AnimationEntry> {
 
 	private final MCreator mcreator;
 
@@ -56,8 +50,8 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 
 	private final JCheckBox walking = new JCheckBox(L10N.t("elementgui.living_entity.animation_walking"));
 
-	public JEntityPlayableAnimationListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JEntityPlayableAnimationListEntry> entryList) {
+	public JEntityAnimationListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JEntityAnimationListEntry> entryList) {
 		super(parent, entryList);
 		this.mcreator = mcreator;
 
@@ -69,13 +63,6 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		animation = new DataListComboBox(mcreator);
-
-		animation.setValidator(() -> {
-			if (animation.getSelectedItem() == dummy)
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.living_entity.select_animation_error"));
-			return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "");
-		});
 
 		line.add(L10N.label("elementgui.living_entity.animation"));
 		line.add(animation);
@@ -100,8 +87,7 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 	@Override public void reloadDataLists() {
 		condition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(animation,
-				ListUtils.merge(Collections.singleton(dummy), ElementUtil.loadAnimations()), dummy);
+		ComboBoxUtil.updateComboBoxContents(animation, ElementUtil.loadAnimations());
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
@@ -129,17 +115,6 @@ public class JEntityPlayableAnimationListEntry extends JSimpleListEntry<LivingEn
 		amplitude.setValue(e.amplitude);
 		walking.setSelected(e.walking);
 		amplitude.setEnabled(walking.isSelected());
-	}
-
-	@Override public Validator.ValidationResult getValidationStatus() {
-		return animation.getValidationStatus();
-	}
-
-	@Override public void setValidator(Validator validator) {
-	}
-
-	@Override public Validator getValidator() {
-		return animation.getValidator();
 	}
 
 }
