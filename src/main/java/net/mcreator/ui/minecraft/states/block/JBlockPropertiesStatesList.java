@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS;
+
 public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private final Supplier<Collection<String>> nonUserProvidedProperties;
@@ -52,6 +54,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private final JPanel propertyEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+
+	private int propertyCombinations = 1;
+	private final JProgressBar propertiesCap = new JProgressBar();
+	private final JLabel propertiesCapLabel = new JLabel();
 
 	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
@@ -82,10 +88,15 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
 
+		propertiesCap.setMaximum(MAX_PROPERTY_COMBINATIONS);
+		propertiesCap.setPreferredSize(new Dimension(220, 6));
+
 		JPanel mainContent = new JPanel(new BorderLayout());
 		mainContent.setOpaque(false);
 		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
-				HelpUtils.helpButton(gui.withEntry("block/block_states"))));
+				HelpUtils.helpButton(gui.withEntry("block/block_states")), new JEmptyBox(15, 5),
+				L10N.label("elementgui.block.custom_properties.properties_cap"), new JEmptyBox(10, 5), propertiesCap,
+				new JEmptyBox(10, 5), propertiesCapLabel));
 		mainContent.add("Center", scrollProperties);
 
 		JPanel basePane = new JPanel(new GridLayout());
@@ -96,6 +107,31 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 				Theme.current().getForegroundColor()));
 		basePane.add(mainContent);
 		add("Center", basePane);
+
+		recalculatePropertiesCap();
+	}
+
+	private void recalculatePropertiesCap() {
+		propertyCombinations = BlockStatePropertyUtils.getNumberOfPropertyCombinations(
+				propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).map(PropertyDataWithValue::property)
+						.collect(Collectors.toList()));
+
+		int cappedPropertyCombinations = Math.min(propertyCombinations, MAX_PROPERTY_COMBINATIONS);
+		propertiesCap.setValue(cappedPropertyCombinations);
+
+		if (cappedPropertyCombinations < MAX_PROPERTY_COMBINATIONS * 0.5) {
+			propertiesCap.setForeground(Validator.ValidationResultType.PASSED.getColor());
+		} else { // blend color between warn and error
+			Color warn = Validator.ValidationResultType.WARNING.getColor();
+			Color error = Validator.ValidationResultType.ERROR.getColor();
+			float blend = (cappedPropertyCombinations - MAX_PROPERTY_COMBINATIONS * 0.5f) / (MAX_PROPERTY_COMBINATIONS
+					* 0.5f);
+			propertiesCap.setForeground(new Color((int) (warn.getRed() + blend * (error.getRed() - warn.getRed())),
+					(int) (warn.getGreen() + blend * (error.getGreen() - warn.getGreen())),
+					(int) (warn.getBlue() + blend * (error.getBlue() - warn.getBlue()))));
+		}
+
+		propertiesCapLabel.setText(String.valueOf(propertyCombinations));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -121,6 +157,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
 		pe.setEntry(data);
 		registerEntryUI(pe);
+
+		recalculatePropertiesCap();
 	}
 
 	void removeProperty(JBlockPropertiesListEntry entry) {
@@ -128,6 +166,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertyEntries.remove(entry);
 		propertyEntries.revalidate();
 		propertyEntries.repaint();
+
+		recalculatePropertiesCap();
 	}
 
 	public List<PropertyDataWithValue<?>> getProperties() {
@@ -140,6 +180,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult.PASS();
+		if (propertyCombinations > MAX_PROPERTY_COMBINATIONS) {
+			validationResult = new AggregatedValidationResult.FAIL(
+					L10N.t("elementgui.block.custom_properties.error_too_many_combinations"));
+		}
 		for (JBlockPropertiesListEntry entry : propertiesList) {
 			if (nonUserProvidedProperties.get().contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
 				entry.setBorder(BorderFactory.createCompoundBorder(
