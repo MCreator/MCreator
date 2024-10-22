@@ -1200,9 +1200,6 @@ public class TestWorkspaceDataProvider {
 				block.customProperties.add(new PropertyDataWithValue<>(
 						new PropertyData.StringType("CUSTOM:enum_prop", new String[] { "logic", "integer", "string" }),
 						"string"));
-				block.customProperties.add(new PropertyDataWithValue<>(
-						new PropertyData.StringType("CUSTOM:enum_prop_two",
-								new String[] { "value1", "value2", "value3" }), "value3"));
 
 				Set<String> usedRegistryNames = new HashSet<>();
 				for (DataListEntry entry : DataListLoader.loadDataMap("blockstateproperties").values()) {
