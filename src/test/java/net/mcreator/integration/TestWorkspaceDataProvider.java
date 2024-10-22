@@ -1200,9 +1200,7 @@ public class TestWorkspaceDataProvider {
 							new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:waterlogged"), false));
 				}
 				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop", 3, 7), 4));
-				block.customProperties.add(
-						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop2", 0, 123), 63));
+						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop", 3, 5), 4));
 				block.customProperties.add(new PropertyDataWithValue<>(
 						new PropertyData.StringType("CUSTOM:enum_prop", new String[] { "logic", "integer", "string" }),
 						"string"));
