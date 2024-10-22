@@ -37,7 +37,8 @@ import net.mcreator.ui.validation.Validator;
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -197,8 +198,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 					L10N.t("elementgui.block.custom_properties.error_too_many_combinations"));
 		}
 		for (JBlockPropertiesListEntry entry : propertiesList) {
-			if (nonUserProvidedProperties.get().contains(
-					BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
+			if (nonUserProvidedProperties.get()
+					.contains(BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Validator.ValidationResultType.ERROR.getColor(), 1),
 						BorderFactory.createEmptyBorder(4, 4, 4, 4)));
