@@ -1195,10 +1195,6 @@ public class TestWorkspaceDataProvider {
 						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop"), _true));
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:bool_prop2"), !_true));
-				if (_true) {
-					block.customProperties.add(
-							new PropertyDataWithValue<>(new PropertyData.LogicType("CUSTOM:waterlogged"), false));
-				}
 				block.customProperties.add(
 						new PropertyDataWithValue<>(new PropertyData.IntegerType("CUSTOM:int_prop", 3, 5), 4));
 				block.customProperties.add(new PropertyDataWithValue<>(
@@ -1214,11 +1210,12 @@ public class TestWorkspaceDataProvider {
 					PropertyDataWithValue<?> property = BlockStatePropertyUtils.fromDataListEntry(entry);
 					if (property != null) {
 						String registryName = BlockStatePropertyUtils.propertyRegistryName(property.property());
-						if (List.of("axis", "facing", "face", "waterlogged").contains(registryName) || usedRegistryNames.contains(registryName))
+						if (List.of("axis", "facing", "face", "waterlogged").contains(registryName)
+								|| usedRegistryNames.contains(registryName))
 							continue;
 						switch (property.property()) {
-						case PropertyData.LogicType logicType ->
-								block.customProperties.add(new PropertyDataWithValue<>(logicType, random.nextBoolean()));
+						case PropertyData.LogicType logicType -> block.customProperties.add(
+								new PropertyDataWithValue<>(logicType, random.nextBoolean()));
 						case PropertyData.IntegerType integerType -> {
 							int min = Integer.parseInt((String) other.get("min"));
 							int max = Integer.parseInt((String) other.get("max"));
@@ -1236,7 +1233,14 @@ public class TestWorkspaceDataProvider {
 						}
 						usedRegistryNames.add(registryName);
 					}
+
+					if (BlockStatePropertyUtils.getNumberOfPropertyCombinations(block.customProperties.stream()
+							.map(e -> (PropertyData<?>) e.property()).collect(Collectors.toList())) > BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS) {
+						break;
+					}
 				}
+				// Remove last entry as it causes combinations to exceed MAX_PROPERTY_COMBINATIONS
+				block.customProperties.removeLast();
 			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
