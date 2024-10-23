@@ -108,6 +108,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	public void moveMode() {
+		if (selected != null && selected.locked) return;
+
 		owner.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		componentMoveMode = true;
 
@@ -447,11 +449,14 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		for (int i = 0; i < wysiwygEditor.components.size(); i++) {
 			GUIComponent component = wysiwygEditor.components.get(i);
 			if (component.equals(selected)) {
-				component.x = ox;
-				component.y = oy;
-				if (positioningModeSettingWidth && component instanceof net.mcreator.element.parts.gui.SizedComponent) {
-					((SizedComponent) component).width = ow;
-					((SizedComponent) component).height = oh;
+				if (!selected.locked) {
+					component.x = ox;
+					component.y = oy;
+					if (positioningModeSettingWidth
+							&& component instanceof net.mcreator.element.parts.gui.SizedComponent) {
+						((SizedComponent) component).width = ow;
+						((SizedComponent) component).height = oh;
+					}
 				}
 				break;
 			}
