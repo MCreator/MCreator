@@ -30,6 +30,7 @@ import_formatter:
     ImmutableSet: com.google.common.collect
     Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
+    Keyframe: net.minecraft.client.animation
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"

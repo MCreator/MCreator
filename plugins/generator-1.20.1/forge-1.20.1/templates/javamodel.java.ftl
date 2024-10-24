@@ -34,6 +34,7 @@ package ${package}.client.model;
 ${model
     ?replace("private final ModelPart", "public final ModelPart")
     ?replace("new ResourceLocation\\(\"(.*?)\", \"(.*?)\"\\)", "new ResourceLocation(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
+    ?replace("void setupAnim(Entity ", "void setupAnim(T ")
 }
 
 <#-- @formatter:on -->
