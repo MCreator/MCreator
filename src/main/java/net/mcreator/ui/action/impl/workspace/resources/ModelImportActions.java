@@ -42,6 +42,7 @@ import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.resources.TexturedModel;
 import org.apache.logging.log4j.LogManager;
@@ -87,6 +88,7 @@ public class ModelImportActions {
 				if (file != null)
 					importJavaModel(actionRegistry.getMCreator(), file);
 			});
+			setIcon(UIRES.get("16px.importjavamodel"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -210,6 +212,7 @@ public class ModelImportActions {
 				if (json != null)
 					importJSONModel(actionRegistry.getMCreator(), json);
 			});
+			setIcon(UIRES.get("16px.importjsonmodel"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -250,6 +253,7 @@ public class ModelImportActions {
 						importOBJModel(actionRegistry.getMCreator(), obj, mtl);
 				}
 			});
+			setIcon(UIRES.get("16px.importobjmodel"));
 		}
 
 		@Override public boolean isEnabled() {
