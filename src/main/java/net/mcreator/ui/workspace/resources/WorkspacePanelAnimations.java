@@ -20,15 +20,22 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Animation;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 
@@ -43,40 +50,40 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 					UIRES.get("16px.importjavamodelanimation"),
 					e -> workspacePanel.getMCreator().actionRegistry.importJavaModelAnimation.doAction());
 
-		//TODO: Usages system
-		/*addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 				Set<ModElement> refs = new HashSet<>();
-				for (Animation model : elementList.getSelectedValuesList())
-					refs.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), model));
+				for (Animation animation : elementList.getSelectedValuesList())
+					refs.addAll(ReferencesFinder.searchAnimationUsages(workspacePanel.getMCreator().getWorkspace(),
+							animation));
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
 						L10N.t("dialog.search_usages.type.resource.model"), refs);
 			}
-		});*/
+		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {
 		List<Animation> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
-			//TODO: Usages system
-			/*workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
-			for (Animation m : elementList.getSelectedValuesList())
-				references.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), m));
+			for (Animation a : elementList.getSelectedValuesList())
+				references.addAll(
+						ReferencesFinder.searchAnimationUsages(workspacePanel.getMCreator().getWorkspace(), a));
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), references)) {*/
-			elements.forEach(animation -> animation.getFile().delete());
-			reloadElements();
-			/*}*///TODO: Usages system
+					L10N.t("dialog.search_usages.type.resource.model"), references)) {
+				elements.forEach(animation -> animation.getFile().delete());
+				reloadElements();
+			}
 		}
 	}
 
