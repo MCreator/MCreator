@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -36,8 +37,11 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 						(item, query) -> item.getName().toLowerCase(Locale.ENGLISH).contains(query), Animation::getName),
 				new Render(), JList.HORIZONTAL_WRAP);
 
-		addToolBarButton("action.workspace.resources.import_java_animation", UIRES.get("16px.importjavamodelanimation"),
-				e -> workspacePanel.getMCreator().actionRegistry.importJavaModelAnimation.doAction());
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
+				!= GeneratorStats.CoverageStatus.NONE)
+			addToolBarButton("action.workspace.resources.import_java_animation",
+					UIRES.get("16px.importjavamodelanimation"),
+					e -> workspacePanel.getMCreator().actionRegistry.importJavaModelAnimation.doAction());
 
 		//TODO: Usages system
 		/*addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
@@ -67,7 +71,6 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 				references.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), m));
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-
 
 			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
 					L10N.t("dialog.search_usages.type.resource.model"), references)) {*/

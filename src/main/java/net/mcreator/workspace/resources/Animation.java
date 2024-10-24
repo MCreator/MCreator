@@ -23,9 +23,8 @@ import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Animation {
 
@@ -46,8 +45,8 @@ public class Animation {
 		return file;
 	}
 
-	public static Collection<Animation> getAnimations(Workspace workspace) {
-		Set<Animation> animations = new HashSet<>();
+	public static List<Animation> getAnimations(Workspace workspace) {
+		List<Animation> animations = new ArrayList<>();
 
 		File[] candidates = workspace.getFolderManager().getModelAnimationsDir().listFiles();
 		for (File f : candidates != null ? candidates : new File[0]) {

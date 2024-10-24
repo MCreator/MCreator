@@ -123,6 +123,11 @@ public class GeneratorStats {
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
+		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
+		baseCoverageInfo.put("model_animations_java",
+				(sourceTasksJSON.contains("\"type\":\"JAVA_viatemplate") && sourceTasksJSON.contains(
+						"\"task\":\"copy_model_animations")) ? CoverageStatus.FULL : CoverageStatus.NONE);
+
 		CoverageStatus texturesCoverage = CoverageStatus.NONE;
 		int supportedTextureTypes = 0;
 		for (TextureType textureType : TextureType.values()) {

@@ -63,8 +63,7 @@ public class AnimationImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			// TODO: check for support
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
 					!= GeneratorStats.CoverageStatus.NONE;
 		}
 	}
@@ -110,7 +109,7 @@ public class AnimationImportActions {
 		classJavaSource.setDefaultPackage();
 
 		if (!classJavaSource.getName().contains("Animation"))
-			classJavaSource.setName("Animation" + classJavaSource.getName());
+			classJavaSource.setName("Animations" + classJavaSource.getName());
 
 		if (new File(mcreator.getFolderManager().getModelAnimationsDir(),
 				classJavaSource.getName() + ".java").exists()) {

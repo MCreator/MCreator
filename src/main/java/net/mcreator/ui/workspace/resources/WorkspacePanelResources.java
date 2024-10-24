@@ -62,8 +62,9 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		// TODO: check for support of animation
-		addResourcesTab(L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
+				!= GeneratorStats.CoverageStatus.NONE)
+			addResourcesTab(L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)
