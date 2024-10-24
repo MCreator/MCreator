@@ -19,8 +19,14 @@
 
 package net.mcreator.workspace.resources;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.source.FieldSource;
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,13 +34,19 @@ import java.util.List;
 
 public class Animation {
 
+	private static final Logger LOG = LogManager.getLogger(Animation.class);
+
 	private final String name;
 
 	private final File file;
 
+	private final List<String> subanimations;
+
 	private Animation(File file) {
 		this.file = file;
 		this.name = FilenameUtils.getBaseName(file.getName());
+
+		this.subanimations = parseSubanimations();
 	}
 
 	public String getName() {
@@ -43,6 +55,24 @@ public class Animation {
 
 	public File getFile() {
 		return file;
+	}
+
+	public List<String> getSubanimations() {
+		return subanimations;
+	}
+
+	private List<String> parseSubanimations() {
+		List<String> subanimations = new ArrayList<>();
+		try {
+			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(FileIO.readFileToString(file));
+			List<FieldSource<JavaClassSource>> fields = classJavaSource.getFields();
+			for (FieldSource<JavaClassSource> field : fields)
+				if (field.getType().getName().contains("AnimationDefinition"))
+					subanimations.add(field.getName());
+		} catch (Exception e) {
+			LOG.warn("Failed to parse subanimations for animation " + name, e);
+		}
+		return subanimations;
 	}
 
 	public static List<Animation> getAnimations(Workspace workspace) {

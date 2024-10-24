@@ -92,7 +92,7 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
-			setText(StringUtils.abbreviateString(ma.getName(), 13));
+			setText("(" + ma.getSubanimations().size() + ") " + StringUtils.abbreviateString(ma.getName(), 13));
 			setToolTipText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
 			setVerticalTextPosition(BOTTOM);
