@@ -175,6 +175,8 @@ public class MainMenuBar extends JMenuBar {
 		resources.add(mcreator.actionRegistry.importJavaModel);
 		resources.add(mcreator.actionRegistry.importJSONModel);
 		resources.add(mcreator.actionRegistry.importOBJModel);
+		resources.addSeparator();
+		resources.add(mcreator.actionRegistry.importJavaModelAnimation);
 		add(resources);
 
 		JMenu build = L10N.menu("menubar.build_and_run");

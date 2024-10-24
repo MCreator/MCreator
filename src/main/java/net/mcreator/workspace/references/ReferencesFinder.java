@@ -34,6 +34,7 @@ import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.resources.Animation;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -147,6 +148,18 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+	}
+
+	public static Set<ModElement> searchAnimationUsages(Workspace workspace, Animation animation) {
+		return getGeneratableElements(workspace).parallelStream()
+				// TODO: implement correctly
+				/*.filter(ge ->
+						anyValueMatches(ge, net.mcreator.element.parts.Animation.class, e -> {
+									ResourceReference ref = e.getAnnotation(ResourceReference.class);
+									return ref != null && ref.value().equals("animation");
+								}, (a, t) -> model.equals(t))
+				)*/
+				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {

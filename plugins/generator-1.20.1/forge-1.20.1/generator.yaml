@@ -26,6 +26,7 @@ import_formatter:
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
     Attributes: net.minecraft.world.entity.ai.attributes
+    Keyframe: net.minecraft.client.animation
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -88,6 +89,11 @@ sources_setup_tasks:
     cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+  - task: copy_model_animations
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javaanimation.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
 tags:
   template: tags.json.ftl

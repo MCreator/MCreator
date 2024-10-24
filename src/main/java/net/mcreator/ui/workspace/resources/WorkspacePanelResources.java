@@ -32,6 +32,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 	public final WorkspacePanelTextures workspacePanelTextures;
 	public final WorkspacePanelSounds workspacePanelSounds;
 	public final WorkspacePanelModels workspacePanelModels;
+	public final WorkspacePanelAnimations workspacePanelAnimations;
 	public final WorkspacePanelStructures workspacePanelStructures;
 	public final WorkspacePanelScreenshots workspacePanelScreenshots;
 
@@ -45,6 +46,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
 		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
 		this.workspacePanelModels = new WorkspacePanelModels(workspacePanel);
+		this.workspacePanelAnimations = new WorkspacePanelAnimations(workspacePanel);
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
@@ -59,6 +61,10 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
+
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
+				!= GeneratorStats.CoverageStatus.NONE)
+			addResourcesTab(L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)

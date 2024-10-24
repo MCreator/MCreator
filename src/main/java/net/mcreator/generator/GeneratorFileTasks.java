@@ -26,6 +26,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.Animation;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.ModelUtils;
 
@@ -157,6 +158,40 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
+					}
+				}
+			}
+			case "copy_model_animations" -> {
+				File to = new File(
+						GeneratorTokens.replaceTokens(generator.getWorkspace(), (String) ((Map<?, ?>) task).get("to")));
+
+				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(new File(to, "animation.dummy"))) {
+					if (((Map<?, ?>) task).get("cleanupBeforeCopy") != null && Boolean.parseBoolean(
+							((Map<?, ?>) task).get("cleanupBeforeCopy").toString())) {
+						// empty directory to remove stale animation files
+						TrackingFileIO.emptyDirectory(generator, to);
+					}
+
+					List<Animation> animations = Animation.getAnimations(generator.getWorkspace());
+
+					if (((Map<?, ?>) task).get("type").toString().equals("JAVA_viatemplate")) {
+						String template = GeneratorTokens.replaceTokens(generator.getWorkspace(),
+								(String) ((Map<?, ?>) task).get("template"));
+						for (Animation animation : animations) {
+							String animationCode = FileIO.readFileToString(animation.getFile());
+							try {
+								animationCode = generator.getTemplateGeneratorFromName("templates")
+										.generateFromTemplate(template, new HashMap<>(
+												Map.of("animationname", animation.getName(), "animation", animationCode,
+														"animationnameregistryname",
+														RegistryNameFixer.fromCamelCase(animation.getName()))));
+							} catch (TemplateGeneratorException e) {
+								generator.getLogger()
+										.error("Failed to generate code for animation: {}", animation.getFile(), e);
+							}
+							ClassWriter.writeClassToFile(generator.getWorkspace(), animationCode,
+									new File(to, animation.getName() + ".java"), true);
+						}
 					}
 				}
 			}
