@@ -71,3 +71,6 @@ tags:
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
+  - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
+    key: item.@modid.@registryname.description_@item_index
+  # condition: ${parent.specialInformation?? && parent.specialInformation.getFixedValue()??}
