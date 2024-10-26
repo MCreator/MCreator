@@ -363,6 +363,30 @@ import java.util.*;
 		return providedMCItems();
 	}
 
+	public List<String> getHelmetStaticSpecialInformation() {
+		if (helmetSpecialInformation != null && helmetSpecialInformation.getName() == null)
+			return List.copyOf(helmetSpecialInformation.getFixedValue());
+		return List.of();
+	}
+
+	public List<String> getBodyStaticSpecialInformation() {
+		if (bodySpecialInformation != null && bodySpecialInformation.getName() == null)
+			return List.copyOf(bodySpecialInformation.getFixedValue());
+		return List.of();
+	}
+
+	public List<String> getLeggingsStaticSpecialInformation() {
+		if (leggingsSpecialInformation != null && leggingsSpecialInformation.getName() == null)
+			return List.copyOf(leggingsSpecialInformation.getFixedValue());
+		return List.of();
+	}
+
+	public List<String> getBootsStaticSpecialInformation() {
+		if (bootsSpecialInformation != null && bootsSpecialInformation.getName() == null)
+			return List.copyOf(bootsSpecialInformation.getFixedValue());
+		return List.of();
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return switch (suffix) {
 			case "helmet" -> textureHelmet.getImageIcon(TextureType.ITEM);

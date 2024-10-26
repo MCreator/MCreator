@@ -87,7 +87,7 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
-  - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
+  - fromlist: data.getStaticSpecialInformation()
     key: block.@modid.@registryname.description_@item_index
 
 tags:

@@ -149,11 +149,11 @@ localizationkeys:
   - key: item.@modid.@registryname_boots
     mapto: bootsName
     condition: enableBoots
-  - fromlist: (data.helmetSpecialInformation??)?then(data.helmetSpecialInformation.getFixedValue()![], [])
+  - fromlist: data.getHelmetStaticSpecialInformation()
     key: item.@modid.@registryname_helmet.description_@item_index
-  - fromlist: (data.bodySpecialInformation??)?then(data.bodySpecialInformation.getFixedValue()![], [])
+  - fromlist: data.getBodyStaticSpecialInformation()
     key: item.@modid.@registryname_chestplate.description_@item_index
-  - fromlist: (data.leggingsSpecialInformation??)?then(data.leggingsSpecialInformation.getFixedValue()![], [])
+  - fromlist: data.getLeggingsStaticSpecialInformation()
     key: item.@modid.@registryname_leggings.description_@item_index
-  - fromlist: (data.bootsSpecialInformation??)?then(data.bootsSpecialInformation.getFixedValue()![], [])
+  - fromlist: data.getBootsStaticSpecialInformation()
     key: item.@modid.@registryname_boots.description_@item_index

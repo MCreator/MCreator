@@ -33,7 +33,7 @@ localizationkeys:
   - key: item.@modid.@registryname_bucket
     mapto: bucketName
     condition: generateBucket
-  - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
+  - fromlist: data.getStaticSpecialInformation()
     key: item.@modid.@registryname_bucket.description_@item_index
 
 tags:

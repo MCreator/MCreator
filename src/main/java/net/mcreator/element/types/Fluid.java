@@ -27,6 +27,7 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -44,7 +45,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement {
+		implements IBlock, ITabContainedElement, ISpecialInfoHolder {
 
 	public String name;
 	public String bucketName;
@@ -162,6 +163,10 @@ import java.util.List;
 		if (this.generateBucket)
 			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
 		return retval;
+	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

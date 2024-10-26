@@ -56,5 +56,5 @@ localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName
     condition: hasIgniter()
-  - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
+  - fromlist: data.getStaticSpecialInformation()
     key: item.@modid.@registryname.description_@item_index

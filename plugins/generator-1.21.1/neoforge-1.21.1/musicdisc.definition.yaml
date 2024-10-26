@@ -16,5 +16,5 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname.desc
     mapto: description
-  - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
+  - fromlist: data.getStaticSpecialInformation()
     key: item.@modid.@registryname.description_@item_index
