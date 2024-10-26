@@ -40,7 +40,7 @@ public class ${name}Item extends Item {
 		super(new Item.Properties().rarity(Rarity.${data.igniterRarity}).durability(64));
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	@Override public InteractionResult useOn(UseOnContext context) {
 		Player entity = context.getPlayer();
