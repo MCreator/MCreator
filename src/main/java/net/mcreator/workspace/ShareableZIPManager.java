@@ -178,6 +178,6 @@ public class ShareableZIPManager {
 		dial.setVisible(true);
 	}
 
-	public record ImportResult(File file, boolean regenerateRequired){}
+	public record ImportResult(File file, boolean regenerateRequired) {}
 
 }

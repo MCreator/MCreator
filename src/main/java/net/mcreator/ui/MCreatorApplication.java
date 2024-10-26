@@ -254,7 +254,7 @@ public final class MCreatorApplication {
 	}
 
 	/**
-	 * @param workspaceFile   File of the .mcreator workspace definition
+	 * @param workspaceFile File of the .mcreator workspace definition
 	 * @return MCreator if new instance, null if existing is open or open failed
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
