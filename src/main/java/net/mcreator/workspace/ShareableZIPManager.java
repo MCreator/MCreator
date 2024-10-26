@@ -41,6 +41,32 @@ public class ShareableZIPManager {
 
 	private static final Logger LOG = LogManager.getLogger("Shareable ZIP manager");
 
+	private static final Set<String> EXCLUDES = new HashSet<>() {{
+		add(".eclipse/");
+		add(".gradle/");
+		add(".mcreator/");
+		add("build/");
+		add("gradle/");
+		add("#build.gradle");
+		add("#gradlew");
+		add("#gradlew.bat");
+		add("#mcreator.gradle");
+		add("#.classpath");
+		add("#.project");
+		add(".idea/");
+		add(".settings/");
+	}};
+
+	/**
+	 * Adds the specified workspace-relative path to the list of files/folders that should be excluded from shareable
+	 * workspace archive.
+	 *
+	 * @param fileOrFolder String identifying a file ({@code #<name>}) or a folder ({@code <name>/}) to be excluded
+	 */
+	public static void excludeWhenZipping(String fileOrFolder) {
+		EXCLUDES.add(fileOrFolder);
+	}
+
 	@Nullable public static ImportResult importZIP(File file, File workspaceDir, Window window) {
 		AtomicReference<File> retval = new AtomicReference<>();
 		AtomicBoolean regenerateRequired = new AtomicBoolean(false);
@@ -135,10 +161,7 @@ public class ShareableZIPManager {
 			dial.addProgressUnit(p1);
 
 			try {
-				Set<String> excludes = new HashSet<>(
-						Set.of(".eclipse/", ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
-								"#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/",
-								".settings/"));
+				Set<String> excludes = new HashSet<>(EXCLUDES);
 				if (excludeRunDir)
 					excludes.addAll(Set.of("run/", "runs/"));
 
