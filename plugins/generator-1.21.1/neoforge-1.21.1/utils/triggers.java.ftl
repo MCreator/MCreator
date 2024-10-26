@@ -15,7 +15,7 @@
 				"world": "entity.level()",
 				"itemstack": "itemstack"
 			}, false/>));
-		<#elseif translationKeyHeader != "">
+		<#elseif translationKeyHeader?has_content>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
 			</#list>
