@@ -137,13 +137,9 @@ localizationkeys:
     condition: enableBoots
   - fromlist: (data.helmetSpecialInformation??)?then(data.helmetSpecialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname_helmet.description_@item_index
-  # condition: ${parent.enableHelmet && parent.helmetSpecialInformation?? && parent.helmetSpecialInformation.getFixedValue()??}
   - fromlist: (data.bodySpecialInformation??)?then(data.bodySpecialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname_chestplate.description_@item_index
-  # condition: ${parent.enableBody && parent.bodySpecialInformation?? && parent.bodySpecialInformation.getFixedValue()??}
   - fromlist: (data.leggingsSpecialInformation??)?then(data.leggingsSpecialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname_leggings.description_@item_index
-  # condition: ${parent.enableLeggings && parent.leggingsSpecialInformation?? && parent.leggingsSpecialInformation.getFixedValue()??}
   - fromlist: (data.bootsSpecialInformation??)?then(data.bootsSpecialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname_boots.description_@item_index
-  # condition: ${parent.enableBoots && parent.bootsSpecialInformation?? && parent.bootsSpecialInformation.getFixedValue()??}

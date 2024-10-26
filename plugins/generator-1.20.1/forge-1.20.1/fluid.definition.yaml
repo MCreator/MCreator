@@ -35,7 +35,6 @@ localizationkeys:
     condition: generateBucket
   - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname_bucket.description_@item_index
-  # condition: ${parent.generateBucket && parent.specialInformation?? && parent.specialInformation.getFixedValue()??}
 
 tags:
   - tag: BLOCKS:minecraft:replaceable

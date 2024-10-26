@@ -407,7 +407,6 @@ localizationkeys:
     mapto: name
   - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
     key: block.@modid.@registryname.description_@item_index
-  # condition: ${parent.specialInformation?? && parent.specialInformation.getFixedValue()??}
 
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe

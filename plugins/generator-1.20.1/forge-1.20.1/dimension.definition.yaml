@@ -58,4 +58,3 @@ localizationkeys:
     condition: hasIgniter()
   - fromlist: (data.specialInformation??)?then(data.specialInformation.getFixedValue()![], [])
     key: item.@modid.@registryname.description_@item_index
-  # condition: ${parent.hasIgniter() && parent.specialInformation?? && parent.specialInformation.getFixedValue()??}
