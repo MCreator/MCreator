@@ -47,7 +47,7 @@ public class TextIndexOfBlock implements IBlockGenerator {
 			master.append("/*@int*/(");
 			master.processOutputBlock(text);
 			master.append(".indexOf(");
-			master.processOutputBlockToInt(check);
+			master.processOutputBlock(check);
 			master.append(",");
 			master.processOutputBlockToInt(from);
 			master.append("))");
