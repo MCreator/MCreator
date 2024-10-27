@@ -59,9 +59,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox isCuredByMilk = L10N.checkbox("elementgui.potioneffect.is_cured_by_milk");
 	private final JCheckBox isCuredbyHoney = L10N.checkbox("elementgui.potioneffect.is_cured_by_honey");
 	private final JCheckBox isProtectedByTotem = L10N.checkbox("elementgui.potioneffect.is_protected_by_totem");
-  
+
 	private final JComboBox<String> mobEffectCategory = new JComboBox<>(
-			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
+			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -150,10 +150,11 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		curesSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/cures"),
 				L10N.label("elementgui.potioneffect.cures")));
-		curesSubpane.add(
-				PanelUtils.gridElements(3, 2, 50, 2, isCuredByMilk, isProtectedByTotem, isCuredbyHoney));
+		curesSubpane.add(PanelUtils.gridElements(3, 2, 50, 2, isCuredByMilk, isProtectedByTotem, isCuredbyHoney));
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)), curesSubpane)));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)),
+				curesSubpane)));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));

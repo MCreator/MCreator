@@ -24,7 +24,6 @@ import net.mcreator.ui.validation.Validator;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;

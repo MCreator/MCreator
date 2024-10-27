@@ -19,11 +19,11 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.gradle.GradleTaskFinishedListener;
+import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.minecraft.ServerUtil;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -289,6 +289,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 	public ProcedureSelector setDefaultName(String defaultName) {
 		this.defaultName = defaultName;
+		procedures.setPrototypeDisplayValue(new ProcedureEntry(defaultName, null));
 		return this;
 	}
 
