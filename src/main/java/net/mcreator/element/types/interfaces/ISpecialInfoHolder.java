@@ -27,7 +27,7 @@ public interface ISpecialInfoHolder {
 
 	StringListProcedure getSpecialInfoProcedure();
 
-	default List<String> getStaticSpecialInformation() {
+	default List<String> getFixedSpecialInformation() {
 		StringListProcedure procedure = getSpecialInfoProcedure();
 		return procedure != null && procedure.getName() == null ? List.copyOf(procedure.getFixedValue()) : List.of();
 	}

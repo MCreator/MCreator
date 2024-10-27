@@ -363,25 +363,25 @@ import java.util.*;
 		return providedMCItems();
 	}
 
-	public List<String> getHelmetStaticSpecialInformation() {
+	public List<String> getHelmetFixedSpecialInformation() {
 		if (helmetSpecialInformation != null && helmetSpecialInformation.getName() == null)
 			return List.copyOf(helmetSpecialInformation.getFixedValue());
 		return List.of();
 	}
 
-	public List<String> getBodyStaticSpecialInformation() {
+	public List<String> getBodyFixedSpecialInformation() {
 		if (bodySpecialInformation != null && bodySpecialInformation.getName() == null)
 			return List.copyOf(bodySpecialInformation.getFixedValue());
 		return List.of();
 	}
 
-	public List<String> getLeggingsStaticSpecialInformation() {
+	public List<String> getLeggingsFixedSpecialInformation() {
 		if (leggingsSpecialInformation != null && leggingsSpecialInformation.getName() == null)
 			return List.copyOf(leggingsSpecialInformation.getFixedValue());
 		return List.of();
 	}
 
-	public List<String> getBootsStaticSpecialInformation() {
+	public List<String> getBootsFixedSpecialInformation() {
 		if (bootsSpecialInformation != null && bootsSpecialInformation.getName() == null)
 			return List.copyOf(bootsSpecialInformation.getFixedValue());
 		return List.of();
