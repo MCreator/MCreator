@@ -82,9 +82,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
-						GeneratorFlavor.FORGE, true));
+		for (GeneratorConfiguration generatorConfiguration : Generator.GENERATOR_CACHE.values()) {
+			UITestUtil.waitUntilWindowIsOpen(mcreator,
+					() -> GeneratorSelector.getGeneratorSelector(mcreator, generatorConfiguration, null, true));
+		}
 	}
 
 	@Test public void testProgressDialog() throws Throwable {
