@@ -1,24 +1,72 @@
-_default: NoteBlockInstrument.HARP
-harp: NoteBlockInstrument.HARP
-basedrum: NoteBlockInstrument.BASEDRUM
-snare: NoteBlockInstrument.SNARE
-hat: NoteBlockInstrument.HAT
-bass: NoteBlockInstrument.BASS
-flute: NoteBlockInstrument.FLUTE
-bell: NoteBlockInstrument.BELL
-guitar: NoteBlockInstrument.GUITAR
-chime: NoteBlockInstrument.CHIME
-xylophone: NoteBlockInstrument.XYLOPHONE
-iron_xylophone: NoteBlockInstrument.IRON_XYLOPHONE
-cow_bell: NoteBlockInstrument.COW_BELL
-didgeridoo: NoteBlockInstrument.DIDGERIDOO
-bit: NoteBlockInstrument.BIT
-banjo: NoteBlockInstrument.BANJO
-pling: NoteBlockInstrument.PLING
-zombie: NoteBlockInstrument.ZOMBIE
-skeleton: NoteBlockInstrument.SKELETON
-creeper: NoteBlockInstrument.CREEPER
-dragon: NoteBlockInstrument.DRAGON
-wither_skeleton: NoteBlockInstrument.WITHER_SKELETON
-piglin: NoteBlockInstrument.PIGLIN
-custom_head: NoteBlockInstrument.CUSTOM_HEAD
+_default:
+  - NoteBlockInstrument.HARP
+  - harp
+harp:
+  - NoteBlockInstrument.HARP
+  - harp
+basedrum:
+  - NoteBlockInstrument.BASEDRUM
+  - basedrum
+snare:
+  - NoteBlockInstrument.SNARE
+  - snare
+hat:
+  - NoteBlockInstrument.HAT
+  - hat
+bass:
+  - NoteBlockInstrument.BASS
+  - bass
+flute:
+  - NoteBlockInstrument.FLUTE
+  - flute
+bell:
+  - NoteBlockInstrument.BELL
+  - bell
+guitar:
+  - NoteBlockInstrument.GUITAR
+  - guitar
+chime:
+  - NoteBlockInstrument.CHIME
+  - chime
+xylophone:
+  - NoteBlockInstrument.XYLOPHONE
+  - xylophone
+iron_xylophone:
+  - NoteBlockInstrument.IRON_XYLOPHONE
+  - iron_xylophone
+cow_bell:
+  - NoteBlockInstrument.COW_BELL
+  - cow_bell
+didgeridoo:
+  - NoteBlockInstrument.DIDGERIDOO
+  - didgeridoo
+bit:
+  - NoteBlockInstrument.BIT
+  - bit
+banjo:
+  - NoteBlockInstrument.BANJO
+  - banjo
+pling:
+  - NoteBlockInstrument.PLING
+  - pling
+zombie:
+  - NoteBlockInstrument.ZOMBIE
+  - zombie
+skeleton:
+  - NoteBlockInstrument.SKELETON
+  - skeleton
+creeper:
+  - NoteBlockInstrument.CREEPER
+  - creeper
+dragon:
+  - NoteBlockInstrument.DRAGON
+  - dragon
+wither_skeleton:
+  - NoteBlockInstrument.WITHER_SKELETON
+  - wither_skeleton
+piglin:
+  - NoteBlockInstrument.PIGLIN
+  - piglin
+custom_head:
+  - NoteBlockInstrument.CUSTOM_HEAD
+  - custom_head
