@@ -25,22 +25,22 @@
 - didgeridoo:
   readable_name: "Didgeridoo"
 - bit:
-  readable_name: "\"Bit\" (Synthesizer)"
+  readable_name: "Bit (Synthesizer)"
 - banjo:
   readable_name: "Banjo"
 - pling:
-  readable_name: "\"Pling\" (Electric piano)"
+  readable_name: "Pling (Electric piano)"
 - zombie:
-  readable_name: "\"Zombie\""
+  readable_name: "Zombie"
 - skeleton:
-  readable_name: "\"Skeleton\""
+  readable_name: "Skeleton"
 - creeper:
-  readable_name: "\"Creeper\""
+  readable_name: "Creeper"
 - dragon:
-  readable_name: "\"Ender Dragon\""
+  readable_name: "Ender Dragon"
 - wither_skeleton:
-  readable_name: "\"Wither Skeleton\""
+  readable_name: "Wither Skeleton"
 - piglin:
-  readable_name: "\"Piglin\""
+  readable_name: "Piglin"
 - custom_head:
   readable_name: "Player Head"
