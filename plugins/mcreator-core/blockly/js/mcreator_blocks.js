@@ -437,6 +437,17 @@ Blockly.Blocks['text_format_number'] = {
     }
 };
 
+Blockly.Blocks['text_new_line'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.text_new_line"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
 Blockly.Blocks['text_is_empty'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
