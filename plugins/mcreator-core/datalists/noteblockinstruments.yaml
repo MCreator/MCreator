@@ -1,0 +1,46 @@
+- harp:
+  readable_name: "Harp"
+- basedrum:
+  readable_name: "Bass Drum (Kick)"
+- snare:
+  readable_name: "Snare Drum"
+- hat:
+  readable_name: "Clicks and Sticks (Hi-hat)"
+- bass:
+  readable_name: "Bass (String Bass)"
+- flute:
+  readable_name: "Flute"
+- bell:
+  readable_name: "Bells (Glockenspiel)"
+- guitar:
+  readable_name: "Guitar"
+- chime:
+  readable_name: "Chimes"
+- xylophone:
+  readable_name: "Xylophone"
+- iron_xylophone:
+  readable_name: "Iron Xylophone (Vibraphone)"
+- cow_bell:
+  readable_name: "Cow Bell"
+- didgeridoo:
+  readable_name: "Didgeridoo"
+- bit:
+  readable_name: "\"Bit\" (Synthesizer)"
+- banjo:
+  readable_name: "Banjo"
+- pling:
+  readable_name: "\"Pling\" (Electric piano)"
+- zombie:
+  readable_name: "\"Zombie\""
+- skeleton:
+  readable_name: "\"Skeleton\""
+- creeper:
+  readable_name: "\"Creeper\""
+- dragon:
+  readable_name: "\"Ender Dragon\""
+- wither_skeleton:
+  readable_name: "\"Wither Skeleton\""
+- piglin:
+  readable_name: "\"Piglin\""
+- custom_head:
+  readable_name: "Player Head"
