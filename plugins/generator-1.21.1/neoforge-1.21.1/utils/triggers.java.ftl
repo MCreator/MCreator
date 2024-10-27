@@ -7,14 +7,19 @@
 		super.appendHoverText(itemstack, context, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : Minecraft.getInstance().player;
-			list.add(Component.literal(<@procedureCode procedure, {
+			String hoverText = <@procedureCode procedure, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
 				"entity": "entity",
 				"world": "entity.level()",
 				"itemstack": "itemstack"
-			}, false/>));
+			}, false/>;
+			if (hoverText != null) {
+				for (String line : hoverText.split("\n")) {
+					list.add(Component.literal(line));
+				}
+			}
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
