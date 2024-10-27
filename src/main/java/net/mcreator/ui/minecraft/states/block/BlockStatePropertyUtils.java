@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
@@ -75,7 +76,11 @@ public class BlockStatePropertyUtils {
 			return new PropertyDataWithValue<>(new PropertyData.IntegerType(property.getName(), min, max), null);
 		}
 		case "Enum" -> {
-			String[] data = ((List<?>) other.get("values")).stream().map(Object::toString).toArray(String[]::new);
+			String[] data;
+			if (other.get("values") instanceof List<?> values)
+				data = values.stream().map(Object::toString).toArray(String[]::new);
+			else
+				data = ElementUtil.getDataListAsStringArray((String) other.get("values"));
 			return new PropertyDataWithValue<>(new PropertyData.StringType(property.getName(), data), null);
 		}
 		case null, default -> {
