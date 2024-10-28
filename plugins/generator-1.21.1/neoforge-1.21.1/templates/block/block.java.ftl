@@ -368,8 +368,6 @@ public class ${name}Block extends
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
 					<#if propName.startsWith("CUSTOM:")>
 					${StringUtils.snakeToCamel(propName.replace("CUSTOM:", ""))}Property.${prop.value()?upper_case}
-					<#elseif propName == "NOTEBLOCK_INSTRUMENT">
-					${propName?upper_case}.getValue("${generator.map(prop.value(), "noteblockinstruments", 1)}").get()
 					<#else>
 					${propName?upper_case}.getValue("${prop.value()}").get()
 					</#if>

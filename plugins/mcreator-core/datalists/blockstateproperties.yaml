@@ -602,7 +602,30 @@
   type: Enum
   other:
     registry_name: instrument
-    values: noteblockinstruments
+    values:
+      - harp
+      - basedrum
+      - snare
+      - hat
+      - bass
+      - flute
+      - bell
+      - guitar
+      - chime
+      - xylophone
+      - iron_xylophone
+      - cow_bell
+      - didgeridoo
+      - bit
+      - banjo
+      - pling
+      - zombie
+      - skeleton
+      - creeper
+      - dragon
+      - wither_skeleton
+      - piglin
+      - custom_head
 - ORIENTATION:
   readable_name: ORIENTATION
   type: Enum
