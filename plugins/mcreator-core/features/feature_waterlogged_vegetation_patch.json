@@ -1,0 +1,118 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "surface",
+      "options": [
+        [
+          "floor",
+          "floor"
+        ],
+        [
+          "ceiling",
+          "ceiling"
+        ]
+      ]
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "xz_radius",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "vertical_range",
+      "value": 2,
+      "min": 1,
+      "max": 256,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "vegetation_chance",
+      "value": 0.05,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_value",
+      "name": "vegetation_feature",
+      "check": [
+        "Feature",
+        "PlacedFeature"
+      ]
+    },
+    {
+      "type": "input_value",
+      "name": "ground_state",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "depth",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_input",
+      "name": "replaceable",
+      "text": "lush_ground_replaceable"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "extra_bottom_block_chance",
+      "value": 0.8,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "extra_edge_column_chance",
+      "value": 0.7,
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "inputsInline": false,
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs",
+    "vegetation_patch_tag_fields_validator",
+    "vegetation_patch_feature_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<value name=\"depth\"><block type=\"int_provider_constant\"><field name=\"value\">3</field></block></value>",
+      "<value name=\"xz_radius\"><block type=\"int_provider_uniform\"><field name=\"min\">4</field><field name=\"max\">7</field></block></value>",
+      "<value name=\"vegetation_feature\"><block type=\"configured_feature_reference\"><field name=\"feature\">dripleaf</field></block></value>",
+      "<value name=\"ground_state\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
+    ],
+    "inputs": [
+      "depth",
+      "xz_radius",
+      "ground_state",
+      "vegetation_feature"
+    ],
+    "fields": [
+      "surface",
+      "replaceable",
+      "extra_bottom_block_chance",
+      "extra_edge_column_chance",
+      "vegetation_chance",
+      "vertical_range"
+    ]
+  }
+}

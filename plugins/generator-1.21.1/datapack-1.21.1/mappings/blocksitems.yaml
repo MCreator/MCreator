@@ -4504,6 +4504,15 @@ Items.HONEYCOMB:
 Items.HONEY_BOTTLE:
   - Items.HONEY_BOTTLE
   - "honey_bottle"
+Items.TORCH:
+  - Items.TORCH
+  - "torch"
+Items.REDSTONE_TORCH:
+  - Items.REDSTONE_TORCH
+  - "redstone_torch"
+Items.SOUL_TORCH:
+  - Items.SOUL_TORCH
+  - "soul_torch"
 Items.NETHERITE_INGOT:
   - Items.NETHERITE_INGOT
   - "netherite_ingot"

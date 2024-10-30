@@ -43,8 +43,6 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,15 +64,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
-
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-
-		mcreator = new MCreator(null, workspace);
+		mcreator = new MCreator(null,
+				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, false, null));
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
@@ -91,9 +82,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
-						GeneratorFlavor.FORGE, true));
+		for (GeneratorConfiguration generatorConfiguration : Generator.GENERATOR_CACHE.values()) {
+			UITestUtil.waitUntilWindowIsOpen(mcreator,
+					() -> GeneratorSelector.getGeneratorSelector(mcreator, generatorConfiguration, null, true));
+		}
 	}
 
 	@Test public void testProgressDialog() throws Throwable {
@@ -172,6 +164,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testAIConditionEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
+	}
+
+	@Test public void testAddBlockPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddBlockPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test")),
+						List::of));
+	}
+
+	@Test public void testAddEntityPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddEntityPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test"))));
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {

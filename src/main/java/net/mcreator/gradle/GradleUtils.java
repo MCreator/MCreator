@@ -57,7 +57,7 @@ public class GradleUtils {
 
 	private static <T extends ConfigurableLauncher<T>> T configureLauncher(T launcher) {
 		launcher.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
-				"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
+				"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m", "-Duser.language=en");
 
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null

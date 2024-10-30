@@ -138,7 +138,8 @@ public class ${name}Item extends Item {
 
 	<@addSpecialInformation data.specialInformation/>
 
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
+	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
 		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
@@ -146,25 +147,23 @@ public class ${name}Item extends Item {
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		</#if>
 
-		<#if (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
-			<#if data.enableRanged>
-				<#if hasProcedure(data.rangedUseCondition)>
-				if (<@procedureCode data.rangedUseCondition, {
-					"x": "entity.getX()",
-					"y": "entity.getY()",
-					"z": "entity.getZ()",
-					"world": "world",
-					"entity": "entity",
-					"itemstack": "ar.getObject()"
-				}, false/>)
-				</#if>
-				if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-					ar = InteractionResultHolder.success(entity.getItemInHand(hand));
-					entity.startUsingItem(hand);
-				}
-			<#else>
-				entity.startUsingItem(hand);
+		<#if data.enableRanged>
+			<#if hasProcedure(data.rangedUseCondition)>
+			if (<@procedureCode data.rangedUseCondition, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "ar.getObject()"
+			}, false/>)
 			</#if>
+			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
+				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+				entity.startUsingItem(hand);
+			}
+		<#elseif shouldExplicitlyCallStartUsing>
+			entity.startUsingItem(hand);
 		</#if>
 
 		<#if data.hasInventory()>
@@ -281,6 +280,9 @@ public class ${name}Item extends Item {
 
 	<#if data.enableRanged>
 	private ItemStack findAmmo(Player player) {
+		<#if data.projectileDisableAmmoCheck>
+		return new ItemStack(${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
+		<#else>
 		ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, e -> e.getItem() == ${generator.map(data.projectile.getUnmappedValue(), "projectiles", 2)});
 		if(stack == ItemStack.EMPTY) {
 			for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -292,6 +294,7 @@ public class ${name}Item extends Item {
 			}
 		}
 		return stack;
+		</#if>
 	}
 	</#if>
 }

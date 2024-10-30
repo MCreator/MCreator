@@ -32,8 +32,8 @@ import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.Transliteration;
 import net.mcreator.java.JavaConventions;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -55,7 +55,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -273,8 +272,7 @@ public class ModelImportActions {
 				return;
 		}
 
-		String modelName = Transliteration.transliterateString(obj.getName()).toLowerCase(Locale.ENGLISH).trim()
-				.replace(" ", "_").replace(":", "");
+		String modelName = RegistryNameFixer.fix(obj.getName());
 		File objFile = new File(mcreator.getFolderManager().getModelsDir(), modelName);
 		FileIO.copyFile(obj, objFile);
 		File mtlFile = new File(mcreator.getFolderManager().getModelsDir(),
@@ -306,14 +304,12 @@ public class ModelImportActions {
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = new TextureMappingDialog(null).openMappingDialog(
 				mcreator, txs, supportMultiple);
 		if (textureMappingMap != null) {
+			String modelNameBase = RegistryNameFixer.fix(modelFile.getName());
 			String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-			FileIO.writeStringToFile(data, new File(mcreator.getFolderManager().getModelsDir(),
-					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
-							.replace(":", "").replace(" ", "_") + ".textures"));
+			FileIO.writeStringToFile(data,
+					new File(mcreator.getFolderManager().getModelsDir(), modelNameBase + ".textures"));
 			// copy the actual model
-			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(),
-					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
-							.replace(":", "").replace(" ", "_")));
+			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(), modelNameBase));
 		}
 	}
 

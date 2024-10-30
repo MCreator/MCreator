@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,14 +171,26 @@ public class BlocklyTestUtil {
 			processed++;
 		}
 		case "field_number" -> {
-			if (arg.has("precision") && arg.get("precision").getAsInt() == 1)
-				additionalXML.append("<field name=\"").append(field).append("\">1</field>");
-			else
-				additionalXML.append("<field name=\"").append(field).append("\">1.23</field>");
+			String value;
+			if (arg.has("value")) {
+				value = arg.get("value").getAsString();
+			} else {
+				double min = arg.has("min") ? arg.get("min").getAsDouble() : -1000;
+				double max = arg.has("max") ? arg.get("max").getAsDouble() : 1000;
+				if (arg.has("precision") && arg.get("precision").getAsInt() == 1)
+					value = String.valueOf(random.nextInt((int) min, (int) (max + 1)));
+				else
+					value = String.valueOf(random.nextDouble(min, max));
+			}
+			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
 		case "field_input", "field_javaname" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
+			String value = "test";
+			if (arg.has("text")) {
+				value = arg.get("text").getAsString();
+			}
+			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
 		case "field_dropdown" -> {

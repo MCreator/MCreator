@@ -64,6 +64,10 @@ public abstract class Texture {
 		return result;
 	}
 
+	@Override public String toString() {
+		return textureName;
+	}
+
 	public abstract ImageIcon getTextureIcon(Workspace workspace);
 
 	/**

@@ -1,0 +1,1 @@
+Bu parametre, bu bitki ile hazırlanan şüpheli güvecin etki süresini belirler.

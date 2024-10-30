@@ -63,6 +63,8 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 		this.texture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.layer_needs_texture");
 
+		this.texture.setPreferredSize(new Dimension(240, 36));
+
 		line.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
 		condition = new ProcedureSelector(gui.withEntry("entity/condition_display_model_layer"), mcreator,

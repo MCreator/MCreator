@@ -51,13 +51,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public class BlocklyPanel extends JFXPanel {
+public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly");
 
@@ -83,6 +84,7 @@ public class BlocklyPanel extends JFXPanel {
 
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
+			browser.setContextMenuEnabled(false);
 			Scene scene = new Scene(browser);
 			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
 			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
@@ -299,6 +301,18 @@ public class BlocklyPanel extends JFXPanel {
 		if (type != BlocklyEditorType.PROCEDURE)
 			throw new RuntimeException("This method can only be called from procedure editor");
 		bridge.addExternalTrigger(external_trigger);
+	}
+
+	@Override public void close() {
+		if (webEngine != null) {
+			// Ensure that the web engine is not closed during the initialization
+			addTaskToRunAfterLoaded(() -> ThreadUtil.runOnFxThread(() -> {
+				// Free resources of the web engine (kill JS, load empty page and finally free the reference)
+				webEngine.setJavaScriptEnabled(false);
+				webEngine.load("");
+				webEngine = null;
+			}));
+		}
 	}
 
 }

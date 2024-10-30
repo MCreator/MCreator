@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -32,7 +33,12 @@ public class MCItemBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
-			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(element.getTextContent()));
+			String textContent = element.getTextContent();
+			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.mcitem_broken_reference", textContent.replaceFirst("CUSTOM:", ""))));
+			}
+			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));

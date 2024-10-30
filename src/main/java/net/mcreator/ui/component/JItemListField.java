@@ -302,10 +302,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		List<T> retval = new ArrayList<>();
 		for (int i = 0; i < elementsListModel.size(); i++) {
 			T element = elementsListModel.get(i);
-			if (element instanceof MappableElement)
-				if (!((MappableElement) element).canProperlyMap())
-					continue;
-			retval.add(elementsListModel.get(i));
+			if (element instanceof MappableElement mappableElement && !mappableElement.isValidReference())
+				continue;
+			retval.add(element);
 		}
 		return retval;
 	}
@@ -315,8 +314,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			return;
 
 		elementsListModel.removeAllElements();
-		for (T el : elements)
-			elementsListModel.addElement(el);
+		for (T element : elements) {
+			if (element instanceof MappableElement mappableElement && !mappableElement.isValidReference())
+				continue;
+			elementsListModel.addElement(element);
+		}
 	}
 
 	public boolean isExclusionMode() {
@@ -336,15 +338,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
+			g.setColor(currentValidationResult.getValidationResultType().getColor());
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
 				WARNING_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(238, 229, 113));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				ERROR_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(204, 108, 108));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED) {
 				OK_ICON.paintIcon(this, g, 0, 0);
-				g.setColor(new Color(79, 192, 121));
 			}
 
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
@@ -421,9 +421,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					else if (unmappedValue.startsWith("#"))
 						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18));
 				}
-
-				if (!(mappableElement).canProperlyMap())
-					setIcon(UIRES.get("18px.warning"));
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {

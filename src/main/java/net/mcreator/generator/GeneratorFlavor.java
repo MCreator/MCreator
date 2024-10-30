@@ -24,30 +24,46 @@ import net.mcreator.util.image.EmptyIcon;
 import javax.swing.*;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 public enum GeneratorFlavor {
 
 	//@formatter:off
-	FORGE(BaseLanguage.JAVA),
-	FABRIC(BaseLanguage.JAVA),
-	SPIGOT(BaseLanguage.JAVA),
-	QUILT(BaseLanguage.JAVA),
-	NEOFORGE(BaseLanguage.JAVA),
-	DATAPACK(BaseLanguage.JSON),
-	ADDON(BaseLanguage.JSON),
-	UNKNOWN(null);
+	FORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	FABRIC(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	SPIGOT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	QUILT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	NEOFORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	DATAPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
+	ADDON(GamePlatform.BEDROCKEDITION, BaseLanguage.JSON),
+	UNKNOWN(null, null);
 	//@formatter:on
 
+	/**
+	 * Official flavors are flavors that MCreator supports in its core.
+	 */
 	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, ADDON, NEOFORGE);
+
+	/**
+	 * Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.
+	 */
+	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(QUILT);
 
 	private final BaseLanguage baseLanguage;
 
-	GeneratorFlavor(BaseLanguage baseLanguage) {
+	private final GamePlatform gamePlatform;
+
+	GeneratorFlavor(GamePlatform gamePlatform, BaseLanguage baseLanguage) {
+		this.gamePlatform = gamePlatform;
 		this.baseLanguage = baseLanguage;
 	}
 
 	public BaseLanguage getBaseLanguage() {
 		return baseLanguage;
+	}
+
+	public GamePlatform getGamePlatform() {
+		return gamePlatform;
 	}
 
 	public ImageIcon getIcon() {
@@ -60,8 +76,27 @@ public enum GeneratorFlavor {
 		return UIRES.get("16px." + name().toLowerCase(Locale.ENGLISH));
 	}
 
+	public static GeneratorFlavor[] gamePlatform(GamePlatform gamePlatform) {
+		return Stream.of(values()).filter(flavor -> flavor.getGamePlatform() == gamePlatform)
+				.toArray(GeneratorFlavor[]::new);
+	}
+
+	public static GeneratorFlavor[] baseLanguage(BaseLanguage baseLanguage) {
+		return Stream.of(values()).filter(flavor -> flavor.getBaseLanguage() == baseLanguage)
+				.toArray(GeneratorFlavor[]::new);
+	}
+
+	public static GeneratorFlavor[] allBut(GeneratorFlavor... flavors) {
+		return Stream.of(values()).filter(flavor -> Stream.of(flavors).noneMatch(f -> f == flavor))
+				.toArray(GeneratorFlavor[]::new);
+	}
+
 	public enum BaseLanguage {
 		JAVA, JSON
+	}
+
+	public enum GamePlatform {
+		JAVAEDITION, BEDROCKEDITION
 	}
 
 }

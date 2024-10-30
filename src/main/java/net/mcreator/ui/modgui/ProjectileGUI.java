@@ -63,6 +63,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner damage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
 	private final JSpinner knockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
+	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
+	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
@@ -112,7 +114,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
@@ -126,6 +128,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model_texture"),
 				L10N.label("elementgui.projectile.model_texture")));
 		propertiesPanel.add(customModelTexture);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
+				L10N.label("elementgui.projectile.bounding_box")));
+		propertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2, modelWidth, modelHeight));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
@@ -210,6 +216,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		knockback.setValue(projectile.knockback);
 		igniteFire.setSelected(projectile.igniteFire);
 		customModelTexture.setTextureFromTextureName(projectile.customModelTexture);
+		modelWidth.setValue(projectile.modelWidth);
+		modelHeight.setValue(projectile.modelHeight);
 		onHitsBlock.setSelectedProcedure(projectile.onHitsBlock);
 		onHitsEntity.setSelectedProcedure(projectile.onHitsEntity);
 		onHitsPlayer.setSelectedProcedure(projectile.onHitsPlayer);
@@ -230,6 +238,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.damage = (double) damage.getValue();
 		projectile.knockback = (int) knockback.getValue();
 		projectile.entityModel = (Objects.requireNonNull(model.getSelectedItem())).getReadableName();
+		projectile.modelWidth = (double) modelWidth.getValue();
+		projectile.modelHeight = (double) modelHeight.getValue();
 		projectile.customModelTexture = customModelTexture.getTextureName();
 		projectile.onHitsBlock = onHitsBlock.getSelectedProcedure();
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();

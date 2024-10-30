@@ -1,0 +1,1 @@
+Bu durum gerçekleştiğinde varlık, balıklar veya kalamarlar gibi sonsuza kadar su altında nefes alabilecek duruma gelecektir.

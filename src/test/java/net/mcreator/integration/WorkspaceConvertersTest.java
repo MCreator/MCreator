@@ -73,8 +73,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
-				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
-						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
+				GeneratorConfiguration generatorConfiguration;
+				if (testWorkspaceName.contains("-be-")) {
+					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.ADDON);
+				} else if (testWorkspaceName.contains("-dp-")) {
+					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.DATAPACK);
+				} else {
+					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
+				}
 
 				assertNotNull(generatorConfiguration);
 
@@ -115,6 +124,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 						// test if UI validation is error free
 						UITestUtil.testIfValidationPasses(modElementGUI, false);
+
+						// close mod element GUI
+						modElementGUI.onViewClosed();
 					}
 				}
 

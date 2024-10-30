@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -120,7 +121,13 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			int size = model.getSize();
 			for (int i = 0; i < size; i++) {
 				T element = model.getElementAt(i);
-				if (element.toString().toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
+				String elementAsString;
+				if (element instanceof DataListEntry dle) {
+					elementAsString = dle.getReadableName();
+				} else {
+					elementAsString = element.toString();
+				}
+				if (elementAsString.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
 					entriesFiltered.add(element);
 				}
 			}

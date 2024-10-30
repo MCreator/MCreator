@@ -19,7 +19,10 @@
 package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import net.mcreator.element.*;
+import net.mcreator.element.BaseType;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
@@ -562,7 +565,7 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
 				e -> toggleFilter("f:err")));
 		filterPopup.addSeparator();
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		for (ModElementType<?> type : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					IconUtils.resize(type.getIcon(), 16, 16)));
@@ -1369,7 +1372,7 @@ import java.util.stream.Collectors;
 					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
-					for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+					for (ModElementType<?> type : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}

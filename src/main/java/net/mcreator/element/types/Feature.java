@@ -51,6 +51,12 @@ import java.util.List;
 	public Procedure generateCondition;
 	@BlocklyXML("features") public String featurexml;
 
+	private transient Boolean hasConfiguredFeature = null;
+
+	private Feature() {
+		this(null);
+	}
+
 	public Feature(ModElement element) {
 		super(element);
 
@@ -80,11 +86,27 @@ import java.util.List;
 
 			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
+			this.hasConfiguredFeature = !blocklyToFeature.getFeatureType().equals("configured_feature_reference");
 		};
 	}
 
+	public boolean hasConfiguredFeature() {
+		if (hasConfiguredFeature == null) {
+			try {
+				var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
+						this.featurexml, this.getModElement().getGenerator()
+						.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()));
+				this.hasConfiguredFeature = !blocklyToFeature.getFeatureType().equals("configured_feature_reference");
+			} catch (Exception e) {
+				return true; // Exception happened, so we don't cache the result
+			}
+		}
+
+		return hasConfiguredFeature;
+	}
+
 	public boolean hasGenerationConditions() {
-		return generateCondition != null;
+		return generateCondition != null && hasConfiguredFeature();
 	}
 
 	public boolean hasPlacedFeature() {
@@ -92,7 +114,10 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.CONFIGUREDFEATURE));
+		List<BaseType> baseTypes = new ArrayList<>();
+
+		if (hasConfiguredFeature())
+			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge

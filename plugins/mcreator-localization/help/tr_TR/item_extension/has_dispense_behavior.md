@@ -1,0 +1,1 @@
+Bu seçenek işaretlenirse, öğe varsayılan eylemle dağıtıcılar tarafından düşürülmez, bunun yerine “${l10n.t(”elementgui.item_extension.dispense_success_condition“)}” ve“${l10n.t(”elementgui.item_extension.dispense_result_itemstack“)}” prosedürlerini çağırır.

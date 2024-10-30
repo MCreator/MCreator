@@ -1,0 +1,1 @@
+Blok kırmızı taş gücüyle çalıştırıldığında bir prosedürü tetikler.

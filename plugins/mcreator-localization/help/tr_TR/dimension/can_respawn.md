@@ -1,0 +1,1 @@
+İşaretlenirse, oyuncu bu boyutun içinde öldüğünde oyuncunun boyutun içinde yeniden doğmasına izin verir.

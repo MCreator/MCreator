@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
@@ -92,14 +93,30 @@ public class BlocklyBlockCodeGenerator {
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
 		// check for all fields if they exist, if they do, add them to data model
+		// we also validate references in the fields are valid
 		if (toolboxBlock.getFields() != null) {
 			for (String fieldName : toolboxBlock.getFields()) {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
 							&& !element.getTextContent().isEmpty()) {
+						String fieldValue = element.getTextContent();
+						if (fieldValue.startsWith("CUSTOM:")) {
+							String fieldType = toolboxBlock.getFieldType(fieldName);
+							if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
+									fieldType) || "field_mcitem_selector".equals(fieldType)) {
+								boolean shouldValidate = !("sound".equals(toolboxBlock.getFieldDataList(fieldName)));
+								if (shouldValidate && !MappableElement.validateReference(fieldValue,
+										master.getWorkspace())) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.invalid_reference", fieldName, type,
+													fieldValue.replaceFirst("CUSTOM:", ""))));
+								}
+							}
+						}
+
 						found = true;
-						dataModel.put("field$" + fieldName, element.getTextContent());
+						dataModel.put("field$" + fieldName, fieldValue);
 						break; // found, no need to look other elements
 					}
 				}
@@ -211,6 +228,7 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		// next we check for field groups if they are defined, we process them and add to data model
+		// we also validate references in the fields are valid
 		if (toolboxBlock.getRepeatingFields() != null) {
 			for (RepeatingField fieldEntry : toolboxBlock.getRepeatingFields()) {
 				String fieldName = fieldEntry.name();
@@ -226,6 +244,20 @@ public class BlocklyBlockCodeGenerator {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
 						if (fieldValue != null && !fieldValue.isEmpty()) {
+							if (fieldValue.startsWith("CUSTOM:")) {
+								String fieldType = fieldEntry.getFieldType();
+								if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
+										fieldType) || "field_mcitem_selector".equals(fieldType)) {
+									boolean shouldValidate = !("sound".equals(fieldEntry.getDataList()));
+									if (shouldValidate && !MappableElement.validateReference(fieldValue,
+											master.getWorkspace())) {
+										master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+												L10N.t("blockly.errors.invalid_reference", fieldName + i, type,
+														fieldValue.replaceFirst("CUSTOM:", ""))));
+									}
+								}
+							}
+
 							processedElements.put(i, fieldValue);
 							continue;
 						}

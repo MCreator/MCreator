@@ -177,7 +177,13 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.features.missing_placement")));
+			} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
+					.equals("configured_feature_reference")) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.features.placement_required")));
 			}
+
+			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));

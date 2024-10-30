@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import com.formdev.flatlaf.util.SystemInfo;
 import net.mcreator.io.OS;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SquareLoaderIcon;
@@ -48,11 +49,16 @@ public class ProgressDialog extends MCreatorDialog {
 			this.mcreator = mcreatorInst;
 
 		setClosable(false);
+		setResizable(false);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-		// If we use undecorated Dialog on Linux, the dialog contents flicker (#4757)
-		boolean customDecoration = OS.getOS() != OS.LINUX;
-		if (customDecoration) {
+		JScrollPane panes = new JScrollPane(progressUnits);
+		panes.setOpaque(false);
+		panes.getViewport().setOpaque(false);
+		panes.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 3));
+
+		// If we use undecorated Dialog on Linux or macOS, the dialog contents flicker (#4757)
+		if (OS.getOS() == OS.WINDOWS) {
 			setUndecorated(true);
 
 			JPanel contentPane = new JPanel() {
@@ -75,16 +81,17 @@ public class ProgressDialog extends MCreatorDialog {
 			titleLabel.setBorder(BorderFactory.createEmptyBorder(7, 10, 2, 10));
 			titleLabel.setForeground(Theme.current().getAltForegroundColor());
 			add("North", titleLabel);
+		} else if (OS.getOS() == OS.MAC
+				&& SystemInfo.isMacFullWindowContentSupported) { // on macOS, we use full window content instead
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+			panes.setBorder(BorderFactory.createEmptyBorder(5 + 20, 10, 5, 3));
 		}
 
 		progressUnits.setCellRenderer(new Render());
 		progressUnits.setOpaque(false);
 		progressUnits.setBorder(null);
-
-		JScrollPane panes = new JScrollPane(progressUnits);
-		panes.setOpaque(false);
-		panes.getViewport().setOpaque(false);
-		panes.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 3));
 
 		add("Center", panes);
 

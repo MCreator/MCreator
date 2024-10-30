@@ -21,21 +21,17 @@ package net.mcreator.integration.ui;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,38 +50,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	private static final Logger LOG = LogManager.getLogger("Mod Element Test");
 
-	private static Workspace workspace;
+	private static Random random;
+
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest(@TempDir File tempDir) {
+		long rgenseed = System.currentTimeMillis();
+		random = new Random(rgenseed);
+		LOG.info("Random number generator seed: {}", rgenseed);
+
 		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
 				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
-
-		mcreator = new MCreator(null, workspace);
-
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-		GTSampleElements.provideAndGenerateSampleElements(new Random(), workspace);
-
-		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
-
-		LOG.info("Test workspace folder: {}", workspace.getWorkspaceFolder());
+		mcreator = new MCreator(null,
+				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random));
 	}
 
 	@Test public void testModElementsDefaultLocale() throws Exception {
-		long rgenseed = System.currentTimeMillis();
-		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: {}", rgenseed);
-
 		PreferencesManager.PREFERENCES.ui.language.set(L10N.DEFAULT_LOCALE);
 		L10N.initTranslations();
 
@@ -95,10 +79,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	// use non-default translation to test translations at the same time
 	@Test public void testModElementsNonDefaultLocale() throws Exception {
-		long rgenseed = System.currentTimeMillis();
-		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: {}", rgenseed);
-
 		PreferencesManager.PREFERENCES.ui.language.set(
 				L10N.getSupportedLocales().stream().filter(locale -> locale != L10N.DEFAULT_LOCALE)
 						.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null));
@@ -110,13 +90,12 @@ import static org.junit.jupiter.api.Assertions.*;
 	}
 
 	private void testModElementLoading(Random random) throws Exception {
-		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
-
+		for (ModElementType<?> modElementType : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
 			if (modElementType == ModElementType.CODE)
 				continue; // does not have regular handling so skip it
 
-			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
-					modElementType, true, random);
+			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(
+					mcreator.getWorkspace(), modElementType, true, random);
 
 			LOG.info("Testing mod element type UI {} with {} variants", modElementType.getReadableName(),
 					generatableElements.size());
@@ -127,10 +106,11 @@ import static org.junit.jupiter.api.Assertions.*;
 				GeneratableElement generatableElement;
 
 				// convert mod element to json
-				String exportedJSON = workspace.getModElementManager().generatableElementToJSON(generatableElementOrig);
+				String exportedJSON = mcreator.getWorkspace().getModElementManager()
+						.generatableElementToJSON(generatableElementOrig);
 
 				// back to GeneratableElement
-				generatableElement = workspace.getModElementManager()
+				generatableElement = mcreator.getWorkspace().getModElementManager()
 						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to GeneratableElement
 
 				// Check if all workspace fields are not null after re-import
@@ -150,12 +130,16 @@ import static org.junit.jupiter.api.Assertions.*;
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
 
+				// close mod element GUI
+				modElementGUI.onViewClosed();
+
 				// Check if all workspace fields are not null after reading from GUI
 				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
 						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 				// compare GeneratableElements, no fields should change in the process
-				String exportedJSON2 = workspace.getModElementManager().generatableElementToJSON(generatableElement);
+				String exportedJSON2 = mcreator.getWorkspace().getModElementManager()
+						.generatableElementToJSON(generatableElement);
 
 				assertEquals(exportedJSON, exportedJSON2);
 			}

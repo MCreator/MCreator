@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        ["Potion", "POTION"],
+        ["Splash potion", "SPLASH_POTION"],
+        ["Lingering potion", "LINGERING_POTION"]
+      ]
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "potion",
+      "datalist": "potions",
+      "customEntryProviders": "potion"
+    }
+  ],
+  "inputsInline": true,
+  "output": "MCItem",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemdata",
+    "fields": [
+      "type",
+      "potion"
+    ]
+  }
+}

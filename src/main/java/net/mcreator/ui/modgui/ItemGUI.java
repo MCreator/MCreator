@@ -29,6 +29,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -66,6 +67,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -77,7 +79,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -94,10 +103,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private LogicProcedureSelector glowCondition;
 
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
-
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox rangedItemChargesPower = L10N.checkbox("elementgui.common.enable");
-
+	private final JCheckBox projectileDisableAmmoCheck = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector onRangedItemUsed;
 	private ProcedureSelector rangedUseCondition;
 
@@ -138,8 +146,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
+	private final TranslatedComboBox animation = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("none", "elementgui.item.item_animation_none"),
+			Map.entry("eat", "elementgui.item.item_animation_eat"),
+			Map.entry("block", "elementgui.item.item_animation_block"),
+			Map.entry("bow", "elementgui.item.item_animation_bow"),
+			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
+			Map.entry("drink", "elementgui.item.item_animation_drink"),
+			Map.entry("spear", "elementgui.item.item_animation_spear")
+			//@formatter:on
+	);
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -425,7 +442,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		JPanel rangedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
+		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
@@ -438,10 +455,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.projectile")));
 		rangedProperties.add(projectile);
 
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
+				L10N.label("elementgui.item.projectile_disable_ammo_check")));
+		projectileDisableAmmoCheck.setOpaque(false);
+		rangedProperties.add(projectileDisableAmmoCheck);
+
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
 				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
+
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
 				L10N.label("elementgui.item.charges_power")));
 		rangedItemChargesPower.setOpaque(false);
@@ -513,6 +536,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
+			projectileDisableAmmoCheck.setEnabled(true);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 0)
 					useDuration.setValue(72000);
@@ -527,6 +551,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			rangedUseCondition.setEnabled(false);
+			projectileDisableAmmoCheck.setEnabled(false);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 72000)
 					useDuration.setValue(0);
@@ -618,6 +643,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		animation.setSelectedItem(item.animation);
 		eatResultItem.setBlock(item.eatResultItem);
 		enableRanged.setSelected(item.enableRanged);
+		projectileDisableAmmoCheck.setSelected(item.projectileDisableAmmoCheck);
 		shootConstantly.setSelected(item.shootConstantly);
 		rangedItemChargesPower.setSelected(item.rangedItemChargesPower);
 		projectile.setSelectedItem(item.projectile);
@@ -639,7 +665,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public Item getElementFromGUI() {
 		Item item = new Item(modElement);
 		item.name = name.getText();
-		item.rarity = (String) rarity.getSelectedItem();
+		item.rarity = rarity.getSelectedItem();
 		item.creativeTabs = creativeTabs.getListElements();
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
@@ -672,10 +698,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.saturation = (double) saturation.getValue();
 		item.isMeat = isMeat.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
-		item.animation = (String) animation.getSelectedItem();
+		item.animation = animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
+		item.projectileDisableAmmoCheck = projectileDisableAmmoCheck.isSelected();
 		item.shootConstantly = shootConstantly.isSelected();
 		item.rangedItemChargesPower = rangedItemChargesPower.isSelected();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());

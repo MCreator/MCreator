@@ -29,9 +29,7 @@ package net.mcreator.integration.generator;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.IWorkspaceDependent;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.workspace.Workspace;
@@ -48,13 +46,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
-
-			// silently skip mod elements not supported by this generator
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementType)
-					== GeneratorStats.CoverageStatus.NONE)
-				continue;
-
+		for (ModElementType<?> modElementType : workspace.getGeneratorConfiguration().getGeneratorStats()
+				.getSupportedModElementTypes()) {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 

@@ -54,6 +54,11 @@ public class JStringListField extends JPanel {
 
 	private boolean uniqueEntries = false;
 
+	private final JList<String> entriesList;
+	private final JScrollPane pane;
+
+	private final JPanel controls;
+
 	/**
 	 * Sole constructor.
 	 *
@@ -64,13 +69,13 @@ public class JStringListField extends JPanel {
 	public JStringListField(Window parent, @Nullable Function<VTextField, Validator> validator) {
 		super(new BorderLayout());
 
-		JList<String> entriesList = new JList<>(entriesModel);
+		entriesList = new JList<>(entriesModel);
 		entriesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		entriesList.setVisibleRowCount(1);
 		entriesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		entriesList.setCellRenderer(new CustomListCellRenderer());
 
-		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(entriesList));
+		pane = new JScrollPane(PanelUtils.totalCenterInPanel(entriesList));
 		pane.setPreferredSize(getPreferredSize());
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -104,13 +109,26 @@ public class JStringListField extends JPanel {
 			changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
 		});
 
-		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
+		controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		controls.setOpaque(true);
 		controls.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add("Center", pane);
 		add("East", controls);
+	}
+
+	public void hideButtons() {
+		controls.setVisible(false);
+	}
+
+	public void disableItemCentering() {
+		Box verticalBox = Box.createVerticalBox();
+		verticalBox.add(Box.createVerticalGlue());
+		verticalBox.add(entriesList);
+		verticalBox.add(Box.createVerticalGlue());
+		entriesList.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		pane.setViewportView(verticalBox);
 	}
 
 	@Override public void setEnabled(boolean b) {
