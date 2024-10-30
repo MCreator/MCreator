@@ -22,7 +22,6 @@ import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import net.mcreator.io.OS;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;

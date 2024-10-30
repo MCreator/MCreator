@@ -20,6 +20,7 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
@@ -27,7 +28,9 @@ import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
@@ -96,6 +99,30 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+
+		JPopupMenu helpMenu = new JPopupMenu();
+
+		JMenuItem javaModels = new JMenuItem(L10N.t("workspace.3dmodels.help.java_models"));
+		javaModels.setIcon(UIRES.get("16px.importjavamodel"));
+		javaModels.addActionListener(e -> DesktopUtils.browseSafe(
+				MCreatorApplication.SERVER_DOMAIN + "/wiki/common-blockbench-issues-mcreator"));
+		helpMenu.add(javaModels);
+
+		JMenuItem jsonModels = new JMenuItem(L10N.t("workspace.3dmodels.help.json_models"));
+		jsonModels.setIcon(UIRES.get("16px.importjsonmodel"));
+		jsonModels.addActionListener(e -> DesktopUtils.browseSafe(
+				MCreatorApplication.SERVER_DOMAIN + "/wiki/my-json-model-renders-broken-texture"));
+		helpMenu.add(jsonModels);
+
+		JMenuItem objModels = new JMenuItem(L10N.t("workspace.3dmodels.help.obj_models"));
+		objModels.setIcon(UIRES.get("16px.importobjmodel"));
+		objModels.addActionListener(e -> DesktopUtils.browseSafe(
+				MCreatorApplication.SERVER_DOMAIN + "/wiki/custom-obj-models-blocks-and-items"));
+		helpMenu.add(objModels);
+
+		JButton help = AbstractWorkspacePanel.createToolBarButton("workspace.3dmodels.help", UIRES.get("16px.info"));
+		help.addActionListener(e -> helpMenu.show(help, 5, help.getHeight() + 5));
+		bar.add(help);
 	}
 
 	@Override void deleteCurrentlySelected() {

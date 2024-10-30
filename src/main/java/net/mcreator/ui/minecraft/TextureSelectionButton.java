@@ -72,7 +72,8 @@ public class TextureSelectionButton extends VButton {
 						setIcon(null);
 						getValidationStatus();
 						setToolTipText(null);
-						textureSelectedListeners.forEach(listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
+						textureSelectedListeners.forEach(
+								listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
 					} else {
 						td.setVisible(true);
 					}

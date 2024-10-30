@@ -71,7 +71,8 @@ public class WorkspaceGeneratorSetup {
 		// attempt to delete AT files if Java (so outdated ATs are not applied during generator setup)
 		// they will be regenerated with next workspace build
 		if (newGenerator.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
-			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/accesstransformer.cfg"));
+			FileIO.deleteDir(
+					new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/accesstransformer.cfg"));
 		}
 
 		// delete generator base files

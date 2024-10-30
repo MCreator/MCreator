@@ -31,7 +31,7 @@ public class TextLengthBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			master.append("(");
+			master.append("/*@int*/(");
 			master.processOutputBlockWithoutParentheses(element);
 			master.append(").length()");
 		} else {
