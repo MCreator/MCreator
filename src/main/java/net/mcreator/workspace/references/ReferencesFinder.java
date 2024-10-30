@@ -152,13 +152,12 @@ public class ReferencesFinder {
 
 	public static Set<ModElement> searchAnimationUsages(Workspace workspace, Animation animation) {
 		return getGeneratableElements(workspace).parallelStream()
-				// TODO: implement correctly
-				/*.filter(ge ->
+				.filter(ge ->
 						anyValueMatches(ge, net.mcreator.element.parts.Animation.class, e -> {
 									ResourceReference ref = e.getAnnotation(ResourceReference.class);
 									return ref != null && ref.value().equals("animation");
-								}, (a, t) -> model.equals(t))
-				)*/
+								}, (a, t) -> animation.getName().equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))
+				)
 				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 

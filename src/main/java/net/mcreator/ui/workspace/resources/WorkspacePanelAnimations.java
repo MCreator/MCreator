@@ -100,7 +100,10 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 			setOpaque(isSelected);
 			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText("(" + ma.getSubanimations().size() + ") " + StringUtils.abbreviateString(ma.getName(), 13));
-			setToolTipText(ma.getName());
+			StringBuilder sb = new StringBuilder(ma.getName()).append("\n");
+			for (String s : ma.getSubanimations())
+				sb.append("-").append(s).append("\n");
+			setToolTipText(sb.toString().trim());
 			ComponentUtils.deriveFont(this, 11);
 			setVerticalTextPosition(BOTTOM);
 			setHorizontalTextPosition(CENTER);

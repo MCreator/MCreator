@@ -1,4 +1,5 @@
 _default: CamelAnimation.CAMEL_WALK
+_mcreator_prefix: "CUSTOM:"
 ARMADILLO_ROLL_UP: ArmadilloAnimation.ARMADILLO_ROLL_UP
 ARMADILLO_WALK: ArmadilloAnimation.ARMADILLO_WALK
 ARMADILLO_PEEK: ArmadilloAnimation.ARMADILLO_PEEK

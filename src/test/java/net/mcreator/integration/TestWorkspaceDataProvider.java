@@ -1850,7 +1850,7 @@ public class TestWorkspaceDataProvider {
 		}
 		livingEntity.animations = new ArrayList<>();
 		if (!emptyLists) {
-			for (DataListEntry anim : ElementUtil.loadAnimations()) {
+			for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
 				LivingEntity.AnimationEntry animation = new LivingEntity.AnimationEntry();
 				animation.animation = new Animation(modElement.getWorkspace(), anim);
 				animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
