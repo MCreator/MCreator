@@ -1169,6 +1169,25 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isCuredByMilk = !_true;
 			potionEffect.isProtectedByTotem = !_true;
 			potionEffect.isCuredbyHoney = _true;
+			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
+			if (!emptyLists) {
+				PotionEffect.AttributeModifierEntry entry1 = new PotionEffect.AttributeModifierEntry();
+				entry1.attribute = new AttributeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
+				entry1.amount = 0.5;
+				entry1.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+				entry1.uuid = UUID.randomUUID().toString();
+				modifiers.add(entry1);
+
+				PotionEffect.AttributeModifierEntry entry2 = new PotionEffect.AttributeModifierEntry();
+				entry2.attribute = new AttributeEntry(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
+				entry2.amount = -1;
+				entry2.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+				entry2.uuid = UUID.randomUUID().toString();
+				modifiers.add(entry2);
+			}
+			potionEffect.modifiers = modifiers;
 			potionEffect.onStarted = new Procedure("procedure1");
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");
