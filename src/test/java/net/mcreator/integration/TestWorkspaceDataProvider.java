@@ -1848,6 +1848,18 @@ public class TestWorkspaceDataProvider {
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
 		}
+		livingEntity.animations = new ArrayList<>();
+		if (!emptyLists) {
+			for (DataListEntry anim : ElementUtil.loadAnimations()) {
+				LivingEntity.AnimationEntry animation = new LivingEntity.AnimationEntry();
+				animation.animation = new Animation(modElement.getWorkspace(), anim);
+				animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
+				animation.speed = 12.3;
+				animation.amplitude = 15.4;
+				animation.walking = _true;
+				livingEntity.animations.add(animation);
+			}
+		}
 		return livingEntity;
 	}
 

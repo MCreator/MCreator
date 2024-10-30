@@ -210,6 +210,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors");
 	}
 
+	public static List<DataListEntry> loadAnimations() {
+		return DataListLoader.loadDataList("animations");
+	}
+
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
