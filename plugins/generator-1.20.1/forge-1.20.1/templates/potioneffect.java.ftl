@@ -81,6 +81,7 @@ public class ${name}MobEffect extends MobEffect {
 			}
 		<#else>
 			@Override public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+				super.addAttributeModifiers(entity, attributeMap, amplifier);
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
