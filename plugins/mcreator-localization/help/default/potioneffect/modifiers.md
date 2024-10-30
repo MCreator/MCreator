@@ -1,0 +1,1 @@
+These attribute modifiers are applied to the entity while the effect is active.
