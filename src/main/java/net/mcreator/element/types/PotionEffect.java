@@ -19,12 +19,14 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +34,8 @@ import org.apache.logging.log4j.Logger;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
@@ -49,6 +53,8 @@ import java.io.File;
 	public boolean isProtectedByTotem;
 	public boolean isCuredbyHoney;
 
+	@ModElementReference public List<AttributeModifierEntry> modifiers;
+
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
@@ -64,6 +70,13 @@ import java.io.File;
 		this.mobEffectCategory = "NEUTRAL";
 		this.isCuredByMilk = true;
 		this.isProtectedByTotem = true;
+		modifiers = new ArrayList<>();
+	}
+
+	public static class AttributeModifierEntry {
+		public AttributeEntry attribute;
+		public double amount;
+		public String operation;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
