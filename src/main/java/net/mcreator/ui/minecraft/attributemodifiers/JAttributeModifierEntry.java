@@ -33,6 +33,7 @@ import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.UUID;
 
 public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.AttributeModifierEntry> {
 
@@ -42,10 +43,13 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01));
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private String uuid; // Used by versions 1.20.1 and below
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JAttributeModifierEntry> entryList) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
+
+		uuid = UUID.randomUUID().toString();
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
@@ -79,6 +83,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
+		entry.uuid = uuid;
 		return entry;
 	}
 
@@ -86,6 +91,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);
+		uuid = e.uuid;
 	}
 
 }

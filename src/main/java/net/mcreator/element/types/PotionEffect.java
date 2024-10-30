@@ -77,6 +77,7 @@ import java.util.List;
 		public AttributeEntry attribute;
 		public double amount;
 		public String operation;
+		public String uuid; // Used by versions 1.20.1 and below
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
