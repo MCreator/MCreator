@@ -126,7 +126,7 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.4.1' // version 3.5.1 logs messages to stdout (https://github.com/bobbylight/RSyntaxTextArea/issues/561)
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.5.2'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
@@ -134,18 +134,18 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.15.0' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '1.6.1'
-    implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'no-natives'
-    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.1') {
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.2', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.2') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'windows-x86_64', ext: 'dll'
-    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'macos-x86_64', ext: 'dylib'
-    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'macos-arm64', ext: 'dylib'
-    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.1', classifier: 'linux-x86_64', ext: 'so'
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.5.2', classifier: 'windows-x86_64', ext: 'dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.5.2', classifier: 'macos-x86_64', ext: 'dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.5.2', classifier: 'macos-arm64', ext: 'dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.2', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.1'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.3'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.3'
 }
 
 javafx {

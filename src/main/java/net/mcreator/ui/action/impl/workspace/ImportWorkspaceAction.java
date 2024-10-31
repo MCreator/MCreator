@@ -36,7 +36,8 @@ public class ImportWorkspaceAction extends BasicAction {
 					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
 							actionRegistry.getMCreator());
 					if (workspaceFile != null)
-						actionRegistry.getMCreator().getApplication().openWorkspaceInMCreator(workspaceFile.file(), workspaceFile.regenerateRequired());
+						actionRegistry.getMCreator().getApplication()
+								.openWorkspaceInMCreator(workspaceFile.file(), workspaceFile.regenerateRequired());
 				}
 			}
 		});

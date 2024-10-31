@@ -107,15 +107,13 @@ public class VTextField extends JTextField implements IValidable {
 		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
 
 		if (currentValidationResult != null) {
+			g.setColor(currentValidationResult.getValidationResultType().getColor());
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.setColor(new Color(238, 229, 113));
 				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.setColor(new Color(204, 108, 108));
 				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
 					&& showPassed) {
-				g.setColor(new Color(79, 192, 121));
 				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			}
 

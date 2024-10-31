@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Attribute;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -34,8 +35,11 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
 
@@ -137,6 +141,10 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		else if (minMaxValue.getMaxValue() < (double) defaultValue.getValue())
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_higher_than_max"));
 		return new AggregatedValidationResult(page1group);
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-attribute");
 	}
 
 }

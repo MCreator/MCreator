@@ -28,8 +28,8 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
-import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.resources.ExternalTexture;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

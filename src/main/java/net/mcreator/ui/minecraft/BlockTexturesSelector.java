@@ -80,7 +80,7 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		add(new JEmptyBox());
 		add(new JEmptyBox());
 
-		textureLeft.setActionListener(event -> {
+		textureLeft.addTextureSelectedListener(event -> {
 			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
 					|| textureFront.hasTexture() || textureRight.hasTexture())) {
 				texture.setTexture(textureLeft.getTextureHolder());
@@ -94,7 +94,8 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		texture.setValidator(new TileHolderValidator(texture));
 	}
 
-	public void setTextures(TextureHolder texture, TextureHolder textureTop, TextureHolder textureLeft, TextureHolder textureFront, TextureHolder textureRight, TextureHolder textureBack) {
+	public void setTextures(TextureHolder texture, TextureHolder textureTop, TextureHolder textureLeft,
+			TextureHolder textureFront, TextureHolder textureRight, TextureHolder textureBack) {
 		this.texture.setTexture(texture);
 		this.textureTop.setTexture(textureTop);
 		this.textureLeft.setTexture(textureLeft);

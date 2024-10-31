@@ -41,8 +41,7 @@ public class ClassWriter {
 	public static void writeClassToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
 		if (formatAndOrganiseImports) {
-			TrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code),
-					file);
+			TrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
 		} else {
 			TrackingFileIO.writeFile(workspace, code, file);
 		}

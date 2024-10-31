@@ -58,6 +58,11 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
+					int index = list.locationToIndex(evt.getPoint());
+					if (index > 0) {
+						list.setSelectedIndex(index);
+					}
+
 					setVisible(false);
 					dispose();
 					if (itemSelectedListener != null)
