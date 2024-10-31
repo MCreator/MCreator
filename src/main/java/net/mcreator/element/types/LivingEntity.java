@@ -74,6 +74,8 @@ import java.util.*;
 	@ModElementReference @TextureReference(TextureType.ENTITY) @ResourceReference("model")
 	public List<ModelLayerEntry> modelLayers;
 
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
+
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
 
@@ -204,6 +206,8 @@ import java.util.*;
 		this.modelLayers = new ArrayList<>();
 
 		this.raidSpawnsCount = new int[] { 4, 3, 3, 4, 4, 4, 2 };
+
+		this.animations = new ArrayList<>();
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -305,6 +309,19 @@ import java.util.*;
 		@Override public @Nullable Workspace getWorkspace() {
 			return workspace;
 		}
+	}
+
+	public static class AnimationEntry {
+
+		public Animation animation;
+		public double speed;
+
+		public Procedure condition;
+
+		// Walking animation only
+		public boolean walking;
+		public double amplitude;
+
 	}
 
 }

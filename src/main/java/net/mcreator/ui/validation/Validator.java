@@ -22,12 +22,9 @@ import java.awt.*;
 
 public interface Validator {
 
-
 	enum ValidationResultType {
 
-		PASSED(new Color(0x93c54b)),
-		WARNING(new Color(0xf0c948)),
-		ERROR(new Color(0xc43b39));
+		PASSED(new Color(0x93c54b)), WARNING(new Color(0xf0c948)), ERROR(new Color(0xc43b39));
 
 		private final Color color;
 

@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;

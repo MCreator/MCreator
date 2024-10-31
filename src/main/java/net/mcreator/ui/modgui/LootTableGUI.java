@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -75,9 +76,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		).setIsPresentOnList(this::isEditingMode));
 		//@formatter:on
 		name.enableRealtimeValidation();
-		name.addItem("blocks/stone");
-		name.addItem("entities/chicken");
-		name.addItem("gameplay/fishing");
+		name.setPreferredSize(new Dimension(350, 0));
 		name.setEditable(true);
 
 		if (isEditingMode()) {
@@ -108,9 +107,28 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 						break;
 					}
 			});
+
+			for (ModElement me : mcreator.getWorkspace().getModElements()) {
+				if (me.getBaseTypesProvided().contains(BaseType.BLOCK)) {
+					name.addItem("blocks/" + me.getRegistryName());
+				} else if (me.getType() == ModElementType.LIVINGENTITY) {
+					name.addItem("entities/" + me.getRegistryName());
+				}
+			}
+
+			name.addActionListener(e -> {
+				String currName = name.getEditor().getItem().toString();
+				if (currName != null) {
+					if (currName.startsWith("blocks/")) {
+						type.setSelectedItem("Block");
+					} else if (currName.startsWith("entities/")) {
+						type.setSelectedItem("Entity");
+					}
+				}
+			});
 		}
 
-		JPanel northPanel = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/registry_name"),

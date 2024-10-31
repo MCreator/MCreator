@@ -53,8 +53,7 @@ public class ServerUtil {
 			if (eulaFile.isFile())
 				por.load(new FileInputStream(eulaFile));
 			por.setProperty("eula", "true");
-			por.store(new FileOutputStream(eulaFile),
-					"#Edited by MCreator - user agreed to EULA inside MCreator");
+			por.store(new FileOutputStream(eulaFile), "#Edited by MCreator - user agreed to EULA inside MCreator");
 		} catch (IOException e) {
 			LOG.warn("Failed to write EULA file", e);
 		}
