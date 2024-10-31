@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
-<#macro addSpecialInformation procedure="" isBlock=false>
+<#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
 		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, level, list, flag);
@@ -20,6 +20,10 @@
 					list.add(Component.literal(line));
 				}
 			}
+		<#elseif translationKeyHeader?has_content>
+			<#list procedure.getFixedValue() as entry>
+				list.add(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
+			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));

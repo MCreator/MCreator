@@ -42,7 +42,7 @@ public class ${name}Item extends RecordItem {
 			new Item.Properties().stacksTo(1).rarity(Rarity.${data.rarity}), ${data.lengthInTicks});
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 

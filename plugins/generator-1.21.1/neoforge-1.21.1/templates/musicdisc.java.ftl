@@ -42,7 +42,7 @@ public class ${name}Item extends Item {
 				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}"))));
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
