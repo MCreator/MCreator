@@ -213,6 +213,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(page1group);
+		} else if (page == 1) {
+			return modifierList.getValidationResult();
 		}
 		return new AggregatedValidationResult.PASS();
 	}

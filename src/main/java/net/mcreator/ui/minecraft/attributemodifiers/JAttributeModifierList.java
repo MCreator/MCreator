@@ -19,15 +19,19 @@
 
 package net.mcreator.ui.minecraft.attributemodifiers;
 
+import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.types.PotionEffect;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifierEntry, PotionEffect.AttributeModifierEntry> {
 
@@ -44,5 +48,17 @@ public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifie
 
 	@Override protected JAttributeModifierEntry newEntry(JPanel parent, List<JAttributeModifierEntry> entryList, boolean userAction) {
 		return new JAttributeModifierEntry(mcreator, gui, parent, entryList);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		Set<AttributeEntry> usedAttributes = new HashSet<>();
+		for (var entry : entryList) {
+			if (usedAttributes.contains(entry.getEntry().attribute)) {
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.potioneffect.error_attributes_must_be_unique"));
+			}
+			usedAttributes.add(entry.getEntry().attribute);
+		}
+		return new AggregatedValidationResult.PASS();
 	}
 }
