@@ -61,4 +61,5 @@ public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifie
 		}
 		return new AggregatedValidationResult.PASS();
 	}
+
 }
