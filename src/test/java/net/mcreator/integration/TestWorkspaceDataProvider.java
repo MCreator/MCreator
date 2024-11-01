@@ -398,6 +398,7 @@ public class TestWorkspaceDataProvider {
 							"Mega spruce trees" });
 			biome.airColor = Color.red;
 			if (!emptyLists) {
+				biome.fogColor = Color.yellow;
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
 				biome.waterColor = Color.blue;

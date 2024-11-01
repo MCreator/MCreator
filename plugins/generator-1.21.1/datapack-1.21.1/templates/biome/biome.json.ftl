@@ -105,7 +105,7 @@
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
     	"sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
-    	"fog_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 12638463)},
+    	"fog_color": ${data.fogColor?has_content?then(data.fogColor.getRGB(), 12638463)},
     	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)},
     	"water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
     },
