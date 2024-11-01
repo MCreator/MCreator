@@ -1176,7 +1176,6 @@ public class TestWorkspaceDataProvider {
 						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
 				entry1.amount = 0.5;
 				entry1.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
-				entry1.uuid = UUID.randomUUID().toString();
 				modifiers.add(entry1);
 
 				PotionEffect.AttributeModifierEntry entry2 = new PotionEffect.AttributeModifierEntry();
@@ -1184,7 +1183,6 @@ public class TestWorkspaceDataProvider {
 						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
 				entry2.amount = -1;
 				entry2.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
-				entry2.uuid = UUID.randomUUID().toString();
 				modifiers.add(entry2);
 			}
 			potionEffect.modifiers = modifiers;

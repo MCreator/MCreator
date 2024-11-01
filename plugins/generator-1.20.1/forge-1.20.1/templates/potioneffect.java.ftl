@@ -40,7 +40,7 @@ public class ${name}MobEffect extends MobEffect {
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
 		<#list data.modifiers as modifier>
-		this.addAttributeModifier(${modifier.attribute}, "${modifier.uuid}", ${modifier.amount},
+		this.addAttributeModifier(${modifier.attribute}, "${w.getUUID(data.getModElement().getRegistryName() + "_" + modifier?index)}", ${modifier.amount},
 				AttributeModifier.Operation.${getAttributeOperation(modifier.operation)});
 		</#list>
 	}
