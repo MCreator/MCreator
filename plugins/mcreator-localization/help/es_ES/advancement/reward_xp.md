@@ -1,1 +1,1 @@
-La cantidad de experiencia que recibirá el jugador al conseguir el avance.
+La cantidad de experiencia que recibirá el jugador al conseguir el logro.

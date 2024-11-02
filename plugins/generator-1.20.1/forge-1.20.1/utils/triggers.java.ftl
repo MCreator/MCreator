@@ -1,20 +1,29 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
-<#macro addSpecialInformation procedure="" isBlock=false>
+<#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
 		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, level, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
-			list.add(Component.literal(<@procedureCode procedure, {
+			String hoverText = <@procedureCode procedure, {
 				"x": "entity != null ? entity.getX() : 0.0",
 				"y": "entity != null ? entity.getY() : 0.0",
 				"z": "entity != null ? entity.getZ() : 0.0",
 				"entity": "entity",
 				"world": "level instanceof Level ? (LevelAccessor) level : null",
 				"itemstack": "itemstack"
-			}, false/>));
+			}, false/>;
+			if (hoverText != null) {
+				for (String line : hoverText.split("\n")) {
+					list.add(Component.literal(line));
+				}
+			}
+		<#elseif translationKeyHeader?has_content>
+			<#list procedure.getFixedValue() as entry>
+				list.add(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
+			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));

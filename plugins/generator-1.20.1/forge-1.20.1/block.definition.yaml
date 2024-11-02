@@ -405,6 +405,8 @@ block_base_properties:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+  - fromlist: data.getFixedSpecialInformation()
+    key: block.@modid.@registryname.description_@item_index
 
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe

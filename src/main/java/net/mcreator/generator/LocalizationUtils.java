@@ -107,6 +107,7 @@ public class LocalizationUtils {
 						null;
 
 				if (fromlist instanceof Collection<?> listEntries) {
+					int i = 0;
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
 								GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
@@ -115,6 +116,7 @@ public class LocalizationUtils {
 												.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())
 												.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
+												.replace("@item_index", Integer.toString(i++))
 												//@formatter:on
 								));
 						keysToEntries.put(key, new Tuple<>(map, entry));
@@ -139,9 +141,13 @@ public class LocalizationUtils {
 	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
 			String mapto = (String) template.get("mapto");
-			String value = (String) (mapto.contains("()") ?
-					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
-					entry.getClass().getField(mapto.trim()).get(entry));
+			String value;
+			if (mapto == null)
+				value = (String) entry;
+			else if (mapto.contains("()"))
+				value = (String) entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry);
+			else
+				value = (String) entry.getClass().getField(mapto.trim()).get(entry);
 
 			String suffix = (String) template.get("suffix");
 			if (suffix != null)
