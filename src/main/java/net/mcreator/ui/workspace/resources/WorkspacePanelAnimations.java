@@ -19,12 +19,14 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
@@ -65,6 +67,9 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+
+		addToolBarButton("action.workspace.resources.animations.help", UIRES.get("16px.info"),
+				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/entity-model-animations"));
 	}
 
 	@Override void deleteCurrentlySelected() {
