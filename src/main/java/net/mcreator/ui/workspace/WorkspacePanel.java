@@ -55,6 +55,7 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
@@ -63,6 +64,8 @@ import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
+import net.mcreator.workspace.resources.CustomTexture;
+import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -1516,7 +1519,13 @@ import java.util.stream.Collectors;
 				if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
 					elementsCount.setIcon(UIRES.get("16px.link"));
 				} else {
-					elementsCount.setIcon(new EmptyIcon(0, 0));
+					Texture icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,
+							mcreator.getWorkspaceSettings().getModPicture());
+					if (icon != null) {
+						elementsCount.setIcon(IconUtils.resize(icon.getTextureIcon(mcreator.getWorkspace()), 16));
+					} else {
+						elementsCount.setIcon(new EmptyIcon(0, 0));
+					}
 				}
 			}
 		}
