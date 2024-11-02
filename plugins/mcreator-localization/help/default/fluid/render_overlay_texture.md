@@ -1,0 +1,1 @@
+If a texture is selected, it will be displayed as an overlay while the player is submerged.
