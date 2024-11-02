@@ -52,15 +52,13 @@ public class MainToolBar extends JToolBar {
 
 		add(mcreator.actionRegistry.importBlockTexture);
 		add(mcreator.actionRegistry.importItemTexture);
-
-		addSeparator(new Dimension(10, 4));
-
 		add(mcreator.actionRegistry.importSound);
 		add(mcreator.actionRegistry.importStructure);
 
 		addSeparator(new Dimension(10, 4));
 
 		add(mcreator.actionRegistry.importJavaModel);
+		add(mcreator.actionRegistry.importJavaModelAnimation);
 		add(mcreator.actionRegistry.importJSONModel);
 		add(mcreator.actionRegistry.importOBJModel);
 
