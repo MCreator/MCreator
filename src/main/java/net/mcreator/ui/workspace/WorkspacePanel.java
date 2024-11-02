@@ -1525,12 +1525,15 @@ import java.util.stream.Collectors;
 					modElementsBar.setGradientColor(ColorUtils.applyAlpha(
 							ImageUtils.getAverageColor(ImageUtils.toBufferedImage(imageIcon.getImage())), 90));
 					elementsCount.setIcon(IconUtils.resize(imageIcon, 16));
+					modElementsBar.setFractionPoint(0.88f);
 				} else if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
 					modElementsBar.setGradientColor(ColorUtils.applyAlpha(new Color(0xe69c32), 100));
 					elementsCount.setIcon(UIRES.get("16px.link"));
+					modElementsBar.setFractionPoint(0.88f);
 				} else {
 					modElementsBar.setGradientColor(
 							ColorUtils.applyAlpha(Theme.current().getInterfaceAccentColor(), 90));
+					modElementsBar.setFractionPoint(0.91f);
 					elementsCount.setIcon(new EmptyIcon(0, 0));
 				}
 			}

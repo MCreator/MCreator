@@ -31,7 +31,8 @@ public class TransparentToolBar extends JToolBar {
 	private final Color color;
 
 	@Nullable private Color gradientColor = null;
-	private int gradientWidth = 300;
+	private int gradientWidth = 320;
+	private float fractionPoint = 0.9f;
 
 	public TransparentToolBar() {
 		this(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
@@ -45,6 +46,14 @@ public class TransparentToolBar extends JToolBar {
 
 	public void setGradientWidth(int gradientWidth) {
 		this.gradientWidth = gradientWidth;
+		revalidate();
+		repaint();
+	}
+
+	public void setFractionPoint(float fractionPoint) {
+		this.fractionPoint = fractionPoint;
+		revalidate();
+		repaint();
 	}
 
 	public void setGradientColor(@Nullable Color gradientColor) {
@@ -60,7 +69,7 @@ public class TransparentToolBar extends JToolBar {
 			int rectX = getWidth() - gradientWidth;
 
 			Color[] colors = { color, gradientColor, color };
-			float[] fractions = { 0.0f, 0.94f, 1.0f };
+			float[] fractions = { 0.0f, fractionPoint, 1.0f };
 			LinearGradientPaint gradient = new LinearGradientPaint(rectX, 0, rectX + gradientWidth, 0, fractions,
 					colors);
 
