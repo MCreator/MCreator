@@ -59,6 +59,9 @@ import java.util.stream.Collectors;
 	@ModElementReference public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
+	public double secondaryTreeChance;
+	public ConfiguredFeatureEntry[] trees;
+
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
 
@@ -139,6 +142,7 @@ import java.util.stream.Collectors;
 
 		this.creativeTabs = new ArrayList<>();
 
+		this.trees = new ConfiguredFeatureEntry[6];
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
