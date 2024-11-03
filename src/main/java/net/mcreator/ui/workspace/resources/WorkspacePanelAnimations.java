@@ -48,7 +48,7 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addToolBarButton("action.workspace.resources.import_java_model_animation",
+			addToolBarButton("action.workspace.resources.import_java_animation",
 					UIRES.get("16px.importjavamodelanimation"),
 					e -> workspacePanel.getMCreator().actionRegistry.importJavaModelAnimation.doAction());
 
