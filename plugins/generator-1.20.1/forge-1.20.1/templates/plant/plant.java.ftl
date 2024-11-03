@@ -43,22 +43,26 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.hasTileEntity>
 	<#assign interfaces += ["EntityBlock"]>
 </#if>
-<#if data.isBonemealable>
+<#if data.isBonemealable && data.plantType != "sapling">
 	<#assign interfaces += ["BonemealableBlock"]>
 </#if>
-public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block
+public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if interfaces?size gt 0>
 		implements ${interfaces?join(",")}
 	</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+		super(<#if data.plantType == "normal">
+		() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
+		<#elseif data.plantType == "sapling">
+        new ${name}TreeGrower(),
+        </#if>
 		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
 		.mapColor(MapColor.PLANT)
 		</#if>
-		<#if data.plantType == "growapable" || data.forceTicking>
+		<#if data.plantType == "growapable" || data.plantType == "sapling" || data.forceTicking>
 		.randomTicks()
 		</#if>
 		<#if data.isCustomSoundType>
@@ -204,7 +208,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		}
 	</#if>
 
-	<#if !(data.growapableSpawnType == "Plains" && data.plantType == "normal")>
+	<#if !(data.growapableSpawnType == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))>
 	@Override public PlantType getPlantType(BlockGetter world, BlockPos pos) {
 		return PlantType.${generator.map(data.growapableSpawnType, "planttypes")};
 	}
@@ -335,6 +339,14 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 }
 </#compress>
 <#-- @formatter:on -->
+
+<#function getPlantClass plantType>
+<#if plantType == "normal"><#return "Flower">
+<#elseif plantType == "growapable"><#return "SugarCane">
+<#elseif data.plantType == "double"><#return "DoublePlant">
+<#elseif data.plantType == "sapling"><#return "Sapling">
+</#if>
+</#function>
 
 <#macro canPlaceOnList blockList condition>
 <#if (blockList?size > 1) && condition>(</#if>
