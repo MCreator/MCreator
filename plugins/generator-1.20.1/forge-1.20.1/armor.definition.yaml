@@ -135,3 +135,11 @@ localizationkeys:
   - key: item.@modid.@registryname_boots
     mapto: bootsName
     condition: enableBoots
+  - fromlist: data.getHelmetFixedSpecialInformation()
+    key: item.@modid.@registryname_helmet.description_@item_index
+  - fromlist: data.getBodyFixedSpecialInformation()
+    key: item.@modid.@registryname_chestplate.description_@item_index
+  - fromlist: data.getLeggingsFixedSpecialInformation()
+    key: item.@modid.@registryname_leggings.description_@item_index
+  - fromlist: data.getBootsFixedSpecialInformation()
+    key: item.@modid.@registryname_boots.description_@item_index

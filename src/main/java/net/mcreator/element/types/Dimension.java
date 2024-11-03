@@ -24,10 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.IPOIProvider;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -43,7 +40,7 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {
+		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider {
 
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 
@@ -155,6 +152,10 @@ import java.util.*;
 		if (this.hasIgniter())
 			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
 		return Collections.emptyList();
+	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

@@ -42,6 +42,6 @@ public class ${name}Item extends BucketItem {
 			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity}));
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>
 }
 <#-- @formatter:on -->

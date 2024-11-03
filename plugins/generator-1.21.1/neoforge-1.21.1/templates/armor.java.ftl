@@ -170,7 +170,7 @@ import net.minecraft.client.model.Model;
 		}
 		</#if>
 
-		<@addSpecialInformation data.helmetSpecialInformation/>
+		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
 		<@piglinNeutral data.helmetPiglinNeutral/>
 
@@ -191,7 +191,7 @@ import net.minecraft.client.model.Model;
 		}
 		</#if>
 
-		<@addSpecialInformation data.bodySpecialInformation/>
+		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
 
 		<@piglinNeutral data.bodyPiglinNeutral/>
 
@@ -212,7 +212,7 @@ import net.minecraft.client.model.Model;
 		}
 		</#if>
 
-		<@addSpecialInformation data.leggingsSpecialInformation/>
+		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
 		<@piglinNeutral data.leggingsPiglinNeutral/>
 
@@ -233,7 +233,7 @@ import net.minecraft.client.model.Model;
 		}
 		</#if>
 
-		<@addSpecialInformation data.bootsSpecialInformation/>
+		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
 
 		<@piglinNeutral data.bootsPiglinNeutral/>
 

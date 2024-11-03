@@ -27,6 +27,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class MusicDisc extends GeneratableElement
-		implements IItem, IItemWithTexture, ITabContainedElement {
+		implements IItem, IItemWithTexture, ITabContainedElement, ISpecialInfoHolder {
 
 	public String name;
 	public String rarity;
@@ -90,6 +91,10 @@ import java.util.List;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return providedMCItems();
+	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
 	}
 
 }

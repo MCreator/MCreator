@@ -56,6 +56,7 @@
         <block type="text_join"/>
         <block type="text_print"/>
         <block type="text_length"/>
+        <block type="text_new_line"/>
         <block type="text_index_of">
             <value name="from">
                 <block type="math_number">

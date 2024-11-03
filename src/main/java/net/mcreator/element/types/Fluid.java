@@ -24,9 +24,11 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -38,19 +40,26 @@ import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement {
+		implements IBlock, ITabContainedElement, ISpecialInfoHolder {
 
 	public String name;
 	public String bucketName;
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureStill;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureFlowing;
+
+	@TextureReference(TextureType.OTHER) public TextureHolder textureRenderOverlay;
+	public boolean hasFog;
+	public Color fogColor;
+	public NumberProcedure fogStartDistance;
+	public NumberProcedure fogEndDistance;
 
 	public String tintType;
 
@@ -162,6 +171,10 @@ import java.util.List;
 		if (this.generateBucket)
 			retval.add(new MCItem.Custom(this.getModElement(), "bucket", "item", "Bucket"));
 		return retval;
+	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
