@@ -54,7 +54,7 @@ public class AnimationImportActions {
 
 	public static class JAVA extends BasicAction {
 		public JAVA(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_java_model_animation"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_java_animation"), actionEvent -> {
 				File file = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".java" });
 				if (file != null)
 					importJavaModelAnimation(actionRegistry.getMCreator(), file);
