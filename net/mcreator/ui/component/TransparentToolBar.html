@@ -164,7 +164,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">TransparentToolBar</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.awt.Color)" class="member-name-link">TransparentToolBar</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;c)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.awt.Color)" class="member-name-link">TransparentToolBar</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
@@ -183,6 +183,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paintComponent(java.awt.Graphics)" class="member-name-link">paintComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFractionPoint(float)" class="member-name-link">setFractionPoint</a><wbr>(float&nbsp;fractionPoint)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGradientColor(java.awt.Color)" class="member-name-link">setGradientColor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;gradientColor)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGradientWidth(int)" class="member-name-link">setGradientWidth</a><wbr>(int&nbsp;gradientWidth)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -221,7 +230,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(java.awt.Color)">
 <h3>TransparentToolBar</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TransparentToolBar</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;c)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TransparentToolBar</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color)</span></div>
 </section>
 </li>
 </ul>
@@ -232,6 +241,25 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setGradientWidth(int)">
+<h3>setGradientWidth</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGradientWidth</span><wbr><span class="parameters">(int&nbsp;gradientWidth)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="setFractionPoint(float)">
+<h3>setFractionPoint</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFractionPoint</span><wbr><span class="parameters">(float&nbsp;fractionPoint)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="setGradientColor(java.awt.Color)">
+<h3>setGradientColor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGradientColor</span><wbr><span class="parameters">(@Nullable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;gradientColor)</span></div>
+</section>
+</li>
 <li>
 <section class="detail" id="paintComponent(java.awt.Graphics)">
 <h3>paintComponent</h3>

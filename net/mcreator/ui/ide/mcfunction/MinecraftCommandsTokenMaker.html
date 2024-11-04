@@ -226,9 +226,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Resets the scanner to read from a new input stream.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#yytext()" class="member-name-link">yytext</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#yystate()" class="member-name-link">yystate</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the current lexical state.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#yytext()" class="member-name-link">yytext</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the text matched by the current regular expression.</div>
 </div>
 </div>
@@ -434,6 +439,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="yystate()">
+<h3>yystate</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">yystate</span>()</div>
+<div class="block">Returns the current lexical state.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>yystate</code>&nbsp;in class&nbsp;<code>org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker</code></dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="yybegin(int)">
 <h3>yybegin</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">yybegin</span><wbr><span class="parameters">(int&nbsp;newState)</span></div>
@@ -466,6 +482,8 @@ loadScripts(document, 'script');</script>
  <p>
  It is equivalent to yytext().charAt(pos), but faster</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>yycharat</code>&nbsp;in class&nbsp;<code>org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker</code></dd>
 <dt>Parameters:</dt>
 <dd><code>pos</code> - the position of the character to fetch.
             A value from 0 to yylength()-1.</dd>
@@ -479,6 +497,10 @@ loadScripts(document, 'script');</script>
 <h3>yylength</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">yylength</span>()</div>
 <div class="block">Returns the length of the matched text region.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>yylength</code>&nbsp;in class&nbsp;<code>org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker</code></dd>
+</dl>
 </section>
 </li>
 <li>
@@ -489,6 +511,8 @@ loadScripts(document, 'script');</script>
  <p>
  They will be read again by then next call of the scanning method</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>yypushback</code>&nbsp;in class&nbsp;<code>org.fife.ui.rsyntaxtextarea.AbstractJFlexTokenMaker</code></dd>
 <dt>Parameters:</dt>
 <dd><code>number</code> - the number of characters to be read again.
                This number must not be greater than yylength()!</dd>
