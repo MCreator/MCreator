@@ -26,29 +26,22 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BlockBoundingBoxFixer implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BlockBoundingBoxFixer.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
-		try {
-			JsonObject blockDefinition = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
-			if (checkOldBoundingBox(blockDefinition)) {
-				IBlockWithBoundingBox.BoxEntry newBB = new IBlockWithBoundingBox.BoxEntry();
-				newBB.mx = blockDefinition.get("mx").getAsDouble() * 16;
-				newBB.my = blockDefinition.get("my").getAsDouble() * 16;
-				newBB.mz = blockDefinition.get("mz").getAsDouble() * 16;
-				newBB.Mx = blockDefinition.get("Mx").getAsDouble() * 16;
-				newBB.My = blockDefinition.get("My").getAsDouble() * 16;
-				newBB.Mz = blockDefinition.get("Mz").getAsDouble() * 16;
-				block.boundingBoxes.add(newBB);
-			}
-		} catch (Exception e) {
-			LOG.warn("Could not update bounding box of: {}", block.getModElement().getName());
+		JsonObject blockDefinition = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
+		if (checkOldBoundingBox(blockDefinition)) {
+			IBlockWithBoundingBox.BoxEntry newBB = new IBlockWithBoundingBox.BoxEntry();
+			newBB.mx = blockDefinition.get("mx").getAsDouble() * 16;
+			newBB.my = blockDefinition.get("my").getAsDouble() * 16;
+			newBB.mz = blockDefinition.get("mz").getAsDouble() * 16;
+			newBB.Mx = blockDefinition.get("Mx").getAsDouble() * 16;
+			newBB.My = blockDefinition.get("My").getAsDouble() * 16;
+			newBB.Mz = blockDefinition.get("Mz").getAsDouble() * 16;
+			block.boundingBoxes.add(newBB);
 		}
 		return block;
 	}

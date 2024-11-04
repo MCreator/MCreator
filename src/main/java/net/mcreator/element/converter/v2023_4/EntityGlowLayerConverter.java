@@ -25,37 +25,29 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class EntityGlowLayerConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(EntityGlowLayerConverter.class);
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		LivingEntity entity = (LivingEntity) input;
 
-		try {
-			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
-			if (jsonObject.get("mobModelGlowTexture") != null) {
-				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
-				if (!glowTexture.isEmpty()) {
-					LivingEntity.ModelLayerEntry glowLayer = new LivingEntity.ModelLayerEntry();
-					glowLayer.setWorkspace(workspace);
-					glowLayer.model = "Default";
-					glowLayer.texture = glowTexture;
-					glowLayer.glow = true;
-					glowLayer.condition = null;
+		JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
+		if (jsonObject.get("mobModelGlowTexture") != null) {
+			String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
+			if (!glowTexture.isEmpty()) {
+				LivingEntity.ModelLayerEntry glowLayer = new LivingEntity.ModelLayerEntry();
+				glowLayer.setWorkspace(workspace);
+				glowLayer.model = "Default";
+				glowLayer.texture = glowTexture;
+				glowLayer.glow = true;
+				glowLayer.condition = null;
 
-					entity.modelLayers = new ArrayList<>();
-					entity.modelLayers.add(glowLayer);
-				}
+				entity.modelLayers = new ArrayList<>();
+				entity.modelLayers.add(glowLayer);
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert entity glow texture", e);
 		}
 
 		return entity;

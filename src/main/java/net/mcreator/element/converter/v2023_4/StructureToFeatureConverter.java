@@ -32,120 +32,104 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class StructureToFeatureConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(StructureToFeatureConverter.class);
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		// Note: onStructureGenerated procedure needs to be manually added to the condition procedure
 
-		try {
-			String modElementName = input.getModElement().getName();
-			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		String modElementName = input.getModElement().getName();
+		JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			Feature feature = new Feature(new ModElement(workspace,
-					ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
-					ModElementType.FEATURE));
+		Feature feature = new Feature(new ModElement(workspace,
+				ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
+				ModElementType.FEATURE));
 
-			if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
-					.isEmpty()) { // Copy the restriction biomes if there are any
-				definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
-						e -> feature.restrictionBiomes.add(
-								new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
-			} else if (definition.has("spawnWorldTypes")) {
-				JsonArray spawnWorldTypes = definition.getAsJsonObject().get("spawnWorldTypes").getAsJsonArray();
-				if (spawnWorldTypes.size() == 1) { // If there are no restriction biomes, consider restiction dimensions
-					String spawnWorldType = spawnWorldTypes.get(0).getAsString();
-					if (spawnWorldType.equals("Surface")) {
-						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
-					} else if (spawnWorldType.equals("Nether")) {
-						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
-					} else if (spawnWorldType.equals("End")) {
-						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
-					} else if (spawnWorldType.startsWith("CUSTOM:")) {
-						ModElement modElement = workspace.getModElementByName(
-								spawnWorldType.replaceFirst("CUSTOM:", ""));
-						if (modElement != null) {
-							GeneratableElement generatableElement = modElement.getGeneratableElement();
-							if (generatableElement instanceof Dimension dimension) {
-								feature.restrictionBiomes.addAll(dimension.biomesInDimension);
-							}
+		if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
+				.isEmpty()) { // Copy the restriction biomes if there are any
+			definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
+					e -> feature.restrictionBiomes.add(
+							new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
+		} else if (definition.has("spawnWorldTypes")) {
+			JsonArray spawnWorldTypes = definition.getAsJsonObject().get("spawnWorldTypes").getAsJsonArray();
+			if (spawnWorldTypes.size() == 1) { // If there are no restriction biomes, consider restiction dimensions
+				String spawnWorldType = spawnWorldTypes.get(0).getAsString();
+				if (spawnWorldType.equals("Surface")) {
+					feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
+				} else if (spawnWorldType.equals("Nether")) {
+					feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
+				} else if (spawnWorldType.equals("End")) {
+					feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
+				} else if (spawnWorldType.startsWith("CUSTOM:")) {
+					ModElement modElement = workspace.getModElementByName(spawnWorldType.replaceFirst("CUSTOM:", ""));
+					if (modElement != null) {
+						GeneratableElement generatableElement = modElement.getGeneratableElement();
+						if (generatableElement instanceof Dimension dimension) {
+							feature.restrictionBiomes.addAll(dimension.biomesInDimension);
 						}
 					}
 				}
 			}
-
-			String spawnLocation = definition.get("spawnLocation").getAsString();
-			if (spawnLocation.equals("Air")) {
-				feature.generationStep = "RAW_GENERATION";
-			} else if (spawnLocation.equals("Underground")) {
-				feature.generationStep = "UNDERGROUND_STRUCTURES";
-			} else {
-				feature.generationStep = "SURFACE_STRUCTURES";
-			}
-
-			// Copy the generation condition
-			if (definition.has("generateCondition") && definition.getAsJsonObject("generateCondition").has("name")) {
-				feature.generateCondition = new Procedure(
-						definition.getAsJsonObject("generateCondition").get("name").getAsString());
-			}
-
-			String structure = definition.get("structure").getAsString();
-			int spawnXOffset = definition.has("spawnXOffset") ? definition.get("spawnXOffset").getAsInt() : 0;
-			int spawnYOffset = definition.has("spawnHeightOffset") ? definition.get("spawnHeightOffset").getAsInt() : 0;
-			int spawnZOffset = definition.has("spawnZOffset") ? definition.get("spawnZOffset").getAsInt() : 0;
-
-			if (spawnLocation.equals("Ground"))
-				spawnYOffset -= 1; // Old ground structures were 1 block lower (#4917)
-
-			spawnXOffset = Math.max(-47, Math.min(47, spawnXOffset));
-			spawnYOffset = Math.max(-47, Math.min(47, spawnYOffset));
-			spawnZOffset = Math.max(-47, Math.min(47, spawnZOffset));
-
-			boolean randomlyRotateStructure =
-					!definition.has("randomlyRotateStructure") || definition.get("randomlyRotateStructure")
-							.getAsBoolean();
-			String ignoreBlocks = definition.has("ignoreBlocks") ?
-					definition.get("ignoreBlocks").getAsString() :
-					"STRUCTURE_BLOCK";
-			String patchXML = getFeatureXML(structure, spawnXOffset, spawnYOffset, spawnZOffset,
-					randomlyRotateStructure, ignoreBlocks);
-
-			String surfaceDetectionType = definition.has("surfaceDetectionType") ?
-					definition.get("surfaceDetectionType").getAsString() :
-					"First motion blocking block";
-			int spawnProbability = definition.get("spawnProbability").getAsInt();
-			int minCountPerChunk = definition.has("minCountPerChunk") ?
-					definition.get("minCountPerChunk").getAsInt() :
-					1;
-			int maxCountPerChunk = definition.has("maxCountPerChunk") ?
-					definition.get("maxCountPerChunk").getAsInt() :
-					1;
-			List<String> restrictionBlocks = definition.has("restrictionBlocks") ?
-					definition.getAsJsonArray("restrictionBlocks").asList().stream()
-							.map(e -> e.getAsJsonObject().get("value").getAsString()).toList() :
-					List.of();
-			String placementXML = getPlacementXML(surfaceDetectionType, spawnProbability, minCountPerChunk,
-					maxCountPerChunk, spawnLocation, restrictionBlocks);
-
-			feature.featurexml = """
-					<xml><block type="feature_container" deletable="false" x="40" y="40">
-					<value name="feature">%s</value>
-					<next>%s</next></block></xml>
-					""".formatted(patchXML, placementXML);
-
-			return feature;
-		} catch (Exception e) {
-			LOG.warn("Could not convert old structure to a feature", e);
 		}
 
-		return null;
+		String spawnLocation = definition.get("spawnLocation").getAsString();
+		if (spawnLocation.equals("Air")) {
+			feature.generationStep = "RAW_GENERATION";
+		} else if (spawnLocation.equals("Underground")) {
+			feature.generationStep = "UNDERGROUND_STRUCTURES";
+		} else {
+			feature.generationStep = "SURFACE_STRUCTURES";
+		}
+
+		// Copy the generation condition
+		if (definition.has("generateCondition") && definition.getAsJsonObject("generateCondition").has("name")) {
+			feature.generateCondition = new Procedure(
+					definition.getAsJsonObject("generateCondition").get("name").getAsString());
+		}
+
+		String structure = definition.get("structure").getAsString();
+		int spawnXOffset = definition.has("spawnXOffset") ? definition.get("spawnXOffset").getAsInt() : 0;
+		int spawnYOffset = definition.has("spawnHeightOffset") ? definition.get("spawnHeightOffset").getAsInt() : 0;
+		int spawnZOffset = definition.has("spawnZOffset") ? definition.get("spawnZOffset").getAsInt() : 0;
+
+		if (spawnLocation.equals("Ground"))
+			spawnYOffset -= 1; // Old ground structures were 1 block lower (#4917)
+
+		spawnXOffset = Math.max(-47, Math.min(47, spawnXOffset));
+		spawnYOffset = Math.max(-47, Math.min(47, spawnYOffset));
+		spawnZOffset = Math.max(-47, Math.min(47, spawnZOffset));
+
+		boolean randomlyRotateStructure =
+				!definition.has("randomlyRotateStructure") || definition.get("randomlyRotateStructure").getAsBoolean();
+		String ignoreBlocks = definition.has("ignoreBlocks") ?
+				definition.get("ignoreBlocks").getAsString() :
+				"STRUCTURE_BLOCK";
+		String patchXML = getFeatureXML(structure, spawnXOffset, spawnYOffset, spawnZOffset, randomlyRotateStructure,
+				ignoreBlocks);
+
+		String surfaceDetectionType = definition.has("surfaceDetectionType") ?
+				definition.get("surfaceDetectionType").getAsString() :
+				"First motion blocking block";
+		int spawnProbability = definition.get("spawnProbability").getAsInt();
+		int minCountPerChunk = definition.has("minCountPerChunk") ? definition.get("minCountPerChunk").getAsInt() : 1;
+		int maxCountPerChunk = definition.has("maxCountPerChunk") ? definition.get("maxCountPerChunk").getAsInt() : 1;
+		List<String> restrictionBlocks = definition.has("restrictionBlocks") ?
+				definition.getAsJsonArray("restrictionBlocks").asList().stream()
+						.map(e -> e.getAsJsonObject().get("value").getAsString()).toList() :
+				List.of();
+		String placementXML = getPlacementXML(surfaceDetectionType, spawnProbability, minCountPerChunk,
+				maxCountPerChunk, spawnLocation, restrictionBlocks);
+
+		feature.featurexml = """
+				<xml><block type="feature_container" deletable="false" x="40" y="40">
+				<value name="feature">%s</value>
+				<next>%s</next></block></xml>
+				""".formatted(patchXML, placementXML);
+
+		return feature;
 	}
 
 	@Override public int getVersionConvertingTo() {
