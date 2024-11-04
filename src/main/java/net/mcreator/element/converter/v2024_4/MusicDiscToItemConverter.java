@@ -33,119 +33,108 @@ import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MusicDiscToItemConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(MusicDiscToItemConverter.class);
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			JsonObject musicdisc = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
-			Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
+		JsonObject musicdisc = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
 
-			item.name = musicdisc.get("name").getAsString();
-			item.texture = new TextureHolder(workspace, musicdisc.get("texture").getAsString());
-			item.creativeTabs = new ArrayList<>();
+		item.name = musicdisc.get("name").getAsString();
+		item.texture = new TextureHolder(workspace, musicdisc.get("texture").getAsString());
+		item.creativeTabs = new ArrayList<>();
 
-			item.customModelName = "Normal";
-			item.renderType = 0;
+		item.customModelName = "Normal";
+		item.renderType = 0;
 
-			JsonObject creativeTab = musicdisc.getAsJsonObject("creativeTab");
-			if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry")) {
-				item.creativeTabs = List.of(new TabEntry(workspace, creativeTab.get("value").getAsString()));
-			} else if (musicdisc.has("creativeTabs")) {
-				musicdisc.getAsJsonArray("creativeTabs").iterator().forEachRemaining(element -> {
-					if (element.getAsJsonObject().has("value"))
-						item.creativeTabs.add(
-								new TabEntry(workspace, element.getAsJsonObject().get("value").getAsString()));
-				});
-			}
-
-			if (musicdisc.has("rarity")) {
-				item.rarity = musicdisc.get("rarity").getAsString();
-			} else {
-				item.rarity = "RARE";
-			}
-
-			item.isMusicDisc = true;
-			item.musicDiscDescription = musicdisc.get("description").getAsString();
-			if (musicdisc.has("music") && musicdisc.get("music").getAsJsonObject().has("value"))
-				item.musicDiscMusic = new Sound(workspace,
-						musicdisc.get("music").getAsJsonObject().get("value").getAsString());
-			else
-				item.isMusicDisc = false;
-			if (musicdisc.has("lengthInTicks")) {
-				item.musicDiscLengthInTicks = musicdisc.get("lengthInTicks").getAsInt();
-			} else {
-				item.musicDiscLengthInTicks = 100;
-			}
-			if (musicdisc.has("analogOutput")) {
-				item.musicDiscAnalogOutput = musicdisc.get("analogOutput").getAsInt();
-			} else {
-				item.musicDiscAnalogOutput = 0;
-			}
-
-			List<String> infoFixedValues = new ArrayList<>();
-			String infoProcedureName = null;
-			if (musicdisc.has("specialInfo")) {
-				musicdisc.getAsJsonArray("specialInfo").iterator()
-						.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
-			} else if (musicdisc.get("specialInformation") != null) {
-				if (musicdisc.get("specialInformation").getAsJsonObject().get("fixedValue") != null) {
-					musicdisc.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue")
-							.forEach(element -> infoFixedValues.add(element.getAsString()));
-				}
-
-				if (musicdisc.get("specialInformation").getAsJsonObject().get("name") != null)
-					infoProcedureName = musicdisc.get("specialInformation").getAsJsonObject().get("name").getAsString();
-			}
-			item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
-
-			if (musicdisc.has("glowCondition")) {
-				JsonObject rangedGlow = musicdisc.getAsJsonObject("glowCondition");
-				String glowConditionProcedureName = rangedGlow.has("name") ?
-						rangedGlow.get("name").getAsString() :
-						null;
-				boolean value = musicdisc.has("hasGlow") ? musicdisc.get("hasGlow").getAsBoolean() : // Old format
-						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
-
-				item.glowCondition = new LogicProcedure(glowConditionProcedureName, value);
-			} else if (musicdisc.has("hasGlow")) {
-				item.glowCondition = new LogicProcedure(null, musicdisc.get("hasGlow").getAsBoolean());
-			}
-
-			if (musicdisc.has("onRightClickedInAir"))
-				item.onRightClickedInAir = new Procedure(
-						musicdisc.get("onRightClickedInAir").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onRightClickedOnBlock"))
-				item.onRightClickedOnBlock = new Procedure(
-						musicdisc.get("onRightClickedOnBlock").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onCrafted"))
-				item.onCrafted = new Procedure(musicdisc.get("onCrafted").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onEntityHitWith"))
-				item.onEntityHitWith = new Procedure(
-						musicdisc.get("onEntityHitWith").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onItemInInventoryTick"))
-				item.onItemInInventoryTick = new Procedure(
-						musicdisc.get("onItemInInventoryTick").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onItemInUseTick"))
-				item.onItemInUseTick = new Procedure(
-						musicdisc.get("onItemInUseTick").getAsJsonObject().get("name").getAsString());
-			if (musicdisc.has("onEntitySwing"))
-				item.onEntitySwing = new Procedure(
-						musicdisc.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
-
-			return item;
-		} catch (Exception e) {
-			LOG.warn("Failed to convert music disc to item", e);
-			return null;
+		JsonObject creativeTab = musicdisc.getAsJsonObject("creativeTab");
+		if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry")) {
+			item.creativeTabs = List.of(new TabEntry(workspace, creativeTab.get("value").getAsString()));
+		} else if (musicdisc.has("creativeTabs")) {
+			musicdisc.getAsJsonArray("creativeTabs").iterator().forEachRemaining(element -> {
+				if (element.getAsJsonObject().has("value"))
+					item.creativeTabs.add(
+							new TabEntry(workspace, element.getAsJsonObject().get("value").getAsString()));
+			});
 		}
+
+		if (musicdisc.has("rarity")) {
+			item.rarity = musicdisc.get("rarity").getAsString();
+		} else {
+			item.rarity = "RARE";
+		}
+
+		item.isMusicDisc = true;
+		item.musicDiscDescription = musicdisc.get("description").getAsString();
+		if (musicdisc.has("music") && musicdisc.get("music").getAsJsonObject().has("value"))
+			item.musicDiscMusic = new Sound(workspace,
+					musicdisc.get("music").getAsJsonObject().get("value").getAsString());
+		else
+			item.isMusicDisc = false;
+		if (musicdisc.has("lengthInTicks")) {
+			item.musicDiscLengthInTicks = musicdisc.get("lengthInTicks").getAsInt();
+		} else {
+			item.musicDiscLengthInTicks = 100;
+		}
+		if (musicdisc.has("analogOutput")) {
+			item.musicDiscAnalogOutput = musicdisc.get("analogOutput").getAsInt();
+		} else {
+			item.musicDiscAnalogOutput = 0;
+		}
+
+		List<String> infoFixedValues = new ArrayList<>();
+		String infoProcedureName = null;
+		if (musicdisc.has("specialInfo")) {
+			musicdisc.getAsJsonArray("specialInfo").iterator()
+					.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
+		} else if (musicdisc.get("specialInformation") != null) {
+			if (musicdisc.get("specialInformation").getAsJsonObject().get("fixedValue") != null) {
+				musicdisc.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue")
+						.forEach(element -> infoFixedValues.add(element.getAsString()));
+			}
+
+			if (musicdisc.get("specialInformation").getAsJsonObject().get("name") != null)
+				infoProcedureName = musicdisc.get("specialInformation").getAsJsonObject().get("name").getAsString();
+		}
+		item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
+
+		if (musicdisc.has("glowCondition")) {
+			JsonObject rangedGlow = musicdisc.getAsJsonObject("glowCondition");
+			String glowConditionProcedureName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
+			boolean value = musicdisc.has("hasGlow") ? musicdisc.get("hasGlow").getAsBoolean() : // Old format
+					rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
+
+			item.glowCondition = new LogicProcedure(glowConditionProcedureName, value);
+		} else if (musicdisc.has("hasGlow")) {
+			item.glowCondition = new LogicProcedure(null, musicdisc.get("hasGlow").getAsBoolean());
+		}
+
+		if (musicdisc.has("onRightClickedInAir"))
+			item.onRightClickedInAir = new Procedure(
+					musicdisc.get("onRightClickedInAir").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onRightClickedOnBlock"))
+			item.onRightClickedOnBlock = new Procedure(
+					musicdisc.get("onRightClickedOnBlock").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onCrafted"))
+			item.onCrafted = new Procedure(musicdisc.get("onCrafted").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onEntityHitWith"))
+			item.onEntityHitWith = new Procedure(
+					musicdisc.get("onEntityHitWith").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onItemInInventoryTick"))
+			item.onItemInInventoryTick = new Procedure(
+					musicdisc.get("onItemInInventoryTick").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onItemInUseTick"))
+			item.onItemInUseTick = new Procedure(
+					musicdisc.get("onItemInUseTick").getAsJsonObject().get("name").getAsString());
+		if (musicdisc.has("onEntitySwing"))
+			item.onEntitySwing = new Procedure(
+					musicdisc.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
+
+		return item;
 	}
 
 	@Override public int getVersionConvertingTo() {
