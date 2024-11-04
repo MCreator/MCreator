@@ -54,6 +54,8 @@ public class FoodToItemConverter implements IConverter {
 			item.renderType = food.get("renderType").getAsInt();
 			if (food.get("customModelName") != null)
 				item.customModelName = food.get("customModelName").getAsString();
+			else
+				item.customModelName = "Normal";
 			JsonObject creativeTab = food.getAsJsonObject("creativeTab");
 			if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry"))
 				item.creativeTabs = List.of(new TabEntry(workspace, creativeTab.get("value").getAsString()));
