@@ -25,34 +25,29 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.types.Item;
+import net.mcreator.element.types.MusicDisc;
 import net.mcreator.element.types.Tool;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ItemHasGlowConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(ItemHasGlowConverter.class);
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			JsonObject itemDefinition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
-			LogicProcedure glowCondition = null;
-			if (itemDefinition.get("hasGlow").getAsBoolean()) {
-				if (itemDefinition.get("glowCondition") != null)
-					glowCondition = new LogicProcedure(
-							itemDefinition.get("glowCondition").getAsJsonObject().get("name").getAsString(), true);
-				else
-					glowCondition = new LogicProcedure(null, true);
-			}
-			if (input instanceof Item item) {
-				item.glowCondition = glowCondition;
-			} else if (input instanceof Tool tool) {
-				tool.glowCondition = glowCondition;
-			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert glow condition", e);
+		JsonObject itemDefinition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		LogicProcedure glowCondition = null;
+		if (itemDefinition.get("hasGlow").getAsBoolean()) {
+			if (itemDefinition.get("glowCondition") != null)
+				glowCondition = new LogicProcedure(
+						itemDefinition.get("glowCondition").getAsJsonObject().get("name").getAsString(), true);
+			else
+				glowCondition = new LogicProcedure(null, true);
+		}
+		if (input instanceof Item item) {
+			item.glowCondition = glowCondition;
+		} else if (input instanceof Tool tool) {
+			tool.glowCondition = glowCondition;
+		} else if (input instanceof MusicDisc musicDisc) {
+			musicDisc.glowCondition = glowCondition;
 		}
 		return input;
 	}

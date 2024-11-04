@@ -28,46 +28,38 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.types.GUI;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class SlotInteractionsConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(SlotInteractionsConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		GUI gui = (GUI) input;
-		try {
-			JsonArray components = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-					.get("components").getAsJsonArray();
+		JsonArray components = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("components")
+				.getAsJsonArray();
 
-			if (components != null && !components.isEmpty()) {
-				components.forEach(c -> {
-					if (c.getAsJsonObject().get("type").getAsString().equals("inputslot") || c.getAsJsonObject()
-							.get("type").getAsString().equals("outputslot")) {
-						gui.components.forEach(component -> {
-							if (component instanceof Slot slot) {
-								if (slot.id == c.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsInt()) {
-									boolean disableStackInteraction = false;
-									if (c.getAsJsonObject().get("data").getAsJsonObject()
-											.has("disableStackInteraction")) {
-										disableStackInteraction = c.getAsJsonObject().get("data").getAsJsonObject()
-												.get("disableStackInteraction").getAsBoolean();
-									}
+		if (components != null && !components.isEmpty()) {
+			components.forEach(c -> {
+				if (c.getAsJsonObject().get("type").getAsString().equals("inputslot") || c.getAsJsonObject().get("type")
+						.getAsString().equals("outputslot")) {
+					gui.components.forEach(component -> {
+						if (component instanceof Slot slot) {
+							if (slot.id == c.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsInt()) {
+								boolean disableStackInteraction = false;
+								if (c.getAsJsonObject().get("data").getAsJsonObject().has("disableStackInteraction")) {
+									disableStackInteraction = c.getAsJsonObject().get("data").getAsJsonObject()
+											.get("disableStackInteraction").getAsBoolean();
+								}
 
-									slot.disablePickup = new LogicProcedure(null, disableStackInteraction);
+								slot.disablePickup = new LogicProcedure(null, disableStackInteraction);
 
-									if (slot instanceof InputSlot inputSlot) {
-										inputSlot.disablePlacement = new LogicProcedure(null, disableStackInteraction);
-									}
+								if (slot instanceof InputSlot inputSlot) {
+									inputSlot.disablePlacement = new LogicProcedure(null, disableStackInteraction);
 								}
 							}
-						});
-					}
-				});
-			}
-		} catch (Exception e) {
-			LOG.warn("Could not update slot interaction fields of: {}", gui.getModElement().getName(), e);
+						}
+					});
+				}
+			});
 		}
 
 		return gui;
