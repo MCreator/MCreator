@@ -51,6 +51,8 @@ public class MusicDiscToItemConverter implements IConverter {
 		item.customModelName = "Normal";
 		item.renderType = 0;
 
+		item.stackSize = 1;
+
 		JsonObject creativeTab = musicdisc.getAsJsonObject("creativeTab");
 		if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry")) {
 			item.creativeTabs = List.of(new TabEntry(workspace, creativeTab.get("value").getAsString()));
