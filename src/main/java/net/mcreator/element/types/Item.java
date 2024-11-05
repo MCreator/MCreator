@@ -108,11 +108,11 @@ import java.util.*;
 	public String animation;
 
 	// Music disc
-	public boolean isMusicDisc;//TODO:UI,generator
-	public String musicDiscDescription;//TODO:UI,generator
-	public Sound musicDiscMusic;//TODO:UI,generator
-	public int musicDiscLengthInTicks;//TODO:UI,generator
-	public int musicDiscAnalogOutput;//TODO:UI,generator
+	public boolean isMusicDisc;//TODO:generator
+	public Sound musicDiscMusic;//TODO:generator
+	public String musicDiscDescription;//TODO:generator
+	public int musicDiscLengthInTicks;//TODO:generator
+	public int musicDiscAnalogOutput;//TODO:generator
 
 	private Item() {
 		this(null);
