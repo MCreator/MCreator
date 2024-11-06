@@ -59,7 +59,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		<#if data.plantType == "normal">
 		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
 		<#elseif data.plantType == "sapling">
-        TREE_GROWER,
+		TREE_GROWER,
 		</#if>
 		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -251,8 +251,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				}
 			}
 		}
+		<#elseif data.plantType == "sapling">
+		super.randomTick(blockstate, world, pos, random);
 		</#if>
-
 		<#if hasProcedure(data.onTickUpdate)>
 			<@procedureCode data.onTickUpdate, {
 				"x": "pos.getX()",
