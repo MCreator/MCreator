@@ -780,6 +780,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			renderType.setEnabled(true);
 		}
 
+		if (!isEditingMode()) {
+			if ("growapable".equals(plantType.getSelectedItem()) || "sapling".equals(plantType.getSelectedItem())) {
+				offsetType.setSelectedItem("NONE");
+			} else {
+				offsetType.setSelectedItem("XZ");
+			}
+		}
+
 		plantTypesLayout.show(plantTypesCardPanel, (String) plantType.getSelectedItem());
 		plantTypeIndicator.setIcon(
 				UIRES.get("plant_" + plantType.getSelectedItem().toString().replace("growapable", "growable").replace("sapling", "normal")));
