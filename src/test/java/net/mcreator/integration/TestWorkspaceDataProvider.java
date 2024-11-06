@@ -887,7 +887,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
+			plant.plantType = new String[] { "normal", "growapable", "double", "sapling" }[valueIndex];
 			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -899,6 +899,11 @@ public class TestWorkspaceDataProvider {
 							.toList());
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
+			plant.secondaryTreeChance = 0.23;
+			for (int i = 0; i < 6; i++) {
+				plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+			}
 			plant.customBoundingBox = !_true;
 			plant.disableOffset = !_true;
 			plant.boundingBoxes = new ArrayList<>();
@@ -1000,7 +1005,7 @@ public class TestWorkspaceDataProvider {
 						"Cross model" }[valueIndex];
 			}
 			plant.isItemTinted = _true;
-			if (!emptyLists) {
+			if (!emptyLists && !"sapling".equals(plant.plantType)) {
 				plant.isBonemealable = true;
 				plant.isBonemealTargetCondition = new Procedure("condition3");
 				plant.bonemealSuccessCondition = new Procedure("condition4");
