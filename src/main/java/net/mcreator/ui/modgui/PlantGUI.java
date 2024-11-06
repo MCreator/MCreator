@@ -768,7 +768,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private void updatePlantType() {
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
-		refreshBonemealProperties(); // disable settings is sapling is selected
+		refreshBonemealProperties(); // disable settings if sapling is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
 			texture.setVisible(true);
