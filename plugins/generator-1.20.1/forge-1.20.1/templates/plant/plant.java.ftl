@@ -270,7 +270,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && (data.plantType != "sapling")>
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 

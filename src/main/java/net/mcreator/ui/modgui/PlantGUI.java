@@ -768,6 +768,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private void updatePlantType() {
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
+		refreshBonemealProperties(); // disable settings is sapling is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
 			texture.setVisible(true);
@@ -803,9 +804,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void refreshBonemealProperties() {
-		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected());
-		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected());
-		onBonemealSuccess.setEnabled(isBonemealable.isSelected());
+		boolean isSapling = "sapling".equals(plantType.getSelectedItem());
+		isBonemealable.setEnabled(!isSapling);
+		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
+		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
+		onBonemealSuccess.setEnabled(isBonemealable.isSelected() && !isSapling);
 	}
 
 	@Override public void reloadDataLists() {
@@ -950,7 +953,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		updatePlantType();
 		updateSoundType();
-		refreshBonemealProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {
