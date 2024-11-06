@@ -179,7 +179,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 			BlockPos blockpos = pos.below();
 			BlockState groundState = worldIn.getBlockState(blockpos);
 
-			<#if data.plantType = "normal">
+			<#if data.plantType == "normal" || data.plantType == "sapling">
 				return this.mayPlaceOn(groundState, worldIn, blockpos)
 			<#elseif data.plantType == "growapable">
 				<#if hasProcedure(data.placingCondition)>
@@ -213,7 +213,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		@Override public boolean canSurvive(BlockState blockstate, LevelReader world, BlockPos pos) {
 			BlockPos posbelow = pos.below();
 			BlockState statebelow = world.getBlockState(posbelow);
-			<#if data.plantType == "normal"><#-- emulate BushBlock plant type logic -->
+			<#if data.plantType == "normal" || data.plantType == "sapling"><#-- emulate BushBlock and SaplingBlock plant type logic -->
         	if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
         	return this.mayPlaceOn(statebelow, world, posbelow);
 			<#elseif data.plantType == "growapable"><#-- emulate SugarCaneBlock plant type logic -->
