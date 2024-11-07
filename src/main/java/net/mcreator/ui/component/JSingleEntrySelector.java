@@ -29,6 +29,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
 
@@ -42,12 +44,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JSingleEntrySelector<T> extends JPanel {
+public abstract class JSingleEntrySelector<T> extends JPanel implements IValidable {
 
 	private final JLabel readableText = new JLabel();
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
 	private final List<ActionListener> listeners = new ArrayList<>();
+
+	private Validator validator = null;
+	private Validator.ValidationResult currentValidationResult = null;
 
 	protected final MCreator mcreator;
 	protected T currentEntry;
@@ -160,5 +165,45 @@ public abstract class JSingleEntrySelector<T> extends JPanel {
 
 	public void addEntrySelectedListener(ActionListener a) {
 		listeners.add(a);
+	}
+
+	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
+	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
+	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
+
+	@Override public void paint(Graphics g) {
+		super.paint(g);
+
+		if (currentValidationResult != null) {
+			g.setColor(currentValidationResult.getValidationResultType().getColor());
+			switch (currentValidationResult.getValidationResultType()) {
+			case WARNING -> WARNING_ICON.paintIcon(this, g, 0, 0);
+			case ERROR -> ERROR_ICON.paintIcon(this, g, 0, 0);
+			case PASSED -> OK_ICON.paintIcon(this, g, 0, 0);
+			}
+
+			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
+					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+			}
+		}
+	}
+
+	@Override public Validator.ValidationResult getValidationStatus() {
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+		this.currentValidationResult = validationResult;
+
+		//repaint as new validation status might have to be rendered
+		repaint();
+
+		return validationResult;
+	}
+
+	@Override public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	@Override public Validator getValidator() {
+		return validator;
 	}
 }
