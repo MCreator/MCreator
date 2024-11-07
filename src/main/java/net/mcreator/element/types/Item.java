@@ -107,6 +107,13 @@ import java.util.*;
 	public boolean isAlwaysEdible;
 	public String animation;
 
+	// Music disc
+	public boolean isMusicDisc;
+	public Sound musicDiscMusic;
+	public String musicDiscDescription;
+	public int musicDiscLengthInTicks;
+	public int musicDiscAnalogOutput;
+
 	private Item() {
 		this(null);
 	}

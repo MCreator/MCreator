@@ -596,9 +596,11 @@ public class TestWorkspaceDataProvider {
 			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2"),
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Sprite(25, 30, "picture1", 1, new Procedure(_true ? "condition1" : null),
-					new NumberProcedure(!_true ? "number1" : null, 0), getRandomItem(random, GUIComponent.AnchorPoint.values())));
+					new NumberProcedure(!_true ? "number1" : null, 0),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Sprite(30, 35, "picture3", 9, new Procedure(!_true ? "condition2" : null),
-					new NumberProcedure(_true ? "number2" : null, 6), getRandomItem(random, GUIComponent.AnchorPoint.values())));
+					new NumberProcedure(_true ? "number2" : null, 6),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false,
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(
@@ -1098,6 +1100,12 @@ public class TestWorkspaceDataProvider {
 			item.projectileDisableAmmoCheck = _true;
 			item.onRangedItemUsed = new Procedure("procedure4");
 			item.rangedUseCondition = new Procedure("condition1");
+			item.isMusicDisc = !_true;
+			item.musicDiscDescription = modElement.getName();
+			item.musicDiscLengthInTicks = 13;
+			item.musicDiscAnalogOutput = 6;
+			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
@@ -1430,30 +1438,6 @@ public class TestWorkspaceDataProvider {
 			function.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			function.code = "execute as @a at @s run function custom:test\n";
 			return function;
-		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
-			MusicDisc musicDisc = new MusicDisc(modElement);
-			musicDisc.name = modElement.getName();
-			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			musicDisc.description = modElement.getName();
-			musicDisc.creativeTabs = emptyLists ? List.of() : tabs;
-			musicDisc.glowCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
-			musicDisc.onRightClickedInAir = new Procedure("procedure1");
-			musicDisc.onRightClickedOnBlock = emptyLists ?
-					new Procedure("actionresulttype1") :
-					new Procedure("procedure2");
-			musicDisc.onCrafted = new Procedure("procedure3");
-			musicDisc.onEntityHitWith = new Procedure("procedure4");
-			musicDisc.onItemInInventoryTick = new Procedure("procedure5");
-			musicDisc.onItemInUseTick = new Procedure("procedure6");
-			musicDisc.onEntitySwing = new Procedure("procedure8");
-			musicDisc.lengthInTicks = 13;
-			musicDisc.analogOutput = 6;
-			musicDisc.music = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			musicDisc.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
-					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			musicDisc.texture = new TextureHolder(modElement.getWorkspace(), "test");
-			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);

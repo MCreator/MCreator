@@ -66,6 +66,9 @@ public class ${name}Item extends Item {
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 					.build())
 				</#if>
+				<#if data.isMusicDisc>
+				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
+				</#if>
 		);
 	}
 
