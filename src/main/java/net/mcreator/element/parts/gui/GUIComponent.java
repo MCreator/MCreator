@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 	public int x;
 	public int y;
 
+	public boolean locked = false;
 	public transient UUID uuid;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{

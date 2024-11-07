@@ -130,6 +130,7 @@ public class ActionRegistry {
 	public final BasicAction importJavaModel;
 	public final BasicAction importJSONModel;
 	public final BasicAction importOBJModel;
+	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
 	public final BasicAction showWorkspaceBrowser;
@@ -261,9 +262,10 @@ public class ActionRegistry {
 		this.importStructure = new StructureImportActions.ImportStructure(this).setIcon(
 				UIRES.get("16px.importstructure"));
 		this.importStructureFromMinecraft = new StructureImportActions.ImportStructureFromMinecraft(this);
-		this.importJavaModel = new ModelImportActions.JAVA(this).setIcon(UIRES.get("16px.importjavamodel"));
-		this.importJSONModel = new ModelImportActions.JSON(this).setIcon(UIRES.get("16px.importjsonmodel"));
-		this.importOBJModel = new ModelImportActions.OBJ(this).setIcon(UIRES.get("16px.importobjmodel"));
+		this.importJavaModel = new ModelImportActions.JAVA(this);
+		this.importJSONModel = new ModelImportActions.JSON(this);
+		this.importOBJModel = new ModelImportActions.OBJ(this);
+		this.importJavaModelAnimation = new AnimationImportActions.JAVA(this);
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),
 				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreators().size() <= 1));
 		this.regenerateCode = new RegenerateCodeAction(this);

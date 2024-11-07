@@ -191,6 +191,10 @@ public class WorkspaceFolderManager {
 		return new File(workspaceFolder, "models/");
 	}
 
+	public File getModelAnimationsDir() {
+		return new File(workspaceFolder, "models/animations");
+	}
+
 	public File getWorkspaceCacheDir() {
 		return new File(workspaceFolder, ".mcreator/");
 	}

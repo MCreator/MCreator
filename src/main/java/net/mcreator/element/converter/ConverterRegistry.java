@@ -60,6 +60,7 @@ import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 import net.mcreator.element.converter.v2024_4.BiomeFogColorConverter;
+import net.mcreator.element.converter.v2024_4.MusicDiscToItemConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -202,11 +203,6 @@ public class ConverterRegistry {
 			new StructureToFeatureConverter(),
 			new StructureIgnoredBlocksConverter()
 		));
-		put(ModElementType.MUSICDISC, List.of(
-			new SpecialInformationConverter(),
-			new ItemHasGlowConverter(),
-			new ItemsCreativeTabsConverter()
-		));
 		put(ModElementType.TOOL, List.of(
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
@@ -225,6 +221,7 @@ public class ConverterRegistry {
 		put("fuel", new FuelToItemExtensionConverter());
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
 		put("tag", new TagModElementConverter());
+		put("musicdisc", new MusicDiscToItemConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

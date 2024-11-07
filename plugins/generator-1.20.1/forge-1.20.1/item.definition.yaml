@@ -62,8 +62,15 @@ list_templates:
         condition: "renderType #= 2"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
+tags:
+  - tag: ITEMS:minecraft:music_discs
+    condition: isMusicDisc
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
+  - key: item.@modid.@registryname.desc
+    mapto: musicDiscDescription
+    condition: isMusicDisc
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index
