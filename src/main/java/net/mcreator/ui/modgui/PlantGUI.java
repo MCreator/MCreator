@@ -133,10 +133,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	// Sapling properties
 	private final JSpinner secondaryTreeChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1, 0.01));
 	private final SingleConfiguredFeatureField[] trees = new SingleConfiguredFeatureField[] {
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator),
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator),
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)
-	};
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
+	private final SingleConfiguredFeatureField[] flowerTrees = new SingleConfiguredFeatureField[] {
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
+	private final SingleConfiguredFeatureField[] megaTrees = new SingleConfiguredFeatureField[] {
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
 
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
@@ -398,23 +399,25 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		saplingProperties.add(L10N.label("elementgui.plant.primary_trees"));
 		saplingProperties.add(L10N.label("elementgui.plant.secondary_trees"));
 
-		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/mega_trees"),
-				L10N.label("elementgui.plant.mega_trees")));
+		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/trees"),
+				L10N.label("elementgui.plant.trees")));
 		saplingProperties.add(trees[0]);
 		saplingProperties.add(trees[1]);
 
-		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/trees"),
-				L10N.label("elementgui.plant.trees")));
-		saplingProperties.add(trees[2]);
-		saplingProperties.add(trees[3]);
-
 		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/flower_trees"),
 				L10N.label("elementgui.plant.flower_trees")));
-		saplingProperties.add(trees[4]);
-		saplingProperties.add(trees[5]);
+		saplingProperties.add(flowerTrees[0]);
+		saplingProperties.add(flowerTrees[1]);
 
-		for (int i = 0; i < 6; i++) {
+		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/mega_trees"),
+				L10N.label("elementgui.plant.mega_trees")));
+		saplingProperties.add(megaTrees[0]);
+		saplingProperties.add(megaTrees[1]);
+
+		for (int i = 0; i < 2; i++) {
 			trees[i].setPreferredSize(new Dimension(280, -1));
+			flowerTrees[i].setPreferredSize(new Dimension(280, -1));
+			megaTrees[i].setPreferredSize(new Dimension(280, -1));
 		}
 
 		saplingCard.add("Center", PanelUtils.pullElementUp(saplingProperties));
@@ -948,8 +951,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
 
 		secondaryTreeChance.setValue(plant.secondaryTreeChance);
-		for (int i = 0; i < trees.length; i++)
+		for (int i = 0; i < 2; i++) {
 			trees[i].setEntry(plant.trees[i]);
+			flowerTrees[i].setEntry(plant.flowerTrees[i]);
+			megaTrees[i].setEntry(plant.megaTrees[i]);
+		}
 
 		tintType.setSelectedItem(plant.tintType);
 		isItemTinted.setSelected(plant.isItemTinted);
@@ -979,8 +985,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
 		plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
-		for (int i = 0; i < trees.length; i++)
+		for (int i = 0; i < 2; i++) {
 			plant.trees[i] = trees[i].getEntry();
+			plant.flowerTrees[i] = flowerTrees[i].getEntry();
+			plant.megaTrees[i] = megaTrees[i].getEntry();
+		}
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();

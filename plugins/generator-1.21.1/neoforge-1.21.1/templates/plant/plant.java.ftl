@@ -51,7 +51,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		implements ${interfaces?join(",")}
 	</#if>{
 	<#if data.plantType == "sapling">
-		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.trees[0] data.trees[1] data.trees[2] data.trees[3] data.trees[4] data.trees[5]/>
+		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
 	</#if>
 
 	public ${name}Block() {

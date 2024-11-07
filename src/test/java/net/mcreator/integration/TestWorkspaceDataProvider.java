@@ -900,8 +900,12 @@ public class TestWorkspaceDataProvider {
 			plant.suspiciousStewDuration = 24;
 			plant.growapableMaxHeight = 5;
 			plant.secondaryTreeChance = 0.23;
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 2; i++) {
 				plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+				plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+				plant.megaTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
 			}
 			plant.customBoundingBox = !_true;

@@ -32,28 +32,28 @@
 package ${package}.block.grower;
 
 <#compress>
-public class ${name}TreeGrower extends <#if (data.trees[0]?has_content) || (data.trees[1]?has_content)>AbstractMegaTreeGrower<#else>AbstractTreeGrower</#if> {
+public class ${name}TreeGrower extends <#if (data.megaTrees[0]?has_content) || (data.megaTrees[1]?has_content)>AbstractMegaTreeGrower<#else>AbstractTreeGrower</#if> {
 	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource randomSource, boolean hasFlower) {
-		<#if data.secondaryTreeChance != 0 && (data.trees[3]?has_content || data.trees[5]?has_content)>
+		<#if data.secondaryTreeChance != 0 && (data.trees[1]?has_content || data.flowerTrees[1]?has_content)>
 		if (randomSource.nextFloat() < ${data.secondaryTreeChance}) {
-			<#if data.trees[5]?has_content>
+			<#if data.flowerTrees[1]?has_content>
 			if (hasFlower)
-				return <@toTreeKey data.trees[5]/>;
+				return <@toTreeKey data.flowerTrees[1]/>;
 			</#if>
-			<#if data.trees[3]?has_content>
-			return <@toTreeKey data.trees[3]/>;
+			<#if data.trees[1]?has_content>
+			return <@toTreeKey data.trees[1]/>;
 			</#if>
 		}
 		</#if>
-		return <#if data.trees[4]?has_content>hasFlower ? <@toTreeKey data.trees[4]/> :</#if> <@toTreeKey data.trees[2]/>;
+		return <#if data.flowerTrees[0]?has_content>hasFlower ? <@toTreeKey data.flowerTrees[0]/> :</#if> <@toTreeKey data.trees[0]/>;
 	}
 
-	<#if (data.trees[0]?has_content) || (data.trees[1]?has_content)>
+	<#if (data.megaTrees[0]?has_content) || (data.megaTrees[1]?has_content)>
 	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredMegaFeature(RandomSource randomSource) {
-		<#if data.trees[1]?has_content && data.secondaryTreeChance != 0>
-		return (randomSource.nextFloat() < ${data.secondaryTreeChance}) ? <@toTreeKey data.trees[1]/> : <@toTreeKey data.trees[0]/>;
+		<#if data.megaTrees[1]?has_content && data.secondaryTreeChance != 0>
+		return (randomSource.nextFloat() < ${data.secondaryTreeChance}) ? <@toTreeKey data.megaTrees[1]/> : <@toTreeKey data.megaTrees[0]/>;
 		<#else>
-		return <@toTreeKey data.trees[0]/>;
+		return <@toTreeKey data.megaTrees[0]/>;
 		</#if>
 	}
 	</#if>
