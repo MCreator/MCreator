@@ -368,7 +368,11 @@ public class TestWorkspaceDataProvider {
 			achievement.disableDisplay = !_true;
 			achievement.rewardXP = 14;
 			achievement.hideIfNotCompleted = !_true;
-			achievement.rewardFunction = "No function";
+			achievement.rewardFunction = emptyLists ?
+					null :
+					getRandomItem(random, modElement.getWorkspace().getModElements().stream()
+							.filter(var -> var.getType() == ModElementType.FUNCTION).map(ModElement::getName)
+							.collect(Collectors.toList()));
 			achievement.background = emptyLists ? "Default" : "test.png";
 			achievement.rewardLoot = new ArrayList<>();
 			if (!emptyLists) {
@@ -2020,12 +2024,16 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static <T> T getRandomItem(Random random, T[] list) {
+		if (list.length == 0)
+			return null;
 		int listSize = list.length;
 		int randomIndex = random.nextInt(listSize);
 		return list[randomIndex];
 	}
 
 	public static <T> T getRandomItem(Random random, List<T> list) {
+		if (list.isEmpty())
+			return null;
 		int listSize = list.size();
 		int randomIndex = random.nextInt(listSize);
 		return list.get(randomIndex);

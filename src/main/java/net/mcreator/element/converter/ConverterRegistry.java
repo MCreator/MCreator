@@ -59,6 +59,7 @@ import net.mcreator.element.converter.v2024_2.ToolHarvestLevelConverter;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
+import net.mcreator.element.converter.v2024_4.AdvancementFunctionConverter;
 import net.mcreator.element.converter.v2024_4.MusicDiscToItemConverter;
 
 import java.util.HashMap;
@@ -73,7 +74,8 @@ public class ConverterRegistry {
 		put(ModElementType.ADVANCEMENT, List.of(
 			new AchievementFixer(),
 			new AdvancementTextureConverter(),
-			new AdvancementTriggerInverter()
+			new AdvancementTriggerInverter(),
+			new AdvancementFunctionConverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
