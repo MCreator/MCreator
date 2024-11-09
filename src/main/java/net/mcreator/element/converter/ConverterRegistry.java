@@ -61,6 +61,7 @@ import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 import net.mcreator.element.converter.v2024_4.AdvancementFunctionConverter;
 import net.mcreator.element.converter.v2024_4.MusicDiscToItemConverter;
+import net.mcreator.element.converter.v2024_4.NoGUISelectedConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,8 @@ public class ConverterRegistry {
 			new BlockFeatureDimensionRestrictionConverter(),
 			new SpecialInformationConverter(),
 			new BlockHarvestLevelConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new NoGUISelectedConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
@@ -131,7 +133,8 @@ public class ConverterRegistry {
 			new EntitiesRangedAttackConverter(),
 			new WaterEntitiesConverter(),
 			new EntityGlowLayerConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new NoGUISelectedConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
@@ -192,7 +195,8 @@ public class ConverterRegistry {
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new NoGUISelectedConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),

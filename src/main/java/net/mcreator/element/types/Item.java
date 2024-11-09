@@ -74,7 +74,7 @@ import java.util.*;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable @ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@Nullable @ModElementReference public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -180,7 +180,7 @@ import java.util.*;
 	}
 
 	public boolean hasInventory() {
-		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
+		return guiBoundTo != null && !guiBoundTo.isEmpty();
 	}
 
 	public boolean hasNonDefaultAnimation() {

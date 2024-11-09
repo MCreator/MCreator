@@ -424,7 +424,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+	<#if data.guiBoundTo?has_content>
 	private final ItemStackHandler inventory = new ItemStackHandler(${data.inventorySize}) {
 		@Override public int getSlotLimit(int slot) {
 			return ${data.inventoryStackSize};
@@ -448,7 +448,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.entityDataEntries?has_content || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content>
 	@Override public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		<#list data.entityDataEntries as entry>
@@ -460,7 +460,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 		compound.put("InventoryCustom", inventory.serializeNBT(this.registryAccess()));
 		</#if>
 	}
@@ -477,19 +477,19 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
 				</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
 			inventory.deserializeNBT(this.registryAccess(), inventoryTag);
 		</#if>
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || data.guiBoundTo?has_content>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
 		InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
