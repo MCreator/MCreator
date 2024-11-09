@@ -63,7 +63,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -134,7 +133,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
-	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
+	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
@@ -219,10 +218,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 
-		guiBoundTo.addActionListener(e -> {
+		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
-				String selected = guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -649,10 +649,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
-						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -695,7 +691,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
-		guiBoundTo.setSelectedItem(item.guiBoundTo);
+		guiBoundTo.setEntry(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
 		isFood.setSelected(item.isFood);
@@ -762,7 +758,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
-		item.guiBoundTo = guiBoundTo.getSelectedItem();
+		item.guiBoundTo = guiBoundTo.getEntry();
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();

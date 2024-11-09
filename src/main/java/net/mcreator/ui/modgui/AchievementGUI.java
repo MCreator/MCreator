@@ -44,17 +44,13 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.ModElementListField;
-import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -79,8 +75,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final JComboBox<String> achievementType = new JComboBox<>(new String[] { "task", "goal", "challenge" });
 
-	private final JComboBox<String> rewardFunction = new JComboBox<>();
-
 	private TextureComboBox background;
 
 	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
@@ -90,6 +84,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
+	private SingleModElementSelector rewardFunction;
 	private ModElementListField rewardLoot;
 	private ModElementListField rewardRecipes;
 
@@ -118,6 +113,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
+		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
@@ -274,10 +270,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		ComboBoxUtil.updateComboBoxContents(parentAchievement,
 				ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
-						.map(ModElement::getName).collect(Collectors.toList())), "No function");
-
 		background.reload();
 	}
 
@@ -297,7 +289,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		showPopup.setSelected(achievement.showPopup);
 		announceToChat.setSelected(achievement.announceToChat);
 		hideIfNotCompleted.setSelected(achievement.hideIfNotCompleted);
-		rewardFunction.setSelectedItem(achievement.rewardFunction);
+		rewardFunction.setEntry(achievement.rewardFunction);
 		background.setTextureFromTextureName(achievement.background);
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
@@ -317,7 +309,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.disableDisplay = disableDisplay.isSelected();
 		achievement.announceToChat = announceToChat.isSelected();
 		achievement.hideIfNotCompleted = hideIfNotCompleted.isSelected();
-		achievement.rewardFunction = (String) rewardFunction.getSelectedItem();
+		achievement.rewardFunction = rewardFunction.getEntry();
 		achievement.background = background.getTextureName();
 		achievement.rewardLoot = rewardLoot.getListElements().stream().map(NonMappableElement::getUnmappedValue)
 				.collect(Collectors.toList());
