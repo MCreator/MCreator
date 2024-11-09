@@ -110,7 +110,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	public void moveMode() {
-		if (selected != null && selected.locked) return;
+		if (selected != null && selected.locked)
+			return;
 
 		owner.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		componentMoveMode = true;

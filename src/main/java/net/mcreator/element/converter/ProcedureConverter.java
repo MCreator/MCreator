@@ -30,8 +30,6 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 
@@ -40,8 +38,8 @@ public abstract class ProcedureConverter implements IConverter {
 	private boolean dependencies_changed = false;
 
 	@Override
-	public final GeneratableElement convert(Workspace workspace, GeneratableElement input,
-			JsonElement jsonElementInput) throws Exception {
+	public final GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Procedure procedure = (Procedure) input;
 
 		procedure.procedurexml = fixXML(procedure, procedure.procedurexml);

@@ -137,12 +137,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	@Override protected void initGUI() {
 		fogStartDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_start_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_start_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01)), 180,
-				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
+				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01)), 180, Dependency.fromString(
+				"world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 		fogEndDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_end_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_end_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(48, -1024, 1024, 0.01)), 180,
-				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
+				new JSpinner(new SpinnerNumberModel(48, -1024, 1024, 0.01)), 180, Dependency.fromString(
+				"world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.fluid.when_added"),
@@ -192,7 +192,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		mainTextures.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER), 32);
+		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER),
+				32);
 		textureRenderOverlay.setOpaque(false);
 
 		JPanel visualSettings = new JPanel(new GridLayout(3, 2, 5, 2));
@@ -204,8 +205,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.texture_render_overlay")));
 		visualSettings.add(PanelUtils.centerInPanel(textureRenderOverlay));
 
-		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/has_fog"),
-				L10N.label("elementgui.fluid.has_fog")));
+		visualSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/has_fog"), L10N.label("elementgui.fluid.has_fog")));
 		visualSettings.add(hasFog);
 
 		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/fog_color"),
