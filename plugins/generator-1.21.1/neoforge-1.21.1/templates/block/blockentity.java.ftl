@@ -104,7 +104,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
-		<#if !data.guiBoundTo?has_content || data.guiBoundTo == "<NONE>" || !(data.guiBoundTo)?has_content>
+		<#if !data.guiBoundTo?has_content>
 		return ChestMenu.threeRows(id, inventory);
 		<#else>
 		return new ${data.guiBoundTo}Menu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));

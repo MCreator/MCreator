@@ -112,7 +112,7 @@ import java.util.*;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
-	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference @Nullable public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 

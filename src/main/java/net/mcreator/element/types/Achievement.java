@@ -56,7 +56,7 @@ import java.util.List;
 
 	@ModElementReference public List<String> rewardLoot;
 	@ModElementReference public List<String> rewardRecipes;
-	@ModElementReference(defaultValues = "No function") public String rewardFunction;
+	@ModElementReference @Nullable public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
@@ -77,7 +77,7 @@ import java.util.List;
 
 	public boolean hasRewards() {
 		return rewardXP > 0 || (rewardLoot != null && !rewardLoot.isEmpty()) || (rewardRecipes != null
-				&& !rewardRecipes.isEmpty()) || (rewardFunction != null && !rewardFunction.equals("No function"));
+				&& !rewardRecipes.isEmpty()) || rewardFunction != null;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
