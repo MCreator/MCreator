@@ -37,7 +37,7 @@
     "rewards": {
         "experience": ${data.rewardXP}
 
-        <#if data.rewardFunction?has_content && data.rewardFunction != "No function">,
+        <#if data.rewardFunction?has_content>,
         "function": "${generator.getResourceLocationForModElement(data.rewardFunction)}"
         </#if>
 

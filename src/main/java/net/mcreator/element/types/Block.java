@@ -39,6 +39,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -143,7 +144,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
-	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -242,7 +243,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
-		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
+		return guiBoundTo != null && openGUIOnRightClick;
 	}
 
 	public boolean shouldScheduleTick() {
