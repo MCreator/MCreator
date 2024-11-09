@@ -153,7 +153,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> KEYBIND;
 	public static ModElementType<?> LIVINGENTITY;
 	public static ModElementType<?> LOOTTABLE;
-	public static ModElementType<?> MUSICDISC;
 	public static ModElementType<?> OVERLAY;
 	public static ModElementType<?> PAINTING;
 	public static ModElementType<?> PARTICLE;

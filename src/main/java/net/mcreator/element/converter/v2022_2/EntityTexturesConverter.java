@@ -28,12 +28,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class EntityTexturesConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(EntityTexturesConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -45,20 +41,15 @@ public class EntityTexturesConverter implements IConverter {
 						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
 								TextureType.ENTITY));
 
-		try {
-			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
-			if (jsonObject.get("mobModelGlowTexture") != null) {
-				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
-				if (!glowTexture.isEmpty()) {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture),
-											TextureType.ENTITY));
-				}
+		JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
+		if (jsonObject.get("mobModelGlowTexture") != null) {
+			String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
+			if (!glowTexture.isEmpty()) {
+				FileIO.copyFile(workspace.getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.OTHER),
+						workspace.getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.ENTITY));
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to migrate entity glow texture", e);
 		}
 
 		return entity;

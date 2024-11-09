@@ -4,6 +4,10 @@ templates:
   - template: item/item_container.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
     condition: hasInventory()
+  - template: json/musicdisc.json.ftl
+    writer: json
+    name: "@MODDATAROOT/jukebox_song/@registryname.json"
+    condition: isMusicDisc
   - template: json/item.json.ftl
     writer: json
     condition:
@@ -67,9 +71,14 @@ tags:
     condition: "${data.isFood && data.isMeat}"
   - tag: ITEMS:minecraft:enchantable/durability
     condition: ${data.damageCount != 0}
+  - tag: ITEMS:minecraft:music_discs
+    condition: isMusicDisc
 
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
+  - key: item.@modid.@registryname.desc
+    mapto: musicDiscDescription
+    condition: isMusicDisc
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index

@@ -59,7 +59,6 @@ public class ModElementTypeLoader {
 		ModElementType.KEYBIND = register(new ModElementType<>("keybind", 'k', KeyBindGUI::new, KeyBinding.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.LIVINGENTITY = register(new ModElementType<>("livingentity", 'e', LivingEntityGUI::new, LivingEntity.class)).coveredOn(GeneratorFlavor.allBut(DATAPACK));
 		ModElementType.LOOTTABLE = register(new ModElementType<>("loottable", 'l', LootTableGUI::new, LootTable.class));
-		ModElementType.MUSICDISC = register(new ModElementType<>("musicdisc", 'x', MusicDiscGUI::new, MusicDisc.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.OVERLAY = register(new ModElementType<>("overlay", 'v', OverlayGUI::new, Overlay.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.PAINTING = register(new ModElementType<>("painting", null, PaintingGUI::new, Painting.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.PARTICLE = register(new ModElementType<>("particle", 'y', ParticleGUI::new, Particle.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));

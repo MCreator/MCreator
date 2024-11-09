@@ -24,55 +24,47 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BiomeCustomFeaturesConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(BiomeCustomFeaturesConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Biome biome = (Biome) input;
 
-		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("grassPerChunk") != null) {
-				int grassPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("grassPerChunk").getAsInt();
-				if (grassPerChunk > 0) {
-					if (!biome.defaultFeatures.contains("ForestGrass"))
-						biome.defaultFeatures.add("ForestGrass");
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("grassPerChunk") != null) {
+			int grassPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("grassPerChunk").getAsInt();
+			if (grassPerChunk > 0) {
+				if (!biome.defaultFeatures.contains("ForestGrass"))
+					biome.defaultFeatures.add("ForestGrass");
 			}
+		}
 
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("flowersPerChunk") != null) {
-				int flowersPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("flowersPerChunk").getAsInt();
-				if (flowersPerChunk > 0) {
-					if (!biome.defaultFeatures.contains("DefaultFlowers"))
-						biome.defaultFeatures.add("DefaultFlowers");
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("flowersPerChunk") != null) {
+			int flowersPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("flowersPerChunk").getAsInt();
+			if (flowersPerChunk > 0) {
+				if (!biome.defaultFeatures.contains("DefaultFlowers"))
+					biome.defaultFeatures.add("DefaultFlowers");
 			}
+		}
 
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("reedsPerChunk") != null) {
-				int reedsPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("reedsPerChunk").getAsInt();
-				if (reedsPerChunk > 0) {
-					if (!biome.defaultFeatures.contains("DesertFeatures"))
-						biome.defaultFeatures.add("DesertFeatures");
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("reedsPerChunk") != null) {
+			int reedsPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("reedsPerChunk").getAsInt();
+			if (reedsPerChunk > 0) {
+				if (!biome.defaultFeatures.contains("DesertFeatures"))
+					biome.defaultFeatures.add("DesertFeatures");
 			}
+		}
 
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("cactiPerChunk") != null) {
-				int cactiPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("cactiPerChunk").getAsInt();
-				if (cactiPerChunk > 0) {
-					if (!biome.defaultFeatures.contains("DesertFeatures"))
-						biome.defaultFeatures.add("DesertFeatures");
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("cactiPerChunk") != null) {
+			int cactiPerChunk = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("cactiPerChunk").getAsInt();
+			if (cactiPerChunk > 0) {
+				if (!biome.defaultFeatures.contains("DesertFeatures"))
+					biome.defaultFeatures.add("DesertFeatures");
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to update biome default features list", e);
 		}
 
 		return biome;

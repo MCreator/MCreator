@@ -36,10 +36,14 @@
 package ${package}.item;
 
 <#compress>
-public class ${name}Item extends Item {
+public class ${name}Item extends <#if data.isMusicDisc>Record</#if>Item {
 
 	public ${name}Item() {
+		<#if data.isMusicDisc>
+		super(${data.musicDiscAnalogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.musicDiscMusic}" )), new Item.Properties()
+		<#else>
 		super(new Item.Properties()
+		</#if>
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
@@ -59,7 +63,11 @@ public class ${name}Item extends Item {
 					<#if data.isMeat>.meat()</#if>
 					.build())
 				</#if>
+		<#if data.isMusicDisc>
+		,${data.musicDiscLengthInTicks});
+		<#else>
 		);
+		</#if>
 	}
 
 	<#if data.hasNonDefaultAnimation()>

@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 
 public interface IConverter extends Comparable<IConverter> {
 
-	GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput);
+	GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) throws Exception;
 
 	int getVersionConvertingTo();
 

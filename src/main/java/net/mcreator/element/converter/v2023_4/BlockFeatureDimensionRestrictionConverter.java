@@ -29,64 +29,55 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Plant;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlockFeatureDimensionRestrictionConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("BlockFeatureDimensionRestrictionConverter");
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("spawnWorldTypes") != null) {
-				JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("spawnWorldTypes").getAsJsonArray();
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("spawnWorldTypes") != null) {
+			JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("spawnWorldTypes").getAsJsonArray();
 
-				boolean generateFeature = !spawnWorldTypes.isEmpty();
-				List<BiomeEntry> restrictionBiomes = new ArrayList<>();
+			boolean generateFeature = !spawnWorldTypes.isEmpty();
+			List<BiomeEntry> restrictionBiomes = new ArrayList<>();
 
-				// We are only able to directly convert this if there is only one dimension restriction
-				// otherwise we lift restriction, so it generates in all dimensions
-				if (spawnWorldTypes.size() == 1) {
-					String spawnWorldType = spawnWorldTypes.get(0).getAsString();
-					if (spawnWorldType.equals("Surface")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
-					} else if (spawnWorldType.equals("Nether")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
-					} else if (spawnWorldType.equals("End")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
-					} else if (spawnWorldType.startsWith("CUSTOM:")) {
-						ModElement modElement = workspace.getModElementByName(
-								spawnWorldType.replaceFirst("CUSTOM:", ""));
-						if (modElement != null) {
-							GeneratableElement generatableElement = modElement.getGeneratableElement();
-							if (generatableElement instanceof Dimension dimension) {
-								restrictionBiomes.addAll(dimension.biomesInDimension);
-							}
+			// We are only able to directly convert this if there is only one dimension restriction
+			// otherwise we lift restriction, so it generates in all dimensions
+			if (spawnWorldTypes.size() == 1) {
+				String spawnWorldType = spawnWorldTypes.get(0).getAsString();
+				if (spawnWorldType.equals("Surface")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
+				} else if (spawnWorldType.equals("Nether")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
+				} else if (spawnWorldType.equals("End")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
+				} else if (spawnWorldType.startsWith("CUSTOM:")) {
+					ModElement modElement = workspace.getModElementByName(spawnWorldType.replaceFirst("CUSTOM:", ""));
+					if (modElement != null) {
+						GeneratableElement generatableElement = modElement.getGeneratableElement();
+						if (generatableElement instanceof Dimension dimension) {
+							restrictionBiomes.addAll(dimension.biomesInDimension);
 						}
 					}
 				}
-
-				if (input instanceof Block block) {
-					block.generateFeature = generateFeature;
-					// we only define our restriction if there are not already biome restrictions in place
-					if (block.restrictionBiomes.isEmpty())
-						block.restrictionBiomes = restrictionBiomes;
-				} else if (input instanceof Plant plant) {
-					plant.generateFeature = generateFeature;
-					// we only define our restriction if there are not already biome restrictions in place
-					if (plant.restrictionBiomes.isEmpty())
-						plant.restrictionBiomes = restrictionBiomes;
-				}
-			} else {
-				throw new NullPointerException("spawnWorldTypes not defined");
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert dimension restriction to biome list", e);
+
+			if (input instanceof Block block) {
+				block.generateFeature = generateFeature;
+				// we only define our restriction if there are not already biome restrictions in place
+				if (block.restrictionBiomes.isEmpty())
+					block.restrictionBiomes = restrictionBiomes;
+			} else if (input instanceof Plant plant) {
+				plant.generateFeature = generateFeature;
+				// we only define our restriction if there are not already biome restrictions in place
+				if (plant.restrictionBiomes.isEmpty())
+					plant.restrictionBiomes = restrictionBiomes;
+			}
+		} else {
+			throw new NullPointerException("spawnWorldTypes not defined");
 		}
 
 		return input;
