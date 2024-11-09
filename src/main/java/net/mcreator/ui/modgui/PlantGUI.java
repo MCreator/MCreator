@@ -822,6 +822,19 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBonemealSuccess.setEnabled(isBonemealable.isSelected() && !isSapling);
 	}
 
+	private AggregatedValidationResult validateSaplingTrees() {
+		if (!"sapling".equals(plantType.getSelectedItem()))
+			return new AggregatedValidationResult.PASS();
+
+		for (int i = 0; i < 2; i++) {
+			if ((trees[i].getEntry() != null) || (flowerTrees[i].getEntry() != null) || (megaTrees[i].getEntry() != null)) {
+				return new AggregatedValidationResult.PASS();
+			}
+		}
+
+		return new AggregatedValidationResult.FAIL(L10N.t("elementgui.plant.error_sapling_needs_tree"));
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -864,7 +877,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
-			return new AggregatedValidationResult(texture);
+			return new AggregatedValidationResult(new AggregatedValidationResult(texture), validateSaplingTrees());
 		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
 		else if (page == 5)
