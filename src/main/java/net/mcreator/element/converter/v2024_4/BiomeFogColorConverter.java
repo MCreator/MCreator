@@ -35,7 +35,7 @@ public class BiomeFogColorConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 71;
+		return 72;
 	}
 
 }
