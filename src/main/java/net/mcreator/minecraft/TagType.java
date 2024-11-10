@@ -20,11 +20,7 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.DamageTypeEntry;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Enchantment;
+import net.mcreator.element.parts.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.ui.init.L10N;

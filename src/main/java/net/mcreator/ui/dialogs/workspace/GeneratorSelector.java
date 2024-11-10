@@ -120,8 +120,8 @@ public class GeneratorSelector {
 						baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
-				addStatusLabel(L10N.t(covpfx + "java_model_animations"), stats.getBaseCoverageInfo().get("model_animations_java"),
-						baseCoverageInfo);
+				addStatusLabel(L10N.t(covpfx + "java_model_animations"),
+						stats.getBaseCoverageInfo().get("model_animations_java"), baseCoverageInfo);
 
 			genStats.add(
 					PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo,

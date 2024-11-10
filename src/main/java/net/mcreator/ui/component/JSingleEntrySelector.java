@@ -146,8 +146,8 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 			readableText.setText(StringUtils.machineToReadableName(currentEntry.toString().replace("CUSTOM:", "")));
 
 			if (currentEntry.toString().contains("CUSTOM:"))
-				readableText.setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()),
-						18));
+				readableText.setIcon(IconUtils.resize(
+						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
 		}
 	}
 

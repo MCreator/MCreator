@@ -60,8 +60,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {

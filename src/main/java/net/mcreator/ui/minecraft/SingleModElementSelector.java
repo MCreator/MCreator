@@ -39,8 +39,8 @@ public class SingleModElementSelector extends JSingleEntrySelector<String> {
 
 	@Override protected String openEntrySelector() {
 		return StringSelectorDialog.openSelectorDialog(mcreator,
-				w -> w.getModElements().stream().filter(e -> e.getType() == type)
-						.map(ModElement::getName).toList().toArray(String[]::new),
+				w -> w.getModElements().stream().filter(e -> e.getType() == type).map(ModElement::getName).toList()
+						.toArray(String[]::new),
 				L10N.t("dialog.selector.mod_element_title", type.getReadableName().toLowerCase(Locale.ENGLISH)),
 				L10N.t("dialog.selector.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)));
 	}
