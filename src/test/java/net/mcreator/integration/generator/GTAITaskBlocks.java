@@ -71,7 +71,7 @@ public class GTAITaskBlocks {
 					"<block type=\"" + aiTask.getMachineName() + "\">" + additionalXML);
 
 			LivingEntity livingentity = TestWorkspaceDataProvider.getLivingEntity(modElement, random, true, true,
-					Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+					Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
 			if (aiTask.getType() == IBlockGenerator.BlockType.PROCEDURAL)
 				livingentity.aixml =
