@@ -899,7 +899,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.plantType = new String[] { "normal", "growapable", "double", "sapling" }[valueIndex];
+			plant.plantType = getRandomString(random, List.of("normal", "growapable", "double", "sapling"));
 			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -915,10 +915,14 @@ public class TestWorkspaceDataProvider {
 			for (int i = 0; i < 2; i++) {
 				plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
-				plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
-				plant.megaTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+				if(_true) {
+					plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+				}
+				if (!emptyLists) {
+					plant.megaTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+				}
 			}
 			plant.customBoundingBox = !_true;
 			plant.disableOffset = !_true;

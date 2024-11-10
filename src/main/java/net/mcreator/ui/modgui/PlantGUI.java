@@ -130,14 +130,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
+
 	// Sapling properties
 	private final JSpinner secondaryTreeChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1, 0.01));
 	private final SingleConfiguredFeatureField[] trees = new SingleConfiguredFeatureField[] {
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator) };
 	private final SingleConfiguredFeatureField[] flowerTrees = new SingleConfiguredFeatureField[] {
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator) };
 	private final SingleConfiguredFeatureField[] megaTrees = new SingleConfiguredFeatureField[] {
-			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator)};
+			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator) };
 
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
@@ -356,7 +357,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plantTypeIndicator.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
 		plantTypeSelector.add("Center", PanelUtils.northAndCenterElement(plantTypePanel, plantTypesCardPanel, 2, 2));
-		plantTypeSelector.add("East", plantTypeIndicator);
+		plantTypeSelector.add("East", PanelUtils.pullElementUp(plantTypeIndicator));
 		plantTypeSelector.setOpaque(false);
 
 		// Panel for static plants
@@ -388,19 +389,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Panel for saplings
 		JPanel saplingCard = new JPanel(new BorderLayout(15, 5));
 
-		JPanel saplingProperties = new JPanel(new GridLayout(5, 3, 5, 2));
+		JPanel saplingProperties = new JPanel(new GridLayout(5, 3, 2, 2));
 		saplingProperties.setOpaque(false);
-		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/secondary_tree_chance"),
-				L10N.label("elementgui.plant.secondary_tree_chance")));
-		saplingProperties.add(secondaryTreeChance);
-		saplingProperties.add(new JLabel());
 
 		saplingProperties.add(new JLabel());
 		saplingProperties.add(L10N.label("elementgui.plant.primary_trees"));
 		saplingProperties.add(L10N.label("elementgui.plant.secondary_trees"));
 
-		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/trees"),
-				L10N.label("elementgui.plant.trees")));
+		saplingProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("plant/trees"), L10N.label("elementgui.plant.trees")));
 		saplingProperties.add(trees[0]);
 		saplingProperties.add(trees[1]);
 
@@ -413,6 +410,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.mega_trees")));
 		saplingProperties.add(megaTrees[0]);
 		saplingProperties.add(megaTrees[1]);
+
+		saplingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/secondary_tree_chance"),
+				L10N.label("elementgui.plant.secondary_tree_chance")));
+		saplingProperties.add(new JLabel());
+		saplingProperties.add(secondaryTreeChance);
+
+		saplingProperties.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
 
 		for (int i = 0; i < 2; i++) {
 			trees[i].setPreferredSize(new Dimension(280, -1));
@@ -771,6 +775,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private void updatePlantType() {
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
+
 		refreshBonemealProperties(); // disable settings if sapling is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
@@ -792,8 +797,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		plantTypesLayout.show(plantTypesCardPanel, (String) plantType.getSelectedItem());
-		plantTypeIndicator.setIcon(
-				UIRES.get("plant_" + plantType.getSelectedItem().toString().replace("growapable", "growable").replace("sapling", "normal")));
+		plantTypeIndicator.setIcon(UIRES.get(
+				"plant_" + plantType.getSelectedItem().toString().replace("growapable", "growable")
+						.replace("sapling", "normal")));
+
+		for (Component comp : plantTypesCardPanel.getComponents()) {
+			if (comp.isVisible()) {
+				plantTypesCardPanel.setPreferredSize(comp.getPreferredSize());
+			}
+		}
 	}
 
 	private void updateSoundType() {
@@ -827,7 +839,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			return new AggregatedValidationResult.PASS();
 
 		for (int i = 0; i < 2; i++) {
-			if ((trees[i].getEntry() != null) || (flowerTrees[i].getEntry() != null) || (megaTrees[i].getEntry() != null)) {
+			if ((trees[i].getEntry() != null) || (flowerTrees[i].getEntry() != null) || (megaTrees[i].getEntry()
+					!= null)) {
 				return new AggregatedValidationResult.PASS();
 			}
 		}

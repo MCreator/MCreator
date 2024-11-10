@@ -144,9 +144,6 @@ import java.util.stream.Collectors;
 
 		this.creativeTabs = new ArrayList<>();
 
-		this.trees = new ConfiguredFeatureEntry[2];
-		this.flowerTrees = new ConfiguredFeatureEntry[2];
-		this.megaTrees = new ConfiguredFeatureEntry[2];
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
@@ -167,6 +164,11 @@ import java.util.stream.Collectors;
 		this.patchSize = 64;
 
 		this.boundingBoxes = new ArrayList<>();
+
+		this.secondaryTreeChance = 0.1;
+		this.trees = new ConfiguredFeatureEntry[2];
+		this.flowerTrees = new ConfiguredFeatureEntry[2];
+		this.megaTrees = new ConfiguredFeatureEntry[2];
 	}
 
 	public boolean generateLootTable() {

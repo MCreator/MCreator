@@ -1,1 +1,1 @@
-These are the trees that can grow if the saplings are in a 2x2 configuration.
+These are the trees that can grow if the saplings are in a 2x2 configuration. Used by mega trees.
