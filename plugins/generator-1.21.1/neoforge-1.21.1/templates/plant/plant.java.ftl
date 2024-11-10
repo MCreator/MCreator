@@ -286,7 +286,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
-	<#if data.isBonemealable && (data.plantType != "sapling")>
+	<#if data.isBonemealable && data.plantType != "sapling">
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 
@@ -365,35 +365,35 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#-- @formatter:on -->
 
 <#function getPlantClass plantType>
-<#if plantType == "normal"><#return "Flower">
-<#elseif plantType == "growapable"><#return "SugarCane">
-<#elseif data.plantType == "double"><#return "DoublePlant">
-<#elseif data.plantType == "sapling"><#return "Sapling">
-</#if>
+	<#if plantType == "normal"><#return "Flower">
+	<#elseif plantType == "growapable"><#return "SugarCane">
+	<#elseif data.plantType == "double"><#return "DoublePlant">
+	<#elseif data.plantType == "sapling"><#return "Sapling">
+	</#if>
 </#function>
 
 <#macro canPlaceOnList blockList condition>
-<#if (blockList?size > 1) && condition>(</#if>
-<#list blockList as canBePlacedOn>
-groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
-</#list><#if (blockList?size > 1) && condition>)</#if>
+	<#if (blockList?size > 1) && condition>(</#if>
+	<#list blockList as canBePlacedOn>
+	groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
+	</#list><#if (blockList?size > 1) && condition>)</#if>
 </#macro>
 
 <#macro toTreeGrower secondaryChance megaTree="" megaTree2="" tree="" tree2="" flowerTree="" flowerTree2="">
-<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
-new TreeGrower("${data.getModElement().getRegistryName()}", ${secondaryChance}f,
-   	<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
-   	<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
-);
-<#else>
-new TreeGrower("${data.getModElement().getRegistryName()}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
-</#if>
+	<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
+	new TreeGrower("${data.getModElement().getRegistryName()}", ${secondaryChance}f,
+	   	<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
+	   	<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
+	);
+	<#else>
+	new TreeGrower("${data.getModElement().getRegistryName()}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
+	</#if>
 </#macro>
 
 <#macro toOptionalTree tree="">
-<#if tree?has_content>
-Optional.of(getFeatureKey("${generator.map(tree, "configuredfeatures")}"))
-<#else>
-Optional.empty()
-</#if>
+	<#if tree?has_content>
+	Optional.of(getFeatureKey("${generator.map(tree, "configuredfeatures")}"))
+	<#else>
+	Optional.empty()
+	</#if>
 </#macro>
