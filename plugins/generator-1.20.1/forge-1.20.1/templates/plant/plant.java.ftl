@@ -270,7 +270,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
-	<#if data.isBonemealable && (data.plantType != "sapling")>
+	<#if data.isBonemealable && data.plantType != "sapling">
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 
@@ -343,16 +343,16 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#-- @formatter:on -->
 
 <#function getPlantClass plantType>
-<#if plantType == "normal"><#return "Flower">
-<#elseif plantType == "growapable"><#return "SugarCane">
-<#elseif data.plantType == "double"><#return "DoublePlant">
-<#elseif data.plantType == "sapling"><#return "Sapling">
-</#if>
+	<#if plantType == "normal"><#return "Flower">
+	<#elseif plantType == "growapable"><#return "SugarCane">
+	<#elseif data.plantType == "double"><#return "DoublePlant">
+	<#elseif data.plantType == "sapling"><#return "Sapling">
+	</#if>
 </#function>
 
 <#macro canPlaceOnList blockList condition>
-<#if (blockList?size > 1) && condition>(</#if>
-<#list blockList as canBePlacedOn>
-groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
-</#list><#if (blockList?size > 1) && condition>)</#if>
+	<#if (blockList?size > 1) && condition>(</#if>
+	<#list blockList as canBePlacedOn>
+	groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
+	</#list><#if (blockList?size > 1) && condition>)</#if>
 </#macro>
