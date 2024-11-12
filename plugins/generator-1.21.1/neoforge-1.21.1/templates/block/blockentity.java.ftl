@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.block.entity;
 
+<#compress>
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
@@ -205,4 +206,5 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
     </#if>
 
 }
+</#compress>
 <#-- @formatter:on -->
