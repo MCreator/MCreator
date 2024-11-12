@@ -54,6 +54,7 @@ import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 import net.mcreator.element.converter.v2024_4.AdvancementFunctionConverter;
+import net.mcreator.element.converter.v2024_4.BiomeFogColorConverter;
 import net.mcreator.element.converter.v2024_4.MusicDiscToItemConverter;
 import net.mcreator.element.converter.v2024_4.NoGUISelectedConverter;
 
@@ -82,7 +83,8 @@ public class ConverterRegistry {
 			new BiomeDefaultFeaturesConverter(),
 			new BiomeFrozenTopLayerConverter(),
 			new BiomeGenParametersConverter(),
-			new BiomeCustomFeaturesConverter()
+			new BiomeCustomFeaturesConverter(),
+			new BiomeFogColorConverter()
 		));
 		put(ModElementType.BLOCK, List.of(
 			new BlockLuminanceFixer(),

@@ -113,6 +113,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder treeFruits;
 
 	private final JColor airColor = new JColor(mcreator, true, false);
+	private final JColor fogColor = new JColor(mcreator, true, false);
 	private final JColor grassColor = new JColor(mcreator, true, false);
 	private final JColor foliageColor = new JColor(mcreator, true, false);
 	private final JColor waterColor = new JColor(mcreator, true, false);
@@ -167,6 +168,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		name.setOpaque(true);
 		airColor.setOpaque(false);
+		fogColor.setOpaque(false);
 		grassColor.setOpaque(false);
 		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
@@ -407,7 +409,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(sbbp3, sbbp5)));
 
-		JPanel sbbp4 = new JPanel(new GridLayout(8, 2, 35, 2));
+		JPanel sbbp4 = new JPanel(new GridLayout(9, 2, 35, 2));
 
 		name.setPreferredSize(new Dimension(350, 36));
 
@@ -425,6 +427,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
 				L10N.label("elementgui.biome.air_color")));
 		sbbp4.add(airColor);
+
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fog_color"),
+				L10N.label("elementgui.biome.fog_color")));
+		sbbp4.add(fogColor);
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_color"),
 				L10N.label("elementgui.biome.grass_color")));
@@ -677,6 +683,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
+		fogColor.setColor(biome.fogColor);
 		grassColor.setColor(biome.grassColor);
 		foliageColor.setColor(biome.foliageColor);
 		waterColor.setColor(biome.waterColor);
@@ -740,6 +747,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		else
 			biome.treeType = biome.TREES_VANILLA;
 		biome.airColor = airColor.getColor();
+		biome.fogColor = fogColor.getColor();
 		biome.grassColor = grassColor.getColor();
 		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();
