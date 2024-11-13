@@ -46,10 +46,7 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -91,6 +88,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner coordinateScale = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.01));
+	private final VTextField infiniburnTag = new VTextField();
+	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner fixedTimeValue = new JSpinner(new SpinnerNumberModel(0, 0, 24000, 1));
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.common.enable");
@@ -170,7 +171,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
 		// Dimension type settings
-		JPanel dimensionTypeSettings = new JPanel(new GridLayout(6, 2, 15, 5));
+		JPanel dimensionTypeSettings = new JPanel(new GridLayout(10, 2, 15, 5));
 		dimensionTypeSettings.setOpaque(false);
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
@@ -196,6 +197,22 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"),
 				L10N.label("elementgui.dimension.does_water_vaporize")));
 		dimensionTypeSettings.add(doesWaterVaporize);
+
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_fixed_time"),
+				L10N.label("elementgui.dimension.has_fixed_time")));
+		dimensionTypeSettings.add(hasFixedTime);
+
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fixed_time_value"),
+				L10N.label("elementgui.dimension.fixed_time_value")));
+		dimensionTypeSettings.add(fixedTimeValue);
+
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/coordinate_scale"),
+				L10N.label("elementgui.dimension.coordinate_scale")));
+		dimensionTypeSettings.add(coordinateScale);
+
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/infiniburn_tag"),
+				L10N.label("elementgui.dimension.infiniburn_tag")));
+		dimensionTypeSettings.add(infiniburnTag);
 
 		dimensionTypeSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -223,6 +240,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		imitateOverworldBehaviour.setOpaque(false);
 		canRespawnHere.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
+		hasFixedTime.setOpaque(false);
+		hasFixedTime.addActionListener(e -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
+		fixedTimeValue.setEnabled(false);
+		if (!isEditingMode()) {
+			infiniburnTag.setText("minecraft:infiniburn_overworld");
+		}
 
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(300, 42));
@@ -383,6 +406,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
+		infiniburnTag.setValidator(new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"),
+				infiniburnTag, true));
+		infiniburnTag.enableRealtimeValidation();
+
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
 				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
@@ -453,7 +480,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
+		if (page == 0)
+			return new AggregatedValidationResult(infiniburnTag);
+		else if (page == 1)
 			return new AggregatedValidationResult(page2group);
 		else if (page == 2)
 			return new AggregatedValidationResult(page1group);
@@ -483,6 +512,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		doesWaterVaporize.setSelected(dimension.doesWaterVaporize);
 		imitateOverworldBehaviour.setSelected(dimension.imitateOverworldBehaviour);
 		hasSkyLight.setSelected(dimension.hasSkyLight);
+		hasFixedTime.setSelected(dimension.hasFixedTime);
+		fixedTimeValue.setValue(dimension.fixedTimeValue);
+		coordinateScale.setValue(dimension.coordinateScale);
+		infiniburnTag.setText(dimension.infiniburnTag);
 		enablePortal.setSelected(dimension.enablePortal);
 		whenPortaTriggerlUsed.setSelectedProcedure(dimension.whenPortaTriggerlUsed);
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
@@ -492,6 +525,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
+		fixedTimeValue.setEnabled(dimension.hasFixedTime);
 		updatePortalElements();
 	}
 
@@ -509,6 +543,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.isDark = isDark.isSelected();
 		dimension.imitateOverworldBehaviour = imitateOverworldBehaviour.isSelected();
 		dimension.hasSkyLight = hasSkyLight.isSelected();
+		dimension.hasFixedTime = hasFixedTime.isSelected();
+		dimension.fixedTimeValue = (int) fixedTimeValue.getValue();
+		dimension.coordinateScale = (double) coordinateScale.getValue();
+		dimension.infiniburnTag = infiniburnTag.getText();
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
