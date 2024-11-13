@@ -16,4 +16,5 @@ templates:
     name: "@MODDATAROOT/dimension/@registryname.json"
 
 field_inclusions: [mainFillerBlock, fluidBlock, biomesInDimension, imitateOverworldBehaviour, canRespawnHere,
-                   hasFog, isDark, doesWaterVaporize, sleepResult, hasSkyLight, worldGenType]
+                   hasFog, isDark, doesWaterVaporize, sleepResult, hasSkyLight, hasFixedTime, fixedTimeValue,
+                   coordinateScale, infiniburnTag, worldGenType]
