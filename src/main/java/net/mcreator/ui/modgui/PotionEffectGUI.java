@@ -30,6 +30,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -65,6 +66,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
+	private JAttributeModifierList modifierList;
+
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;
 	private ProcedureSelector onExpired;
@@ -78,6 +81,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	}
 
 	@Override protected void initGUI() {
+		modifierList = new JAttributeModifierList(mcreator, this);
+
 		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_applied"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
@@ -95,6 +100,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInHUD.setSelected(true);
 
 		JPanel pane3 = new JPanel(new BorderLayout());
+		JPanel modifiersPage = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
 		JPanel selp = new JPanel(new GridLayout(7, 2, 50, 2));
@@ -157,6 +163,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 				curesSubpane)));
 		pane3.setOpaque(false);
 
+		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/modifiers"), L10N.label("elementgui.potioneffect.modifiers")),
+				modifierList);
+		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		modifiersPage.add("Center", modifiersEditor);
+		modifiersPage.setOpaque(false);
+
 		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onStarted);
@@ -181,11 +195,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
+
+		modifierList.reloadDataLists();
 
 		onStarted.refreshListKeepSelected();
 		onActiveTick.refreshListKeepSelected();
@@ -196,6 +213,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(page1group);
+		} else if (page == 1) {
+			return modifierList.getValidationResult();
 		}
 		return new AggregatedValidationResult.PASS();
 	}
@@ -215,6 +234,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		isCuredByMilk.setSelected(potion.isCuredByMilk);
 		isProtectedByTotem.setSelected(potion.isProtectedByTotem);
 		isCuredbyHoney.setSelected(potion.isCuredbyHoney);
+		modifierList.setEntries(potion.modifiers);
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -233,6 +253,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.isCuredByMilk = isCuredByMilk.isSelected();
 		potion.isProtectedByTotem = isProtectedByTotem.isSelected();
 		potion.isCuredbyHoney = isCuredbyHoney.isSelected();
+		potion.modifiers = modifierList.getEntries();
 		return potion;
 	}
 
