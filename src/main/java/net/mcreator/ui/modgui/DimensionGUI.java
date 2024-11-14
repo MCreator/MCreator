@@ -171,8 +171,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
 		// Dimension type settings
-		JPanel dimensionTypeSettings = new JPanel(new GridLayout(10, 2, 15, 5));
+		JPanel dimensionTypeSettings = new JPanel(new GridLayout(10, 2, 15, 2));
 		dimensionTypeSettings.setOpaque(false);
+
+		sleepResult.setPreferredSize(new java.awt.Dimension(0, 42));
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
 				L10N.label("elementgui.dimension.sleep_result")));
