@@ -147,6 +147,9 @@ public class ElementOrderEditor {
 
 		// Add ME items of tabs with overridden elements order
 		for (Map.Entry<String, ArrayList<String>> tab : mcreator.getWorkspace().getCreativeTabsOrder().entrySet()) {
+			if (!tabEditors.containsKey(tab.getKey()))
+				continue;
+
 			for (String element : tab.getValue()) {
 				ModElement me = mcreator.getWorkspace().getModElementByName(element);
 				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)

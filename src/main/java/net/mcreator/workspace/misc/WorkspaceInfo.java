@@ -158,10 +158,11 @@ import java.util.*;
 
 		// Last, we add items to tabs with custom order
 		for (Map.Entry<String, ArrayList<String>> tab : workspace.getCreativeTabsOrder().entrySet()) {
-			if (workspace.getModElementByName(tab.getKey()).getType() == ModElementType.TAB) {
+			ModElement tabME = workspace.getModElementByName(tab.getKey());
+			if (tabME != null && tabME.getType() == ModElementType.TAB) {
 				List<MItemBlock> tabOrder = tabMap.computeIfAbsent(tab.getKey(), e -> new ArrayList<>());
-				ModElement me = workspace.getModElementByName(tab.getKey());
 				for (String element : tab.getValue()) {
+					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 						List<MCItem> tabItems = tabElement.getCreativeTabItems();
 						if (tabItems != null && !tabItems.isEmpty()) {
