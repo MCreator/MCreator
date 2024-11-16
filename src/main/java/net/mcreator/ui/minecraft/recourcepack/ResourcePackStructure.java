@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class ResourcePackStructure {
 
-	private static List<String> extensions = List.of("json", "mcmeta", "png");
+	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh");
 
 	public static List<Entry> getResourcePackStructure(Workspace workspace) {
 		List<Entry> entries = new ArrayList<>();

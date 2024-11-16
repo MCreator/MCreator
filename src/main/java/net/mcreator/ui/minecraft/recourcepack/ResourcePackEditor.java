@@ -41,6 +41,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final Workspace workspace;
 
+	@Nullable private final WorkspacePanel workspacePanel;
+
 	private final JFileTree tree;
 
 	private final FilteredTreeModel model = new FilteredTreeModel(new FilterTreeNode(""));
@@ -50,6 +52,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		setOpaque(false);
 
 		this.workspace = workspace;
+		this.workspacePanel = workspacePanel;
 
 		this.tree = new JFileTree(model);
 
@@ -71,14 +74,23 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		FilterTreeNode root = new FilterTreeNode("");
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
-		List<ResourcePackStructure.Entry> entries = ResourcePackStructure.getResourcePackStructure(workspace);
-		entries.forEach(entry -> fileTree.addElement(entry.path(), entry));
+		ResourcePackStructure.getResourcePackStructure(workspace)
+				.forEach(entry -> fileTree.addElement(entry.path(), entry));
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 
 		model.setRoot(root);
 
 		if (initial) {
-			tree.expandPath(new TreePath(new Object[] { root }));
+			TreeUtils.expandMatchingNodesRecursively(tree, root, node -> {
+				if (node instanceof FilterTreeNode filterTreeNode) {
+					if (filterTreeNode.getUserObject() instanceof FileNode<?> fileNode) {
+						if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
+							return entry.overrideExists();
+						}
+					}
+				}
+				return false;
+			});
 			initial = false;
 		} else {
 			TreeUtils.setExpansionState(tree, state);
@@ -86,7 +98,9 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	}
 
 	@Override public void refilterElements() {
-		// TODO: Implement
+		if (workspacePanel != null) {
+			model.setFilter(workspacePanel.search.getText());
+		}
 	}
 
 }
