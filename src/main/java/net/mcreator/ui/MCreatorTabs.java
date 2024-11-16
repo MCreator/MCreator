@@ -112,7 +112,7 @@ public class MCreatorTabs {
 
 		moreTabsMenu = new JScrollablePopupMenu();
 		moreTabsMenu.setBorder(
-				BorderFactory.createMatteBorder(0, TAB_BORDER_HEIGHT, 0, 0, Theme.current().getInterfaceAccentColor()));
+				BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getInterfaceAccentColor()));
 		moreTabsMenu.setMaximumVisibleRows(11);
 
 		int maxWidth = tabsStrip.getWidth();
