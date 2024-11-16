@@ -186,9 +186,10 @@ public class ElementOrderEditor {
 				new String[] { "Save layout", UIManager.getString("OptionPane.cancelButtonText") }, "");
 		if (resultval == 0) {
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
-				List<ModElement> newOrder = Collections.list(entry.getValue().elements());
-				if (!Arrays.equals(newOrder.toArray(new ModElement[0]), originalOrder.get(entry.getKey()))) {
-					mcreator.getWorkspace().getCreativeTabsOrder().setElementOrderInTab(entry.getKey(), newOrder);
+				ModElement[] newOrder = Collections.list(entry.getValue().elements()).toArray(new ModElement[0]);
+				if (!Arrays.equals(newOrder, originalOrder.get(entry.getKey()))) {
+					mcreator.getWorkspace().getCreativeTabsOrder()
+							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
 			}
 

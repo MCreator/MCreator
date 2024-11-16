@@ -147,10 +147,12 @@ import java.util.*;
 				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
+						if (!tabMap.containsKey(tab))
+							tabMap.put(tab, new ArrayList<>());
 
 						// If tab does not have custom order, add items to the end of the list
 						if (workspace.getCreativeTabsOrder().get(tab) == null)
-							tabMap.computeIfAbsent(tab, e -> new ArrayList<>()).addAll(tabItems);
+							tabMap.get(tab).addAll(tabItems);
 					}
 				}
 			}
@@ -160,14 +162,17 @@ import java.util.*;
 		for (Map.Entry<String, ArrayList<String>> tab : workspace.getCreativeTabsOrder().entrySet()) {
 			ModElement tabME = workspace.getModElementByName(tab.getKey());
 			if (tabME != null && tabME.getType() == ModElementType.TAB) {
-				List<MItemBlock> tabOrder = tabMap.computeIfAbsent(tab.getKey(), e -> new ArrayList<>());
+				if (!tabMap.containsKey(tab.getKey()))
+					tabMap.put(tab.getKey(), new ArrayList<>());
+
 				for (String element : tab.getValue()) {
 					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 						List<MCItem> tabItems = tabElement.getCreativeTabItems();
 						if (tabItems != null && !tabItems.isEmpty()) {
-							tabOrder.addAll(
-									tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+							tabMap.get(tab.getKey())
+									.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+											.toList());
 						}
 					}
 				}
