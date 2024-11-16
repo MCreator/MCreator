@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.recourcepack;
 
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
+import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import java.io.File;
@@ -29,6 +30,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class ResourcePackStructure {
+
+	private static List<String> extensions = List.of("json", "mcmeta", "png");
 
 	public static List<Entry> getResourcePackStructure(Workspace workspace) {
 		List<Entry> entries = new ArrayList<>();
@@ -44,8 +47,12 @@ public class ResourcePackStructure {
 					ZipIO.iterateZip(libraryFile, entry -> {
 						if (!entry.isDirectory()) {
 							String path = entry.getName();
-							File override = new File(workspace.getGenerator().getResourceRoot(), path);
-							entries.add(new Entry(path, override, override.isFile()));
+							if (path.startsWith("assets/minecraft/") && extensions.contains(
+									FilenameUtils.getExtension(path))) {
+								path = path.substring("assets/minecraft/".length());
+								File override = new File(workspace.getGenerator().getResourceRoot(), path);
+								entries.add(new Entry(path, override, override.isFile()));
+							}
 						}
 						// Get input stream of the entry
 					}, true);

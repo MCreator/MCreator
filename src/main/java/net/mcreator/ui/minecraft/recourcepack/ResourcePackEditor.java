@@ -19,12 +19,21 @@
 
 package net.mcreator.ui.minecraft.recourcepack;
 
+import net.mcreator.io.tree.FileNode;
+import net.mcreator.io.tree.FileTree;
+import net.mcreator.ui.component.tree.FilterTreeNode;
+import net.mcreator.ui.component.tree.FilteredTreeModel;
+import net.mcreator.ui.component.tree.JFileTree;
+import net.mcreator.ui.component.util.TreeUtils;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.List;
 
@@ -32,19 +41,52 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final Workspace workspace;
 
+	private final JFileTree tree;
+
+	private final FilteredTreeModel model = new FilteredTreeModel(new FilterTreeNode(""));
+
 	public ResourcePackEditor(Workspace workspace, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspace = workspace;
+
+		this.tree = new JFileTree(model);
+
+		JScrollPane jsp = new JScrollPane(tree);
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
+		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
+
+		jsp.setPreferredSize(new Dimension(300, 0));
+
+		add("West", jsp);
 	}
 
+	private boolean initial = true;
+
 	@Override public void reloadElements() {
+		List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
+
+		FilterTreeNode root = new FilterTreeNode("");
+
+		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
 		List<ResourcePackStructure.Entry> entries = ResourcePackStructure.getResourcePackStructure(workspace);
+		entries.forEach(entry -> fileTree.addElement(entry.path(), entry));
+		JFileTree.addFileNodeToRoot(root, fileTree.root());
+
+		model.setRoot(root);
+
+		if (initial) {
+			tree.expandPath(new TreePath(new Object[] { root }));
+			initial = false;
+		} else {
+			TreeUtils.setExpansionState(tree, state);
+		}
 	}
 
 	@Override public void refilterElements() {
-
+		// TODO: Implement
 	}
 
 }

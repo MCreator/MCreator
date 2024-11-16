@@ -82,8 +82,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
 				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@")) {
-			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
+			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 		}
 
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());
