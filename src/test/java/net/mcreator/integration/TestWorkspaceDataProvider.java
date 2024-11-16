@@ -1187,19 +1187,14 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isCuredbyHoney = _true;
 			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
-				PotionEffect.AttributeModifierEntry entry1 = new PotionEffect.AttributeModifierEntry();
-				entry1.attribute = new AttributeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
-				entry1.amount = 0.5;
-				entry1.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
-				modifiers.add(entry1);
-
-				PotionEffect.AttributeModifierEntry entry2 = new PotionEffect.AttributeModifierEntry();
-				entry2.attribute = new AttributeEntry(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllAttributes(modElement.getWorkspace())));
-				entry2.amount = -1;
-				entry2.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
-				modifiers.add(entry2);
+				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
+					PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
+					entry.amount = random.nextDouble(-5, 5);
+					entry.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE",
+							"ADD_MULTIPLIED_TOTAL" });
+					modifiers.add(entry);
+				}
 			}
 			potionEffect.modifiers = modifiers;
 			potionEffect.onStarted = new Procedure("procedure1");
