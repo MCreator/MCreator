@@ -93,17 +93,15 @@ public final class ExternalTexture extends Texture {
 					workspace.getGenerator().getProjectJarManager().getClassFileSources() :
 					List.of();
 
+			String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
 			String root = workspace.getGeneratorConfiguration()
 					.getSpecificRoot("vanilla_" + type.getID() + "_textures_dir");
-			if (root != null) {
-				String[] data = root.split("!/"); // 0 = jar name, 1 = path
-				final var jarNameRegex = data[0];
-				final var path = data[1];
-
+			if (vanillaResourcesJar != null && root != null) {
 				for (LibraryInfo libraryInfo : libraryInfos) {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
-					if (libraryFile.isFile() && Pattern.compile(jarNameRegex).matcher(libraryFile.getName()).find()) {
-						loadTexturesFrom(libraryFile, "minecraft", path, type, textures);
+					if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
+							.find()) {
+						loadTexturesFrom(libraryFile, "minecraft", root, type, textures);
 						break;
 					}
 				}
