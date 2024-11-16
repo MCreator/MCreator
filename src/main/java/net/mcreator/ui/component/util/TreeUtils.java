@@ -23,6 +23,7 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class TreeUtils {
 
@@ -129,4 +130,25 @@ public class TreeUtils {
 			}
 		}
 	}
+
+	public static void expandMatchingNodesRecursively(JTree tree, DefaultMutableTreeNode node,
+			Predicate<DefaultMutableTreeNode> predicate) {
+		if (node == null) {
+			return;
+		}
+
+		// If the node matches the predicate, expand it
+		if (predicate.test(node)) {
+			TreePath path = getPath(node);
+			tree.expandPath(path);
+		}
+
+		// Recurse into children
+		int childCount = node.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+			expandMatchingNodesRecursively(tree, child, predicate);
+		}
+	}
+
 }
