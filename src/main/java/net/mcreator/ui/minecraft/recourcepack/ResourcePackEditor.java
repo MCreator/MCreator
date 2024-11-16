@@ -98,19 +98,11 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		}
 	}
 
-	private boolean searchInAction = false;
-
 	@Override public void refilterElements() {
 		if (workspacePanel != null) {
 			if (workspacePanel.search.getText().trim().length() >= 3) {
-				if (!searchInAction) {
-					new Thread(() -> {
-						searchInAction = true;
-						model.setFilter(workspacePanel.search.getText().trim());
-						SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
-						searchInAction = false;
-					}, "ReferenceSearch").start();
-				}
+				model.setFilter(workspacePanel.search.getText().trim());
+				SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 			} else {
 				model.setFilter("");
 			}
