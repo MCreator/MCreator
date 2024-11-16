@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.recourcepack;
 
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
+import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.JFileTree;
@@ -33,7 +34,6 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.List;
 
@@ -55,13 +55,14 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		this.workspacePanel = workspacePanel;
 
 		this.tree = new JFileTree(model);
+		tree.setCellRenderer(new ResourcePackTreeCellRenderer());
 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 
-		jsp.setPreferredSize(new Dimension(300, 0));
+		jsp.setPreferredSize(new Dimension(320, 0));
 
 		add("West", jsp);
 	}
@@ -97,9 +98,22 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		}
 	}
 
+	private boolean searchInAction = false;
+
 	@Override public void refilterElements() {
 		if (workspacePanel != null) {
-			model.setFilter(workspacePanel.search.getText());
+			if (workspacePanel.search.getText().trim().length() >= 3) {
+				if (!searchInAction) {
+					new Thread(() -> {
+						searchInAction = true;
+						model.setFilter(workspacePanel.search.getText().trim());
+						SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
+						searchInAction = false;
+					}, "ReferenceSearch").start();
+				}
+			} else {
+				model.setFilter("");
+			}
 		}
 	}
 

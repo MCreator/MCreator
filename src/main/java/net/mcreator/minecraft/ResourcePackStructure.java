@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft.recourcepack;
+package net.mcreator.minecraft;
 
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
