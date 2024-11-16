@@ -405,7 +405,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-			ComponentUtils.deriveFont(a, 11);
 
 			FilterTreeNode node = (FilterTreeNode) value;
 			if (node.getUserObject() instanceof String tsi) {

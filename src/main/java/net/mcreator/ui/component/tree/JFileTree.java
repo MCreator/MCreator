@@ -32,7 +32,6 @@ public class JFileTree extends JTree {
 	public JFileTree(FilteredTreeModel model) {
 		super(model);
 
-		setRowHeight(18);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		setOpaque(false);
 		setRootVisible(false);
