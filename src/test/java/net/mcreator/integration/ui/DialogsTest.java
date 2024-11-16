@@ -166,10 +166,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
 	}
 
-	@Test public void testAddBlockPropertyDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> AddBlockPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test")),
-						List::of));
+	@Test public void testAddBlockPropertyDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddBlockPropertyDialog.showCreateDialog(mcreator,
+				List.of(new PropertyData.LogicType("ENABLED"), new PropertyData.IntegerType("CUSTOM:test", 0, 7),
+						new PropertyData.StringType("CUSTOM:property", new String[] { "logic", "integer", "string" })),
+				List::of));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddBlockPropertyDialog.showImportDialog(mcreator,
+				List.of(new PropertyData.LogicType("ENABLED"), new PropertyData.IntegerType("CUSTOM:test", 0, 7),
+						new PropertyData.StringType("CUSTOM:property", new String[] { "logic", "integer", "string" })),
+				List::of));
 	}
 
 	@Test public void testAddEntityPropertyDialog() throws Throwable {

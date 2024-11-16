@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -27,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -37,20 +40,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class AddBlockPropertyDialog {
 
 	@Nullable
-	public static PropertyDataWithValue<?> showDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
+	public static PropertyDataWithValue<?> showCreateDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("elementgui.block.custom_properties.add.title"),
 				true);
 
 		VTextField name = new VTextField(24);
 		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> currentEntries.stream().map(e -> e.getName().replace("CUSTOM:", "")),
+				() -> currentEntries.stream().map(BlockStatePropertyUtils::propertyRegistryName),
 				nonUserProvidedProperties.get(), new RegistryNameValidator(name,
 				L10N.t("elementgui.block.custom_properties.add.input"))).setIsPresentOnList(false));
 		name.enableRealtimeValidation();
@@ -116,6 +120,39 @@ public class AddBlockPropertyDialog {
 		dialog.setVisible(true);
 
 		return result.get();
+	}
+
+	public static PropertyDataWithValue<?> showImportDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
+			Supplier<Collection<String>> nonUserProvidedProperties) {
+		DataListEntry property = DataListSelectorDialog.openSelectorDialog(mcreator,
+				w -> DataListLoader.loadDataList("blockstateproperties").stream()
+						.filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).toList(),
+				L10N.t("elementgui.block.custom_properties.add_existing"),
+				L10N.t("elementgui.block.custom_properties.add_existing.message"));
+		if (property == null || !(property.getOther() instanceof Map<?, ?> other) || other.get("registry_name") == null)
+			return null;
+
+		String registryName = (String) other.get("registry_name");
+		for (PropertyData<?> p : currentEntries) {
+			if (registryName.equals(BlockStatePropertyUtils.propertyRegistryName(p))) {
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
+						JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+		for (String s : nonUserProvidedProperties.get()) {
+			if (registryName.equals(s)) {
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate"),
+						L10N.t("elementgui.block.custom_properties.add.error_duplicate.title"),
+						JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+
+		return BlockStatePropertyUtils.fromDataListEntry(property);
 	}
 
 }
