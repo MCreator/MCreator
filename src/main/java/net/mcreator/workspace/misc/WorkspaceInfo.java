@@ -161,7 +161,7 @@ import java.util.*;
 		// Last, we add items to tabs with custom order
 		for (Map.Entry<String, ArrayList<String>> entry : workspace.getCreativeTabsOrder().entrySet()) {
 			String tab = entry.getKey();
-			ModElement tabME = workspace.getModElementByName(tab);
+			ModElement tabME = workspace.getModElementByName(tab.replace("CUSTOM:", ""));
 			if (tabME != null && tabME.getType() == ModElementType.TAB) {
 				if (!tabMap.containsKey(tab))
 					tabMap.put(tab, new ArrayList<>());
