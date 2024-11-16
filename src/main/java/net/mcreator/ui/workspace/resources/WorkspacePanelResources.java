@@ -20,6 +20,7 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -36,6 +37,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 	public final WorkspacePanelStructures workspacePanelStructures;
 	public final WorkspacePanelScreenshots workspacePanelScreenshots;
 
+	public final ResourcePackEditor resourcePackEditor;
+
 	private final JTabbedPane resourceTabs;
 
 	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
@@ -49,6 +52,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		this.workspacePanelAnimations = new WorkspacePanelAnimations(workspacePanel);
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
+
+		this.resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator().getWorkspace(), workspacePanel);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
@@ -76,8 +81,10 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
 				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
-				.contains("@"))
+				.contains("@")) {
+			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
+		}
 
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());
 		add(resourceTabs);
