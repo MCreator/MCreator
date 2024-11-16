@@ -268,9 +268,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
-		restrictionBiomes = new BiomeListField(mcreator, true);
-		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
-
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
