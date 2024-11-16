@@ -81,11 +81,11 @@ public class PluginLoader extends URLClassLoader {
 	public PluginLoader() {
 		super(new URL[] {}, null);
 
-		this.plugins = new HashSet<>();
-		this.failedPlugins = new HashSet<>();
-		this.javaPlugins = new HashSet<>();
-		this.pluginUpdates = new HashSet<>();
-		this.pluginsModules = new HashSet<>();
+		this.plugins = new LinkedHashSet<>();
+		this.javaPlugins = new LinkedHashSet<>();
+		this.failedPlugins = new LinkedHashSet<>();
+		this.pluginUpdates = new LinkedHashSet<>();
+		this.pluginsModules = new LinkedHashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -164,6 +164,18 @@ public class PluginLoader extends URLClassLoader {
 						.setScanners(Scanners.Resources).setExpandSuperTypes(false));
 
 		checkForPluginUpdates();
+
+		// Sort regular plugin list
+		List<Plugin> sortedPlugins = new ArrayList<>(plugins);
+		Collections.sort(sortedPlugins);
+		plugins.clear();
+		plugins.addAll(sortedPlugins);
+
+		// Sort Java plugin list
+		List<JavaPlugin> sortedJavaPlugins = new ArrayList<>(javaPlugins);
+		Collections.sort(sortedJavaPlugins);
+		javaPlugins.clear();
+		javaPlugins.addAll(sortedJavaPlugins);
 	}
 
 	/**
@@ -196,14 +208,14 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 * @return <p> A {@link List} of all loaded plugins.</p>
+	 * @return <p> A {@link List} of all loaded plugins. Sorted by plugin weight.</p>
 	 */
 	public Collection<Plugin> getPlugins() {
 		return Collections.unmodifiableCollection(plugins);
 	}
 
 	/**
-	 * @return <p> A {@link List} of all loaded Java plugins.</p>
+	 * @return <p> A {@link List} of all loaded Java plugins. Sorted by plugin weight.</p>
 	 */
 	protected Collection<JavaPlugin> getJavaPlugins() {
 		return Collections.unmodifiableCollection(javaPlugins);

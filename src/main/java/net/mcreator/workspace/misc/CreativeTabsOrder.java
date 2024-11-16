@@ -21,7 +21,9 @@ package net.mcreator.workspace.misc;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.Tab;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
@@ -60,7 +62,9 @@ public class CreativeTabsOrder extends LinkedHashMap<String, ArrayList<String>> 
 	}
 
 	public void removeModElementFromTabs(GeneratableElement element) {
-		if (element instanceof ITabContainedElement) {
+		if (element instanceof Tab) {
+			this.remove(new DataListEntry.Custom(element.getModElement()).getName());
+		} else if (element instanceof ITabContainedElement) {
 			for (ArrayList<String> tabContents : this.values())
 				tabContents.remove(element.getModElement().getName());
 		}
