@@ -30,6 +30,7 @@ import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
+import net.mcreator.ui.component.tree.JFileTree;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
@@ -45,7 +46,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -54,7 +54,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Workspace file browser is used in a workspace window by the user to view source files of the project contained in
@@ -67,7 +66,8 @@ public class WorkspaceFileBrowser extends JPanel {
 	FilterTreeNode sourceCode = null;
 	FilterTreeNode currRes = null;
 
-	public final JTree tree = new JTree(mods);
+	public final JFileTree tree = new JFileTree(mods);
+
 	private final JTextField jtf1 = new JTextField() {
 		@Override public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
@@ -93,17 +93,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		this.mcreator = mcreator;
 
 		tree.setCellRenderer(new ProjectBrowserCellRenderer());
-		tree.setRowHeight(18);
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.setOpaque(false);
-		tree.setRootVisible(false);
-		tree.setShowsRootHandles(true);
-		tree.setBackground(Theme.current().getBackgroundColor());
-
-		JScrollPane jsp = new JScrollPane(tree);
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
-		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
-		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getBackgroundColor()).brighter()));
@@ -158,6 +147,11 @@ public class WorkspaceFileBrowser extends JPanel {
 		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
 		add("North", topBar);
+
+		JScrollPane jsp = new JScrollPane(tree);
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
+		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		add("Center", PanelUtils.northAndCenterElement(search, jsp));
 
 		tree.addMouseListener(new MouseAdapter() {
@@ -196,24 +190,24 @@ public class WorkspaceFileBrowser extends JPanel {
 			FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
 
 			sourceCode = new FilterTreeNode("Source (Gradle)");
-			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
+			JFileTree.addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
 			currRes = new FilterTreeNode("Resources (Gradle)");
-			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
+			JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				FilterTreeNode sounds = new FilterTreeNode("Sounds");
-				addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
+				JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 				node.add(sounds);
 			}
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				FilterTreeNode structures = new FilterTreeNode("Structures");
-				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
+				JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
 
@@ -224,13 +218,13 @@ public class WorkspaceFileBrowser extends JPanel {
 					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
 				FilterTreeNode models = new FilterTreeNode("Models");
-				addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
+				JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 				node.add(models);
 			}
 
 			if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
 				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
-				addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
+				JFileTree.addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
 				node.add(debugFolder);
 			}
 
@@ -248,18 +242,18 @@ public class WorkspaceFileBrowser extends JPanel {
 			if (clientRunDir.equals(serverRunDir)) {
 				if (clientRunDir.isDirectory()) {
 					FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
-					addNodes(minecraft, clientRunDir, true);
+					JFileTree.addNodes(minecraft, clientRunDir, true);
 					root.add(minecraft);
 				}
 			} else {
 				if (clientRunDir.isDirectory()) {
 					FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
-					addNodes(minecraft, clientRunDir, true);
+					JFileTree.addNodes(minecraft, clientRunDir, true);
 					root.add(minecraft);
 				}
 				if (serverRunDir.isDirectory()) {
 					FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
-					addNodes(minecraft, serverRunDir, true);
+					JFileTree.addNodes(minecraft, serverRunDir, true);
 					root.add(minecraft);
 				}
 			}
@@ -271,7 +265,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
 					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
 				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
-				addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
+				JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
 				root.add(minecraft);
 			}
 
@@ -387,67 +381,22 @@ public class WorkspaceFileBrowser extends JPanel {
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
 						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
-							FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
+							FileTree<Void> libsrc = new FileTree<>(new FileNode<>(libName, sourceFile.getAbsolutePath() + ":%:"));
 							ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
-							addFileNodeToFilterTreeNode(extDeps, libsrc.root);
+							JFileTree.addFileNodeToFilterTreeNode(extDeps, libsrc.root());
 							continue;
 						}
 					}
 
 					// If source file is not found, add the library file itself
-					FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
+					FileTree<Void> lib = new FileTree<>(new FileNode<>(libName, libraryFile.getAbsolutePath() + ":%:"));
 					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
-					addFileNodeToFilterTreeNode(extDeps, lib.root);
+					JFileTree.addFileNodeToFilterTreeNode(extDeps, lib.root());
 				}
 			}
 		}
 
 		node.add(extDeps);
-	}
-
-	private void addFileNodeToFilterTreeNode(FilterTreeNode node, FileNode root) {
-		FilterTreeNode treeNode = new FilterTreeNode(root);
-		node.add(treeNode);
-		for (FileNode child : root.childs)
-			addFileNodeToFilterTreeNode(treeNode, child);
-		for (FileNode child : root.leafs)
-			addFileNodeToFilterTreeNode(treeNode, child);
-
-	}
-
-	private void addNodes(FilterTreeNode curTop, File dir, boolean first) {
-		if (dir == null)
-			return;
-
-		String curPath = dir.getPath();
-		FilterTreeNode curDir = new FilterTreeNode(dir);
-		if (curTop != null && !first) {
-			curTop.add(curDir);
-		} else {
-			curDir = curTop;
-		}
-		Vector<String> ol = new Vector<>();
-		String[] tmp = dir.list();
-		for (String aTmp : tmp != null ? tmp : new String[0])
-			ol.addElement(aTmp);
-		ol.sort(String.CASE_INSENSITIVE_ORDER);
-		File f;
-		Vector<File> files = new Vector<>();
-		for (int i = 0; i < ol.size(); i++) {
-			String thisObject = ol.elementAt(i);
-			String newPath;
-			if (curPath.equals("."))
-				newPath = thisObject;
-			else
-				newPath = curPath + File.separator + thisObject;
-			if ((f = new File(newPath)).isDirectory())
-				addNodes(curDir, f, false);
-			else
-				files.addElement(new File(newPath));
-		}
-		for (int fnum = 0; fnum < files.size(); fnum++)
-			if (curDir != null)
-				curDir.add(new FilterTreeNode(files.elementAt(fnum)));
 	}
 
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
@@ -482,7 +431,7 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.directory"));
 				else if (tsi.equals("Structures"))
 					a.setIcon(UIRES.get("16px.structures"));
-			} else if (node.getUserObject() instanceof FileNode fileNode) {
+			} else if (node.getUserObject() instanceof FileNode<?> fileNode) {
 				a.setText(fileNode.data);
 				if (fileNode.data.endsWith(".java"))
 					a.setIcon(UIRES.get("16px.classro"));
