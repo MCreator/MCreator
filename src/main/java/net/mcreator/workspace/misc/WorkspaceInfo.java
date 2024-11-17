@@ -135,7 +135,7 @@ import java.util.*;
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).toList();
 
-		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
+		Map<String, List<MItemBlock>> tabMap = new LinkedHashMap<>();
 
 		// Can't use parallelStream here because getCreativeTabItems
 		// call MCItem.Custom::new that calls getBlockIconBasedOnName which calls
@@ -147,12 +147,10 @@ import java.util.*;
 				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
-						if (!tabMap.containsKey(tab))
-							tabMap.put(tab, new ArrayList<>());
 
 						// If tab does not have custom order, add items to the end of the list
 						if (workspace.getCreativeTabsOrder().get(tab) == null)
-							tabMap.get(tab).addAll(tabItems);
+							tabMap.computeIfAbsent(tab, key -> new ArrayList<>()).addAll(tabItems);
 					}
 				}
 			}
@@ -170,8 +168,9 @@ import java.util.*;
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 						List<MCItem> tabItems = tabElement.getCreativeTabItems();
 						if (tabItems != null && !tabItems.isEmpty()) {
-							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-									.toList());
+							tabMap.computeIfAbsent(tab, key -> new ArrayList<>())
+									.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+											.toList());
 						}
 					}
 				}
