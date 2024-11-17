@@ -160,9 +160,6 @@ import java.util.*;
 		for (String tab : tabMap.keySet()) {
 			ArrayList<String> tabOrder = workspace.getCreativeTabsOrder().get(tab);
 			if (tabOrder != null) {
-				if (!tabMap.containsKey(tab))
-					tabMap.put(tab, new ArrayList<>());
-
 				for (String element : tabOrder) {
 					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
