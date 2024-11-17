@@ -147,12 +147,10 @@ import java.util.*;
 				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
-						if (!tabMap.containsKey(tab))
-							tabMap.put(tab, new ArrayList<>());
 
 						// If tab does not have custom order, add items to the end of the list
 						if (workspace.getCreativeTabsOrder().get(tab) == null)
-							tabMap.get(tab).addAll(tabItems);
+							tabMap.computeIfAbsent(tab, e -> new ArrayList<>()).addAll(tabItems);
 					}
 				}
 			}
