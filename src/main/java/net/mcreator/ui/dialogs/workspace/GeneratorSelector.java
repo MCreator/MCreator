@@ -123,6 +123,11 @@ public class GeneratorSelector {
 				addStatusLabel(L10N.t(covpfx + "java_model_animations"),
 						stats.getBaseCoverageInfo().get("model_animations_java"), baseCoverageInfo);
 
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "vanilla_resources"),
+						stats.getBaseCoverageInfo().get("vanilla_resources"), baseCoverageInfo);
+
 			genStats.add(
 					PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo,
 							10, 10));
