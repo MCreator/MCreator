@@ -4,6 +4,9 @@ templates:
   - template: plant/plantblockentity.java.ftl
     condition: hasTileEntity
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
+  - template: plant/treegrower.java.ftl
+    condition: "plantType %= sapling"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/grower/@NAMETreeGrower.java"
 
   # Worldgen
   - template: json/block_feature_biome_modifier.json.ftl
@@ -73,11 +76,10 @@ templates:
   # Blockstate templates
   - template: json/block_states.json.ftl
     writer: json
-    condition: "plantType %= normal"
-    name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/block_states.json.ftl
-    writer: json
-    condition: "plantType %= growapable"
+    condition_any:
+      - "plantType %= normal"
+      - "plantType %= sapling"
+      - "plantType %= growapable"
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block_states_double_plant.json.ftl
     writer: json
@@ -93,3 +95,5 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+  - tag: BLOCKS:minecraft:saplings
+    condition: "plantType %= sapling"
