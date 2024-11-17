@@ -161,9 +161,6 @@ import java.util.*;
 			String tab = entry.getKey();
 			ModElement tabME = workspace.getModElementByName(tab.replace("CUSTOM:", ""));
 			if (tabME != null && tabME.getType() == ModElementType.TAB) {
-				if (!tabMap.containsKey(tab))
-					tabMap.put(tab, new ArrayList<>());
-
 				for (String element : entry.getValue()) {
 					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
