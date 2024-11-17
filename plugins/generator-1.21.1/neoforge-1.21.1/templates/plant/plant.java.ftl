@@ -43,17 +43,23 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.hasTileEntity>
 	<#assign interfaces += ["EntityBlock"]>
 </#if>
-<#if data.isBonemealable>
+<#if data.isBonemealable && data.plantType != "sapling">
 	<#assign interfaces += ["BonemealableBlock"]>
 </#if>
-public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block
+public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if interfaces?size gt 0>
 		implements ${interfaces?join(",")}
 	</#if>{
+	<#if data.plantType == "sapling">
+		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
+	</#if>
+
 	public ${name}Block() {
 		super(
 		<#if data.plantType == "normal">
 		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
+		<#elseif data.plantType == "sapling">
+		TREE_GROWER,
 		</#if>
 		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -61,7 +67,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#else>
 		.mapColor(MapColor.PLANT)
 		</#if>
-		<#if data.plantType == "growapable" || data.forceTicking>
+		<#if data.plantType == "growapable" || data.plantType == "sapling" || data.forceTicking>
 		.randomTicks()
 		</#if>
 		<#if data.isCustomSoundType>
@@ -173,7 +179,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			BlockPos blockpos = pos.below();
 			BlockState groundState = worldIn.getBlockState(blockpos);
 
-			<#if data.plantType == "normal">
+			<#if data.plantType == "normal" || data.plantType == "sapling">
 				return this.mayPlaceOn(groundState, worldIn, blockpos)
 			<#elseif data.plantType == "growapable">
 				<#if hasProcedure(data.placingCondition)>
@@ -199,7 +205,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
 		}
-	<#else><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+	<#elseif !(data.growapableSpawnType == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 		private boolean canPlantTypeSurvive(BlockState state, LevelReader world, BlockPos pos) {
 			${generator.map(data.growapableSpawnType, "planttypes")}
 		}
@@ -207,7 +213,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		@Override public boolean canSurvive(BlockState blockstate, LevelReader world, BlockPos pos) {
 			BlockPos posbelow = pos.below();
 			BlockState statebelow = world.getBlockState(posbelow);
-			<#if data.plantType == "normal"><#-- emulate BushBlock plant type logic -->
+			<#if data.plantType == "normal" || data.plantType == "sapling"><#-- emulate BushBlock and SaplingBlock plant type logic -->
         	if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
         	return this.mayPlaceOn(statebelow, world, posbelow);
 			<#elseif data.plantType == "growapable"><#-- emulate SugarCaneBlock plant type logic -->
@@ -245,8 +251,9 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 				}
 			}
 		}
+		<#elseif data.plantType == "sapling">
+		super.randomTick(blockstate, world, pos, random);
 		</#if>
-
 		<#if hasProcedure(data.onTickUpdate)>
 			<@procedureCode data.onTickUpdate, {
 				"x": "pos.getX()",
@@ -279,8 +286,14 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && data.plantType != "sapling">
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
+	</#if>
+
+	<#if data.plantType == "sapling">
+	private static ResourceKey<ConfiguredFeature<?, ?>> getFeatureKey(String feature) {
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.parse(feature));
+	}
 	</#if>
 
 	<#if data.hasTileEntity>
@@ -351,9 +364,36 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 </#compress>
 <#-- @formatter:on -->
 
+<#function getPlantClass plantType>
+	<#if plantType == "normal"><#return "Flower">
+	<#elseif plantType == "growapable"><#return "SugarCane">
+	<#elseif data.plantType == "double"><#return "DoublePlant">
+	<#elseif data.plantType == "sapling"><#return "Sapling">
+	</#if>
+</#function>
+
 <#macro canPlaceOnList blockList condition>
-<#if (blockList?size > 1) && condition>(</#if>
-<#list blockList as canBePlacedOn>
-groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
-</#list><#if (blockList?size > 1) && condition>)</#if>
+	<#if (blockList?size > 1) && condition>(</#if>
+	<#list blockList as canBePlacedOn>
+	groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
+	</#list><#if (blockList?size > 1) && condition>)</#if>
+</#macro>
+
+<#macro toTreeGrower secondaryChance megaTree="" megaTree2="" tree="" tree2="" flowerTree="" flowerTree2="">
+	<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
+	new TreeGrower("${data.getModElement().getRegistryName()}", ${secondaryChance}f,
+	   	<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
+	   	<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
+	);
+	<#else>
+	new TreeGrower("${data.getModElement().getRegistryName()}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
+	</#if>
+</#macro>
+
+<#macro toOptionalTree tree="">
+	<#if tree?has_content>
+	Optional.of(getFeatureKey("${generator.map(tree, "configuredfeatures")}"))
+	<#else>
+	Optional.empty()
+	</#if>
 </#macro>
