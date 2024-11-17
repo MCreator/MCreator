@@ -265,6 +265,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
+		splitPane.addPropertyChangeListener("dividerLocation", evt -> {
+			if ((Integer) evt.getNewValue() == 0) {
+				splitPane.setBackground(Theme.current().getAltBackgroundColor());
+			} else {
+				splitPane.setBackground(Theme.current().getBackgroundColor());
+			}
+		});
+
 		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 

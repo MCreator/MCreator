@@ -128,6 +128,11 @@ public class GeneratorStats {
 				(sourceTasksJSON.contains("\"type\":\"JAVA_viatemplate") && sourceTasksJSON.contains(
 						"\"task\":\"copy_model_animations")) ? CoverageStatus.FULL : CoverageStatus.NONE);
 
+		baseCoverageInfo.put("vanilla_resources",
+				generatorConfiguration.getSpecificRoot("vanilla_resources_jar") != null ?
+						CoverageStatus.FULL :
+						CoverageStatus.NONE);
+
 		CoverageStatus texturesCoverage = CoverageStatus.NONE;
 		int supportedTextureTypes = 0;
 		for (TextureType textureType : TextureType.values()) {

@@ -45,6 +45,7 @@ package ${package}.init;
 <#if vanillaTabs?has_content>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
+</#compress>
 public class ${JavaModName}Tabs {
 
 	public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ${JavaModName}.MODID);
@@ -81,5 +82,5 @@ public class ${JavaModName}Tabs {
 	</#if>
 
 }
-
+</#compress>
 <#-- @formatter:on -->
