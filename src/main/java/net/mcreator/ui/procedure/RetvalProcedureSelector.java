@@ -126,10 +126,10 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		JComponent procwrap = PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(procedures),
 				Objects.requireNonNullElse(fixedValue, new JEmptyBox(1, 1)), 3, 3);
 
-		Border outerBorder = new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor"));
+		Border outerBorder = new FlatLineBorder(new Insets(0, 0, 0, 0), returnType.getBlocklyColor());
 
 		if (allowInlineEditor) {
-			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 4)));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(1, 2, 1, 4)));
 
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
@@ -191,7 +191,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			add("Center", PanelUtils.centerAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit)), 2, 0));
 		} else {
-			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 1)));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(1, 2, 1, 1)));
 
 			add("Center", procwrap);
 		}

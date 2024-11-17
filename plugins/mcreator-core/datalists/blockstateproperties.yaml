@@ -1,0 +1,825 @@
+- ATTACHED:
+  readable_name: ATTACHED
+  type: Logic
+  other:
+    registry_name: attached
+- BERRIES:
+  readable_name: BERRIES
+  type: Logic
+  other:
+    registry_name: berries
+- BLOOM:
+  readable_name: BLOOM
+  type: Logic
+  other:
+    registry_name: bloom
+- BOTTOM:
+  readable_name: BOTTOM
+  type: Logic
+  other:
+    registry_name: bottom
+- CAN_SUMMON:
+  readable_name: CAN_SUMMON
+  type: Logic
+  other:
+    registry_name: can_summon
+- CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_0_occupied
+- CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_1_occupied
+- CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_2_occupied
+- CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_3_occupied
+- CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_4_occupied
+- CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
+  readable_name: CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
+  type: Logic
+  other:
+    registry_name: slot_5_occupied
+- CONDITIONAL:
+  readable_name: CONDITIONAL
+  type: Logic
+  other:
+    registry_name: conditional
+- CRACKED:
+  readable_name: CRACKED
+  type: Logic
+  other:
+    registry_name: cracked
+- CRAFTING:
+  readable_name: CRAFTING
+  type: Logic
+  other:
+    registry_name: crafting
+- DISARMED:
+  readable_name: DISARMED
+  type: Logic
+  other:
+    registry_name: disarmed
+- DRAG:
+  readable_name: DRAG
+  type: Logic
+  other:
+    registry_name: drag
+- ENABLED:
+  readable_name: ENABLED
+  type: Logic
+  other:
+    registry_name: enabled
+- EXTENDED:
+  readable_name: EXTENDED
+  type: Logic
+  other:
+    registry_name: extended
+- EYE:
+  readable_name: EYE
+  type: Logic
+  other:
+    registry_name: eye
+- FALLING:
+  readable_name: FALLING
+  type: Logic
+  other:
+    registry_name: falling
+- HANGING:
+  readable_name: HANGING
+  type: Logic
+  other:
+    registry_name: hanging
+- HAS_BOOK:
+  readable_name: HAS_BOOK
+  type: Logic
+  other:
+    registry_name: has_book
+- HAS_BOTTLE_0:
+  readable_name: HAS_BOTTLE_0
+  type: Logic
+  other:
+    registry_name: has_bottle_0
+- HAS_BOTTLE_1:
+  readable_name: HAS_BOTTLE_1
+  type: Logic
+  other:
+    registry_name: has_bottle_1
+- HAS_BOTTLE_2:
+  readable_name: HAS_BOTTLE_2
+  type: Logic
+  other:
+    registry_name: has_bottle_2
+- HAS_RECORD:
+  readable_name: HAS_RECORD
+  type: Logic
+  other:
+    registry_name: has_record
+- INVERTED:
+  readable_name: INVERTED
+  type: Logic
+  other:
+    registry_name: inverted
+- IN_WALL:
+  readable_name: IN_WALL
+  type: Logic
+  other:
+    registry_name: in_wall
+- LIT:
+  readable_name: LIT
+  type: Logic
+  other:
+    registry_name: lit
+- LOCKED:
+  readable_name: LOCKED
+  type: Logic
+  other:
+    registry_name: locked
+- OCCUPIED:
+  readable_name: OCCUPIED
+  type: Logic
+  other:
+    registry_name: occupied
+- OMINOUS:
+  readable_name: OMINOUS
+  type: Logic
+  other:
+    registry_name: ominous
+- OPEN:
+  readable_name: OPEN
+  type: Logic
+  other:
+    registry_name: open
+- PERSISTENT:
+  readable_name: PERSISTENT
+  type: Logic
+  other:
+    registry_name: persistent
+- POWERED:
+  readable_name: POWERED
+  type: Logic
+  other:
+    registry_name: powered
+- SHORT:
+  readable_name: SHORT
+  type: Logic
+  other:
+    registry_name: short
+- SHRIEKING:
+  readable_name: SHRIEKING
+  type: Logic
+  other:
+    registry_name: shrieking
+- SIGNAL_FIRE:
+  readable_name: SIGNAL_FIRE
+  type: Logic
+  other:
+    registry_name: signal_fire
+- SNOWY:
+  readable_name: SNOWY
+  type: Logic
+  other:
+    registry_name: snowy
+- TRIGGERED:
+  readable_name: TRIGGERED
+  type: Logic
+  other:
+    registry_name: triggered
+- UNSTABLE:
+  readable_name: UNSTABLE
+  type: Logic
+  other:
+    registry_name: unstable
+- WATERLOGGED:
+  readable_name: WATERLOGGED
+  type: Logic
+  other:
+    registry_name: waterlogged
+- UP:
+  readable_name: UP
+  type: Logic
+  other:
+    registry_name: up
+- DOWN:
+  readable_name: DOWN
+  type: Logic
+  other:
+    registry_name: down
+- NORTH:
+  readable_name: NORTH
+  type: Logic
+  other:
+    registry_name: north
+- EAST:
+  readable_name: EAST
+  type: Logic
+  other:
+    registry_name: east
+- SOUTH:
+  readable_name: SOUTH
+  type: Logic
+  other:
+    registry_name: south
+- WEST:
+  readable_name: WEST
+  type: Logic
+  other:
+    registry_name: west
+
+- AGE_1:
+  readable_name: AGE_1
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 1
+- AGE_2:
+  readable_name: AGE_2
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 2
+- AGE_3:
+  readable_name: AGE_3
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 3
+- AGE_4:
+  readable_name: AGE_4
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 4
+- AGE_5:
+  readable_name: AGE_5
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 5
+- AGE_7:
+  readable_name: AGE_7
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 7
+- AGE_15:
+  readable_name: AGE_15
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 15
+- AGE_25:
+  readable_name: AGE_25
+  type: Integer
+  other:
+    registry_name: age
+    min: 0
+    max: 25
+- BITES:
+  readable_name: BITES
+  type: Integer
+  other:
+    registry_name: bites
+    min: 0
+    max: 6
+- CANDLES:
+  readable_name: CANDLES
+  type: Integer
+  other:
+    registry_name: candles
+    min: 1
+    max: 4
+- DELAY:
+  readable_name: DELAY
+  type: Integer
+  other:
+    registry_name: delay
+    min: 1
+    max: 4
+- DISTANCE:
+  readable_name: DISTANCE
+  type: Integer
+  other:
+    registry_name: distance
+    min: 1
+    max: 7
+- DUSTED:
+  readable_name: DUSTED
+  type: Integer
+  other:
+    registry_name: dusted
+    min: 0
+    max: 3
+- EGGS:
+  readable_name: EGGS
+  type: Integer
+  other:
+    registry_name: eggs
+    min: 1
+    max: 4
+- FLOWER_AMOUNT:
+  readable_name: FLOWER_AMOUNT
+  type: Integer
+  other:
+    registry_name: flower_amount
+    min: 1
+    max: 4
+- HATCH:
+  readable_name: HATCH
+  type: Integer
+  other:
+    registry_name: hatch
+    min: 0
+    max: 2
+- LAYERS:
+  readable_name: LAYERS
+  type: Integer
+  other:
+    registry_name: layers
+    min: 1
+    max: 8
+- LEVEL_CAULDRON:
+  readable_name: LEVEL_CAULDRON
+  type: Integer
+  other:
+    registry_name: level
+    min: 1
+    max: 3
+- LEVEL_COMPOSTER:
+  readable_name: LEVEL_COMPOSTER
+  type: Integer
+  other:
+    registry_name: level
+    min: 0
+    max: 8
+- LEVEL_FLOWING:
+  readable_name: LEVEL_FLOWING
+  type: Integer
+  other:
+    registry_name: level
+    min: 1
+    max: 8
+- LEVEL_HONEY:
+  readable_name: LEVEL_HONEY
+  type: Integer
+  other:
+    registry_name: honey_level
+    min: 0
+    max: 5
+- LEVEL:
+  readable_name: LEVEL
+  type: Integer
+  other:
+    registry_name: level
+    min: 0
+    max: 15
+- MOISTURE:
+  readable_name: MOISTURE
+  type: Integer
+  other:
+    registry_name: moisture
+    min: 0
+    max: 7
+- NOTE:
+  readable_name: NOTE
+  type: Integer
+  other:
+    registry_name: note
+    min: 0
+    max: 24
+- PICKLES:
+  readable_name: PICKLES
+  type: Integer
+  other:
+    registry_name: pickles
+    min: 1
+    max: 4
+- POWER:
+  readable_name: POWER
+  type: Integer
+  other:
+    registry_name: power
+    min: 0
+    max: 15
+- RESPAWN_ANCHOR_CHARGES:
+  readable_name: RESPAWN_ANCHOR_CHARGES
+  type: Integer
+  other:
+    registry_name: charges
+    min: 0
+    max: 4
+- ROTATION_16:
+  readable_name: ROTATION_16
+  type: Integer
+  other:
+    registry_name: rotation
+    min: 0
+    max: 15
+- STABILITY_DISTANCE:
+  readable_name: STABILITY_DISTANCE
+  type: Integer
+  other:
+    registry_name: distance
+    min: 0
+    max: 7
+- STAGE:
+  readable_name: STAGE
+  type: Integer
+  other:
+    registry_name: stage
+    min: 0
+    max: 1
+
+- FACING:
+  readable_name: FACING
+  type: Enum
+  other:
+    registry_name: facing
+    values:
+      - down
+      - up
+      - north
+      - south
+      - west
+      - east
+- FACING_HOPPER:
+  readable_name: FACING_HOPPER
+  type: Enum
+  other:
+    registry_name: facing
+    values:
+      - down
+      - north
+      - south
+      - west
+      - east
+- HORIZONTAL_FACING:
+  readable_name: HORIZONTAL_FACING
+  type: Enum
+  other:
+    registry_name: facing
+    values:
+      - north
+      - south
+      - west
+      - east
+- VERTICAL_DIRECTION:
+  readable_name: VERTICAL_DIRECTION
+  type: Enum
+  other:
+    registry_name: facing
+    values:
+      - down
+      - up
+- AXIS:
+  readable_name: AXIS
+  type: Enum
+  other:
+    registry_name: axis
+    values:
+      - x
+      - y
+      - z
+- HORIZONTAL_AXIS:
+  readable_name: HORIZONTAL_AXIS
+  type: Enum
+  other:
+    registry_name: axis
+    values:
+      - x
+      - z
+
+- ATTACH_FACE:
+  readable_name: ATTACH_FACE
+  type: Enum
+  other:
+    registry_name: face
+    values:
+      - floor
+      - wall
+      - ceiling
+- BAMBOO_LEAVES:
+  readable_name: BAMBOO_LEAVES
+  type: Enum
+  other:
+    registry_name: leaves
+    values:
+      - none
+      - small
+      - large
+- BED_PART:
+  readable_name: BED_PART
+  type: Enum
+  other:
+    registry_name: part
+    values:
+      - head
+      - foot
+- BELL_ATTACHMENT:
+  readable_name: BELL_ATTACHMENT
+  type: Enum
+  other:
+    registry_name: attachment
+    values:
+      - floor
+      - ceiling
+      - single_wall
+      - double_wall
+- CHEST_TYPE:
+  readable_name: CHEST_TYPE
+  type: Enum
+  other:
+    registry_name: type
+    values:
+      - single
+      - left
+      - right
+- DOOR_HINGE:
+  readable_name: DOOR_HINGE
+  type: Enum
+  other:
+    registry_name: hinge
+    values:
+      - left
+      - right
+- DOUBLE_BLOCK_HALF:
+  readable_name: DOUBLE_BLOCK_HALF
+  type: Enum
+  other:
+    registry_name: half
+    values:
+      - upper
+      - lower
+- DRIPSTONE_THICKNESS:
+  readable_name: DRIPSTONE_THICKNESS
+  type: Enum
+  other:
+    registry_name: thickness
+    values:
+      - tip_merge
+      - tip
+      - frustum
+      - middle
+      - base
+- HALF:
+  readable_name: HALF
+  type: Enum
+  other:
+    registry_name: half
+    values:
+      - top
+      - bottom
+- MODE_COMPARATOR:
+  readable_name: MODE_COMPARATOR
+  type: Enum
+  other:
+    registry_name: mode
+    values:
+      - compare
+      - subtract
+- NOTEBLOCK_INSTRUMENT:
+  readable_name: NOTEBLOCK_INSTRUMENT
+  type: Enum
+  other:
+    registry_name: instrument
+    values:
+      - harp
+      - basedrum
+      - snare
+      - hat
+      - bass
+      - flute
+      - bell
+      - guitar
+      - chime
+      - xylophone
+      - iron_xylophone
+      - cow_bell
+      - didgeridoo
+      - bit
+      - banjo
+      - pling
+      - zombie
+      - skeleton
+      - creeper
+      - dragon
+      - wither_skeleton
+      - piglin
+      - custom_head
+- ORIENTATION:
+  readable_name: ORIENTATION
+  type: Enum
+  other:
+    registry_name: orientation
+    values:
+      - down_east
+      - down_north
+      - down_south
+      - down_west
+      - up_east
+      - up_north
+      - up_south
+      - up_west
+      - west_up
+      - east_up
+      - north_up
+      - south_up
+- PISTON_TYPE:
+  readable_name: PISTON_TYPE
+  type: Enum
+  other:
+    registry_name: type
+    values:
+      - normal
+      - sticky
+- RAIL_SHAPE:
+  readable_name: RAIL_SHAPE
+  type: Enum
+  other:
+    registry_name: shape
+    values:
+      - north_south
+      - east_west
+      - ascending_east
+      - ascending_west
+      - ascending_north
+      - ascending_south
+      - south_east
+      - south_west
+      - north_west
+      - north_east
+- RAIL_SHAPE_STRAIGHT:
+  readable_name: RAIL_SHAPE_STRAIGHT
+  type: Enum
+  other:
+    registry_name: shape
+    values:
+      - north_south
+      - east_west
+      - ascending_east
+      - ascending_west
+      - ascending_north
+      - ascending_south
+- SCULK_SENSOR_PHASE:
+  readable_name: SCULK_SENSOR_PHASE
+  type: Enum
+  other:
+    registry_name: sculk_sensor_phase
+    values:
+      - inactive
+      - active
+      - cooldown
+- SLAB_TYPE:
+  readable_name: SLAB_TYPE
+  type: Enum
+  other:
+    registry_name: type
+    values:
+      - top
+      - bottom
+      - double
+- STAIRS_SHAPE:
+  readable_name: STAIRS_SHAPE
+  type: Enum
+  other:
+    registry_name: shape
+    values:
+      - straight
+      - inner_left
+      - inner_right
+      - outer_left
+      - outer_right
+- STRUCTUREBLOCK_MODE:
+  readable_name: STRUCTUREBLOCK_MODE
+  type: Enum
+  other:
+    registry_name: mode
+    values:
+      - save
+      - load
+      - corner
+      - data
+- TILT:
+  readable_name: TILT
+  type: Enum
+  other:
+    registry_name: tilt
+    values:
+      - none
+      - unstable
+      - partial
+      - full
+- TRIAL_SPAWNER_STATE:
+  readable_name: TRIAL_SPAWNER_STATE
+  type: Enum
+  other:
+    registry_name: trial_spawner_state
+    values:
+      - inactive
+      - waiting_for_players
+      - active
+      - waiting_for_reward_ejection
+      - ejecting_reward
+      - cooldown
+- VAULT_STATE:
+  readable_name: VAULT_STATE
+  type: Enum
+  other:
+    registry_name: vault_state
+    values:
+      - inactive
+      - active
+      - unlocking
+      - ejecting
+- NORTH_WALL:
+  readable_name: NORTH_WALL
+  type: Enum
+  other:
+    registry_name: north
+    values:
+      - none
+      - low
+      - tall
+- SOUTH_WALL:
+  readable_name: SOUTH_WALL
+  type: Enum
+  other:
+    registry_name: south
+    values:
+      - none
+      - low
+      - tall
+- WEST_WALL:
+  readable_name: WEST_WALL
+  type: Enum
+  other:
+    registry_name: west
+    values:
+      - none
+      - low
+      - tall
+- EAST_WALL:
+  readable_name: EAST_WALL
+  type: Enum
+  other:
+    registry_name: east
+    values:
+      - none
+      - low
+      - tall
+- NORTH_REDSTONE:
+  readable_name: NORTH_REDSTONE
+  type: Enum
+  other:
+    registry_name: north
+    values:
+      - up
+      - side
+      - none
+- SOUTH_REDSTONE:
+  readable_name: SOUTH_REDSTONE
+  type: Enum
+  other:
+    registry_name: south
+    values:
+      - up
+      - side
+      - none
+- WEST_REDSTONE:
+  readable_name: WEST_REDSTONE
+  type: Enum
+  other:
+    registry_name: west
+    values:
+      - up
+      - side
+      - none
+- EAST_REDSTONE:
+  readable_name: EAST_REDSTONE
+  type: Enum
+  other:
+    registry_name: east
+    values:
+      - up
+      - side
+      - none

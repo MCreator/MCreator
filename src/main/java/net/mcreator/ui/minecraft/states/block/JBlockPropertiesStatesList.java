@@ -54,6 +54,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private final JPanel propertyEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+	private final TechnicalButton addExisting = new TechnicalButton(UIRES.get("16px.add"));
 
 	private int propertyCombinations = 1;
 	private final JProgressBar propertiesCap = new JProgressBar();
@@ -73,6 +74,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		addProperty.setText(L10N.t("elementgui.block.custom_properties.add"));
 		addProperty.addActionListener(e -> createPropertiesEntry());
+		addExisting.setText(L10N.t("elementgui.block.custom_properties.add_existing"));
+		addExisting.addActionListener(e -> addPropertyFromDataList());
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
@@ -93,8 +96,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 		JPanel mainContent = new JPanel(new BorderLayout());
 		mainContent.setOpaque(false);
-		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
-				HelpUtils.helpButton(gui.withEntry("block/block_states")), new JEmptyBox(15, 5),
+		mainContent.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5), addExisting,
+				new JEmptyBox(5, 5), HelpUtils.helpButton(gui.withEntry("block/block_states")), new JEmptyBox(15, 5),
 				L10N.label("elementgui.block.custom_properties.properties_cap"), new JEmptyBox(10, 5), propertiesCap,
 				new JEmptyBox(10, 5), propertiesCapLabel));
 		mainContent.add("Center", scrollProperties);
@@ -138,6 +141,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		super.setEnabled(enabled);
 
 		addProperty.setEnabled(enabled);
+		addExisting.setEnabled(enabled);
 
 		propertiesList.forEach(e -> e.setEnabled(enabled));
 
@@ -145,7 +149,16 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void createPropertiesEntry() {
-		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showDialog(mcreator,
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showCreateDialog(mcreator,
+				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				nonUserProvidedProperties);
+		if (newEntry != null) {
+			addPropertiesEntry(newEntry);
+		}
+	}
+
+	private void addPropertyFromDataList() {
+		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showImportDialog(mcreator,
 				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
 				nonUserProvidedProperties);
 		if (newEntry != null) {
@@ -185,7 +198,8 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 					L10N.t("elementgui.block.custom_properties.error_too_many_combinations"));
 		}
 		for (JBlockPropertiesListEntry entry : propertiesList) {
-			if (nonUserProvidedProperties.get().contains(entry.getPropertyData().getName().replace("CUSTOM:", ""))) {
+			if (nonUserProvidedProperties.get()
+					.contains(BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Validator.ValidationResultType.ERROR.getColor(), 1),
 						BorderFactory.createEmptyBorder(4, 4, 4, 4)));

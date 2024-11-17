@@ -41,6 +41,11 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
+		<#list data.modifiers as modifier>
+		this.addAttributeModifier(${modifier.attribute},
+				ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "effect.${data.getModElement().getRegistryName()}_${modifier?index}"),
+				${modifier.amount}, AttributeModifier.Operation.${modifier.operation});
+		</#list>
 	}
 
 	<#if !(data.isCuredByMilk && data.isProtectedByTotem) || data.isCuredbyHoney>

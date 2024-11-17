@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,20 +17,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.tree;
+package net.mcreator.element.parts;
 
-public record FileTree<T>(FileNode<T> root) {
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.workspace.Workspace;
 
-	public void addElement(String elementValue) {
-		addElement(elementValue, null);
+import javax.annotation.Nonnull;
+
+public class AttributeEntry extends MappableElement {
+
+	private AttributeEntry() {
+		super(new NameMapper(null, "attributes"));
 	}
 
-	public void addElement(String elementValue, T object) {
-		if (elementValue.endsWith("/")) // skip folders, we add them as part of file paths
-			return;
+	public AttributeEntry(@Nonnull Workspace owner, String name) {
+		super(new NameMapper(owner, "attributes"), name);
+	}
 
-		String[] list = elementValue.split("/");
-		root.addElement(root.incrementalPath, list, object);
+	public AttributeEntry(@Nonnull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
 }

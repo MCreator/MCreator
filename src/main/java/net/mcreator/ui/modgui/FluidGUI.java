@@ -213,7 +213,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.fog_color")));
 		visualSettings.add(fogColor);
 
-		JPanel fogProcedures = new JPanel(new GridLayout(2, 1, 2, 0));
+		JPanel fogProcedures = new JPanel(new GridLayout(2, 1, 2, 2));
 		fogProcedures.setOpaque(false);
 
 		fogProcedures.add(fogStartDistance);

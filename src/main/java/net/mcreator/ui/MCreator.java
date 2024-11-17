@@ -240,7 +240,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				g.fillRect(getWidth() - 15, getHeight() - 18, 3, 3);
 			}
 		};
-		consoleTab.setHasRightBorder(false);
 		consoleTab.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
@@ -265,6 +264,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
+
+		splitPane.addPropertyChangeListener("dividerLocation", evt -> {
+			if ((Integer) evt.getNewValue() == 0) {
+				splitPane.setBackground(Theme.current().getAltBackgroundColor());
+			} else {
+				splitPane.setBackground(Theme.current().getBackgroundColor());
+			}
+		});
 
 		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
