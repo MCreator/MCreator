@@ -6,12 +6,7 @@
 		BlockEntity _ent = level.getBlockEntity(pos);
 		if (_ent != null)
 			_ent.getCapability(ForgeCapabilities.FLUID_HANDLER, ${input$direction}).ifPresent(capability ->
-				<#if field$fluid.startsWith("CUSTOM:")>
-				<#assign fluid = field$fluid?replace("CUSTOM:", "")>
-				_retval.set(capability.fill(new FluidStack(${JavaModName}Fluids.${fluid?ends_with(":Flowing")?then("FLOWING_","")}${generator.getRegistryNameForModElement(fluid?remove_ending(":Flowing"))?upper_case}.get(), amount), IFluidHandler.FluidAction.SIMULATE))
-				<#else>
-				_retval.set(capability.fill(new FluidStack(Fluids.${generator.map(field$fluid, "fluids")}, amount), IFluidHandler.FluidAction.SIMULATE))
-				</#if>
+				_retval.set(capability.fill(new FluidStack(${generator.map(field$fluid, "fluids")}, amount), IFluidHandler.FluidAction.SIMULATE))
 		);
 		return _retval.get();
 	}
