@@ -179,6 +179,8 @@ public class ElementOrderEditor {
 			moveLeft.setEnabled(index > customStart.get());
 			moveRight.setEnabled(index >= customStart.get() && index < tabs.getTabCount() - 1);
 		});
+		if (tabs.getTabCount() > 0)
+			tabs.setSelectedIndex(0);
 
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(720, 320));
