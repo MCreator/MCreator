@@ -82,14 +82,14 @@ loadScripts(document, 'script');</script>
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">net.mcreator.io.tree</a></div>
-<h1 title="Class FileNode" class="title">Class FileNode</h1>
+<h1 title="Class FileNode" class="title">Class FileNode&lt;T&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">net.mcreator.io.tree.FileNode</div>
+<div class="inheritance">net.mcreator.io.tree.FileNode&lt;T&gt;</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FileNode</span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FileNode&lt;T&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </section>
 <section class="summary">
@@ -103,7 +103,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&gt;</code></div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&lt;<a href="FileNode.html" title="type parameter in FileNode">T</a>&gt;&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#childs" class="member-name-link">childs</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -112,9 +112,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#incrementalPath" class="member-name-link">incrementalPath</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&lt;<a href="FileNode.html" title="type parameter in FileNode">T</a>&gt;&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#leafs" class="member-name-link">leafs</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>final <a href="FileNode.html" title="type parameter in FileNode">T</a></code></div>
+<div class="col-second even-row-color"><code><a href="#object" class="member-name-link">object</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -129,6 +132,10 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">FileNode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nodeValue,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;incrementalPath)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,T)" class="member-name-link">FileNode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nodeValue,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;incrementalPath,
+ <a href="FileNode.html" title="type parameter in FileNode">T</a>&nbsp;object)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -143,12 +150,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addElement(java.lang.String,java.lang.String%5B%5D)" class="member-name-link">addElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentPath,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;list)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FileNode.html" title="type parameter in FileNode">T</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getObject()" class="member-name-link">getObject</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isLeaf()" class="member-name-link">isLeaf</a>()</code></div>
@@ -179,13 +185,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="childs">
 <h3>childs</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&gt;</span>&nbsp;<span class="element-name">childs</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&lt;<a href="FileNode.html" title="type parameter in FileNode">T</a>&gt;&gt;</span>&nbsp;<span class="element-name">childs</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="leafs">
 <h3>leafs</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&gt;</span>&nbsp;<span class="element-name">leafs</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="FileNode.html" title="class in net.mcreator.io.tree">FileNode</a>&lt;<a href="FileNode.html" title="type parameter in FileNode">T</a>&gt;&gt;</span>&nbsp;<span class="element-name">leafs</span></div>
 </section>
 </li>
 <li>
@@ -198,6 +204,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="incrementalPath">
 <h3>incrementalPath</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">incrementalPath</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="object">
+<h3>object</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="FileNode.html" title="type parameter in FileNode">T</a></span>&nbsp;<span class="element-name">object</span></div>
 </section>
 </li>
 </ul>
@@ -215,6 +228,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;incrementalPath)</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,T)">
+<h3 id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.Object)">FileNode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileNode</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nodeValue,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;incrementalPath,
+ @Nullable
+ <a href="FileNode.html" title="type parameter in FileNode">T</a>&nbsp;object)</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -223,6 +245,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getObject()">
+<h3>getObject</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FileNode.html" title="type parameter in FileNode">T</a></span>&nbsp;<span class="element-name">getObject</span>()</div>
+</section>
+</li>
 <li>
 <section class="detail" id="isLeaf()">
 <h3>isLeaf</h3>
@@ -233,13 +262,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="splitPath()">
 <h3>splitPath</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">splitPath</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="addElement(java.lang.String,java.lang.String[])">
-<h3>addElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentPath,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;list)</span></div>
 </section>
 </li>
 <li>

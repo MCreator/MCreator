@@ -133,8 +133,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getNumberOfPropertyCombinations(java.util.List)" class="member-name-link">getNumberOfPropertyCombinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a>&lt;?&gt;&gt;&nbsp;properties)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a><wbr>&lt;?&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromDataListEntry(net.mcreator.minecraft.DataListEntry)" class="member-name-link">fromDataListEntry</a><wbr>(<a href="../../../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&nbsp;property)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getNumberOfPropertyCombinations(java.util.List)" class="member-name-link">getNumberOfPropertyCombinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a>&lt;?&gt;&gt;&nbsp;properties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#propertyRegistryName(net.mcreator.ui.minecraft.states.PropertyData)" class="member-name-link">propertyRegistryName</a><wbr>(<a href="../PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a>&lt;?&gt;&nbsp;data)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -193,6 +199,21 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNumberOfPropertyCombinations(java.util.List)">
 <h3>getNumberOfPropertyCombinations</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getNumberOfPropertyCombinations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a>&lt;?&gt;&gt;&nbsp;properties)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="propertyRegistryName(net.mcreator.ui.minecraft.states.PropertyData)">
+<h3>propertyRegistryName</h3>
+<div class="member-signature"><span class="annotations">@Nonnull
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">propertyRegistryName</span><wbr><span class="parameters">(<a href="../PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a>&lt;?&gt;&nbsp;data)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="fromDataListEntry(net.mcreator.minecraft.DataListEntry)">
+<h3>fromDataListEntry</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;</span>&nbsp;<span class="element-name">fromDataListEntry</span><wbr><span class="parameters">(@Nonnull
+ <a href="../../../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&nbsp;property)</span></div>
 </section>
 </li>
 </ul>

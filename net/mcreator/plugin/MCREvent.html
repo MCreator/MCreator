@@ -116,7 +116,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -125,6 +125,16 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T extends <a href="MCREvent.html" title="class in net.mcreator.plugin">MCREvent</a>&gt;<br>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#event(T)" class="member-name-link">event</a><wbr>(T&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTimeout()" class="member-name-link">getTimeout</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the timeout for the event.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSynchronous()" class="member-name-link">isSynchronous</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns if the event is synchronous.</div>
+</div>
 </div>
 </div>
 </div>
@@ -160,6 +170,33 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="event(T)">
 <h3 id="event(net.mcreator.plugin.MCREvent)">event</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="MCREvent.html" title="class in net.mcreator.plugin">MCREvent</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">event</span><wbr><span class="parameters">(T&nbsp;event)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isSynchronous()">
+<h3>isSynchronous</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isSynchronous</span>()</div>
+<div class="block">Returns if the event is synchronous. MCreator waits for all synchronous events to finish before continuing with execution.
+ If the event is meant to change value that is needed after the MCREvent.event() call, it should be synchronous.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>if the event is synchronous</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTimeout()">
+<h3>getTimeout</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getTimeout</span>()</div>
+<div class="block">Returns the timeout for the event. Ignored if the event is not synchronous.
+ If the event is synchronous and the timeout is set to a value greater than 0, MCreator will wait for the event to finish for the given amount of time.
+ If the event does not finish in the given time, MCreator will continue with execution and the event execution will be cancelled. A warning will be logged.
+ <p>
+ This is used to prevent a plugin from blocking MCreator execution indefinitely.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the timeout for the event in milliseconds</dd>
+</dl>
 </section>
 </li>
 </ul>

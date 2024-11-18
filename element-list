@@ -99,6 +99,7 @@ net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.laf.renderer.elementlist.special
 net.mcreator.ui.laf.themes
 net.mcreator.ui.minecraft
+net.mcreator.ui.minecraft.attributemodifiers
 net.mcreator.ui.minecraft.boundingboxes
 net.mcreator.ui.minecraft.entityanimations
 net.mcreator.ui.minecraft.jigsaw
