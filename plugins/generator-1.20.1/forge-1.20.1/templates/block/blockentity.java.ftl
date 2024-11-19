@@ -176,7 +176,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
         <#if data.fluidRestrictions?has_content>
 		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
 			<#list data.fluidRestrictions as fluidRestriction>
-				if (fs.getFluid() == Fluids.${fluidRestriction}) return true;
+				if (fs.getFluid() == ${fluidRestriction}) return true;
             </#list>
 
 			return false;
