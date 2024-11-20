@@ -731,6 +731,10 @@ public class TestWorkspaceDataProvider {
 			dimension.imitateOverworldBehaviour = _true;
 			dimension.isDark = _true;
 			dimension.doesWaterVaporize = !_true;
+			dimension.hasFixedTime = !_true;
+			dimension.fixedTimeValue = _true ? 0 : 1523;
+			dimension.coordinateScale = 4.23;
+			dimension.infiniburnTag = "minecraft:infiniburn_end";
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 8;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),

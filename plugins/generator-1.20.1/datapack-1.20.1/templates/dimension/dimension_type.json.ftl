@@ -7,9 +7,12 @@
   "has_raids": ${data.imitateOverworldBehaviour},
   "has_skylight": ${data.hasSkyLight},
   "has_ceiling": ${data.worldGenType == "Nether like gen"},
-  "coordinate_scale": 1,
+  "coordinate_scale": ${data.coordinateScale},
   "ambient_light": <#if data.isDark>0<#else>0.5</#if>,
-  "infiniburn": "#minecraft:infiniburn_overworld",
+  "infiniburn": "#${data.infiniburnTag}",
+  <#if data.hasFixedTime>
+  "fixed_time": ${data.fixedTimeValue},
+  </#if>
   <#if data.worldGenType == "Normal world gen">
   "min_y": -64,
   "height": 384,
