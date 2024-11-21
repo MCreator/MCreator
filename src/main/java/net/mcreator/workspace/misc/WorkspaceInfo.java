@@ -135,7 +135,7 @@ import java.util.*;
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).toList();
 
-		Map<String, List<MItemBlock>> tabMap = new LinkedHashMap<>(), customTabs = new LinkedHashMap<>();
+		Map<String, List<MItemBlock>> tabMap = new LinkedHashMap<>(), customTabsWithoutOrder = new LinkedHashMap<>();
 
 		// Can't use parallelStream here because getCreativeTabItems
 		// call MCItem.Custom::new that calls getBlockIconBasedOnName which calls
@@ -150,7 +150,7 @@ import java.util.*;
 
 						// If tab does not have custom order, add items to the end of appropriate list
 						if (workspace.getCreativeTabsOrder().get(tab) == null) {
-							(tab.startsWith("CUSTOM:") ? customTabs : tabMap).computeIfAbsent(tab,
+							(tab.startsWith("CUSTOM:") ? customTabsWithoutOrder : tabMap).computeIfAbsent(tab,
 									key -> new ArrayList<>()).addAll(tabItems);
 						}
 					}
@@ -186,7 +186,9 @@ import java.util.*;
 				tabMap.put(entry.getKey(), entry.getValue());
 			}
 		}
-		tabMap.putAll(customTabs);
+
+		// Add tabs without order to the end of the main list
+		tabMap.putAll(customTabsWithoutOrder);
 
 		return tabMap;
 	}
