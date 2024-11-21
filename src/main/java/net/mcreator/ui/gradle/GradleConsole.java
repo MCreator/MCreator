@@ -24,6 +24,7 @@ import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
+import net.mcreator.java.debug.JMXMonitorClient;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -114,6 +115,8 @@ public class GradleConsole extends JPanel {
 
 	// Gradle console may be associated with a debug client
 	@Nullable private JVMDebugClient debugClient = null;
+
+	@Nullable private JMXMonitorClient jmxMonitorClient = null;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -368,6 +371,8 @@ public class GradleConsole extends JPanel {
 				this.debugClient = null;
 			}
 
+			this.jmxMonitorClient = new JMXMonitorClient(environment, 1000);
+
 			task.setEnvironmentVariables(environment);
 		}
 
@@ -608,6 +613,11 @@ public class GradleConsole extends JPanel {
 					ref.getDebugPanel().stopDebug();
 					debugClient.stop();
 					debugClient = null;
+				}
+
+				if (jmxMonitorClient != null) {
+					jmxMonitorClient.stop();
+					jmxMonitorClient = null;
 				}
 
 				if (taskSpecificListener != null)
