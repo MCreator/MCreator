@@ -26,11 +26,9 @@ import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
-import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.CancellationToken;
-import org.gradle.tooling.ConfigurableLauncher;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -66,7 +64,8 @@ public class JVMDebugClient {
 			try {
 				virtualMachine = connectToRemoteVM(vmDebugPort);
 				if (virtualMachine != null) {
-					LOG.info("Connected to remote VM: {}host: localhost, port: {}", virtualMachine.name(), vmDebugPort);
+					LOG.info("Connected to remote VM: {} host: localhost, port: {}", virtualMachine.name(),
+							vmDebugPort);
 
 					virtualMachine.eventRequestManager().createClassPrepareRequest().enable();
 
