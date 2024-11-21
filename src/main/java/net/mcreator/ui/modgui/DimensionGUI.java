@@ -184,8 +184,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.imitate_overworld_behaviour")));
 		dimensionTypeSettings.add(imitateOverworldBehaviour);
 
-		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_respawn"),
-				L10N.label("elementgui.dimension.can_player_respawn")));
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_use_respawn_anchor"),
+				L10N.label("elementgui.dimension.can_use_respawn_anchor")));
 		dimensionTypeSettings.add(canRespawnHere);
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_skylight"),
