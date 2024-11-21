@@ -19,7 +19,7 @@
 package net.mcreator.ui.laf.renderer;
 
 import com.google.gson.JsonElement;
-import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -40,7 +40,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		setBorderSelectionColor(Theme.current().getBackgroundColor());
 		setBackground(Theme.current().getBackgroundColor());
 		setBackgroundSelectionColor(Theme.current().getInterfaceAccentColor());
-		ComponentUtils.deriveFont(this, 11);
+		setFont(Theme.current().getConsoleFont().deriveFont((float) PreferencesManager.PREFERENCES.ide.fontSize.get()));
 	}
 
 	@Override

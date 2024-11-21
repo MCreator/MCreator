@@ -45,6 +45,7 @@ package ${package}.init;
 <#if vanillaTabs?has_content>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
+<#compress>
 public class ${JavaModName}Tabs {
 
 	public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ${JavaModName}.MODID);
@@ -62,8 +63,10 @@ public class ${JavaModName}Tabs {
 							</#list>
 						})
 						<#if tab.showSearch>.withSearchBar()</#if>
+						<#if prevTab??>.withTabsBefore(${prevTab}.getId())</#if>
 						.build()
 				);
+		<#assign prevTab = tab.getModElement().getRegistryNameUpper()>
 	</#list>
 
 	<#if vanillaTabs?has_content>
@@ -81,5 +84,5 @@ public class ${JavaModName}Tabs {
 	</#if>
 
 }
-
+</#compress>
 <#-- @formatter:on -->

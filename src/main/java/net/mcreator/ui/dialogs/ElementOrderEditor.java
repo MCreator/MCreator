@@ -146,6 +146,7 @@ public class ElementOrderEditor {
 		}
 
 		// Add ME items of tabs with overridden elements order
+		int shiftedCustom = customStart.get();
 		for (Map.Entry<String, ArrayList<String>> tab : mcreator.getWorkspace().getCreativeTabsOrder().entrySet()) {
 			if (!tabEditors.containsKey(tab.getKey()))
 				continue;
@@ -156,12 +157,13 @@ public class ElementOrderEditor {
 					tabEditors.get(tab.getKey()).addElement(me);
 			}
 
-			// Move custom tabs with modified ordering to the end to reflect order of tabs themselves
+			// Move custom tabs with modified ordering before other custom ones to reflect order of tabs themselves
 			int index = tabs.indexOfTab(tab.getKey());
-			if (index >= customStart.get()) {
+			if (index >= shiftedCustom) {
 				Component tc = tabs.getTabComponentAt(index);
-				tabs.addTab(tabs.getTitleAt(index), tabs.getIconAt(index), tabs.getComponentAt(index));
-				tabs.setTabComponentAt(tabs.getTabCount() - 1, tc);
+				tabs.insertTab(tabs.getTitleAt(index), tabs.getIconAt(index), tabs.getComponentAt(index), null,
+						shiftedCustom);
+				tabs.setTabComponentAt(shiftedCustom++, tc);
 			}
 		}
 
@@ -177,6 +179,8 @@ public class ElementOrderEditor {
 			moveLeft.setEnabled(index > customStart.get());
 			moveRight.setEnabled(index >= customStart.get() && index < tabs.getTabCount() - 1);
 		});
+		if (tabs.getTabCount() > 0)
+			tabs.setSelectedIndex(0);
 
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(720, 320));
