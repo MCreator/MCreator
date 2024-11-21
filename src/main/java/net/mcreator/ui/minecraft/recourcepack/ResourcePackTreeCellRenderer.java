@@ -41,10 +41,10 @@ public class ResourcePackTreeCellRenderer extends DefaultTreeCellRenderer {
 			a.setText(fileNode.data);
 			a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			if (!sel && fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
-				if (entry.overrideExists()) {
-					a.setForeground(Theme.current().getForegroundColor());
-				} else {
+				if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
 					a.setForeground(Theme.current().getAltForegroundColor());
+				} else {
+					a.setForeground(Theme.current().getForegroundColor());
 				}
 			}
 		}

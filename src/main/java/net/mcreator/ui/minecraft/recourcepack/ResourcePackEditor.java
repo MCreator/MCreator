@@ -86,7 +86,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				if (node instanceof FilterTreeNode filterTreeNode) {
 					if (filterTreeNode.getUserObject() instanceof FileNode<?> fileNode) {
 						if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
-							return entry.overrideExists();
+							return entry.type() != ResourcePackStructure.EntryType.VANILLA;
 						}
 					}
 				}

@@ -25,16 +25,22 @@ import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class ResourcePackStructure {
 
-	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh");
+	private static final List<String> extensions = List.of("json" , "mcmeta" , "png" , "ogg" , "fsh" , "vsh");
 
 	public static List<Entry> getResourcePackStructure(Workspace workspace) {
 		List<Entry> entries = new ArrayList<>();
+
+		// Load vanilla resources
 		String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
 		if (vanillaResourcesJar != null) {
 			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
@@ -51,7 +57,8 @@ public class ResourcePackStructure {
 									FilenameUtils.getExtension(path))) {
 								path = path.substring("assets/minecraft/".length());
 								File override = new File(workspace.getGenerator().getResourceRoot(), path);
-								entries.add(new Entry(path, override, override.isFile()));
+								entries.add(new Entry(path, override,
+										override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
 							}
 						}
 						// Get input stream of the entry
@@ -60,9 +67,27 @@ public class ResourcePackStructure {
 				}
 			}
 		}
+
+		// Load custom resources
+		File customResources = new File(workspace.getGenerator().getResourceRoot(), "assets/minecraft");
+		try (Stream<Path> paths = Files.walk(customResources.toPath())) {
+			paths.forEach(path -> {
+				File file = path.toFile();
+				if (file.isFile() && extensions.contains(FilenameUtils.getExtension(file.getName()))) {
+					String relativePath = customResources.toPath().relativize(path).toString();
+					entries.add(new Entry(relativePath, file, EntryType.CUSTOM));
+				}
+			});
+		} catch (IOException ignored) {
+		}
+
 		return entries;
 	}
 
-	public record Entry(String path, File override, boolean overrideExists) {}
+	public record Entry(String path, File override, EntryType type) {}
+
+	public enum EntryType {
+		VANILLA, VANILLA_OVERRIDE, CUSTOM
+	}
 
 }
