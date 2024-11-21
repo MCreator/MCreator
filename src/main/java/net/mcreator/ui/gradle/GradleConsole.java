@@ -59,9 +59,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -360,13 +358,17 @@ public class GradleConsole extends JPanel {
 		} else {
 			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
 
+			Map<String, String> environment = GradleUtils.getEnvironment(java_home);
+
 			if (optionalDebugClient != null) {
 				this.debugClient = optionalDebugClient;
-				this.debugClient.init(task, cancellationSource.token());
+				this.debugClient.init(environment, cancellationSource.token());
 				ref.getDebugPanel().startDebug(this.debugClient);
 			} else {
 				this.debugClient = null;
 			}
+
+			task.setEnvironmentVariables(environment);
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
