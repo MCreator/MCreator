@@ -54,6 +54,10 @@ import java.util.*;
 	public boolean hasFog;
 	public boolean isDark;
 	public boolean doesWaterVaporize;
+	public boolean hasFixedTime;
+	public int fixedTimeValue;
+	public double coordinateScale;
+	public String infiniburnTag;
 
 	public String sleepResult;
 	public boolean hasSkyLight;
@@ -87,6 +91,8 @@ import java.util.*;
 		super(element);
 
 		// DEFAULT VALUES
+		this.coordinateScale = 1;
+		this.infiniburnTag = "minecraft:infiniburn_overworld";
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.creativeTabs = new ArrayList<>();

@@ -51,14 +51,16 @@ public class JVMDebugClient {
 
 	private final List<JVMEventListener> eventListeners = new ArrayList<>();
 
-	public void init(ConfigurableLauncher<?> task, CancellationToken token) {
+	public void init(Map<String, String> environment, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
 
-		Map<String, String> environment = GradleUtils.getEnvironment(GradleUtils.getJavaHome());
-		environment.put("JAVA_TOOL_OPTIONS",
-				"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
-		task.setEnvironmentVariables(environment);
+		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
+		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
+			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS") + " " + javaToolOptions);
+		} else {
+			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
+		}
 
 		new Thread(() -> {
 			try {
