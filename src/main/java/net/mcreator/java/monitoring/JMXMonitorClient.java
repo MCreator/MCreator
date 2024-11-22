@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.java.debug;
+package net.mcreator.java.monitoring;
 
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
-import java.lang.management.ThreadMXBean;
 import java.net.ServerSocket;
 import java.util.Map;
 

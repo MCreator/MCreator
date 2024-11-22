@@ -24,7 +24,7 @@ import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
-import net.mcreator.java.debug.JMXMonitorClient;
+import net.mcreator.java.monitoring.JMXMonitorClient;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
