@@ -1,6 +1,38 @@
-tasks.register('build', Zip.class) {
+plugins {
+    id 'eclipse'
+    id 'net.neoforged.moddev' version '1.0.21'
+}
+
+version = '1.0'
+base.archivesName = "modid"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    neoFormVersion = "1.21.1-20240808.144430"
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+}
+
+tasks.register('generateExport', Zip.class) {
     from 'src/main'
     archiveFileName = 'export.zip'
     destinationDirectory = file('build/export/')
 }
 
+tasks.register('syncDataPack', Copy) {
+    from("build/export/export.zip")
+    into("run/globaldatapacks/")
+    dependsOn 'generateExport'
+}
+
+tasks.named('build') {
+    dependsOn 'syncDataPack'
+}
