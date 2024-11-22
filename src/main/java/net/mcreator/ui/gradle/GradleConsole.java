@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.gradle;
 
+import com.sun.management.OperatingSystemMXBean;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
@@ -26,6 +27,7 @@ import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.java.monitoring.JMXMonitorClient;
 import net.mcreator.java.debug.JVMDebugClient;
+import net.mcreator.java.monitoring.JMXMonitorEventListener;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
@@ -47,6 +49,7 @@ import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUt
 import org.gradle.tooling.*;
 
 import javax.annotation.Nullable;
+import javax.management.remote.JMXConnector;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.SimpleAttributeSet;
@@ -59,6 +62,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.management.MemoryMXBean;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
@@ -373,7 +377,19 @@ public class GradleConsole extends JPanel {
 
 			// We make sure only one monitor runs for server run where client is run too
 			if (this.jmxMonitorClient == null || !this.jmxMonitorClient.isActive()) {
-				this.jmxMonitorClient = new JMXMonitorClient(environment, 1000);
+				this.jmxMonitorClient = new JMXMonitorClient(environment, new JMXMonitorEventListener() {
+					@Override public void connected(JMXConnector jmxConnector) {
+
+					}
+
+					@Override public void disconnected() {
+
+					}
+
+					@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {
+
+					}
+				}, 1000);
 			}
 
 			task.setEnvironmentVariables(environment);

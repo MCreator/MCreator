@@ -31,7 +31,6 @@ import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
 import java.net.ServerSocket;
 import java.util.Map;
 
@@ -43,7 +42,11 @@ public class JMXMonitorClient {
 
 	@Nullable private JMXConnector jmxConnector;
 
-	public JMXMonitorClient(Map<String, String> environment, int refreshInterval) {
+	private final JMXMonitorEventListener listener;
+
+	public JMXMonitorClient(Map<String, String> environment, JMXMonitorEventListener listener, int refreshInterval) {
+		this.listener = listener;
+
 		int jmxPort = findAvailablePort();
 
 		//@formatter:off
@@ -73,11 +76,9 @@ public class JMXMonitorClient {
 					OperatingSystemMXBean osMXBean = ManagementFactory.newPlatformMXBeanProxy(mbeanServerConnection,
 							ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
 
+					listener.connected(jmxConnector);
 					while (isActive()) {
-						MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
-						System.out.println("Heap Memory Used: " + (heapMemoryUsage.getUsed() / 1024 / 1024) + " MB");
-						System.out.println("Heap Memory Max: " + (heapMemoryUsage.getMax() / 1024 / 1024) + " MB");
-						System.err.println("CPU usage: " + osMXBean.getProcessCpuLoad() * 100 + "%");
+						listener.dataRefresh(memoryMXBean, osMXBean);
 
 						try {
 							//noinspection BusyWait
@@ -133,6 +134,10 @@ public class JMXMonitorClient {
 	}
 
 	public void stop() {
+		if (!this.stopRequested) {
+			listener.disconnected();
+		}
+
 		this.stopRequested = true;
 
 		if (jmxConnector != null) {
