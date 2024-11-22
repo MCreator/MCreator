@@ -1,0 +1,1 @@
+Napíše zprávu do chatu, když hráč dokončí advancement.
