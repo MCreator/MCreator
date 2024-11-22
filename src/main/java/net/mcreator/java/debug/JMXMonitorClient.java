@@ -55,13 +55,13 @@ public class JMXMonitorClient {
 				" -Dcom.sun.management.jmxremote.authenticate=false";
 		//@formatter:on
 		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
-			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS") + " " + javaToolOptions);
+			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS").trim() + " " + javaToolOptions);
 		} else {
 			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
 		}
 
 		new Thread(() -> {
-			jmxConnector = connectToJMX(jmxPort, 10000);
+			jmxConnector = connectToJMX(jmxPort, 15000);
 			if (jmxConnector != null) {
 				LOG.info("Connected to JMX. Host: localhost, port: {}", jmxPort);
 
@@ -87,7 +87,7 @@ public class JMXMonitorClient {
 						}
 					}
 				} catch (Exception e) {
-					LOG.warn("Error while running JMX debug client", e);
+					// Silently handle exceptions because we just stop monitoring in this case
 				} finally {
 					LOG.info("Disconnecting from JMX");
 					stop();

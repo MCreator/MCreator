@@ -60,8 +60,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -371,7 +371,10 @@ public class GradleConsole extends JPanel {
 				this.debugClient = null;
 			}
 
-			this.jmxMonitorClient = new JMXMonitorClient(environment, 1000);
+			// We make sure only one monitor runs for server run where client is run too
+			if (this.jmxMonitorClient == null || !this.jmxMonitorClient.isActive()) {
+				this.jmxMonitorClient = new JMXMonitorClient(environment, 1000);
+			}
 
 			task.setEnvironmentVariables(environment);
 		}
