@@ -176,6 +176,14 @@ import java.util.stream.Collectors;
 		return !useLootTableForDrops;
 	}
 
+	public boolean isWaterloggable() {
+		// Disable waterlogging for sapling with mega trees due to ghost water blocks when the tree fails to grow
+		if ("sapling".equals(plantType) && (megaTrees[0] != null || megaTrees[1] != null)) {
+			return false;
+		}
+		return isWaterloggable;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)

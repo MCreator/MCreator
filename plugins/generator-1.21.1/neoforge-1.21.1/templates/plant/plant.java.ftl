@@ -46,14 +46,14 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.isBonemealable && data.plantType != "sapling">
 	<#assign interfaces += ["BonemealableBlock"]>
 </#if>
-<#if data.isWaterloggable>
+<#if data.isWaterloggable()>
 	<#assign interfaces += ["SimpleWaterloggedBlock"]>
 </#if>
 public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if interfaces?size gt 0>
 		implements ${interfaces?join(",")}
 	</#if>{
-	<#if data.isWaterloggable>
+	<#if data.isWaterloggable()>
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
 	<#if data.plantType == "sapling">
@@ -120,12 +120,12 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		.offsetType(BlockBehaviour.OffsetType.${data.offsetType}).pushReaction(PushReaction.DESTROY)
 		);
 
-		<#if data.isWaterloggable>
+		<#if data.isWaterloggable()>
 		<@initStateProperties/>
 		</#if>
 	}
 
-	<#if data.isWaterloggable>
+	<#if data.isWaterloggable()>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(WATERLOGGED);
@@ -268,18 +268,18 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if data.plantType == "growapable" || hasProcedure(data.onTickUpdate)>
 	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
 		<#if data.plantType == "growapable">
-		<#if data.isWaterloggable>
+		<#if data.isWaterloggable()>
 		boolean flag = world.getBlockState(pos.above()).is(Blocks.WATER);
 		</#if>
-		if (world.isEmptyBlock(pos.above()) <#if data.isWaterloggable>|| flag</#if>) {
+		if (world.isEmptyBlock(pos.above()) <#if data.isWaterloggable()>|| flag</#if>) {
 			int i = 1;
 			for(;world.getBlockState(pos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
 				if (CommonHooks.canCropGrow(world, pos, blockstate, true)) {
 					if (j == 15) {
-						world.setBlockAndUpdate(pos.above(), defaultBlockState()<#if data.isWaterloggable>.setValue(WATERLOGGED, flag)</#if>);
-						CommonHooks.fireCropGrowPost(world, pos.above(), defaultBlockState()<#if data.isWaterloggable>.setValue(WATERLOGGED, flag)</#if>);
+						world.setBlockAndUpdate(pos.above(), defaultBlockState()<#if data.isWaterloggable()>.setValue(WATERLOGGED, flag)</#if>);
+						CommonHooks.fireCropGrowPost(world, pos.above(), defaultBlockState()<#if data.isWaterloggable()>.setValue(WATERLOGGED, flag)</#if>);
 						world.setBlock(pos, blockstate.setValue(AGE, 0), 4);
 					} else {
 						world.setBlock(pos, blockstate.setValue(AGE, j + 1), 4);
@@ -443,7 +443,7 @@ this.registerDefaultState(this.stateDefinition.any()
 <#elseif data.plantType == "sapling">
 .setValue(STAGE, 0)
 </#if>
-<#if data.isWaterloggable>
+<#if data.isWaterloggable()>
 .setValue(WATERLOGGED, false)
 </#if>
 );

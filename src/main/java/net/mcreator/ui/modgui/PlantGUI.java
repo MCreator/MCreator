@@ -424,6 +424,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			trees[i].setPreferredSize(new Dimension(280, -1));
 			flowerTrees[i].setPreferredSize(new Dimension(280, -1));
 			megaTrees[i].setPreferredSize(new Dimension(280, -1));
+			megaTrees[i].addEntrySelectedListener(e -> updateWaterloggableSetting());
 		}
 
 		saplingCard.add("Center", PanelUtils.pullElementUp(saplingProperties));
@@ -783,6 +784,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom.setVisible(false);
 
 		refreshBonemealProperties(); // disable settings if sapling is selected
+		updateWaterloggableSetting(); // disable waterlogging if sapling with mega trees is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
 			texture.setVisible(true);
@@ -838,6 +840,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
 		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
 		onBonemealSuccess.setEnabled(isBonemealable.isSelected() && !isSapling);
+	}
+
+	private void updateWaterloggableSetting() {
+		isWaterloggable.setEnabled(
+				!"sapling".equals(plantType.getSelectedItem()) || (megaTrees[0].isEmpty() && megaTrees[1].isEmpty()));
 	}
 
 	private AggregatedValidationResult validateSaplingTrees() {
