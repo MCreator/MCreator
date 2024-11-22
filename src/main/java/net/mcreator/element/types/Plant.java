@@ -79,6 +79,7 @@ import java.util.stream.Collectors;
 	public int luminance;
 	public boolean unbreakable;
 	public boolean isSolid;
+	public boolean isWaterloggable;
 
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
