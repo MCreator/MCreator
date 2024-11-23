@@ -234,8 +234,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		dimensionEffects.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		isDark.setOpaque(false);
 		hasSkyLight.setOpaque(false);
@@ -408,8 +408,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
-		infiniburnTag.setValidator(new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"),
-				infiniburnTag, true));
+		infiniburnTag.setValidator(
+				new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"), infiniburnTag,
+						true));
 		infiniburnTag.enableRealtimeValidation();
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,

@@ -172,8 +172,7 @@ import java.util.*;
 					List<MCItem> tabItems = tabElement.getCreativeTabItems();
 					if (tabItems != null && !tabItems.isEmpty()) {
 						tabMap.computeIfAbsent(tab, key -> new ArrayList<>())
-								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-										.toList());
+								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
 					}
 				}
 			}

@@ -164,8 +164,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane3.setOpaque(false);
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/modifiers"), L10N.label("elementgui.potioneffect.modifiers")),
-				modifierList);
+				HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/modifiers"),
+						L10N.label("elementgui.potioneffect.modifiers")), modifierList);
 		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		modifiersPage.add("Center", modifiersEditor);

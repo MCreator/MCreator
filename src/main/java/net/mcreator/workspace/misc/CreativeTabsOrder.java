@@ -27,8 +27,8 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreativeTabsOrder extends LinkedHashMap<String, ArrayList<String>> {
