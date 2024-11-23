@@ -26,11 +26,9 @@ import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
-import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.CancellationToken;
-import org.gradle.tooling.ConfigurableLauncher;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -51,20 +49,23 @@ public class JVMDebugClient {
 
 	private final List<JVMEventListener> eventListeners = new ArrayList<>();
 
-	public void init(ConfigurableLauncher<?> task, CancellationToken token) {
+	public void init(Map<String, String> environment, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
 
-		Map<String, String> environment = GradleUtils.getEnvironment(GradleUtils.getJavaHome());
-		environment.put("JAVA_TOOL_OPTIONS",
-				"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
-		task.setEnvironmentVariables(environment);
+		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
+		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
+			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS").trim() + " " + javaToolOptions);
+		} else {
+			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
+		}
 
 		new Thread(() -> {
 			try {
 				virtualMachine = connectToRemoteVM(vmDebugPort);
 				if (virtualMachine != null) {
-					LOG.info("Connected to remote VM: {}host: localhost, port: {}", virtualMachine.name(), vmDebugPort);
+					LOG.info("Connected to remote VM: {} host: localhost, port: {}", virtualMachine.name(),
+							vmDebugPort);
 
 					virtualMachine.eventRequestManager().createClassPrepareRequest().enable();
 
