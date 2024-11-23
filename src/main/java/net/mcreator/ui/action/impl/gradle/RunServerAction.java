@@ -38,7 +38,7 @@ public class RunServerAction extends GradleAction {
 	public RunServerAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.run_server_and_client"), null);
 		setActionListener(evt -> {
-			if (ServerUtil.isEULAAccepted(actionRegistry.getMCreator().getWorkspace())) {
+			if (!ServerUtil.isEULAAccepted(actionRegistry.getMCreator().getWorkspace())) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
 
