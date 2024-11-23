@@ -467,7 +467,10 @@ public class GradleConsole extends JPanel {
 				if (line.startsWith("Cannot inject duplicate file mcp/client/Start.class"))
 					return;
 
-				append(line, COLOR_STDERR);
+				if (line.startsWith("Picked up JAVA_TOOL_OPTIONS: "))
+					append(line, COLOR_UNIMPORTANT);
+				else
+					append(line, COLOR_STDERR);
 			}
 		})));
 
