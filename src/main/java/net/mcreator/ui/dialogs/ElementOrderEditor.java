@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -27,6 +28,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
@@ -35,15 +37,27 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ElementOrderEditor {
 
 	public static void openElementOrderEditor(MCreator mcreator) {
 		JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
 
+		JButton moveLeft = L10N.button("dialog.element_order.move_tab.left");
+		moveLeft.setIcon(UIRES.get("previous"));
+		JButton moveRight = L10N.button("dialog.element_order.move_tab.right");
+		moveRight.setIcon(UIRES.get("next"));
+		JPanel tabMovers = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		tabMovers.add(moveLeft);
+		tabMovers.add(moveRight);
+
 		JPanel top = new JPanel(new BorderLayout());
 
 		top.add("West", L10N.label("dialog.element_order.instructions"));
+		top.add("South", tabMovers);
 
 		mainPanel.add("North", top);
 
@@ -51,7 +65,31 @@ public class ElementOrderEditor {
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabs.putClientProperty(FlatClientProperties.TABBED_PANE_TABS_POPUP_POLICY,
+				FlatClientProperties.TABBED_PANE_POLICY_NEVER);
 
+		AtomicBoolean tabsMoved = new AtomicBoolean();
+		moveLeft.addActionListener(e -> {
+			int index = tabs.getSelectedIndex();
+			Component tc = tabs.getTabComponentAt(index);
+			tabs.insertTab(tabs.getTitleAt(index), tabs.getIconAt(index), tabs.getComponentAt(index),
+					tabs.getToolTipTextAt(index), index - 1);
+			tabs.setTabComponentAt(index - 1, tc);
+			tabs.setSelectedIndex(index - 1);
+			tabsMoved.set(true);
+		});
+		moveRight.addActionListener(e -> {
+			int index = tabs.getSelectedIndex();
+			Component tc = tabs.getTabComponentAt(index);
+			tabs.insertTab(tabs.getTitleAt(index), tabs.getIconAt(index), tabs.getComponentAt(index),
+					tabs.getToolTipTextAt(index), index + 2);
+			tabs.setTabComponentAt(index + 1, tc);
+			tabs.setSelectedIndex(index + 1);
+			tabsMoved.set(true);
+		});
+
+		// Custom tabs are appended after all the other ones
+		AtomicInteger customStart = new AtomicInteger();
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
 			if (generatableElement instanceof ITabContainedElement element) {
@@ -75,18 +113,26 @@ public class ElementOrderEditor {
 
 						list.setCellRenderer(new SmallIconModListRender(false));
 
+						// Pick the right index depending on tab type (custom or vanilla)
+						int nextIndex = tab.getUnmappedValue().startsWith("CUSTOM:") ?
+								tabs.getTabCount() :
+								customStart.getAndIncrement();
+						tabs.insertTab(tab.getUnmappedValue(), null, new JScrollPane(list), null, nextIndex);
+
 						Optional<DataListEntry> tabEntry = tab.getDataListEntry();
 						if (tabEntry.isPresent()) {
-							tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+							tabs.setTabComponentAt(nextIndex, new JLabel(tabEntry.get().getReadableName(),
+									new ImageIcon(ImageUtils.resizeAA(
 											BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
-									new JScrollPane(list));
+									JLabel.LEADING));
 						} else {
 							Icon tabIcon = null;
 							if (tab.getUnmappedValue().startsWith("CUSTOM:"))
 								tabIcon = new ImageIcon(ImageUtils.resizeAA(
 										MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), tab.getUnmappedValue())
 												.getImage(), 24));
-							tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+							tabs.setTabComponentAt(nextIndex,
+									new JLabel(tab.getUnmappedValue(), tabIcon, JLabel.LEADING));
 						}
 
 						tabEditors.put(tab.getUnmappedValue(), model);
@@ -100,14 +146,24 @@ public class ElementOrderEditor {
 		}
 
 		// Add ME items of tabs with overridden elements order
-		for (String tab : tabEditors.keySet()) {
-			ArrayList<String> tabOrder = mcreator.getWorkspace().getCreativeTabsOrder().get(tab);
-			if (tabOrder != null) {
-				for (String element : tabOrder) {
-					ModElement me = mcreator.getWorkspace().getModElementByName(element);
-					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
-						tabEditors.get(tab).addElement(me);
-				}
+		int shiftedCustom = customStart.get();
+		for (Map.Entry<String, ArrayList<String>> tab : mcreator.getWorkspace().getCreativeTabsOrder().entrySet()) {
+			if (!tabEditors.containsKey(tab.getKey()))
+				continue;
+
+			for (String element : tab.getValue()) {
+				ModElement me = mcreator.getWorkspace().getModElementByName(element);
+				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
+					tabEditors.get(tab.getKey()).addElement(me);
+			}
+
+			// Move custom tabs with modified ordering before other custom ones to reflect order of tabs themselves
+			int index = tabs.indexOfTab(tab.getKey());
+			if (index >= shiftedCustom) {
+				Component tc = tabs.getTabComponentAt(index);
+				tabs.insertTab(tabs.getTitleAt(index), tabs.getIconAt(index), tabs.getComponentAt(index), null,
+						shiftedCustom);
+				tabs.setTabComponentAt(shiftedCustom++, tc);
 			}
 		}
 
@@ -115,6 +171,16 @@ public class ElementOrderEditor {
 		for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
 			originalOrder.put(entry.getKey(), Collections.list(entry.getValue().elements()).toArray(new ModElement[0]));
 		}
+
+		moveLeft.setEnabled(false);
+		moveRight.setEnabled(customStart.get() == 0); // If custom tabs start later, initial tab is vanilla/external
+		tabs.addChangeListener(e -> {
+			int index = tabs.getSelectedIndex();
+			moveLeft.setEnabled(index > customStart.get());
+			moveRight.setEnabled(index >= customStart.get() && index < tabs.getTabCount() - 1);
+		});
+		if (tabs.getTabCount() > 0)
+			tabs.setSelectedIndex(0);
 
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(720, 320));
@@ -130,6 +196,17 @@ public class ElementOrderEditor {
 							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
 			}
+
+			// If order of tabs themselves was changed, re-add them in the same order as in dialog
+			if (tabsMoved.get()) {
+				for (int i = customStart.get(); i < tabs.getTabCount(); i++) {
+					String title = tabs.getTitleAt(i);
+					List<ModElement> newOrder = Collections.list(tabEditors.get(title).elements());
+					mcreator.getWorkspace().getCreativeTabsOrder().remove(title);
+					mcreator.getWorkspace().getCreativeTabsOrder().setElementOrderInTab(title, newOrder);
+				}
+			}
+
 			mcreator.getWorkspace().markDirty();
 		}
 	}

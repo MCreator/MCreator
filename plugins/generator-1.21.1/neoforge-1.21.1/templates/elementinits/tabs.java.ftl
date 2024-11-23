@@ -63,8 +63,10 @@ public class ${JavaModName}Tabs {
 							</#list>
 						})
 						<#if tab.showSearch>.withSearchBar()</#if>
+						<#if prevTab??>.withTabsBefore(${prevTab}.getId())</#if>
 						.build()
 				);
+		<#assign prevTab = tab.getModElement().getRegistryNameUpper()>
 	</#list>
 
 	<#if vanillaTabs?has_content>
