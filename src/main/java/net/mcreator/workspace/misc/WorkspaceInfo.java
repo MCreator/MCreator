@@ -180,6 +180,7 @@ import java.util.*;
 		}
 
 		// Last, we move custom tabs to the end of the main list
+		// Is not strictly necessary, but this makes sure order of keys in tabMap is consistent with the editor UI
 		for (Map.Entry<String, List<MItemBlock>> entry : tabMap.entrySet().stream().toList()) {
 			if (entry.getKey().startsWith("CUSTOM:")) {
 				tabMap.remove(entry.getKey());
