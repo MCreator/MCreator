@@ -89,24 +89,22 @@ public class NameMapper {
 			String suffix = null;
 			if (mcreator_map_template instanceof String) {
 				toMapTemplate = (String) mcreator_map_template;
-			}
-			else if (mcreator_map_template instanceof List<?> mappingValuesList
+			} else if (mcreator_map_template instanceof List<?> mappingValuesList
 					&& mappingTable < mappingValuesList.size()) {
 				toMapTemplate = (String) mappingValuesList.get(mappingTable);
-			}
-			else if (mcreator_map_template instanceof Map<?, ?> mappingValuesMap) {
+			} else if (mcreator_map_template instanceof Map<?, ?> mappingValuesMap) {
 				String suffixSeparator = ".";
 				if (mapping.get("_suffix_separator") != null) {
 					suffixSeparator = (String) mapping.get("_suffix_separator");
 				}
-				String suffixLookup = StringUtils.substringAfterLast(
-						origName.replace(mcreator_prefix, ""), suffixSeparator);
+				String suffixLookup = StringUtils.substringAfterLast(origName.replace(mcreator_prefix, ""),
+						suffixSeparator);
 				if (suffixLookup.isEmpty()) { // If the entry has no suffix, use the "_default" mapping entry
 					suffixLookup = "_default";
 				} else {
 					suffix = suffixSeparator + suffixLookup;
 				}
-				toMapTemplate = switch(mappingValuesMap.get(suffixLookup)) {
+				toMapTemplate = switch (mappingValuesMap.get(suffixLookup)) {
 					case String stringEntry -> stringEntry;
 					case List<?> listEntry when mappingTable < listEntry.size() -> (String) listEntry.get(mappingTable);
 					default -> null;
