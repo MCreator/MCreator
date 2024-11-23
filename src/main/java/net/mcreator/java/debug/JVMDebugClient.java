@@ -55,7 +55,7 @@ public class JVMDebugClient {
 
 		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
 		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
-			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS") + " " + javaToolOptions);
+			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS").trim() + " " + javaToolOptions);
 		} else {
 			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
 		}
