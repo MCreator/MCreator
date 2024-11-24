@@ -436,15 +436,15 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 <#macro initStateProperties>
 this.registerDefaultState(this.stateDefinition.any()
-<#if data.plantType == "double">
-.setValue(HALF, DoubleBlockHalf.LOWER)
-<#elseif data.plantType == "growapable">
-.setValue(AGE, 0)
-<#elseif data.plantType == "sapling">
-.setValue(STAGE, 0)
-</#if>
-<#if data.isWaterloggable()>
-.setValue(WATERLOGGED, false)
-</#if>
+	<#if data.plantType == "double">
+	.setValue(HALF, DoubleBlockHalf.LOWER)
+	<#elseif data.plantType == "growapable">
+	.setValue(AGE, 0)
+	<#elseif data.plantType == "sapling">
+	.setValue(STAGE, 0)
+	</#if>
+	<#if data.isWaterloggable()>
+	.setValue(WATERLOGGED, false)
+	</#if>
 );
 </#macro>
