@@ -843,8 +843,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updateWaterloggableSetting() {
-		isWaterloggable.setEnabled(
-				!"sapling".equals(plantType.getSelectedItem()) || (megaTrees[0].isEmpty() && megaTrees[1].isEmpty()));
+		boolean canBeWaterlogged =
+				!"sapling".equals(plantType.getSelectedItem()) || (megaTrees[0].isEmpty() && megaTrees[1].isEmpty());
+		isWaterloggable.setEnabled(canBeWaterlogged);
+		if (!canBeWaterlogged)
+			isWaterloggable.setSelected(false);
 	}
 
 	private AggregatedValidationResult validateSaplingTrees() {
