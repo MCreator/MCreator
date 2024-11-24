@@ -66,6 +66,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.lang.management.MemoryMXBean;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -174,7 +177,8 @@ public class GradleConsole extends JPanel {
 
 		mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		mainScrollPane.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
+		mainScrollPane.setBorder(
+				BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		mainScrollPane.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		setLayout(new BorderLayout());
@@ -202,10 +206,22 @@ public class GradleConsole extends JPanel {
 		cpuChart.setMaxPoints(3 * 60);
 		cpuChart.setYLimits(0, 100);
 		cpuChart.addLinkedChart(memoryChart);
+		cpuChart.setLabelFormatter(d -> {
+			String xLabel = Instant.ofEpochMilli((long) d[0]).atZone(ZoneId.systemDefault())
+					.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			String yLabel = String.format("%d%%", (int) Math.round(d[1]));
+			return new String[] { xLabel, yLabel };
+		});
 
 		memoryChart.setChartColor(COLOR_LOGLEVEL_TRACE);
 		memoryChart.setMaxPoints(3 * 60);
 		memoryChart.addLinkedChart(cpuChart);
+		memoryChart.setLabelFormatter(d -> {
+			String xLabel = Instant.ofEpochMilli((long) d[0]).atZone(ZoneId.systemDefault())
+					.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			String yLabel = String.format("%d MB", (int) Math.round(d[1]));
+			return new String[] { xLabel, yLabel };
+		});
 
 		JPanel monitorPanel = new JPanel();
 		monitorPanel.setOpaque(false);
@@ -411,36 +427,38 @@ public class GradleConsole extends JPanel {
 			}
 
 			// We make sure only one monitor runs for server run where client is run too
-			if (this.jmxMonitorClient == null || !this.jmxMonitorClient.isActive()) {
-				this.jmxMonitorClient = new JMXMonitorClient(environment, new JMXMonitorEventListener() {
+			if (PreferencesManager.PREFERENCES.gradle.enablePerformanceMonitor.get()) {
+				if (this.jmxMonitorClient == null || !this.jmxMonitorClient.isActive()) {
+					this.jmxMonitorClient = new JMXMonitorClient(environment, new JMXMonitorEventListener() {
 
-					private boolean initial = true;
+						private boolean initial = true;
 
-					@Override public void connected(JMXConnector jmxConnector) {
-						cpuChart.clear();
-						memoryChart.clear();
-						mainScrollPane.getColumnHeader().setVisible(true);
-					}
-
-					@Override public void disconnected() {
-						mainScrollPane.getColumnHeader().setVisible(false);
-					}
-
-					@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {
-						if (initial) {
-							memoryChart.setYLimits(0,
-									(double) memoryMXBean.getHeapMemoryUsage().getMax() / 1024 / 1024);
-
-							initial = false;
+						@Override public void connected(JMXConnector jmxConnector) {
+							cpuChart.clear();
+							memoryChart.clear();
+							mainScrollPane.getColumnHeader().setVisible(true);
 						}
 
-						long timestamp = System.currentTimeMillis();
+						@Override public void disconnected() {
+							mainScrollPane.getColumnHeader().setVisible(false);
+						}
 
-						cpuChart.addPoint(timestamp, osMXBean.getProcessCpuLoad() * 100);
-						memoryChart.addPoint(timestamp, (double) (memoryMXBean.getHeapMemoryUsage().getUsed()
-								+ memoryMXBean.getNonHeapMemoryUsage().getUsed()) / 1024 / 1024);
-					}
-				}, 1000);
+						@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {
+							if (initial) {
+								memoryChart.setYLimits(0,
+										(double) memoryMXBean.getHeapMemoryUsage().getMax() / 1024 / 1024);
+
+								initial = false;
+							}
+
+							long timestamp = System.currentTimeMillis();
+
+							cpuChart.addPoint(timestamp, osMXBean.getProcessCpuLoad() * 100);
+							memoryChart.addPoint(timestamp, (double) (memoryMXBean.getHeapMemoryUsage().getUsed()
+									+ memoryMXBean.getNonHeapMemoryUsage().getUsed()) / 1024 / 1024);
+						}
+					}, 1000);
+				}
 			}
 
 			task.setEnvironmentVariables(environment);

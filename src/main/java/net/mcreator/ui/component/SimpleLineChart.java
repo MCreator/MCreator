@@ -29,15 +29,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
 public class SimpleLineChart extends JPanel {
 
-	private final LinkedList<Double> xPoints;
-	private final LinkedList<Double> yPoints;
+	private final List<Double> xPoints;
+	private final List<Double> yPoints;
 
 	private int maxPoints = -1;
 
@@ -53,8 +55,8 @@ public class SimpleLineChart extends JPanel {
 	private Function<double[], String[]> labelFormatter = null;
 
 	public SimpleLineChart() {
-		this.xPoints = new LinkedList<>();
-		this.yPoints = new LinkedList<>();
+		this.xPoints = Collections.synchronizedList(new LinkedList<>());
+		this.yPoints = Collections.synchronizedList(new LinkedList<>());
 		setOpaque(false);
 
 		addMouseListener(new MouseAdapter() {
@@ -93,14 +95,15 @@ public class SimpleLineChart extends JPanel {
 	}
 
 	public void addPoint(double x, double y) {
-		if (maxPoints > 0 && xPoints.size() >= maxPoints) {
-			xPoints.removeFirst();
-			yPoints.removeFirst();
+		synchronized (this) {
+			if (maxPoints > 0 && xPoints.size() >= maxPoints) {
+				xPoints.removeFirst();
+				yPoints.removeFirst();
+			}
+
+			xPoints.add(x);
+			yPoints.add(y);
 		}
-
-		xPoints.add(x);
-		yPoints.add(y);
-
 		repaint();
 	}
 
@@ -173,16 +176,30 @@ public class SimpleLineChart extends JPanel {
 			int mousePointIdx = mouseToChartPoint(mousePoint, xMin, xMax, width);
 			if (mousePointIdx >= 0 && mousePointIdx < points.size()) {
 				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.drawLine(points.get(mousePointIdx).x, 0, points.get(mousePointIdx).x, height);
+				g2d.drawLine(points.get(mousePointIdx).x, 15, points.get(mousePointIdx).x, height);
 				g2d.setColor(ColorUtils.applyAlpha(chartColor, 200));
-				g2d.fillOval(points.get(mousePointIdx).x - 2, points.get(mousePointIdx).y - 2, 4, 4);
+				g2d.fillOval(points.get(mousePointIdx).x - 3, points.get(mousePointIdx).y - 3, 6, 6);
 				g2d.setColor(ColorUtils.applyAlpha(chartColor, 255));
-				g2d.drawOval(points.get(mousePointIdx).x - 2, points.get(mousePointIdx).y - 2, 4, 4);
+				g2d.drawOval(points.get(mousePointIdx).x - 3, points.get(mousePointIdx).y - 3, 6, 6);
 
 				if (labelFormatter != null) {
+					g2d.setColor(Theme.current().getForegroundColor());
+
 					String[] pointLabels = labelFormatter.apply(
 							new double[] { xPoints.get(mousePointIdx), yPoints.get(mousePointIdx) });
-					// TODO: draw labels
+					String xLabel = pointLabels[0];
+					String yLabel = pointLabels[1];
+
+					Rectangle2D xLabelBounds = g2d.getFontMetrics().getStringBounds(xLabel, g2d);
+					g2d.drawString(xLabel, points.get(mousePointIdx).x - (int) xLabelBounds.getWidth() / 2, 10);
+
+					int yLabelOffset = -8;
+					if (points.get(mousePointIdx).y < height * 0.45) {
+						yLabelOffset = 8;
+					}
+					Rectangle2D yLabelBounds = g2d.getFontMetrics().getStringBounds(yLabel, g2d);
+					g2d.drawString(yLabel, points.get(mousePointIdx).x - (int) yLabelBounds.getWidth() / 2,
+							points.get(mousePointIdx).y + yLabelOffset);
 				}
 			}
 		}

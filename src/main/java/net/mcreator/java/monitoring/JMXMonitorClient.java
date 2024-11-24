@@ -63,7 +63,7 @@ public class JMXMonitorClient {
 		}
 
 		new Thread(() -> {
-			jmxConnector = connectToJMX(jmxPort, 30000);
+			jmxConnector = connectToJMX(jmxPort, 60000);
 			if (jmxConnector != null) {
 				LOG.info("Connected to JMX. Host: localhost, port: {}", jmxPort);
 
