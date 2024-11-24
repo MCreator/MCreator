@@ -194,11 +194,11 @@ public class GradleConsole extends JPanel {
 
 		searchBar.setBorder(BorderFactory.createEmptyBorder(6, 10, 5, 0));
 
-		JLabel cpuLabel = new JLabel("CPU");
+		JLabel cpuLabel = L10N.label("performance_monitor.cpu");
 		cpuLabel.setForeground(Theme.current().getAltForegroundColor());
 		cpuLabel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
-		JLabel memoryLabel = new JLabel("Heap Memory");
+		JLabel memoryLabel = L10N.label("performance_monitor.memory");
 		memoryLabel.setForeground(Theme.current().getAltForegroundColor());
 		memoryLabel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
