@@ -180,7 +180,8 @@ public class DesktopUtils {
 			if (selectOnly) {
 				if (SystemUtils.IS_OS_WINDOWS) { // https://bugs.openjdk.java.net/browse/JDK-8233994
 					LOG.info("Trying to execute: explorer /select, \"{}\"", file.getPath());
-					return Runtime.getRuntime().exec(new String[] { "explorer", "/select,", "\"" + file.getPath() + "\"" }) != null;
+					return Runtime.getRuntime()
+							.exec(new String[] { "explorer", "/select,", "\"" + file.getPath() + "\"" }) != null;
 				} else {
 					LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with {}", file.toString());
 					Desktop.getDesktop().browseFileDirectory(file);

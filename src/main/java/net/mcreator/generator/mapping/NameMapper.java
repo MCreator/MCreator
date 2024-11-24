@@ -22,6 +22,7 @@ import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -85,14 +86,34 @@ public class NameMapper {
 		if (mcreator_prefix != null && origName.startsWith(mcreator_prefix)) {
 			Object mcreator_map_template = mapping.get("_mcreator_map_template");
 			String toMapTemplate = null;
-			if (mcreator_map_template instanceof String)
+			String suffix = null;
+			if (mcreator_map_template instanceof String) {
 				toMapTemplate = (String) mcreator_map_template;
-			else if (mcreator_map_template instanceof List<?> mappingValuesList
-					&& mappingTable < mappingValuesList.size())
+			} else if (mcreator_map_template instanceof List<?> mappingValuesList
+					&& mappingTable < mappingValuesList.size()) {
 				toMapTemplate = (String) mappingValuesList.get(mappingTable);
+			} else if (mcreator_map_template instanceof Map<?, ?> mappingValuesMap) {
+				String suffixSeparator = ".";
+				if (mapping.get("_suffix_separator") != null) {
+					suffixSeparator = (String) mapping.get("_suffix_separator");
+				}
+				String suffixLookup = StringUtils.substringAfterLast(origName.replace(mcreator_prefix, ""),
+						suffixSeparator);
+				if (suffixLookup.isEmpty()) { // If the entry has no suffix, use the "_default" mapping entry
+					suffixLookup = "_default";
+				} else {
+					suffix = suffixSeparator + suffixLookup;
+				}
+				toMapTemplate = switch (mappingValuesMap.get(suffixLookup)) {
+					case String stringEntry -> stringEntry;
+					case List<?> listEntry when mappingTable < listEntry.size() -> (String) listEntry.get(mappingTable);
+					default -> null;
+				};
+			}
 
 			if (toMapTemplate != null) {
-				origName = origName.replace(mcreator_prefix, "");
+				// Remove prefix and possibly the suffix
+				origName = StringUtils.removeEnd(origName.replace(mcreator_prefix, ""), suffix);
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));

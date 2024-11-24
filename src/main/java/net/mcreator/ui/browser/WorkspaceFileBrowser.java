@@ -381,7 +381,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
 						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
-							FileTree<Void> libsrc = new FileTree<>(new FileNode<>(libName, sourceFile.getAbsolutePath() + ":%:"));
+							FileTree<Void> libsrc = new FileTree<>(
+									new FileNode<>(libName, sourceFile.getAbsolutePath() + ":%:"));
 							ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
 							JFileTree.addFileNodeToFilterTreeNode(extDeps, libsrc.root());
 							continue;

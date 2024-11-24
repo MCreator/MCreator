@@ -184,8 +184,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.imitate_overworld_behaviour")));
 		dimensionTypeSettings.add(imitateOverworldBehaviour);
 
-		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_respawn"),
-				L10N.label("elementgui.dimension.can_player_respawn")));
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_use_respawn_anchor"),
+				L10N.label("elementgui.dimension.can_use_respawn_anchor")));
 		dimensionTypeSettings.add(canRespawnHere);
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_skylight"),
@@ -234,8 +234,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		dimensionEffects.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		isDark.setOpaque(false);
 		hasSkyLight.setOpaque(false);
@@ -250,11 +250,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		}
 
 		airColor.setOpaque(false);
-		airColor.setPreferredSize(new java.awt.Dimension(300, 42));
+		airColor.setPreferredSize(new java.awt.Dimension(240, 42));
 		hasFog.setOpaque(false);
 
 		propertiesPage.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(dimensionTypeSettings, dimensionEffects)));
+				PanelUtils.westAndEastElement(dimensionTypeSettings, PanelUtils.pullElementUp(dimensionEffects))));
 		propertiesPage.setOpaque(false);
 
 		// Dimension generation settings
@@ -408,8 +408,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
-		infiniburnTag.setValidator(new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"),
-				infiniburnTag, true));
+		infiniburnTag.setValidator(
+				new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"), infiniburnTag,
+						true));
 		infiniburnTag.enableRealtimeValidation();
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
@@ -433,8 +434,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		page2group.addValidationElement(mainFillerBlock);
 		page2group.addValidationElement(fluidBlock);
 
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPage);
 		addPage(L10N.t("elementgui.dimension.page_generation"), generationPage);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPage);
 		addPage(L10N.t("elementgui.dimension.page_portal"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
@@ -483,9 +484,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
-			return new AggregatedValidationResult(infiniburnTag);
-		else if (page == 1)
 			return new AggregatedValidationResult(page2group);
+		else if (page == 1)
+			return new AggregatedValidationResult(infiniburnTag);
 		else if (page == 2)
 			return new AggregatedValidationResult(page1group);
 		return new AggregatedValidationResult.PASS();
