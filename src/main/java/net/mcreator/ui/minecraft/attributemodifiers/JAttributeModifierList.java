@@ -33,7 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifierEntry, PotionEffect.AttributeModifierEntry> {
+public class JAttributeModifierList
+		extends JSimpleEntriesList<JAttributeModifierEntry, PotionEffect.AttributeModifierEntry> {
 
 	public JAttributeModifierList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
@@ -46,7 +47,9 @@ public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifie
 				Theme.current().getForegroundColor()));
 	}
 
-	@Override protected JAttributeModifierEntry newEntry(JPanel parent, List<JAttributeModifierEntry> entryList, boolean userAction) {
+	@Override
+	protected JAttributeModifierEntry newEntry(JPanel parent, List<JAttributeModifierEntry> entryList,
+			boolean userAction) {
 		return new JAttributeModifierEntry(mcreator, gui, parent, entryList);
 	}
 

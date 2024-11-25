@@ -43,7 +43,8 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
 
-	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JAttributeModifierEntry> entryList) {
+	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JAttributeModifierEntry> entryList) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
 

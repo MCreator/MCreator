@@ -59,8 +59,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -467,7 +467,10 @@ public class GradleConsole extends JPanel {
 				if (line.startsWith("Cannot inject duplicate file mcp/client/Start.class"))
 					return;
 
-				append(line, COLOR_STDERR);
+				if (line.startsWith("Picked up JAVA_TOOL_OPTIONS: "))
+					append(line, COLOR_UNIMPORTANT);
+				else
+					append(line, COLOR_STDERR);
 			}
 		})));
 

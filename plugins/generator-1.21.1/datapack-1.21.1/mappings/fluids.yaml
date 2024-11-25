@@ -1,16 +1,24 @@
 _default:
-  - WATER
+  - Fluids.WATER
   - minecraft:water
 _mcreator_prefix: "CUSTOM:"
+_suffix_separator: ":"
+_mcreator_map_template:
+  _default:
+    - "@JavaModNameFluids.@REGISTRYNAME.get()"
+    - "@modid:@registryname"
+  Flowing:
+    - "@JavaModNameFluids.FLOWING_@REGISTRYNAME.get()"
+    - "@modid:flowing_@registryname"
 FLOWING_WATER:
-  - FLOWING_WATER
+  - Fluids.FLOWING_WATER
   - minecraft:flowing_water
 WATER:
-  - WATER
+  - Fluids.WATER
   - minecraft:water
 FLOWING_LAVA:
-  - FLOWING_LAVA
+  - Fluids.FLOWING_LAVA
   - minecraft:flowing_lava
 LAVA:
-  - LAVA
+  - Fluids.LAVA
   - minecraft:lava

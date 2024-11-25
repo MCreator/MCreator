@@ -1,10 +1,6 @@
 {
   "state": {
-    <#if field$state?starts_with("CUSTOM:")>
-      "Name": "${modid}:${field$state?ends_with(":Flowing")?then("flowing_","")}${generator.getRegistryNameFromFullName(field$state)}"
-    <#else>
-      "Name": "${generator.map(field$state, "fluids", 1)}"
-    </#if>
+    "Name": "${generator.map(field$state, "fluids", 1)}"
   },
   "valid_blocks": ${input$valid_blocks}
   <#if field$requires_block_below == "FALSE">,

@@ -921,7 +921,7 @@ public class TestWorkspaceDataProvider {
 			for (int i = 0; i < 2; i++) {
 				plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
-				if(_true) {
+				if (_true) {
 					plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
 				}
@@ -1209,8 +1209,8 @@ public class TestWorkspaceDataProvider {
 					PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
-					entry.operation = getRandomItem(random, new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE",
-							"ADD_MULTIPLIED_TOTAL" });
+					entry.operation = getRandomItem(random,
+							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
 					modifiers.add(entry);
 				}
 			}
@@ -1290,8 +1290,10 @@ public class TestWorkspaceDataProvider {
 						usedRegistryNames.add(registryName);
 					}
 
-					if (BlockStatePropertyUtils.getNumberOfPropertyCombinations(block.customProperties.stream()
-							.map(e -> (PropertyData<?>) e.property()).collect(Collectors.toList())) > BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS) {
+					if (BlockStatePropertyUtils.getNumberOfPropertyCombinations(
+							block.customProperties.stream().map(e -> (PropertyData<?>) e.property())
+									.collect(Collectors.toList()))
+							> BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS) {
 						break;
 					}
 				}
