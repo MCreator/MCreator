@@ -1,0 +1,30 @@
+plugins {
+    id 'eclipse'
+    id 'net.neoforged.moddev' version '1.0.21'
+}
+
+version = '1.0'
+base.archivesName = "packloader"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = "21.1.65"
+
+    runs {
+        client {
+            client()
+            gameDirectory = project.file('../run')
+        }
+    }
+
+    mods {
+        packloader {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
