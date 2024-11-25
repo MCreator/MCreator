@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Mod(PackloaderMod.MODID) public class PackloaderMod {
+@Mod(PackLoaderMod.MODID) public class PackLoaderMod {
 
 	public static final String MODID = "packloader";
 
-	public PackloaderMod(IEventBus modEventBus) {
+	public PackLoaderMod(IEventBus modEventBus) {
 		modEventBus.addListener(this::addPacks);
 	}
 
