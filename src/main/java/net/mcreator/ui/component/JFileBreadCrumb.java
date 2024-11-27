@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.UIRES;
@@ -58,6 +59,9 @@ public class JFileBreadCrumb extends JPanel {
 		File origfile = file;
 
 		removeAll();
+
+		if (!FileIO.isFileSomewhereInDirectory(file, root) || file.equals(root))
+			return;
 
 		List<File> path = new ArrayList<>();
 		int depth = 0;
