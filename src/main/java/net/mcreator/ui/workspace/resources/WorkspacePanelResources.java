@@ -53,7 +53,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		this.resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator().getWorkspace(), workspacePanel);
+		this.resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(), workspacePanel);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)

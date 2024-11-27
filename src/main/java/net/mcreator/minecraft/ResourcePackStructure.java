@@ -70,7 +70,7 @@ public class ResourcePackStructure {
 					String path = entry.getName();
 					if (path.startsWith(RESOURCES_FOLDER) && extensions.contains(FilenameUtils.getExtension(path))) {
 						path = path.substring(RESOURCES_FOLDER.length());
-						File override = new File(workspace.getGenerator().getResourceRoot(), path);
+						File override = new File(getResourcePackRoot(workspace), path);
 						entries.add(new Entry(path, override,
 								override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
 					}
@@ -95,7 +95,13 @@ public class ResourcePackStructure {
 		return entries;
 	}
 
-	public record Entry(String path, File override, EntryType type) {}
+	public record Entry(String path, File override, EntryType type) {
+
+		public String fullPath() {
+			return RESOURCES_FOLDER + path;
+		}
+
+	}
 
 	public enum EntryType {
 		VANILLA, VANILLA_OVERRIDE, CUSTOM

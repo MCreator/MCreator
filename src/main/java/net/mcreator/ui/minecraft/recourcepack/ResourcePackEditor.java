@@ -24,9 +24,12 @@ import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.JFileTree;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -53,17 +56,19 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final JFileTree tree;
 
+	private final JFileBreadCrumb breadCrumb;
+
 	private final FilteredTreeModel model = new FilteredTreeModel(new FilterTreeNode(""));
 
 	private final JPanel previewPanel = new JPanel();
 
 	@Nullable private File resourcePackArchive = null;
 
-	public ResourcePackEditor(Workspace workspace, @Nullable WorkspacePanel workspacePanel) {
+	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
-		this.workspace = workspace;
+		this.workspace = mcreator.getWorkspace();
 		this.workspacePanel = workspacePanel;
 
 		this.tree = new JFileTree(model);
@@ -80,8 +85,11 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		add("West", jsp);
 
+		File root = ResourcePackStructure.getResourcePackRoot(workspace);
+		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
+
 		previewPanel.setOpaque(false);
-		add("Center", previewPanel);
+		add("Center", PanelUtils.northAndCenterElement(breadCrumb, previewPanel));
 
 		tree.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -98,9 +106,11 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private void setSelectedEntry(ResourcePackStructure.Entry entry) {
 		previewPanel.removeAll();
 
+		breadCrumb.reloadPath(entry.override());
+
 		String extension = FilenameUtils.getExtension(entry.path());
 		if (extension.equalsIgnoreCase("png")) {
-			Image image = ZipIO.readFileInZip(resourcePackArchive, entry.path(), (file, zipEntry) -> {
+			Image image = ZipIO.readFileInZip(resourcePackArchive, entry.fullPath(), (file, zipEntry) -> {
 				try {
 					return ImageIO.read(file.getInputStream(zipEntry));
 				} catch (IOException e) {
@@ -117,7 +127,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			}
 			showImageEntry(originalIcon, overrideIcon);
 		} else {
-			String original = ZipIO.readCodeInZip(resourcePackArchive, entry.path());
+			String original = ZipIO.readCodeInZip(resourcePackArchive, entry.fullPath());
 			String override = null;
 			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
 				override = FileIO.readFileToString(entry.override());
@@ -127,11 +137,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	}
 
 	private void showImageEntry(@Nullable ImageIcon original, @Nullable ImageIcon override) {
+		if (original != null) {
 
+		}
 	}
 
 	private void showTextEntry(@Nullable String original, @Nullable String override) {
-
+		if (original != null) {
+			System.err.println(original);
+		}
 	}
 
 	private boolean initial = true;
