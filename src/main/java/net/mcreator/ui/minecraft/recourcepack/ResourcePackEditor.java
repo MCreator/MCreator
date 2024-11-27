@@ -19,8 +19,10 @@
 
 package net.mcreator.ui.minecraft.recourcepack;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
@@ -30,11 +32,17 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
@@ -47,6 +55,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final FilteredTreeModel model = new FilteredTreeModel(new FilterTreeNode(""));
 
+	private final JPanel previewPanel = new JPanel();
+
+	@Nullable private File resourcePackArchive = null;
+
 	public ResourcePackEditor(Workspace workspace, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
@@ -58,6 +70,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		tree.setCellRenderer(new ResourcePackTreeCellRenderer());
 
 		JScrollPane jsp = new JScrollPane(tree);
+		jsp.setOpaque(false);
+		jsp.getViewport().setOpaque(false);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
@@ -65,6 +79,59 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		jsp.setPreferredSize(new Dimension(320, 0));
 
 		add("West", jsp);
+
+		previewPanel.setOpaque(false);
+		add("Center", previewPanel);
+
+		tree.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent mouseEvent) {
+				if (tree.getLastSelectedPathComponent() instanceof FilterTreeNode node
+						&& node.getUserObject() instanceof FileNode<?> fileNode) {
+					if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
+						setSelectedEntry(entry);
+					}
+				}
+			}
+		});
+	}
+
+	private void setSelectedEntry(ResourcePackStructure.Entry entry) {
+		previewPanel.removeAll();
+
+		String extension = FilenameUtils.getExtension(entry.path());
+		if (extension.equalsIgnoreCase("png")) {
+			Image image = ZipIO.readFileInZip(resourcePackArchive, entry.path(), (file, zipEntry) -> {
+				try {
+					return ImageIO.read(file.getInputStream(zipEntry));
+				} catch (IOException e) {
+					return null;
+				}
+			});
+			ImageIcon originalIcon = null;
+			if (image != null) {
+				originalIcon = new ImageIcon(image);
+			}
+			ImageIcon overrideIcon = null;
+			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
+				overrideIcon = new ImageIcon(entry.override().getAbsolutePath());
+			}
+			showImageEntry(originalIcon, overrideIcon);
+		} else {
+			String original = ZipIO.readCodeInZip(resourcePackArchive, entry.path());
+			String override = null;
+			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
+				override = FileIO.readFileToString(entry.override());
+			}
+			showTextEntry(original, override);
+		}
+	}
+
+	private void showImageEntry(@Nullable ImageIcon original, @Nullable ImageIcon override) {
+
+	}
+
+	private void showTextEntry(@Nullable String original, @Nullable String override) {
+
 	}
 
 	private boolean initial = true;
@@ -75,7 +142,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		FilterTreeNode root = new FilterTreeNode("");
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
-		ResourcePackStructure.getResourcePackStructure(workspace)
+		resourcePackArchive = ResourcePackStructure.getResourcePackArchive(workspace);
+		ResourcePackStructure.getResourcePackStructure(workspace, resourcePackArchive)
 				.forEach(entry -> fileTree.addElement(entry.path(), entry));
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 

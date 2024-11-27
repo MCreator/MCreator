@@ -24,6 +24,7 @@ import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,12 +36,15 @@ import java.util.stream.Stream;
 
 public class ResourcePackStructure {
 
-	private static final List<String> extensions = List.of("json" , "mcmeta" , "png" , "ogg" , "fsh" , "vsh");
+	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh");
 
-	public static List<Entry> getResourcePackStructure(Workspace workspace) {
-		List<Entry> entries = new ArrayList<>();
+	private static final String RESOURCES_FOLDER = "assets/minecraft";
 
-		// Load vanilla resources
+	public static File getResourcePackRoot(Workspace workspace) {
+		return new File(workspace.getGenerator().getResourceRoot(), RESOURCES_FOLDER);
+	}
+
+	@Nullable public static File getResourcePackArchive(Workspace workspace) {
 		String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
 		if (vanillaResourcesJar != null) {
 			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
@@ -50,26 +54,33 @@ public class ResourcePackStructure {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
 						.find()) {
-					ZipIO.iterateZip(libraryFile, entry -> {
-						if (!entry.isDirectory()) {
-							String path = entry.getName();
-							if (path.startsWith("assets/minecraft/") && extensions.contains(
-									FilenameUtils.getExtension(path))) {
-								path = path.substring("assets/minecraft/".length());
-								File override = new File(workspace.getGenerator().getResourceRoot(), path);
-								entries.add(new Entry(path, override,
-										override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
-							}
-						}
-						// Get input stream of the entry
-					}, true);
-					break;
+					return libraryFile;
 				}
 			}
 		}
+		return null;
+	}
+
+	public static List<Entry> getResourcePackStructure(Workspace workspace, @Nullable File resourcePackArchive) {
+		List<Entry> entries = new ArrayList<>();
+
+		if (resourcePackArchive != null) {
+			ZipIO.iterateZip(resourcePackArchive, entry -> {
+				if (!entry.isDirectory()) {
+					String path = entry.getName();
+					if (path.startsWith(RESOURCES_FOLDER) && extensions.contains(FilenameUtils.getExtension(path))) {
+						path = path.substring(RESOURCES_FOLDER.length());
+						File override = new File(workspace.getGenerator().getResourceRoot(), path);
+						entries.add(new Entry(path, override,
+								override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
+					}
+				}
+				// Get input stream of the entry
+			}, true);
+		}
 
 		// Load custom resources
-		File customResources = new File(workspace.getGenerator().getResourceRoot(), "assets/minecraft");
+		File customResources = getResourcePackRoot(workspace);
 		try (Stream<Path> paths = Files.walk(customResources.toPath())) {
 			paths.forEach(path -> {
 				File file = path.toFile();
