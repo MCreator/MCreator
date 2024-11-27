@@ -171,7 +171,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1);
+	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
@@ -277,7 +277,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
-		generateHeight.setAllowEqualValues(true);
 
 		generateFeature.setOpaque(false);
 

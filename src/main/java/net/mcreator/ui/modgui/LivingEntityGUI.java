@@ -121,7 +121,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
 
 	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
@@ -375,8 +375,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
-
-		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");

@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
 	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();
@@ -55,7 +55,6 @@ public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		line.add(L10N.label("dialog.spawn_list_entry.entity"));
 		line.add(entityType);

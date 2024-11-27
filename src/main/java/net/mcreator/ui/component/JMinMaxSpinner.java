@@ -146,8 +146,9 @@ public class JMinMaxSpinner extends JPanel {
 		directValueSet = false;
 	}
 
-	public void setAllowEqualValues(boolean allowEqualValues) {
-		this.allowEqualValues = allowEqualValues;
+	public JMinMaxSpinner allowEqualValues() {
+		this.allowEqualValues = true;
+		return this;
 	}
 
 }
