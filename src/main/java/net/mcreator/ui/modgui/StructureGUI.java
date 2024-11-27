@@ -102,7 +102,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
-		separation_spacing.setAllowEqualValues(false);
 		terrainAdaptation.addActionListener(e -> {
 			int max = "none".equals(terrainAdaptation.getSelectedItem()) ? 128 : 116;
 			SpinnerNumberModel spinnerModel = (SpinnerNumberModel) maxDistanceFromCenter.getModel();
