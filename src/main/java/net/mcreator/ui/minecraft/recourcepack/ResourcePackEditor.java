@@ -144,7 +144,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private void showTextEntry(@Nullable String original, @Nullable String override) {
 		if (original != null) {
-			System.err.println(original);
+
 		}
 	}
 
