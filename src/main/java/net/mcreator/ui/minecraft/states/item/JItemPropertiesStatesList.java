@@ -39,7 +39,7 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -87,7 +87,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
 		addProperty.addActionListener(e -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
-					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidatior() {
+					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
 							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
 									((VTextField) component)::getText,

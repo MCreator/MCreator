@@ -32,23 +32,23 @@ import java.awt.*;
 public class VOptionPane {
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator) {
+			OptionPaneValidator validator) {
 		return showInputDialog(frame, text, title, icon, validator, UIManager.getString("OptionPane.okButtonText"),
 				UIManager.getString("OptionPane.cancelButtonText"));
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel) {
+			OptionPaneValidator validator, String ok, String cancel) {
 		return showInputDialog(frame, text, title, icon, validator, ok, cancel, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel, String defaultValue) {
+			OptionPaneValidator validator, String ok, String cancel, String defaultValue) {
 		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel, String defaultValue,
+			OptionPaneValidator validator, String ok, String cancel, String defaultValue,
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 

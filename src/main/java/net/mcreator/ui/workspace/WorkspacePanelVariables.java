@@ -32,7 +32,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.DesktopUtils;
@@ -190,7 +190,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
-					new OptionPaneValidatior() {
+					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
 							UniqueNameValidator validator = new UniqueNameValidator(
 									L10N.t("workspace.variables.variable_name"),
