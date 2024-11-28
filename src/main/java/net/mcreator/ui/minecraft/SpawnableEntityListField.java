@@ -33,11 +33,7 @@ import java.util.List;
 public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 
 	public SpawnableEntityListField(MCreator mcreator) {
-		super(mcreator, false);
-	}
-
-	public SpawnableEntityListField(MCreator mcreator, boolean allowTags) {
-		super(mcreator, false, allowTags);
+		super(mcreator);
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {

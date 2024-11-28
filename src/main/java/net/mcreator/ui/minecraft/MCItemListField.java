@@ -50,8 +50,11 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier, boolean excludeButton,
 			boolean supportTags) {
-		super(mcreator, excludeButton, supportTags);
+		super(mcreator, excludeButton);
 		this.supplier = supplier;
+
+		if (supportTags)
+			allowTags();
 
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 	}

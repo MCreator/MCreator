@@ -32,6 +32,10 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
@@ -54,9 +58,11 @@ import java.util.Optional;
 public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final TechnicalButton add = new TechnicalButton(UIRES.get("18px.add"));
+	private final TechnicalButton addexternal = new TechnicalButton(UIRES.get("18px.add_new"));
 	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
 	private final TechnicalButton removeall = new TechnicalButton(UIRES.get("18px.removeall"));
 	private final TechnicalButton addtag = new TechnicalButton(UIRES.get("18px.addtag"));
+
 	private final JToggleButton include = L10N.togglebutton("elementgui.common.include");
 	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
@@ -82,10 +88,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	protected JItemListField(MCreator mcreator, boolean excludeButton) {
-		this(mcreator, excludeButton, false);
-	}
-
-	protected JItemListField(MCreator mcreator, boolean excludeButton, boolean allowTags) {
 		this.mcreator = mcreator;
 
 		setLayout(new BorderLayout());
@@ -96,9 +98,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 
 		add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		addexternal.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		removeall.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		addtag.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+
+		add.setToolTipText(L10N.t("itemlistfield.add"));
+		addexternal.setToolTipText(L10N.t("itemlistfield.addexternal"));
+		remove.setToolTipText(L10N.t("itemlistfield.remove"));
+		removeall.setToolTipText(L10N.t("itemlistfield.removeall"));
+		addtag.setToolTipText(L10N.t("itemlistfield.addtag"));
 
 		add.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
@@ -132,6 +141,14 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		addtag.addActionListener(e -> {
 			List<T> list = getTagsToAdd();
+			for (T el : list)
+				if (!elementsListModel.contains(el))
+					elementsListModel.addElement(el);
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
+
+		addexternal.addActionListener(e -> {
+			List<T> list = getExternalElementsToAdd();
 			for (T el : list)
 				if (!elementsListModel.contains(el))
 					elementsListModel.addElement(el);
@@ -200,10 +217,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		buttonsPanel.setOpaque(false);
 		buttonsPanel.add(add);
-		if (allowTags)
-			buttonsPanel.add(addtag);
+		buttonsPanel.add(addtag);
+		buttonsPanel.add(addexternal);
 		buttonsPanel.add(remove);
 		buttonsPanel.add(removeall);
+
+		// Do not allow adding tags by default
+		addtag.setVisible(false);
+
+		// Do not allow adding external elements by default
+		addexternal.setVisible(false);
 
 		buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getAltBackgroundColor()));
@@ -226,6 +249,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public JItemListField<T> allowTags() {
+		addtag.setVisible(true);
+		return this;
+	}
+
+	public JItemListField<T> allowExternalElements() {
+		addexternal.setVisible(true);
+		return this;
 	}
 
 	public void setWarnOnRemoveAll(boolean warnOnDeleteAll) {
@@ -284,8 +317,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		return List.of();
 	}
 
+	protected List<T> getExternalElementsToAdd() {
+		return List.of();
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		add.setEnabled(enabled);
+		addexternal.setEnabled(enabled);
 		remove.setEnabled(enabled);
 		removeall.setEnabled(enabled);
 		addtag.setEnabled(enabled);

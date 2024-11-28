@@ -38,7 +38,9 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 	}
 
 	public BiomeListField(MCreator mcreator, boolean allowTags) {
-		super(mcreator, false, allowTags);
+		this(mcreator);
+		if (allowTags)
+			allowTags();
 	}
 
 	@Override protected List<BiomeEntry> getElementsToAdd() {
