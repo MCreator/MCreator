@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -28,6 +29,7 @@ import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,10 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 			tags.add(new BiomeEntry(mcreator.getWorkspace(), "#" + tag));
 
 		return tags;
+	}
+
+	@Nullable @Override protected BiomeEntry fromExternalToElement(String external) {
+		return new BiomeEntry(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
 	}
 
 }

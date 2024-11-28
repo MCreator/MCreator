@@ -29,6 +29,7 @@ import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.IconUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -85,6 +86,10 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		if (tag != null)
 			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
 		return tags;
+	}
+
+	@Nullable @Override protected MItemBlock fromExternalToElement(String external) {
+		return new MItemBlock(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
 	}
 
 	class CustomListCellRenderer extends JLabel implements ListCellRenderer<MItemBlock> {
