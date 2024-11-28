@@ -1,5 +1,4 @@
 _default: Potions.WATER
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNamePotions.@REGISTRYNAME.get()"
 WATER: Potions.WATER
 MUNDANE: Potions.MUNDANE

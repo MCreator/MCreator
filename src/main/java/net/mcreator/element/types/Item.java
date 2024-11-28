@@ -24,6 +24,7 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
@@ -214,8 +215,8 @@ import java.util.*;
 
 			model.stateMap = new StateMap();
 			state.stateMap.forEach((prop, value) -> {
-				if (customProperties.containsKey(prop.getName().replace("CUSTOM:", "")) || builtinProperties.contains(
-						prop.getName()))
+				if (customProperties.containsKey(prop.getName().replace(NameMapper.MCREATOR_PREFIX, ""))
+						|| builtinProperties.contains(prop.getName()))
 					model.stateMap.put(prop, value);
 			});
 

@@ -36,7 +36,8 @@ public class MCItemBlock implements IBlockGenerator {
 			String textContent = element.getTextContent();
 			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.mcitem_broken_reference", textContent.replaceFirst("CUSTOM:", ""))));
+						L10N.t("blockly.errors.mcitem_broken_reference",
+								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
 		} else {

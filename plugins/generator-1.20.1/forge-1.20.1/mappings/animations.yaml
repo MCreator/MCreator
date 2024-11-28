@@ -1,5 +1,4 @@
 _default: CamelAnimation.CAMEL_WALK
-_mcreator_prefix: "CUSTOM:"
 CAMEL_WALK: CamelAnimation.CAMEL_WALK
 CAMEL_SIT: CamelAnimation.CAMEL_SIT
 CAMEL_SIT_POSE: CamelAnimation.CAMEL_SIT_POSE

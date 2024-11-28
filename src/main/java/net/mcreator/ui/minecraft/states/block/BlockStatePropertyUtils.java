@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
@@ -53,8 +54,8 @@ public class BlockStatePropertyUtils {
 	}
 
 	@Nonnull public static String propertyRegistryName(PropertyData<?> data) {
-		if (data.getName().startsWith("CUSTOM:"))
-			return data.getName().replace("CUSTOM:", "");
+		if (data.getName().startsWith(NameMapper.MCREATOR_PREFIX))
+			return data.getName().replace(NameMapper.MCREATOR_PREFIX, "");
 		DataListEntry dle = DataListLoader.loadDataMap("blockstateproperties").get(data.getName());
 		if (dle != null && dle.getOther() instanceof Map<?, ?> other && other.get(
 				"registry_name") instanceof String registryName)

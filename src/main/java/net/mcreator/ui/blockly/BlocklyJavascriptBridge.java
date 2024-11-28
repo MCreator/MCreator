@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
@@ -189,7 +190,7 @@ public final class BlocklyJavascriptBridge {
 					"biome");
 			case "dimensionCustom" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
+							.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new), "dimension");
 			case "fluid" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"fluids");
@@ -313,7 +314,7 @@ public final class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimension_custom":
 			retval = workspace.getModElements().stream().filter(mu -> mu.getType() == ModElementType.DIMENSION)
-					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
+					.map(mu -> NameMapper.MCREATOR_PREFIX + mu.getName()).collect(Collectors.toList());
 			break;
 		case "material":
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
@@ -361,7 +362,7 @@ public final class BlocklyJavascriptBridge {
 	 * @return The readable name of the passed entry, or an empty string if it can't find a readable name
 	 */
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
-		if (value.startsWith("CUSTOM:"))
+		if (value.startsWith(NameMapper.MCREATOR_PREFIX))
 			return value.substring(7);
 
 		String datalist;
