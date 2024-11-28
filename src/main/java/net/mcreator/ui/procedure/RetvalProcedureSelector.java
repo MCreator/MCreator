@@ -37,7 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
@@ -150,7 +150,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
-						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
+						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidator() {
 							@Override public ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();

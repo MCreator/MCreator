@@ -1,7 +1,6 @@
 # Source: https://bedrock.dev/docs/stable/Addons#Items
 # Source: https://bedrock.dev/docs/stable/Addons#Blocks
 _default: "air"
-_mcreator_prefix: "CUSTOM:"
 _bypass_prefix: "TAG:"
 Blocks.AIR: "air"
 Blocks.STONE: "stone"

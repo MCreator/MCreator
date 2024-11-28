@@ -29,6 +29,7 @@ import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
@@ -150,8 +151,9 @@ import java.util.*;
 
 						// If tab does not have custom order, add items to the end of appropriate list
 						if (workspace.getCreativeTabsOrder().get(tab) == null) {
-							(tab.startsWith("CUSTOM:") ? customTabsWithoutOrder : tabMap).computeIfAbsent(tab,
-									key -> new ArrayList<>()).addAll(tabItems);
+							(tab.startsWith(NameMapper.MCREATOR_PREFIX) ?
+									customTabsWithoutOrder :
+									tabMap).computeIfAbsent(tab, key -> new ArrayList<>()).addAll(tabItems);
 						}
 					}
 				}
@@ -161,8 +163,8 @@ import java.util.*;
 		// Next, we add items to tabs with custom order
 		for (Map.Entry<String, ArrayList<String>> entry : workspace.getCreativeTabsOrder().entrySet()) {
 			String tab = entry.getKey();
-			if (tab.startsWith("CUSTOM:")) {
-				ModElement tabME = workspace.getModElementByName(tab.replace("CUSTOM:", ""));
+			if (tab.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				ModElement tabME = workspace.getModElementByName(tab.replace(NameMapper.MCREATOR_PREFIX, ""));
 				if (tabME == null || tabME.getType() != ModElementType.TAB)
 					continue; // Might be a stale entry we didn't remove previously (#5174)
 			}
@@ -181,7 +183,7 @@ import java.util.*;
 		// Last, we move custom tabs to the end of the main list
 		// Is not strictly necessary, but this makes sure order of keys in tabMap is consistent with the editor UI
 		for (Map.Entry<String, List<MItemBlock>> entry : tabMap.entrySet().stream().toList()) {
-			if (entry.getKey().startsWith("CUSTOM:")) {
+			if (entry.getKey().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				tabMap.remove(entry.getKey());
 				tabMap.put(entry.getKey(), entry.getValue());
 			}
@@ -201,12 +203,13 @@ import java.util.*;
 		for (T t : input) {
 			if (t instanceof NonMappableElement) {
 				retval.add(t);
-			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+			} else if (t.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
 					LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
-							TraceUtil.tryToFindMCreatorInvoker(), t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
+							TraceUtil.tryToFindMCreatorInvoker(),
+							t.getUnmappedValue().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));

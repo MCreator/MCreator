@@ -22,6 +22,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -114,7 +115,7 @@ public class ElementOrderEditor {
 						list.setCellRenderer(new SmallIconModListRender(false));
 
 						// Pick the right index depending on tab type (custom or vanilla)
-						int nextIndex = tab.getUnmappedValue().startsWith("CUSTOM:") ?
+						int nextIndex = tab.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX) ?
 								tabs.getTabCount() :
 								customStart.getAndIncrement();
 						tabs.insertTab(tab.getUnmappedValue(), null, new JScrollPane(list), null, nextIndex);
@@ -127,7 +128,7 @@ public class ElementOrderEditor {
 									JLabel.LEADING));
 						} else {
 							Icon tabIcon = null;
-							if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+							if (tab.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX))
 								tabIcon = new ImageIcon(ImageUtils.resizeAA(
 										MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), tab.getUnmappedValue())
 												.getImage(), 24));

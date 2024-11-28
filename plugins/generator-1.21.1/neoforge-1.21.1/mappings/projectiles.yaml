@@ -2,7 +2,6 @@ _default:
   - Snowball
   - EntityType.SNOWBALL
   - Items.SNOWBALL
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "@NAMEEntity"
   - "@JavaModNameEntities.@REGISTRYNAME.get()"

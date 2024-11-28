@@ -22,7 +22,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -35,7 +35,7 @@ import java.util.Collection;
 public class NewVariableDialog {
 
 	public static VariableElement showNewVariableDialog(MCreator mcreator, boolean showScope,
-			OptionPaneValidatior variableNameValidator, Collection<VariableType> supportedTypes) {
+			OptionPaneValidator variableNameValidator, Collection<VariableType> supportedTypes) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(25);

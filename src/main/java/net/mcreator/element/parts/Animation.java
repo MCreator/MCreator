@@ -41,7 +41,7 @@ public class Animation extends MappableElement {
 	}
 
 	@Override public String getMappedValue() {
-		return super.getMappedValue().replaceFirst("CUSTOM:", "");
+		return super.getMappedValue().replaceFirst(NameMapper.MCREATOR_PREFIX, "");
 	}
 
 }

@@ -29,7 +29,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -83,7 +83,7 @@ public class TextureMappingDialog {
 					pane.setSelectedIndex(1);
 					String mapping = VOptionPane.showInputDialog(mcreator,
 							L10N.t("dialog.textures_mapping.enter_name_message"),
-							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidatior() {
+							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidator() {
 								@Override public Validator.ValidationResult validate(JComponent component) {
 									return new JavaMemberNameValidator((VTextField) component, false).validate();
 								}

@@ -76,7 +76,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	@Override protected void initGUI() {
 		supportedItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
-		incompatibleEnchantments = new EnchantmentListField(mcreator, false, true);
+		incompatibleEnchantments = new EnchantmentListField(mcreator, true);
 
 		supportedItems.addAdditionalTagSuggestions("enchantable/foot_armor", "enchantable/leg_armor",
 				"enchantable/chest_armor", "enchantable/head_armor", "enchantable/armor", "enchantable/sword",

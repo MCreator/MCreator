@@ -1,9 +1,10 @@
 name: Data Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 1.0
+buildfileversion: 2.0
 
 # gradle task definitions
 gradle:
+  run_client: ":packloader:runClient"
   export_file: "build/export/export.zip"
 
 # base generator roots

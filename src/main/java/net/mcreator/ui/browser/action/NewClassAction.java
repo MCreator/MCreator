@@ -26,7 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +45,7 @@ public class NewClassAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.browser.new_class"), actionEvent -> {
 			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_class.class_name"),
-					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidatior() {
+					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidator() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
 							return new JavaMemberNameValidator((VTextField) component, true).validate();
 						}

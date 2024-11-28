@@ -1,5 +1,4 @@
 _default: null
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNameGameRules.@REGISTRYNAME"
 DO_FIRE_TICK: GameRules.RULE_DOFIRETICK
 MOB_GRIEFING: GameRules.RULE_MOBGRIEFING

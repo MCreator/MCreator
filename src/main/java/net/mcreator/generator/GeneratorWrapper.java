@@ -86,13 +86,14 @@ import java.util.stream.Collectors;
 	}
 
 	/**
-	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
+	 * Removes the NameMapper.MCREATOR_PREFIX prefix and any eventual suffix (if present, it's after the last .)
 	 *
 	 * @param elementName The name to convert
 	 * @return The plain name of the element
 	 */
 	public static String getElementPlainName(String elementName) {
-		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", "").replace(":Flowing", ""), ".");
+		return StringUtils.substringBeforeLast(
+				elementName.replace(NameMapper.MCREATOR_PREFIX, "").replace(":Flowing", ""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {

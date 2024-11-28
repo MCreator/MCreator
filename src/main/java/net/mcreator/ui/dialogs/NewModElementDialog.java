@@ -27,7 +27,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
@@ -48,7 +48,7 @@ public class NewModElementDialog {
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
 				L10N.t("dialog.new_modelement.title_window", type.getReadableName()), type.getIcon(),
-				new OptionPaneValidatior() {
+				new OptionPaneValidator() {
 					@Override public Validator.ValidationResult validate(JComponent component) {
 						String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
 						regName.setText(L10N.t("dialog.new_modelement.registry_name",

@@ -41,7 +41,7 @@ public class EntityEntry extends MappableElement {
 
 	@Override public String getDataListEntryType() {
 		String value = getUnmappedValue();
-		if (value != null && value.startsWith("CUSTOM:"))
+		if (value != null && value.startsWith(NameMapper.MCREATOR_PREFIX))
 			return "spawnable";
 
 		return super.getDataListEntryType();

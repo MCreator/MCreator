@@ -1,6 +1,5 @@
 # Source: https://bedrock.dev/docs/stable/Addons#Entities
 _default: zombie
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 EntityArrow: arrow
 EntityArmadillo: armadillo

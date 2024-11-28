@@ -97,7 +97,7 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	 * even if they are not supported in the selected Minecraft version.
 	 */
 	public static boolean validateReference(@Nonnull String value, @Nonnull Workspace workspace) {
-		if (value.startsWith("CUSTOM:")) {
+		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval)
 				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
