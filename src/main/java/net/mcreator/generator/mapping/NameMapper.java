@@ -35,9 +35,11 @@ public class NameMapper {
 
 	private static final Logger LOG = LogManager.getLogger("Name Mapper");
 
+	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
+
 	public static final String MCREATOR_PREFIX = "CUSTOM:";
 
-	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
+	public static final String EXTERNAL_PREFIX = "EXTERNAL:";
 
 	private final String mappingSource;
 	private Workspace workspace;
@@ -71,6 +73,10 @@ public class NameMapper {
 
 		if (mapping == null)
 			return origName;
+
+		if (origName.startsWith(EXTERNAL_PREFIX)) {
+			return origName.replace(EXTERNAL_PREFIX, "");
+		}
 
 		Object skip_prefixes = mapping.get("_bypass_prefix");
 		if (skip_prefixes instanceof String skipPrefix && origName.startsWith(skipPrefix)) {
