@@ -36,8 +36,10 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.PlacementHelperDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -136,8 +138,14 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
+
+		JButton featureHelperButton = L10N.button("elementgui.feature.generate_placement");
+		featureHelperButton.setIcon(UIRES.get("18px.add"));
+		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
+		BlocklyEditorToolbar.normalizeButton4(featureHelperButton);
+
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel);
+				blocklyPanel, null, featureHelperButton);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
