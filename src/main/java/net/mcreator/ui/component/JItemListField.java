@@ -21,6 +21,7 @@ package net.mcreator.ui.component;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -32,6 +33,10 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
+import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
@@ -163,7 +168,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 						T element = elementsListModel.get(index);
 						if (element instanceof MappableElement mappableElement) {
 							String unmappedValue = mappableElement.getUnmappedValue();
-							if (unmappedValue.startsWith("CUSTOM:")) {
+							if (unmappedValue.startsWith(NameMapper.MCREATOR_PREFIX)) {
 								ModElement modElement = mcreator.getWorkspace()
 										.getModElementByName(GeneratorWrapper.getElementPlainName(unmappedValue));
 								if (modElement != null) {
@@ -314,7 +319,29 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	protected List<T> getExternalElementsToAdd() {
+		String element = VOptionPane.showInputDialog(mcreator, L10N.t("itemlistfield.addexternal.message"),
+				L10N.t("itemlistfield.addexternal.title"), null, new OptionPaneValidator() {
+					@Override public Validator.ValidationResult validate(JComponent component) {
+						String text = ((VTextField) component).getText();
+						if (!text.contains(":") || text.startsWith("minecraft:") || text.startsWith("mod:")
+								|| text.startsWith(mcreator.getWorkspaceSettings().getModID() + ":")) {
+							return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+									L10N.t("itemlistfield.addexternal.entry.error"));
+						}
+						return new ResourceLocationValidator<>(L10N.t("itemlistfield.addexternal.entry"),
+								(VTextField) component, true).validate();
+					}
+				});
+		if (element != null) {
+			T mappedElement = fromExternalToElement(element);
+			if (mappedElement != null)
+				return List.of(mappedElement);
+		}
 		return List.of();
+	}
+
+	@Nullable protected T fromExternalToElement(String external) {
+		return null;
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -446,10 +473,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					}
 				} else {
 					String unmappedValue = mappableElement.getUnmappedValue();
-					setText(unmappedValue.replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", "")
-							.replace("#", ""));
+					setText(unmappedValue.replace(NameMapper.MCREATOR_PREFIX, "").replace("Blocks.", "")
+							.replace("Items.", "").replace("#", "").replace("EXTERNAL:", ""));
 
-					if (unmappedValue.startsWith("CUSTOM:"))
+					if (unmappedValue.startsWith(NameMapper.MCREATOR_PREFIX) || unmappedValue.startsWith("EXTERNAL:"))
 						setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue),
 								18));
 					else if (unmappedValue.startsWith("#"))
@@ -458,9 +485,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
+				setText(StringUtils.machineToReadableName(value.toString().replace(NameMapper.MCREATOR_PREFIX, "")));
 
-				if (value.toString().contains("CUSTOM:"))
+				if (value.toString().contains(NameMapper.MCREATOR_PREFIX))
 					setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()),
 							18));
 			}
