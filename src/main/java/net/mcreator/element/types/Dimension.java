@@ -25,6 +25,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -109,9 +110,9 @@ import java.util.*;
 		Set<String> retval = new HashSet<>();
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : biomesInDimension) {
-			if (biomeEntry.getUnmappedValue().startsWith("CUSTOM:")) {
+			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				ModElement biomeElement = getModElement().getWorkspace()
-						.getModElementByName(biomeEntry.getUnmappedValue().replace("CUSTOM:", ""));
+						.getModElementByName(biomeEntry.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, ""));
 				if (biomeElement != null) {
 					GeneratableElement generatableElement = biomeElement.getGeneratableElement();
 					if (generatableElement instanceof Biome biome) {
@@ -173,7 +174,7 @@ import java.util.*;
 
 	@Override public List<MItemBlock> poiBlocks() {
 		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
-				"CUSTOM:" + this.getModElement().getName() + ".portal"));
+				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
 	}
 
 }

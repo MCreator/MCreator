@@ -21,6 +21,7 @@ package net.mcreator.ui.component;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -32,6 +33,10 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
+import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
@@ -54,9 +59,11 @@ import java.util.Optional;
 public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final TechnicalButton add = new TechnicalButton(UIRES.get("18px.add"));
+	private final TechnicalButton addexternal = new TechnicalButton(UIRES.get("18px.add_new"));
 	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
 	private final TechnicalButton removeall = new TechnicalButton(UIRES.get("18px.removeall"));
 	private final TechnicalButton addtag = new TechnicalButton(UIRES.get("18px.addtag"));
+
 	private final JToggleButton include = L10N.togglebutton("elementgui.common.include");
 	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
@@ -82,10 +89,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	protected JItemListField(MCreator mcreator, boolean excludeButton) {
-		this(mcreator, excludeButton, false);
-	}
-
-	protected JItemListField(MCreator mcreator, boolean excludeButton, boolean allowTags) {
 		this.mcreator = mcreator;
 
 		setLayout(new BorderLayout());
@@ -96,9 +99,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 
 		add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		addexternal.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		removeall.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		addtag.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+
+		add.setToolTipText(L10N.t("itemlistfield.add"));
+		addexternal.setToolTipText(L10N.t("itemlistfield.addexternal"));
+		remove.setToolTipText(L10N.t("itemlistfield.remove"));
+		removeall.setToolTipText(L10N.t("itemlistfield.removeall"));
+		addtag.setToolTipText(L10N.t("itemlistfield.addtag"));
 
 		add.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
@@ -138,6 +148,14 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
+		addexternal.addActionListener(e -> {
+			List<T> list = getExternalElementsToAdd();
+			for (T el : list)
+				if (!elementsListModel.contains(el))
+					elementsListModel.addElement(el);
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
+
 		elementsList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON2) {
@@ -150,7 +168,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 						T element = elementsListModel.get(index);
 						if (element instanceof MappableElement mappableElement) {
 							String unmappedValue = mappableElement.getUnmappedValue();
-							if (unmappedValue.startsWith("CUSTOM:")) {
+							if (unmappedValue.startsWith(NameMapper.MCREATOR_PREFIX)) {
 								ModElement modElement = mcreator.getWorkspace()
 										.getModElementByName(GeneratorWrapper.getElementPlainName(unmappedValue));
 								if (modElement != null) {
@@ -200,10 +218,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		buttonsPanel.setOpaque(false);
 		buttonsPanel.add(add);
-		if (allowTags)
-			buttonsPanel.add(addtag);
+		buttonsPanel.add(addtag);
+		buttonsPanel.add(addexternal);
 		buttonsPanel.add(remove);
 		buttonsPanel.add(removeall);
+
+		// Do not allow adding tags by default
+		addtag.setVisible(false);
+
+		// Do not allow adding external elements by default
+		addexternal.setVisible(false);
 
 		buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getAltBackgroundColor()));
@@ -226,6 +250,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public JItemListField<T> allowTags() {
+		addtag.setVisible(true);
+		return this;
+	}
+
+	public JItemListField<T> allowExternalElements() {
+		addexternal.setVisible(true);
+		return this;
 	}
 
 	public void setWarnOnRemoveAll(boolean warnOnDeleteAll) {
@@ -284,8 +318,35 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		return List.of();
 	}
 
+	protected List<T> getExternalElementsToAdd() {
+		String element = VOptionPane.showInputDialog(mcreator, L10N.t("itemlistfield.addexternal.message"),
+				L10N.t("itemlistfield.addexternal.title"), null, new OptionPaneValidator() {
+					@Override public Validator.ValidationResult validate(JComponent component) {
+						String text = ((VTextField) component).getText();
+						if (!text.contains(":") || text.startsWith("minecraft:") || text.startsWith("mod:")
+								|| text.startsWith(mcreator.getWorkspaceSettings().getModID() + ":")) {
+							return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+									L10N.t("itemlistfield.addexternal.entry.error"));
+						}
+						return new ResourceLocationValidator<>(L10N.t("itemlistfield.addexternal.entry"),
+								(VTextField) component, true).validate();
+					}
+				});
+		if (element != null) {
+			T mappedElement = fromExternalToElement(element);
+			if (mappedElement != null)
+				return List.of(mappedElement);
+		}
+		return List.of();
+	}
+
+	@Nullable protected T fromExternalToElement(String external) {
+		return null;
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		add.setEnabled(enabled);
+		addexternal.setEnabled(enabled);
 		remove.setEnabled(enabled);
 		removeall.setEnabled(enabled);
 		addtag.setEnabled(enabled);
@@ -412,10 +473,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					}
 				} else {
 					String unmappedValue = mappableElement.getUnmappedValue();
-					setText(unmappedValue.replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", "")
-							.replace("#", ""));
+					setText(unmappedValue.replace(NameMapper.MCREATOR_PREFIX, "").replace("Blocks.", "")
+							.replace("Items.", "").replace("#", "").replace("EXTERNAL:", ""));
 
-					if (unmappedValue.startsWith("CUSTOM:"))
+					if (unmappedValue.startsWith(NameMapper.MCREATOR_PREFIX) || unmappedValue.startsWith("EXTERNAL:"))
 						setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue),
 								18));
 					else if (unmappedValue.startsWith("#"))
@@ -424,9 +485,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			} else if (value instanceof File) {
 				setText(FilenameUtilsPatched.removeExtension(((File) value).getName()));
 			} else {
-				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
+				setText(StringUtils.machineToReadableName(value.toString().replace(NameMapper.MCREATOR_PREFIX, "")));
 
-				if (value.toString().contains("CUSTOM:"))
+				if (value.toString().contains(NameMapper.MCREATOR_PREFIX))
 					setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()),
 							18));
 			}

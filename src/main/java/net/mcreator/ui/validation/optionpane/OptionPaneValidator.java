@@ -22,7 +22,7 @@ import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
 
-public abstract class OptionPaneValidatior implements Validator {
+public abstract class OptionPaneValidator implements Validator {
 
 	private JComponent validatedComponent = null;
 

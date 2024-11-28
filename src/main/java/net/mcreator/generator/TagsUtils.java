@@ -20,6 +20,7 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.writer.JSONWriter;
@@ -99,7 +100,7 @@ public class TagsUtils {
 
 					handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
 				} else {
-					handleTagEntryEntry(generator, tag, "CUSTOM:" + element.getModElement().getName(),
+					handleTagEntryEntry(generator, tag, NameMapper.MCREATOR_PREFIX + element.getModElement().getName(),
 							deleteMode || shouldSkip);
 				}
 			}

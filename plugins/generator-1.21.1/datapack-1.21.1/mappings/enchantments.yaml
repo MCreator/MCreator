@@ -1,7 +1,6 @@
 _default:
   - Enchantments.EFFICIENCY
   - efficiency
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.parse(\"@modid:@registryname\"))"
   - "@modid:@registryname"

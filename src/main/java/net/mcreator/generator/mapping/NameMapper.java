@@ -37,6 +37,10 @@ public class NameMapper {
 
 	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
 
+	public static final String MCREATOR_PREFIX = "CUSTOM:";
+
+	public static final String EXTERNAL_PREFIX = "EXTERNAL:";
+
 	private final String mappingSource;
 	private Workspace workspace;
 
@@ -70,6 +74,10 @@ public class NameMapper {
 		if (mapping == null)
 			return origName;
 
+		if (origName.startsWith(EXTERNAL_PREFIX)) {
+			return origName.replace(EXTERNAL_PREFIX, "");
+		}
+
 		Object skip_prefixes = mapping.get("_bypass_prefix");
 		if (skip_prefixes instanceof String skipPrefix && origName.startsWith(skipPrefix)) {
 			return origName.replace(skipPrefix + "mod:",
@@ -82,8 +90,7 @@ public class NameMapper {
 			}
 		}
 
-		String mcreator_prefix = (String) mapping.get("_mcreator_prefix");
-		if (mcreator_prefix != null && origName.startsWith(mcreator_prefix)) {
+		if (origName.startsWith(MCREATOR_PREFIX)) {
 			Object mcreator_map_template = mapping.get("_mcreator_map_template");
 			String toMapTemplate = null;
 			String suffix = null;
@@ -97,7 +104,7 @@ public class NameMapper {
 				if (mapping.get("_suffix_separator") != null) {
 					suffixSeparator = (String) mapping.get("_suffix_separator");
 				}
-				String suffixLookup = StringUtils.substringAfterLast(origName.replace(mcreator_prefix, ""),
+				String suffixLookup = StringUtils.substringAfterLast(origName.replace(MCREATOR_PREFIX, ""),
 						suffixSeparator);
 				if (suffixLookup.isEmpty()) { // If the entry has no suffix, use the "_default" mapping entry
 					suffixLookup = "_default";
@@ -113,7 +120,7 @@ public class NameMapper {
 
 			if (toMapTemplate != null) {
 				// Remove prefix and possibly the suffix
-				origName = StringUtils.removeEnd(origName.replace(mcreator_prefix, ""), suffix);
+				origName = StringUtils.removeEnd(origName.replace(MCREATOR_PREFIX, ""), suffix);
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));

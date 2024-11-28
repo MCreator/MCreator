@@ -1,7 +1,6 @@
 _default:
   - DamageTypes.GENERIC
   - generic
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template:
   - "ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(\"@modid:@registryname\"))"
   - "@modid:@registryname"

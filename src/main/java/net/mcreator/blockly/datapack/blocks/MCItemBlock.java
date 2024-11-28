@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -40,7 +41,8 @@ public class MCItemBlock implements IBlockGenerator {
 			String textContent = element.getTextContent();
 			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.mcitem_broken_reference", textContent.replaceFirst("CUSTOM:", ""))));
+						L10N.t("blockly.errors.mcitem_broken_reference",
+								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
 			if (master.getTemplateGenerator() != null) {

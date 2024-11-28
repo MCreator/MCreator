@@ -51,7 +51,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
@@ -138,7 +138,7 @@ import java.util.stream.Collectors;
 	public final JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 
-	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
+	private final OptionPaneValidator folderNameValidator = new OptionPaneValidator() {
 		@Override public ValidationResult validate(JComponent component) {
 			String folderName = ((JTextField) component).getText();
 
@@ -1110,7 +1110,7 @@ import java.util.stream.Collectors;
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
-						new OptionPaneValidatior() {
+						new OptionPaneValidator() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();

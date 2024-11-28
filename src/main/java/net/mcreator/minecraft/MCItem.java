@@ -20,6 +20,7 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.GeneratorWrapper;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
@@ -48,6 +49,7 @@ public class MCItem extends DataListEntry {
 	public static final ImageIcon EMPTY_ICON = new EmptyIcon.ImageIcon(32, 32);
 	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod");
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
+	public static final ImageIcon EXTERNAL_ICON = UIRES.get("mod_external");
 
 	public ImageIcon icon;
 	boolean hasSubtypes;
@@ -97,9 +99,12 @@ public class MCItem extends DataListEntry {
 		if (name.startsWith("TAG:"))
 			return TAG_ICON;
 
+		if (name.startsWith(NameMapper.EXTERNAL_PREFIX))
+			return EXTERNAL_ICON;
+
 		ImageIcon retval = null;
 		try {
-			if (name.startsWith("CUSTOM:")) {
+			if (name.startsWith(NameMapper.MCREATOR_PREFIX)) {
 				String elementName = GeneratorWrapper.getElementPlainName(name);
 				String suffix = StringUtils.substringAfterLast(name, ".");
 				boolean hasGeneratableIcon = false;
@@ -129,12 +134,12 @@ public class MCItem extends DataListEntry {
 				}
 			} else if (name.startsWith("POTION:")) {
 				String potion = name.replace("POTION:", "");
-				if (potion.startsWith("CUSTOM:")) {
+				if (potion.startsWith(NameMapper.MCREATOR_PREFIX)) {
 					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-							potion.replace("CUSTOM:", "") + ".png").isFile()) {
+							potion.replace(NameMapper.MCREATOR_PREFIX, "") + ".png").isFile()) {
 						retval = new ImageIcon(
 								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-										+ potion.replace("CUSTOM:", "") + ".png");
+										+ potion.replace(NameMapper.MCREATOR_PREFIX, "") + ".png");
 					} else {
 						retval = ImageMakerTexturesCache.CACHE.get(
 								new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png"));
@@ -175,7 +180,7 @@ public class MCItem extends DataListEntry {
 		}
 
 		public Custom(ModElement element, String fieldName, String type, @Nullable String descriptor) {
-			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
+			super(NameMapper.MCREATOR_PREFIX + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
 
 			if (descriptor != null) {
 				setReadableName(

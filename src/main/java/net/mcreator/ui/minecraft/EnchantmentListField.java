@@ -37,11 +37,9 @@ public class EnchantmentListField extends JItemListField<Enchantment> {
 	}
 
 	public EnchantmentListField(MCreator mcreator, boolean allowTags) {
-		super(mcreator, false, allowTags);
-	}
-
-	public EnchantmentListField(MCreator mcreator, boolean excludeButton, boolean allowTags) {
-		super(mcreator, excludeButton, allowTags);
+		super(mcreator, false);
+		if (allowTags)
+			allowTags();
 	}
 
 	@Override protected List<Enchantment> getElementsToAdd() {
