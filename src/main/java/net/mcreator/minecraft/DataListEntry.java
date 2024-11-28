@@ -19,6 +19,7 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -77,8 +78,9 @@ public class DataListEntry implements Comparable<DataListEntry> {
 
 	public String getReadableName() {
 		if (readableName == null) {
-			if (name.startsWith("CUSTOM:")) {
-				return WordUtils.capitalizeFully(StringUtils.machineToReadableName(name.replace("CUSTOM:", "")));
+			if (name.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				return WordUtils.capitalizeFully(
+						StringUtils.machineToReadableName(name.replace(NameMapper.MCREATOR_PREFIX, "")));
 			} else if (name.startsWith("TAG:")) {
 				return name;
 			} else {
@@ -129,9 +131,9 @@ public class DataListEntry implements Comparable<DataListEntry> {
 		String a_ = this.getName();
 		String b_ = o.getName();
 
-		if (a_.startsWith("CUSTOM:") && !b_.startsWith("CUSTOM:"))
+		if (a_.startsWith(NameMapper.MCREATOR_PREFIX) && !b_.startsWith(NameMapper.MCREATOR_PREFIX))
 			return -1;
-		else if (!a_.startsWith("CUSTOM:") && b_.startsWith("CUSTOM:"))
+		else if (!a_.startsWith(NameMapper.MCREATOR_PREFIX) && b_.startsWith(NameMapper.MCREATOR_PREFIX))
 			return 1;
 		return a.compareToIgnoreCase(b);
 	}
@@ -185,7 +187,7 @@ public class DataListEntry implements Comparable<DataListEntry> {
 		}
 
 		public Custom(ModElement modElement, @Nullable String suffix) {
-			super("CUSTOM:" + modElement.getName() + (suffix != null ? suffix : ""));
+			super(NameMapper.MCREATOR_PREFIX + modElement.getName() + (suffix != null ? suffix : ""));
 
 			this.modElement = modElement;
 
