@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -215,7 +216,8 @@ public class ElementUtil {
 		List<DataListEntry> animations = new ArrayList<>();
 		for (Animation animation : Animation.getAnimations(workspace)) {
 			for (String subanimation : animation.getSubanimations()) {
-				animations.add(new DataListEntry.Dummy("CUSTOM:" + animation.getName() + "." + subanimation));
+				animations.add(
+						new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + animation.getName() + "." + subanimation));
 			}
 		}
 		animations.addAll(DataListLoader.loadDataList("animations"));
@@ -255,8 +257,8 @@ public class ElementUtil {
 	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName,
 			Class<? extends PropertyData<?>> type) {
 		if (entityName != null) {
-			LivingEntity entity = (LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
-					.getGeneratableElement();
+			LivingEntity entity = (LivingEntity) workspace.getModElementByName(
+					entityName.replace(NameMapper.MCREATOR_PREFIX, "")).getGeneratableElement();
 			if (entity != null) {
 				return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
 						.map(e -> e.property().getName()).toList();
@@ -346,7 +348,7 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add("CUSTOM:" + soundElement.getName());
+			retval.add(NameMapper.MCREATOR_PREFIX + soundElement.getName());
 		}
 
 		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName).toList());
