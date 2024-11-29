@@ -79,7 +79,6 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 	private final JCheckBox requireSolidBelow = L10N.checkbox("elementgui.common.enable");
 	private final MCItemListField requiredBlocks;
 
-
 	public PlacementHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator) {
 		super(blocklyPanel, mcreator, L10N.t("dialog.tools.placement_helper.title"),
 				L10N.t("dialog.tools.placement_helper.confirm"), 1000, 400);
@@ -186,9 +185,9 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		int rarityValue = (int) rarity.getValue();
 		if (rarityValue != 1) {
 			xml.append("""
-				<block type="placement_rarity">
-					<field name="rarity">%d</field>
-					<next>""".formatted(rarityValue));
+					<block type="placement_rarity">
+						<field name="rarity">%d</field>
+						<next>""".formatted(rarityValue));
 			blocksToClose++;
 		}
 
@@ -204,8 +203,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 						<value name="count">%s</value>
 						<next>""".formatted(frequencyIntProvider));
 			blocksToClose++;
-		}
-		else if (frequencyMin != 1 || frequencyMax != 1) {
+		} else if (frequencyMin != 1 || frequencyMax != 1) {
 			xml.append("""
 					<block type="placement_count">
 						<value name="count">%s</value>
@@ -237,14 +235,13 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 						</value>
 						<next>""".formatted(distributionType.getSelectedItem(), heightMin, heightMax));
 			blocksToClose++;
-		}
-		else if ("HEIGHTMAP".equals(heightPlacement)) {
+		} else if ("HEIGHTMAP".equals(heightPlacement)) {
 			int maxWaterDepthValue = (int) maxWaterDepth.getValue();
 			if (maxWaterDepthValue != -1) {
 				xml.append("""
-					<block type="placement_surface_water_depth">
-						<field name="depth">%d</field>
-						<next>""".formatted(maxWaterDepthValue));
+						<block type="placement_surface_water_depth">
+							<field name="depth">%d</field>
+							<next>""".formatted(maxWaterDepthValue));
 				blocksToClose++;
 			}
 
@@ -257,11 +254,11 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 			int minWaterDepthValue = (int) minWaterDepth.getValue();
 			if (minWaterDepthValue > 0 && minWaterDepth.isEnabled()) {
 				xml.append("""
-					<block type="placement_surface_relative_threshold">
-						<field name="heightmap">WORLD_SURFACE_WG</field>
-						<field name="min">-4096</field>
-						<field name="max">-%d</field>
-						<next>""".formatted(minWaterDepthValue));
+						<block type="placement_surface_relative_threshold">
+							<field name="heightmap">WORLD_SURFACE_WG</field>
+							<field name="min">-4096</field>
+							<field name="max">-%d</field>
+							<next>""".formatted(minWaterDepthValue));
 				blocksToClose++;
 			}
 		}
@@ -309,16 +306,16 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		if (!requiredBlocks.getListElements().isEmpty()) {
 			java.util.List<MItemBlock> blocks = requiredBlocks.getListElements();
 			xml.append("""
-				<block type="placement_block_predicate_filter">
-					<value name="condition">
-						<block type="block_predicate_matching_blocks">
-							<field name="x">0</field>
-							<field name="y">-1</field>
-							<field name="z">0</field>
-							<value name="blockSet">%s</value>
-						</block>
-					</value>
-					<next>""".formatted(toTagOrListBlockHolderset(blocks)));
+					<block type="placement_block_predicate_filter">
+						<value name="condition">
+							<block type="block_predicate_matching_blocks">
+								<field name="x">0</field>
+								<field name="y">-1</field>
+								<field name="z">0</field>
+								<value name="blockSet">%s</value>
+							</block>
+						</value>
+						<next>""".formatted(toTagOrListBlockHolderset(blocks)));
 			blocksToClose++;
 		}
 
@@ -350,7 +347,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 					</block>""".formatted(blocks.getFirst().getUnmappedValue().substring(4));
 		} else {
 			StringBuilder result = new StringBuilder();
-			result.append("<block type=\"block_holderset_list\"><mutation inputs=\"%d\"></mutation>".formatted(blocks.size()));
+			result.append("<block type=\"block_holderset_list\"><mutation inputs=\"%d\"></mutation>".formatted(
+					blocks.size()));
 			for (int i = 0; i < blocks.size(); i++) {
 				result.append("<field name=\"block%d\">%s</field>".formatted(i, blocks.get(i).getUnmappedValue()));
 			}

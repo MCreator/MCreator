@@ -48,8 +48,8 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 				dispose();
 			} else {
 				JOptionPane.showMessageDialog(mcreator,
-						"<html>" + String.join("<br>- ", getValidationResult().getValidationProblemMessages()),
-						title, JOptionPane.ERROR_MESSAGE);
+						"<html>" + String.join("<br>- ", getValidationResult().getValidationProblemMessages()), title,
+						JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		this.add("South", PanelUtils.join(ok, cancel));
@@ -70,4 +70,5 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 	 * @return The XML that will be converted to Blockly blocks.
 	 */
 	protected abstract String getXML();
+
 }
