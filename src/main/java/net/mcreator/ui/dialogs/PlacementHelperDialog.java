@@ -81,10 +81,10 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 
 	public PlacementHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator) {
 		super(blocklyPanel, mcreator, L10N.t("dialog.tools.placement_helper.title"),
-				L10N.t("dialog.tools.placement_helper.confirm"), 1000, 400);
+				L10N.t("dialog.tools.placement_helper.confirm"), 1100, 360);
 		blockSurvivalCondition = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		requiredBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
-		requiredBlocks.setPreferredSize(new Dimension(280, -1));
+		requiredBlocks.setPreferredSize(new Dimension(250, -1));
 		requiredBlocks.setValidator(new ItemListFieldSingleTagValidator(requiredBlocks));
 		requiredBlocks.addAdditionalTagSuggestions("minecraft:dirt", "minecraft:sand", "minecraft:terracotta",
 				"minecraft:ice", "minecraft:nylium", "minecraft:base_stone_overworld", "minecraft:base_stone_nether");
@@ -105,24 +105,24 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				Theme.current().getForegroundColor()));
 
 		// Height settings
-		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 4));
+		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 2));
 		heightPlacementSettings.add(L10N.label("dialog.tools.placement_helper.height_placement_type"));
 		heightPlacementSettings.add(heightPlacementType);
+		heightPlacementType.setPreferredSize(new Dimension(0, 32));
 
 		CardLayout heightTypeLayout = new CardLayout();
 		JPanel heightCardPanel = new JPanel(heightTypeLayout);
 
 		// Height range page
-		JPanel heightRangeSettings = new JPanel(new GridLayout(2, 2, 4, 4));
-
+		JPanel heightRangeSettings = new JPanel(new GridLayout(2, 2, 4, 2));
 		heightRangeSettings.add(L10N.label("dialog.tools.placement_helper.at_height"));
 		heightRangeSettings.add(heightRange);
 		heightRangeSettings.add(L10N.label("dialog.tools.placement_helper.distribution_type"));
 		heightRangeSettings.add(distributionType);
+		distributionType.setPreferredSize(new Dimension(0, 32));
 
 		// Heightmap page
-		JPanel heightmapSettings = new JPanel(new GridLayout(3, 2, 4, 4));
-
+		JPanel heightmapSettings = new JPanel(new GridLayout(3, 2, 4, 2));
 		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.heightmap_type"));
 		heightmapSettings.add(heightmapType);
 		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.max_water_depth"));
@@ -133,16 +133,17 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 			String heightType = heightmapType.getSelectedItem();
 			minWaterDepth.setEnabled("OCEAN_FLOOR_WG".equals(heightType) || "OCEAN_FLOOR".equals(heightType));
 		});
+		heightmapType.setPreferredSize(new Dimension(0, 32));
 
-		heightCardPanel.add(heightmapSettings, "HEIGHTMAP");
-		heightCardPanel.add(heightRangeSettings, "HEIGHT RANGE");
+		heightCardPanel.add(PanelUtils.pullElementUp(heightmapSettings), "HEIGHTMAP");
+		heightCardPanel.add(PanelUtils.pullElementUp(heightRangeSettings), "HEIGHT RANGE");
 		heightCardPanel.add(new JPanel(), "ON EVERY LAYER");
 		heightTypeLayout.show(heightCardPanel, "HEIGHTMAP");
 		heightPlacementType.addActionListener(
 				e -> heightTypeLayout.show(heightCardPanel, heightPlacementType.getSelectedItem()));
+
 		JPanel heightSettings = new JPanel(new BorderLayout(5, 5));
 		heightSettings.add(PanelUtils.northAndCenterElement(heightPlacementSettings, heightCardPanel, 2, 2));
-
 		heightSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.tools.placement_helper.height_settings"), TitledBorder.LEADING,
@@ -150,7 +151,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				Theme.current().getForegroundColor()));
 
 		// Offset and conditions
-		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 2));
 
 		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.vertical_offset"));
 		conditionsPanel.add(verticalOffset);
