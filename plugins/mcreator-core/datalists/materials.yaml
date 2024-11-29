@@ -3,7 +3,7 @@
 - ROCK:
   readable_name: Basedrum noteblock instrument
 - WOOD:
-  readable_name: Base noteblock instrument, ignited by lava
+  readable_name: Wood (base noteblock instrument)
 - WATER:
   readable_name: Liquid (water)
 - LAVA:

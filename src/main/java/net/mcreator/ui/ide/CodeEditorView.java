@@ -130,7 +130,7 @@ public class CodeEditorView extends ViewBase {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
 
-	public CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
+	public CodeEditorView(MCreator fa, String code, String fileName, @Nullable File fileWorkingOn, boolean readOnly) {
 		super(fa);
 
 		this.fileWorkingOn = fileWorkingOn;
@@ -143,12 +143,13 @@ public class CodeEditorView extends ViewBase {
 
 		setBackground(Theme.current().getBackgroundColor());
 
-		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
+		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, this.fileWorkingOn, fa.getWorkspaceFolder());
+		this.fileBreadCrumb.setVisible(false);
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
 				super.focusGained(focusEvent);
-				fileBreadCrumb.reloadPath(fileWorkingOn);
+				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
 				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 			}
 		});
@@ -265,7 +266,9 @@ public class CodeEditorView extends ViewBase {
 		JPanel topPan = new JPanel(new BorderLayout());
 		topPan.setOpaque(false);
 		topPan.add("Center", bars);
-		topPan.add("North", fileBreadCrumb);
+
+		if (fileWorkingOn != null)
+			topPan.add("North", fileBreadCrumb);
 
 		add("North", topPan);
 		add("Center", spne);

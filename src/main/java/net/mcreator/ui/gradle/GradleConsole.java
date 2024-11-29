@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.gradle;
 
+import com.sun.management.OperatingSystemMXBean;
 import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
@@ -25,12 +26,16 @@ import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.java.debug.JVMDebugClient;
+import net.mcreator.java.monitoring.JMXMonitorClient;
+import net.mcreator.java.monitoring.JMXMonitorEventListener;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.component.SimpleLineChart;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.CodeErrorDialog;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -46,6 +51,7 @@ import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUt
 import org.gradle.tooling.*;
 
 import javax.annotation.Nullable;
+import javax.management.remote.JMXConnector;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.SimpleAttributeSet;
@@ -58,7 +64,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.management.MemoryMXBean;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -105,7 +115,12 @@ public class GradleConsole extends JPanel {
 	private int status = READY;
 	private boolean gradleSetupTaskRunning = false;
 
+	private final JScrollPane mainScrollPane;
+
 	private final ConsoleSearchBar searchBar = new ConsoleSearchBar();
+
+	private final SimpleLineChart cpuChart = new SimpleLineChart();
+	private final SimpleLineChart memoryChart = new SimpleLineChart();
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
 
@@ -114,6 +129,8 @@ public class GradleConsole extends JPanel {
 
 	// Gradle console may be associated with a debug client
 	@Nullable private JVMDebugClient debugClient = null;
+
+	@Nullable private JMXMonitorClient jmxMonitorClient = null;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -158,10 +175,11 @@ public class GradleConsole extends JPanel {
 
 		pan.setBorder(BorderFactory.createEmptyBorder(9, 0, 0, 0));
 
-		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
-		aae.setBackground(Theme.current().getSecondAltBackgroundColor());
+		mainScrollPane.setBorder(
+				BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
+		mainScrollPane.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		setLayout(new BorderLayout());
 
@@ -171,10 +189,50 @@ public class GradleConsole extends JPanel {
 
 		JPanel outerholder = new JPanel(new BorderLayout());
 		outerholder.add("North", searchBar);
-		outerholder.add("Center", aae);
+		outerholder.add("Center", mainScrollPane);
 		outerholder.setOpaque(false);
 
 		searchBar.setBorder(BorderFactory.createEmptyBorder(6, 10, 5, 0));
+
+		JLabel cpuLabel = L10N.label("performance_monitor.cpu");
+		cpuLabel.setForeground(Theme.current().getAltForegroundColor());
+		cpuLabel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+
+		JLabel memoryLabel = L10N.label("performance_monitor.memory");
+		memoryLabel.setForeground(Theme.current().getAltForegroundColor());
+		memoryLabel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+
+		cpuChart.setChartColor(COLOR_LOGLEVEL_INFO);
+		cpuChart.setMaxPoints(3 * 60);
+		cpuChart.setYLimits(0, 100);
+		cpuChart.addLinkedChart(memoryChart);
+		cpuChart.setLabelFormatter(d -> {
+			String xLabel = Instant.ofEpochMilli((long) d[0]).atZone(ZoneId.systemDefault())
+					.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			String yLabel = String.format("%d%%", (int) Math.round(d[1]));
+			return new String[] { xLabel, yLabel };
+		});
+
+		memoryChart.setChartColor(COLOR_LOGLEVEL_TRACE);
+		memoryChart.setMaxPoints(3 * 60);
+		memoryChart.addLinkedChart(cpuChart);
+		memoryChart.setLabelFormatter(d -> {
+			String xLabel = Instant.ofEpochMilli((long) d[0]).atZone(ZoneId.systemDefault())
+					.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			String yLabel = String.format("%d MB", (int) Math.round(d[1]));
+			return new String[] { xLabel, yLabel };
+		});
+
+		JPanel monitorPanel = new JPanel();
+		monitorPanel.setOpaque(false);
+		monitorPanel.setLayout(new GridLayout(1, 2, 15, 15));
+		monitorPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 10));
+		monitorPanel.setPreferredSize(new Dimension(0, 100));
+		monitorPanel.add(PanelUtils.centerAndSouthElement(cpuChart, cpuLabel));
+		monitorPanel.add(PanelUtils.centerAndSouthElement(memoryChart, memoryLabel));
+		mainScrollPane.setColumnHeaderView(monitorPanel);
+		mainScrollPane.getColumnHeader().setOpaque(false);
+		mainScrollPane.getColumnHeader().setVisible(false);
 
 		add("Center", outerholder);
 
@@ -366,6 +424,41 @@ public class GradleConsole extends JPanel {
 				ref.getDebugPanel().startDebug(this.debugClient);
 			} else {
 				this.debugClient = null;
+			}
+
+			// We make sure only one monitor runs for server run where client is run too
+			if (PreferencesManager.PREFERENCES.gradle.enablePerformanceMonitor.get()) {
+				if (this.jmxMonitorClient == null || !this.jmxMonitorClient.isActive()) {
+					this.jmxMonitorClient = new JMXMonitorClient(environment, new JMXMonitorEventListener() {
+
+						private boolean initial = true;
+
+						@Override public void connected(JMXConnector jmxConnector) {
+							cpuChart.clear();
+							memoryChart.clear();
+							mainScrollPane.getColumnHeader().setVisible(true);
+						}
+
+						@Override public void disconnected() {
+							mainScrollPane.getColumnHeader().setVisible(false);
+						}
+
+						@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {
+							if (initial) {
+								memoryChart.setYLimits(0,
+										(double) memoryMXBean.getHeapMemoryUsage().getMax() / 1024 / 1024);
+
+								initial = false;
+							}
+
+							long timestamp = System.currentTimeMillis();
+
+							cpuChart.addPoint(timestamp, osMXBean.getProcessCpuLoad() * 100);
+							memoryChart.addPoint(timestamp, (double) (memoryMXBean.getHeapMemoryUsage().getUsed()
+									+ memoryMXBean.getNonHeapMemoryUsage().getUsed()) / 1024 / 1024);
+						}
+					}, 1000);
+				}
 			}
 
 			task.setEnvironmentVariables(environment);
@@ -611,6 +704,11 @@ public class GradleConsole extends JPanel {
 					ref.getDebugPanel().stopDebug();
 					debugClient.stop();
 					debugClient = null;
+				}
+
+				if (jmxMonitorClient != null) {
+					jmxMonitorClient.stop();
+					jmxMonitorClient = null;
 				}
 
 				if (taskSpecificListener != null)
