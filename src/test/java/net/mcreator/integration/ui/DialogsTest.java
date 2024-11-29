@@ -251,4 +251,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		}
 	}
 
+	@Test public void testPlacementHelperDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PlacementHelperDialog(null, mcreator));
+	}
+
 }

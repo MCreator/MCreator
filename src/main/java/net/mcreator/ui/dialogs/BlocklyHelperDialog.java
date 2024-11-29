@@ -22,7 +22,6 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
@@ -40,7 +39,7 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 		this.setLayout(new BorderLayout(10, 10));
 		this.setIconImage(UIRES.get("18px.add").getImage());
 
-		JButton ok = L10N.button(okMessage);
+		JButton ok = new JButton(okMessage);
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		cancel.addActionListener(e -> dispose());
 		ok.addActionListener(e -> {

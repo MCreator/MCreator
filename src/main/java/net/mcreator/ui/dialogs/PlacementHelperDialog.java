@@ -102,7 +102,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		rarityFrequencySettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.tools.placement_helper.rarity_and_frequency"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
 		// Height settings
 		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 4));
@@ -146,7 +147,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		heightSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.tools.placement_helper.height_settings"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
 		// Offset and conditions
 		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 4));
@@ -163,7 +165,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		conditionsPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.tools.placement_helper.offset_and_conditions"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
 		this.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.northAndCenterElement(rarityFrequencySettings, PanelUtils.pullElementUp(heightSettings)),
