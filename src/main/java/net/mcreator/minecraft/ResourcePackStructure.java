@@ -101,6 +101,10 @@ public class ResourcePackStructure {
 			return RESOURCES_FOLDER + path;
 		}
 
+		public Entry parent() {
+			return new Entry(FilenameUtils.getFullPath(path), override.getParentFile(), type);
+		}
+
 	}
 
 	public enum EntryType {

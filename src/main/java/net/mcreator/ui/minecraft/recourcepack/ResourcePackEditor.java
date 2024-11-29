@@ -25,13 +25,18 @@ import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.ImagePreviewPanel;
 import net.mcreator.ui.component.JFileBreadCrumb;
+import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.JFileTree;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
+import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
@@ -42,14 +47,13 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
+	private final MCreator mcreator;
 	private final Workspace workspace;
 
 	@Nullable private final WorkspacePanel workspacePanel;
@@ -60,13 +64,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final FilteredTreeModel model = new FilteredTreeModel(new FilterTreeNode(""));
 
-	private final JPanel previewPanel = new JPanel();
+	private final JPanel previewPanel = new JPanel(new GridLayout());
 
 	@Nullable private File resourcePackArchive = null;
 
 	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
+
+		this.mcreator = mcreator;
 
 		this.workspace = mcreator.getWorkspace();
 		this.workspacePanel = workspacePanel;
@@ -89,62 +95,114 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
 
 		previewPanel.setOpaque(false);
-		add("Center", PanelUtils.northAndCenterElement(breadCrumb, previewPanel));
 
-		tree.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				if (tree.getLastSelectedPathComponent() instanceof FilterTreeNode node
-						&& node.getUserObject() instanceof FileNode<?> fileNode) {
-					if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
-						setSelectedEntry(entry);
+		tree.addTreeSelectionListener(e -> {
+			ResourcePackStructure.Entry toSelect = null;
+			if (tree.getLastSelectedPathComponent() instanceof FilterTreeNode node
+					&& node.getUserObject() instanceof FileNode<?> fileNode) {
+				if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
+					if (entry.path().equals(fileNode.incrementalPath)) {
+						toSelect = entry;
+					} else {
+						toSelect = entry.parent();
 					}
 				}
 			}
+			setSelectedEntry(toSelect);
 		});
+
+		TransparentToolBar bar = new TransparentToolBar();
+		add("North", bar);
+
+		JButton editOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
+				UIRES.get("16px.edit"), e -> {
+					// TODO: if no override yet, ask if user wants one to be created. ask if copy original and warn about copyright
+				});
+		bar.add(editOverride);
+
+		JButton importOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
+				UIRES.get("16px.open"), e -> {
+
+				});
+		bar.add(importOverride);
+
+		JButton deleteOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
+				UIRES.get("16px.delete"), e -> {
+
+				});
+		bar.add(deleteOverride);
+
+		add("Center",
+				PanelUtils.northAndCenterElement(bar, PanelUtils.northAndCenterElement(breadCrumb, previewPanel)));
 	}
 
-	private void setSelectedEntry(ResourcePackStructure.Entry entry) {
+	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
 		previewPanel.removeAll();
 
-		breadCrumb.reloadPath(entry.override());
+		if (entry != null) {
+			breadCrumb.reloadPath(entry.override());
 
-		String extension = FilenameUtils.getExtension(entry.path());
-		if (extension.equalsIgnoreCase("png")) {
-			Image image = ZipIO.readFileInZip(resourcePackArchive, entry.fullPath(), (file, zipEntry) -> {
-				try {
-					return ImageIO.read(file.getInputStream(zipEntry));
-				} catch (IOException e) {
-					return null;
+			String extension = FilenameUtils.getExtension(entry.path());
+			if (extension.equalsIgnoreCase("png")) {
+				Image image = ZipIO.readFileInZip(resourcePackArchive, entry.fullPath(), (file, zipEntry) -> {
+					try {
+						return ImageIO.read(file.getInputStream(zipEntry));
+					} catch (IOException e) {
+						return null;
+					}
+				});
+				ImageIcon originalIcon = null;
+				if (image != null) {
+					originalIcon = new ImageIcon(image);
 				}
-			});
-			ImageIcon originalIcon = null;
-			if (image != null) {
-				originalIcon = new ImageIcon(image);
+				ImageIcon overrideIcon = null;
+				if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
+					overrideIcon = new ImageIcon(entry.override().getAbsolutePath());
+				}
+				showImageEntry(originalIcon, overrideIcon);
+			} else if (!extension.isBlank()) {
+				String original = ZipIO.readCodeInZip(resourcePackArchive, entry.fullPath());
+				String override = null;
+				if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
+					override = FileIO.readFileToString(entry.override());
+				}
+				showTextEntry(entry.override(), original, override);
 			}
-			ImageIcon overrideIcon = null;
-			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
-				overrideIcon = new ImageIcon(entry.override().getAbsolutePath());
-			}
-			showImageEntry(originalIcon, overrideIcon);
-		} else {
-			String original = ZipIO.readCodeInZip(resourcePackArchive, entry.fullPath());
-			String override = null;
-			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
-				override = FileIO.readFileToString(entry.override());
-			}
-			showTextEntry(original, override);
 		}
+
+		previewPanel.revalidate();
+		previewPanel.repaint();
 	}
 
 	private void showImageEntry(@Nullable ImageIcon original, @Nullable ImageIcon override) {
 		if (original != null) {
-
+			ImagePreviewPanel imagePreviewPanel = new ImagePreviewPanel(original);
+			if (override != null) {
+				ImagePreviewPanel overrideImagePreviewPanel = new ImagePreviewPanel(override);
+				previewPanel.add(PanelUtils.westAndEastElement(
+						PanelUtils.northAndCenterElement(new JLabel("<html><big>Original"), imagePreviewPanel),
+						PanelUtils.northAndCenterElement(new JLabel("<html><big>Override"),
+								overrideImagePreviewPanel)));
+			} else {
+				previewPanel.add(imagePreviewPanel);
+			}
 		}
 	}
 
-	private void showTextEntry(@Nullable String original, @Nullable String override) {
+	private void showTextEntry(File file, @Nullable String original, @Nullable String override) {
 		if (original != null) {
-
+			CodeEditorView codeEditorView = new CodeEditorView(mcreator, original, file.getName(), null, true);
+			codeEditorView.hideNotice();
+			if (override != null) {
+				CodeEditorView overrideCodeEditorView = new CodeEditorView(mcreator, override, file.getName(), null,
+						true);
+				overrideCodeEditorView.hideNotice();
+				previewPanel.add(PanelUtils.westAndEastElement(
+						PanelUtils.northAndCenterElement(new JLabel("<html><big>Original"), codeEditorView),
+						PanelUtils.northAndCenterElement(new JLabel("<html><big>Override"), overrideCodeEditorView)));
+			} else {
+				previewPanel.add(codeEditorView);
+			}
 		}
 	}
 
