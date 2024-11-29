@@ -24,6 +24,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,14 +44,27 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		cancel.addActionListener(e -> dispose());
 		ok.addActionListener(e -> {
-			blocklyPanel.addBlocksFromXML(getXML());
-			dispose();
+			if (getValidationResult().validateIsErrorFree()) {
+				blocklyPanel.addBlocksFromXML(getXML());
+				dispose();
+			} else {
+				JOptionPane.showMessageDialog(mcreator,
+						"<html>" + String.join("<br>- ", getValidationResult().getValidationProblemMessages()),
+						title, JOptionPane.ERROR_MESSAGE);
+			}
 		});
 		this.add("South", PanelUtils.join(ok, cancel));
 
 		this.setSize(width, height);
 		this.getRootPane().setDefaultButton(ok);
 		this.setLocationRelativeTo(mcreator);
+	}
+
+	/**
+	 * @return An {@link AggregatedValidationResult}, used to validate the user inputs before generating the blocks.
+	 */
+	protected AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult.PASS();
 	}
 
 	/**

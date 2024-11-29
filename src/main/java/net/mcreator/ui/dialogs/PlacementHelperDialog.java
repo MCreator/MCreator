@@ -30,6 +30,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -83,7 +85,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				L10N.t("dialog.tools.placement_helper.confirm"), 1000, 400);
 		blockSurvivalCondition = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		requiredBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
-		requiredBlocks.setPreferredSize(new Dimension(250, -1));
+		requiredBlocks.setPreferredSize(new Dimension(280, -1));
+		requiredBlocks.setValidator(new ItemListFieldSingleTagValidator(requiredBlocks));
 
 		// Rarity and frequency on single chunk settings
 		JPanel rarityFrequencySettings = new JPanel(new GridLayout(2, 2, 4, 2));
@@ -164,6 +167,10 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				PanelUtils.northAndCenterElement(rarityFrequencySettings, PanelUtils.pullElementUp(heightSettings)),
 				PanelUtils.pullElementUp(conditionsPanel))));
 		this.setVisible(true);
+	}
+
+	@Override public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(requiredBlocks);
 	}
 
 	@Override String getXML() {
