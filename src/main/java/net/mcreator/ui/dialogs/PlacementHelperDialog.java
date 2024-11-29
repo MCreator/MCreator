@@ -71,7 +71,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 			//@formatter:on
 	);
 	private final JSpinner maxWaterDepth = new JSpinner(new SpinnerNumberModel(-1, -1, 1024, 1));
-	private final JCheckBox onlyPlaceUnderwater = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner minWaterDepth = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
 	// Offset and conditions
 	private final JMinMaxSpinner verticalOffset = new JMinMaxSpinner(0, 0, -15, 15, 1).allowEqualValues();
@@ -128,11 +128,11 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		heightmapSettings.add(heightmapType);
 		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.max_water_depth"));
 		heightmapSettings.add(maxWaterDepth);
-		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.only_place_underwater"));
-		heightmapSettings.add(onlyPlaceUnderwater);
+		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.min_water_depth"));
+		heightmapSettings.add(minWaterDepth);
 		heightmapType.addActionListener(e -> {
 			String heightType = heightmapType.getSelectedItem();
-			onlyPlaceUnderwater.setEnabled("OCEAN_FLOOR_WG".equals(heightType) || "OCEAN_FLOOR".equals(heightType));
+			minWaterDepth.setEnabled("OCEAN_FLOOR_WG".equals(heightType) || "OCEAN_FLOOR".equals(heightType));
 		});
 
 		heightCardPanel.add(heightmapSettings, "HEIGHTMAP");
@@ -254,13 +254,14 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 						<next>""".formatted(heightmapType.getSelectedItem()));
 			blocksToClose++;
 
-			if (onlyPlaceUnderwater.isSelected() && onlyPlaceUnderwater.isEnabled()) {
+			int minWaterDepthValue = (int) minWaterDepth.getValue();
+			if (minWaterDepthValue > 0 && minWaterDepth.isEnabled()) {
 				xml.append("""
 					<block type="placement_surface_relative_threshold">
 						<field name="heightmap">WORLD_SURFACE_WG</field>
 						<field name="min">-4096</field>
-						<field name="max">0</field>
-						<next>""");
+						<field name="max">-%d</field>
+						<next>""".formatted(minWaterDepthValue));
 				blocksToClose++;
 			}
 		}
