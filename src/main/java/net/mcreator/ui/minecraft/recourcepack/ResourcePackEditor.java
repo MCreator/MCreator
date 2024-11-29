@@ -34,6 +34,7 @@ import net.mcreator.ui.component.tree.JFileTree;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -46,6 +47,7 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -180,8 +182,9 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			if (override != null) {
 				ImagePreviewPanel overrideImagePreviewPanel = new ImagePreviewPanel(override);
 				previewPanel.add(PanelUtils.westAndEastElement(
-						PanelUtils.northAndCenterElement(new JLabel("<html><big>Original"), imagePreviewPanel),
-						PanelUtils.northAndCenterElement(new JLabel("<html><big>Override"),
+						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.original"),
+								imagePreviewPanel),
+						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.override"),
 								overrideImagePreviewPanel)));
 			} else {
 				previewPanel.add(imagePreviewPanel);
@@ -190,6 +193,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	}
 
 	private void showTextEntry(File file, @Nullable String original, @Nullable String override) {
+		// TODO: do not use CEV but some more lightweight implementation of it
 		if (original != null) {
 			CodeEditorView codeEditorView = new CodeEditorView(mcreator, original, file.getName(), null, true);
 			codeEditorView.hideNotice();
@@ -198,8 +202,9 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 						true);
 				overrideCodeEditorView.hideNotice();
 				previewPanel.add(PanelUtils.westAndEastElement(
-						PanelUtils.northAndCenterElement(new JLabel("<html><big>Original"), codeEditorView),
-						PanelUtils.northAndCenterElement(new JLabel("<html><big>Override"), overrideCodeEditorView)));
+						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.original"), codeEditorView),
+						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.override"),
+								overrideCodeEditorView)));
 			} else {
 				previewPanel.add(codeEditorView);
 			}
@@ -210,6 +215,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	@Override public void reloadElements() {
 		List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
+		TreePath selectionPath = tree.getSelectionPath();
 
 		FilterTreeNode root = new FilterTreeNode("");
 
@@ -235,6 +241,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			initial = false;
 		} else {
 			TreeUtils.setExpansionState(tree, state);
+			tree.setSelectionPath(selectionPath);
 		}
 	}
 
