@@ -87,9 +87,11 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		requiredBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 		requiredBlocks.setPreferredSize(new Dimension(280, -1));
 		requiredBlocks.setValidator(new ItemListFieldSingleTagValidator(requiredBlocks));
+		requiredBlocks.addAdditionalTagSuggestions("minecraft:dirt", "minecraft:sand", "minecraft:terracotta",
+				"minecraft:ice", "minecraft:nylium", "minecraft:base_stone_overworld", "minecraft:base_stone_nether");
 
 		// Rarity and frequency on single chunk settings
-		JPanel rarityFrequencySettings = new JPanel(new GridLayout(2, 2, 4, 2));
+		JPanel rarityFrequencySettings = new JPanel(new GridLayout(2, 2, 4, 4));
 		rarityFrequencySettings.setOpaque(false);
 
 		rarityFrequencySettings.add(L10N.label("dialog.tools.placement_helper.rarity"));
@@ -103,7 +105,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		// Height settings
-		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 2));
+		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 4));
 		heightPlacementSettings.add(L10N.label("dialog.tools.placement_helper.height_placement_type"));
 		heightPlacementSettings.add(heightPlacementType);
 
@@ -111,7 +113,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		JPanel heightCardPanel = new JPanel(heightTypeLayout);
 
 		// Height range page
-		JPanel heightRangeSettings = new JPanel(new GridLayout(2, 2, 4, 2));
+		JPanel heightRangeSettings = new JPanel(new GridLayout(2, 2, 4, 4));
 
 		heightRangeSettings.add(L10N.label("dialog.tools.placement_helper.at_height"));
 		heightRangeSettings.add(heightRange);
@@ -119,7 +121,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		heightRangeSettings.add(distributionType);
 
 		// Heightmap page
-		JPanel heightmapSettings = new JPanel(new GridLayout(3, 2, 4, 2));
+		JPanel heightmapSettings = new JPanel(new GridLayout(3, 2, 4, 4));
 
 		heightmapSettings.add(L10N.label("dialog.tools.placement_helper.heightmap_type"));
 		heightmapSettings.add(heightmapType);
@@ -147,7 +149,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		// Offset and conditions
-		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 2));
+		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
 		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.vertical_offset"));
 		conditionsPanel.add(verticalOffset);
@@ -173,7 +175,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		return new AggregatedValidationResult(requiredBlocks);
 	}
 
-	@Override String getXML() {
+	@Override protected String getXML() {
 		StringBuilder xml = new StringBuilder("<xml>");
 		int blocksToClose = 0;
 
@@ -309,9 +311,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 							<field name="x">0</field>
 							<field name="y">-1</field>
 							<field name="z">0</field>
-							<value name="blockSet">
-								%s
-							</value>
+							<value name="blockSet">%s</value>
 						</block>
 					</value>
 					<next>""".formatted(toTagOrListBlockHolderset(blocks)));

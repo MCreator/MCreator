@@ -70,5 +70,5 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 	/**
 	 * @return The XML that will be converted to Blockly blocks.
 	 */
-	abstract String getXML();
+	protected abstract String getXML();
 }
