@@ -70,6 +70,12 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	@Nullable private File resourcePackArchive = null;
 
+	private final JButton editFile;
+	private final JButton importFile;
+	private final JButton deleteOverrideOrFile;
+	private final JButton addFolder;
+	private final JButton addFile;
+
 	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
@@ -116,35 +122,70 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		TransparentToolBar bar = new TransparentToolBar();
 		add("North", bar);
 
-		JButton editOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
+		editFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
 				UIRES.get("16px.edit"), e -> {
 					// TODO: if no override yet, ask if user wants one to be created. ask if copy original and warn about copyright
 				});
-		bar.add(editOverride);
+		bar.add(editFile);
 
-		JButton importOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
+		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
 				UIRES.get("16px.open"), e -> {
 
 				});
-		bar.add(importOverride);
+		bar.add(importFile);
 
-		JButton deleteOverride = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
+		deleteOverrideOrFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
 				UIRES.get("16px.delete"), e -> {
 
 				});
-		bar.add(deleteOverride);
+		bar.add(deleteOverrideOrFile);
+
+		addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file", UIRES.get("16px.add"),
+				e -> {
+
+				});
+		bar.add(addFile);
+
+		addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
+				UIRES.get("16px.directory"), e -> {
+
+				});
+		bar.add(addFolder);
 
 		add("Center",
 				PanelUtils.northAndCenterElement(bar, PanelUtils.northAndCenterElement(breadCrumb, previewPanel)));
+
+		editFile.setEnabled(false);
+		importFile.setEnabled(false);
+		deleteOverrideOrFile.setEnabled(false);
+		addFolder.setEnabled(false);
 	}
 
 	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
 		previewPanel.removeAll();
 
+		editFile.setEnabled(false);
+		importFile.setEnabled(false);
+		deleteOverrideOrFile.setEnabled(false);
+		addFolder.setEnabled(false);
+
 		if (entry != null) {
 			breadCrumb.reloadPath(entry.override());
 
 			String extension = FilenameUtils.getExtension(entry.path());
+
+			addFolder.setEnabled(true);
+			addFile.setEnabled(true);
+			importFile.setEnabled(true);
+			if (entry.type() != ResourcePackStructure.EntryType.CUSTOM) {
+				if (!extension.isBlank()) {
+					editFile.setEnabled(true);
+				}
+			}
+			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
+				deleteOverrideOrFile.setEnabled(true);
+			}
+
 			if (extension.equalsIgnoreCase("png")) {
 				Image image = ZipIO.readFileInZip(resourcePackArchive, entry.fullPath(), (file, zipEntry) -> {
 					try {
