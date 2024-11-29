@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
@@ -28,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.MCItemListField;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -73,12 +75,15 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 	private final JMinMaxSpinner verticalOffset = new JMinMaxSpinner(0, 0, -15, 15, 1).allowEqualValues();
 	private final MCItemHolder blockSurvivalCondition;
 	private final JCheckBox requireSolidBelow = L10N.checkbox("elementgui.common.enable");
+	private final MCItemListField requiredBlocks;
 
 
 	public PlacementHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator) {
 		super(blocklyPanel, mcreator, L10N.t("dialog.tools.placement_helper.title"),
 				L10N.t("dialog.tools.placement_helper.confirm"), 1000, 400);
 		blockSurvivalCondition = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		requiredBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
+		requiredBlocks.setPreferredSize(new Dimension(250, -1));
 
 		// Rarity and frequency on single chunk settings
 		JPanel rarityFrequencySettings = new JPanel(new GridLayout(2, 2, 4, 2));
@@ -139,7 +144,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		// Offset and conditions
-		JPanel conditionsPanel = new JPanel(new GridLayout(3, 2, 4, 2));
+		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 2));
 
 		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.vertical_offset"));
 		conditionsPanel.add(verticalOffset);
@@ -147,6 +152,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		conditionsPanel.add(PanelUtils.centerInPanel(blockSurvivalCondition));
 		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.require_solid_block"));
 		conditionsPanel.add(requireSolidBelow);
+		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.required_blocks"));
+		conditionsPanel.add(requiredBlocks);
 
 		conditionsPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -284,7 +291,24 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 						</value>
 						<next>""");
 			blocksToClose++;
+		}
 
+		if (!requiredBlocks.getListElements().isEmpty()) {
+			java.util.List<MItemBlock> blocks = requiredBlocks.getListElements();
+			xml.append("""
+				<block type="placement_block_predicate_filter">
+					<value name="condition">
+						<block type="block_predicate_matching_blocks">
+							<field name="x">0</field>
+							<field name="y">-1</field>
+							<field name="z">0</field>
+							<value name="blockSet">
+								%s
+							</value>
+						</block>
+					</value>
+					<next>""".formatted(toTagOrListBlockHolderset(blocks)));
+			blocksToClose++;
 		}
 
 		// Add the biome filter block (no need for blocksToClose as it does not open next)
@@ -305,5 +329,22 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 					<field name="min">%d</field>
 					<field name="max">%d</field>
 				</block>""".formatted(min, max);
+	}
+
+	private String toTagOrListBlockHolderset(java.util.List<MItemBlock> blocks) {
+		if (blocks.getFirst().getUnmappedValue().startsWith("TAG:")) {
+			return """
+					<block type="block_holderset_tag">
+						<field name="tag">%s</field>
+					</block>""".formatted(blocks.getFirst().getUnmappedValue().substring(4));
+		} else {
+			StringBuilder result = new StringBuilder();
+			result.append("<block type=\"block_holderset_list\"><mutation inputs=\"%d\"></mutation>".formatted(blocks.size()));
+			for (int i = 0; i < blocks.size(); i++) {
+				result.append("<field name=\"block%d\">%s</field>".formatted(i, blocks.get(i).getUnmappedValue()));
+			}
+			result.append("</block>");
+			return result.toString();
+		}
 	}
 }
