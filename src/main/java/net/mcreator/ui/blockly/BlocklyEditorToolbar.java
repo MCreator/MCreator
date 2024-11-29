@@ -169,7 +169,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		});
-		normalizeButton4(export);
+		styleButton(export);
 		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
@@ -207,7 +207,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}, "Blockly-Template-Import").start();
 			}
 		});
-		normalizeButton4(import_);
+		styleButton(import_);
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
@@ -308,12 +308,12 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 	}
 
-	public static void normalizeButton4(AbstractButton button) {
+	public static void styleButton(AbstractButton button) {
 		button.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(0, 0, 0, 0)),
 						BorderFactory.createCompoundBorder(
 								BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"), 1),
-								BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
+								BorderFactory.createMatteBorder(1, 3, 1, 5, new Color(0, 0, 0, 0)))));
 		ComponentUtils.deriveFont(button, 11);
 	}
 
