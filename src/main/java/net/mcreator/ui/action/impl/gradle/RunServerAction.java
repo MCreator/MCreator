@@ -74,6 +74,7 @@ public class RunServerAction extends GradleAction {
 				MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
 
 			AtomicBoolean clientStarted = new AtomicBoolean(false);
+			actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
 			actionRegistry.getMCreator().getGradleConsole()
 					.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server"),
 							progressEvent -> {

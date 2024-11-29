@@ -263,7 +263,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
+		splitPane.setDividerLocation(workspace.getWorkspaceUserSettings().projectBrowserSplitPos);
 
 		splitPane.addPropertyChangeListener("dividerLocation", evt -> {
 			if ((Integer) evt.getNewValue() == 0) {
@@ -389,8 +389,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(
-						splitPane.getDividerLocation()); // this one could be stored per workspace in the future
+				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
