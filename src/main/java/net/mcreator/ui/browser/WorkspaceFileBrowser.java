@@ -31,6 +31,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.JFileTree;
+import net.mcreator.ui.component.tree.SerializableTreeExpansionState;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
@@ -43,6 +44,8 @@ import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -175,6 +178,16 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 		});
+
+		tree.addTreeExpansionListener(new TreeExpansionListener() {
+			@Override public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
+				mcreator.getWorkspaceUserSettings().projectBrowserState = SerializableTreeExpansionState.fromTree(tree);
+			}
+
+			@Override public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
+				mcreator.getWorkspaceUserSettings().projectBrowserState = SerializableTreeExpansionState.fromTree(tree);
+			}
+		});
 	}
 
 	private boolean initial = true;
@@ -272,7 +285,11 @@ public class WorkspaceFileBrowser extends JPanel {
 			mods.setRoot(root);
 
 			if (initial) {
-				tree.expandPath(new TreePath(new Object[] { root, node }));
+				SerializableTreeExpansionState expansionState = mcreator.getWorkspaceUserSettings().projectBrowserState;
+				if (expansionState != null)
+					expansionState.applyToTree(tree);
+				else
+					tree.expandPath(new TreePath(new Object[] { root, node }));
 				initial = false;
 			} else {
 				TreeUtils.setExpansionState(tree, state);
