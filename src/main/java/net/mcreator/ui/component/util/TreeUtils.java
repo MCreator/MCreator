@@ -139,8 +139,17 @@ public class TreeUtils {
 
 		// If the node matches the predicate, expand it
 		if (predicate.test(node)) {
-			TreePath path = getPath(node);
-			tree.expandPath(path);
+			List<Object> nodes = new ArrayList<>();
+			TreeNode treeNode = node;
+			nodes.add(treeNode);
+			treeNode = treeNode.getParent();
+			while (treeNode != null) {
+				nodes.addFirst(treeNode);
+				treeNode = treeNode.getParent();
+			}
+
+			nodes.removeLast();
+			tree.expandPath(nodes.isEmpty() ? null : new TreePath(nodes.toArray()));
 		}
 
 		// Recurse into children

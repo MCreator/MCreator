@@ -61,8 +61,12 @@ public class FileNode<T> {
 	}
 
 	void addElement(String currentPath, String[] list, @Nullable T object) {
-		while (list[0] == null || list[0].isEmpty())
+		while (list.length > 0 && (list[0] == null || list[0].isEmpty()))
 			list = Arrays.copyOfRange(list, 1, list.length);
+
+		if (list.length == 0) { // No valid elements to process
+			return;
+		}
 
 		FileNode<T> currentChild = new FileNode<>(list[0], currentPath + "/" + list[0], object);
 		if (list.length == 1) {
@@ -84,6 +88,10 @@ public class FileNode<T> {
 			return incrementalPath.equals(cmpObj.incrementalPath) && data.equals(cmpObj.data);
 		}
 		return false;
+	}
+
+	@Override public int hashCode() {
+		return (incrementalPath + "@" + data).hashCode();
 	}
 
 	@Override public String toString() {
