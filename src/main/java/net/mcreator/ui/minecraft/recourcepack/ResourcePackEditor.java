@@ -36,7 +36,6 @@ import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -91,7 +90,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setOpaque(false);
 		jsp.getViewport().setOpaque(false);
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 
@@ -110,7 +108,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 					&& node.getUserObject() instanceof FileNode<?> fileNode) {
 				if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
 					if (entry.path().equals(fileNode.incrementalPath)) {
-						toSelect = entry;
+						if (entry.type() == ResourcePackStructure.EntryType.VANILLA || entry.override().exists())
+							toSelect = entry; // prevents edge cases where deleted entry is attempted to be selected
 					} else {
 						toSelect = entry.parent();
 					}

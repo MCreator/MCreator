@@ -29,8 +29,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -61,8 +63,8 @@ public class ResourcePackStructure {
 		return null;
 	}
 
-	public static List<Entry> getResourcePackStructure(Workspace workspace, @Nullable File resourcePackArchive) {
-		List<Entry> entries = new ArrayList<>();
+	public static Collection<Entry> getResourcePackStructure(Workspace workspace, @Nullable File resourcePackArchive) {
+		Set<Entry> entries = new TreeSet<>();
 
 		if (resourcePackArchive != null) {
 			ZipIO.iterateZip(resourcePackArchive, entry -> {
@@ -84,9 +86,26 @@ public class ResourcePackStructure {
 		try (Stream<Path> paths = Files.walk(customResources.toPath())) {
 			paths.forEach(path -> {
 				File file = path.toFile();
-				if (file.isFile() && extensions.contains(FilenameUtils.getExtension(file.getName()))) {
-					String relativePath = customResources.toPath().relativize(path).toString();
-					entries.add(new Entry(relativePath, file, EntryType.CUSTOM));
+				String relativePath = "/" + customResources.toPath().relativize(path).toString().replace("\\", "/");
+				Entry toAdd = new Entry(relativePath, file, EntryType.CUSTOM);
+				if (file.isDirectory()) {
+					if (file.isDirectory() && !relativePath.endsWith("/"))
+						relativePath += "/";
+
+					boolean folderExists = false;
+					for (Entry existing : entries) {
+						if (existing.path().startsWith(relativePath)) {
+							folderExists = true;
+							break;
+						}
+					}
+
+					if (!folderExists) { // If folder is already defined, do not re-add it
+						entries.add(toAdd);
+					}
+				} else {
+					entries.remove(toAdd); // make sure to override existing entry if it exists
+					entries.add(toAdd);
 				}
 			});
 		} catch (IOException ignored) {
@@ -95,7 +114,7 @@ public class ResourcePackStructure {
 		return entries;
 	}
 
-	public record Entry(String path, File override, EntryType type) {
+	public record Entry(String path, File override, EntryType type) implements Comparable<Entry> {
 
 		public String fullPath() {
 			return RESOURCES_FOLDER + path;
@@ -103,6 +122,21 @@ public class ResourcePackStructure {
 
 		public Entry parent() {
 			return new Entry(FilenameUtils.getFullPath(path), override.getParentFile(), type);
+		}
+
+		@Override public int compareTo(Entry o) {
+			return path.compareTo(o.path);
+		}
+
+		@Override public boolean equals(Object obj) {
+			if (obj instanceof Entry entry) {
+				return path.equals(entry.path);
+			}
+			return false;
+		}
+
+		@Override public int hashCode() {
+			return path.hashCode();
 		}
 
 	}

@@ -22,6 +22,7 @@ package net.mcreator.ui.minecraft.recourcepack;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.component.tree.FilterTreeNode;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.themes.Theme;
 
@@ -41,6 +42,10 @@ public class ResourcePackTreeCellRenderer extends DefaultTreeCellRenderer {
 			a.setText(fileNode.data);
 			a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			if (!sel && fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
+				if (entry.override().isDirectory()) {
+					// workaround for empty directories because they appear as leafs in the setIcon above
+					a.setIcon(UIRES.get("laf.directory"));
+				}
 				if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
 					a.setForeground(Theme.current().getAltForegroundColor());
 				} else {
