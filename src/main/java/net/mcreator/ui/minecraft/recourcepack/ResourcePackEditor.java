@@ -25,15 +25,16 @@ import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.CodePreviewPanel;
 import net.mcreator.ui.component.ImagePreviewPanel;
 import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.component.tree.FilteredTreeModel;
 import net.mcreator.ui.component.tree.JFileTree;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
-import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -69,11 +70,12 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	@Nullable private File resourcePackArchive = null;
 
+	private final JLabel originalLabel = L10N.label("mcreator.resourcepack.original");
+	private final JLabel overrideLabel = L10N.label("mcreator.resourcepack.override");
+
 	private final JButton editFile;
 	private final JButton importFile;
 	private final JButton deleteOverrideOrFile;
-	private final JButton addFolder;
-	private final JButton addFile;
 
 	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -84,23 +86,67 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		this.workspace = mcreator.getWorkspace();
 		this.workspacePanel = workspacePanel;
 
+		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
+		overrideLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
+
+		ComponentUtils.deriveFont(originalLabel, 12);
+		ComponentUtils.deriveFont(overrideLabel, 12);
+
 		this.tree = new JFileTree(model);
 		tree.setCellRenderer(new ResourcePackTreeCellRenderer());
 
 		JScrollPane jsp = new JScrollPane(tree);
-		jsp.setOpaque(false);
-		jsp.getViewport().setOpaque(false);
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 
-		jsp.setPreferredSize(new Dimension(320, 0));
+		TransparentToolBar folderBar = new TransparentToolBar();
+		add("North", folderBar);
 
-		add("West", jsp);
+		JButton addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file",
+				UIRES.get("16px.add"), e -> {
+
+				});
+		folderBar.add(addFile);
+
+		JButton addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
+				UIRES.get("16px.directory"), e -> {
+
+				});
+		folderBar.add(addFolder);
 
 		File root = ResourcePackStructure.getResourcePackRoot(workspace);
 		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
 
 		previewPanel.setOpaque(false);
+
+		TransparentToolBar fileBar = new TransparentToolBar();
+		add("North", fileBar);
+
+		editFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
+				UIRES.get("16px.edit"), e -> {
+					// TODO: if no override yet, ask if user wants one to be created. ask if copy original and warn about copyright
+				});
+		fileBar.add(editFile);
+
+		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
+				UIRES.get("16px.open"), e -> {
+
+				});
+		fileBar.add(importFile);
+
+		deleteOverrideOrFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
+				UIRES.get("16px.delete"), e -> {
+
+				});
+		fileBar.add(deleteOverrideOrFile);
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				PanelUtils.northAndCenterElement(folderBar, jsp),
+				PanelUtils.northAndCenterElement(fileBar, PanelUtils.northAndCenterElement(breadCrumb, previewPanel)));
+		splitPane.setDividerLocation(320);
+		splitPane.setOpaque(false);
+
+		add("Center", splitPane);
 
 		tree.addTreeSelectionListener(e -> {
 			ResourcePackStructure.Entry toSelect = null;
@@ -118,46 +164,9 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			setSelectedEntry(toSelect);
 		});
 
-		TransparentToolBar bar = new TransparentToolBar();
-		add("North", bar);
-
-		editFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
-				UIRES.get("16px.edit"), e -> {
-					// TODO: if no override yet, ask if user wants one to be created. ask if copy original and warn about copyright
-				});
-		bar.add(editFile);
-
-		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
-				UIRES.get("16px.open"), e -> {
-
-				});
-		bar.add(importFile);
-
-		deleteOverrideOrFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
-				UIRES.get("16px.delete"), e -> {
-
-				});
-		bar.add(deleteOverrideOrFile);
-
-		addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file", UIRES.get("16px.add"),
-				e -> {
-
-				});
-		bar.add(addFile);
-
-		addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
-				UIRES.get("16px.directory"), e -> {
-
-				});
-		bar.add(addFolder);
-
-		add("Center",
-				PanelUtils.northAndCenterElement(bar, PanelUtils.northAndCenterElement(breadCrumb, previewPanel)));
-
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
-		addFolder.setEnabled(false);
 	}
 
 	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
@@ -166,20 +175,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
-		addFolder.setEnabled(false);
 
 		if (entry != null) {
 			breadCrumb.reloadPath(entry.override());
 
 			String extension = FilenameUtils.getExtension(entry.path());
 
-			addFolder.setEnabled(true);
-			addFile.setEnabled(true);
 			importFile.setEnabled(true);
-			if (entry.type() != ResourcePackStructure.EntryType.CUSTOM) {
-				if (!extension.isBlank()) {
-					editFile.setEnabled(true);
-				}
+			if (!extension.isBlank()) {
+				editFile.setEnabled(true);
 			}
 			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
 				deleteOverrideOrFile.setEnabled(true);
@@ -221,33 +225,32 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			ImagePreviewPanel imagePreviewPanel = new ImagePreviewPanel(original);
 			if (override != null) {
 				ImagePreviewPanel overrideImagePreviewPanel = new ImagePreviewPanel(override);
-				previewPanel.add(PanelUtils.westAndEastElement(
-						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.original"),
-								imagePreviewPanel),
-						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.override"),
-								overrideImagePreviewPanel)));
+				previewPanel.add(PanelUtils.gridElements(1, 2,
+						PanelUtils.northAndCenterElement(originalLabel, imagePreviewPanel),
+						PanelUtils.northAndCenterElement(overrideLabel, overrideImagePreviewPanel)));
 			} else {
 				previewPanel.add(imagePreviewPanel);
 			}
+		} else if (override != null) {
+			ImagePreviewPanel overrideImagePreviewPanel = new ImagePreviewPanel(override);
+			previewPanel.add(overrideImagePreviewPanel);
 		}
 	}
 
 	private void showTextEntry(File file, @Nullable String original, @Nullable String override) {
-		// TODO: do not use CEV but some more lightweight implementation of it
 		if (original != null) {
-			CodeEditorView codeEditorView = new CodeEditorView(mcreator, original, file.getName(), null, true);
-			codeEditorView.hideNotice();
+			CodePreviewPanel codeEditorView = new CodePreviewPanel(original, file);
 			if (override != null) {
-				CodeEditorView overrideCodeEditorView = new CodeEditorView(mcreator, override, file.getName(), null,
-						true);
-				overrideCodeEditorView.hideNotice();
-				previewPanel.add(PanelUtils.westAndEastElement(
-						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.original"), codeEditorView),
-						PanelUtils.northAndCenterElement(L10N.label("mcreator.resourcepack.override"),
-								overrideCodeEditorView)));
+				CodePreviewPanel overrideCodeEditorView = new CodePreviewPanel(override, file);
+				previewPanel.add(
+						PanelUtils.gridElements(1, 2, PanelUtils.northAndCenterElement(originalLabel, codeEditorView),
+								PanelUtils.northAndCenterElement(overrideLabel, overrideCodeEditorView)));
 			} else {
 				previewPanel.add(codeEditorView);
 			}
+		} else if (override != null) {
+			CodePreviewPanel overrideCodeEditorView = new CodePreviewPanel(override, file);
+			previewPanel.add(overrideCodeEditorView);
 		}
 	}
 

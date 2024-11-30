@@ -41,15 +41,17 @@ public class ResourcePackTreeCellRenderer extends DefaultTreeCellRenderer {
 		if (node.getUserObject() instanceof FileNode<?> fileNode) {
 			a.setText(fileNode.data);
 			a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
-			if (!sel && fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
+			if (fileNode.getObject() instanceof ResourcePackStructure.Entry entry) {
 				if (entry.override().isDirectory()) {
 					// workaround for empty directories because they appear as leafs in the setIcon above
 					a.setIcon(UIRES.get("laf.directory"));
 				}
-				if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
-					a.setForeground(Theme.current().getAltForegroundColor());
-				} else {
-					a.setForeground(Theme.current().getForegroundColor());
+				if (!sel) {
+					if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
+						a.setForeground(Theme.current().getAltForegroundColor());
+					} else {
+						a.setForeground(Theme.current().getForegroundColor());
+					}
 				}
 			}
 		}
