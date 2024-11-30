@@ -46,10 +46,16 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.isBonemealable && data.plantType != "sapling">
 	<#assign interfaces += ["BonemealableBlock"]>
 </#if>
+<#if data.isWaterloggable()>
+	<#assign interfaces += ["SimpleWaterloggedBlock"]>
+</#if>
 public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if interfaces?size gt 0>
 		implements ${interfaces?join(",")}
 	</#if>{
+	<#if data.isWaterloggable()>
+		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	</#if>
 	<#if data.plantType == "sapling">
 		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
 	</#if>
@@ -113,7 +119,34 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		</#if>
 		.offsetType(BlockBehaviour.OffsetType.${data.offsetType}).pushReaction(PushReaction.DESTROY)
 		);
+
+		<#if data.isWaterloggable()>
+		<@initStateProperties/>
+		</#if>
 	}
+
+	<#if data.isWaterloggable()>
+	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(WATERLOGGED);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+	}
+
+	@Override public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+		}
+		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+	}
+	</#if>
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
@@ -235,15 +268,18 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if data.plantType == "growapable" || hasProcedure(data.onTickUpdate)>
 	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
 		<#if data.plantType == "growapable">
-		if (world.isEmptyBlock(pos.above())) {
+		<#if data.isWaterloggable()>
+		boolean flag = world.getBlockState(pos.above()).is(Blocks.WATER);
+		</#if>
+		if (world.isEmptyBlock(pos.above()) <#if data.isWaterloggable()>|| flag</#if>) {
 			int i = 1;
 			for(;world.getBlockState(pos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
 				if (CommonHooks.canCropGrow(world, pos, blockstate, true)) {
 					if (j == 15) {
-						world.setBlockAndUpdate(pos.above(), defaultBlockState());
-						CommonHooks.fireCropGrowPost(world, pos.above(), defaultBlockState());
+						world.setBlockAndUpdate(pos.above(), defaultBlockState()<#if data.isWaterloggable()>.setValue(WATERLOGGED, flag)</#if>);
+						CommonHooks.fireCropGrowPost(world, pos.above(), defaultBlockState()<#if data.isWaterloggable()>.setValue(WATERLOGGED, flag)</#if>);
 						world.setBlock(pos, blockstate.setValue(AGE, 0), 4);
 					} else {
 						world.setBlock(pos, blockstate.setValue(AGE, j + 1), 4);
@@ -396,4 +432,19 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#else>
 	Optional.empty()
 	</#if>
+</#macro>
+
+<#macro initStateProperties>
+this.registerDefaultState(this.stateDefinition.any()
+	<#if data.plantType == "double">
+	.setValue(HALF, DoubleBlockHalf.LOWER)
+	<#elseif data.plantType == "growapable">
+	.setValue(AGE, 0)
+	<#elseif data.plantType == "sapling">
+	.setValue(STAGE, 0)
+	</#if>
+	<#if data.isWaterloggable()>
+	.setValue(WATERLOGGED, false)
+	</#if>
+);
 </#macro>

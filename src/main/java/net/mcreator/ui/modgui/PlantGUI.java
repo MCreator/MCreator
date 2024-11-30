@@ -95,6 +95,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox hasTileEntity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isSolid = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(18);
 
@@ -334,6 +335,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		emissiveRendering.setOpaque(false);
 		isSolid.setOpaque(false);
+		isWaterloggable.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		isBonemealable.setOpaque(false);
@@ -422,6 +424,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			trees[i].setPreferredSize(new Dimension(280, -1));
 			flowerTrees[i].setPreferredSize(new Dimension(280, -1));
 			megaTrees[i].setPreferredSize(new Dimension(280, -1));
+			megaTrees[i].addEntrySelectedListener(e -> updateWaterloggableSetting());
 		}
 
 		saplingCard.add("Center", PanelUtils.pullElementUp(saplingProperties));
@@ -472,7 +475,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -536,6 +539,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
 				L10N.label("elementgui.plant.is_solid")));
 		selp.add(isSolid);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
+				L10N.label("elementgui.plant.is_waterloggable")));
+		selp.add(isWaterloggable);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -777,6 +784,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom.setVisible(false);
 
 		refreshBonemealProperties(); // disable settings if sapling is selected
+		updateWaterloggableSetting(); // disable waterlogging if sapling with mega trees is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
 			texture.setVisible(true);
@@ -832,6 +840,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
 		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected() && !isSapling);
 		onBonemealSuccess.setEnabled(isBonemealable.isSelected() && !isSapling);
+	}
+
+	private void updateWaterloggableSetting() {
+		boolean canBeWaterlogged =
+				!"sapling".equals(plantType.getSelectedItem()) || (megaTrees[0].isEmpty() && megaTrees[1].isEmpty());
+		isWaterloggable.setEnabled(canBeWaterlogged);
+		if (!canBeWaterlogged)
+			isWaterloggable.setSelected(false);
 	}
 
 	private AggregatedValidationResult validateSaplingTrees() {
@@ -921,6 +937,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		frequencyOnChunks.setValue(plant.frequencyOnChunks);
 		emissiveRendering.setSelected(plant.emissiveRendering);
 		isSolid.setSelected(plant.isSolid);
+		isWaterloggable.setSelected(plant.isWaterloggable);
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
@@ -1064,6 +1081,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
+		plant.isWaterloggable = isWaterloggable.isSelected();
 		plant.isBonemealable = isBonemealable.isSelected();
 		plant.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
 		plant.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
