@@ -389,7 +389,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
+				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
