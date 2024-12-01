@@ -101,10 +101,12 @@ public class ResourcePackStructure {
 					}
 
 					if (!folderExists) { // If folder is already defined, do not re-add it
-						entries.add(toAdd);
+						File[] children = file.listFiles();
+						// Only explicitly add empty folders because non-empty folders will be added by their children
+						if (children == null || children.length == 0)
+							entries.add(toAdd);
 					}
 				} else {
-					entries.remove(toAdd); // make sure to override existing entry if it exists
 					entries.add(toAdd);
 				}
 			});

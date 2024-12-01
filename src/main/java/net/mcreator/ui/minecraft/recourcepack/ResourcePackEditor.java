@@ -24,6 +24,7 @@ import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
+import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CodePreviewPanel;
 import net.mcreator.ui.component.ImagePreviewPanel;
@@ -37,6 +38,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -52,8 +54,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
+
+	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh");
 
 	private final MCreator mcreator;
 	private final Workspace workspace;
@@ -61,6 +66,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	@Nullable private final WorkspacePanel workspacePanel;
 
 	private final JFileTree tree;
+	@Nullable ResourcePackStructure.Entry selectedEntry = null;
 
 	private final JFileBreadCrumb breadCrumb;
 
@@ -87,10 +93,14 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		this.workspacePanel = workspacePanel;
 
 		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
-		overrideLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
+		ComponentUtils.deriveFont(originalLabel, 13);
+		originalLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		originalLabel.setVerticalTextPosition(SwingConstants.CENTER);
 
-		ComponentUtils.deriveFont(originalLabel, 12);
-		ComponentUtils.deriveFont(overrideLabel, 12);
+		overrideLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
+		ComponentUtils.deriveFont(overrideLabel, 13);
+		overrideLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		overrideLabel.setVerticalTextPosition(SwingConstants.CENTER);
 
 		this.tree = new JFileTree(model);
 		tree.setCellRenderer(new ResourcePackTreeCellRenderer());
@@ -104,13 +114,13 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		JButton addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file",
 				UIRES.get("16px.add"), e -> {
-
+					// TODO: implement
 				});
 		folderBar.add(addFile);
 
 		JButton addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
 				UIRES.get("16px.directory"), e -> {
-
+					// TODO: implement
 				});
 		folderBar.add(addFolder);
 
@@ -124,27 +134,49 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		editFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
 				UIRES.get("16px.edit"), e -> {
-					// TODO: if no override yet, ask if user wants one to be created. ask if copy original and warn about copyright
+					if (selectedEntry != null && selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
+						File override = selectedEntry.override();
+						if (override.isFile()) {
+							FileOpener.openFile(mcreator, override);
+						}
+					} else {
+						// TODO: ask if make new file or duplicate vanilla and edit
+					}
 				});
 		fileBar.add(editFile);
 
 		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
 				UIRES.get("16px.open"), e -> {
-
+					// TODO: implement
 				});
 		fileBar.add(importFile);
 
-		deleteOverrideOrFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.delete_override",
+		deleteOverrideOrFile = AbstractWorkspacePanel.createToolBarButton("common.delete_selected",
 				UIRES.get("16px.delete"), e -> {
-
+					if (selectedEntry != null && selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
+						File toDelete = selectedEntry.override();
+						int n = JOptionPane.showConfirmDialog(mcreator,
+								L10N.t("mcreator.resourcepack.delete_override_confirm", toDelete.getName()),
+								L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						if (n == JOptionPane.YES_OPTION) {
+							if (toDelete.isDirectory()) {
+								FileIO.deleteDir(toDelete);
+							} else {
+								toDelete.delete();
+							}
+							setSelectedEntry(null);
+							reloadElements();
+						}
+					}
 				});
 		fileBar.add(deleteOverrideOrFile);
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				PanelUtils.northAndCenterElement(folderBar, jsp),
-				PanelUtils.northAndCenterElement(fileBar, PanelUtils.northAndCenterElement(breadCrumb, previewPanel)));
-		splitPane.setDividerLocation(320);
+				PanelUtils.northAndCenterElement(fileBar, PanelUtils.centerAndSouthElement(previewPanel, breadCrumb)));
+		splitPane.setDividerLocation(300);
 		splitPane.setOpaque(false);
+		splitPane.setBackground(Theme.current().getBackgroundColor());
 
 		add("Center", splitPane);
 
@@ -170,6 +202,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	}
 
 	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
+		this.selectedEntry = entry;
+
 		previewPanel.removeAll();
 
 		editFile.setEnabled(false);
@@ -184,6 +218,13 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			importFile.setEnabled(true);
 			if (!extension.isBlank()) {
 				editFile.setEnabled(true);
+				if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
+					editFile.setText(L10N.t("mcreator.resourcepack.edit_vanilla"));
+				} else if (entry.type() == ResourcePackStructure.EntryType.CUSTOM) {
+					editFile.setText(L10N.t("mcreator.resourcepack.edit_file"));
+				} else {
+					editFile.setText(L10N.t("mcreator.resourcepack.edit_override"));
+				}
 			}
 			if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
 				deleteOverrideOrFile.setEnabled(true);
@@ -206,7 +247,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 					overrideIcon = new ImageIcon(entry.override().getAbsolutePath());
 				}
 				showImageEntry(originalIcon, overrideIcon);
-			} else if (!extension.isBlank()) {
+			} else if (textExtensions.contains(extension.toLowerCase(Locale.ROOT))) {
 				String original = ZipIO.readCodeInZip(resourcePackArchive, entry.fullPath());
 				String override = null;
 				if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
