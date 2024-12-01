@@ -20,6 +20,7 @@
 package net.mcreator.java.monitoring;
 
 import com.sun.management.OperatingSystemMXBean;
+import net.mcreator.util.NetworkUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,7 +48,7 @@ public class JMXMonitorClient {
 	public JMXMonitorClient(Map<String, String> environment, JMXMonitorEventListener listener, int refreshInterval) {
 		this.listener = listener;
 
-		int jmxPort = findAvailablePort();
+		int jmxPort = NetworkUtils.findAvailablePort(5006);
 
 		//@formatter:off
 		String javaToolOptions =
@@ -116,17 +117,6 @@ public class JMXMonitorClient {
 			}
 		}
 		return null;
-	}
-
-	private int findAvailablePort() {
-		int port;
-		try (ServerSocket socket = new ServerSocket(0)) {
-			port = socket.getLocalPort();
-		} catch (IOException e) {
-			LOG.warn("Failed to find available port for debugging, using default 5006", e);
-			return 5006;
-		}
-		return port;
 	}
 
 	public boolean isActive() {
