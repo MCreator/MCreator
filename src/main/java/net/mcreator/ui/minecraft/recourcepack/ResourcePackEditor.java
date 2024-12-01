@@ -36,9 +36,11 @@ import net.mcreator.ui.component.tree.JFileTree;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
+import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -50,18 +52,17 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
 	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh");
 
-	private final MCreator mcreator;
 	private final Workspace workspace;
 
 	@Nullable private final WorkspacePanel workspacePanel;
@@ -87,8 +88,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
-
-		this.mcreator = mcreator;
 
 		this.workspace = mcreator.getWorkspace();
 		this.workspacePanel = workspacePanel;
@@ -150,23 +149,29 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 									L10N.t("common.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
 							if (n == JOptionPane.YES_OPTION) {
-									File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(), (file, zipEntry) -> {
-										try {
-											FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry), selectedEntry.override());
-											return selectedEntry.override();
-										} catch (IOException e1) {
-											return null;
-										}
-									});
-									if (result != null) {
-										FileOpener.openFile(mcreator, result);
-									}
+								File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
+										(file, zipEntry) -> {
+											try {
+												FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
+														selectedEntry.override());
+												return selectedEntry.override();
+											} catch (IOException e1) {
+												return null;
+											}
+										});
+								if (result != null) {
+									FileOpener.openFile(mcreator, result);
+									reloadElements();
+								}
 							} else if (n == JOptionPane.NO_OPTION) {
 								if (extension.equals("png")) {
-
+									ImageMakerView imageMakerView = new ImageMakerView(mcreator);
+									new NewImageDialog(mcreator, imageMakerView).setVisible(true);
+									imageMakerView.setSaveLocation(selectedEntry.override());
 								} else if (textExtensions.contains(extension)) {
 									FileIO.writeStringToFile("", selectedEntry.override());
 									FileOpener.openFile(mcreator, selectedEntry.override());
+									reloadElements();
 								} else {
 									// Can't create new file of this type
 									Toolkit.getDefaultToolkit().beep();
@@ -196,7 +201,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							} else {
 								toDelete.delete();
 							}
-							setSelectedEntry(null);
 							reloadElements();
 						}
 					}
@@ -206,7 +210,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				PanelUtils.northAndCenterElement(folderBar, jsp),
 				PanelUtils.northAndCenterElement(fileBar, PanelUtils.centerAndSouthElement(previewPanel, breadCrumb)));
-		splitPane.setDividerLocation(300);
+		splitPane.setDividerLocation(320);
 		splitPane.setOpaque(false);
 		splitPane.setBackground(Theme.current().getBackgroundColor());
 
@@ -331,7 +335,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	@Override public void reloadElements() {
 		List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
-		TreePath selectionPath = tree.getSelectionPath();
+		ResourcePackStructure.Entry selectedEntry = this.selectedEntry;
 
 		FilterTreeNode root = new FilterTreeNode("");
 
@@ -357,7 +361,21 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			initial = false;
 		} else {
 			TreeUtils.setExpansionState(tree, state);
-			tree.setSelectionPath(selectionPath);
+
+			if (selectedEntry != null) {
+				AtomicReference<ResourcePackStructure.Entry> newEntry = new AtomicReference<>(null);
+				TreeUtils.selectNodeByUserObject(tree, entry -> {
+					if (entry.getObject() instanceof ResourcePackStructure.Entry selectedEntry2) {
+						boolean match = selectedEntry2.path().equals(selectedEntry.path());
+						if (match) {
+							newEntry.set(selectedEntry2);
+						}
+						return match;
+					}
+					return false;
+				}, FileNode.class);
+				setSelectedEntry(newEntry.get());
+			}
 		}
 	}
 

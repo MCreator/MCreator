@@ -141,6 +141,9 @@ public class ResourcePackStructure {
 			return path.hashCode();
 		}
 
+		@Override public String toString() {
+			return path + " [" + type + "]";
+		}
 	}
 
 	public enum EntryType {
