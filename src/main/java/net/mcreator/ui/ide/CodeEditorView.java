@@ -484,6 +484,8 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
 		} else if (fileName.endsWith(".md")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
+		} else if (fileName.endsWith(".vsh") || fileName.endsWith(".fsh")) {
+			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
@@ -691,7 +693,7 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
 				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
