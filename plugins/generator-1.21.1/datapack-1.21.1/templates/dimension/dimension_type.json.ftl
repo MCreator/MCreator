@@ -1,10 +1,10 @@
 {
   "ultrawarm": ${data.doesWaterVaporize},
   "natural": ${data.imitateOverworldBehaviour},
-  "piglin_safe": ${!data.imitateOverworldBehaviour},
+  "piglin_safe": ${data.piglinSafe},
   "respawn_anchor_works": ${data.canRespawnHere},
   "bed_works": ${data.sleepResult == "ALLOW"},
-  "has_raids": ${data.imitateOverworldBehaviour},
+  "has_raids": ${data.hasRaids},
   "has_skylight": ${data.hasSkyLight},
   "has_ceiling": ${data.worldGenType == "Nether like gen"},
   "coordinate_scale": ${data.coordinateScale},
@@ -22,17 +22,16 @@
   "height": 256,
   "logical_height": 256,
   </#if>
-  <#if data.worldGenType == "Nether like gen">
-  "monster_spawn_light_level": 11,
-  "monster_spawn_block_light_limit": 15,
+  <#if data.minMonsterSpawnLightLimit == data.maxMonsterSpawnLightLimit>
+  "monster_spawn_light_level": ${data.minMonsterSpawnLightLimit},
   <#else>
   "monster_spawn_light_level": {
     "type": "minecraft:uniform",
-    "min_inclusive": 0,
-    "max_inclusive": 7
+    "min_inclusive": ${data.minMonsterSpawnLightLimit},
+    "max_inclusive": ${data.maxMonsterSpawnLightLimit}
   },
-  "monster_spawn_block_light_limit": 0,
   </#if>
+  "monster_spawn_block_light_limit": ${data.monsterSpawnBlockLightLimit},
   <#if var_customeffects?? && var_customeffects == "true">
   "effects": "${modid}:${registryname}"
   <#else>

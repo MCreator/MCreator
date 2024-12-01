@@ -63,6 +63,11 @@ import java.util.*;
 	public String sleepResult;
 	public boolean hasSkyLight;
 	public boolean imitateOverworldBehaviour;
+	public boolean piglinSafe;
+	public boolean hasRaids;
+	public int minMonsterSpawnLightLimit;
+	public int maxMonsterSpawnLightLimit;
+	public int monsterSpawnBlockLightLimit;
 
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;

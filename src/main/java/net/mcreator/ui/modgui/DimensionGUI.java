@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -92,6 +93,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final VTextField infiniburnTag = new VTextField();
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fixedTimeValue = new JSpinner(new SpinnerNumberModel(0, 0, 24000, 1));
+	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasRaids = L10N.checkbox("elementgui.common.enable");
+	private final JMinMaxSpinner monsterSpawnLightLimit = new JMinMaxSpinner(0, 7, 0, 15, 1).allowEqualValues();
+	private final JSpinner monsterSpawnBlockLightLimit = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.common.enable");
@@ -237,9 +242,34 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
-		isDark.setOpaque(false);
+		JPanel mobSettings = new JPanel(new GridLayout(4, 2, 15, 5));
+		mobSettings.setOpaque(false);
+
+		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/piglin_safe"),
+				L10N.label("elementgui.dimension.piglin_safe")));
+		mobSettings.add(piglinSafe);
+
+		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_raids"),
+				L10N.label("elementgui.dimension.has_raids")));
+		mobSettings.add(hasRaids);
+
+		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/spawning_light_limit"),
+				L10N.label("elementgui.dimension.monster_spawn_light_limit")));
+		mobSettings.add(monsterSpawnLightLimit);
+
+		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/spawning_block_light_limit"),
+				L10N.label("elementgui.dimension.monster_spawn_block_light_limit")));
+		mobSettings.add(monsterSpawnBlockLightLimit);
+
+		mobSettings.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.dimension.mob_settings"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+
 		hasSkyLight.setOpaque(false);
 		imitateOverworldBehaviour.setOpaque(false);
+		piglinSafe.setOpaque(false);
+		hasRaids.setOpaque(false);
 		canRespawnHere.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 		hasFixedTime.setOpaque(false);
@@ -254,7 +284,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFog.setOpaque(false);
 
 		propertiesPage.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(dimensionTypeSettings, PanelUtils.pullElementUp(dimensionEffects))));
+				PanelUtils.westAndEastElement(dimensionTypeSettings, PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
 		propertiesPage.setOpaque(false);
 
 		// Dimension generation settings
@@ -519,6 +550,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		fixedTimeValue.setValue(dimension.fixedTimeValue);
 		coordinateScale.setValue(dimension.coordinateScale);
 		infiniburnTag.setText(dimension.infiniburnTag);
+		piglinSafe.setSelected(dimension.piglinSafe);
+		hasRaids.setSelected(dimension.hasRaids);
+		monsterSpawnLightLimit.setMinValue(dimension.minMonsterSpawnLightLimit);
+		monsterSpawnLightLimit.setMaxValue(dimension.maxMonsterSpawnLightLimit);
+		monsterSpawnBlockLightLimit.setValue(dimension.monsterSpawnBlockLightLimit);
 		enablePortal.setSelected(dimension.enablePortal);
 		whenPortaTriggerlUsed.setSelectedProcedure(dimension.whenPortaTriggerlUsed);
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
@@ -550,6 +586,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.fixedTimeValue = (int) fixedTimeValue.getValue();
 		dimension.coordinateScale = (double) coordinateScale.getValue();
 		dimension.infiniburnTag = infiniburnTag.getText();
+		dimension.piglinSafe = piglinSafe.isSelected();
+		dimension.hasRaids = hasRaids.isSelected();
+		dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getIntMinValue();
+		dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getIntMaxValue();
+		dimension.monsterSpawnBlockLightLimit = (int) monsterSpawnBlockLightLimit.getValue();
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
