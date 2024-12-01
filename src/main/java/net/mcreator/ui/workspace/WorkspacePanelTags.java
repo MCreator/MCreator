@@ -56,17 +56,17 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	// Cache of list fields (so cell renderer just sets the value instead of making a new object) - these are for cell renderer
 	private final JItemListField<MItemBlock> listFieldBlocksItems = new MCItemListField(workspacePanel.getMCreator(),
-			ElementUtil::loadBlocksAndItems).allowTags();
+			ElementUtil::loadBlocksAndItems).allowTags().allowExternalElements();
 	private final JItemListField<EntityEntry> listFieldEntities = new SpawnableEntityListField(
-			workspacePanel.getMCreator()).allowTags();
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<BiomeEntry> listFieldBiomes = new BiomeListField(
-			workspacePanel.getMCreator()).allowTags();
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<NonMappableElement> listFieldFunctions = new ModElementListField(
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
 	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
-			workspacePanel.getMCreator()).allowTags();
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
-			workspacePanel.getMCreator()).allowTags();
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -398,21 +398,23 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					JItemListField<MItemBlock> retval = new MCItemListField(mcreator,
 							tagElement.type() == TagType.ITEMS ?
 									ElementUtil::loadBlocksAndItems :
-									ElementUtil::loadBlocks).allowTags();
+									ElementUtil::loadBlocks).allowTags().allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (MItemBlock) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case ENTITIES -> {
-					JItemListField<EntityEntry> retval = new SpawnableEntityListField(mcreator).allowTags();
+					JItemListField<EntityEntry> retval = new SpawnableEntityListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (EntityEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case BIOMES -> {
-					JItemListField<BiomeEntry> retval = new BiomeListField(mcreator).allowTags();
+					JItemListField<BiomeEntry> retval = new BiomeListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (BiomeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
@@ -427,14 +429,16 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					yield retval;
 				}
 				case DAMAGE_TYPES -> {
-					JItemListField<DamageTypeEntry> retval = new DamageTypeListField(mcreator).allowTags();
+					JItemListField<DamageTypeEntry> retval = new DamageTypeListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case ENCHANTMENTS -> {
-					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags();
+					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());

@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -27,6 +28,7 @@ import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,4 +55,7 @@ public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 		return tags;
 	}
 
+	@Nullable @Override protected EntityEntry fromExternalToElement(String external) {
+		return new EntityEntry(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
+	}
 }
