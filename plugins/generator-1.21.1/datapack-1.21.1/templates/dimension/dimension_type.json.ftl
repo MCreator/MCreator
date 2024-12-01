@@ -8,7 +8,7 @@
   "has_skylight": ${data.hasSkyLight},
   "has_ceiling": ${data.worldGenType == "Nether like gen"},
   "coordinate_scale": ${data.coordinateScale},
-  "ambient_light": <#if data.isDark>0<#else>0.5</#if>,
+  "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
   <#if data.hasFixedTime>
   "fixed_time": ${data.fixedTimeValue},

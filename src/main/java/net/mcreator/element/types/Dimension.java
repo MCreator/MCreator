@@ -53,7 +53,7 @@ import java.util.*;
 	public Color airColor;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public boolean isDark;
+	public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
 	public int fixedTimeValue;

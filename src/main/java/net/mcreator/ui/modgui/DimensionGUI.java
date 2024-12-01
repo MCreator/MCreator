@@ -85,7 +85,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasFog = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox isDark = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner ambientLight = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
@@ -197,9 +197,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.has_sky_light")));
 		dimensionTypeSettings.add(hasSkyLight);
 
-		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/is_dark"),
-				L10N.label("elementgui.dimension.is_dark")));
-		dimensionTypeSettings.add(isDark);
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/ambient_light"),
+				L10N.label("elementgui.dimension.ambient_light")));
+		dimensionTypeSettings.add(ambientLight);
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/does_water_vaporize"),
 				L10N.label("elementgui.dimension.does_water_vaporize")));
@@ -542,7 +542,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		airColor.setColor(dimension.airColor);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
 		hasFog.setSelected(dimension.hasFog);
-		isDark.setSelected(dimension.isDark);
+		ambientLight.setValue(dimension.ambientLight);
 		doesWaterVaporize.setSelected(dimension.doesWaterVaporize);
 		imitateOverworldBehaviour.setSelected(dimension.imitateOverworldBehaviour);
 		hasSkyLight.setSelected(dimension.hasSkyLight);
@@ -579,7 +579,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.airColor = airColor.getColor();
 		dimension.canRespawnHere = canRespawnHere.isSelected();
 		dimension.hasFog = hasFog.isSelected();
-		dimension.isDark = isDark.isSelected();
+		dimension.ambientLight = (double) ambientLight.getValue();
 		dimension.imitateOverworldBehaviour = imitateOverworldBehaviour.isSelected();
 		dimension.hasSkyLight = hasSkyLight.isSelected();
 		dimension.hasFixedTime = hasFixedTime.isSelected();
