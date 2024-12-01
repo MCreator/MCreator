@@ -26,6 +26,7 @@ import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
+import net.mcreator.util.NetworkUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.CancellationToken;
@@ -51,7 +52,7 @@ public class JVMDebugClient {
 
 	public void init(Map<String, String> environment, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
-		this.vmDebugPort = findAvailablePort();
+		this.vmDebugPort = NetworkUtils.findAvailablePort(5005);
 
 		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
 		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
@@ -161,17 +162,6 @@ public class JVMDebugClient {
 			}
 		}
 		return null;
-	}
-
-	private int findAvailablePort() {
-		int port;
-		try (ServerSocket socket = new ServerSocket(0)) {
-			port = socket.getLocalPort();
-		} catch (IOException e) {
-			LOG.warn("Failed to find available port for debugging, using default 5005", e);
-			return 5005;
-		}
-		return port;
 	}
 
 	public boolean isActive() {
