@@ -36,6 +36,7 @@ import net.mcreator.ui.component.tree.JFileTree;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -94,13 +95,9 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 		ComponentUtils.deriveFont(originalLabel, 13);
-		originalLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		originalLabel.setVerticalTextPosition(SwingConstants.CENTER);
 
 		overrideLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 		ComponentUtils.deriveFont(overrideLabel, 13);
-		overrideLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		overrideLabel.setVerticalTextPosition(SwingConstants.CENTER);
 
 		this.tree = new JFileTree(model);
 		tree.setCellRenderer(new ResourcePackTreeCellRenderer());
@@ -184,7 +181,24 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
 				UIRES.get("16px.open"), e -> {
-					// TODO: implement
+					if (selectedEntry != null) {
+						String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
+						if (extension.isBlank()) { // Importing files into a folder
+							File importTargetFolder = selectedEntry.override();
+							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[]{"*"});
+							if (fileOrigin != null) {
+								for (File file : fileOrigin) {
+									// TODO: implement
+								}
+							}
+						} else { // Importing a file to override existing file
+							File importTarget = selectedEntry.override();
+							File fileOrigin = FileDialogs.getOpenDialog(mcreator, new String[]{extension});
+							if (fileOrigin != null) {
+								// TODO: implement
+							}
+						}
+					}
 				});
 		fileBar.add(importFile);
 
@@ -251,7 +265,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 			String extension = FilenameUtils.getExtension(entry.path()).toLowerCase(Locale.ROOT);
 
-			importFile.setEnabled(true);
+			if (extension.isBlank() || entry.type() == ResourcePackStructure.EntryType.VANILLA) {
+				importFile.setEnabled(true);
+			}
+
 			if (!extension.isBlank()) {
 				editFile.setEnabled(true);
 				if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
