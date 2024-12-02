@@ -52,6 +52,7 @@ net.mcreator.io.writer
 net.mcreator.io.zip
 net.mcreator.java
 net.mcreator.java.debug
+net.mcreator.java.monitoring
 net.mcreator.minecraft
 net.mcreator.plugin
 net.mcreator.plugin.events
@@ -154,3 +155,4 @@ net.mcreator.workspace.misc
 net.mcreator.workspace.references
 net.mcreator.workspace.resources
 net.mcreator.workspace.settings
+net.mcreator.workspace.settings.user
