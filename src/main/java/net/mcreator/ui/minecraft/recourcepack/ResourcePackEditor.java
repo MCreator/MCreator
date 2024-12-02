@@ -188,14 +188,16 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[]{"*"});
 							if (fileOrigin != null) {
 								for (File file : fileOrigin) {
-									// TODO: implement
+									FileIO.copyFile(file, new File(importTargetFolder, file.getName()));
 								}
+								reloadElements();
 							}
 						} else { // Importing a file to override existing file
 							File importTarget = selectedEntry.override();
 							File fileOrigin = FileDialogs.getOpenDialog(mcreator, new String[]{extension});
 							if (fileOrigin != null) {
-								// TODO: implement
+								FileIO.copyFile(fileOrigin, importTarget);
+								reloadElements();
 							}
 						}
 					}
