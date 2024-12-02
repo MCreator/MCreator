@@ -3,7 +3,7 @@
   "natural": ${data.imitateOverworldBehaviour},
   "piglin_safe": ${data.piglinSafe},
   "respawn_anchor_works": ${data.canRespawnHere},
-  "bed_works": ${data.sleepResult == "ALLOW"},
+  "bed_works": ${data.bedWorks},
   "has_raids": ${data.hasRaids},
   "has_skylight": ${data.hasSkyLight},
   "has_ceiling": ${data.worldGenType == "Nether like gen"},

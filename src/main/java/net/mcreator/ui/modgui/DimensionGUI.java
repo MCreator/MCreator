@@ -84,6 +84,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder fluidBlock;
 
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bedWorks = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasFog = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner ambientLight = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.common.enable");
@@ -108,8 +109,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final JComboBox<String> worldGenType = new JComboBox<>(
 			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
-
-	private final JComboBox<String> sleepResult = new JComboBox<>(new String[] { "ALLOW", "DENY", "BED_EXPLODES" });
 
 	private BiomeListField biomesInDimension;
 
@@ -179,11 +178,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel dimensionTypeSettings = new JPanel(new GridLayout(10, 2, 15, 2));
 		dimensionTypeSettings.setOpaque(false);
 
-		sleepResult.setPreferredSize(new java.awt.Dimension(0, 42));
-
-		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sleep_result"),
-				L10N.label("elementgui.dimension.sleep_result")));
-		dimensionTypeSettings.add(sleepResult);
+		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/can_use_beds"),
+				L10N.label("elementgui.dimension.can_use_beds")));
+		dimensionTypeSettings.add(bedWorks);
 
 		dimensionTypeSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/imitate_overworld"),
 				L10N.label("elementgui.dimension.imitate_overworld_behaviour")));
@@ -535,7 +532,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalTexture.setTexture(dimension.portalTexture);
 		texture.setTexture(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
-		sleepResult.setSelectedItem(dimension.sleepResult);
+		bedWorks.setSelected(dimension.bedWorks);
 		creativeTabs.setListElements(dimension.creativeTabs);
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
@@ -598,7 +595,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.igniterRarity = igniterRarity.getSelectedItem();
 		dimension.specialInformation = specialInformation.getSelectedProcedure();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
-		dimension.sleepResult = (String) sleepResult.getSelectedItem();
+		dimension.bedWorks = bedWorks.isSelected();
 		dimension.mainFillerBlock = mainFillerBlock.getBlock();
 		dimension.fluidBlock = fluidBlock.getBlock();
 		dimension.whenPortaTriggerlUsed = whenPortaTriggerlUsed.getSelectedProcedure();

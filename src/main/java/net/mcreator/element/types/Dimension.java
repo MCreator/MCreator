@@ -60,7 +60,7 @@ import java.util.*;
 	public double coordinateScale;
 	public String infiniburnTag;
 
-	public String sleepResult;
+	public boolean bedWorks;
 	public boolean hasSkyLight;
 	public boolean imitateOverworldBehaviour;
 	public boolean piglinSafe;
@@ -103,7 +103,6 @@ import java.util.*;
 		this.enableIgniter = true;
 		this.creativeTabs = new ArrayList<>();
 		this.igniterRarity = "COMMON";
-		this.sleepResult = "ALLOW";
 	}
 
 	public boolean hasIgniter() {
