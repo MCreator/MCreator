@@ -1,6 +1,7 @@
 templates:
   - template: dimension/dimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
+    condition: hasEffectsOrDimensionTriggers()
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"
@@ -15,7 +16,6 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
   - template: dimension/dimension_type.json.ftl # loaded from datapack generator
-    variables: "customeffects=true"
     writer: json
     name: "@MODDATAROOT/dimension_type/@registryname.json"
   - template: dimension/dimension_overworld.json.ftl # loaded from datapack generator

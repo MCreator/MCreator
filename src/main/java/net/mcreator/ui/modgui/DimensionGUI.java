@@ -99,6 +99,19 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JMinMaxSpinner monsterSpawnLightLimit = new JMinMaxSpinner(0, 7, 0, 15, 1).allowEqualValues();
 	private final JSpinner monsterSpawnBlockLightLimit = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
+	private final TranslatedComboBox defaultEffects = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("overworld", "elementgui.dimension.effects_overworld"),
+			Map.entry("the_nether", "elementgui.dimension.effects_the_nether"),
+			Map.entry("the_end", "elementgui.dimension.effects_the_end")
+			//@formatter:on
+	);
+	private final JCheckBox useCustomEffects = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasClouds = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -4096, 4096, 0.1));
+	private final JComboBox<String> skyType = new JComboBox<>(new String[] { "NONE", "NORMAL", "END" });
+	private final JCheckBox sunHeightAffectsFog = L10N.checkbox("elementgui.common.enable");
+
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
 	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.common.enable");
 
@@ -223,12 +236,36 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.dimension_type_settings"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
-		JPanel dimensionEffects = new JPanel(new GridLayout(2, 2, 15, 5));
+		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 5));
 		dimensionEffects.setOpaque(false);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
+				L10N.label("elementgui.dimension.default_effects")));
+		dimensionEffects.add(defaultEffects);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/use_custom_effects"),
+				L10N.label("elementgui.dimension.use_custom_effects")));
+		dimensionEffects.add(useCustomEffects);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_clouds"),
+				L10N.label("elementgui.dimension.has_clouds")));
+		dimensionEffects.add(hasClouds);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/cloud_height"),
+				L10N.label("elementgui.dimension.cloud_height")));
+		dimensionEffects.add(cloudHeight);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sky_type"),
+				L10N.label("elementgui.dimension.sky_type")));
+		dimensionEffects.add(skyType);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
 		dimensionEffects.add(airColor);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sun_height_affects_fog"),
+				L10N.label("elementgui.dimension.sun_height_affects_fog")));
+		dimensionEffects.add(sunHeightAffectsFog);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_fog"),
 				L10N.label("elementgui.dimension.has_fog")));
@@ -275,14 +312,28 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		if (!isEditingMode()) {
 			infiniburnTag.setText("minecraft:infiniburn_overworld");
 		}
+		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
+		useCustomEffects.setOpaque(false);
+		useCustomEffects.addActionListener(e -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
+		hasClouds.setOpaque(false);
+		hasClouds.addActionListener(e -> cloudHeight.setEnabled(useCustomEffects.isSelected() && hasClouds.isSelected()));
 		airColor.setOpaque(false);
-		airColor.setPreferredSize(new java.awt.Dimension(240, 42));
+		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
+		sunHeightAffectsFog.setOpaque(false);
 		hasFog.setOpaque(false);
 
+		if (!isEditingMode()) {
+			// Currently only Java based mods support custom dimension effects
+			useCustomEffects.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA);
+			hasClouds.setSelected(true);
+			updateDimensionEffectSettings(useCustomEffects.isSelected());
+		}
+
 		propertiesPage.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(dimensionTypeSettings, PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(dimensionTypeSettings),
+						PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
 		propertiesPage.setOpaque(false);
 
 		// Dimension generation settings
@@ -495,6 +546,16 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterRarity.setEnabled(enabled);
 	}
 
+	private void updateDimensionEffectSettings(boolean hasCustomEffects) {
+		defaultEffects.setEnabled(!hasCustomEffects);
+		hasClouds.setEnabled(hasCustomEffects);
+		cloudHeight.setEnabled(hasCustomEffects && hasClouds.isSelected());
+		skyType.setEnabled(hasCustomEffects);
+		airColor.setEnabled(hasCustomEffects);
+		sunHeightAffectsFog.setEnabled(hasCustomEffects);
+		hasFog.setEnabled(hasCustomEffects);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		whenPortaTriggerlUsed.refreshListKeepSelected();
@@ -537,6 +598,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
+		defaultEffects.setSelectedItem(dimension.defaultEffects);
+		useCustomEffects.setSelected(dimension.useCustomEffects);
+		hasClouds.setSelected(dimension.hasClouds);
+		cloudHeight.setValue(dimension.cloudHeight);
+		skyType.setSelectedItem(dimension.skyType);
+		sunHeightAffectsFog.setSelected(dimension.sunHeightAffectsFog);
 		canRespawnHere.setSelected(dimension.canRespawnHere);
 		hasFog.setSelected(dimension.hasFog);
 		ambientLight.setValue(dimension.ambientLight);
@@ -562,6 +629,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
 		fixedTimeValue.setEnabled(dimension.hasFixedTime);
+		updateDimensionEffectSettings(dimension.useCustomEffects);
 		updatePortalElements();
 	}
 
@@ -574,6 +642,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
 		dimension.airColor = airColor.getColor();
+		dimension.defaultEffects = defaultEffects.getSelectedItem();
+		dimension.useCustomEffects = useCustomEffects.isSelected();
+		dimension.hasClouds = hasClouds.isSelected();
+		dimension.cloudHeight = (double) cloudHeight.getValue();
+		dimension.skyType = (String) skyType.getSelectedItem();
+		dimension.sunHeightAffectsFog = sunHeightAffectsFog.isSelected();
 		dimension.canRespawnHere = canRespawnHere.isSelected();
 		dimension.hasFog = hasFog.isSelected();
 		dimension.ambientLight = (double) ambientLight.getValue();

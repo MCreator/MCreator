@@ -50,7 +50,13 @@ import java.util.*;
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
 
+	public String defaultEffects;
+	public boolean useCustomEffects;
+	public boolean hasClouds;
+	public double cloudHeight;
+	public String skyType;
 	public Color airColor;
+	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
 	public boolean hasFog;
 	public double ambientLight;
@@ -102,12 +108,20 @@ import java.util.*;
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.creativeTabs = new ArrayList<>();
+		this.defaultEffects = "overworld";
+		this.cloudHeight = 192;
+		this.skyType = "NONE";
+		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
 	}
 
 	public boolean hasIgniter() {
 		// igniter needs portal and igniter enabled
 		return enablePortal && enableIgniter;
+	}
+
+	public boolean hasEffectsOrDimensionTriggers() {
+		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
 	public Set<String> getWorldgenBlocks() {
