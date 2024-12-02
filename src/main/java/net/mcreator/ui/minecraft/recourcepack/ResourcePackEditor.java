@@ -54,6 +54,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -63,6 +65,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
 	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh");
+
+	private final MCreator mcreator;
 
 	private final Workspace workspace;
 
@@ -90,6 +94,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		super(new BorderLayout());
 		setOpaque(false);
 
+		this.mcreator = mcreator;
 		this.workspace = mcreator.getWorkspace();
 		this.workspacePanel = workspacePanel;
 
@@ -130,53 +135,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		add("North", fileBar);
 
 		editFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.edit_override",
-				UIRES.get("16px.edit"), e -> {
-					if (selectedEntry != null) {
-						if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
-							File override = selectedEntry.override();
-							if (override.isFile()) {
-								FileOpener.openFile(mcreator, override);
-							}
-						} else {
-							String extension = FilenameUtils.getExtension(selectedEntry.path())
-									.toLowerCase(Locale.ROOT);
-
-							int n = JOptionPane.showConfirmDialog(mcreator,
-									L10N.t("mcreator.resourcepack.edit_override_confirm"),
-									L10N.t("common.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-							if (n == JOptionPane.YES_OPTION) {
-								File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
-										(file, zipEntry) -> {
-											try {
-												FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
-														selectedEntry.override());
-												return selectedEntry.override();
-											} catch (IOException e1) {
-												return null;
-											}
-										});
-								if (result != null) {
-									FileOpener.openFile(mcreator, result);
-									reloadElements();
-								}
-							} else if (n == JOptionPane.NO_OPTION) {
-								if (extension.equals("png")) {
-									ImageMakerView imageMakerView = new ImageMakerView(mcreator);
-									new NewImageDialog(mcreator, imageMakerView).setVisible(true);
-									imageMakerView.setSaveLocation(selectedEntry.override());
-								} else if (textExtensions.contains(extension)) {
-									FileIO.writeStringToFile("", selectedEntry.override());
-									FileOpener.openFile(mcreator, selectedEntry.override());
-									reloadElements();
-								} else {
-									// Can't create new file of this type
-									Toolkit.getDefaultToolkit().beep();
-								}
-							}
-						}
-					}
-				});
+				UIRES.get("16px.edit"), e -> editOrOverrideCurrentEntry());
 		fileBar.add(editFile);
 
 		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
@@ -248,9 +207,65 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			setSelectedEntry(toSelect);
 		});
 
+		tree.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					editOrOverrideCurrentEntry();
+				}
+			}
+		});
+
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
+	}
+
+	private void editOrOverrideCurrentEntry() {
+		if (selectedEntry != null) {
+			if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
+				File override = selectedEntry.override();
+				if (override.isFile()) {
+					FileOpener.openFile(mcreator, override);
+				}
+			} else {
+				String extension = FilenameUtils.getExtension(selectedEntry.path())
+						.toLowerCase(Locale.ROOT);
+
+				int n = JOptionPane.showConfirmDialog(mcreator,
+						L10N.t("mcreator.resourcepack.edit_override_confirm"),
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				if (n == JOptionPane.YES_OPTION) {
+					File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
+							(file, zipEntry) -> {
+								try {
+									FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
+											selectedEntry.override());
+									return selectedEntry.override();
+								} catch (IOException e1) {
+									return null;
+								}
+							});
+					if (result != null) {
+						FileOpener.openFile(mcreator, result);
+						reloadElements();
+					}
+				} else if (n == JOptionPane.NO_OPTION) {
+					if (extension.equals("png")) {
+						ImageMakerView imageMakerView = new ImageMakerView(mcreator);
+						new NewImageDialog(mcreator, imageMakerView).setVisible(true);
+						imageMakerView.setSaveLocation(selectedEntry.override());
+					} else if (textExtensions.contains(extension)) {
+						FileIO.writeStringToFile("", selectedEntry.override());
+						FileOpener.openFile(mcreator, selectedEntry.override());
+						reloadElements();
+					} else {
+						// Can't create new file of this type
+						Toolkit.getDefaultToolkit().beep();
+					}
+				}
+			}
+		}
 	}
 
 	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
