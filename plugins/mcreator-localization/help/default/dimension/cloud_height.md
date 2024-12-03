@@ -1,0 +1,1 @@
+This parameter controls the height at which clouds appear if they are enabled.
