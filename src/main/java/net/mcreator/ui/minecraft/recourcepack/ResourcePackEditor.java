@@ -23,6 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
@@ -42,11 +43,6 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
-import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -122,12 +118,25 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		JPopupMenu createMenu = new JPopupMenu();
 		JMenuItem createJSON = new JMenuItem(L10N.t("action.browser.new_json_file"));
 		createJSON.addActionListener(e -> {
+			File currentFolder = getCurrentFolder();
+			if (currentFolder != null) {
+				String fileName = JOptionPane.showInputDialog(mcreator, L10N.t("workspace_file_browser.new_json"));
 
+				if (fileName != null) {
+					fileName = RegistryNameFixer.fix(fileName);
+					FileIO.writeStringToFile("",
+							new File(currentFolder, fileName + (fileName.contains(".") ? "" : ".json")));
+					reloadElements();
+				}
+			}
 		});
 		createMenu.add(createJSON);
 		JMenuItem createPNG = new JMenuItem(L10N.t("action.browser.new_image_file"));
 		createPNG.addActionListener(e -> {
-
+			File currentFolder = getCurrentFolder();
+			if (currentFolder != null) {
+				// TODO: implement NewImageFileAction
+			}
 		});
 		createMenu.add(createPNG);
 		JButton addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file",
