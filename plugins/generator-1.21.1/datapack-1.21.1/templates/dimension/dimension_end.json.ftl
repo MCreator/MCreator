@@ -20,8 +20,8 @@
       "noise": {
         "min_y": 0,
         "height": 128,
-        "size_horizontal": 2,
-        "size_vertical": 1,
+        "size_horizontal": ${data.horizontalNoiseSize},
+        "size_vertical": ${data.verticalNoiseSize},
         "island_noise_override": true
       },
       <#include "end_noise_router.json.ftl">,

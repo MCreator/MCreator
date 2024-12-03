@@ -20,8 +20,8 @@
       "noise": {
         "min_y": -64,
         "height": 384,
-        "size_horizontal": 1,
-        "size_vertical": 2
+        "size_horizontal": ${data.horizontalNoiseSize},
+        "size_vertical": ${data.verticalNoiseSize}
       },
       <#include "overworld_noise_router.json.ftl">,
       "surface_rule": {

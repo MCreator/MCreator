@@ -52,6 +52,8 @@ import java.util.*;
 	public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
+	public int horizontalNoiseSize;
+	public int verticalNoiseSize;
 
 	public String defaultEffects;
 	public boolean useCustomEffects;
@@ -109,6 +111,8 @@ import java.util.*;
 		this.seaLevel = 63;
 		this.generateOreVeins = true;
 		this.generateAquifers = true;
+		this.horizontalNoiseSize = 1;
+		this.verticalNoiseSize = 2;
 		this.coordinateScale = 1;
 		this.infiniburnTag = "minecraft:infiniburn_overworld";
 		this.enablePortal = true;

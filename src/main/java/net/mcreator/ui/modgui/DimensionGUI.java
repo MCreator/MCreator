@@ -85,6 +85,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JSpinner seaLevel = new JSpinner(new SpinnerNumberModel(63, -1024, 1024, 1));
 	private final JCheckBox generateOreVeins = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox generateAquifers = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner horizontalNoiseSize = new JSpinner(new SpinnerListModel(List.of(1, 2, 4))); // Setting these values to 3 can cause crashes
+	private final JSpinner verticalNoiseSize = new JSpinner(new SpinnerListModel(List.of(1, 2, 4)));
 
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bedWorks = L10N.checkbox("elementgui.common.enable");
@@ -347,7 +349,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel worldgenSettings = new JPanel(new GridLayout(3, 2, 3, 3));
+		JPanel worldgenSettings = new JPanel(new GridLayout(8, 2, 3, 3));
 		worldgenSettings.setOpaque(false);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
@@ -375,6 +377,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/generate_aquifers"),
 				L10N.label("elementgui.dimension.generate_aquifers")));
 		worldgenSettings.add(generateAquifers);
+
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/horizontal_noise_size"),
+				L10N.label("elementgui.dimension.horizontal_noise_size")));
+		worldgenSettings.add(horizontalNoiseSize);
+
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/vertical_noise_size"),
+				L10N.label("elementgui.dimension.vertical_noise_size")));
+		worldgenSettings.add(verticalNoiseSize);
 
 		insid.setOpaque(false);
 		generateOreVeins.setOpaque(false);
@@ -583,6 +593,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			generateOreVeins.setEnabled(true);
 			if (!isEditingMode()) {
 				seaLevel.setValue(63);
+				horizontalNoiseSize.setValue(1);
+				verticalNoiseSize.setValue(2);
 			}
 		} else {
 			generateAquifers.setEnabled(false);
@@ -590,8 +602,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			if (!isEditingMode()) {
 				if ("Nether like gen".equals(genType)) {
 					seaLevel.setValue(32);
+					horizontalNoiseSize.setValue(1);
+					verticalNoiseSize.setValue(2);
 				} else {
 					seaLevel.setValue(0);
+					horizontalNoiseSize.setValue(2);
+					verticalNoiseSize.setValue(1);
 				}
 			}
 		}
@@ -629,6 +645,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		seaLevel.setValue(dimension.seaLevel);
 		generateOreVeins.setSelected(dimension.generateOreVeins);
 		generateAquifers.setSelected(dimension.generateAquifers);
+		horizontalNoiseSize.setValue(dimension.horizontalNoiseSize);
+		verticalNoiseSize.setValue(dimension.verticalNoiseSize);
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
@@ -720,6 +738,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.seaLevel = (int) seaLevel.getValue();
 		dimension.generateOreVeins = generateOreVeins.isSelected();
 		dimension.generateAquifers = generateAquifers.isSelected();
+		dimension.horizontalNoiseSize = (int) horizontalNoiseSize.getValue();
+		dimension.verticalNoiseSize = (int) verticalNoiseSize.getValue();
 		dimension.whenPortaTriggerlUsed = whenPortaTriggerlUsed.getSelectedProcedure();
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
