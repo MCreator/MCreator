@@ -26,6 +26,7 @@ import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.ResourcePackStructure;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.browser.action.NewFolderAction;
 import net.mcreator.ui.component.CodePreviewPanel;
 import net.mcreator.ui.component.ImagePreviewPanel;
 import net.mcreator.ui.component.JFileBreadCrumb;
@@ -118,30 +119,33 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		TransparentToolBar folderBar = new TransparentToolBar();
 		add("North", folderBar);
 
+		JPopupMenu createMenu = new JPopupMenu();
+		JMenuItem createJSON = new JMenuItem(L10N.t("action.browser.new_json_file"));
+		createJSON.addActionListener(e -> {
+
+		});
+		createMenu.add(createJSON);
+		JMenuItem createPNG = new JMenuItem(L10N.t("action.browser.new_image_file"));
+		createPNG.addActionListener(e -> {
+
+		});
+		createMenu.add(createPNG);
 		JButton addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file",
-				UIRES.get("16px.add"), e -> {
-					File currentFolder = getCurrentFolder();
-					if (currentFolder != null) {
-						// TODO: implement
-					}
-				});
+				UIRES.get("16px.add"));
+		addFile.addActionListener(e -> {
+			if (selectedEntry != null) {
+				createMenu.show(addFile, 5, addFile.getHeight() + 5);
+			}
+		});
 		folderBar.add(addFile);
 
 		JButton addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
 				UIRES.get("16px.directory"), e -> {
 					File currentFolder = getCurrentFolder();
 					if (currentFolder != null) {
-						String foldername = VOptionPane.showInputDialog(mcreator,
-								L10N.t("workspace_file_browser.new_folder_name.folder_name"),
-								L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
-								new OptionPaneValidator() {
-									@Override public Validator.ValidationResult validate(JComponent component) {
-										return new RegistryNameValidator((VTextField) component,
-												L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
-									}
-								});
-						if (foldername != null) {
-							new File(currentFolder, foldername).mkdirs();
+						File folderToMake = NewFolderAction.openCreateFolderDialog(mcreator, currentFolder);
+						if (folderToMake != null) {
+							folderToMake.mkdirs();
 							reloadElements();
 						}
 					}
