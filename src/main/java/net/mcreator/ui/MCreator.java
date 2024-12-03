@@ -342,30 +342,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 	}
 
-	public MCreatorApplication getApplication() {
-		return application;
-	}
-
-	public GradleConsole getGradleConsole() {
-		return gradleConsole;
-	}
-
-	public WorkspaceFileBrowser getProjectBrowser() {
-		return workspaceFileBrowser;
-	}
-
-	@Override public @Nonnull Workspace getWorkspace() {
-		return workspace;
-	}
-
-	@Override public NotificationsRenderer getNotificationsRenderer() {
-		return notificationsRenderer;
-	}
-
-	public StatusBar getStatusBar() {
-		return statusBar;
-	}
-
 	public boolean closeThisMCreator(boolean returnToProjectSelector) {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
@@ -435,6 +411,17 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 	}
 
+	private JComponent getPreloaderPane() {
+		JPanel wrap = new BlockingGlassPane();
+		JLabel loading = L10N.label("workspace.loading");
+		loading.setIconTextGap(5);
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground(Theme.current().getAltForegroundColor());
+		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
+		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		return wrap;
+	}
+
 	@Override public boolean equals(Object mcreator) {
 		if (mcreator instanceof MCreator theothermcreator) {
 			if (theothermcreator.workspace != null && workspace != null)
@@ -452,15 +439,20 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return Long.valueOf(windowUID).hashCode();
 	}
 
-	private JComponent getPreloaderPane() {
-		JPanel wrap = new BlockingGlassPane();
-		JLabel loading = L10N.label("workspace.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		wrap.add(PanelUtils.totalCenterInPanel(loading));
-		return wrap;
+	public MCreatorApplication getApplication() {
+		return application;
+	}
+
+	public GradleConsole getGradleConsole() {
+		return gradleConsole;
+	}
+
+	public WorkspaceFileBrowser getProjectBrowser() {
+		return workspaceFileBrowser;
+	}
+
+	public StatusBar getStatusBar() {
+		return statusBar;
 	}
 
 	public ActionRegistry getActionRegistry() {
@@ -485,6 +477,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	public JPanel getMainPanel() {
 		return mainPanel;
+	}
+
+	@Override public @Nonnull Workspace getWorkspace() {
+		return workspace;
+	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
 	}
 
 }
