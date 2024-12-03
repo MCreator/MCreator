@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 
 public class ResourcePackStructure {
 
-	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh");
+	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh", "txt");
 
 	private static final String RESOURCES_FOLDER = "assets/minecraft";
 
