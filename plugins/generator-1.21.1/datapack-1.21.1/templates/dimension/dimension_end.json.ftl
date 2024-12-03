@@ -9,7 +9,7 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "sea_level": 0,
+      "sea_level": ${data.seaLevel},
       "legacy_random_source": true,
       "disable_mob_generation": false,
       "aquifers_enabled": false,

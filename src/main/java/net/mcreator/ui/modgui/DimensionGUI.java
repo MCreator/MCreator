@@ -82,6 +82,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder portalFrame;
 	private MCItemHolder mainFillerBlock;
 	private MCItemHolder fluidBlock;
+	private final JSpinner seaLevel = new JSpinner(new SpinnerNumberModel(63, -1024, 1024, 1));
+	private final JCheckBox generateOreVeins = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox generateAquifers = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bedWorks = L10N.checkbox("elementgui.common.enable");
@@ -174,6 +177,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
+		worldGenType.addActionListener(e -> updateWorldgenSettings());
 		biomesInDimension = new BiomeListField(mcreator);
 
 		portalParticles.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXX"));
@@ -360,7 +364,23 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.biomes_in")));
 		worldgenSettings.add(biomesInDimension);
 
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sea_level"),
+				L10N.label("elementgui.dimension.sea_level")));
+		worldgenSettings.add(seaLevel);
+
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/generate_ore_veins"),
+				L10N.label("elementgui.dimension.generate_ore_veins")));
+		worldgenSettings.add(generateOreVeins);
+
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/generate_aquifers"),
+				L10N.label("elementgui.dimension.generate_aquifers")));
+		worldgenSettings.add(generateAquifers);
+
 		insid.setOpaque(false);
+		generateOreVeins.setOpaque(false);
+		generateOreVeins.setSelected(true);
+		generateAquifers.setOpaque(false);
+		generateAquifers.setSelected(true);
 
 		insid.add("Center", PanelUtils.totalCenterInPanel(worldgenSettings));
 		generationPage.add("Center", PanelUtils.totalCenterInPanel(insid));
@@ -556,6 +576,27 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFog.setEnabled(hasCustomEffects);
 	}
 
+	private void updateWorldgenSettings() {
+		String genType = (String) worldGenType.getSelectedItem();
+		if ("Normal world gen".equals(genType)) {
+			generateAquifers.setEnabled(true);
+			generateOreVeins.setEnabled(true);
+			if (!isEditingMode()) {
+				seaLevel.setValue(63);
+			}
+		} else {
+			generateAquifers.setEnabled(false);
+			generateOreVeins.setEnabled(false);
+			if (!isEditingMode()) {
+				if ("Nether like gen".equals(genType)) {
+					seaLevel.setValue(32);
+				} else {
+					seaLevel.setValue(0);
+				}
+			}
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		whenPortaTriggerlUsed.refreshListKeepSelected();
@@ -585,6 +626,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalFrame.setBlock(dimension.portalFrame);
 		mainFillerBlock.setBlock(dimension.mainFillerBlock);
 		fluidBlock.setBlock(dimension.fluidBlock);
+		seaLevel.setValue(dimension.seaLevel);
+		generateOreVeins.setSelected(dimension.generateOreVeins);
+		generateAquifers.setSelected(dimension.generateAquifers);
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
@@ -629,6 +673,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
 		fixedTimeValue.setEnabled(dimension.hasFixedTime);
+		updateWorldgenSettings();
 		updateDimensionEffectSettings(dimension.useCustomEffects);
 		updatePortalElements();
 	}
@@ -672,6 +717,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.bedWorks = bedWorks.isSelected();
 		dimension.mainFillerBlock = mainFillerBlock.getBlock();
 		dimension.fluidBlock = fluidBlock.getBlock();
+		dimension.seaLevel = (int) seaLevel.getValue();
+		dimension.generateOreVeins = generateOreVeins.isSelected();
+		dimension.generateAquifers = generateAquifers.isSelected();
 		dimension.whenPortaTriggerlUsed = whenPortaTriggerlUsed.getSelectedProcedure();
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();

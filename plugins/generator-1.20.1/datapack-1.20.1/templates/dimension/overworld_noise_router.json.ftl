@@ -1,4 +1,5 @@
 "noise_router": {
+  <#if data.generateAquifers>
   "barrier": {
     "type": "minecraft:noise",
     "noise": "minecraft:aquifer_barrier",
@@ -23,6 +24,12 @@
     "xz_scale": 1,
     "y_scale": 1
   },
+  <#else>
+  "barrier": 0,
+  "fluid_level_floodedness": 0,
+  "fluid_level_spread": 0,
+  "lava": 0,
+  </#if>
   "temperature": {
     "type": "minecraft:shifted_noise",
     "noise": "minecraft:temperature",

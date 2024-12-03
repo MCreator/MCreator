@@ -49,6 +49,9 @@ import java.util.*;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
+	public int seaLevel;
+	public boolean generateOreVeins;
+	public boolean generateAquifers;
 
 	public String defaultEffects;
 	public boolean useCustomEffects;
@@ -103,6 +106,9 @@ import java.util.*;
 		super(element);
 
 		// DEFAULT VALUES
+		this.seaLevel = 63;
+		this.generateOreVeins = true;
+		this.generateAquifers = true;
 		this.coordinateScale = 1;
 		this.infiniburnTag = "minecraft:infiniburn_overworld";
 		this.enablePortal = true;
