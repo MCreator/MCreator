@@ -27,8 +27,10 @@
   <#else>
   "monster_spawn_light_level": {
     "type": "minecraft:uniform",
-    "min_inclusive": ${data.minMonsterSpawnLightLimit},
-    "max_inclusive": ${data.maxMonsterSpawnLightLimit}
+    "value": {
+      "min_inclusive": ${data.minMonsterSpawnLightLimit},
+      "max_inclusive": ${data.maxMonsterSpawnLightLimit}
+    }
   },
   </#if>
   "monster_spawn_block_light_limit": ${data.monsterSpawnBlockLightLimit},
