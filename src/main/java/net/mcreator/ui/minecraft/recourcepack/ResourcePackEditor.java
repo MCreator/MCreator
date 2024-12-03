@@ -41,6 +41,11 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
+import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -122,7 +127,29 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		JButton addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
 				UIRES.get("16px.directory"), e -> {
-					// TODO: implement
+					if (selectedEntry != null) {
+						String foldername = VOptionPane.showInputDialog(mcreator,
+								L10N.t("workspace_file_browser.new_folder_name.folder_name"),
+								L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
+								new OptionPaneValidator() {
+									@Override public Validator.ValidationResult validate(JComponent component) {
+										return new RegistryNameValidator((VTextField) component,
+												L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
+									}
+								});
+						if (foldername != null) {
+							File parentFolder;
+							String extension = FilenameUtils.getExtension(selectedEntry.path())
+									.toLowerCase(Locale.ROOT);
+							if (extension.isBlank()) {
+								parentFolder = selectedEntry.override(); // Already a folder
+							} else {
+								parentFolder = selectedEntry.override().getParentFile();
+							}
+							new File(parentFolder, foldername).mkdirs();
+							reloadElements();
+						}
+					}
 				});
 		folderBar.add(addFolder);
 
@@ -144,7 +171,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 						String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
 						if (extension.isBlank()) { // Importing files into a folder
 							File importTargetFolder = selectedEntry.override();
-							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[]{"*"});
+							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[] { "*" });
 							if (fileOrigin != null) {
 								for (File file : fileOrigin) {
 									FileIO.copyFile(file, new File(importTargetFolder, file.getName()));
@@ -153,7 +180,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							}
 						} else { // Importing a file to override existing file
 							File importTarget = selectedEntry.override();
-							File fileOrigin = FileDialogs.getOpenDialog(mcreator, new String[]{extension});
+							File fileOrigin = FileDialogs.getOpenDialog(mcreator, new String[] { extension });
 							if (fileOrigin != null) {
 								FileIO.copyFile(fileOrigin, importTarget);
 								reloadElements();
@@ -222,46 +249,45 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private void editOrOverrideCurrentEntry() {
 		if (selectedEntry != null) {
-			if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
-				File override = selectedEntry.override();
-				if (override.isFile()) {
-					FileOpener.openFile(mcreator, override);
-				}
-			} else {
-				String extension = FilenameUtils.getExtension(selectedEntry.path())
-						.toLowerCase(Locale.ROOT);
-
-				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("mcreator.resourcepack.edit_override_confirm"),
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-				if (n == JOptionPane.YES_OPTION) {
-					File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
-							(file, zipEntry) -> {
-								try {
-									FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
-											selectedEntry.override());
-									return selectedEntry.override();
-								} catch (IOException e1) {
-									return null;
-								}
-							});
-					if (result != null) {
-						FileOpener.openFile(mcreator, result);
-						reloadElements();
+			String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
+			if (!extension.isBlank()) {
+				if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
+					File override = selectedEntry.override();
+					if (override.isFile()) {
+						FileOpener.openFile(mcreator, override);
 					}
-				} else if (n == JOptionPane.NO_OPTION) {
-					if (extension.equals("png")) {
-						ImageMakerView imageMakerView = new ImageMakerView(mcreator);
-						new NewImageDialog(mcreator, imageMakerView).setVisible(true);
-						imageMakerView.setSaveLocation(selectedEntry.override());
-					} else if (textExtensions.contains(extension)) {
-						FileIO.writeStringToFile("", selectedEntry.override());
-						FileOpener.openFile(mcreator, selectedEntry.override());
-						reloadElements();
-					} else {
-						// Can't create new file of this type
-						Toolkit.getDefaultToolkit().beep();
+				} else {
+					int n = JOptionPane.showConfirmDialog(mcreator,
+							L10N.t("mcreator.resourcepack.edit_override_confirm"), L10N.t("common.confirmation"),
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (n == JOptionPane.YES_OPTION) {
+						File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
+								(file, zipEntry) -> {
+									try {
+										FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
+												selectedEntry.override());
+										return selectedEntry.override();
+									} catch (IOException e1) {
+										return null;
+									}
+								});
+						if (result != null) {
+							FileOpener.openFile(mcreator, result);
+							reloadElements();
+						}
+					} else if (n == JOptionPane.NO_OPTION) {
+						if (extension.equals("png")) {
+							ImageMakerView imageMakerView = new ImageMakerView(mcreator);
+							new NewImageDialog(mcreator, imageMakerView).setVisible(true);
+							imageMakerView.setSaveLocation(selectedEntry.override());
+						} else if (textExtensions.contains(extension)) {
+							FileIO.writeStringToFile("", selectedEntry.override());
+							FileOpener.openFile(mcreator, selectedEntry.override());
+							reloadElements();
+						} else {
+							// Can't create new file of this type
+							Toolkit.getDefaultToolkit().beep();
+						}
 					}
 				}
 			}
