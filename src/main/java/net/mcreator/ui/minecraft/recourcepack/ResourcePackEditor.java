@@ -121,7 +121,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			File currentFolder = getCurrentFolder();
 			if (currentFolder != null) {
 				String fileName = JOptionPane.showInputDialog(mcreator, L10N.t("workspace_file_browser.new_json"));
-
 				if (fileName != null) {
 					fileName = RegistryNameFixer.fix(fileName);
 					FileIO.writeStringToFile("",
@@ -135,7 +134,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		createPNG.addActionListener(e -> {
 			File currentFolder = getCurrentFolder();
 			if (currentFolder != null) {
-				// TODO: implement NewImageFileAction
+				String fileName = JOptionPane.showInputDialog(mcreator, L10N.t("workspace_file_browser.new_image"));
+				if (fileName != null) {
+					fileName = RegistryNameFixer.fix(fileName);
+					ImageMakerView imageMakerView = new ImageMakerView(mcreator);
+					new NewImageDialog(mcreator, imageMakerView).setVisible(true);
+					imageMakerView.setSaveLocation(
+							new File(currentFolder, fileName + (fileName.contains(".") ? "" : ".png")));
+					reloadElements();
+				}
 			}
 		});
 		createMenu.add(createPNG);
