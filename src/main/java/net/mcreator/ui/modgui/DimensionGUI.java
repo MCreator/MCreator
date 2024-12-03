@@ -391,6 +391,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		generateOreVeins.setSelected(true);
 		generateAquifers.setOpaque(false);
 		generateAquifers.setSelected(true);
+		if (!this.isEditingMode())
+			verticalNoiseSize.setValue(2);
 
 		insid.add("Center", PanelUtils.totalCenterInPanel(worldgenSettings));
 		generationPage.add("Center", PanelUtils.totalCenterInPanel(insid));
