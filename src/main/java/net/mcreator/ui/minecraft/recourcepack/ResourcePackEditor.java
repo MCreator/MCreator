@@ -121,13 +121,17 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		JButton addFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_file",
 				UIRES.get("16px.add"), e -> {
-					// TODO: implement
+					File currentFolder = getCurrentFolder();
+					if (currentFolder != null) {
+						// TODO: implement
+					}
 				});
 		folderBar.add(addFile);
 
 		JButton addFolder = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.add_folder",
 				UIRES.get("16px.directory"), e -> {
-					if (selectedEntry != null) {
+					File currentFolder = getCurrentFolder();
+					if (currentFolder != null) {
 						String foldername = VOptionPane.showInputDialog(mcreator,
 								L10N.t("workspace_file_browser.new_folder_name.folder_name"),
 								L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
@@ -138,15 +142,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 									}
 								});
 						if (foldername != null) {
-							File parentFolder;
-							String extension = FilenameUtils.getExtension(selectedEntry.path())
-									.toLowerCase(Locale.ROOT);
-							if (extension.isBlank()) {
-								parentFolder = selectedEntry.override(); // Already a folder
-							} else {
-								parentFolder = selectedEntry.override().getParentFile();
-							}
-							new File(parentFolder, foldername).mkdirs();
+							new File(currentFolder, foldername).mkdirs();
 							reloadElements();
 						}
 					}
@@ -292,6 +288,19 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				}
 			}
 		}
+	}
+
+	@Nullable private File getCurrentFolder() {
+		File currentFolder = null;
+		if (selectedEntry != null) {
+			String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
+			if (extension.isBlank()) {
+				currentFolder = selectedEntry.override(); // Already a folder
+			} else {
+				currentFolder = selectedEntry.override().getParentFile();
+			}
+		}
+		return currentFolder;
 	}
 
 	private void setSelectedEntry(final @Nullable ResourcePackStructure.Entry entry) {
