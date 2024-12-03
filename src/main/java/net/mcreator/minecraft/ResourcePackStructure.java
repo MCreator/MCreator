@@ -29,10 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -126,8 +123,24 @@ public class ResourcePackStructure {
 			return new Entry(FilenameUtils.getFullPath(path), override.getParentFile(), type);
 		}
 
+		public String extension() {
+			return FilenameUtils.getExtension(path).toLowerCase(Locale.ROOT);
+		}
+
+		public boolean isFolder() {
+			return extension().isBlank();
+		}
+
 		@Override public int compareTo(Entry o) {
-			return path.compareTo(o.path);
+			boolean isThisFolder = this.isFolder();
+			boolean isOtherFolder = o.isFolder();
+			if (isThisFolder && !isOtherFolder) {
+				return -1;
+			} else if (!isThisFolder && isOtherFolder) {
+				return 1;
+			} else {
+				return path.compareTo(o.path);
+			}
 		}
 
 		@Override public boolean equals(Object obj) {

@@ -52,7 +52,6 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -164,8 +163,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		importFile = AbstractWorkspacePanel.createToolBarButton("mcreator.resourcepack.import_override",
 				UIRES.get("16px.open"), e -> {
 					if (selectedEntry != null) {
-						String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
-						if (extension.isBlank()) { // Importing files into a folder
+						if (selectedEntry.isFolder()) { // Importing files into a folder
 							File importTargetFolder = selectedEntry.override();
 							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[] { "*" });
 							if (fileOrigin != null) {
@@ -176,7 +174,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							}
 						} else { // Importing a file to override existing file
 							File importTarget = selectedEntry.override();
-							File fileOrigin = FileDialogs.getOpenDialog(mcreator, new String[] { extension });
+							File fileOrigin = FileDialogs.getOpenDialog(mcreator,
+									new String[] { selectedEntry.extension() });
 							if (fileOrigin != null) {
 								FileIO.copyFile(fileOrigin, importTarget);
 								reloadElements();
@@ -245,8 +244,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private void editOrOverrideCurrentEntry() {
 		if (selectedEntry != null) {
-			String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
-			if (!extension.isBlank()) {
+			if (!selectedEntry.isFolder()) { // Make sure not a folder
 				if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
 					File override = selectedEntry.override();
 					if (override.isFile()) {
@@ -272,11 +270,11 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							reloadElements();
 						}
 					} else if (n == JOptionPane.NO_OPTION) {
-						if (extension.equals("png")) {
+						if (selectedEntry.extension().equals("png")) {
 							ImageMakerView imageMakerView = new ImageMakerView(mcreator);
 							new NewImageDialog(mcreator, imageMakerView).setVisible(true);
 							imageMakerView.setSaveLocation(selectedEntry.override());
-						} else if (textExtensions.contains(extension)) {
+						} else if (textExtensions.contains(selectedEntry.extension())) {
 							FileIO.writeStringToFile("", selectedEntry.override());
 							FileOpener.openFile(mcreator, selectedEntry.override());
 							reloadElements();
@@ -293,8 +291,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	@Nullable private File getCurrentFolder() {
 		File currentFolder = null;
 		if (selectedEntry != null) {
-			String extension = FilenameUtils.getExtension(selectedEntry.path()).toLowerCase(Locale.ROOT);
-			if (extension.isBlank()) {
+			if (selectedEntry.isFolder()) {
 				currentFolder = selectedEntry.override(); // Already a folder
 			} else {
 				currentFolder = selectedEntry.override().getParentFile();
@@ -315,7 +312,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		if (entry != null) {
 			breadCrumb.reloadPath(entry.override());
 
-			String extension = FilenameUtils.getExtension(entry.path()).toLowerCase(Locale.ROOT);
+			String extension = entry.extension();
 
 			if (extension.isBlank() || entry.type() == ResourcePackStructure.EntryType.VANILLA) {
 				importFile.setEnabled(true);
