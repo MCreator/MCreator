@@ -45,25 +45,25 @@ public class MainToolBar extends JToolBar {
 
 		add(new JEmptyBox(4, 4));
 
-		add(mcreator.actionRegistry.createMCItemTexture);
-		add(mcreator.actionRegistry.createAnimatedTexture);
+		add(mcreator.getActionRegistry().createMCItemTexture);
+		add(mcreator.getActionRegistry().createAnimatedTexture);
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.importBlockTexture);
-		add(mcreator.actionRegistry.importItemTexture);
-		add(mcreator.actionRegistry.importSound);
-		add(mcreator.actionRegistry.importStructure);
+		add(mcreator.getActionRegistry().importBlockTexture);
+		add(mcreator.getActionRegistry().importItemTexture);
+		add(mcreator.getActionRegistry().importSound);
+		add(mcreator.getActionRegistry().importStructure);
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.importJavaModel);
-		add(mcreator.actionRegistry.importJavaModelAnimation);
-		add(mcreator.actionRegistry.importJSONModel);
-		add(mcreator.actionRegistry.importOBJModel);
+		add(mcreator.getActionRegistry().importJavaModel);
+		add(mcreator.getActionRegistry().importJavaModelAnimation);
+		add(mcreator.getActionRegistry().importJSONModel);
+		add(mcreator.getActionRegistry().importOBJModel);
 
 		addSeparator(new Dimension(10, 4));
-		add(mcreator.actionRegistry.setCreativeTabItemOrder);
+		add(mcreator.getActionRegistry().setCreativeTabItemOrder);
 
 		addSeparator(new Dimension(10, 4));
 
@@ -75,23 +75,23 @@ public class MainToolBar extends JToolBar {
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.workspaceSettings);
+		add(mcreator.getActionRegistry().workspaceSettings);
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.regenerateCode);
-		add(mcreator.actionRegistry.buildWorkspace);
+		add(mcreator.getActionRegistry().regenerateCode);
+		add(mcreator.getActionRegistry().buildWorkspace);
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.runClient);
-		add(mcreator.actionRegistry.debugClient);
-		add(mcreator.actionRegistry.runServer);
-		add(mcreator.actionRegistry.cancelGradleTaskAction);
+		add(mcreator.getActionRegistry().runClient);
+		add(mcreator.getActionRegistry().debugClient);
+		add(mcreator.getActionRegistry().runServer);
+		add(mcreator.getActionRegistry().cancelGradleTaskAction);
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.actionRegistry.exportToJAR);
+		add(mcreator.getActionRegistry().exportToJAR);
 
 		add(new JEmptyBox(4, 4));
 	}

@@ -135,9 +135,9 @@ public class ToolPanel extends JPanel {
 
 		versionManager.setRevisionListener(() -> {
 			undo.setEnabled(!versionManager.firstRevision());
-			frame.actionRegistry.imageEditorUndo.setEnabled(!versionManager.firstRevision());
+			frame.getActionRegistry().imageEditorUndo.setEnabled(!versionManager.firstRevision());
 			redo.setEnabled(!versionManager.lastRevision());
-			frame.actionRegistry.imageEditorRedo.setEnabled(!versionManager.lastRevision());
+			frame.getActionRegistry().imageEditorRedo.setEnabled(!versionManager.lastRevision());
 		});
 
 		toolGroups.add(general);

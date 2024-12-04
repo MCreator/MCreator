@@ -172,7 +172,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 		public Small(MCreator mcreator) {
 			super(mcreator, 3, true);
-			reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+			reloadPath(mcreator.getWorkspacePanel().currentFolder, FolderElement.class);
 			setSelectionListener((element, component, event) -> {
 				if (element instanceof FolderElement fe)
 					reloadPath(fe, FolderElement.class);

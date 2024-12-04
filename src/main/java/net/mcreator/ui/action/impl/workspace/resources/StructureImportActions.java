@@ -56,9 +56,9 @@ public class StructureImportActions {
 	public static void importStructure(MCreator mcreator, File[] schs) {
 		Arrays.stream(schs).forEach(sch -> FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(),
 				Objects.requireNonNull(RegistryNameFixer.fix(sch.getName())))));
-		mcreator.mv.resourcesPan.workspacePanelStructures.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		mcreator.getWorkspacePanel().resourcesPan.workspacePanelStructures.reloadElements();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}
 
 	public static class ImportStructureFromMinecraft extends BasicAction {
@@ -100,8 +100,8 @@ public class StructureImportActions {
 										RegistryNameFixer.fix(sch.getName())));
 					}
 				}
-				actionRegistry.getMCreator().mv.resourcesPan.workspacePanelStructures.reloadElements();
-				if (actionRegistry.getMCreator().mcreatorTabs.getCurrentTab()
+				actionRegistry.getMCreator().getWorkspacePanel().resourcesPan.workspacePanelStructures.reloadElements();
+				if (actionRegistry.getMCreator().getTabs().getCurrentTab()
 						.getContent() instanceof ModElementGUI<?> modElementGUI)
 					modElementGUI.reloadDataLists();
 			});

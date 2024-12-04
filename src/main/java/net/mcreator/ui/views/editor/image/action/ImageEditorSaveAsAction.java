@@ -28,13 +28,13 @@ import javax.swing.*;
 public class ImageEditorSaveAsAction extends BasicAction {
 	public ImageEditorSaveAsAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.save_as"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.saveAs();
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.save_as.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+		actionRegistry.getMCreator().getTabs().addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

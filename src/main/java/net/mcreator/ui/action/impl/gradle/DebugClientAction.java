@@ -48,7 +48,7 @@ public class DebugClientAction extends GradleAction {
 				JVMDebugClient debugClient = new JVMDebugClient();
 
 				SwingUtilities.invokeLater(() -> {
-					actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+					actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
 					actionRegistry.getMCreator().getGradleConsole()
 							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 									.getGradleTaskFor("run_client"), debugClient);

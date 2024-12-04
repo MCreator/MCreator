@@ -39,9 +39,9 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, String::toString), new Render());
 
 		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
+				e -> workspacePanel.getMCreator().getActionRegistry().importStructure.doAction());
 		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
+				e -> workspacePanel.getMCreator().getActionRegistry().importStructureFromMinecraft.doAction());
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

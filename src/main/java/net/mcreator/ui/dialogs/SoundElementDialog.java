@@ -137,7 +137,7 @@ public class SoundElementDialog {
 		SoundElement soundElement = soundDialog(mcreator, null, null);
 		if (soundElement != null) {
 			mcreator.getWorkspace().addSoundElement(soundElement);
-			mcreator.mv.resourcesPan.workspacePanelSounds.reloadElements();
+			mcreator.getWorkspacePanel().resourcesPan.workspacePanelSounds.reloadElements();
 		}
 	}
 
@@ -145,7 +145,7 @@ public class SoundElementDialog {
 		SoundElement soundElement = soundDialog(mcreator, null, musics);
 		if (soundElement != null) {
 			mcreator.getWorkspace().addSoundElement(soundElement);
-			mcreator.mv.resourcesPan.workspacePanelSounds.reloadElements();
+			mcreator.getWorkspacePanel().resourcesPan.workspacePanelSounds.reloadElements();
 		}
 	}
 

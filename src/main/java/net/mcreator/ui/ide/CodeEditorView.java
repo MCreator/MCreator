@@ -281,7 +281,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.buildWorkspace.doAction();
+							fa.getActionRegistry().buildWorkspace.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_build"));
@@ -306,7 +306,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.runClient.doAction();
+							fa.getActionRegistry().runClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_launch"));
@@ -319,7 +319,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.debugClient.doAction();
+							fa.getActionRegistry().debugClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_debug"));
@@ -671,9 +671,9 @@ public class CodeEditorView extends ViewBase {
 			}
 		});
 
-		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(fileWorkingOn);
+		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);
 		if (existing == null) {
-			mcreator.mcreatorTabs.addTab(fileTab);
+			mcreator.getTabs().addTab(fileTab);
 			return this;
 		}
 		return (ViewBase) existing.getContent();

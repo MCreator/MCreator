@@ -18,6 +18,7 @@
 
 package net.mcreator.ui;
 
+import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -45,12 +46,12 @@ public class StatusBar extends JPanel {
 
 	private final GradleIndicator gradleIndicator = new GradleIndicator();
 
-	private final MCreator mcreator;
+	private final MCreatorFrame mcreatorFrame;
 
-	public StatusBar(MCreator mcreator) {
+	public StatusBar(MCreatorFrame mcreatorFrame) {
 		super(new BorderLayout(0, 0));
 
-		this.mcreator = mcreator;
+		this.mcreatorFrame = mcreatorFrame;
 
 		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		left.setOpaque(false);
@@ -61,7 +62,7 @@ public class StatusBar extends JPanel {
 		info.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		info.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				mcreator.actionRegistry.aboutMCreator.doAction();
+				AboutAction.showDialog(mcreatorFrame);
 			}
 		});
 		info.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -83,7 +84,7 @@ public class StatusBar extends JPanel {
 		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				new PreferencesDialog(mcreator, null);
+				new PreferencesDialog(mcreatorFrame, null);
 			}
 		});
 		preferences.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -166,21 +167,23 @@ public class StatusBar extends JPanel {
 
 		@Override protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			switch (mcreator.getGradleConsole().getStatus()) {
-			case GradleConsole.READY:
-				g.setColor(Theme.current().getAltForegroundColor());
-				break;
-			case GradleConsole.RUNNING:
-				g.setColor(new Color(158, 247, 89));
-				break;
-			case GradleConsole.ERROR:
-				g.setColor(new Color(0xFF5956));
-				break;
-			}
-			if (mcreator.getGradleConsole().isGradleSetupTaskRunning())
-				g.setColor(new Color(106, 247, 244));
+			if (mcreatorFrame instanceof MCreator mcreator) {
+				switch (mcreator.getGradleConsole().getStatus()) {
+				case GradleConsole.READY:
+					g.setColor(Theme.current().getAltForegroundColor());
+					break;
+				case GradleConsole.RUNNING:
+					g.setColor(new Color(158, 247, 89));
+					break;
+				case GradleConsole.ERROR:
+					g.setColor(new Color(0xFF5956));
+					break;
+				}
+				if (mcreator.getGradleConsole().isGradleSetupTaskRunning())
+					g.setColor(new Color(106, 247, 244));
 
-			g.fillRect(4, 5, 8, 8);
+				g.fillRect(4, 5, 8, 8);
+			}
 		}
 	}
 

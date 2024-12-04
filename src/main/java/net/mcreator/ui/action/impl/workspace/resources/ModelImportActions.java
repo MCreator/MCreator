@@ -198,9 +198,9 @@ public class ModelImportActions {
 							+ ".java"));
 		}
 
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		mcreator.getWorkspacePanel().resourcesPan.workspacePanelModels.reloadElements();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}
 
 	public static class JSON extends BasicAction {
@@ -231,9 +231,9 @@ public class ModelImportActions {
 		if (!txs.isEmpty()) {
 			newTextureMapDialog(mcreator, txs, file, true);
 
-			mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-				((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			mcreator.getWorkspacePanel().resourcesPan.workspacePanelModels.reloadElements();
+			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 		}
 	}
 
@@ -298,9 +298,9 @@ public class ModelImportActions {
 			}
 		} catch (Exception ignore) {
 		}
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		mcreator.getWorkspacePanel().resourcesPan.workspacePanelModels.reloadElements();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}
 
 	private static void newTextureMapDialog(MCreator mcreator, HashSet<String> txs, File modelFile,

@@ -34,7 +34,7 @@ public class ReloadGradleProjectAction extends GradleAction {
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
 				progressDialog.addProgressUnit(p1);
 
-				actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+				actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
 
 				actionRegistry.getMCreator().getGradleConsole()
 						.exec(GradleConsole.GRADLE_SYNC_TASK + " --refresh-dependencies", finished -> {

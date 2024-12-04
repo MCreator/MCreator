@@ -95,7 +95,7 @@ public class CodeErrorDialog {
 
 		if (problematicMods.isEmpty()) { // if list is empty, there are no mod elements to show
 			if (stderroutput.contains("see the compiler error output for details")) {
-				mcreator.mcreatorTabs.showTab(mcreator.consoleTab);
+				mcreator.getTabs().showTab(mcreator.consoleTab);
 				return true;
 			}
 			return false;
@@ -123,10 +123,10 @@ public class CodeErrorDialog {
 		int n = JOptionPane.showOptionDialog(mcreator, wrapper, L10N.t("dialog.code_error.title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (n == 0) {
-			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
-			mcreator.mv.search.setText("f:err");
+			mcreator.getTabs().showTab(mcreator.workspaceTab);
+			mcreator.getWorkspacePanel().search.setText("f:err");
 		} else if (n == 1) {
-			mcreator.mcreatorTabs.showTab(mcreator.consoleTab);
+			mcreator.getTabs().showTab(mcreator.consoleTab);
 		} else if (n == 3) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/support");
 		}

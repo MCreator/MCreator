@@ -160,12 +160,12 @@ public class BreakpointHandler {
 				}
 
 				@Override public boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent breakpointEvent) {
-					MCreatorTabs.Tab existing = cev.getMCreator().mcreatorTabs.showTabOrGetExisting(cev.fileWorkingOn);
+					MCreatorTabs.Tab existing = cev.getMCreator().getTabs().showTabOrGetExisting(cev.fileWorkingOn);
 					if (existing != null) {
 						SwingUtilities.invokeLater(() -> {
 							CodeEditorView bpCev = (CodeEditorView) existing.getContent();
 							if (bpCev == cev) {
-								bpCev.getMCreator().mcreatorTabs.showTab(existing);
+								bpCev.getMCreator().getTabs().showTab(existing);
 								try {
 									int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
 									int startOffset = bpCev.te.getLineStartOffset(breakpointLine);

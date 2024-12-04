@@ -134,9 +134,9 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
-				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
+				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI) {
 					StringBuilder procedureName = new StringBuilder(
-							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
+							((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).getModElement()
 									.getName());
 					String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
 					for (String part : parts) {

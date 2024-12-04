@@ -256,14 +256,14 @@ public class GradleConsole extends JPanel {
 		buildbt.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		buildbt.setToolTipText(L10N.t("dialog.gradle_console.start_build"));
 		buildbt.setOpaque(false);
-		buildbt.addActionListener(e -> ref.actionRegistry.buildWorkspace.doAction());
+		buildbt.addActionListener(e -> ref.getActionRegistry().buildWorkspace.doAction());
 		options.add(buildbt);
 
 		JButton rungradletask = new JButton(UIRES.get("16px.runtask"));
 		rungradletask.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		rungradletask.setToolTipText(L10N.t("dialog.gradle_console.run_specific_task"));
 		rungradletask.setOpaque(false);
-		rungradletask.addActionListener(e -> ref.actionRegistry.runGradleTask.doAction());
+		rungradletask.addActionListener(e -> ref.getActionRegistry().runGradleTask.doAction());
 		options.add(rungradletask);
 
 		options.add(ComponentUtils.deriveFont(new JLabel(" "), 2));
@@ -353,7 +353,7 @@ public class GradleConsole extends JPanel {
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
 
 		ref.consoleTab.repaint();
-		ref.statusBar.reloadGradleIndicator();
+		ref.getStatusBar().reloadGradleIndicator();
 
 		stateListeners.forEach(listener -> listener.taskStarted(command));
 
@@ -365,10 +365,10 @@ public class GradleConsole extends JPanel {
 
 		if (isGradleSync) {
 			append("Executing Gradle synchronization tasks", COLOR_TASK_START);
-			ref.statusBar.setGradleMessage("Gradle sync");
+			ref.getStatusBar().setGradleMessage("Gradle sync");
 		} else {
 			append("Executing Gradle task: " + command, COLOR_TASK_START);
-			ref.statusBar.setGradleMessage("Gradle: " + command);
+			ref.getStatusBar().setGradleMessage("Gradle: " + command);
 		}
 
 		String java_home = GradleUtils.getJavaHome();
@@ -567,7 +567,7 @@ public class GradleConsole extends JPanel {
 			}
 		})));
 
-		task.addProgressListener((ProgressListener) event -> ref.statusBar.setGradleMessage(event.getDescription()));
+		task.addProgressListener((ProgressListener) event -> ref.getStatusBar().setGradleMessage(event.getDescription()));
 
 		if (progressListener != null) {
 			task.addProgressListener(progressListener);
@@ -678,15 +678,15 @@ public class GradleConsole extends JPanel {
 			private void fail() {
 				status = ERROR;
 				ref.consoleTab.repaint();
-				ref.statusBar.reloadGradleIndicator();
-				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
+				ref.getStatusBar().reloadGradleIndicator();
+				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
 				ref.consoleTab.repaint();
-				ref.statusBar.reloadGradleIndicator();
-				ref.statusBar.setGradleMessage(L10N.t("gradle.idle"));
+				ref.getStatusBar().reloadGradleIndicator();
+				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 
 				// on success, we clear the re-run flag
 				if (rerunFlag) {
@@ -718,7 +718,7 @@ public class GradleConsole extends JPanel {
 						listener -> listener.taskFinished(new GradleTaskResult("", mcreatorGradleStatus)));
 
 				// reload mods view to display errors
-				ref.mv.reloadElementsInCurrentTab();
+				ref.getWorkspacePanel().reloadElementsInCurrentTab();
 			}
 		};
 

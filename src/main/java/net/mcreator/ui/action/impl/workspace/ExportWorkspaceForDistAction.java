@@ -42,7 +42,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 		actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 		actionRegistry.getMCreator().getGenerator().generateBase();
 
-		actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+		actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
 
 		actionRegistry.getMCreator().getGradleConsole().exec("build", taskResult -> {
 			String exportFile = actionRegistry.getMCreator().getGeneratorConfiguration()

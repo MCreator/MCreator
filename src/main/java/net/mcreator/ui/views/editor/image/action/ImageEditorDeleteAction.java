@@ -28,13 +28,13 @@ import javax.swing.*;
 public class ImageEditorDeleteAction extends BasicAction {
 	public ImageEditorDeleteAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.delete"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getLayerPanel().selected().deleteSelection();
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.delete.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+		actionRegistry.getMCreator().getTabs().addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }
