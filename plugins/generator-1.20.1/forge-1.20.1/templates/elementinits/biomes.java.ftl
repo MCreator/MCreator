@@ -279,9 +279,15 @@ import com.mojang.datafixers.util.Pair;
 			parameters.add(point);
 	}
 
-	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules,  int index, SurfaceRules.RuleSource rule) {
-		if (!surfaceRules.contains(rule))
-			surfaceRules.add(index, rule);
+	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules, int index, SurfaceRules.RuleSource rule) {
+		if (!surfaceRules.contains(rule)) {
+			<#-- Make sure index is within list bounds - improved mod intercompatibility - #5204 -->
+			if (index >= surfaceRules.size()) {
+				surfaceRules.add(rule);
+			} else {
+				surfaceRules.add(index, rule);
+			}
+		}
 	}
 
 }

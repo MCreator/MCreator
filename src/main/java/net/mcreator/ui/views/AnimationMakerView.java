@@ -617,7 +617,7 @@ public class AnimationMakerView extends ViewBase {
 	@Override public ViewBase showView() {
 		MCreatorTabs.Tab tab = new MCreatorTabs.Tab(this);
 		tab.setTabClosedListener(tab1 -> this.active = false);
-		mcreator.mcreatorTabs.addTab(tab);
+		mcreator.getTabs().addTab(tab);
 		return this;
 	}
 

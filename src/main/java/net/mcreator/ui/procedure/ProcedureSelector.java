@@ -216,9 +216,9 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
-				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
+				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI) {
 					StringBuilder procedureNameBuilder = new StringBuilder(
-							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
+							((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).getModElement()
 									.getName());
 					String[] parts = procedureName.replaceAll("\\(.*\\)", "").split(" ");
 					for (String part : parts) {

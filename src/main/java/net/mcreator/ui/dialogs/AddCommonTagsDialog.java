@@ -136,7 +136,7 @@ public class AddCommonTagsDialog {
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			callables.forEach(c -> c.accept(false));
-			mcreator.mv.reloadElementsInCurrentTab();
+			mcreator.getWorkspacePanel().reloadElementsInCurrentTab();
 			dialog.setCursor(Cursor.getDefaultCursor());
 			dialog.setVisible(false);
 		});

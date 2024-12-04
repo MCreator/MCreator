@@ -121,7 +121,7 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.getWorkspacePanel().reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -141,7 +141,7 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.getWorkspacePanel().currentFolder;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(

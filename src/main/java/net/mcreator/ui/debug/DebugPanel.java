@@ -341,7 +341,7 @@ public class DebugPanel extends JPanel {
 
 			cardLayout.show(this, DEBUGGING);
 
-			mcreator.mcreatorTabs.getTabs().forEach(tab -> {
+			mcreator.getTabs().getTabs().forEach(tab -> {
 				if (tab.getContent() instanceof CodeEditorView cev) {
 					if (cev.getBreakpointHandler() != null) {
 						cev.getBreakpointHandler().newDebugClient(debugClient);

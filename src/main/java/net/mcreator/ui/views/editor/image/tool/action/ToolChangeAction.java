@@ -29,13 +29,13 @@ public class ToolChangeAction extends BasicAction {
 	public ToolChangeAction(ActionRegistry actionRegistry, String name, String tooltip,
 			Class<? extends AbstractTool> tool) {
 		super(actionRegistry, name, actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getToolPanel().setToolByClass(tool);
 			}
 		});
 		setTooltip(tooltip);
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+		actionRegistry.getMCreator().getTabs().addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

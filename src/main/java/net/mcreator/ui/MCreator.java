@@ -19,35 +19,27 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
-import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleTaskResult;
-import net.mcreator.io.OS;
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
-import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.JAdaptiveSplitPane;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
-import net.mcreator.ui.init.AppIcon;
-import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.notifications.INotificationConsumer;
-import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
-import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,69 +53,51 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
+public final class MCreator extends MCreatorFrame {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
-	public WorkspacePanel mv;
+	private final WorkspacePanel workspacePanel;
+
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
 
-	public final ActionRegistry actionRegistry;
+	private final ActionRegistry actionRegistry;
 
-	public final MCreatorTabs mcreatorTabs;
-	public final StatusBar statusBar;
-
-	public MCreatorTabs.Tab workspaceTab;
-	public MCreatorTabs.Tab consoleTab;
+	private final MCreatorTabs mcreatorTabs;
 
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
 
-	private final MCreatorApplication application;
-
-	public final JSplitPane splitPane;
-
-	private final Workspace workspace;
-
-	private final long windowUID;
-
-	private final NotificationsRenderer notificationsRenderer;
+	private final JSplitPane splitPane;
 
 	private final DebugPanel debugPanel;
 
-	private final JPanel mainPanel;
+	public final MCreatorTabs.Tab workspaceTab;
+	public final MCreatorTabs.Tab consoleTab;
 
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
+		super(application, workspace);
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
-
-		this.windowUID = System.currentTimeMillis();
-		this.workspace = workspace;
-		this.application = application;
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
 			@Override public void taskStarted(String taskName) {
-				mv.disableRemoving();
+				workspacePanel.disableRemoving();
 			}
 
 			@Override public void taskFinished(GradleTaskResult result) {
-				mv.enableRemoving();
+				workspacePanel.enableRemoving();
 			}
 		});
-
-		this.debugPanel = new DebugPanel(this);
 
 		this.mcreatorTabs = new MCreatorTabs();
 
 		this.actionRegistry = new ActionRegistry(this);
-		this.statusBar = new StatusBar(this);
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
 
@@ -134,92 +108,30 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		setTitle(WindowTitleHelper.getWindowTitle(this));
 
-		setLayout(new BorderLayout(0, 0));
-
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		if (screenSize.getWidth() > 2140 && screenSize.getHeight() > 1250)
-			setSize(2140, 1250);
-		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
-			setSize(1574, 967);
-		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
-			setSize(1290, 791);
-		else
-			setSize(1002, 640);
-
-		if (OS.getOS() == OS.MAC)
-			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
-
-		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-		setIconImages(AppIcon.getAppIcons());
-		setLocationRelativeTo(null);
-
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent arg0) {
 				closeThisMCreator(false);
 			}
 		});
 
-		mcreatorTabs.addTabShownListener(tab -> {
-			if (tab.equals(workspaceTab))
-				mv.reloadElementsInCurrentTab();
-
-			menuBar.refreshMenuBar();
-
-			setTitle(WindowTitleHelper.getWindowTitle(this));
-		});
-
-		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
-
-		// Load backgrounds depending on the background source
-		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
-		case "All":
-			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
-			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
-			break;
-		case "Current theme":
-			bgimages = BackgroundLoader.loadThemeBackgrounds();
-			break;
-		case "Custom":
-			bgimages = BackgroundLoader.loadUserBackgrounds();
-			break;
-		}
-
-		Image bgimage = null;
-		if (!bgimages.isEmpty()) {
-			bgimage = ListUtils.getRandomItem(bgimages);
-			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-			if (avg > 0.15) {
-				avg = (float) Math.min(avg * 1.7, 0.85);
-				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-						ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
-			}
-		}
-
-		if (bgimage != null) {
-			mainPanel = new ImagePanel(bgimage);
-			((ImagePanel) mainPanel).setKeepRatio(true);
-		} else {
-			mainPanel = new JPanel();
-			mainPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
-		}
-
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add("Center", mcreatorTabs.getContainer());
-
-		mv = new WorkspacePanel(this);
+		workspacePanel = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
-				ComponentUtils.applyPadding(mv, 5, true, true, true, true), "Workspace", true, false);
+				ComponentUtils.applyPadding(workspacePanel, 5, true, true, true, true), "Workspace", true, false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
+
+		mcreatorTabs.addTabShownListener(tab -> {
+			if (tab.equals(workspaceTab))
+				workspacePanel.reloadElementsInCurrentTab();
+
+			menuBar.refreshMenuBar();
+
+			setTitle(WindowTitleHelper.getWindowTitle(this));
+		});
 
 		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", gradleConsole, "Console", true, false) {
 			@Override public void paintComponent(Graphics g) {
@@ -253,36 +165,36 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		pon.add("Center", mcreatorTabs.getTabsStrip());
 
-		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
+		workspace.getFileManager().setDataSavedListener(() -> getStatusBar().setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mainPanel);
+		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
-		splitPane.setBackground(Theme.current().getAltBackgroundColor());
+		splitPane.setOpaque(false);
 		splitPane.setOneTouchExpandable(true);
-
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(workspace.getWorkspaceUserSettings().projectBrowserSplitPos);
 
+		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
+		splitPane.setUI(ui);
+		ui.setDividerColor(Theme.current().getAltBackgroundColor());
 		splitPane.addPropertyChangeListener("dividerLocation", evt -> {
 			if ((Integer) evt.getNewValue() == 0) {
-				splitPane.setBackground(Theme.current().getAltBackgroundColor());
+				ui.setDividerColor(Theme.current().getAltBackgroundColor());
 			} else {
-				splitPane.setBackground(Theme.current().getBackgroundColor());
+				ui.setDividerColor(Theme.current().getBackgroundColor());
 			}
 		});
 
 		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
-		JAdaptiveSplitPane mainContent = new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65);
+		debugPanel = new DebugPanel(this);
 
-		this.notificationsRenderer = new NotificationsRenderer(mainContent);
+		setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
 
-		add("South", statusBar);
 		add("North", toolBar);
-		add("Center", mainContent);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
@@ -342,30 +254,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 	}
 
-	public MCreatorApplication getApplication() {
-		return application;
-	}
-
-	public GradleConsole getGradleConsole() {
-		return gradleConsole;
-	}
-
-	public WorkspaceFileBrowser getProjectBrowser() {
-		return workspaceFileBrowser;
-	}
-
-	@Override public @Nonnull Workspace getWorkspace() {
-		return workspace;
-	}
-
-	@Override public NotificationsRenderer getNotificationsRenderer() {
-		return notificationsRenderer;
-	}
-
-	public StatusBar getStatusBar() {
-		return statusBar;
-	}
-
 	public boolean closeThisMCreator(boolean returnToProjectSelector) {
 		boolean safetoexit = gradleConsole.getStatus() != GradleConsole.RUNNING;
 		if (!safetoexit) {
@@ -388,8 +276,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
-			if (splitPane != null)
-				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
+			workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
@@ -435,40 +322,32 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 	}
 
-	@Override public boolean equals(Object mcreator) {
-		if (mcreator instanceof MCreator theothermcreator) {
-			if (theothermcreator.workspace != null && workspace != null)
-				return theothermcreator.workspace.getFileManager().getWorkspaceFile()
-						.equals(workspace.getFileManager().getWorkspaceFile());
-			else
-				return theothermcreator.windowUID == windowUID;
-		}
-		return false;
+	public void showProjectBrowser(boolean visible) {
+		splitPane.setDividerLocation(visible ? 280 : 0);
 	}
 
-	@Override public int hashCode() {
-		if (workspace != null)
-			return workspace.getFileManager().getWorkspaceFile().hashCode();
-		return Long.valueOf(windowUID).hashCode();
+	public GradleConsole getGradleConsole() {
+		return gradleConsole;
 	}
 
-	private JComponent getPreloaderPane() {
-		JPanel wrap = new BlockingGlassPane();
-		JLabel loading = L10N.label("workspace.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		wrap.add(PanelUtils.totalCenterInPanel(loading));
-		return wrap;
+	public WorkspaceFileBrowser getProjectBrowser() {
+		return workspaceFileBrowser;
 	}
 
 	public ActionRegistry getActionRegistry() {
 		return actionRegistry;
 	}
 
-	public MCreatorTabs getMCreatorTabs() {
+	public MCreatorTabs getTabs() {
 		return mcreatorTabs;
+	}
+
+	public DebugPanel getDebugPanel() {
+		return debugPanel;
+	}
+
+	public WorkspacePanel getWorkspacePanel() {
+		return workspacePanel;
 	}
 
 	public MainMenuBar getMainMenuBar() {
@@ -477,14 +356,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	public MainToolBar getToolBar() {
 		return toolBar;
-	}
-
-	public DebugPanel getDebugPanel() {
-		return debugPanel;
-	}
-
-	public JPanel getMainPanel() {
-		return mainPanel;
 	}
 
 }

@@ -69,17 +69,17 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_java_model", UIRES.get("16px.importjavamodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importJavaModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_json_model", UIRES.get("16px.importjsonmodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importJSONModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importOBJModel.doAction());
 
 		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
 				e -> editSelectedModelTextureMappings());
@@ -157,7 +157,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMCreator(), code);
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
-				workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
+				workspacePanel.getMCreator().getActionRegistry().buildWorkspace.doAction();
 			}
 		} else {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),

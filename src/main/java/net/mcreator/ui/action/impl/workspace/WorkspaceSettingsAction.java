@@ -58,7 +58,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				refactorWorkspace(actionRegistry.getMCreator(), change);
 
-				actionRegistry.getMCreator().mv.reloadElementsInCurrentTab();
+				actionRegistry.getMCreator().getWorkspacePanel().reloadElementsInCurrentTab();
 			}
 		});
 	}
@@ -199,7 +199,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 			} else { // in any other case, we need to regenerate the whole code
 				if (change.gradleCachesRebuildNeeded()) { // and rebuild caches when needed
 					ModAPIManager.deleteAPIs(mcreator.getWorkspace(), change.oldSettings);
-					mcreator.actionRegistry.reloadGradleProject.doAction();
+					mcreator.getActionRegistry().reloadGradleProject.doAction();
 				}
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
 			}

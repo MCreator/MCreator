@@ -53,7 +53,7 @@ public class RunClientAction extends GradleAction {
 						actionRegistry.getMCreator().getGradleConsole()
 								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 										.getGradleTaskFor("run_client"));
-						actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+						actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
 					});
 				}
 			} catch (Exception e) { // if something fails, we still need to free the gradle console

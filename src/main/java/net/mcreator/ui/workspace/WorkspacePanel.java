@@ -288,7 +288,7 @@ import java.util.stream.Collectors;
 		sp.setBorder(BorderFactory.createEmptyBorder());
 
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
-		if (mcreator.getMainPanel() instanceof ImagePanel) {
+		if (mcreator.hasBackgroundImage()) {
 			modElementsPanel.setOpaque(false);
 		} else {
 			modElementsPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
@@ -750,7 +750,7 @@ import java.util.stream.Collectors;
 		pne.add(but5a);
 
 		JPanel toolp;
-		if (mcreator.getMainPanel() instanceof ImagePanel) {
+		if (mcreator.hasBackgroundImage()) {
 			toolp = new JPanel(new BorderLayout(0, 0)) {
 				@Override public void paintComponent(Graphics g) {
 					g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
@@ -1071,7 +1071,7 @@ import java.util.stream.Collectors;
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
 					dial.addProgressUnit(p2);
-					mcreator.actionRegistry.buildWorkspace.doAction();
+					mcreator.getActionRegistry().buildWorkspace.doAction();
 					p2.markStateOk();
 				}
 				dial.hideDialog();
@@ -1270,7 +1270,7 @@ import java.util.stream.Collectors;
 					reloadElementsInCurrentTab();
 
 					if (buildNeeded.get())
-						mcreator.actionRegistry.buildWorkspace.doAction();
+						mcreator.getActionRegistry().buildWorkspace.doAction();
 				}
 			}
 		}

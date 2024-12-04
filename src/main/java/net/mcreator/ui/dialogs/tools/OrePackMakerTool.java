@@ -103,7 +103,7 @@ public class OrePackMakerTool {
 				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
 						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
 						(Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.getWorkspacePanel().reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -131,7 +131,7 @@ public class OrePackMakerTool {
 			return null;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.getWorkspacePanel().currentFolder;
 
 		// first we generate ore texture
 		ImageIcon ore = ImageUtils.drawOver(

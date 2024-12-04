@@ -28,13 +28,13 @@ import javax.swing.*;
 public class ImageEditorCopyAction extends BasicAction {
 	public ImageEditorCopyAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.copy"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getClipboardManager().copy();
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.copy.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
+		actionRegistry.getMCreator().getTabs().addTabShownListener(
 				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

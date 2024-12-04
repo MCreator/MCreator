@@ -137,15 +137,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> ArmorPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> MaterialPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> OrePackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> OrePackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> ToolPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> ToolPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> WoodPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> WoodPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 	}
 
 	@Test public void testWYSIWYGDialogs() throws Throwable {
@@ -249,6 +249,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 			UITestUtil.waitUntilWindowIsOpen(mcreator,
 					() -> new TypedTextureSelectorDialog(mcreator, type).setVisible(true));
 		}
+	}
+
+	@Test public void testPlacementHelperDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PlacementHelperDialog(null, mcreator));
 	}
 
 }

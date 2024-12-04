@@ -41,7 +41,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, SoundElement::getName), new Render());
 
 		addToolBarButton("action.workspace.resources.import_sound", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
+				e -> workspacePanel.getMCreator().getActionRegistry().importSound.doAction());
 		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit"),
 				e -> editSelectedSound(elementList.getSelectedValue()));
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
