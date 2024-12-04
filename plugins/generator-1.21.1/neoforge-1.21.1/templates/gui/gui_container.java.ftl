@@ -113,6 +113,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
+						private final int slot = ${component.id}; <#-- #5209, this is needed for procedure dependencies -->
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
