@@ -308,6 +308,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.mob_settings"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
+		bedWorks.setOpaque(false);
 		hasSkyLight.setOpaque(false);
 		imitateOverworldBehaviour.setOpaque(false);
 		piglinSafe.setOpaque(false);
@@ -318,6 +319,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFixedTime.addActionListener(e -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
 		fixedTimeValue.setEnabled(false);
 		if (!isEditingMode()) {
+			bedWorks.setSelected(true);
+			imitateOverworldBehaviour.setSelected(true);
+			hasSkyLight.setSelected(true);
+			hasRaids.setSelected(true);
 			infiniburnTag.setText("minecraft:infiniburn_overworld");
 		}
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
