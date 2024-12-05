@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.browser.action;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
@@ -28,6 +29,7 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
@@ -36,32 +38,41 @@ public class NewFolderAction extends BasicAction {
 
 	public NewFolderAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.browser.new_folder"), actionEvent -> {
-			String foldername = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
-					L10N.t("workspace_file_browser.new_folder_name.folder_name"),
-					L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
-					new OptionPaneValidator() {
-						@Override public Validator.ValidationResult validate(JComponent component) {
-							return new RegistryNameValidator((VTextField) component,
-									L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
-						}
-					});
-			if (foldername != null) {
-				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
-							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-					if (selection instanceof File filesel) {
-						if (filesel.isFile())
-							filesel = filesel.getParentFile();
+			if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
+				Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
+						.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
+				if (selection instanceof File filesel) {
+					if (filesel.isFile())
+						filesel = filesel.getParentFile();
 
-						if (filesel.isDirectory()) {
-							new File(filesel, foldername).mkdirs();
-							actionRegistry.getMCreator().getProjectBrowser().reloadTree();
-						}
+					File folderToMake = openCreateFolderDialog(actionRegistry.getMCreator(), filesel);
+					if (folderToMake != null) {
+						folderToMake.mkdirs();
+						actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 					}
 				}
 			}
 		});
 		setIcon(UIRES.get("16px.directory"));
+	}
+
+	@Nullable public static File openCreateFolderDialog(MCreator mcreator, File parentFolder) {
+		String foldername = VOptionPane.showInputDialog(mcreator,
+				L10N.t("workspace_file_browser.new_folder_name.folder_name"),
+				L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null, new OptionPaneValidator() {
+					@Override public Validator.ValidationResult validate(JComponent component) {
+						return new RegistryNameValidator((VTextField) component,
+								L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
+					}
+				});
+		if (foldername != null) {
+			if (parentFolder.isDirectory()) {
+				File newFolder = new File(parentFolder, foldername);
+				newFolder.mkdirs();
+				return newFolder;
+			}
+		}
+		return null;
 	}
 
 }
