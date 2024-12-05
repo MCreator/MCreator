@@ -96,7 +96,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner coordinateScale = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.01));
-	private final VTextField infiniburnTag = new VTextField();
+	private final VTextField infiniburnTag = new VTextField(24);
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fixedTimeValue = new JSpinner(new SpinnerNumberModel(0, 0, 24000, 1));
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
@@ -242,7 +242,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.dimension_type_settings"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
-		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 5));
+		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
 		dimensionEffects.setOpaque(false);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
@@ -282,7 +282,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
-		JPanel mobSettings = new JPanel(new GridLayout(4, 2, 15, 5));
+		JPanel mobSettings = new JPanel(new GridLayout(4, 2, 15, 2));
 		mobSettings.setOpaque(false);
 
 		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/piglin_safe"),
@@ -300,6 +300,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		mobSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/spawning_block_light_limit"),
 				L10N.label("elementgui.dimension.monster_spawn_block_light_limit")));
 		mobSettings.add(monsterSpawnBlockLightLimit);
+
+		monsterSpawnBlockLightLimit.setPreferredSize(new java.awt.Dimension(0, 36));
 
 		mobSettings.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -349,7 +351,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel worldgenSettings = new JPanel(new GridLayout(8, 2, 3, 3));
+		JPanel worldgenSettings = new JPanel(new GridLayout(8, 2, 2, 2));
 		worldgenSettings.setOpaque(false);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
