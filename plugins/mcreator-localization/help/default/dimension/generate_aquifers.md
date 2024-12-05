@@ -1,1 +1,1 @@
-If this parameter is enabled, aquifers will generate in this dimension.
+If this parameter is enabled, aquifers (large water/lava lakes) will generate in this dimension.
