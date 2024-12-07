@@ -49,20 +49,36 @@ import java.util.*;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
+	public int seaLevel;
+	public boolean generateOreVeins;
+	public boolean generateAquifers;
+	public int horizontalNoiseSize;
+	public int verticalNoiseSize;
 
+	public String defaultEffects;
+	public boolean useCustomEffects;
+	public boolean hasClouds;
+	public double cloudHeight;
+	public String skyType;
 	public Color airColor;
+	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public boolean isDark;
+	public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
 	public int fixedTimeValue;
 	public double coordinateScale;
 	public String infiniburnTag;
 
-	public String sleepResult;
+	public boolean bedWorks;
 	public boolean hasSkyLight;
 	public boolean imitateOverworldBehaviour;
+	public boolean piglinSafe;
+	public boolean hasRaids;
+	public int minMonsterSpawnLightLimit;
+	public int maxMonsterSpawnLightLimit;
+	public int monsterSpawnBlockLightLimit;
 
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
@@ -92,18 +108,30 @@ import java.util.*;
 		super(element);
 
 		// DEFAULT VALUES
+		this.seaLevel = 63;
+		this.generateOreVeins = true;
+		this.generateAquifers = true;
+		this.horizontalNoiseSize = 1;
+		this.verticalNoiseSize = 2;
 		this.coordinateScale = 1;
 		this.infiniburnTag = "minecraft:infiniburn_overworld";
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.creativeTabs = new ArrayList<>();
+		this.defaultEffects = "overworld";
+		this.cloudHeight = 192;
+		this.skyType = "NONE";
+		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
-		this.sleepResult = "ALLOW";
 	}
 
 	public boolean hasIgniter() {
 		// igniter needs portal and igniter enabled
 		return enablePortal && enableIgniter;
+	}
+
+	public boolean hasEffectsOrDimensionTriggers() {
+		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
 	public Set<String> getWorldgenBlocks() {

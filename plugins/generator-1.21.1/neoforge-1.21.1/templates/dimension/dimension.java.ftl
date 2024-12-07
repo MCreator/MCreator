@@ -41,26 +41,26 @@ package ${package}.world.dimension;
 </#if>
 public class ${name}Dimension {
 
+	<#if data.useCustomEffects>
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ${name}SpecialEffectsHandler {
 
 		@SubscribeEvent public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
 			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(
-				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.OverworldEffects.CLOUD_LEVEL<#else>Float.NaN</#if>,
+				<#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>,
 				true,
-				<#if data.imitateOverworldBehaviour>DimensionSpecialEffects.SkyType.NORMAL<#else>DimensionSpecialEffects.SkyType.NONE</#if>,
+				DimensionSpecialEffects.SkyType.${data.skyType},
 				false,
 				false
 			) {
 				@Override public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
 					<#if data.airColor?has_content>
-						return new Vec3(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
+						return new Vec3(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
 					<#else>
-						<#if data.imitateOverworldBehaviour>
-							return color.multiply(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09);
-						<#else>
-							return color;
-						</#if>
+						return color
 					</#if>
+					<#if data.sunHeightAffectsFog>
+						.multiply(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09)
+					</#if>;
 				}
 
 				@Override public boolean isFoggyAt(int x, int y) {
@@ -71,6 +71,7 @@ public class ${name}Dimension {
 		}
 
 	}
+	</#if>
 
 	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public static void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {

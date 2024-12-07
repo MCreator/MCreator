@@ -726,15 +726,27 @@ public class TestWorkspaceDataProvider {
 			}
 			dimension.airColor = Color.cyan;
 			dimension.canRespawnHere = _true;
+			dimension.bedWorks = !_true;
 			dimension.hasFog = _true;
 			dimension.hasSkyLight = !_true;
 			dimension.imitateOverworldBehaviour = _true;
-			dimension.isDark = _true;
+			dimension.ambientLight = 0.12;
 			dimension.doesWaterVaporize = !_true;
 			dimension.hasFixedTime = !_true;
 			dimension.fixedTimeValue = _true ? 0 : 1523;
 			dimension.coordinateScale = 4.23;
 			dimension.infiniburnTag = "minecraft:infiniburn_end";
+			dimension.piglinSafe = !_true;
+			dimension.hasRaids = _true;
+			dimension.minMonsterSpawnLightLimit = _true ? 4 : 12;
+			dimension.maxMonsterSpawnLightLimit = 12;
+			dimension.monsterSpawnBlockLightLimit = 5;
+			dimension.defaultEffects = new String[] { "overworld", "overworld", "the_nether", "the_end" }[valueIndex];
+			dimension.useCustomEffects = emptyLists;
+			dimension.hasClouds = _true;
+			dimension.cloudHeight = 162.9;
+			dimension.sunHeightAffectsFog = !_true;
+			dimension.skyType = new String[] { "NONE", "NORMAL", "END", "NORMAL" }[valueIndex];
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 8;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
@@ -749,6 +761,11 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, worldgenBlocks).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
+			dimension.seaLevel = 24;
+			dimension.generateOreVeins = _true;
+			dimension.generateAquifers = !_true;
+			dimension.horizontalNoiseSize = new int[] { 1, 2, 1, 4 }[valueIndex];
+			dimension.verticalNoiseSize = new int[] { 2, 2, 4, 1 }[valueIndex];
 			dimension.whenPortaTriggerlUsed = emptyLists ?
 					new Procedure("actionresulttype1") :
 					new Procedure("procedure1");

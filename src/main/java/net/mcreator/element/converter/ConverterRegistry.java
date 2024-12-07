@@ -53,10 +53,7 @@ import net.mcreator.element.converter.v2024_2.*;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
-import net.mcreator.element.converter.v2024_4.AdvancementFunctionConverter;
-import net.mcreator.element.converter.v2024_4.BiomeFogColorConverter;
-import net.mcreator.element.converter.v2024_4.MusicDiscToItemConverter;
-import net.mcreator.element.converter.v2024_4.NoGUISelectedConverter;
+import net.mcreator.element.converter.v2024_4.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +99,8 @@ public class ConverterRegistry {
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
 			new SpecialInformationConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new DimensionSettingsConverter()
 		));
 		put(ModElementType.FLUID, List.of(
 			new FluidNameFixer(),

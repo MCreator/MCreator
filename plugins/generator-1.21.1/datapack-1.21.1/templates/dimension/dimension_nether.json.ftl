@@ -9,7 +9,7 @@
     "biome_source": <@ms.multiNoiseSource/>,
     "settings": {
       "name": "${modid}:${registryname}",
-      "sea_level": 32,
+      "sea_level": ${data.seaLevel},
       "legacy_random_source": true,
       "disable_mob_generation": false,
       "aquifers_enabled": false,
@@ -20,8 +20,8 @@
       "noise": {
         "min_y": 0,
         "height": 128,
-        "size_horizontal": 1,
-        "size_vertical": 2
+        "size_horizontal": ${data.horizontalNoiseSize},
+        "size_vertical": ${data.verticalNoiseSize}
       },
       <#include "nether_noise_router.json.ftl">,
       "surface_rule": {
