@@ -34,7 +34,7 @@ public class ImageEditorCutAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.cut.tooltip"));
-		actionRegistry.getMCreator().getTabs().addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

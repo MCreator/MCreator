@@ -170,7 +170,8 @@ public class TreeUtils {
 		}
 	}
 
-	public static <T> TreePath findPathByUserObject(DefaultMutableTreeNode node, Predicate<T> predicate, Class<T> clazz) {
+	public static <T> TreePath findPathByUserObject(DefaultMutableTreeNode node, Predicate<T> predicate,
+			Class<T> clazz) {
 		// Check children first to avoid selecting a parent prematurely
 		for (int i = 0; i < node.getChildCount(); i++) {
 			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);

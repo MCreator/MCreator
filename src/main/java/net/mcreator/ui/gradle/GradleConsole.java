@@ -567,7 +567,8 @@ public class GradleConsole extends JPanel {
 			}
 		})));
 
-		task.addProgressListener((ProgressListener) event -> ref.getStatusBar().setGradleMessage(event.getDescription()));
+		task.addProgressListener(
+				(ProgressListener) event -> ref.getStatusBar().setGradleMessage(event.getDescription()));
 
 		if (progressListener != null) {
 			task.addProgressListener(progressListener);

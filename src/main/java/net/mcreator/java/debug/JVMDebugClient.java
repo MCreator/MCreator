@@ -33,7 +33,6 @@ import org.gradle.tooling.CancellationToken;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.*;
 
 public class JVMDebugClient {

@@ -85,7 +85,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JSpinner seaLevel = new JSpinner(new SpinnerNumberModel(63, -1024, 1024, 1));
 	private final JCheckBox generateOreVeins = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox generateAquifers = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner horizontalNoiseSize = new JSpinner(new SpinnerListModel(List.of(1, 2, 4))); // Setting these values to 3 can cause crashes
+	private final JSpinner horizontalNoiseSize = new JSpinner(
+			new SpinnerListModel(List.of(1, 2, 4))); // Setting these values to 3 can cause crashes
 	private final JSpinner verticalNoiseSize = new JSpinner(new SpinnerListModel(List.of(1, 2, 4)));
 
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
@@ -330,7 +331,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		useCustomEffects.setOpaque(false);
 		useCustomEffects.addActionListener(e -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
 		hasClouds.setOpaque(false);
-		hasClouds.addActionListener(e -> cloudHeight.setEnabled(useCustomEffects.isSelected() && hasClouds.isSelected()));
+		hasClouds.addActionListener(
+				e -> cloudHeight.setEnabled(useCustomEffects.isSelected() && hasClouds.isSelected()));
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);

@@ -34,7 +34,7 @@ public class ImageEditorPasteAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.paste.tooltip"));
-		actionRegistry.getMCreator().getTabs().addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }

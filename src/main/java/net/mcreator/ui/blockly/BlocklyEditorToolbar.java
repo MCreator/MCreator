@@ -77,7 +77,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
-	 * @param extraComponents	<p>List of additional {@link JComponent} to show inside the toolbar.</p>
+	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
 			ProcedureGUI procedureGUI, JComponent... extraComponents) {

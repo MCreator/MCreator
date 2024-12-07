@@ -51,8 +51,8 @@ public class ReloadCodeAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.ide.reload_code.tooltip"));
-		actionRegistry.getMCreator().getTabs().addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
 
 }

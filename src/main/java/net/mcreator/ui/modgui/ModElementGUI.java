@@ -558,7 +558,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// if new element, specify the folder of the mod element
 		if (!editingMode)
-			modElement.setParentFolder(Objects.requireNonNullElse(targetFolder, mcreator.getWorkspacePanel().currentFolder));
+			modElement.setParentFolder(
+					Objects.requireNonNullElse(targetFolder, mcreator.getWorkspacePanel().currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded

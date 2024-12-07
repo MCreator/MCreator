@@ -35,8 +35,8 @@ public class ToolChangeAction extends BasicAction {
 			}
 		});
 		setTooltip(tooltip);
-		actionRegistry.getMCreator().getTabs().addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof ImageMakerView));
 	}
 }
 
