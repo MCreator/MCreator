@@ -62,6 +62,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
@@ -71,7 +72,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final Workspace workspace;
 
-	@Nullable private final WorkspacePanel workspacePanel;
+	@Nullable private final Supplier<String> filterProvider;
 
 	private final JFileTree tree;
 	@Nullable ResourcePackStructure.Entry selectedEntry = null;
@@ -91,13 +92,13 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private final JButton importFile;
 	private final JButton deleteOverrideOrFile;
 
-	public ResourcePackEditor(MCreator mcreator, @Nullable WorkspacePanel workspacePanel) {
+	public ResourcePackEditor(MCreator mcreator, @Nullable Supplier<String> filterProvider) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.mcreator = mcreator;
 		this.workspace = mcreator.getWorkspace();
-		this.workspacePanel = workspacePanel;
+		this.filterProvider = filterProvider;
 
 		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 		ComponentUtils.deriveFont(originalLabel, 13);
@@ -466,9 +467,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	}
 
 	@Override public void refilterElements() {
-		if (workspacePanel != null) {
-			if (workspacePanel.search.getText().trim().length() >= 3) {
-				model.setFilter(workspacePanel.search.getText().trim());
+		if (filterProvider != null) {
+			String filter = filterProvider.get();
+			if (filter.length() >= 3) {
+				model.setFilter(filter);
 				SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 			} else {
 				model.setFilter("");

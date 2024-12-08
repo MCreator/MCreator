@@ -27,37 +27,33 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
-	public final WorkspacePanelTextures workspacePanelTextures;
-	public final WorkspacePanelSounds workspacePanelSounds;
-	public final WorkspacePanelModels workspacePanelModels;
-	public final WorkspacePanelAnimations workspacePanelAnimations;
-	public final WorkspacePanelStructures workspacePanelStructures;
-	public final WorkspacePanelScreenshots workspacePanelScreenshots;
-
-	public final ResourcePackEditor resourcePackEditor;
-
 	private final JTabbedPane resourceTabs;
+
+	private final Map<String, JPanel> resourcePanels = new HashMap<>();
 
 	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
 		resourceTabs = new JTabbedPane();
 		resourceTabs.setOpaque(false);
 
-		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
-		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
-		this.workspacePanelModels = new WorkspacePanelModels(workspacePanel);
-		this.workspacePanelAnimations = new WorkspacePanelAnimations(workspacePanel);
-		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
-		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
+		WorkspacePanelTextures workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
+		WorkspacePanelSounds workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
+		WorkspacePanelModels workspacePanelModels = new WorkspacePanelModels(workspacePanel);
+		WorkspacePanelAnimations workspacePanelAnimations = new WorkspacePanelAnimations(workspacePanel);
+		WorkspacePanelStructures workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
+		WorkspacePanelScreenshots workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		this.resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(), workspacePanel);
+		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(),
+				() -> workspacePanel.search.getText().trim());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
+			addResourcesTab("textures", L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE
@@ -65,28 +61,28 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				!= GeneratorStats.CoverageStatus.NONE
 				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
+			addResourcesTab("3d_models", L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
+			addResourcesTab("animations", L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
+			addResourcesTab("sounds", L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
+			addResourcesTab("structures", L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
 				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@"))
-			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
+			addResourcesTab("screenshots", L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("vanilla_resources")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
+			addResourcesTab("resource_pack", L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());
 		add(resourceTabs);
@@ -98,8 +94,19 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 	 * @param title     The name of the section shown in the workspace.
 	 * @param component The panel representing contents of the resources tab being added.
 	 */
-	public void addResourcesTab(String title, Component component) {
+	public void addResourcesTab(String key, String title, JPanel component) {
 		resourceTabs.addTab(title, component);
+		resourcePanels.put(key, component);
+	}
+
+	/**
+	 * Gets the resource panel by its key.
+	 *
+	 * @param key The key of the resource panel.
+	 * @return The resource panel.
+	 */
+	public JPanel getResourcePanel(String key) {
+		return resourcePanels.get(key);
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
