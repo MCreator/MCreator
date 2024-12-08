@@ -214,13 +214,17 @@ public class WorkspaceDialogs {
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
-				JTabbedPane master = new JTabbedPane();
-				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
-						PanelUtils.pullElementUp(_basicSettings));
-				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
-				master.addTab(L10N.t("dialog.workspace_settings.tab.advanced"),
-						PanelUtils.pullElementUp(_advancedSettings));
-				add("Center", master);
+				if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+					JTabbedPane master = new JTabbedPane();
+					master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
+							PanelUtils.pullElementUp(_basicSettings));
+					master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
+					master.addTab(L10N.t("dialog.workspace_settings.tab.advanced"),
+							PanelUtils.pullElementUp(_advancedSettings));
+					add("Center", master);
+				} else {
+					add("Center", PanelUtils.pullElementUp(_basicSettings));
+				}
 			} else {
 				add("Center", _basicSettings);
 			}
