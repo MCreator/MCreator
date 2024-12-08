@@ -310,9 +310,9 @@ import java.util.stream.Collectors;
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
 					if (currentTabPanel instanceof WorkspacePanelMods) {
-						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
-					} else {
 						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 19);
+					} else {
+						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
 					}
 				}
 			}

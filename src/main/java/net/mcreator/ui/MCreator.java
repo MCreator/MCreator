@@ -30,7 +30,6 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
@@ -38,6 +37,7 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
@@ -56,7 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public final class MCreator extends MCreatorFrame {
+public abstract class MCreator extends MCreatorFrame {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
@@ -73,14 +73,19 @@ public final class MCreator extends MCreatorFrame {
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
 
-	private final JSplitPane splitPane;
+	@Nullable private final JSplitPane splitPane;
 
 	private final DebugPanel debugPanel;
 
 	public final MCreatorTabs.Tab workspaceTab;
 	public final MCreatorTabs.Tab consoleTab;
 
-	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
+	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
+		return new ModMaker(application, workspace);
+	}
+
+	protected MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace,
+			boolean hasProjectBrowser) {
 		super(application, workspace);
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
 
@@ -101,10 +106,8 @@ public final class MCreator extends MCreatorFrame {
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
 
-		new MCreatorDropTarget(this);
-
-		this.menuBar = new MainMenuBar(this);
-		this.toolBar = new MainToolBar(this);
+		this.menuBar = createMenuBar();
+		this.toolBar = createToolBar();
 
 		setTitle(WindowTitleHelper.getWindowTitle(this));
 
@@ -116,11 +119,13 @@ public final class MCreator extends MCreatorFrame {
 
 		workspacePanel = new WorkspacePanel(this);
 
+		debugPanel = new DebugPanel(this);
+
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
-		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
-				ComponentUtils.applyPadding(workspacePanel, 5, true, true, true, true), "Workspace", true, false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", true,
+				false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 
@@ -170,34 +175,43 @@ public final class MCreator extends MCreatorFrame {
 
 		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
-		splitPane.setOpaque(false);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(workspace.getWorkspaceUserSettings().projectBrowserSplitPos);
+		if (hasProjectBrowser) {
+			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
+			splitPane.setOpaque(false);
+			splitPane.setOneTouchExpandable(true);
+			splitPane.setDividerLocation(280);
+			splitPane.setDividerLocation(workspace.getWorkspaceUserSettings().projectBrowserSplitPos);
 
-		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
-		splitPane.setUI(ui);
-		ui.setDividerColor(Theme.current().getAltBackgroundColor());
-		splitPane.addPropertyChangeListener("dividerLocation", evt -> {
-			if ((Integer) evt.getNewValue() == 0) {
-				ui.setDividerColor(Theme.current().getAltBackgroundColor());
-			} else {
-				ui.setDividerColor(Theme.current().getBackgroundColor());
-			}
-		});
+			OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
+			splitPane.setUI(ui);
+			ui.setDividerColor(Theme.current().getAltBackgroundColor());
+			splitPane.addPropertyChangeListener("dividerLocation", evt -> {
+				if ((Integer) evt.getNewValue() == 0) {
+					ui.setDividerColor(Theme.current().getAltBackgroundColor());
+				} else {
+					ui.setDividerColor(Theme.current().getBackgroundColor());
+				}
+			});
 
-		rightPanel.setMinimumSize(new Dimension(0, 0));
-		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
+			rightPanel.setMinimumSize(new Dimension(0, 0));
+			workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
-		debugPanel = new DebugPanel(this);
-
-		setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
+			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
+		} else {
+			splitPane = null;
+			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, rightPanel, debugPanel, 0.65));
+		}
 
 		add("North", toolBar);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
+
+	protected abstract MainMenuBar createMenuBar();
+
+	protected abstract MainToolBar createToolBar();
+
+	protected abstract JPanel createWorkspaceTabContent();
 
 	@Override public void setVisible(boolean makeVisible) {
 		super.setVisible(makeVisible);
@@ -276,7 +290,8 @@ public final class MCreator extends MCreatorFrame {
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
-			workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
+			if (splitPane != null)
+				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
@@ -323,7 +338,9 @@ public final class MCreator extends MCreatorFrame {
 	}
 
 	public void showProjectBrowser(boolean visible) {
-		splitPane.setDividerLocation(visible ? 280 : 0);
+		if (splitPane != null) {
+			splitPane.setDividerLocation(visible ? 280 : 0);
+		}
 	}
 
 	public GradleConsole getGradleConsole() {

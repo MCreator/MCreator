@@ -26,12 +26,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainToolBar extends JToolBar {
+public abstract class MainToolBar extends JToolBar {
 
 	private final JToolBar pluginToolbarLeft = new JToolBar();
 	private final JToolBar pluginToolbarRight = new JToolBar();
 
-	MainToolBar(MCreator mcreator) {
+	protected MainToolBar(MCreator mcreator) {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 		setFloatable(false);
 
@@ -45,27 +45,7 @@ public class MainToolBar extends JToolBar {
 
 		add(new JEmptyBox(4, 4));
 
-		add(mcreator.getActionRegistry().createMCItemTexture);
-		add(mcreator.getActionRegistry().createAnimatedTexture);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().importBlockTexture);
-		add(mcreator.getActionRegistry().importItemTexture);
-		add(mcreator.getActionRegistry().importSound);
-		add(mcreator.getActionRegistry().importStructure);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().importJavaModel);
-		add(mcreator.getActionRegistry().importJavaModelAnimation);
-		add(mcreator.getActionRegistry().importJSONModel);
-		add(mcreator.getActionRegistry().importOBJModel);
-
-		addSeparator(new Dimension(10, 4));
-		add(mcreator.getActionRegistry().setCreativeTabItemOrder);
-
-		addSeparator(new Dimension(10, 4));
+		assembleLeftSection(mcreator);
 
 		add(pluginToolbarLeft);
 
@@ -75,26 +55,14 @@ public class MainToolBar extends JToolBar {
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.getActionRegistry().workspaceSettings);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().regenerateCode);
-		add(mcreator.getActionRegistry().buildWorkspace);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().runClient);
-		add(mcreator.getActionRegistry().debugClient);
-		add(mcreator.getActionRegistry().runServer);
-		add(mcreator.getActionRegistry().cancelGradleTaskAction);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().exportToJAR);
+		assembleRightSection(mcreator);
 
 		add(new JEmptyBox(4, 4));
 	}
+
+	protected abstract void assembleLeftSection(MCreator mcreator);
+
+	protected abstract void assembleRightSection(MCreator mcreator);
 
 	/**
 	 * @implNote Plugins should use {@link #addToLeftToolbar(Action)} and {@link #addToRightToolbar(Action)}

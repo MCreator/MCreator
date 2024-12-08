@@ -35,14 +35,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class MainMenuBar extends JMenuBar {
+public abstract class MainMenuBar extends JMenuBar {
 
 	private final JMenu code = new JMenu(L10N.t("menubar.code"));
 	private final JMenu imageEditor = new JMenu(L10N.t("menubar.image"));
 
 	private final MCreator mcreator;
 
-	public MainMenuBar(MCreator mcreator) {
+	protected MainMenuBar(MCreator mcreator) {
 		this.mcreator = mcreator;
 
 		boolean macOSscreenMenuBar =
@@ -145,95 +145,7 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeCanvas);
 		add(imageEditor);
 
-		JMenu workspace = L10N.menu("menubar.workspace");
-		workspace.setMnemonic('S');
-		workspace.add(mcreator.getActionRegistry().setCreativeTabItemOrder);
-		workspace.addSeparator();
-		workspace.add(mcreator.getActionRegistry().openWorkspaceFolder);
-		workspace.addSeparator();
-		workspace.add(mcreator.getActionRegistry().workspaceSettings);
-		workspace.addSeparator();
-		workspace.add(mcreator.getActionRegistry().exportToJAR);
-		add(workspace);
-
-		JMenu resources = L10N.menu("menubar.resources");
-		resources.setMnemonic('R');
-		resources.add(mcreator.getActionRegistry().importBlockTexture);
-		resources.add(mcreator.getActionRegistry().importItemTexture);
-		resources.add(mcreator.getActionRegistry().importEntityTexture);
-		resources.add(mcreator.getActionRegistry().importEffectTexture);
-		resources.add(mcreator.getActionRegistry().importParticleTexture);
-		resources.add(mcreator.getActionRegistry().importScreenTexture);
-		resources.add(mcreator.getActionRegistry().importArmorTexture);
-		resources.add(mcreator.getActionRegistry().importOtherTexture);
-		resources.addSeparator();
-		resources.add(mcreator.getActionRegistry().importSound);
-		resources.addSeparator();
-		resources.add(mcreator.getActionRegistry().importStructure);
-		resources.add(mcreator.getActionRegistry().importStructureFromMinecraft);
-		resources.addSeparator();
-		resources.add(mcreator.getActionRegistry().importJavaModel);
-		resources.add(mcreator.getActionRegistry().importJSONModel);
-		resources.add(mcreator.getActionRegistry().importOBJModel);
-		resources.addSeparator();
-		resources.add(mcreator.getActionRegistry().importJavaModelAnimation);
-		add(resources);
-
-		JMenu build = L10N.menu("menubar.build_and_run");
-		build.setMnemonic('B');
-		build.add(mcreator.getActionRegistry().buildWorkspace);
-		build.add(mcreator.getActionRegistry().buildGradleOnly);
-		build.addSeparator();
-		build.add(mcreator.getActionRegistry().regenerateCode);
-		build.addSeparator();
-		build.add(mcreator.getActionRegistry().reloadGradleProject);
-		build.add(mcreator.getActionRegistry().clearAllGradleCaches);
-		build.addSeparator();
-		build.add(mcreator.getActionRegistry().cancelGradleTaskAction);
-		build.addSeparator();
-		build.add(mcreator.getActionRegistry().runGradleTask);
-		build.addSeparator();
-		build.add(mcreator.getActionRegistry().runClient);
-		build.add(mcreator.getActionRegistry().debugClient);
-		build.add(mcreator.getActionRegistry().runServer);
-		add(build);
-
-		JMenu tools = L10N.menu("menubar.tools");
-		tools.setMnemonic('T');
-		tools.add(mcreator.getActionRegistry().createMCItemTexture);
-		tools.add(mcreator.getActionRegistry().createArmorTexture);
-		tools.add(mcreator.getActionRegistry().createAnimatedTexture);
-		tools.addSeparator();
-		tools.add(mcreator.getActionRegistry().openMaterialPackMaker);
-		tools.add(mcreator.getActionRegistry().openOrePackMaker);
-		tools.add(mcreator.getActionRegistry().openToolPackMaker);
-		tools.add(mcreator.getActionRegistry().openArmorPackMaker);
-		tools.add(mcreator.getActionRegistry().openWoodPackMaker);
-		tools.addSeparator();
-		tools.add(mcreator.getActionRegistry().openJavaEditionFolder);
-		tools.add(mcreator.getActionRegistry().openBedrockEditionFolder);
-		tools.addSeparator();
-		JMenu dataLists = L10N.menu("menubar.tools.data_lists");
-		dataLists.add(mcreator.getActionRegistry().showEntityIDList);
-		dataLists.add(mcreator.getActionRegistry().showItemBlockList);
-		dataLists.add(mcreator.getActionRegistry().showParticleIDList);
-		dataLists.add(mcreator.getActionRegistry().showSoundsList);
-		dataLists.add(mcreator.getActionRegistry().showFuelBurnTimes);
-		dataLists.add(mcreator.getActionRegistry().showVanillaLootTables);
-		tools.add(dataLists);
-		add(tools);
-
-		JMenu window = L10N.menu("menubar.window");
-		window.add(mcreator.getActionRegistry().showWorkspaceBrowser);
-		window.add(mcreator.getActionRegistry().hideWorkspaceBrowser);
-		window.addSeparator();
-		window.add(mcreator.getActionRegistry().closeCurrentTab);
-		window.add(mcreator.getActionRegistry().closeAllTabs);
-		window.addSeparator();
-		window.add(mcreator.getActionRegistry().showWorkspaceTab);
-		window.add(mcreator.getActionRegistry().showConsoleTab);
-		window.setMnemonic('W');
-		add(window);
+		assembleMenuBar(mcreator);
 
 		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
@@ -257,6 +169,8 @@ public class MainMenuBar extends JMenuBar {
 		help.setMnemonic('H');
 		add(help);
 	}
+
+	protected abstract void assembleMenuBar(MCreator mcreator);
 
 	private void addHelpSearch(JMenu help) {
 		JTextField searchField = new JTextField(20) {

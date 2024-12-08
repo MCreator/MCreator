@@ -93,7 +93,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						mod.getGeneratableElement();
 					}
 
-					MCreator mcreator = new MCreator(null, workspace);
+					MCreator mcreator = MCreator.create(null, workspace);
 
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {

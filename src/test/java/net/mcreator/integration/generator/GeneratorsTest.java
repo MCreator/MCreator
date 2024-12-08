@@ -106,7 +106,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						GradleDaemonUtils.stopAllDaemons(workspace.get());
 
 						CountDownLatch latch = new CountDownLatch(1);
-						new MCreator(null, workspace.get()).getGradleConsole()
+						MCreator.create(null, workspace.get()).getGradleConsole()
 								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 										workspace.get().getGenerator().reloadGradleCaches();
