@@ -25,7 +25,7 @@ import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 
-public class ModMakerMenuBar extends MainMenuBar {
+class ModMakerMenuBar extends MainMenuBar {
 
 	protected ModMakerMenuBar(MCreator mcreator) {
 		super(mcreator);
@@ -109,18 +109,6 @@ public class ModMakerMenuBar extends MainMenuBar {
 		dataLists.add(mcreator.getActionRegistry().showVanillaLootTables);
 		tools.add(dataLists);
 		add(tools);
-
-		JMenu window = L10N.menu("menubar.window");
-		window.add(mcreator.getActionRegistry().showWorkspaceBrowser);
-		window.add(mcreator.getActionRegistry().hideWorkspaceBrowser);
-		window.addSeparator();
-		window.add(mcreator.getActionRegistry().closeCurrentTab);
-		window.add(mcreator.getActionRegistry().closeAllTabs);
-		window.addSeparator();
-		window.add(mcreator.getActionRegistry().showWorkspaceTab);
-		window.add(mcreator.getActionRegistry().showConsoleTab);
-		window.setMnemonic('W');
-		add(window);
 	}
 
 }

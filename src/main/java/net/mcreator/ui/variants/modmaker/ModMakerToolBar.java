@@ -24,7 +24,7 @@ import net.mcreator.ui.MainToolBar;
 
 import java.awt.*;
 
-public class ModMakerToolBar extends MainToolBar {
+class ModMakerToolBar extends MainToolBar {
 
 	public ModMakerToolBar(MCreator mcreator) {
 		super(mcreator);
