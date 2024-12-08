@@ -58,7 +58,7 @@ public final class ResourcePackMaker extends MCreator {
 	}
 
 	@Override public void workspaceFullyLoaded() {
-		resourcePackEditor.reloadElements();
+		this.reloadWorkspaceTabContentsImpl();
 	}
 
 }
