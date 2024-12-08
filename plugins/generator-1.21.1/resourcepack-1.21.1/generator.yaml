@@ -1,0 +1,21 @@
+name: Resource Pack for Java Edition @minecraft
+status: stable
+buildfileversion: 1.0
+
+# gradle task definitions
+gradle:
+  run_client: ":packloader:runClient"
+  export_file: "build/export/export.zip"
+
+# base generator roots
+source_root: "@WORKSPACEROOT/src/main/"
+res_root: "@SRCROOT"
+mod_assets_root: "@RESROOT/assets/@modid"
+
+# vanilla resources
+vanilla_resources_jar: ".*-client-extra.jar"
+
+base_templates:
+  - template: pack.mcmeta.ftl
+    writer: json
+    name: "@SRCROOT/pack.mcmeta"
