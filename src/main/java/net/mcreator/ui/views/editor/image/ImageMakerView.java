@@ -175,7 +175,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		paletteLayerSplitPane.setOneTouchExpandable(true);
 
 		leftControls.add(template);
-		rightControls.add(saveNew);
+
+		if (TextureType.getSupportedTypes(mcreator.getWorkspace(), false).length > 0)
+			rightControls.add(saveNew);
 
 		rightControls.add(save);
 

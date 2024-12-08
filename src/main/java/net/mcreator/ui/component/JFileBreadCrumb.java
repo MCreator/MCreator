@@ -23,23 +23,17 @@ import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class JFileBreadCrumb extends JPanel {
-
-	private static final Logger LOG = LogManager.getLogger("File Breadcrumb");
 
 	private final File root;
 	private final MCreator mcreator;
@@ -68,14 +62,8 @@ public class JFileBreadCrumb extends JPanel {
 		while (true) {
 			path.add(file);
 			file = file.getParentFile();
-			if (file == null)
+			if (file == null || FileIO.isSameFile(file, root))
 				break;
-			try {
-				if (file.exists() && Files.isSameFile(file.toPath(), root.toPath()))
-					break;
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
 			depth++;
 			if (depth > 9)
 				break;
