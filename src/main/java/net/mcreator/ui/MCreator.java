@@ -75,6 +75,8 @@ public abstract class MCreator extends MCreatorFrame {
 	public final MCreatorTabs.Tab workspaceTab;
 	public final MCreatorTabs.Tab consoleTab;
 
+	private final boolean hasProjectBrowser;
+
 	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		return new ModMaker(application, workspace);
 	}
@@ -83,6 +85,8 @@ public abstract class MCreator extends MCreatorFrame {
 			boolean hasProjectBrowser) {
 		super(application, workspace);
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
+
+		this.hasProjectBrowser = hasProjectBrowser;
 
 		this.gradleConsole = new GradleConsole(this);
 
@@ -360,6 +364,10 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public MainToolBar getToolBar() {
 		return toolBar;
+	}
+
+	public final boolean hasProjectBrowser() {
+		return hasProjectBrowser;
 	}
 
 }
