@@ -23,6 +23,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.util.ColorUtils;
 
@@ -104,6 +105,15 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 
 	public ResourcePackEditor getResourcePackEditor() {
 		return resourcePackEditor;
+	}
+
+	@Override protected void paintComponent(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setColor(Theme.current().getAltBackgroundColor());
+		g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.dispose();
+		super.paintComponent(g);
 	}
 
 }
