@@ -19,3 +19,9 @@ base_templates:
   - template: pack.mcmeta.ftl
     writer: json
     name: "@SRCROOT/pack.mcmeta"
+
+resources_setup_tasks:
+  - task: provide_default_pack_icon
+    width: 128
+    height: 128
+    to: "@RESROOT/pack.png"
