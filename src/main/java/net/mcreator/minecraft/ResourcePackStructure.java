@@ -39,6 +39,8 @@ public class ResourcePackStructure {
 
 	private static final String RESOURCES_FOLDER = "assets/minecraft";
 
+	private static final Map<File, Collection<String>> ZIP_STRUCTURE_CACHE = new HashMap<>();
+
 	public static File getResourcePackRoot(Workspace workspace) {
 		return new File(workspace.getGenerator().getResourceRoot(), RESOURCES_FOLDER);
 	}
@@ -64,18 +66,25 @@ public class ResourcePackStructure {
 		Set<Entry> entries = new TreeSet<>();
 
 		if (resourcePackArchive != null) {
-			ZipIO.iterateZip(resourcePackArchive, entry -> {
-				if (!entry.isDirectory()) {
-					String path = entry.getName();
-					if (path.startsWith(RESOURCES_FOLDER) && extensions.contains(FilenameUtils.getExtension(path))) {
-						path = path.substring(RESOURCES_FOLDER.length());
-						File override = new File(getResourcePackRoot(workspace), path);
-						entries.add(new Entry(path, override,
-								override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
+			Collection<String> zipEntries = ZIP_STRUCTURE_CACHE.computeIfAbsent(resourcePackArchive, file -> {
+				List<String> zipEntriesComputed = new ArrayList<>();
+				ZipIO.iterateZip(resourcePackArchive, entry -> {
+					if (!entry.isDirectory()) {
+						String path = entry.getName();
+						if (path.startsWith(RESOURCES_FOLDER) && extensions.contains(FilenameUtils.getExtension(path))) {
+							path = path.substring(RESOURCES_FOLDER.length());
+							zipEntriesComputed.add(path);
+						}
 					}
-				}
-				// Get input stream of the entry
-			}, true);
+				}, true);
+				return zipEntriesComputed;
+			});
+
+			for (String path : zipEntries) {
+				File override = new File(getResourcePackRoot(workspace), path);
+				entries.add(
+						new Entry(path, override, override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
+			}
 		}
 
 		// Load custom resources
