@@ -88,32 +88,7 @@ public class ProjectJarManager extends JarManager {
 			try {
 				EclipseProject project = projectConnection.getModel(EclipseProject.class);
 
-				for (ExternalDependency externalDependency : project.getClasspath()) {
-					File libFile = externalDependency.getFile();
-					if (libFile != null && libFile.isFile()) {
-						if (libFile.getName().startsWith("scala-"))
-							continue; // skip scala libraries as we do not need them in MCreator
-
-						if (libFile.getName().contains("-natives-"))
-							continue; // skip native libraries as we do not need them in MCreator
-
-						File srcFile = externalDependency.getSource();
-						GeneratorGradleCache.ClasspathEntry classpathEntry = new GeneratorGradleCache.ClasspathEntry(
-								generator.getWorkspace(), libFile.getAbsolutePath(),
-								srcFile != null ? srcFile.getAbsolutePath() : null);
-
-						int idx = classPathEntries.indexOf(classpathEntry);
-						if (idx >= 0) { // If we already have this library in the list,
-							GeneratorGradleCache.ClasspathEntry altClasspathEntry = classPathEntries.get(idx);
-							//  replace it in case we don't have src yet but the alt entry has it
-							if (altClasspathEntry.getSrc(generator.getWorkspace()) == null && srcFile != null) {
-								classPathEntries.set(idx, classpathEntry);
-							}
-						} else {
-							classPathEntries.add(classpathEntry);
-						}
-					}
-				}
+				processProjectClassPath(generator, project, classPathEntries);
 			} catch (BuildException ignored) {
 			}
 
@@ -127,6 +102,41 @@ public class ProjectJarManager extends JarManager {
 		}
 
 		return classPathEntries;
+	}
+
+	private void processProjectClassPath(Generator generator, EclipseProject project, List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
+		LOG.debug("Processing classpath for project {}", project.getName());
+
+		for (ExternalDependency externalDependency : project.getClasspath()) {
+			File libFile = externalDependency.getFile();
+			if (libFile != null && libFile.isFile()) {
+				if (libFile.getName().startsWith("scala-"))
+					continue; // skip scala libraries as we do not need them in MCreator
+
+				if (libFile.getName().contains("-natives-"))
+					continue; // skip native libraries as we do not need them in MCreator
+
+				File srcFile = externalDependency.getSource();
+				GeneratorGradleCache.ClasspathEntry classpathEntry = new GeneratorGradleCache.ClasspathEntry(
+						generator.getWorkspace(), libFile.getAbsolutePath(),
+						srcFile != null ? srcFile.getAbsolutePath() : null);
+
+				int idx = classPathEntries.indexOf(classpathEntry);
+				if (idx >= 0) { // If we already have this library in the list,
+					GeneratorGradleCache.ClasspathEntry altClasspathEntry = classPathEntries.get(idx);
+					//  replace it in case we don't have src yet but the alt entry has it
+					if (altClasspathEntry.getSrc(generator.getWorkspace()) == null && srcFile != null) {
+						classPathEntries.set(idx, classpathEntry);
+					}
+				} else {
+					classPathEntries.add(classpathEntry);
+				}
+			}
+		}
+
+		for (EclipseProject childProject : project.getChildren()) {
+			processProjectClassPath(generator, childProject, classPathEntries);
+		}
 	}
 
 	private void loadExternalDependency(Workspace workspace, GeneratorGradleCache.ClasspathEntry classpathEntry)
