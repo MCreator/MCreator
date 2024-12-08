@@ -19,8 +19,14 @@
 
 package net.mcreator.ui.variants.modmaker;
 
-import net.mcreator.ui.*;
+import net.mcreator.gradle.GradleStateListener;
+import net.mcreator.gradle.GradleTaskResult;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.MainMenuBar;
+import net.mcreator.ui.MainToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
@@ -29,10 +35,22 @@ import javax.swing.*;
 
 public final class ModMaker extends MCreator {
 
+	private WorkspacePanel workspacePanel;
+
 	public ModMaker(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		super(application, workspace, true);
 
 		new ModMakerDropTarget(this);
+
+		getGradleConsole().addGradleStateListener(new GradleStateListener() {
+			@Override public void taskStarted(String taskName) {
+				workspacePanel.disableRemoving();
+			}
+
+			@Override public void taskFinished(GradleTaskResult result) {
+				workspacePanel.enableRemoving();
+			}
+		});
 	}
 
 	@Override public MainMenuBar createMenuBar() {
@@ -44,7 +62,16 @@ public final class ModMaker extends MCreator {
 	}
 
 	@Override protected JPanel createWorkspaceTabContent() {
-		return ComponentUtils.applyPadding(getWorkspacePanel(), 5, true, true, true, true);
+		workspacePanel = new WorkspacePanel(this);
+		return ComponentUtils.applyPadding(workspacePanel, 5, true, true, true, true);
+	}
+
+	@Override public void reloadWorkspaceTabContentsImpl() {
+		workspacePanel.reloadElementsInCurrentTab();
+	}
+
+	public WorkspacePanel getWorkspacePanel() {
+		return workspacePanel;
 	}
 
 }

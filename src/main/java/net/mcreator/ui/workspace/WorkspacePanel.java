@@ -55,6 +55,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
@@ -101,7 +102,7 @@ import java.util.stream.Collectors;
 
 	@Nullable private AbstractWorkspacePanel currentTabPanel = null;
 
-	private final MCreator mcreator;
+	private final ModMaker mcreator;
 
 	private final JButton upFolder;
 	private final JButton renameFolder;
@@ -166,7 +167,7 @@ import java.util.stream.Collectors;
 
 	private final JTabbedPane subTabs;
 
-	public WorkspacePanel(final MCreator mcreator) {
+	public WorkspacePanel(final ModMaker mcreator) {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
 

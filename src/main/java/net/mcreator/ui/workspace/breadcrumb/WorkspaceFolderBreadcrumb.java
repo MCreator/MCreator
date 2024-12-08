@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -172,7 +173,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 		public Small(MCreator mcreator) {
 			super(mcreator, 3, true);
-			reloadPath(mcreator.getWorkspacePanel().currentFolder, FolderElement.class);
+			if (mcreator instanceof ModMaker modMaker) {
+				reloadPath(modMaker.getWorkspacePanel().currentFolder, FolderElement.class);
+			}
 			setSelectionListener((element, component, event) -> {
 				if (element instanceof FolderElement fe)
 					reloadPath(fe, FolderElement.class);

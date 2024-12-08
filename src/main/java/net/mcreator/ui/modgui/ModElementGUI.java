@@ -40,6 +40,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.TestUtil;
@@ -557,9 +558,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		GE element = getElementFromGUI();
 
 		// if new element, specify the folder of the mod element
-		if (!editingMode)
+		if (!editingMode && mcreator instanceof ModMaker modMaker)
 			modElement.setParentFolder(
-					Objects.requireNonNullElse(targetFolder, mcreator.getWorkspacePanel().currentFolder));
+					Objects.requireNonNullElse(targetFolder, modMaker.getWorkspacePanel().currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded

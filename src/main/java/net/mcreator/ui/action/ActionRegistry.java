@@ -254,7 +254,7 @@ public class ActionRegistry {
 				TextureType.SCREEN).setIcon(UIRES.get("16px.importgui"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
-			mcreator.getWorkspacePanel().resourcesPan.workspacePanelTextures.reloadElements();
+			mcreator.reloadWorkspaceTabContents();
 		}, TextureType.ARMOR).setIcon(UIRES.get("16px.importarmor"));
 		this.importOtherTexture = new TextureImportAction(this, L10N.t("action.import_other_texture"),
 				TextureType.OTHER).setIcon(UIRES.get("16px.importtexture"));

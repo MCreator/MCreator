@@ -258,7 +258,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 				//reload image in java cache
 				new ImageIcon(image.getAbsolutePath()).getImage().flush();
-				mcreator.getWorkspacePanel().reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 
 				refreshTab();
 			} else {

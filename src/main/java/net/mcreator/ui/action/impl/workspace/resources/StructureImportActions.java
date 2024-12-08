@@ -56,7 +56,7 @@ public class StructureImportActions {
 	public static void importStructure(MCreator mcreator, File[] schs) {
 		Arrays.stream(schs).forEach(sch -> FileIO.copyFile(sch, new File(mcreator.getFolderManager().getStructuresDir(),
 				Objects.requireNonNull(RegistryNameFixer.fix(sch.getName())))));
-		mcreator.getWorkspacePanel().resourcesPan.workspacePanelStructures.reloadElements();
+		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}
@@ -100,7 +100,7 @@ public class StructureImportActions {
 										RegistryNameFixer.fix(sch.getName())));
 					}
 				}
-				actionRegistry.getMCreator().getWorkspacePanel().resourcesPan.workspacePanelStructures.reloadElements();
+				actionRegistry.getMCreator().reloadWorkspaceTabContents();
 				if (actionRegistry.getMCreator().getTabs().getCurrentTab()
 						.getContent() instanceof ModElementGUI<?> modElementGUI)
 					modElementGUI.reloadDataLists();

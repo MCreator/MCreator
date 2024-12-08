@@ -719,7 +719,7 @@ public class GradleConsole extends JPanel {
 						listener -> listener.taskFinished(new GradleTaskResult("", mcreatorGradleStatus)));
 
 				// reload mods view to display errors
-				ref.getWorkspacePanel().reloadElementsInCurrentTab();
+				ref.reloadWorkspaceTabContents();
 			}
 		};
 

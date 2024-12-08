@@ -124,7 +124,7 @@ public class AnimationImportActions {
 		FileIO.writeStringToFile(classJavaSource.toString(),
 				new File(mcreator.getFolderManager().getModelAnimationsDir(), classJavaSource.getName() + ".java"));
 
-		mcreator.getWorkspacePanel().resourcesPan.workspacePanelAnimations.reloadElements();
+		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}

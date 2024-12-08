@@ -58,7 +58,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				refactorWorkspace(actionRegistry.getMCreator(), change);
 
-				actionRegistry.getMCreator().getWorkspacePanel().reloadElementsInCurrentTab();
+				actionRegistry.getMCreator().reloadWorkspaceTabContents();
 			}
 		});
 	}

@@ -20,8 +20,6 @@ package net.mcreator.ui;
 
 import net.mcreator.Launcher;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleStateListener;
-import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
@@ -38,7 +36,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.variants.modmaker.ModMaker;
-import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
@@ -59,8 +56,6 @@ import java.util.Locale;
 public abstract class MCreator extends MCreatorFrame {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
-
-	private final WorkspacePanel workspacePanel;
 
 	private final GradleConsole gradleConsole;
 
@@ -90,15 +85,6 @@ public abstract class MCreator extends MCreatorFrame {
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
 
 		this.gradleConsole = new GradleConsole(this);
-		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
-			@Override public void taskStarted(String taskName) {
-				workspacePanel.disableRemoving();
-			}
-
-			@Override public void taskFinished(GradleTaskResult result) {
-				workspacePanel.enableRemoving();
-			}
-		});
 
 		this.mcreatorTabs = new MCreatorTabs();
 
@@ -117,8 +103,6 @@ public abstract class MCreator extends MCreatorFrame {
 			}
 		});
 
-		workspacePanel = new WorkspacePanel(this);
-
 		debugPanel = new DebugPanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
@@ -130,8 +114,7 @@ public abstract class MCreator extends MCreatorFrame {
 		pon.add("West", workspaceTab);
 
 		mcreatorTabs.addTabShownListener(tab -> {
-			if (tab.equals(workspaceTab))
-				workspacePanel.reloadElementsInCurrentTab();
+			reloadWorkspaceTabContents();
 
 			menuBar.refreshMenuBar();
 
@@ -212,6 +195,14 @@ public abstract class MCreator extends MCreatorFrame {
 	protected abstract MainToolBar createToolBar();
 
 	protected abstract JPanel createWorkspaceTabContent();
+
+	protected abstract void reloadWorkspaceTabContentsImpl();
+
+	public final void reloadWorkspaceTabContents() {
+		if (mcreatorTabs.getCurrentTab().equals(workspaceTab)) {
+			reloadWorkspaceTabContentsImpl();
+		}
+	}
 
 	@Override public void setVisible(boolean makeVisible) {
 		super.setVisible(makeVisible);
@@ -361,10 +352,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public DebugPanel getDebugPanel() {
 		return debugPanel;
-	}
-
-	public WorkspacePanel getWorkspacePanel() {
-		return workspacePanel;
 	}
 
 	public MainMenuBar getMainMenuBar() {

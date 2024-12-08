@@ -105,7 +105,7 @@ public class TextureImportDialogs {
 				FileIO.copyFile(f1.get(), armor[0]);
 				FileIO.copyFile(f2.get(), armor[1]);
 
-				mcreator.getWorkspacePanel().resourcesPan.workspacePanelTextures.reloadElements();
+				mcreator.reloadWorkspaceTabContents();
 				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
 					modElementGUI.reloadDataLists();
 			}
@@ -149,7 +149,7 @@ public class TextureImportDialogs {
 			FileIO.copyFile(textureFile, file);
 		});
 
-		mcreator.getWorkspacePanel().resourcesPan.workspacePanelTextures.reloadElements();
+		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
 			modElementGUI.reloadDataLists();
 	}

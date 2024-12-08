@@ -26,6 +26,7 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -124,7 +125,8 @@ public class CodeErrorDialog {
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			mcreator.getTabs().showTab(mcreator.workspaceTab);
-			mcreator.getWorkspacePanel().search.setText("f:err");
+			if (mcreator instanceof ModMaker modMaker)
+				modMaker.getWorkspacePanel().search.setText("f:err");
 		} else if (n == 1) {
 			mcreator.getTabs().showTab(mcreator.consoleTab);
 		} else if (n == 3) {
