@@ -68,6 +68,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			UIRES.get("16px.spigot"));
 	private final JToggleButton datapack = new JToggleButton(L10N.t("dialog.new_workspace.datapack.toggle"),
 			UIRES.get("16px.datapack"));
+	private final JToggleButton resourcepack = new JToggleButton(L10N.t("dialog.new_workspace.resourcepack.toggle"),
+			UIRES.get("16px.resourcepack"));
 	private final JToggleButton addon = new JToggleButton(L10N.t("dialog.new_workspace.addon.toggle"),
 			UIRES.get("16px.bedrock"));
 
@@ -80,6 +82,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		AbstractWorkspacePanel quiltWorkspacePanel = new QuiltWorkspacePanel(this);
 		AbstractWorkspacePanel spigotWorkspacePanel = new SpigotWorkspacePanel(this);
 		AbstractWorkspacePanel datapackWorkspacePanel = new DatapackWorkspacePanel(this);
+		AbstractWorkspacePanel resourcepackWorkspacePanel = new ResourcepackWorkspacePanel(this);
 		AbstractWorkspacePanel addonWorkspacePanel = new AddonWorkspacePanel(this);
 
 		JPanel buttons = new JPanel();
@@ -135,6 +138,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspacePanels.add("quilt", PanelUtils.pullElementUp(quiltWorkspacePanel));
 		workspacePanels.add("spigot", PanelUtils.pullElementUp(spigotWorkspacePanel));
 		workspacePanels.add("datapack", PanelUtils.pullElementUp(datapackWorkspacePanel));
+		workspacePanels.add("resourcepack", PanelUtils.pullElementUp(resourcepackWorkspacePanel));
 		workspacePanels.add("addon", PanelUtils.pullElementUp(addonWorkspacePanel));
 
 		workspacePanels.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
@@ -209,6 +213,15 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			cardLayout.show(workspacePanels, "datapack");
 		});
 
+		resourcepack.setHorizontalAlignment(SwingConstants.LEFT);
+		resourcepack.setBackground(Theme.current().getBackgroundColor());
+		resourcepack.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 30));
+		buttonGroup.add(resourcepack);
+		resourcepack.addActionListener(e -> {
+			current = resourcepackWorkspacePanel;
+			cardLayout.show(workspacePanels, "resourcepack");
+		});
+
 		addon.setHorizontalAlignment(SwingConstants.LEFT);
 		addon.setBackground(Theme.current().getBackgroundColor());
 		addon.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 30));
@@ -225,6 +238,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspaceType.add(quilt);
 		workspaceType.add(separator("dialog.new_workspace.je_dp"));
 		workspaceType.add(datapack);
+		workspaceType.add(separator("dialog.new_workspace.je_rp"));
+		workspaceType.add(resourcepack);
 		workspaceType.add(separator("dialog.new_workspace.be_addon"));
 		workspaceType.add(addon);
 		workspaceType.add(separator("dialog.new_workspace.je_plugin"));
@@ -263,6 +278,11 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		if (Generator.GENERATOR_CACHE.values().stream()
 				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.DATAPACK)) {
 			disableType(datapack);
+		}
+
+		if (Generator.GENERATOR_CACHE.values().stream()
+				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.RESOURCEPACK)) {
+			disableType(resourcepack);
 		}
 
 		JComponent wrapPan = PanelUtils.northAndCenterElement(workspaceType, new JEmptyBox());
@@ -326,6 +346,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			break;
 		case DATAPACK:
 			datapack.doClick();
+			break;
+		case RESOURCEPACK:
+			resourcepack.doClick();
 			break;
 		}
 	}
