@@ -144,7 +144,6 @@ public class CodeEditorView extends ViewBase {
 		setBackground(Theme.current().getBackgroundColor());
 
 		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, this.fileWorkingOn, fa.getWorkspaceFolder());
-		this.fileBreadCrumb.setVisible(false);
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
