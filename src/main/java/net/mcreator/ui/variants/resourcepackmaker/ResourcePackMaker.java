@@ -23,7 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.MainMenuBar;
 import net.mcreator.ui.MainToolBar;
-import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
@@ -32,12 +32,12 @@ import javax.swing.*;
 
 public final class ResourcePackMaker extends MCreator {
 
-	public ResourcePackEditor resourcePackEditor;
+	public ResourcePackMakerWorkspacePanel workspacePanel;
 
 	public ResourcePackMaker(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		super(application, workspace, true);
 
-		new ResourcePackMakerDropTarget(this, resourcePackEditor);
+		new ResourcePackMakerDropTarget(this);
 	}
 
 	@Override public MainMenuBar createMenuBar() {
@@ -49,16 +49,20 @@ public final class ResourcePackMaker extends MCreator {
 	}
 
 	@Override protected JPanel createWorkspaceTabContent() {
-		resourcePackEditor = new ResourcePackEditor(this, () -> ""); // TODO: add search bar
-		return resourcePackEditor;
+		workspacePanel = new ResourcePackMakerWorkspacePanel(this);
+		return ComponentUtils.applyPadding(workspacePanel, 5, true, true, true, true);
 	}
 
 	@Override public void reloadWorkspaceTabContentsImpl() {
-		resourcePackEditor.reloadElements();
+		workspacePanel.reloadElements();
 	}
 
 	@Override public void workspaceFullyLoaded() {
 		this.reloadWorkspaceTabContentsImpl();
+	}
+
+	public ResourcePackMakerWorkspacePanel getWorkspacePanel() {
+		return workspacePanel;
 	}
 
 }

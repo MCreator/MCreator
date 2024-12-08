@@ -37,8 +37,6 @@
 
 package net.mcreator.ui.variants.resourcepackmaker;
 
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,8 +46,7 @@ import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-record ResourcePackMakerDropTarget(MCreator mcreator, ResourcePackEditor resourcePackEditor)
-		implements DropTargetListener {
+record ResourcePackMakerDropTarget(ResourcePackMaker mcreator) implements DropTargetListener {
 
 	private static final Logger LOG = LogManager.getLogger("DND");
 
@@ -80,7 +77,7 @@ record ResourcePackMakerDropTarget(MCreator mcreator, ResourcePackEditor resourc
 				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
-						resourcePackEditor.importExternalFile(file);
+						mcreator.getWorkspacePanel().getResourcePackEditor().importExternalFile(file);
 					}
 				}
 			} catch (Exception ex) {
