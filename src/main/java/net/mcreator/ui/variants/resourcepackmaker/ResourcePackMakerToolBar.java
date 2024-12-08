@@ -36,15 +36,12 @@ class ResourcePackMakerToolBar extends MainToolBar {
 	@Override protected void assembleRightSection(MCreator mcreator) {
 		add(mcreator.getActionRegistry().workspaceSettings);
 
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().buildWorkspace);
-
-		addSeparator(new Dimension(10, 4));
+		addSeparator(new Dimension(4, 4));
 
 		add(mcreator.getActionRegistry().runClient);
+		add(mcreator.getActionRegistry().cancelGradleTaskAction);
 
-		addSeparator(new Dimension(10, 4));
+		addSeparator(new Dimension(4, 4));
 
 		add(mcreator.getActionRegistry().exportToJAR);
 	}

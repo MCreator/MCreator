@@ -46,7 +46,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
-import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 
@@ -171,8 +170,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		File root = ResourcePackStructure.getResourcePackRoot(workspace);
 		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
-
-		previewPanel.setOpaque(false);
 
 		TransparentToolBar fileBar = new TransparentToolBar();
 		add("North", fileBar);
@@ -474,6 +471,20 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 			} else {
 				model.setFilter("");
+			}
+		}
+	}
+
+	public void importExternalFile(File file) {
+		if (selectedEntry != null) {
+			if (selectedEntry.isFolder()) { // Importing files into a folder
+				File importTargetFolder = selectedEntry.override();
+				FileIO.copyFile(file, new File(importTargetFolder, file.getName()));
+				reloadElements();
+			} else { // Importing a file to override existing file
+				File importTarget = selectedEntry.override();
+				FileIO.copyFile(file, importTarget);
+				reloadElements();
 			}
 		}
 	}

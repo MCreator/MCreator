@@ -38,22 +38,18 @@
 package net.mcreator.ui.variants.resourcepackmaker;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
-import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
-import net.mcreator.ui.dialogs.SoundElementDialog;
-import net.mcreator.ui.dialogs.TextureImportDialogs;
-import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-record ResourcePackMakerDropTarget(MCreator mcreator) implements DropTargetListener {
+record ResourcePackMakerDropTarget(MCreator mcreator, ResourcePackEditor resourcePackEditor)
+		implements DropTargetListener {
 
 	private static final Logger LOG = LogManager.getLogger("DND");
 
@@ -84,7 +80,7 @@ record ResourcePackMakerDropTarget(MCreator mcreator) implements DropTargetListe
 				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
-						// TODO: implement
+						resourcePackEditor.importExternalFile(file);
 					}
 				}
 			} catch (Exception ex) {

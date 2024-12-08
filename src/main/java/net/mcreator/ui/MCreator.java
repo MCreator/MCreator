@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
@@ -36,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.variants.modmaker.ModMaker;
+import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
@@ -78,7 +80,11 @@ public abstract class MCreator extends MCreatorFrame {
 	private final boolean hasProjectBrowser;
 
 	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		return new ModMaker(application, workspace);
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.RESOURCEPACK) {
+			return new ResourcePackMaker(application, workspace);
+		} else {
+			return new ModMaker(application, workspace);
+		}
 	}
 
 	protected MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace,
@@ -258,9 +264,13 @@ public abstract class MCreator extends MCreatorFrame {
 					setGlassPane(new JEmptyBox());
 					setJMenuBar(menuBar);
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					workspaceFullyLoaded();
 				});
 			}, "ME preloader").start();
 		}
+	}
+
+	public void workspaceFullyLoaded() {
 	}
 
 	public boolean closeThisMCreator(boolean returnToProjectSelector) {
