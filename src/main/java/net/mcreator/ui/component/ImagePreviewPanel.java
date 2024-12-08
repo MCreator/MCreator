@@ -41,6 +41,7 @@ public class ImagePreviewPanel extends JPanel {
 
 	public ImagePreviewPanel(@Nullable ImageIcon image) {
 		super(new BorderLayout());
+		setOpaque(false);
 		zoomPane = new JZoomPane(imageRenderer);
 
 		add("Center", zoomPane);
@@ -66,7 +67,7 @@ public class ImagePreviewPanel extends JPanel {
 		this.image = image;
 		imageRenderer.setIcon(image);
 		imageRenderer.setSize(image.getIconWidth(), image.getIconHeight());
-		zoomPane.getZoomport().fitZoom();
+		zoomPane.getZoomport().fitZoom(60, 60);
 	}
 
 }

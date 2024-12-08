@@ -222,6 +222,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				});
 		fileBar.add(deleteOverrideOrFile);
 
+		previewPanel.setOpaque(false);
+
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				PanelUtils.northAndCenterElement(folderBar, jsp),
 				PanelUtils.northAndCenterElement(fileBar, PanelUtils.centerAndSouthElement(previewPanel, breadCrumb)));
