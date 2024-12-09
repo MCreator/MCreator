@@ -1,0 +1,1 @@
+Este ajuste te permite generar aldeas dentro de tu bioma.

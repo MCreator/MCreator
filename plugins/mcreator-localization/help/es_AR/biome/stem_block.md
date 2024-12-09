@@ -1,0 +1,1 @@
+Este parámetro controla el bloque usado para hacer el tallo de tu árbol si se seleccionan árboles personalizados.
