@@ -101,7 +101,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/MenuElement.html" title="class or interface in javax.swing" class="external-link">MenuElement</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MainMenuBar</span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">MainMenuBar</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JMenuBar.html" title="class or interface in javax.swing" class="external-link">JMenuBar</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
@@ -152,9 +152,11 @@ loadScripts(document, 'script');</script>
 <section class="constructor-summary" id="constructor-summary">
 <h2>Constructor Summary</h2>
 <div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator)" class="member-name-link">MainMenuBar</a><wbr>(<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -165,15 +167,18 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshMenuBar()" class="member-name-link">refreshMenuBar</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#assembleMenuBar(net.mcreator.ui.MCreator)" class="member-name-link">assembleMenuBar</a><wbr>(<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshMenuBar()" class="member-name-link">refreshMenuBar</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -206,7 +211,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator)">
 <h3>MainMenuBar</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MainMenuBar</span><wbr><span class="parameters">(<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">MainMenuBar</span><wbr><span class="parameters">(<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
 </section>
 </li>
 </ul>
@@ -217,6 +222,12 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="assembleMenuBar(net.mcreator.ui.MCreator)">
+<h3>assembleMenuBar</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">assembleMenuBar</span><wbr><span class="parameters">(<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</span></div>
+</section>
+</li>
 <li>
 <section class="detail" id="refreshMenuBar()">
 <h3>refreshMenuBar</h3>

@@ -90,7 +90,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">java.awt.Window</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Frame.html" title="class or interface in java.awt" class="external-link">java.awt.Frame</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html" title="class or interface in javax.swing" class="external-link">javax.swing.JFrame</a>
+<div class="inheritance"><a href="MCreatorFrame.html" title="class in net.mcreator.ui">net.mcreator.ui.MCreatorFrame</a>
 <div class="inheritance">net.mcreator.ui.MCreator</div>
+</div>
 </div>
 </div>
 </div>
@@ -102,10 +104,13 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/RootPaneContainer.html" title="class or interface in javax.swing" class="external-link">RootPaneContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/WindowConstants.html" title="class or interface in javax.swing" class="external-link">WindowConstants</a></code>, <code><a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></code>, <code><a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></code>, <code><a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="variants/modmaker/ModMaker.html" title="class in net.mcreator.ui.variants.modmaker">ModMaker</a></code>, <code><a href="variants/resourcepackmaker/ResourcePackMaker.html" title="class in net.mcreator.ui.variants.resourcepackmaker">ResourcePackMaker</a></code></dd>
+</dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">MCreator</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html" title="class or interface in javax.swing" class="external-link">JFrame</a>
-implements <a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a>, <a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a>, <a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></span></div>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">MCreator</span>
+<span class="extends-implements">extends <a href="MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -147,28 +152,16 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>final <a href="action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a></code></div>
-<div class="col-second even-row-color"><code><a href="#actionRegistry" class="member-name-link">actionRegistry</a></code></div>
+<div class="col-first even-row-color"><code>final <a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></code></div>
+<div class="col-second even-row-color"><code><a href="#consoleTab" class="member-name-link">consoleTab</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#consoleTab" class="member-name-link">consoleTab</a></code></div>
+<div class="col-first odd-row-color"><code>final <a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#workspaceTab" class="member-name-link">workspaceTab</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>final <a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></code></div>
-<div class="col-second even-row-color"><code><a href="#mcreatorTabs" class="member-name-link">mcreatorTabs</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">WorkspacePanel</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#mv" class="member-name-link">mv</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a></code></div>
-<div class="col-second even-row-color"><code><a href="#splitPane" class="member-name-link">splitPane</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#statusBar" class="member-name-link">statusBar</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></code></div>
-<div class="col-second even-row-color"><code><a href="#workspaceTab" class="member-name-link">workspaceTab</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-net.mcreator.ui.MCreatorFrame">Fields inherited from class&nbsp;net.mcreator.ui.<a href="MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a></h3>
+<code><a href="MCreatorFrame.html#application">application</a>, <a href="MCreatorFrame.html#workspace">workspace</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JFrame">Fields inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html" title="class or interface in javax.swing" class="external-link">JFrame</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#accessibleContext" title="class or interface in javax.swing" class="external-link">accessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#rootPane" title="class or interface in javax.swing" class="external-link">rootPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#rootPaneCheckingEnabled" title="class or interface in javax.swing" class="external-link">rootPaneCheckingEnabled</a></code></div>
@@ -191,11 +184,14 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <section class="constructor-summary" id="constructor-summary">
 <h2>Constructor Summary</h2>
 <div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace)" class="member-name-link">MCreator</a><wbr>(<a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a>&nbsp;application,
- <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-first even-row-color"><code>protected </code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace,boolean)" class="member-name-link">MCreator</a><wbr>(<a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a>&nbsp;application,
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ boolean&nbsp;hasProjectBrowser)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -205,7 +201,7 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -214,14 +210,21 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeThisMCreator(boolean)" class="member-name-link">closeThisMCreator</a><wbr>(boolean&nbsp;returnToProjectSelector)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;mcreator)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionRegistry()" class="member-name-link">getActionRegistry</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getApplication()" class="member-name-link">getApplication</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#create(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace)" class="member-name-link">create</a><wbr>(<a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a>&nbsp;application,
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="MainMenuBar.html" title="class in net.mcreator.ui">MainMenuBar</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createMenuBar()" class="member-name-link">createMenuBar</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createToolBar()" class="member-name-link">createToolBar</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createWorkspaceTabContent()" class="member-name-link">createWorkspaceTabContent</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionRegistry()" class="member-name-link">getActionRegistry</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="debug/DebugPanel.html" title="class in net.mcreator.ui.debug">DebugPanel</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDebugPanel()" class="member-name-link">getDebugPanel</a>()</code></div>
@@ -232,39 +235,42 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MainMenuBar.html" title="class in net.mcreator.ui">MainMenuBar</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMainMenuBar()" class="member-name-link">getMainMenuBar</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMainPanel()" class="member-name-link">getMainPanel</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectBrowser()" class="member-name-link">getProjectBrowser</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreatorTabs()" class="member-name-link">getMCreatorTabs</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabs()" class="member-name-link">getTabs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationsRenderer()" class="member-name-link">getNotificationsRenderer</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolBar()" class="member-name-link">getToolBar</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectBrowser()" class="member-name-link">getProjectBrowser</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasProjectBrowser()" class="member-name-link">hasProjectBrowser</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatusBar()" class="member-name-link">getStatusBar</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadWorkspaceTabContents()" class="member-name-link">reloadWorkspaceTabContents</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolBar()" class="member-name-link">getToolBar</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#reloadWorkspaceTabContentsImpl()" class="member-name-link">reloadWorkspaceTabContentsImpl</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTitle(java.lang.String)" class="member-name-link">setTitle</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVisible(boolean)" class="member-name-link">setVisible</a><wbr>(boolean&nbsp;makeVisible)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showProjectBrowser(boolean)" class="member-name-link">showProjectBrowser</a><wbr>(boolean&nbsp;visible)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#workspaceFullyLoaded()" class="member-name-link">workspaceFullyLoaded</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.MCreatorFrame">Methods inherited from class&nbsp;net.mcreator.ui.<a href="MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a></h3>
+<code><a href="MCreatorFrame.html#equals(java.lang.Object)">equals</a>, <a href="MCreatorFrame.html#getApplication()">getApplication</a>, <a href="MCreatorFrame.html#getNotificationsRenderer()">getNotificationsRenderer</a>, <a href="MCreatorFrame.html#getPreloaderPane()">getPreloaderPane</a>, <a href="MCreatorFrame.html#getStatusBar()">getStatusBar</a>, <a href="MCreatorFrame.html#getWorkspace()">getWorkspace</a>, <a href="MCreatorFrame.html#hasBackgroundImage()">hasBackgroundImage</a>, <a href="MCreatorFrame.html#hashCode()">hashCode</a>, <a href="MCreatorFrame.html#setMainContent(javax.swing.JComponent)">setMainContent</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-javax.swing.JFrame">Methods inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html" title="class or interface in javax.swing" class="external-link">JFrame</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#addImpl(java.awt.Component,java.lang.Object,int)" title="class or interface in javax.swing" class="external-link">addImpl</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#createRootPane()" title="class or interface in javax.swing" class="external-link">createRootPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#frameInit()" title="class or interface in javax.swing" class="external-link">frameInit</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getContentPane()" title="class or interface in javax.swing" class="external-link">getContentPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getDefaultCloseOperation()" title="class or interface in javax.swing" class="external-link">getDefaultCloseOperation</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getGlassPane()" title="class or interface in javax.swing" class="external-link">getGlassPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getGraphics()" title="class or interface in javax.swing" class="external-link">getGraphics</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getJMenuBar()" title="class or interface in javax.swing" class="external-link">getJMenuBar</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getLayeredPane()" title="class or interface in javax.swing" class="external-link">getLayeredPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getRootPane()" title="class or interface in javax.swing" class="external-link">getRootPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#getTransferHandler()" title="class or interface in javax.swing" class="external-link">getTransferHandler</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#isDefaultLookAndFeelDecorated()" title="class or interface in javax.swing" class="external-link">isDefaultLookAndFeelDecorated</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#isRootPaneCheckingEnabled()" title="class or interface in javax.swing" class="external-link">isRootPaneCheckingEnabled</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#processWindowEvent(java.awt.event.WindowEvent)" title="class or interface in javax.swing" class="external-link">processWindowEvent</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#remove(java.awt.Component)" title="class or interface in javax.swing" class="external-link">remove</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#repaint(long,int,int,int,int)" title="class or interface in javax.swing" class="external-link">repaint</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setContentPane(java.awt.Container)" title="class or interface in javax.swing" class="external-link">setContentPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setDefaultCloseOperation(int)" title="class or interface in javax.swing" class="external-link">setDefaultCloseOperation</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setDefaultLookAndFeelDecorated(boolean)" title="class or interface in javax.swing" class="external-link">setDefaultLookAndFeelDecorated</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setGlassPane(java.awt.Component)" title="class or interface in javax.swing" class="external-link">setGlassPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setIconImage(java.awt.Image)" title="class or interface in javax.swing" class="external-link">setIconImage</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setJMenuBar(javax.swing.JMenuBar)" title="class or interface in javax.swing" class="external-link">setJMenuBar</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setLayeredPane(javax.swing.JLayeredPane)" title="class or interface in javax.swing" class="external-link">setLayeredPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setLayout(java.awt.LayoutManager)" title="class or interface in javax.swing" class="external-link">setLayout</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setRootPane(javax.swing.JRootPane)" title="class or interface in javax.swing" class="external-link">setRootPane</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setRootPaneCheckingEnabled(boolean)" title="class or interface in javax.swing" class="external-link">setRootPaneCheckingEnabled</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#setTransferHandler(javax.swing.TransferHandler)" title="class or interface in javax.swing" class="external-link">setTransferHandler</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JFrame.html#update(java.awt.Graphics)" title="class or interface in javax.swing" class="external-link">update</a></code></div>
@@ -307,45 +313,15 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="mv">
-<h3>mv</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">WorkspacePanel</a></span>&nbsp;<span class="element-name">mv</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="actionRegistry">
-<h3>actionRegistry</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a></span>&nbsp;<span class="element-name">actionRegistry</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="mcreatorTabs">
-<h3>mcreatorTabs</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></span>&nbsp;<span class="element-name">mcreatorTabs</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="statusBar">
-<h3>statusBar</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></span>&nbsp;<span class="element-name">statusBar</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="workspaceTab">
 <h3>workspaceTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></span>&nbsp;<span class="element-name">workspaceTab</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></span>&nbsp;<span class="element-name">workspaceTab</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="consoleTab">
 <h3>consoleTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></span>&nbsp;<span class="element-name">consoleTab</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="splitPane">
-<h3>splitPane</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a></span>&nbsp;<span class="element-name">splitPane</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></span>&nbsp;<span class="element-name">consoleTab</span></div>
 </section>
 </li>
 </ul>
@@ -357,12 +333,13 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace,boolean)">
 <h3>MCreator</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MCreator</span><wbr><span class="parameters">(@Nullable
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">MCreator</span><wbr><span class="parameters">(@Nullable
  <a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a>&nbsp;application,
  @Nonnull
- <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ boolean&nbsp;hasProjectBrowser)</span></div>
 </section>
 </li>
 </ul>
@@ -374,6 +351,45 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="create(net.mcreator.ui.MCreatorApplication,net.mcreator.workspace.Workspace)">
+<h3>create</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a></span>&nbsp;<span class="element-name">create</span><wbr><span class="parameters">(@Nullable
+ <a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a>&nbsp;application,
+ @Nonnull
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="createMenuBar()">
+<h3>createMenuBar</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="MainMenuBar.html" title="class in net.mcreator.ui">MainMenuBar</a></span>&nbsp;<span class="element-name">createMenuBar</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createToolBar()">
+<h3>createToolBar</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></span>&nbsp;<span class="element-name">createToolBar</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createWorkspaceTabContent()">
+<h3>createWorkspaceTabContent</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></span>&nbsp;<span class="element-name">createWorkspaceTabContent</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="reloadWorkspaceTabContentsImpl()">
+<h3>reloadWorkspaceTabContentsImpl</h3>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadWorkspaceTabContentsImpl</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="reloadWorkspaceTabContents()">
+<h3>reloadWorkspaceTabContents</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadWorkspaceTabContents</span>()</div>
+</section>
+</li>
+<li>
 <section class="detail" id="setVisible(boolean)">
 <h3>setVisible</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVisible</span><wbr><span class="parameters">(boolean&nbsp;makeVisible)</span></div>
@@ -384,48 +400,9 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 </section>
 </li>
 <li>
-<section class="detail" id="getApplication()">
-<h3>getApplication</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a></span>&nbsp;<span class="element-name">getApplication</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getGradleConsole()">
-<h3>getGradleConsole</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></span>&nbsp;<span class="element-name">getGradleConsole</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getProjectBrowser()">
-<h3>getProjectBrowser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></span>&nbsp;<span class="element-name">getProjectBrowser</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getWorkspace()">
-<h3>getWorkspace</h3>
-<div class="member-signature"><span class="annotations">@Nonnull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></span>&nbsp;<span class="element-name">getWorkspace</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../workspace/IWorkspaceProvider.html#getWorkspace()">getWorkspace</a></code>&nbsp;in interface&nbsp;<code><a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getNotificationsRenderer()">
-<h3>getNotificationsRenderer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a></span>&nbsp;<span class="element-name">getNotificationsRenderer</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="notifications/INotificationConsumer.html#getNotificationsRenderer()">getNotificationsRenderer</a></code>&nbsp;in interface&nbsp;<code><a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getStatusBar()">
-<h3>getStatusBar</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></span>&nbsp;<span class="element-name">getStatusBar</span>()</div>
+<section class="detail" id="workspaceFullyLoaded()">
+<h3>workspaceFullyLoaded</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">workspaceFullyLoaded</span>()</div>
 </section>
 </li>
 <li>
@@ -445,23 +422,21 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 </section>
 </li>
 <li>
-<section class="detail" id="equals(java.lang.Object)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;mcreator)</span></div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
-</dl>
+<section class="detail" id="showProjectBrowser(boolean)">
+<h3>showProjectBrowser</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">showProjectBrowser</span><wbr><span class="parameters">(boolean&nbsp;visible)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="hashCode()">
-<h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
-</dl>
+<section class="detail" id="getGradleConsole()">
+<h3>getGradleConsole</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></span>&nbsp;<span class="element-name">getGradleConsole</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getProjectBrowser()">
+<h3>getProjectBrowser</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></span>&nbsp;<span class="element-name">getProjectBrowser</span>()</div>
 </section>
 </li>
 <li>
@@ -471,9 +446,15 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 </section>
 </li>
 <li>
-<section class="detail" id="getMCreatorTabs()">
-<h3>getMCreatorTabs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></span>&nbsp;<span class="element-name">getMCreatorTabs</span>()</div>
+<section class="detail" id="getTabs()">
+<h3>getTabs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></span>&nbsp;<span class="element-name">getTabs</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getDebugPanel()">
+<h3>getDebugPanel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="debug/DebugPanel.html" title="class in net.mcreator.ui.debug">DebugPanel</a></span>&nbsp;<span class="element-name">getDebugPanel</span>()</div>
 </section>
 </li>
 <li>
@@ -489,15 +470,9 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 </section>
 </li>
 <li>
-<section class="detail" id="getDebugPanel()">
-<h3>getDebugPanel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="debug/DebugPanel.html" title="class in net.mcreator.ui.debug">DebugPanel</a></span>&nbsp;<span class="element-name">getDebugPanel</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getMainPanel()">
-<h3>getMainPanel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></span>&nbsp;<span class="element-name">getMainPanel</span>()</div>
+<section class="detail" id="hasProjectBrowser()">
+<h3>hasProjectBrowser</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasProjectBrowser</span>()</div>
 </section>
 </li>
 </ul>

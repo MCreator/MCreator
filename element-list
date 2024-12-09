@@ -108,6 +108,7 @@ net.mcreator.ui.minecraft.loottable
 net.mcreator.ui.minecraft.modellayers
 net.mcreator.ui.minecraft.potions
 net.mcreator.ui.minecraft.recipemakers
+net.mcreator.ui.minecraft.recourcepack
 net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.minecraft.states
 net.mcreator.ui.minecraft.states.block
@@ -122,6 +123,8 @@ net.mcreator.ui.validation
 net.mcreator.ui.validation.component
 net.mcreator.ui.validation.optionpane
 net.mcreator.ui.validation.validators
+net.mcreator.ui.variants.modmaker
+net.mcreator.ui.variants.resourcepackmaker
 net.mcreator.ui.views
 net.mcreator.ui.views.editor.image
 net.mcreator.ui.views.editor.image.action
