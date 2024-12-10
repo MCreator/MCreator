@@ -31,7 +31,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -116,6 +115,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		};
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
+		JPanel tools = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		tools.setOpaque(false);
+		tools.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+		add(tools);
+
 		if (procedureGUI != null) {
 			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 			search.addFocusListener(new FocusAdapter() {
@@ -141,14 +145,19 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			});
 
-			JComponent component = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-			component.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
-			add(component);
+			tools.add(search);
 		}
 
-		for (var component : extraComponents) {
-			add(component);
+		for (JComponent component : extraComponents) {
+			tools.add(component);
 		}
+
+		JButton cleanup = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".cleanup");
+		cleanup.setIcon(UIRES.get("18px.remove"));
+		tools.add(cleanup);
+		cleanup.addActionListener(event -> blocklyPanel.cleanupUnusedBlocks());
+		styleButton(cleanup);
+		cleanup.setForeground(Theme.current().getAltForegroundColor());
 
 		add(Box.createHorizontalGlue());
 

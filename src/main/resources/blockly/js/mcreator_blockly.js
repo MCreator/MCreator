@@ -85,6 +85,17 @@ function arrayToBlocklyDropDownArray(arrorig) {
     return retval;
 }
 
+// A function to remove blocks not attached to start block associated with particular editor
+function cleanupUnusedBlocks(startBlock) {
+    const group = Blockly.Events.getGroup();
+    Blockly.Events.setGroup(true);
+    for (const block of workspace.getTopBlocks()) {
+        if (block.type !== startBlock)
+            block.dispose();
+    }
+    Blockly.Events.setGroup(group);
+}
+
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);
