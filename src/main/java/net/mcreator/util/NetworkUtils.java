@@ -19,7 +19,6 @@
 
 package net.mcreator.util;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 
 public class NetworkUtils {
@@ -29,7 +28,7 @@ public class NetworkUtils {
 		try (ServerSocket socket = new ServerSocket(0)) {
 			port = socket.getLocalPort();
 			socket.setReuseAddress(true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return fallback;
 		}
 		return port;
