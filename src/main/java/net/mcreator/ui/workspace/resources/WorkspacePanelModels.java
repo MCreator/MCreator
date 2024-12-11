@@ -168,20 +168,22 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	private void editSelectedModelTextureMappings() {
 		Model model = elementList.getSelectedValue();
-		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
-				workspacePanel.getMCreator().getWorkspace(), model);
-		if (textureMappingMap != null) {
-			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
-					workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
+		if (model != null) {
+			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+					workspacePanel.getMCreator().getWorkspace(), model);
 			if (textureMappingMap != null) {
-				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-				FileIO.writeStringToFile(data, new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
-						model.getFile().getName() + ".textures"));
+				textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
+						workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
+				if (textureMappingMap != null) {
+					String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
+					FileIO.writeStringToFile(data, new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
+							model.getFile().getName() + ".textures"));
+				}
+			} else {
+				JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+						L10N.t("workspace.3dmodels.mappings_unsupported_message"),
+						L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 			}
-		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.3dmodels.mappings_unsupported_message"),
-					L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
