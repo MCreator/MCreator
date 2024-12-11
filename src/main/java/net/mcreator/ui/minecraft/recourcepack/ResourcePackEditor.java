@@ -48,6 +48,7 @@ import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -484,6 +485,12 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				FileIO.copyFile(file, new File(importTargetFolder, file.getName()));
 				reloadElements();
 			} else { // Importing a file to override existing file
+				// Make sure extensions match, otherwise reject import
+				if (!selectedEntry.extension().equalsIgnoreCase(FilenameUtils.getExtension(file.getName()))) {
+					Toolkit.getDefaultToolkit().beep();
+					return;
+				}
+
 				File importTarget = selectedEntry.override();
 				FileIO.copyFile(file, importTarget);
 				reloadElements();
