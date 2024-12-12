@@ -214,10 +214,6 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
 	}
 
-	public void cleanupUnusedBlocks() {
-		executeJavaScriptSynchronously("cleanupUnusedBlocks('%s');".formatted(type.startBlockName()));
-	}
-
 	public void addBlocksFromXML(String xml) {
 		String cleanXML = escapeXML(cleanupXML(xml));
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks

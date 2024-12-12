@@ -146,18 +146,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			add(component);
 		}
 
-		for (JComponent component : extraComponents) {
+		for (var component : extraComponents) {
 			add(component);
 		}
 
 		add(Box.createHorizontalGlue());
-
-		JButton cleanup = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".cleanup");
-		cleanup.setIcon(UIRES.get("18px.remove"));
-		add(cleanup);
-		cleanup.addActionListener(event -> blocklyPanel.cleanupUnusedBlocks());
-		styleButton(cleanup);
-		cleanup.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));

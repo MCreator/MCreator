@@ -50,6 +50,29 @@ Blockly.Variables.allUsedVarModels = function () {
     return workspace.getVariableMap().getAllVariables();
 };
 
+Blockly.ContextMenuRegistry.register({
+    displayText: function () {
+        return javabridge.t("blockly.context_menu.cleanup_unused_blocks");
+    },
+    preconditionFn: function (scope) {
+        if (scope.workspace.getTopBlocks().length > 1) {
+            return 'enabled';
+        }
+        return 'hidden';
+    },
+    callback: function (scope) {
+        const group = Blockly.Events.getGroup();
+        Blockly.Events.setGroup(true);
+        for (const block of scope.workspace.getTopBlocks()) {
+            if (block.type !== javabridge.startBlockForEditor(editorType))
+                block.dispose();
+        }
+        Blockly.Events.setGroup(group);
+    },
+    scopeType: ContextMenuRegistry.ScopeType.WORKSPACE,
+    id: 'cleanupUnusedBlocks'
+});
+
 function getVariablesOfType(type) {
     let retval = [];
 
@@ -83,17 +106,6 @@ function arrayToBlocklyDropDownArray(arrorig) {
         retval.push(["" + element, "" + element]);
     });
     return retval;
-}
-
-// A function to remove blocks not attached to start block associated with particular editor
-function cleanupUnusedBlocks(startBlock) {
-    const group = Blockly.Events.getGroup();
-    Blockly.Events.setGroup(true);
-    for (const block of workspace.getTopBlocks()) {
-        if (block.type !== startBlock)
-            block.dispose();
-    }
-    Blockly.Events.setGroup(group);
 }
 
 // A function to properly convert workspace to XML (google/blockly#6738)
