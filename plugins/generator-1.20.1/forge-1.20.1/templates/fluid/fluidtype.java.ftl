@@ -106,6 +106,8 @@ public class ${name}FluidType extends FluidType {
 						RenderSystem.setShaderFogEnd(
 							<#if hasProcedure(data.fogEndDistance)>
 								(float) <@procedureOBJToNumberCode data.fogEndDistance/>
+							<#elseif data.fogEndDistance.getFixedValue() gt 16>
+								Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
 							<#else>
 								${data.fogEndDistance.getFixedValue()}f
 							</#if>);
