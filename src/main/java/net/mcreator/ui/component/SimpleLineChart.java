@@ -132,6 +132,9 @@ public class SimpleLineChart extends JPanel {
 			return;
 		}
 
+		List<Double> xPointsSnapshot = new ArrayList<>(xPoints);
+		List<Double> yPointsSnapshot = new ArrayList<>(yPoints);
+
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -141,21 +144,22 @@ public class SimpleLineChart extends JPanel {
 		// Find the min and max for scaling
 		double xMin = (xLimits != null && maxPoints <= 0) ?
 				xLimits[0] :
-				xPoints.stream().min(Double::compare).orElse(0.0);
+				xPointsSnapshot.stream().min(Double::compare).orElse(0.0);
 		double xMax = (xLimits != null && maxPoints <= 0) ?
 				xLimits[1] :
-				xPoints.stream().max(Double::compare).orElse(1.0);
-		double yMin = yLimits != null ? yLimits[0] : yPoints.stream().min(Double::compare).orElse(0.0);
-		double yMax = yLimits != null ? yLimits[1] : yPoints.stream().max(Double::compare).orElse(1.0);
+				xPointsSnapshot.stream().max(Double::compare).orElse(1.0);
+		double yMin = yLimits != null ? yLimits[0] : yPointsSnapshot.stream().min(Double::compare).orElse(0.0);
+		double yMax = yLimits != null ? yLimits[1] : yPointsSnapshot.stream().max(Double::compare).orElse(1.0);
 
 		// User rolling min and max if in rolling mode
 		if (maxPoints > 0) {
-			xMin = xPoints.stream().min(Double::compare).orElse(0.0);
-			xMax = xPoints.stream().max(Double::compare).orElse(1.0);
+			xMin = xPointsSnapshot.stream().min(Double::compare).orElse(0.0);
+			xMax = xPointsSnapshot.stream().max(Double::compare).orElse(1.0);
 		}
 
 		// Transform data points to pixel coordinates
-		List<Point> points = transformToScreenCoordinates(xMin, xMax, yMin, yMax, width, height);
+		List<Point> points = transformToScreenCoordinates(xMin, xMax, yMin, yMax, width, height, xPointsSnapshot,
+				yPointsSnapshot);
 
 		// Create a Path2D to represent the filled area
 		Path2D path = getPath2D(points, height);
@@ -173,7 +177,7 @@ public class SimpleLineChart extends JPanel {
 		}
 
 		if (mousePoint != null) {
-			int mousePointIdx = mouseToChartPoint(mousePoint, xMin, xMax, width);
+			int mousePointIdx = mouseToChartPoint(mousePoint, xMin, xMax, width, xPointsSnapshot);
 			if (mousePointIdx >= 0 && mousePointIdx < points.size()) {
 				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.drawLine(points.get(mousePointIdx).x, 15, points.get(mousePointIdx).x, height);
@@ -186,7 +190,7 @@ public class SimpleLineChart extends JPanel {
 					g2d.setColor(Theme.current().getForegroundColor());
 
 					String[] pointLabels = labelFormatter.apply(
-							new double[] { xPoints.get(mousePointIdx), yPoints.get(mousePointIdx) });
+							new double[] { xPointsSnapshot.get(mousePointIdx), yPointsSnapshot.get(mousePointIdx) });
 					String xLabel = pointLabels[0];
 					String yLabel = pointLabels[1];
 
@@ -220,11 +224,11 @@ public class SimpleLineChart extends JPanel {
 		return path;
 	}
 
-	private int mouseToChartPoint(Point mousePoint, double xMin, double xMax, double width) {
+	private int mouseToChartPoint(Point mousePoint, double xMin, double xMax, double width, List<Double> xPoints) {
 		int mouseX = mousePoint.x;
 		double xNormalized = (double) mouseX / width;
 
-		double xNormalizedOffset = getNormalizedXOffset();
+		double xNormalizedOffset = getNormalizedXOffset(xPoints);
 		xNormalized = (xNormalized - xNormalizedOffset) / (1 - xNormalizedOffset);
 
 		double xData = xNormalized * (xMax - xMin) + xMin;
@@ -244,7 +248,7 @@ public class SimpleLineChart extends JPanel {
 	}
 
 	private List<Point> transformToScreenCoordinates(double xMin, double xMax, double yMin, double yMax, int width,
-			int height) {
+			int height, List<Double> xPoints, List<Double> yPoints) {
 		List<Point> transformedPoints = new ArrayList<>();
 
 		double xRange = xMax - xMin;
@@ -252,7 +256,7 @@ public class SimpleLineChart extends JPanel {
 		if (xRange == 0 || yRange == 0)
 			return transformedPoints;
 
-		double xNormalizedOffset = getNormalizedXOffset();
+		double xNormalizedOffset = getNormalizedXOffset(xPoints);
 
 		for (int i = 0; i < xPoints.size(); i++) {
 			double x = xPoints.get(i);
@@ -274,7 +278,7 @@ public class SimpleLineChart extends JPanel {
 		return transformedPoints;
 	}
 
-	private double getNormalizedXOffset() {
+	private double getNormalizedXOffset(List<Double> xPoints) {
 		double xNormalizedOffset = 0;
 		if (maxPoints > 0 && xPoints.size() < maxPoints)
 			xNormalizedOffset = (maxPoints - xPoints.size()) / (double) maxPoints;
