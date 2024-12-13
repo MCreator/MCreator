@@ -50,7 +50,7 @@ Blockly.Variables.allUsedVarModels = function () {
     return workspace.getVariableMap().getAllVariables();
 };
 
-Blockly.ContextMenuRegistry.register({
+Blockly.ContextMenuRegistry.registry.register({
     displayText: function () {
         return javabridge.t("blockly.context_menu.cleanup_unused_blocks");
     },
@@ -69,7 +69,7 @@ Blockly.ContextMenuRegistry.register({
         }
         Blockly.Events.setGroup(group);
     },
-    scopeType: ContextMenuRegistry.ScopeType.WORKSPACE,
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'cleanupUnusedBlocks'
 });
 
