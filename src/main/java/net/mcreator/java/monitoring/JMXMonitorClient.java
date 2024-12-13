@@ -47,7 +47,7 @@ public class JMXMonitorClient {
 	public JMXMonitorClient(Map<String, String> environment, JMXMonitorEventListener listener, int refreshInterval) {
 		this.listener = listener;
 
-		int jmxPort = NetworkUtils.findAvailablePort(-1);
+		int jmxPort = NetworkUtils.findAvailablePort(1099);
 		if (jmxPort == -1) {
 			LOG.warn("Failed to find available port for JMX monitoring");
 			return;

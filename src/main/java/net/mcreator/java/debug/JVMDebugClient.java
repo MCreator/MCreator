@@ -52,6 +52,10 @@ public class JVMDebugClient {
 	public void init(Map<String, String> environment, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = NetworkUtils.findAvailablePort(5005);
+		if (this.vmDebugPort == -1) {
+			LOG.warn("Failed to find available port for JVM debugging");
+			return;
+		}
 
 		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
 		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
