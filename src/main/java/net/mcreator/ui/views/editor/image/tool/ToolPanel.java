@@ -150,7 +150,7 @@ public class ToolPanel extends JPanel {
 			ToolGroup toolGroup) {
 		JButton toolButton = new JButton();
 		toolButton.setIcon(icon);
-		toolButton.setToolTipText(name);
+		toolButton.setToolTipText(name + "\n" + description);
 		toolGroup.register(toolButton);
 		toolButton.addActionListener(actionListener);
 		return toolButton;
@@ -159,7 +159,7 @@ public class ToolPanel extends JPanel {
 	private JToggleButton register(AbstractTool tool, ToolGroup toolGroup) {
 		JToggleButton toolButton = new JToggleButton();
 		toolButton.setIcon(tool.getIcon());
-		toolButton.setToolTipText(tool.getName());
+		toolButton.setToolTipText(tool.getName() + "\n" + tool.getDescription());
 		buttonGroup.add(toolButton);
 		toolGroup.register(toolButton);
 		toolProperties.add(tool.getPropertiesPanel(), tool.getName());
