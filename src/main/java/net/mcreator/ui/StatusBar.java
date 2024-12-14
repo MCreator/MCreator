@@ -127,7 +127,7 @@ public class StatusBar extends JPanel {
 			if (e.getID() == 504 && e.getSource() instanceof JComponent component) {
 				String toolTipText = component.getToolTipText();
 				if (toolTipText != null) {
-					setMessage(HtmlUtils.html2text(toolTipText));
+					setMessage(HtmlUtils.html2text(toolTipText).replace("\n", " - "));
 				}
 			}
 		}, AWTEvent.MOUSE_EVENT_MASK);
