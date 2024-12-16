@@ -1,0 +1,1 @@
+Este procedimento é executado antes que o fluido substitua um bloco diferente de ar (por exemplo, grama alta).

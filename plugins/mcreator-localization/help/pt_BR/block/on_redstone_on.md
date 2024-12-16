@@ -1,0 +1,1 @@
+Aciona um procedimento quando o bloco é energizado pelo poder da redstone.

@@ -1,0 +1,1 @@
+Os slots de saída não serão usados ​​como entrada para transmissão de itens do funil.

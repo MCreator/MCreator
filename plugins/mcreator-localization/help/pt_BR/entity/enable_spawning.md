@@ -1,0 +1,1 @@
+Se marcada, a entidade surgirá no mundo naturalmente por meio do processo de geração de multidões.

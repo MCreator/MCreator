@@ -1,0 +1,1 @@
+A partícula que surge neste bioma.
