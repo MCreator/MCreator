@@ -83,6 +83,7 @@ import java.util.List;
 			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
 			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToFeature.getExtraTemplatesCode());
 
 			this.getModElement().putMetadata("has_nbt_structure",
 					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);

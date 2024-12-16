@@ -266,6 +266,7 @@ import java.util.*;
 					blocklyToJava.getGeneratedCode() :
 					"");
 			additionalData.put("aiblocks", blocklyToJava.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJava.getExtraTemplatesCode());
 		};
 	}
 
