@@ -18,6 +18,8 @@
 
 package net.mcreator.generator.blockly;
 
+import freemarker.core.Environment;
+import freemarker.template.*;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
@@ -447,6 +449,7 @@ public class BlocklyBlockCodeGenerator {
 
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
+			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
@@ -466,6 +469,17 @@ public class BlocklyBlockCodeGenerator {
 		return blocks_machine_names.computeIfAbsent(blockType,
 				key -> blocks.values().stream().filter(block -> block.getType() == key)
 						.map(ToolboxBlock::getMachineName).toArray(String[]::new));
+	}
+
+	private record ExtraTemplatesLinker(BlocklyToCode master) implements TemplateDirectiveModel {
+
+		@Override
+		public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
+				throws TemplateModelException {
+			if (params.get("file") instanceof TemplateScalarModel template)
+				master.addTemplate(template.getAsString());
+		}
+
 	}
 
 }
