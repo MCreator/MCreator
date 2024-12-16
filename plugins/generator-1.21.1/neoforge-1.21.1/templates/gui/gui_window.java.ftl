@@ -113,8 +113,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
-					guiGraphics.renderTooltip(font, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
+				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
+					<#if hasProcedure(component.text)>
+					String hoverText = <@procedureOBJToStringCode component.text/>;
+					if (hoverText != null) {
+						if (hoverText.contains("\n"))
+							guiGraphics.renderComponentTooltip(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
+						else
+							guiGraphics.renderTooltip(font, Component.literal(hoverText), mouseX, mouseY);
+					}
+					<#else>
+						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}") mouseX, mouseY);
+					</#if>
+				}
 		</#list>
 	}
 
