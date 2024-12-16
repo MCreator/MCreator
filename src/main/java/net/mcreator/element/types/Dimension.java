@@ -91,7 +91,7 @@ import java.util.*;
 	public String igniterName;
 	public String igniterRarity;
 	public StringListProcedure specialInformation;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder portalTexture;
 	public boolean enablePortal;

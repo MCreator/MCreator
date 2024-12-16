@@ -62,7 +62,7 @@ import java.util.*;
 	public Procedure onLeggingsTick;
 	public Procedure onBootsTick;
 
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;

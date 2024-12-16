@@ -60,9 +60,9 @@ import java.util.stream.Collectors;
 	public int suspiciousStewDuration;
 
 	public double secondaryTreeChance;
-	public ConfiguredFeatureEntry[] trees;
-	public ConfiguredFeatureEntry[] flowerTrees;
-	public ConfiguredFeatureEntry[] megaTrees;
+	@ModElementReference public ConfiguredFeatureEntry[] trees;
+	@ModElementReference public ConfiguredFeatureEntry[] flowerTrees;
+	@ModElementReference public ConfiguredFeatureEntry[] megaTrees;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
@@ -73,7 +73,7 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public double hardness;
 	public double resistance;
 	public int luminance;
