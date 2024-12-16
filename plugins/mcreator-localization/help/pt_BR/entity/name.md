@@ -1,0 +1,1 @@
+O nome do mob é usado em mensagens de morte, é mostrado em menus do jogo e outros lugares onde a exibição visual do nome é possível.

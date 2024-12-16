@@ -1,0 +1,1 @@
+Este parâmetro controla quanta luz o bloco emite. É um valor entre 0 e 15. Se definido como 0, o bloco não emitirá luz. Se definido como 15, o bloco emitirá tanta luz quanto a pedra luminosa.
