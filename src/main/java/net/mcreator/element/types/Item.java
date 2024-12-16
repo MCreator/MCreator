@@ -56,7 +56,7 @@ import java.util.*;
 
 	public String name;
 	public String rarity;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;

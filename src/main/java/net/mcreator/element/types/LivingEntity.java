@@ -82,7 +82,7 @@ import java.util.*;
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
 	public String bossBarColor;
