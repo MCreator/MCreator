@@ -1,0 +1,1 @@
+Textura stratulu armurii este textura afișată pe jucător când are armura pe el.

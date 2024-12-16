@@ -84,7 +84,7 @@ public class ZipIO {
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry zipEntry = entries.nextElement();
-				if (zipEntry.toString().startsWith(path)) {
+				if (zipEntry.toString().equals(path)) {
 					return transformer.apply(zipFile, zipEntry);
 				}
 			}

@@ -38,22 +38,22 @@ public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 		add(new JEmptyBox(20, 20));
 
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.display_name"),
-				PanelUtils.join(workspaceDialogPanel.modName)));
+				workspaceDialogPanel.modName));
 
-		add(new JEmptyBox(5, 5));
+		add(new JEmptyBox(10, 10));
 
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.modid"),
-				PanelUtils.join(workspaceDialogPanel.modID)));
+				workspaceDialogPanel.modID));
 
-		add(new JEmptyBox(5, 5));
+		add(new JEmptyBox(10, 10));
 
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.generator"),
-				PanelUtils.join(workspaceDialogPanel.generatorSelector)));
+				workspaceDialogPanel.generatorSelector));
 
 		add(new JEmptyBox(30, 30));
 
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.package"),
-				PanelUtils.join(workspaceDialogPanel.packageName)));
+				workspaceDialogPanel.packageName));
 
 		add(new JEmptyBox(30, 30));
 

@@ -382,8 +382,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#function getPlantClass plantType>
 	<#if plantType == "normal"><#return "Flower">
 	<#elseif plantType == "growapable"><#return "SugarCane">
-	<#elseif data.plantType == "double"><#return "DoublePlant">
-	<#elseif data.plantType == "sapling"><#return "Sapling">
+	<#elseif plantType == "double"><#return "DoublePlant">
+	<#elseif plantType == "sapling"><#return "Sapling">
 	</#if>
 </#function>
 

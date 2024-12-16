@@ -247,13 +247,13 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 			BlockPos posbelow = pos.below();
 			BlockState statebelow = world.getBlockState(posbelow);
 			<#if data.plantType == "normal" || data.plantType == "sapling"><#-- emulate BushBlock and SaplingBlock plant type logic -->
-        	if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
-        	return this.mayPlaceOn(statebelow, world, posbelow);
+			if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
+			return this.mayPlaceOn(statebelow, world, posbelow);
 			<#elseif data.plantType == "growapable"><#-- emulate SugarCaneBlock plant type logic -->
 			if (this.canPlantTypeSurvive(statebelow, world, posbelow)) return true;
 			return super.canSurvive(blockstate, world, pos);
 			<#else><#-- emulate DoublePlantBlock plant type logic -->
-        	if (blockstate.getValue(HALF) != DoubleBlockHalf.UPPER) {
+			if (blockstate.getValue(HALF) != DoubleBlockHalf.UPPER) {
 				if (blockstate.getBlock() == this) return this.canPlantTypeSurvive(statebelow, world, posbelow);
 				return this.mayPlaceOn(statebelow, world, posbelow);
 			} else {
@@ -403,8 +403,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#function getPlantClass plantType>
 	<#if plantType == "normal"><#return "Flower">
 	<#elseif plantType == "growapable"><#return "SugarCane">
-	<#elseif data.plantType == "double"><#return "DoublePlant">
-	<#elseif data.plantType == "sapling"><#return "Sapling">
+	<#elseif plantType == "double"><#return "DoublePlant">
+	<#elseif plantType == "sapling"><#return "Sapling">
 	</#if>
 </#function>
 
@@ -418,8 +418,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#macro toTreeGrower secondaryChance megaTree="" megaTree2="" tree="" tree2="" flowerTree="" flowerTree2="">
 	<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
 	new TreeGrower("${data.getModElement().getRegistryName()}", ${secondaryChance}f,
-	   	<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
-	   	<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
+		<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
+		<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
 	);
 	<#else>
 	new TreeGrower("${data.getModElement().getRegistryName()}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);

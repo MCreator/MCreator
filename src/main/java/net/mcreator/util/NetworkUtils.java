@@ -19,20 +19,34 @@
 
 package net.mcreator.util;
 
-import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
 public class NetworkUtils {
 
-	public static int findAvailablePort(int fallback) {
-		int port;
-		try (ServerSocket socket = new ServerSocket(0)) {
-			port = socket.getLocalPort();
-			socket.setReuseAddress(true);
-		} catch (IOException e) {
-			return fallback;
+	public static int findAvailablePort(int... toTry) {
+		for (int port : toTry) {
+			if (isPortAvailable(port)) {
+				return port;
+			}
 		}
-		return port;
+
+		try (ServerSocket socket = new ServerSocket()) {
+			socket.bind(new InetSocketAddress("localhost", 0));
+			return socket.getLocalPort();
+		} catch (Exception e) {
+			// if we fail to bind to unique port, we'll return -1 (error)
+			return -1;
+		}
+	}
+
+	private static boolean isPortAvailable(int port) {
+		try (ServerSocket socket = new ServerSocket()) {
+			socket.bind(new InetSocketAddress("localhost", port));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

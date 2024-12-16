@@ -1,0 +1,1 @@
+Este parâmetro define a saúde inicial (e base máxima) do mob. 2 saúde = 1 coração

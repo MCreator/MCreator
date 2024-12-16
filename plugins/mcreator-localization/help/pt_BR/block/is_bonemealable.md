@@ -1,0 +1,1 @@
+Se esta opção estiver habilitada, o bloco pode ser fertilizado com farinha de osso.

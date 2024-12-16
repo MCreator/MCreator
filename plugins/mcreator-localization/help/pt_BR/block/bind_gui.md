@@ -1,0 +1,1 @@
+Este parâmetro controla a GUI do seu bloco. Ele é necessário para fazer um baú ou bloco de crafting, por exemplo.
