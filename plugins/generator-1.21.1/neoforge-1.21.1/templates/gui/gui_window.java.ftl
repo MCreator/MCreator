@@ -123,7 +123,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 							guiGraphics.renderTooltip(font, Component.literal(hoverText), mouseX, mouseY);
 					}
 					<#else>
-						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}") mouseX, mouseY);
+						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+
 					</#if>
 				}
 		</#list>
