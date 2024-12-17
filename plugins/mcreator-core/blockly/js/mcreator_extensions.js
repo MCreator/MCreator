@@ -170,30 +170,6 @@ Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
         }
     });
 
-// Helper function for extensions that validate one or more resource location text fields
-function validateResourceLocationFields(...fields) {
-    return function () {
-        for (let i = 0; i < fields.length; i++) {
-            let field = this.getField(fields[i]);
-            // The validator checks if the new input value is a valid resource location
-            field.setValidator(function (newValue) {
-                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
-                    return newValue;
-                return null;
-            });
-        }
-    }
-}
-
-Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
-
-Blockly.Extensions.register('geode_tag_fields_validator',
-    validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
-
-Blockly.Extensions.register('root_system_tag_fields_validator', validateResourceLocationFields('root_replaceable'));
-
-Blockly.Extensions.register('vegetation_patch_tag_fields_validator', validateResourceLocationFields('replaceable'));
-
 Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
     {
         onchange: function (e) {
