@@ -111,15 +111,15 @@ dependencies {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.30.0.Final'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.30.0.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.30.1.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.30.1.Final'
     implementation group: 'org.snakeyaml', name: 'snakeyaml-engine', version: '2.8'
     implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
-    implementation group: 'com.google.guava', name: 'guava', version: '33.3.0-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.2'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.3'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.0'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.16'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.11.1'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
@@ -144,8 +144,8 @@ dependencies {
     linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.3'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.3'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.4'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.4'
 }
 
 javafx {
