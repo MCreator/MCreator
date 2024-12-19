@@ -107,6 +107,7 @@ import java.util.List;
 
 			additionalData.put("triggercode", triggerCode);
 			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJSONTrigger.getExtraTemplatesCode());
 		};
 	}
 

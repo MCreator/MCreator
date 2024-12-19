@@ -57,7 +57,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
-	private final Set<String> usedBlocks = new HashSet<>();
+	private final Set<String> usedBlocks = new HashSet<>(), usedTemplates = new LinkedHashSet<>();
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -83,6 +83,18 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final String getGeneratedCode() {
+		return code.toString();
+	}
+
+	public final String getExtraTemplatesCode() throws TemplateGeneratorException {
+		StringBuilder code = new StringBuilder();
+		if (templateGenerator != null) {
+			for (String template : usedTemplates) {
+				Map<String, Object> dataModel = new HashMap<>();
+				dataModel.put("parent", parent);
+				code.append(templateGenerator.generateFromTemplate(template, dataModel));
+			}
+		}
 		return code.toString();
 	}
 
@@ -157,6 +169,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	public List<StatementInput> getStatementInputsMatching(Predicate<StatementInput> predicate) {
 		return this.dependencyProviderInputStack.stream().filter(i -> i instanceof StatementInput)
 				.map(i -> (StatementInput) i).filter(predicate).collect(Collectors.toList());
+	}
+
+	public final void addTemplate(String template) {
+		usedTemplates.add(template);
 	}
 
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
