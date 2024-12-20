@@ -72,6 +72,11 @@ public final class BlocklyJavascriptBridge {
 		blocklyEvent.run();
 	}
 
+	@SuppressWarnings("unused") public String startBlockForEditor(String editorName) {
+		BlocklyEditorType bet = BlocklyEditorType.fromName(editorName);
+		return bet == null ? null : bet.startBlockName();
+	}
+
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
