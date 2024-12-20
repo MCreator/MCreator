@@ -1,3 +1,3 @@
-To jest osiągnięcie, po którym następuje twoje osiągnięcie.
+To jest postęp, po którym następuje twoje osiągnięcie.
 
-Możesz użyć "Brak rodzica: korzeń", żeby utworzyć nową ścieżkę (nową zakładkę postępów).
+Możesz użyć "No parent: root", żeby utworzyć nową ścieżkę (nową zakładkę postępów).
