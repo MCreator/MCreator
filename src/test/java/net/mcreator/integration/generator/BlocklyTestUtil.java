@@ -185,7 +185,7 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
-		case "field_input", "field_javaname" -> {
+		case "field_input", "field_javaname", "field_resourcelocation" -> {
 			String value = "test";
 			if (arg.has("text")) {
 				value = arg.get("text").getAsString();
