@@ -1,0 +1,1 @@
+Aciona um procedimento a cada tick enquanto esta interface estiver aberta.

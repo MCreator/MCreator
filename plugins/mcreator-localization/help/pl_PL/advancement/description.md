@@ -1,1 +1,1 @@
-W tym miejscu zamieszczasz informacje na temat sposobu zdobycia osiągniecia.
+W tym miejscu zamieszczasz informacje na temat sposobu zdobycia osiągnięcia.
