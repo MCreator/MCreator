@@ -117,10 +117,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					<#if hasProcedure(component.text)>
 					String hoverText = <@procedureOBJToStringCode component.text/>;
 					if (hoverText != null) {
-						if (hoverText.contains("\n"))
-							guiGraphics.renderComponentTooltip(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
-						else
-							guiGraphics.renderTooltip(font, Component.literal(hoverText), mouseX, mouseY);
+						guiGraphics.renderComponentTooltip(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
 					}
 					<#else>
 						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
