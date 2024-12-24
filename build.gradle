@@ -131,7 +131,7 @@ dependencies {
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.15.0' // needed by discord-rpc.jar
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.16.0' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '1.6.1'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'no-natives'
