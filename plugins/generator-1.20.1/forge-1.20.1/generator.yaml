@@ -1,7 +1,7 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: lts
 buildfileversion: 47.3.0
-subversion: 1.0 # force setup re-run to update Gradle wrapper to work with Java 21
+subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
   - datapack-1.20.1

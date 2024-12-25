@@ -57,11 +57,11 @@ public class JVMDebugClient {
 			return;
 		}
 
-		String javaToolOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
-		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
-			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS").trim() + " " + javaToolOptions);
+		String mcreatorJvmOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
+		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
+			environment.put("MCREATOR_JVM_OPTIONS", environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
 		} else {
-			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
+			environment.put("MCREATOR_JVM_OPTIONS", mcreatorJvmOptions);
 		}
 
 		new Thread(() -> {

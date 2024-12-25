@@ -15,6 +15,13 @@ neoForge {
         client {
             client()
             gameDirectory = project.file('../run')
+
+            def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
+            if (mcreatorJvmOptions) {
+                mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.each { arg ->
+                    jvmArgument(arg)
+                }
+            }
         }
     }
 

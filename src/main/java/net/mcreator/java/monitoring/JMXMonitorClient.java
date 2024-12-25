@@ -54,16 +54,16 @@ public class JMXMonitorClient {
 		}
 
 		//@formatter:off
-		String javaToolOptions =
+		String mcreatorJvmOptions =
 				" -Dcom.sun.management.jmxremote.port=" + jmxPort +
 				" -Dcom.sun.management.jmxremote.local.only=true" +
 				" -Dcom.sun.management.jmxremote.ssl=false" +
 				" -Dcom.sun.management.jmxremote.authenticate=false";
 		//@formatter:on
-		if (environment.containsKey("JAVA_TOOL_OPTIONS")) {
-			environment.put("JAVA_TOOL_OPTIONS", environment.get("JAVA_TOOL_OPTIONS").trim() + " " + javaToolOptions);
+		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
+			environment.put("MCREATOR_JVM_OPTIONS", environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
 		} else {
-			environment.put("JAVA_TOOL_OPTIONS", javaToolOptions);
+			environment.put("MCREATOR_JVM_OPTIONS", mcreatorJvmOptions);
 		}
 
 		new Thread(() -> {
