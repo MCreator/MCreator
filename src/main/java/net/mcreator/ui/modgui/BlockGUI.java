@@ -275,6 +275,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		material.setPrototypeDisplayValue(new DataListEntry.Dummy("No legacy material"));
 
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
+		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 
