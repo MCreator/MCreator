@@ -107,10 +107,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 	public void setDefaultText(String text) {
 		this.defaultText = text;
-		if (currentEntry == null) {
-			readableText.setText(text);
-			readableText.setForeground(Theme.current().getAltForegroundColor());
-		}
+		updateReadableText();
 	}
 
 	@Override public void setEnabled(boolean enabled) {
