@@ -603,6 +603,19 @@ public class GradleConsole extends JPanel {
 
 								return;
 							}
+						} else if (GradleErrorDecoder.isErrorDueToJMXPortIssues(taskErr.toString() + taskOut)) {
+							if (!rerunFlag) {
+								rerunFlag = true;
+
+								LOG.warn("Gradle task failed due to JMX port issues. Disabling JMX and attempting re-running task: {}", command);
+
+								PreferencesManager.PREFERENCES.gradle.enablePerformanceMonitor.set(false);
+
+								// Re-run the same command with the same listener
+								execImpl(command, taskSpecificListener, progressListener, debugClient);
+
+								return;
+							}
 						} else if (workspaceReportedFailingGradleDependencies
 								|| GradleErrorDecoder.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
 							AtomicBoolean shouldReturn = new AtomicBoolean(false);

@@ -68,6 +68,7 @@ import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 
 public class WorkspaceDialogs {
 
@@ -214,11 +215,13 @@ public class WorkspaceDialogs {
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
-				if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
+				if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+						== GeneratorFlavor.BaseLanguage.JAVA) {
 					JTabbedPane master = new JTabbedPane();
 					master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 							PanelUtils.pullElementUp(_basicSettings));
-					master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
+					master.addTab(L10N.t("dialog.workspace_settings.tab.apis"),
+							PanelUtils.pullElementUp(_external_apis));
 					master.addTab(L10N.t("dialog.workspace_settings.tab.advanced"),
 							PanelUtils.pullElementUp(_advancedSettings));
 					add("Center", master);
@@ -320,9 +323,20 @@ public class WorkspaceDialogs {
 			license.setEditable(true);
 			license.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
 
-			modID.setValidator(
-					new RegistryNameValidator(modID, L10N.t("dialog.workspace.settings.workspace_modid")).setMaxLength(
-							32));
+			modID.setValidator(new Validator() {
+				private static final Pattern VALID_MODID = Pattern.compile(
+						"^(?=.{2,64}$)[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$");
+
+				private final Validator parent = new RegistryNameValidator(modID,
+						L10N.t("dialog.workspace.settings.workspace_modid")).setMaxLength(32);
+
+				@Override public ValidationResult validate() {
+					if (!VALID_MODID.matcher(modID.getText()).matches())
+						return new ValidationResult(ValidationResultType.ERROR,
+								L10N.t("dialog.workspace.settings.workspace_modid_invalid"));
+					return parent.validate();
+				}
+			});
 
 			modName.enableRealtimeValidation();
 			modID.enableRealtimeValidation();

@@ -116,8 +116,7 @@ public class GradleErrorDecoder {
 	}
 
 	public static boolean isErrorCausedByCorruptedCaches(String errortext) {
-		// normalize spaces
-		errortext = errortext.replace('\u00a0', ' ');
+		errortext = errortext.replace('\u00a0', ' '); // normalize spaces
 		if (!errortext.contains("Could not GET ") && !errortext.contains("Could not HEAD ") && !errortext.contains(
 				"Network is unreachable:")) { // eliminate networking problems first
 			if (errortext.contains("java.util.zip.ZipException: error in opening zip file")) {
@@ -132,9 +131,13 @@ public class GradleErrorDecoder {
 	}
 
 	public static boolean doesErrorSuggestRerun(String errortext) {
-		// normalize spaces
-		errortext = errortext.replace('\u00a0', ' ');
+		errortext = errortext.replace('\u00a0', ' '); // normalize spaces
 		return errortext.contains("try running the task again.");
+	}
+
+	public static boolean isErrorDueToJMXPortIssues(String errortext) {
+		errortext = errortext.replace('\u00a0', ' '); // normalize spaces
+		return errortext.contains("java.rmi.server.ExportException: Port already in use:") && errortext.contains(".jmxremote.");
 	}
 
 }

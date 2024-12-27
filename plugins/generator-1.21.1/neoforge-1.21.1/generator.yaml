@@ -1,6 +1,7 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
 buildfileversion: 21.1.65
+subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
 import:
   - datapack-1.21.1

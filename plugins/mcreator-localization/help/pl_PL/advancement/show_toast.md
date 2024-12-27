@@ -1,1 +1,1 @@
-Pokazuje osiągnięcia w górnym rogu ekranu, gdy gracz ukończy osiągnięcie.
+Pokaż osiągnięcie w górnym rogu ekranu po prawej, gdy gracz ukończy osiągnięcie.

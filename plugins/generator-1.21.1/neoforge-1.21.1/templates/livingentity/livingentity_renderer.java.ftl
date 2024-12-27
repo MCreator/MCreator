@@ -90,6 +90,7 @@ package ${package}.client.renderer;
 
 <#assign model = model + "<" + name + "Entity>">
 
+<#compress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
@@ -196,7 +197,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			}
 
 			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+				<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 				this.root().getAllParts().forEach(ModelPart::resetPose);
+				</#if>
 				<#list data.animations as animation>
 					<#if !animation.walking>
 						this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
@@ -222,11 +225,17 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		}
 
 		@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			<#if humanoid>
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			<#else>
 			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			</#if>
 		}
 
 	}
 	</#if>
 
 }
+</#compress>
