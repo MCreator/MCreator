@@ -1,0 +1,1 @@
+Este parâmetro define o autor da pintura.
