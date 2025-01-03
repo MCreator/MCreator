@@ -26,6 +26,7 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class JSimpleListEntry<T> extends JPanel {
@@ -33,6 +34,8 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	protected final JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
+	private final JButton moveUp = new JButton(UIRES.get("18px.up"));
+	private final JButton moveDown = new JButton(UIRES.get("18px.down"));
 
 	protected final JPanel parent;
 
@@ -57,10 +60,43 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 			entryRemovedByUserHandler();
 		});
 
-		add(PanelUtils.centerAndEastElement(line, PanelUtils.join(remove)));
+		moveUp.setToolTipText(L10N.t("simple_list_entry.move_up"));
+		moveUp.addActionListener(e -> {
+			int i = entryList.indexOf(this);
+			if (i > 0) {
+				Collections.swap(entryList, i - 1, i);
+				swapEntries(parent, i - 1, i);
+				parent.revalidate();
+				parent.repaint();
+			}
+		});
+
+		moveDown.setToolTipText(L10N.t("simple_list_entry.move_down"));
+		moveDown.addActionListener(e -> {
+			int i = entryList.indexOf(this);
+			if (i >= 0 && i < entryList.size() - 1) {
+				Collections.swap(entryList, i, i + 1);
+				swapEntries(parent, i, i + 1);
+				parent.revalidate();
+				parent.repaint();
+			}
+		});
+
+		add(PanelUtils.westAndCenterElement(PanelUtils.join(moveUp, moveDown),
+				PanelUtils.centerAndEastElement(line, PanelUtils.join(remove))));
 
 		parent.revalidate();
 		parent.repaint();
+	}
+
+	private static void swapEntries(JPanel parent, int thisIndex, int otherIndex) {
+		Component[] components = parent.getComponents();
+		parent.removeAll();
+		var thisComp = components[thisIndex];
+		components[thisIndex] = components[otherIndex];
+		components[otherIndex] = thisComp;
+		for (var comp : components)
+			parent.add(comp);
 	}
 
 	protected void entryRemovedByUserHandler() {
@@ -72,6 +108,8 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		remove.setEnabled(enabled);
+		moveUp.setEnabled(enabled);
+		moveDown.setEnabled(enabled);
 		setEntryEnabled(enabled);
 	}
 

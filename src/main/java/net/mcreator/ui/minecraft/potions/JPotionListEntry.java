@@ -38,11 +38,11 @@ import java.util.stream.Collectors;
 public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry> {
 
 	private final JSpinner duration = new JSpinner(new SpinnerNumberModel(3600, 1, 72000, 1));
-	private final JCheckBox infinite = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox infinite = L10N.checkbox("elementgui.potion.infinite");
 	private final JSpinner amplifier = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JComboBox<String> effect = new JComboBox<>();
-	private final JCheckBox ambient = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox ambient = L10N.checkbox("elementgui.potion.ambient");
+	private final JCheckBox showParticles = L10N.checkbox("elementgui.potion.show_particles");
 
 	private final Workspace workspace;
 
@@ -61,22 +61,16 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 				L10N.label("elementgui.potion.duration")));
 		line.add(duration);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/infinite"),
-				L10N.label("elementgui.potion.infinite")));
-		line.add(infinite);
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/infinite"), infinite));
 		infinite.addActionListener(e -> duration.setEnabled(!infinite.isSelected()));
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/amplifier"),
 				L10N.label("elementgui.potion.amplifier")));
 		line.add(amplifier);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/show_particles"),
-				L10N.label("elementgui.potion.show_particles")));
-		line.add(showParticles);
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/show_particles"), showParticles));
 
-		line.add(
-				HelpUtils.wrapWithHelpButton(gui.withEntry("potion/ambient"), L10N.label("elementgui.potion.ambient")));
-		line.add(ambient);
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/ambient"), ambient));
 
 		showParticles.setSelected(true);
 	}
