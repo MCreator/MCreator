@@ -59,7 +59,7 @@
       "check": "IntProvider"
     },
     {
-      "type": "field_input",
+      "type": "field_resourcelocation",
       "name": "replaceable",
       "text": "lush_ground_replaceable"
     },
@@ -89,7 +89,6 @@
   "colour": 0,
   "extensions": [
     "add_image_to_bsp_inputs",
-    "vegetation_patch_tag_fields_validator",
     "vegetation_patch_feature_validator"
   ],
   "mcreator": {
