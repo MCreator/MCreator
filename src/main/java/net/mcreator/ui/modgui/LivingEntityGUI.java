@@ -375,6 +375,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
+		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");

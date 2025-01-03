@@ -116,6 +116,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
 		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
+		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
