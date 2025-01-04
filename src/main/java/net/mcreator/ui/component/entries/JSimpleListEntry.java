@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.component.entries;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -61,6 +62,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		});
 
 		moveUp.setToolTipText(L10N.t("simple_list_entry.move_up"));
+		moveUp.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		moveUp.addActionListener(e -> {
 			int i = entryList.indexOf(this);
 			if (i > 0) {
@@ -72,6 +74,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		});
 
 		moveDown.setToolTipText(L10N.t("simple_list_entry.move_down"));
+		moveDown.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		moveDown.addActionListener(e -> {
 			int i = entryList.indexOf(this);
 			if (i >= 0 && i < entryList.size() - 1) {
@@ -82,8 +85,8 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 			}
 		});
 
-		add(PanelUtils.westAndCenterElement(PanelUtils.join(moveUp, moveDown),
-				PanelUtils.centerAndEastElement(line, PanelUtils.join(remove))));
+		add(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(PanelUtils.join(moveUp, moveDown)),
+				PanelUtils.centerAndEastElement(line, PanelUtils.totalCenterInPanel(PanelUtils.join(remove))), 5, 0));
 
 		parent.revalidate();
 		parent.repaint();
