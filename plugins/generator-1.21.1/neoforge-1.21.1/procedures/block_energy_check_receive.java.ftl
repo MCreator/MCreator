@@ -1,3 +1,3 @@
 <#include "mcelements.ftl">
 <@addTemplate file="utils/energy/block_energy_check_receive.java.ftl"/>
-(receiveEnergySimulate(world, ${toBlockPos(input$x,input$y,input$z)}, ${opt.toInt(input$amount)}, ${input$direction}))
+/*@int*/(receiveEnergySimulate(world, ${toBlockPos(input$x,input$y,input$z)}, ${opt.toInt(input$amount)}, ${input$direction}))
