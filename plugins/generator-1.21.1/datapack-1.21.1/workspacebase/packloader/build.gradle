@@ -9,7 +9,7 @@ base.archivesName = "packloader"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    version = "21.1.92"
+    version = "${generator.getGeneratorBuildFileVersion()}"
 
     runs {
         client {
