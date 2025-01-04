@@ -110,11 +110,8 @@ public class ProjectJarManager extends JarManager {
 		for (ExternalDependency externalDependency : project.getClasspath()) {
 			File libFile = externalDependency.getFile();
 			if (libFile != null && libFile.isFile()) {
-				if (libFile.getName().startsWith("scala-"))
-					continue; // skip scala libraries as we do not need them in MCreator
-
-				if (libFile.getName().contains("-natives-"))
-					continue; // skip native libraries as we do not need them in MCreator
+				if (libFile.getName().contains("-natives-") || libFile.getName().startsWith("scala-"))
+					continue; // skip scala and native libraries as we do not need them in MCreator
 
 				File srcFile = externalDependency.getSource();
 				GeneratorGradleCache.ClasspathEntry classpathEntry = new GeneratorGradleCache.ClasspathEntry(
