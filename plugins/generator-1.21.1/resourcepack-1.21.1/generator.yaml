@@ -13,7 +13,7 @@ res_root: "@SRCROOT"
 mod_assets_root: "@RESROOT/assets/@modid"
 
 # vanilla resources
-vanilla_resources_jar: ".*-client-extra.jar"
+vanilla_resources_jar: ".*-client-extra-.*.jar"
 
 base_templates:
   - template: pack.mcmeta.ftl

@@ -55,6 +55,10 @@ public class GradleUtils {
 		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
 	}
 
+	public static <T> ModelBuilder<T> getGradleModelBuilder(ProjectConnection projectConnection, Class<T> clazz) {
+		return configureLauncher(projectConnection.model(clazz));
+	}
+
 	private static <T extends ConfigurableLauncher<T>> T configureLauncher(T launcher) {
 		launcher.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
 				"-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m", "-Duser.language=en");

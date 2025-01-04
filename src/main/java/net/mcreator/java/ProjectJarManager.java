@@ -32,6 +32,7 @@ import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
+import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.ExternalDependency;
 import org.gradle.tooling.model.eclipse.EclipseProject;
@@ -86,7 +87,10 @@ public class ProjectJarManager extends JarManager {
 		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(generator.getWorkspace());
 		if (projectConnection != null) {
 			try {
-				EclipseProject project = projectConnection.getModel(EclipseProject.class);
+				ModelBuilder<EclipseProject> modelBuilder = GradleUtils.getGradleModelBuilder(projectConnection,
+						EclipseProject.class);
+
+				EclipseProject project = modelBuilder.get();
 
 				processProjectClassPath(generator, project, classPathEntries);
 			} catch (BuildException ignored) {
@@ -104,17 +108,15 @@ public class ProjectJarManager extends JarManager {
 		return classPathEntries;
 	}
 
-	private void processProjectClassPath(Generator generator, EclipseProject project, List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
+	private void processProjectClassPath(Generator generator, EclipseProject project,
+			List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
 		LOG.debug("Processing classpath for project {}", project.getName());
 
 		for (ExternalDependency externalDependency : project.getClasspath()) {
 			File libFile = externalDependency.getFile();
 			if (libFile != null && libFile.isFile()) {
-				if (libFile.getName().startsWith("scala-"))
-					continue; // skip scala libraries as we do not need them in MCreator
-
-				if (libFile.getName().contains("-natives-"))
-					continue; // skip native libraries as we do not need them in MCreator
+				if (libFile.getName().contains("-natives-") || libFile.getName().startsWith("scala-"))
+					continue; // skip scala and native libraries as we do not need them in MCreator
 
 				File srcFile = externalDependency.getSource();
 				GeneratorGradleCache.ClasspathEntry classpathEntry = new GeneratorGradleCache.ClasspathEntry(
