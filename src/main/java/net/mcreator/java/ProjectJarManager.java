@@ -32,6 +32,7 @@ import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
+import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.ExternalDependency;
 import org.gradle.tooling.model.eclipse.EclipseProject;
@@ -86,7 +87,10 @@ public class ProjectJarManager extends JarManager {
 		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(generator.getWorkspace());
 		if (projectConnection != null) {
 			try {
-				EclipseProject project = projectConnection.getModel(EclipseProject.class);
+				ModelBuilder<EclipseProject> modelBuilder = GradleUtils.getGradleModelBuilder(projectConnection,
+						EclipseProject.class);
+
+				EclipseProject project = modelBuilder.get();
 
 				processProjectClassPath(generator, project, classPathEntries);
 			} catch (BuildException ignored) {
@@ -104,7 +108,8 @@ public class ProjectJarManager extends JarManager {
 		return classPathEntries;
 	}
 
-	private void processProjectClassPath(Generator generator, EclipseProject project, List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
+	private void processProjectClassPath(Generator generator, EclipseProject project,
+			List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
 		LOG.debug("Processing classpath for project {}", project.getName());
 
 		for (ExternalDependency externalDependency : project.getClasspath()) {
