@@ -882,9 +882,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	private void updateArmorTexturePreview() {
-		File[] armorTextures = mcreator.getFolderManager()
-				.getArmorTextureFilesForName(armorTextureFile.getTextureName());
-		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
+		String textureName = armorTextureFile.getTextureName();
+		File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(textureName);
+		if (!textureName.isBlank() && armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(
 					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(),
 							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
