@@ -1,0 +1,37 @@
+plugins {
+    id 'eclipse'
+    id 'net.neoforged.moddev' version '2.0.72'
+}
+
+version = '1.0'
+base.archivesName = "packloader"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = "${generator.getGeneratorBuildFileVersion()}"
+
+    runs {
+        client {
+            client()
+            gameDirectory = project.file('../run')
+
+            def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
+            if (mcreatorJvmOptions) {
+                mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.each { arg ->
+                    jvmArgument(arg)
+                }
+            }
+        }
+    }
+
+    mods {
+        packloader {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
