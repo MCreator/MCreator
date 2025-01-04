@@ -1,0 +1,1 @@
+Este parâmetro controla a largura desta pintura (em unidades de bloco).

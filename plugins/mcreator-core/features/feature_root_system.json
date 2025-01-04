@@ -33,7 +33,7 @@
       "type": "input_dummy"
     },
     {
-      "type": "field_input",
+      "type": "field_resourcelocation",
       "name": "root_replaceable",
       "text": "azalea_root_replaceable"
     },
@@ -106,7 +106,6 @@
   "output": "Feature",
   "colour": 0,
   "extensions": [
-    "root_system_tag_fields_validator",
     "add_image_to_bsp_inputs"
   ],
   "mcreator": {
