@@ -31,6 +31,7 @@ import_formatter:
     Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
     Keyframe: net.minecraft.client.animation
+    Potion: net.minecraft.world.item.alchemy
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
