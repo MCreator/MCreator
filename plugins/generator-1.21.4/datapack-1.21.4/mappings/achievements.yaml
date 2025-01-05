@@ -1,0 +1,4 @@
+_default: none
+_mcreator_map_template: "@modid:@registryname"
+"No parent: root": none
+adventure/adventuring_time: minecraft:adventure/adventuring_time
