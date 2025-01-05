@@ -66,7 +66,7 @@
     <#elseif mappedBlock.getMappedValue(1).startsWith("#")>
         <#return "Ingredient.of(ItemTags.create(ResourceLocation.parse(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\")))">
     <#else>
-        <#return "Ingredient.of(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
+        <#return "Ingredient.of(" + mappedMCItemToItem(mappedBlock) + ")">
     </#if>
 </#function>
 
@@ -88,7 +88,7 @@
         <#if itemsOnly>
             <#assign retval = "Ingredient.of(">
             <#list mappedBlocks as mappedBlock>
-                <#assign retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
+                <#assign retval += mappedMCItemToItem(mappedBlock)>
 
                 <#if mappedBlock?has_next>
                     <#assign retval += ",">
