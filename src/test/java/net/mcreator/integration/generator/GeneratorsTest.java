@@ -183,7 +183,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						// We only run server tests if we are not in GitHub Actions (their workers are too slow for this)
 						if (generatorConfiguration.getGradleTaskFor("run_server") != null
-								&& !TestUtil.isRunningInGitHubActions()) {
+								&& !TestUtil.isRunningInGitHubActions()
+								&& generatorConfiguration.getGeneratorStats().getStatus()
+								!= GeneratorStats.Status.DEV) {
 							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
 									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
 						}
