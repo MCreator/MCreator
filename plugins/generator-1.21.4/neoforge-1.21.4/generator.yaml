@@ -39,7 +39,7 @@ mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-#sounds_dir: "@MODASSETSROOT/sounds"
+sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structure"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
@@ -65,13 +65,13 @@ base_templates:
   - template: pack.mcmeta.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/pack.mcmeta"
-#  - template: modbase/sounds.json.ftl
-#    writer: json
-#    name: "@MODASSETSROOT/sounds.json"
-#    condition: hasSounds()
-#  - template: modbase/sounds.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
-#    condition: hasSounds()
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
 #  - template: modbase/variableslist.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
 #    condition: hasVariables()
