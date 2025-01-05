@@ -1,7 +1,10 @@
 new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, projectileLevel) {
-	private double knockback = ${opt.toInt(input$knockback)};
+	private final byte piercing;
+	private final double knockback;
 
 	{
+		piercing = ${input$piercing};
+		knockback = ${opt.toInt(input$knockback)};
 		<#if input$shooter != "null">setOwner(${input$shooter});</#if>
 		setBaseDamage(${opt.toFloat(input$damage)});
 		<#if field$projectile?starts_with("CUSTOM:")>setSilent(true);</#if>
@@ -11,7 +14,7 @@ new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$p
 	}
 
 	@Override public byte getPierceLevel() {
-		return (byte) ${input$piercing};
+		return piercing;
 	}
 
 	@Override protected void doKnockback(LivingEntity livingEntity, DamageSource damageSource) {
