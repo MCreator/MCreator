@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
-		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 
 		VTextField soundName = new VTextField(20);
 
