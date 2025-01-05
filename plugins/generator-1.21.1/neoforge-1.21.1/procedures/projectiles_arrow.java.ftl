@@ -3,7 +3,7 @@ new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$p
 	private final double knockback;
 
 	{
-		piercing = ${input$piercing};
+		piercing = (byte) ${input$piercing};
 		knockback = ${opt.toInt(input$knockback)};
 		<#if input$shooter != "null">setOwner(${input$shooter});</#if>
 		setBaseDamage(${opt.toFloat(input$damage)});
