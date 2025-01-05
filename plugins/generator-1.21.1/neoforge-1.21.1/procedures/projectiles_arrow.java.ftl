@@ -1,12 +1,11 @@
 new ${generator.map(field$projectile, "projectiles", 0)}(${generator.map(field$projectile, "projectiles", 1)}, projectileLevel) {
-	private final byte piercing;
-	private final double knockback;
+	private final Entity shooter = ${input$shooter};
+	private final double damage = ${opt.toFloat(input$damage)}, knockback = ${opt.toInt(input$knockback)};
+	private final byte piercing = (byte) ${input$piercing};
 
 	{
-		piercing = (byte) ${input$piercing};
-		knockback = ${opt.toInt(input$knockback)};
-		<#if input$shooter != "null">setOwner(${input$shooter});</#if>
-		setBaseDamage(${opt.toFloat(input$damage)});
+		<#if input$shooter != "null">setOwner(shooter);</#if>
+		setBaseDamage(damage);
 		<#if field$projectile?starts_with("CUSTOM:")>setSilent(true);</#if>
 		<#if field$fire == "TRUE">igniteForSeconds(100);</#if>
 		<#if field$particles == "TRUE">setCritArrow(true);</#if>
