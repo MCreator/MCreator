@@ -571,12 +571,15 @@ public class CodeEditorView extends ViewBase {
 			int pos = te.getCaretPosition();
 			String ncode = codeCleanup.reformatTheCodeAndOrganiseImports(mcreator.getWorkspace(), te.getText());
 			te.setText(ncode);
-			te.setCaretPosition(pos);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			int pos = te.getCaretPosition();
 			JsonElement json = JsonParser.parseString(te.getText());
-			te.setText(JSONWriter.gson.toJson(json));
-			te.setCaretPosition(pos);
+			String ncode = JSONWriter.gson.toJson(json);
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		}
 	}
 
