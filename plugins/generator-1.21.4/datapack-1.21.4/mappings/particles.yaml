@@ -1,0 +1,15 @@
+_mcreator_map_template:
+  - "(SimpleParticleType) (@JavaModNameParticleTypes.@REGISTRYNAME.get())"
+  - "@modid:@registryname"
+_default:
+  - ParticleTypes.CRIT
+  - "crit"
+VILLAGER_ANGRY:
+  - ParticleTypes.ANGRY_VILLAGER
+  - "angry_villager"
+WATER_BUBBLE:
+  - ParticleTypes.BUBBLE
+  - "bubble"
+CLOUD:
+  - ParticleTypes.CLOUD
+  - "cloud"

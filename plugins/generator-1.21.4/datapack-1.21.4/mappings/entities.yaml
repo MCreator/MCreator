@@ -1,0 +1,13 @@
+_default:
+  - Zombie
+  - EntityType.ZOMBIE
+  - zombie
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+_bypass_prefix: "#"
+EntityBee:
+  - Bee
+  - EntityType.BEE
+  - bee
