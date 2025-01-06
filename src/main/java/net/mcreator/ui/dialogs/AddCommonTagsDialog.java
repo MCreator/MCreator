@@ -90,8 +90,6 @@ public class AddCommonTagsDialog {
 
 		callables.add(addTag(mcreator, itemTags, "arrows", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "planks", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, itemTags, "flowers", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "enchantable/weapon", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "enchantable/mining", "minecraft", TagType.ITEMS, false));
