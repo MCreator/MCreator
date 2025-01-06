@@ -39,9 +39,11 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	private final JButton moveDown = new JButton(UIRES.get("18px.down"));
 
 	protected final JPanel parent;
+	protected final List<? extends JSimpleListEntry<T>> entryList;
 
 	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList) {
 		this.parent = parent;
+		this.entryList = entryList;
 
 		setBackground((Theme.current().getAltBackgroundColor()).darker());
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -54,7 +56,15 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 
 		remove.setText(L10N.t("simple_list_entry.remove"));
 		remove.addActionListener(e -> {
+			int thisIndex = entryList.indexOf(this);
 			entryList.remove(this);
+			// Update move up/down buttons of other entries
+			if (!entryList.isEmpty()) {
+				if (thisIndex == 0) // This entry was the first one
+					entryList.getFirst().updateMoveButtons();
+				else if (thisIndex == entryList.size()) // This entry was the last one
+					entryList.getLast().updateMoveButtons();
+			}
 			parent.remove(container);
 			parent.revalidate();
 			parent.repaint();
@@ -63,11 +73,14 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 
 		moveUp.setToolTipText(L10N.t("simple_list_entry.move_up"));
 		moveUp.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		if (entryList.isEmpty()) { // At this point, this entry isn't in the entry list yet
+			moveUp.setEnabled(false);
+		}
+
 		moveUp.addActionListener(e -> {
 			int i = entryList.indexOf(this);
 			if (i > 0) {
-				Collections.swap(entryList, i - 1, i);
-				swapEntries(parent, i - 1, i);
+				swapEntries(parent, entryList, i - 1, i);
 				parent.revalidate();
 				parent.repaint();
 			}
@@ -75,11 +88,15 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 
 		moveDown.setToolTipText(L10N.t("simple_list_entry.move_down"));
 		moveDown.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		moveDown.setEnabled(false); // The new entry is always the last one
+		if (!entryList.isEmpty()) { // Enable the "move down" button of the second-to-last entry
+			entryList.getLast().enableMoveDownButton();
+		}
+
 		moveDown.addActionListener(e -> {
 			int i = entryList.indexOf(this);
 			if (i >= 0 && i < entryList.size() - 1) {
-				Collections.swap(entryList, i, i + 1);
-				swapEntries(parent, i, i + 1);
+				swapEntries(parent, entryList, i, i + 1);
 				parent.revalidate();
 				parent.repaint();
 			}
@@ -92,7 +109,9 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		parent.repaint();
 	}
 
-	private static void swapEntries(JPanel parent, int thisIndex, int otherIndex) {
+	private static void swapEntries(JPanel parent, List<? extends JSimpleListEntry<?>> entryList, int thisIndex, int otherIndex) {
+		Collections.swap(entryList, thisIndex, otherIndex);
+		// Also swap entries in the parent panel
 		Component[] components = parent.getComponents();
 		parent.removeAll();
 		var thisComp = components[thisIndex];
@@ -100,6 +119,9 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		components[otherIndex] = thisComp;
 		for (var comp : components)
 			parent.add(comp);
+		// Update move buttons of swapped entries
+		entryList.get(thisIndex).updateMoveButtons();
+		entryList.get(otherIndex).updateMoveButtons();
 	}
 
 	protected void entryRemovedByUserHandler() {
@@ -111,9 +133,17 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		remove.setEnabled(enabled);
-		moveUp.setEnabled(enabled);
-		moveDown.setEnabled(enabled);
+		updateMoveButtons();
 		setEntryEnabled(enabled);
+	}
+
+	public void updateMoveButtons() {
+		moveUp.setEnabled(this.isEnabled() && entryList.getFirst() != this);
+		moveDown.setEnabled(this.isEnabled() && entryList.getLast() != this);
+	}
+
+	public void enableMoveDownButton() {
+		moveDown.setEnabled(true);
 	}
 
 	protected abstract void setEntryEnabled(boolean enabled);
