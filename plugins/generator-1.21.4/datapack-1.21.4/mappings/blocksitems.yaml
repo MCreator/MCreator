@@ -4491,6 +4491,12 @@ Items.THING_BANNER_PATTERN:
 Items.GLOBE_BANNER_PATTERN:
   - Items.GLOBE_BANNER_PATTERN
   - "globe_banner_pattern"
+Items.FIELD_MASONED_BANNER_PATTERN:
+  - Items.FIELD_MASONED_BANNER_PATTERN
+  - "field_masoned_banner_pattern"
+Items.BORDURE_INDENTED_BANNER_PATTERN:
+  - Items.BORDURE_INDENTED_BANNER_PATTERN
+  - "bordure_indented_banner_pattern"
 Items.SWEET_BERRIES:
   - Items.SWEET_BERRIES
   - "sweet_berries"
@@ -4620,6 +4626,54 @@ Items.AMETHYST_SHARD:
 Items.BUNDLE:
   - Items.BUNDLE
   - "bundle"
+Items.WHITE_BUNDLE:
+  - Items.WHITE_BUNDLE
+  - "white_bundle"
+Items.ORANGE_BUNDLE:
+  - Items.ORANGE_BUNDLE
+  - "orange_bundle"
+Items.MAGENTA_BUNDLE:
+  - Items.MAGENTA_BUNDLE
+  - "magenta_bundle"
+Items.LIGHT_BLUE_BUNDLE:
+  - Items.LIGHT_BLUE_BUNDLE
+  - "light_blue_bundle"
+Items.YELLOW_BUNDLE:
+  - Items.YELLOW_BUNDLE
+  - "yellow_bundle"
+Items.LIME_BUNDLE:
+  - Items.LIME_BUNDLE
+  - "lime_bundle"
+Items.PINK_BUNDLE:
+  - Items.PINK_BUNDLE
+  - "pink_bundle"
+Items.GRAY_BUNDLE:
+  - Items.GRAY_BUNDLE
+  - "gray_bundle"
+Items.LIGHT_GRAY_BUNDLE:
+  - Items.LIGHT_GRAY_BUNDLE
+  - "light_gray_bundle"
+Items.CYAN_BUNDLE:
+  - Items.CYAN_BUNDLE
+  - "cyan_bundle"
+Items.PURPLE_BUNDLE:
+  - Items.PURPLE_BUNDLE
+  - "purple_bundle"
+Items.BLUE_BUNDLE:
+  - Items.BLUE_BUNDLE
+  - "blue_bundle"
+Items.BROWN_BUNDLE:
+  - Items.BROWN_BUNDLE
+  - "brown_bundle"
+Items.GREEN_BUNDLE:
+  - Items.GREEN_BUNDLE
+  - "green_bundle"
+Items.RED_BUNDLE:
+  - Items.RED_BUNDLE
+  - "red_bundle"
+Items.BLACK_BUNDLE:
+  - Items.BLACK_BUNDLE
+  - "black_bundle"
 Items.RAW_IRON:
   - Items.RAW_IRON
   - "raw_iron"

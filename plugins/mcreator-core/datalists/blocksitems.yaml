@@ -5849,6 +5849,86 @@
   type: item
   texture: BUNDLE
 
+- Items.WHITE_BUNDLE:
+  readable_name: "White Bundle"
+  type: item
+  texture: WHITE_BUNDLE
+
+- Items.ORANGE_BUNDLE:
+  readable_name: "Orange Bundle"
+  type: item
+  texture: ORANGE_BUNDLE
+
+- Items.MAGENTA_BUNDLE:
+  readable_name: "Magenta Bundle"
+  type: item
+  texture: MAGENTA_BUNDLE
+
+- Items.LIGHT_BLUE_BUNDLE:
+  readable_name: "Light Blue Bundle"
+  type: item
+  texture: LIGHT_BLUE_BUNDLE
+
+- Items.YELLOW_BUNDLE:
+  readable_name: "Yellow Bundle"
+  type: item
+  texture: YELLOW_BUNDLE
+
+- Items.LIME_BUNDLE:
+  readable_name: "Lime Bundle"
+  type: item
+  texture: LIME_BUNDLE
+
+- Items.PINK_BUNDLE:
+  readable_name: "Pink Bundle"
+  type: item
+  texture: PINK_BUNDLE
+
+- Items.GRAY_BUNDLE:
+  readable_name: "Gray Bundle"
+  type: item
+  texture: GRAY_BUNDLE
+
+- Items.LIGHT_GRAY_BUNDLE:
+  readable_name: "Light Gray Bundle"
+  type: item
+  texture: LIGHT_GRAY_BUNDLE
+
+- Items.CYAN_BUNDLE:
+  readable_name: "Cyan Bundle"
+  type: item
+  texture: CYAN_BUNDLE
+
+- Items.PURPLE_BUNDLE:
+  readable_name: "Purple Bundle"
+  type: item
+  texture: PURPLE_BUNDLE
+
+- Items.BLUE_BUNDLE:
+  readable_name: "Blue Bundle"
+  type: item
+  texture: BLUE_BUNDLE
+
+- Items.BROWN_BUNDLE:
+  readable_name: "Brown Bundle"
+  type: item
+  texture: BROWN_BUNDLE
+
+- Items.GREEN_BUNDLE:
+  readable_name: "Green Bundle"
+  type: item
+  texture: GREEN_BUNDLE
+
+- Items.RED_BUNDLE:
+  readable_name: "Red Bundle"
+  type: item
+  texture: RED_BUNDLE
+
+- Items.BLACK_BUNDLE:
+  readable_name: "Black Bundle"
+  type: item
+  texture: BLACK_BUNDLE
+
 - Items.MAP:
   readable_name: "Empty Map"
   type: item
@@ -5865,38 +5945,32 @@
   texture: BRUSH
 
 - Items.FLOWER_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Flower"
+  readable_name: "Flower Charge Banner Pattern"
   type: item
   texture: FLOWER_BANNER_PATTERN
 
 - Items.CREEPER_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Creeper"
+  readable_name: "Creeper Charge Banner Pattern"
   type: item
   texture: CREEPER_BANNER_PATTERN
 
 - Items.SKULL_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Skull"
+  readable_name: "Skull Charge Banner Pattern"
   type: item
   texture: SKULL_BANNER_PATTERN
 
 - Items.THING_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Thing"
+  readable_name: "Thing Banner Pattern"
   type: item
   texture: THING_BANNER_PATTERN
 
 - Items.GLOBE_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Globe"
+  readable_name: "Globe Banner Pattern"
   type: item
   texture: GLOBE_BANNER_PATTERN
 
 - Items.PIGLIN_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Snout"
+  readable_name: "Snout Banner Pattern"
   type: item
   texture: PIGLIN_BANNER_PATTERN
 
@@ -5909,6 +5983,16 @@
   readable_name: "Guster Banner Pattern"
   type: item
   texture: GUSTER_BANNER_PATTERN
+
+- Items.FIELD_MASONED_BANNER_PATTERN:
+  readable_name: "Field Masoned Banner Pattern"
+  type: item
+  texture: FIELD_MASONED_BANNER_PATTERN
+
+- Items.BORDURE_INDENTED_BANNER_PATTERN:
+  readable_name: "Bordure Indented Banner Pattern"
+  type: item
+  texture: BORDURE_INDENTED_BANNER_PATTERN
 
 - Items.TOTEM_OF_UNDYING:
   readable_name: "Totem of Undying"
