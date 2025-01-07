@@ -94,6 +94,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnNetherFossil = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnAncientCity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnTrialChamber = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnTrailRuin = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> spawnRuinedPortal = new JComboBox<>(
 			new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
 	private final JComboBox<String> villageType = new JComboBox<>(
@@ -177,7 +180,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnEntries = new JSpawnEntriesList(mcreator, this);
 
 		JPanel sbbp2 = new JPanel(new GridLayout(13, 2, 4, 2));
-		JPanel sbbp2b = new JPanel(new GridLayout(7, 2, 4, 2));
+		JPanel sbbp2b = new JPanel(new GridLayout(10, 2, 4, 2));
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
 				L10N.label("elementgui.biome.generate_strongholds")));
@@ -264,6 +267,21 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.generate_end_cities")));
 		sbbp2b.add(spawnEndCity);
 		spawnEndCity.setOpaque(false);
+
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ancient_cities"),
+				L10N.label("elementgui.biome.generate_ancient_cities")));
+		sbbp2b.add(spawnAncientCity);
+		spawnAncientCity.setOpaque(false);
+
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_trial_chambers"),
+				L10N.label("elementgui.biome.generate_trial_chambers")));
+		sbbp2b.add(spawnTrialChamber);
+		spawnTrialChamber.setOpaque(false);
+
+		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_trail_ruins"),
+				L10N.label("elementgui.biome.generate_trail_ruins")));
+		sbbp2b.add(spawnTrailRuin);
+		spawnTrailRuin.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
 				L10N.label("elementgui.biome.generate_ruined_portals")));
@@ -712,6 +730,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnNetherFossil.setSelected(biome.spawnNetherFossil);
 		spawnBastionRemnant.setSelected(biome.spawnBastionRemnant);
 		spawnEndCity.setSelected(biome.spawnEndCity);
+		spawnAncientCity.setSelected(biome.spawnAncientCity);
+		spawnTrialChamber.setSelected(biome.spawnTrialChamber);
+		spawnTrailRuin.setSelected(biome.spawnTrailRuin);
 		spawnRuinedPortal.setSelectedItem(biome.spawnRuinedPortal);
 
 		temperature.setValue(biome.temperature);
@@ -795,6 +816,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnNetherFossil = spawnNetherFossil.isSelected();
 		biome.spawnBastionRemnant = spawnBastionRemnant.isSelected();
 		biome.spawnEndCity = spawnEndCity.isSelected();
+		biome.spawnAncientCity = spawnAncientCity.isSelected();
+		biome.spawnTrialChamber = spawnTrialChamber.isSelected();
+		biome.spawnTrailRuin = spawnTrailRuin.isSelected();
+
 		biome.spawnRuinedPortal = (String) spawnRuinedPortal.getSelectedItem();
 
 		biome.genTemperature = new Biome.ClimatePoint(genTemperature.getMinValue(), genTemperature.getMaxValue());

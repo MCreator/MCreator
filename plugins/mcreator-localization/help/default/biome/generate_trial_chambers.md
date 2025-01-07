@@ -1,0 +1,1 @@
+Select this setting to have Trial chambers in your biome.

@@ -99,10 +99,13 @@ import java.util.List;
 	public boolean spawnShipwreckBeached;
 	public boolean spawnBuriedTreasure;
 	public String oceanRuinType;
+	public boolean spawnTrailRuin;
 	public boolean spawnNetherBridge;
 	public boolean spawnNetherFossil;
 	public boolean spawnBastionRemnant;
 	public boolean spawnEndCity;
+	public boolean spawnAncientCity;
+	public boolean spawnTrialChamber;
 	public String spawnRuinedPortal;
 
 	@ModElementReference public List<SpawnEntry> spawnEntries;
