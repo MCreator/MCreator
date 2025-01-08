@@ -220,7 +220,15 @@
   texture: SPONGE#1
 - VAULT:
   texture: VAULT
+- CREAKING_HEART:
+  texture: CREAKING_HEART
 - HEAVY_CORE:
   texture: HEAVY_CORE
 - COBWEB:
   texture: WEB
+- SPAWNER:
+  texture: MOB_SPAWNER
+- RESIN:
+  texture: RESIN_BLOCK
+- RESIN_BRICKS:
+  texture: RESIN_BRICKS
