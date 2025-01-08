@@ -19,6 +19,31 @@
 
 package net.mcreator.ui.workspace;
 
+import java.awt.Component;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
 import net.mcreator.generator.GeneratorStats;
@@ -32,21 +57,13 @@ import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
+import net.mcreator.ui.dialogs.AddOtherTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
-
-import javax.swing.*;
-import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WorkspacePanelTags extends AbstractWorkspacePanel {
@@ -60,6 +77,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private final JItemListField<EntityEntry> listFieldEntities = new SpawnableEntityListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<BiomeEntry> listFieldBiomes = new BiomeListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<StructureEntry> listFieldStructures = new StructureListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<NonMappableElement> listFieldFunctions = new ModElementListField(
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
@@ -79,6 +98,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldBlocksItems.disableItemCentering();
 		listFieldEntities.disableItemCentering();
 		listFieldBiomes.disableItemCentering();
+		listFieldStructures.disableItemCentering();
 		listFieldFunctions.disableItemCentering();
 		listFieldDamageTypes.disableItemCentering();
 		listFieldEnchantment.disableItemCentering();
@@ -86,6 +106,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldBlocksItems.hideButtons();
 		listFieldEntities.hideButtons();
 		listFieldBiomes.hideButtons();
+		listFieldStructures.hideButtons();
 		listFieldFunctions.hideButtons();
 		listFieldDamageTypes.hideButtons();
 		listFieldEnchantment.hideButtons();
@@ -93,6 +114,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
 		listFieldBiomes.setEnabled(false);
+		listFieldStructures.setEnabled(false);
 		listFieldFunctions.setEnabled(false);
 		listFieldDamageTypes.setEnabled(false);
 		listFieldEnchantment.setEnabled(false);
@@ -100,6 +122,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldBlocksItems.setOpaque(false);
 		listFieldEntities.setOpaque(false);
 		listFieldBiomes.setOpaque(false);
+		listFieldStructures.setOpaque(false);
 		listFieldFunctions.setOpaque(false);
 		listFieldDamageTypes.setOpaque(false);
 		listFieldEnchantment.setOpaque(false);
@@ -155,6 +178,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldBiomes;
+						}
+						case STRUCTURES -> {
+							listFieldStructures.setListElements(entries.map(
+											e -> (StructureEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldStructures;
 						}
 						case FUNCTIONS -> {
 							listFieldFunctions.setListElements(entries.map(
@@ -243,6 +273,11 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), e -> {
 			AddCommonTagsDialog.open(workspacePanel.getMCreator());
+			reloadElements();
+		}));
+
+		bar.add(createToolBarButton("workspace.tags.add_other", UIRES.get("16px.injecttags"), e -> {
+			AddOtherTagsDialog.open(workspacePanel.getMCreator());
 			reloadElements();
 		}));
 
@@ -417,6 +452,14 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (BiomeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case STRUCTURES -> {
+					JItemListField<StructureEntry> retval = new StructureListField(mcreator).allowTags()
+							.allowExternalElements();
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (StructureEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}

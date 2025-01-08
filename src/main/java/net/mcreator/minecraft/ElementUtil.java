@@ -200,6 +200,13 @@ public class ElementUtil {
 		return biomes;
 	}
 
+	public static List<DataListEntry> loadAllStructures(Workspace workspace) {
+		List<DataListEntry> structures = getCustomElementsOfType(workspace, ModElementType.STRUCTURE);
+		structures.addAll(DataListLoader.loadDataList("structures"));
+		Collections.sort(structures);
+		return structures;
+	}
+
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
 		return loadDataListAndElements(workspace, "enchantments", false, null, "enchantment");
 	}
