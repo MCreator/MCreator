@@ -1,11 +1,3 @@
-feature_random_patch_simple:
-  - RandomPatchFeature
-  - RandomPatchConfiguration
-  - "minecraft:random_patch"
-feature_random_patch:
-  - RandomPatchFeature
-  - RandomPatchConfiguration
-  - "minecraft:random_patch"
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
