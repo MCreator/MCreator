@@ -57,6 +57,8 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	protected final MCreator mcreator;
 	protected T currentEntry;
 
+	private String defaultText = "";
+
 	public JSingleEntrySelector(MCreator mcreator) {
 		this.mcreator = mcreator;
 
@@ -103,6 +105,11 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		add(buttons, BorderLayout.EAST);
 	}
 
+	public void setDefaultText(String text) {
+		this.defaultText = text;
+		updateReadableText();
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		readableText.setEnabled(enabled);
 		edit.setEnabled(enabled);
@@ -120,7 +127,9 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	public void updateReadableText() {
 		readableText.setIcon(null);
 		if (currentEntry == null) {
-			readableText.setText("");
+			readableText.setText(defaultText);
+			readableText.setForeground(Theme.current().getAltForegroundColor());
+			return;
 		} else if (currentEntry instanceof MappableElement mappableElement) {
 			Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 			if (dataListEntryOpt.isPresent()) {
@@ -149,6 +158,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 				readableText.setIcon(IconUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
 		}
+		readableText.setForeground(Theme.current().getForegroundColor());
 	}
 
 	protected abstract T openEntrySelector();
