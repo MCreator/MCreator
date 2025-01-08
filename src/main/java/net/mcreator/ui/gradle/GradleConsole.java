@@ -500,6 +500,8 @@ public class GradleConsole extends JPanel {
 				return;
 			if (line.startsWith("*** Started working on "))
 				return;
+			if (line.contains("Problems report is available at:"))
+				return;
 
 			if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
 				append("The code of this workspace uses official obfuscation mappings provided by Mojang. These mappings fall under their associated license you should be fully aware of.",

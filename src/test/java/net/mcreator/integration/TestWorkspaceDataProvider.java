@@ -154,17 +154,26 @@ public class TestWorkspaceDataProvider {
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:plains");
-			workspace.getTagElements().get(tag).add("~testmod:testbiome");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("~test_mod:examplebiome_1");
+			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("testmod:testdamage");
-			workspace.getTagElements().get(tag).add("~testmod:testdamage2");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("test_mod:exampledamagetype_1");
+				workspace.getTagElements().get(tag).add("~test_mod:exampledamagetype_2");
+			}
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("testmod:testenchantment");
-			workspace.getTagElements().get(tag).add("~testmod:testenchantment2");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("test_mod:exampleenchantment_1");
+				workspace.getTagElements().get(tag).add("~test_mod:exampleenchantment_2");
+			}
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
