@@ -18,8 +18,6 @@
 
 package net.mcreator.blockly;
 
-import freemarker.core.Environment;
-import freemarker.template.*;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
@@ -91,14 +89,16 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final String getExtraTemplatesCode() throws TemplateGeneratorException {
 		StringBuilder code = new StringBuilder();
-		while (!usedTemplates.isEmpty() && templateGenerator != null) {
-			for (String template : usedTemplates.stream().toList()) {
-				generatedTemplates.add(template);
-				usedTemplates.remove(template);
-				Map<String, Object> dataModel = new HashMap<>();
-				dataModel.put("parent", parent);
-				dataModel.put("addTemplate", new ExtraTemplatesLinker(this));
-				code.append(templateGenerator.generateFromTemplate(template, dataModel));
+		if (templateGenerator != null) {
+			while (!usedTemplates.isEmpty()) {
+				for (String template : List.copyOf(usedTemplates)) {
+					generatedTemplates.add(template);
+					usedTemplates.remove(template);
+					Map<String, Object> dataModel = new HashMap<>();
+					dataModel.put("parent", parent);
+					dataModel.put("addTemplate", new ExtraTemplatesLinker(this));
+					code.append(templateGenerator.generateFromTemplate(template, dataModel));
+				}
 			}
 		}
 		return code.toString();
@@ -322,16 +322,6 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	 */
 	public Collection<String> getUsedBlocks() {
 		return Collections.unmodifiableSet(usedBlocks);
-	}
-
-	private record ExtraTemplatesLinker(BlocklyToCode master) implements TemplateDirectiveModel {
-
-		@Override public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
-				throws TemplateModelException {
-			if (params.get("file") instanceof TemplateScalarModel template)
-				master.addTemplate(template.getAsString());
-		}
-
 	}
 
 }
