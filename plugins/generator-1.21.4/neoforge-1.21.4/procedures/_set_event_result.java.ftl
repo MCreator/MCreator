@@ -19,8 +19,8 @@
 	<#elseif result == "DENY">if (event instanceof CropGrowEvent.Pre _event) _event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
 	</#if>
 <#elseif trigger == "entity_item_pickup">
-	<#if result == "DEFAULT">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(TriState.DEFAULT);
-	<#elseif result == "ALLOW">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(TriState.TRUE);
-	<#elseif result == "DENY">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(TriState.FALSE);
+	<#if result == "DEFAULT">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(net.neoforged.neoforge.common.util.TriState.DEFAULT);
+	<#elseif result == "ALLOW">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(net.neoforged.neoforge.common.util.TriState.TRUE);
+	<#elseif result == "DENY">if (event instanceof ItemEntityPickupEvent.Pre _event) _event.setCanPickup(net.neoforged.neoforge.common.util.TriState.FALSE);
 	</#if>
 </#if>
