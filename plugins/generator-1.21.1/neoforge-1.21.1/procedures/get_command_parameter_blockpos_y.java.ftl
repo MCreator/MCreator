@@ -1,10 +1,2 @@
-(new Object() {
-	public double getY() {
-		try {
-			return BlockPosArgument.getLoadedBlockPos(arguments, "${field$param}").getY();
-		} catch (CommandSyntaxException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-}.getY())
+<@addTemplate file="utils/command/get_command_parameter_blockpos.java.ftl"/>
+/*@int*/(commandParameterBlockPos(arguments, "${field$param}").getY())

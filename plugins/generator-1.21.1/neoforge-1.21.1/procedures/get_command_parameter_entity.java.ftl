@@ -1,10 +1,2 @@
-(new Object() {
-	public Entity getEntity() {
-		try {
-			return EntityArgument.getEntity(arguments, "${field$param}");
-		} catch (CommandSyntaxException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-}.getEntity())
+<@addTemplate file="utils/command/get_command_parameter_entity.java.ftl"/>
+(commandParameterEntity(arguments, "${field$param}"))
