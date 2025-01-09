@@ -1,0 +1,1 @@
+/*@ItemStack*/ItemStack.EMPTY

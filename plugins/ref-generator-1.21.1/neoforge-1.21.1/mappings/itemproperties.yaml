@@ -1,0 +1,7 @@
+_mcreator_map_template: "@modid:@name"
+damaged: damaged
+damage: damage
+lefthanded: lefthanded
+cooldown: cooldown
+custom_model_data: custom_model_data
+trim_type: trim_type

@@ -1,0 +1,60 @@
+templates:
+  - template: dimension/dimension.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
+    condition: hasEffectsOrDimensionTriggers()
+  - template: dimension/teleporter.java.ftl
+    condition: enablePortal
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"
+  - template: dimension/portalshape.java.ftl
+    condition: enablePortal
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMEPortalShape.java"
+  - template: dimension/blockportal.java.ftl
+    condition: enablePortal
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
+  - template: dimension/portaltrigger.java.ftl
+    condition: hasIgniter()
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+
+  - template: dimension/dimension_type.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/dimension_type/@registryname.json"
+  - template: dimension/dimension_overworld.json.ftl # loaded from datapack generator
+    writer: json
+    condition: "worldGenType %= Normal world gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_nether.json.ftl # loaded from datapack generator
+    writer: json
+    condition: "worldGenType %= Nether like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_end.json.ftl # loaded from datapack generator
+    writer: json
+    condition: "worldGenType %= End like gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
+
+  - template: json/dimension_portal.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname_portal.json"
+    condition: enablePortal
+  - template: json/dimension_portal_ew.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ew.json"
+    condition: enablePortal
+  - template: json/dimension_portal_ns.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ns.json"
+    condition: enablePortal
+  - template: json/item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+    condition: hasIgniter()
+
+tags:
+  - tag: BLOCKS:minecraft:overworld_carver_replaceables
+    entryprovider: data.getWorldgenBlocks()
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: igniterName
+    condition: hasIgniter()
+  - fromlist: data.getFixedSpecialInformation()
+    key: item.@modid.@registryname.description_@item_index
