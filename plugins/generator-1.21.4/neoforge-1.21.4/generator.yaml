@@ -5,10 +5,10 @@ buildfileversion: 21.4.49-beta
 import:
   - datapack-1.21.4
 
-java_models:
-  key: mojmap-1.21.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
-  requested_key_words: [ModelPart, ~ModelRenderer]
+#java_models:
+#  key: mojmap-1.21.x
+#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
+#  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
@@ -32,6 +32,7 @@ import_formatter:
     Attributes: net.minecraft.world.entity.ai.attributes
     Keyframe: net.minecraft.client.animation
     Potion: net.minecraft.world.item.alchemy
+    AttachmentType: net.neoforged.neoforge.attachment
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -73,9 +74,9 @@ base_templates:
   - template: modbase/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-#  - template: modbase/variableslist.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-#    condition: hasVariables()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
 #  - template: elementinits/tabs.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
 #    condition: hasItemsInTabs()
