@@ -1,9 +1,2 @@
-(new Object() {
-	public String getMessage() {
-		try {
-			return MessageArgument.getMessage(arguments, "${field$param}").getString();
-		} catch (CommandSyntaxException ignored) {
-			return "";
-		}
-	}
-}).getMessage()
+<@addTemplate file="utils/command/get_command_parameter_message.java.ftl"/>
+(commandParameterMessage(arguments, "${field$param}"))

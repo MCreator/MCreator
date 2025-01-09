@@ -77,6 +77,7 @@ import java.util.Locale;
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
 			additionalData.put("argsblocks", blocklyToJava.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJava.getExtraTemplatesCode());
 		};
 	}
 
