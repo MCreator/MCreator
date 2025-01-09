@@ -208,6 +208,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	${extra_templates_code}
+
 	<#if !data.doesDespawnWhenIdle>
 	@Override public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return false;

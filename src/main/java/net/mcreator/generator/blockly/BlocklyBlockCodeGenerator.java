@@ -18,10 +18,7 @@
 
 package net.mcreator.generator.blockly;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
-import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.*;
 import net.mcreator.blockly.data.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.TemplateGenerator;
@@ -447,6 +444,7 @@ public class BlocklyBlockCodeGenerator {
 
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
+			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);

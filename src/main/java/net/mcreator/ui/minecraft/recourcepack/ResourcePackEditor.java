@@ -433,6 +433,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 
 		model.setRoot(root);
+		model.refilter();
 
 		if (initial) {
 			TreeUtils.expandMatchingNodesRecursively(tree, root, node -> {
