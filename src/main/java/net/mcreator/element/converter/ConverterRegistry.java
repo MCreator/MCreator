@@ -54,6 +54,7 @@ import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 import net.mcreator.element.converter.v2024_4.*;
+import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 
 import java.util.HashMap;
 import java.util.List;
@@ -195,7 +196,8 @@ public class ConverterRegistry {
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
 			new FeatureDimensionRestrictionConverter(),
-			new FeatureBlockstateSelectorConverter()
+			new FeatureBlockstateSelectorConverter(),
+			new FeatureCarvingMaskRemover()
 		));
 		put(ModElementType.STRUCTURE, List.of(
 			new StructureToFeatureConverter(),
