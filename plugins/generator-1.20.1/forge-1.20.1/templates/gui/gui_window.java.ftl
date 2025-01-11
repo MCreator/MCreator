@@ -146,7 +146,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.sprite}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-					<#if (component.getTextureWidth(w.getWorkspace()) >= component.getTextureHeight(w.getWorkspace()))>
+					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
 					<#else>
 						0, <@getSpriteByIndex component "height"/>
