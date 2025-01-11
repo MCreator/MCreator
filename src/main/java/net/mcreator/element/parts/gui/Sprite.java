@@ -69,7 +69,7 @@ public class Sprite extends GUIComponent {
 
 		if (spriteIndex.getName() == null) {
 			int index = spriteIndex.getFixedValue().intValue();
-			if (actualImage.getWidth(null) > actualImage.getHeight(null)) {
+			if (actualImage.getWidth(null) >= actualImage.getHeight(null)) {
 				r = new Rectangle(width * index, 0, width, height);
 			} else {
 				r = new Rectangle(0, height * index, width, height);
@@ -93,7 +93,7 @@ public class Sprite extends GUIComponent {
 		int width = getImage(workspace).getWidth(null);
 		int height = getImage(workspace).getHeight(null);
 
-		return Math.max(1, width > height ? width / spritesCount : width);
+		return Math.max(1, width >= height ? width / spritesCount : width);
 	}
 
 	@Override public int getHeight(Workspace workspace) {
