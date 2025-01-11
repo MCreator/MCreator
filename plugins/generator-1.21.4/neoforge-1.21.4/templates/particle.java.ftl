@@ -101,7 +101,7 @@ package ${package}.client.particle;
 	</#if>
 
 	@Override public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
+		return ParticleRenderType.PARTICLE_SHEET_<#if data.renderType == "LIT">OPAQUE<#else>${data.renderType}</#if>;
 	}
 
 	<#if hasProcedure(data.scale)>
