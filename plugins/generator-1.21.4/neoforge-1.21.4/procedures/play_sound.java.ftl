@@ -4,11 +4,11 @@
 if (world instanceof Level _level) {
 	if (!_level.isClientSide()) {
 		_level.playSound(null, ${toBlockPos(input$x,input$y,input$z)},
-			BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${sound}")),
+			BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${sound}")),
 			SoundSource.${generator.map(field$soundcategory!"neutral", "soundcategories")}, ${opt.toFloat(input$level)}, ${opt.toFloat(input$pitch)});
 	} else {
 		_level.playLocalSound(${input$x}, ${input$y}, ${input$z},
-			BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${sound}")),
+			BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${sound}")),
 			SoundSource.${generator.map(field$soundcategory!"neutral", "soundcategories")}, ${opt.toFloat(input$level)}, ${opt.toFloat(input$pitch)}, false);
 	}
 }
