@@ -100,7 +100,7 @@ public class Sprite extends GUIComponent {
 		int width = getImage(workspace).getWidth(null);
 		int height = getImage(workspace).getHeight(null);
 
-		return Math.max(1, width < height ? height / spritesCount : height);
+		return Math.max(1, width <= height ? height / spritesCount : height);
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {
