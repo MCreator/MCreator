@@ -1585,6 +1585,7 @@ public class TestWorkspaceDataProvider {
 			particle.texture = new TextureHolder(modElement.getWorkspace(), "particle1");
 			particle.width = 2.3;
 			particle.frameDuration = 2;
+			particle.emissiveRendering = _true;
 			particle.height = 1.38;
 			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.gravity = 12.3;
