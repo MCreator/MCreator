@@ -29,10 +29,10 @@ public class ParticleLitRemover implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Particle particle = (Particle) input;
-		String renderType = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("renderType")
-				.getAsString();
-		if (renderType.equals("LIT"))
+		if (particle.renderType.equals("LIT")) {
+			particle.renderType = "OPAQUE";
 			particle.emissiveRendering = true;
+		}
 		return particle;
 	}
 
