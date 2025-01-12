@@ -2,7 +2,7 @@
 <#assign entity = generator.map(field$entity, "entities", 1)!"null">
 <#if entity != "null">
 if (world instanceof ServerLevel _level) {
-	Entity entityToSpawn = ${entity}.spawn(_level, ${toBlockPos(input$x,input$y,input$z)}, MobSpawnType.MOB_SUMMONED);
+	Entity entityToSpawn = ${entity}.spawn(_level, ${toBlockPos(input$x,input$y,input$z)}, EntitySpawnReason.MOB_SUMMONED);
 	if (entityToSpawn != null) {
 		<#if input$yaw != "/*@int*/0">
 			entityToSpawn.setYRot(${opt.toFloat(input$yaw)});
