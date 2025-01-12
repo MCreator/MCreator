@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package net.mcreator.element.converter.v2025_1;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.Biome;
 import net.mcreator.element.types.Particle;
 import net.mcreator.workspace.Workspace;
 
@@ -31,12 +29,14 @@ public class ParticleLitRemover implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Particle particle = (Particle) input;
-		particle.emissiveRendering = particle.renderType.equals("LIT");
+		String renderType = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("renderType")
+				.getAsString();
+		if (renderType.equals("LIT"))
+			particle.emissiveRendering = true;
 		return particle;
 	}
 
 	@Override public int getVersionConvertingTo() {
 		return 75;
 	}
-
 }

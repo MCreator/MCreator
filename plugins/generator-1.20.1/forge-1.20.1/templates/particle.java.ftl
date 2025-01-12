@@ -94,14 +94,14 @@ package ${package}.client.particle;
 		</#if>
 	}
 
-	<#if data.renderType == "LIT">
+	<#if data.emissiveRendering>
 	@Override public int getLightColor(float partialTick) {
 		return 15728880;
 	}
 	</#if>
 
 	@Override public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
+		return ParticleRenderType.PARTICLE_SHEET_<#if data.emissiveRendering>LIT<#else>${data.renderType}</#if>;
 	}
 
 	<#if hasProcedure(data.scale)>
