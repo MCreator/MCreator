@@ -64,12 +64,12 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
-			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
+			@Override public void applyInstantenousEffect(ServerLevel level, Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
 					"z": "entity.getZ()",
-					"world": "entity.level()",
+					"world": "level",
 					"entity": "entity",
 					"amplifier": "amplifier"
 				}/>
@@ -99,16 +99,16 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 	</#if>
 
 	<#if hasProcedure(data.onActiveTick)>
-		@Override public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+		@Override public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
 			<@procedureCode data.onActiveTick, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-				"world": "entity.level()",
+				"world": "level",
 				"entity": "entity",
 				"amplifier": "amplifier"
 			}/>
-			return super.applyEffectTick(entity, amplifier);
+			return super.applyEffectTick(level, entity, amplifier);
 		}
 	</#if>
 
