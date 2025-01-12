@@ -1,6 +1,25 @@
 templates:
   - template: armor.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/armor_equipment.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/equipment/@registryname.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    variables: "sufix=_helmet"
+    name: "@MODASSETSROOT/items/@registryname_helmet.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    variables: "sufix=_chestplate"
+    name: "@MODASSETSROOT/items/@registryname_chestplate.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    variables: "sufix=_leggings"
+    name: "@MODASSETSROOT/items/@registryname_leggings.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    variables: "sufix=_boots"
+    name: "@MODASSETSROOT/items/@registryname_boots.json"
 
 # Helmet item model
   - template: json/item.json.ftl
@@ -135,6 +154,8 @@ tags:
   - tag: ITEMS:minecraft:foot_armor
     condition: enableBoots
     entry: "CUSTOM:@NAME.boots"
+  - tag: ITEMS:@modid:@registryname_repair_items
+    entryprovider: data.getRepairItemsAsStringList()
 
 localizationkeys:
   - key: item.@modid.@registryname_helmet
