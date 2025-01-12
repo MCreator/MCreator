@@ -5,11 +5,6 @@ buildfileversion: 21.4.49-beta
 import:
   - datapack-1.21.4
 
-#java_models:
-#  key: mojmap-1.21.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
-
 # gradle task definitions
 gradle:
   run_client: runClient
@@ -86,21 +81,26 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
       - "${w.hasElementsOfType('feature')}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
 #  - template: modbase/enumextensions.json.ftl
 #    writer: json
 #    name: "@RESROOT/META-INF/enumextensions.json"
 #    condition_any:
 #      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+java_models:
+  key: mojmap-1.21.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 #  - task: copy_model_animations
 #    type: JAVA_viatemplate
 #    cleanupBeforeCopy: true

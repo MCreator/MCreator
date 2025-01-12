@@ -38,6 +38,18 @@ ${model
     ?replace("float\\s+red,\\s+float\\s+green,\\s+float\\s+blue,\\s+float\\s+alpha", "int rgb", "r")
     ?replace("red,\\s+green,\\s+blue,\\s+alpha", "rgb", "r")
     ?replace("void setupAnim(Entity ", "void setupAnim(T ")
+    ?replace("@Override", "")
+    ?replace("public\\s+void\\s+renderToBuffer\\((.*?)}", "", "rms")
+    ?replace("<T\\s+extends\\s+(.*?)>", "", "r")
+    ?replace("<T>", "<LivingEntityRenderState>", "")
+    ?replace("root\\)\\s+\\{", "root) {super(root);", "r")
+    ?replace("void setupAnim\\(T(.*?)\\{", "void setupAnim(LivingEntityRenderState state) {
+            float limbSwing = state.walkAnimationPos;
+            float limbSwingAmount = state.walkAnimationSpeed;
+            float ageInTicks = state.ageInTicks;
+            float netHeadYaw = state.yRot;
+            float headPitch = state.xRot;
+    ", "rms")
 }
 
 <#-- @formatter:on -->

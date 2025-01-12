@@ -35,7 +35,7 @@
 
 package ${package}.item;
 
-import java.util.function.Consumer;
+import java.util.Map;import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public abstract class ${name}Item extends ArmorItem {
@@ -66,9 +66,14 @@ import net.minecraft.client.model.Model;
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
 			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+				ModelPart head = new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart};
+				head.setInitialPose(PartPose.rotation(0, (float) (Math.PI), 0));
+				head.resetPose();
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-					"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
-					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+					"head", new ModelPart(Collections.emptyList(), Map.of(
+						"head", head,
+						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap())
+					)),
 					"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -96,8 +101,9 @@ import net.minecraft.client.model.Model;
 					"body", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.bodyModelPart},
 					"left_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartL},
 					"right_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartR},
-					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
-					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+					"head", new ModelPart(Collections.emptyList(), Map.of(
+						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap())
+					)),
 					"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
 				)));
@@ -121,8 +127,9 @@ import net.minecraft.client.model.Model;
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"left_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartL},
 					"right_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartR},
-					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
-					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+					"head", new ModelPart(Collections.emptyList(), Map.of(
+						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap())
+					)),
 					"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
@@ -147,8 +154,9 @@ import net.minecraft.client.model.Model;
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"left_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartL},
 					"right_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartR},
-					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
-					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
+					"head", new ModelPart(Collections.emptyList(), Map.of(
+						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap())
+					)),
 					"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
