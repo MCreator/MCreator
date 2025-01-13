@@ -101,7 +101,7 @@ package ${package}.client.particle;
 	</#if>
 
 	@Override public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_<#if data.emissiveRendering>LIT<#else>${data.renderType}</#if>;
+		return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
 	}
 
 	<#if hasProcedure(data.scale)>
