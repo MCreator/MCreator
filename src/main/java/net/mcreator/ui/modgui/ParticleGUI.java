@@ -158,8 +158,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2,
-						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10), 15,
-				15)));
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 2), 15,
+				5)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
