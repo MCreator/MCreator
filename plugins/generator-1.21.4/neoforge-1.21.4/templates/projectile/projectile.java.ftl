@@ -159,7 +159,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			}/>
 		</#if>
 
-		if (this.inGround)
+		if (this.isInGround())
 			this.discard();
 	}
 
@@ -184,8 +184,9 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		world.addFreshEntity(entityarrow);
 
 		<#if data.actionSound.toString()?has_content>
-		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(ResourceLocation.parse("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+				BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.actionSound}")),
+				SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 		</#if>
 
 		return entityarrow;
@@ -208,8 +209,9 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entity.level().addFreshEntity(entityarrow);
 
 		<#if data.actionSound.toString()?has_content>
-		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(ResourceLocation.parse("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
+		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+				BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.actionSound}")),
+				SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
 		</#if>
 
 		return entityarrow;

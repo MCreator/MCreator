@@ -33,7 +33,7 @@ package ${package}.client.renderer;
 
 import com.mojang.math.Axis;
 
-public class ${name}Renderer extends EntityRenderer<${name}Entity> {
+public class ${name}Renderer extends EntityRenderer<${name}Entity, LivingEntityRenderState> {
 
 	private static final ResourceLocation texture = ResourceLocation.parse("${modid}:textures/entities/${data.customModelTexture}");
 
@@ -44,19 +44,26 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 		model = new ${data.entityModel}(context.bakeLayer(${data.entityModel}.LAYER_LOCATION));
 	}
 
-	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
-		VertexConsumer vb = bufferIn.getBuffer(RenderType.entityCutout(this.getTextureLocation(entityIn)));
+	@Override public void render(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+		VertexConsumer vb = bufferIn.getBuffer(RenderType.entityCutout(texture));
 		poseStack.pushPose();
-		poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90));
-		poseStack.mulPose(Axis.ZP.rotationDegrees(90 + Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
+		poseStack.mulPose(Axis.ZP.rotationDegrees(90 + state.xRot));
+		model.setupAnim(state);
 		model.renderToBuffer(poseStack, vb, packedLightIn, OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 
-		super.render(entityIn, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
+		super.render(state, poseStack, bufferIn, packedLightIn);
 	}
 
-	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
-		return texture;
+	@Override public LivingEntityRenderState createRenderState() {
+		return new LivingEntityRenderState();
+	}
+
+	@Override public void extractRenderState(${name}Entity entity, LivingEntityRenderState state, float partialTicks) {
+		super.extractRenderState(entity, state, partialTicks);
+		state.xRot = entity.getXRot(partialTicks);
+		state.yRot = entity.getYRot(partialTicks);
 	}
 
 }
