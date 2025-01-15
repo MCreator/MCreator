@@ -66,7 +66,6 @@ DisconnectedRealms: DisconnectedRealmsScreen
 DownloadTerrain: ReceivingLevelScreen
 EditGamerules: EditGameRulesScreen
 EditWorld: EditWorldScreen
-EffectRenderingInventory: EffectRenderingInventoryScreen
 Error: ErrorScreen
 Experiments: ExperimentsScreen
 FlatPresets: PresetFlatWorldScreen
@@ -110,3 +109,4 @@ Win: WinScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen
+AbstractRecipeBookScreen: AbstractRecipeBookScreen
