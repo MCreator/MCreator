@@ -47,6 +47,9 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: hasIgniter()
+  - template: json/model_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/items/@registryname.json"
 
 tags:
   - tag: BLOCKS:minecraft:overworld_carver_replaceables

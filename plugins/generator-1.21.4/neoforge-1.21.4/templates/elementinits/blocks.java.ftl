@@ -63,10 +63,10 @@ public class ${JavaModName}Blocks {
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
             public static final DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
-				REGISTRY.register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
+				REGISTRY.registerBlock("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new, BlockBehaviour.Properties.of());
 		<#else>
 			public static final DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+				REGISTRY.registerBlock("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new, BlockBehaviour.Properties.of());
 		</#if>
 	</#list>
 

@@ -36,8 +36,8 @@ package ${package}.item;
 
 public class ${name}Item extends Item {
 
-	public ${name}Item() {
-		super(new Item.Properties().rarity(Rarity.${data.igniterRarity}).durability(64));
+	public ${name}Item(Item.Properties properties) {
+		super(properties.rarity(Rarity.${data.igniterRarity}).durability(64));
 	}
 
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>

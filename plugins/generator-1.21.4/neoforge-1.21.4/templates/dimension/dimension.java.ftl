@@ -48,7 +48,7 @@ public class ${name}Dimension {
 			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(
 				<#if data.hasClouds>${data.cloudHeight}f<#else>Float.NaN</#if>,
 				true,
-				DimensionSpecialEffects.SkyType.${data.skyType},
+				DimensionSpecialEffects.SkyType.${data.skyType?replace("NORMAL", "OVERWORLD")},
 				false,
 				false
 			) {

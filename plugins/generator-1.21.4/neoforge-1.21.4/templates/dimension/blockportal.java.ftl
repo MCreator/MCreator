@@ -43,12 +43,12 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	public static void portalSpawn(Level world, BlockPos pos) {
 		Optional<${name}PortalShape> optional = ${name}PortalShape.findEmptyPortalShape(world, pos, Direction.Axis.X);
 		if (optional.isPresent()) {
-			optional.get().createPortalBlocks();
+			optional.get().createPortalBlocks(world);
 		}
 	}
 
-	public ${name}PortalBlock() {
-		super(BlockBehaviour.Properties.of().noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
+	public ${name}PortalBlock(BlockBehaviour.Properties properties) {
+		super(properties.noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
 	}
 
@@ -56,8 +56,8 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		return new ${name}Teleporter(level);
 	}
 
-	@Override ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
-				   .replace("new PortalShape(", "new "+name+"PortalShape(")}
+	@Override ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "LevelReader", "ScheduledTickAccess", "BlockPos", "Direction", "BlockPos", "BlockState", "RandomSource")
+				   .replace("PortalShape", name+"PortalShape")}
 
 	@Override @Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getPortalDestination", "ServerLevel", "Entity", "BlockPos")
 							 .replace("Level.NETHER", "ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(\"${modid}:${registryname}\"))")}
@@ -66,11 +66,11 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 				   .replace("p_350564_.getPortalForcer()", "getTeleporter(p_350564_)")}
 
 	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getDimensionTransitionFromExit",
-			"Entity", "BlockPos", "BlockUtil.FoundRectangle", "ServerLevel", "DimensionTransition.PostDimensionTransition")}
+			"Entity", "BlockPos", "BlockUtil.FoundRectangle", "ServerLevel", "TeleportTransition.PostTeleportTransition")}
 
 	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "createDimensionTransition",
-			"ServerLevel", "BlockUtil.FoundRectangle", "Direction.Axis", "Vec3", "Entity", "Vec3", "float", "float", "DimensionTransition.PostDimensionTransition")
-				.replace("PortalShape.", name+"PortalShape.")}
+			"ServerLevel", "BlockUtil.FoundRectangle", "Direction.Axis", "Vec3", "Entity", "TeleportTransition.PostTeleportTransition")
+				.replace("PortalShape", name+"PortalShape")}
 
 	@Override public int getPortalTransitionTime(ServerLevel world, Entity entity) {
 		return 0;
@@ -115,9 +115,9 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
-			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
-					random.nextFloat() * 0.4f + 0.8f);
+			world.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+					BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse(("${data.portalSound}"))), SoundSource.BLOCKS, 0.5f,
+					random.nextFloat() * 0.4f + 0.8f, false);
         </#if>
 	}
 
