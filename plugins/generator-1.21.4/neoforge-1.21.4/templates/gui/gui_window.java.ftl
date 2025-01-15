@@ -133,12 +133,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-			guiGraphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+			guiGraphics.blit(RenderType::guiTextured, texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
+				guiGraphics.blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -147,7 +147,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
+				guiGraphics.blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
@@ -275,7 +275,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
-					guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+					guiGraphics.blit(RenderType::guiTextured, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
 
