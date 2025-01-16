@@ -1,0 +1,1 @@
+If this option is selected, this potion effect will be cured after consuming a honey bottle.
