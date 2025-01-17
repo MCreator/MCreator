@@ -38,8 +38,9 @@ package ${package}.item;
 <#compress>
 public class ${name}Item extends Item {
 
-	public ${name}Item() {
-		super(new Item.Properties()
+	public ${name}Item(Item.Properties properties) {
+		super(properties
+				.rarity(Rarity.${data.rarity})
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
@@ -50,7 +51,6 @@ public class ${name}Item extends Item {
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
-				.rarity(Rarity.${data.rarity})
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
 					.nutrition(${data.nutritionalValue})
@@ -69,26 +69,25 @@ public class ${name}Item extends Item {
 				<#if data.isMusicDisc>
 				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
 				</#if>
+				<#if data.enchantability != 0>
+				.enchantable(${data.enchantability})
+				</#if>
 		);
 	}
 
 	<#if data.hasNonDefaultAnimation()>
-	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.${data.animation?upper_case};
+	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
+		return ItemUseAnimation.${data.animation?upper_case};
 	}
 	</#if>
 
 	<#if data.stayInGridWhenCrafting>
-		@Override public boolean hasCraftingRemainingItem(ItemStack stack) {
-			return true;
-		}
-
 		<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
 			}
 		<#elseif data.damageOnCrafting && data.damageCount != 0>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
 				retval.setDamageValue(itemstack.getDamageValue() + 1);
 				if(retval.getDamageValue() >= retval.getMaxDamage()) {
@@ -97,26 +96,20 @@ public class ${name}Item extends Item {
 				return retval;
 			}
 
-			@Override public boolean isRepairable(ItemStack itemstack) {
+			@Override public boolean isCombineRepairable(ItemStack itemstack) {
 				return false;
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
 
 			<#if data.damageCount != 0>
-			@Override public boolean isRepairable(ItemStack itemstack) {
+			@Override public boolean isCombineRepairable(ItemStack itemstack) {
 				return false;
 			}
 			</#if>
 		</#if>
-	</#if>
-
-	<#if data.enchantability != 0>
-	@Override public int getEnchantmentValue() {
-		return ${data.enchantability};
-	}
 	</#if>
 
 	<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
@@ -143,11 +136,11 @@ public class ${name}Item extends Item {
 
 	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>
-	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+	@Override public InteractionResult use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
-		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
+		InteractionResult ar = InteractionResult.FAIL;
 		<#else>
-		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+		InteractionResult ar = super.use(world, entity, hand);
 		</#if>
 
 		<#if data.enableRanged>
@@ -162,7 +155,7 @@ public class ${name}Item extends Item {
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+				ar = InteractionResult.SUCCESS;
 				entity.startUsingItem(hand);
 			}
 		<#elseif shouldExplicitlyCallStartUsing>
@@ -247,7 +240,7 @@ public class ${name}Item extends Item {
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
-		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+		@Override public boolean releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 			<#if hasProcedure(data.onStoppedUsing)>
 				<@procedureCode data.onStoppedUsing, {
 					"x": "entity.getX()",
@@ -264,11 +257,12 @@ public class ${name}Item extends Item {
 					<#if data.rangedItemChargesPower>
 						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack, player) - time);
 						if (pullingPower < 0.1)
-							return;
+							return false;
 					</#if>
 					<@arrowShootCode/>
 				}
 			</#if>
+			return super.releaseUsing(itemstack, world, entity, time);
 		}
 	</#if>
 
@@ -318,8 +312,9 @@ public class ${name}Item extends Item {
 			${projectileClass} projectile = new ${projectileClass}(world, entity, arrowPickupStack, itemstack);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.rangedItemChargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
-			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+				BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS,
+				1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
 		<#if data.damageCount != 0>
