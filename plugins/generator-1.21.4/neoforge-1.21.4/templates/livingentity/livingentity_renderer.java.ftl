@@ -35,93 +35,104 @@
 package ${package}.client.renderer;
 
 <#assign humanoid = false>
-<#assign model = "HumanoidModel">
+<#assign model = "HumanoidModel<HumanoidRenderState>">
+<#assign renderState = "HumanoidRenderState">
 
 <#if data.mobModelName == "Chicken">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.CHICKEN)">
 	<#assign model = "ChickenModel">
+	<#assign renderState = "ChickenRenderState">
 <#elseif data.mobModelName == "Cod">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.COD)">
 	<#assign model = "CodModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Cow">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.COW)">
 	<#assign model = "CowModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Creeper">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.CREEPER)">
 	<#assign model = "CreeperModel">
+	<#assign renderState = "CreeperRenderState">
 <#elseif data.mobModelName == "Ghast">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.GHAST)">
 	<#assign model = "GhastModel">
+	<#assign renderState = "GhastRenderState">
 <#elseif data.mobModelName == "Ocelot">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.OCELOT)">
 	<#assign model = "OcelotModel">
+	<#assign renderState = "FelineRenderState">
 <#elseif data.mobModelName == "Pig">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.PIG)">
 	<#assign model = "PigModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Piglin">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.PIGLIN)">
 	<#assign model = "PiglinModel">
+	<#assign renderState = "PiglinRenderState">
 <#elseif data.mobModelName == "Slime">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.SLIME)">
 	<#assign model = "SlimeModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Salmon">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.SALMON)">
 	<#assign model = "SalmonModel">
+	<#assign renderState = "SalmonRenderState">
 <#elseif data.mobModelName == "Spider">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.SPIDER)">
 	<#assign model = "SpiderModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Villager">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.VILLAGER)">
 	<#assign model = "VillagerModel">
+	<#assign renderState = "VillagerRenderState">
 <#elseif data.mobModelName == "Silverfish">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.SILVERFISH)">
 	<#assign model = "SilverfishModel">
+	<#assign renderState = "LivingEntityRenderState">
 <#elseif data.mobModelName == "Witch">
 	<#assign rootPart = "context.bakeLayer(ModelLayers.WITCH)">
 	<#assign model = "WitchModel">
+	<#assign renderState = "WitchRenderState">
 <#elseif !data.isBuiltInModel()>
 	<#assign rootPart = "context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)">
 	<#assign model = data.mobModelName>
+	<#assign renderState = "LivingEntityRenderState">
 <#else>
 	<#assign rootPart = "context.bakeLayer(ModelLayers.PLAYER)">
-	<#assign model = "HumanoidModel">
+	<#assign model = "HumanoidModel<HumanoidRenderState>">
+	<#assign renderState = "HumanoidRenderState">
 	<#assign humanoid = true>
 </#if>
 
+<#assign stateForAnimations = renderState>
+<#if data.mobModelName == "Slime" || data.mobModelName == "Silverfish"> <#-- special handling for silverfish and slime -->
+	<#assign stateForAnimations = "EntityRenderState">
+</#if>
+
 <#compress>
-public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, LivingEntityRenderState, ${model}> {
+public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${renderState}, ${model}> {
 
 	private ${name}Entity entity = null;
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		<#if data.animations?has_content>
-		super(context, new ${model}(${rootPart}) {
-			@Override public void setupAnim(LivingEntityRenderState state) {
-				<#if humanoid>
-					super.setupAnim(state);
-					<@setupAnim/>
-				<#else>
-					<@setupAnim/>
-					super.setupAnim(state);
-				</#if>
-			}
-		}, ${data.modelShadowSize}f);
+		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
 		<#else>
 		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
 		</#if>
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
-				new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
+						new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
 		</#if>
 
 		<#list data.modelLayers as layer>
-		this.addLayer(new RenderLayer<LivingEntityRenderState, ${model}>(this) {
+		this.addLayer(new RenderLayer<>(this) {
 			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
 
 			<#compress>
-			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light,
-					LivingEntityRenderState state, float headYaw, float headPitch) {
+			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, ${renderState} state, float headYaw, float headPitch) {
 				<#if hasProcedure(layer.condition)>
 				Level world = entity.level();
 				double x = entity.getX();
@@ -133,14 +144,12 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.<#if layer.glow>eyes<#else>entityCutoutNoCull</#if>(LAYER_TEXTURE));
 				<#if layer.model != "Default">
 					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					this.getParentModel().copyPropertiesTo(model);
-					model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 					model.setupAnim(state);
 					model.renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
 				<#else>
 					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
@@ -150,21 +159,26 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#list>
 	}
 
-	@Override public LivingEntityRenderState createRenderState() {
-		return new LivingEntityRenderState();
+	@Override public ${renderState} createRenderState() {
+		return new ${renderState}();
 	}
 
-	@Override public void extractRenderState(${name}Entity entity, LivingEntityRenderState state, float partialTicks) {
+	@Override public void extractRenderState(${name}Entity entity, ${renderState} state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
 		this.entity = entity;
+		<#if data.animations?has_content>
+		if (this.model instanceof AnimatedModel) {
+			((AnimatedModel) this.model).setEntity(entity);
+		}
+		</#if>
 	}
 
-	@Override public ResourceLocation getTextureLocation(LivingEntityRenderState state) {
+	@Override public ResourceLocation getTextureLocation(${renderState} state) {
 		return ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
 	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
-	@Override protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+	@Override protected void scale(${renderState} state, PoseStack poseStack) {
 		<#if hasProcedure(data.visualScale)>
 			Level world = entity.level();
 			double x = entity.getX();
@@ -182,7 +196,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>
-	@Override protected boolean isBodyVisible(LivingEntityRenderState state) {
+	@Override protected boolean isBodyVisible(${renderState} state) {
 		<#if hasProcedure(data.transparentModelCondition)>
 		Level world = entity.level();
 		double x = entity.getX();
@@ -194,7 +208,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 	<#if data.isShakingCondition?? && (hasProcedure(data.isShakingCondition) || data.isShakingCondition.getFixedValue())>
-	@Override protected boolean isShaking(LivingEntityRenderState state) {
+	@Override protected boolean isShaking(${renderState} state) {
 		<#if hasProcedure(data.isShakingCondition)>
 		Level world = entity.level();
 		double x = entity.getX();
@@ -202,6 +216,39 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.isShakingCondition/>;
+	}
+	</#if>
+
+	<#if data.animations?has_content>
+	private static final class AnimatedModel extends ${model} {
+		private ${name}Entity entity = null;
+
+		public AnimatedModel(ModelPart root) {
+			super(root);
+		}
+
+		public void setEntity(${name}Entity entity) {
+			this.entity = entity;
+		}
+
+		<#if stateForAnimations == "EntityRenderState"><#-- special handling for silverfish and slime -->
+		@Override public void setupAnim(EntityRenderState originalState) {
+			if (originalState instanceof LivingEntityRenderState state) {
+				<@setupAnim/>
+			}
+			super.setupAnim(originalState);
+		}
+		<#else>
+		@Override public void setupAnim(${stateForAnimations} state) {
+			<#if humanoid>
+				super.setupAnim(state);
+				<@setupAnim/>
+			<#else>
+				<@setupAnim/>
+				super.setupAnim(state);
+			</#if>
+		}
+		</#if>
 	}
 	</#if>
 
