@@ -235,38 +235,38 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if !data.mobDrop.isEmpty()>
     protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource source, boolean recentlyHitIn) {
         super.dropCustomDeathLoot(serverLevel, source, recentlyHitIn);
-        this.spawnAtLocation(${mappedMCItemToItemStackCode(data.mobDrop, 1)});
+        this.spawnAtLocation(serverLevel, ${mappedMCItemToItemStackCode(data.mobDrop, 1)});
    	}
 	</#if>
 
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.livingSound}"));
+		return BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.stepSound}")), 0.15f, 1);
+		this.playSound(BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
 	<#if data.hurtSound?has_content && data.hurtSound.getMappedValue()?has_content>
 	@Override public SoundEvent getHurtSound(DamageSource ds) {
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.hurtSound}"));
+		return BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.hurtSound}"));
 	}
 	</#if>
 
 	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.deathSound}"));
+		return BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.deathSound}"));
 	}
 	</#if>
 
 	<#if data.mobBehaviourType == "Raider">
 	@Override public SoundEvent getCelebrateSound() {
 		<#if data.raidCelebrationSound?has_content && data.raidCelebrationSound.getMappedValue()?has_content>
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.raidCelebrationSound}"));
+		return BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.raidCelebrationSound}"));
 		<#else>
 		return SoundEvents.EMPTY;
 		</#if>
@@ -311,7 +311,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
 		|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
 		|| data.immuneToDragonBreath || data.immuneToWither>
-	@Override public boolean hurt(DamageSource damagesource, float amount) {
+	@Override public boolean hurtServer(ServerLevel level, DamageSource damagesource, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
 			double x = this.getX();
 			double y = this.getY();
@@ -380,7 +380,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			if (damagesource.is(DamageTypes.WITHER) || damagesource.is(DamageTypes.WITHER_SKULL))
 				return false;
 		</#if>
-		return super.hurt(damagesource, amount);
+		return super.hurtServer(level, damagesource, amount);
 	}
     </#if>
 
@@ -413,7 +413,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if hasProcedure(data.onInitialSpawn)>
-	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
+	@Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData livingdata) {
 		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata);
 		<@procedureCode data.onInitialSpawn, {
 			"x": "this.getX()",
@@ -439,12 +439,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return combined;
 	}
 
-   	@Override protected void dropEquipment() {
-		super.dropEquipment();
+   	@Override protected void dropEquipment(ServerLevel serverLevel) {
+		super.dropEquipment(serverLevel);
 		for (int i = 0; i < inventory.getSlots(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
 			if (!itemstack.isEmpty() && !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
-				this.spawnAtLocation(itemstack);
+				this.spawnAtLocation(serverLevel, itemstack);
 			}
 		}
 	}
@@ -489,7 +489,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || data.guiBoundTo?has_content>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
-		InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+		InteractionResult retval = InteractionResult.SUCCESS;
 
 		<#if data.guiBoundTo?has_content>
 			<#if data.ridable>
@@ -517,7 +517,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					});
 				}
 			<#if data.ridable>
-					return InteractionResult.sidedSuccess(this.level().isClientSide());
+					return InteractionResult.SUCCESS;
 				}
 			</#if>
 		</#if>
@@ -528,20 +528,20 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				retval = super.mobInteract(sourceentity, hand);
 			} else if (this.level().isClientSide()) {
 				retval = (this.isTame() && this.isOwnedBy(sourceentity) || this.isFood(itemstack))
-						? InteractionResult.sidedSuccess(this.level().isClientSide()) : InteractionResult.PASS;
+						? InteractionResult.SUCCESS : InteractionResult.PASS;
 			} else {
 				if (this.isTame()) {
 					if (this.isOwnedBy(sourceentity)) {
 						if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
-							FoodProperties foodproperties = itemstack.getFoodProperties(this);
+							FoodProperties foodproperties = itemstack.get(DataComponents.FOOD);
 							float nutrition = foodproperties != null ? (float) foodproperties.nutrition() : 1;
 							this.heal(nutrition);
-							retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+							retval = InteractionResult.SUCCESS;
 						} else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
 							this.heal(4);
-							retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+							retval = InteractionResult.SUCCESS;
 						} else {
 							retval = super.mobInteract(sourceentity, hand);
 						}
@@ -556,7 +556,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 
 					this.setPersistenceRequired();
-					retval = InteractionResult.sidedSuccess(this.level().isClientSide());
+					retval = InteractionResult.SUCCESS;
 				} else {
 					retval = super.mobInteract(sourceentity, hand);
 					if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME)
@@ -590,8 +590,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if hasProcedure(data.whenThisMobKillsAnother)>
-	@Override public void awardKillScore(Entity entity, int score, DamageSource damageSource) {
-		super.awardKillScore(entity, score, damageSource);
+	@Override public void awardKillScore(Entity entity, DamageSource damageSource) {
+		super.awardKillScore(entity, damageSource);
 		<@procedureCode data.whenThisMobKillsAnother, {
 			"x": "this.getX()",
 			"y": "this.getY()",
@@ -681,8 +681,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null);
+			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld, EntitySpawnReason.BREEDING);
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
 			return retval;
 		}
 
@@ -761,8 +761,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		this.bossInfo.removePlayer(player);
 	}
 
-	@Override public void customServerAiStep() {
-		super.customServerAiStep();
+	@Override public void customServerAiStep(ServerLevel serverLevel) {
+		super.customServerAiStep(serverLevel);
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 	</#if>
