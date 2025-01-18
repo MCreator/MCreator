@@ -39,8 +39,7 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
-<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
-	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
+<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
 <#if itemsWithInventory?size != 0>
@@ -121,41 +120,36 @@ public class ${JavaModName}Items {
 	}
 	</#if>
 
-	<#--
 	<#if hasItemsWithProperties>
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
-		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
-			event.enqueueWork(() -> {
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterRangeSelectItemModelPropertyEvent event) {
 			<#compress>
 			<#list items as item>
 				<#if item.getModElement().getTypeString() == "item">
 					<#list item.customProperties.entrySet() as property>
+					<#--
 					ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
 						ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
 						(itemStackToRender, clientWorld, entity, itemEntityId) ->
 							<#if hasProcedure(property.getValue())>
 								(float) <@procedureCode property.getValue(), {
-									"x": "entity != null ? entity.getX() : 0",
-									"y": "entity != null ? entity.getY() : 0",
-									"z": "entity != null ? entity.getZ() : 0",
-									"world": "entity != null ? entity.level() : clientWorld",
-									"entity": "entity",
-									"itemstack": "itemStackToRender"
+								"x": "entity != null ? entity.getX() : 0",
+								"y": "entity != null ? entity.getY() : 0",
+								"z": "entity != null ? entity.getZ() : 0",
+								"world": "entity != null ? entity.level() : clientWorld",
+								"entity": "entity",
+								"itemstack": "itemStackToRender"
 								}, false/>
-							<#else>0</#if>
+								<#else>0</#if>
 					);
+					-->
 					</#list>
-				<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
-					ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), ResourceLocation.parse("minecraft:blocking"),
-						ItemProperties.getProperty(new ItemStack(Items.SHIELD), ResourceLocation.parse("minecraft:blocking")));
 				</#if>
 			</#list>
 			</#compress>
-			});
 		}
 	}
 	</#if>
-	-->
 
 }
 
