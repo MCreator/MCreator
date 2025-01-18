@@ -46,7 +46,7 @@ this.goalSelector.addGoal(${cbi+1}, new Goal() {
 	@Override public void tick() {
 		LivingEntity livingentity = ${name}Entity.this.getTarget();
 		if (${name}Entity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
-			${name}Entity.this.doHurtTarget(livingentity);
+			${name}Entity.this.doHurtTarget(this.getServerLevel(livingentity), livingentity);
 		} else {
 			double d0 = ${name}Entity.this.distanceToSqr(livingentity);
 			if (d0 < ${field$radius}) {

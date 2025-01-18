@@ -84,11 +84,11 @@ base_templates:
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
-#  - template: modbase/enumextensions.json.ftl
-#    writer: json
-#    name: "@RESROOT/META-INF/enumextensions.json"
-#    condition_any:
-#      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+  - template: modbase/enumextensions.json.ftl
+    writer: json
+    name: "@RESROOT/META-INF/enumextensions.json"
+    condition_any:
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
 
 java_models:
   key: mojmap-1.21.x
@@ -101,11 +101,11 @@ sources_setup_tasks:
     cleanupBeforeCopy: true
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
-#  - task: copy_model_animations
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javaanimation.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
+  - task: copy_model_animations
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javaanimation.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
 tags:
   template: tags.json.ftl # loaded from datapack generator

@@ -70,8 +70,8 @@ public class ${JavaModName}Items {
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_spawn_egg", properties -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, properties), new Item.Properties());
+				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_spawn_egg",
+						properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties), new Item.Properties());
 		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
 				REGISTRY.registerItem("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new, new Item.Properties());
