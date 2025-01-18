@@ -66,8 +66,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 		workspace = TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random);
 
-		for (ModElementType<?> type : workspace.getGeneratorConfiguration().getGeneratorStats()
-				.getSupportedModElementTypes()) {
+		for (ModElementType<?> type : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(workspace.getGeneratorConfiguration())) {
 			TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
 				workspace.addModElement(e.getModElement());
 				workspace.getModElementManager().storeModElement(e);
@@ -130,10 +129,10 @@ import static org.junit.jupiter.api.Assertions.*;
 				.anyMatch(e -> e.contains("Examplepotioneffect")));
 
 		section = TextureType.ENTITY;
-		texture = workspace.getFolderManager().getTextureFile("entityTx1", section);
+		texture = workspace.getFolderManager().getTextureFile("entity_texture_1", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplelivingentity")));
-		texture = workspace.getFolderManager().getTextureFile("entityTx2", section);
+		texture = workspace.getFolderManager().getTextureFile("entity_texture_2", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplelivingentity")));
 
