@@ -88,8 +88,13 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.ATTRIBUTE);
 		retval.add(ModElementType.POTIONEFFECT);
 
+		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
+
+		// Remove METs not supported by the generator
+		retval.retainAll(supportedMETs);
+
 		// Add remaining types
-		retval.addAll(generatorConfiguration.getGeneratorStats().getSupportedModElementTypes());
+		retval.addAll(supportedMETs);
 		return retval;
 	}
 
