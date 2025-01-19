@@ -6728,7 +6728,7 @@
 - Items.PALE_OAK_HANGING_SIGN:
   readable_name: "Pale Oak Hanging Sign"
   type: item
-  texture: PALE_OAK_HANGING_SIGN
+  texture: PALE_OAK_HANGING_SIGN_ITEM
 
 - Items.CRIMSON_HANGING_SIGN:
   readable_name: "Crimson Hanging Sign"
