@@ -5,11 +5,6 @@ buildfileversion: 21.4.49-beta
 import:
   - datapack-1.21.4
 
-#java_models:
-#  key: mojmap-1.21.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
-
 # gradle task definitions
 gradle:
   run_client: runClient
@@ -43,13 +38,13 @@ mod_data_root: "@RESROOT/data/@modid"
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structure"
-#block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
-#screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
@@ -86,26 +81,31 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
       - "${w.hasElementsOfType('feature')}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
-#  - template: modbase/enumextensions.json.ftl
-#    writer: json
-#    name: "@RESROOT/META-INF/enumextensions.json"
-#    condition_any:
-#      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
+  - template: modbase/enumextensions.json.ftl
+    writer: json
+    name: "@RESROOT/META-INF/enumextensions.json"
+    condition_any:
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
-#  - task: copy_model_animations
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javaanimation.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
+java_models:
+  key: mojmap-1.21.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+  - task: copy_model_animations
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javaanimation.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
 tags:
   template: tags.json.ftl # loaded from datapack generator
@@ -120,10 +120,9 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-#  - task: copy_models
-#    type: OBJ_inlinetextures
-#    prefix: "@modid:block/"
-#    to: "@MODASSETSROOT/models/item"
-#  - task: copy_models
-#    type: JSON_noinlinetextures
-#    to: "@MODASSETSROOT/models/custom"
+  - task: copy_models
+    type: OBJ_referencetextures
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

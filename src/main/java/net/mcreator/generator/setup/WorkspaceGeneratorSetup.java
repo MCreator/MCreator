@@ -71,8 +71,7 @@ public class WorkspaceGeneratorSetup {
 		// attempt to delete AT files if Java (so outdated ATs are not applied during generator setup)
 		// they will be regenerated with next workspace build
 		if (newGenerator.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA) {
-			FileIO.deleteDir(
-					new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/accesstransformer.cfg"));
+			new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/accesstransformer.cfg").delete();
 		}
 
 		// delete generator base files
@@ -85,6 +84,13 @@ public class WorkspaceGeneratorSetup {
 				if (generatorFile.isFile())
 					generatorFile.delete();
 			}
+		}
+
+		if (newGenerator.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE) { // If switching to NeoForge, delete mods.toml (Minecraft Forge mod specification file)
+			new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/mods.toml").delete();
+			new File(workspace.getWorkspaceFolder(), "src/main/resources/mcmod.info").delete(); // also delete legacy mcmod.info used in early versions of Forge
+		} else if (newGenerator.getGeneratorFlavor() == GeneratorFlavor.FORGE) { // If switching to Minecraft Forge, delete neoforge.mods.toml (NeoForge mod specification file)
+			new File(workspace.getWorkspaceFolder(), "src/main/resources/META-INF/neoforge.mods.toml").delete();
 		}
 
 		AbstractFolderStructure folderStructure = AbstractFolderStructure.getFolderStructure(workspace);

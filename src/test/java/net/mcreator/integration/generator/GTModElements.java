@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		for (ModElementType<?> modElementType : workspace.getGeneratorConfiguration().getGeneratorStats()
-				.getSupportedModElementTypes()) {
+		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
+				workspace.getGeneratorConfiguration())) {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 

@@ -76,7 +76,13 @@ public class TagsUtils {
 		if (tags != null) {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
-				TagElement tag = TagElement.fromString((String) map.get("tag"));
+				TagElement tag = TagElement.fromString(((String) map.get("tag"))
+								//@formatter:off
+								.replace("@NAME", element.getModElement().getName())
+								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
+								.replace("@registryname", element.getModElement().getRegistryName())
+						//@formatter:on
+				);
 
 				boolean shouldSkip = TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, map,
 						element);
