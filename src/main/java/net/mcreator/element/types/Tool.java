@@ -170,4 +170,11 @@ import java.util.*;
 		return specialInformation;
 	}
 
+	public List<String> getRepairItemsAsStringList() {
+		List<String> repairItems = new ArrayList<>();
+		for (MItemBlock repairItem : this.repairItems)
+			repairItems.add(repairItem.getUnmappedValue());
+		return repairItems;
+	}
+
 }
