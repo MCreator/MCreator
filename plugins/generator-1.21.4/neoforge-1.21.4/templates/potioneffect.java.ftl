@@ -34,7 +34,7 @@
 package ${package}.potion;
 
 <#compress>
-<#if data.hasCustomRenderer()>
+<#if data.hasCustomRenderer() || data.isCuredbyHoney>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
@@ -48,28 +48,14 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		</#list>
 	}
 
-	<#if !(data.isCuredByMilk && data.isProtectedByTotem) || data.isCuredbyHoney>
-	@Override public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
-		<#if data.isCuredByMilk>
-		cures.add(EffectCures.MILK);
-		</#if>
-		<#if data.isProtectedByTotem>
-		cures.add(EffectCures.PROTECTED_BY_TOTEM);
-		</#if>
-		<#if data.isCuredbyHoney>
-		cures.add(EffectCures.HONEY);
-		</#if>
-	}
-	</#if>
-
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
-			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
+			@Override public void applyInstantenousEffect(ServerLevel level, Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
 					"z": "entity.getZ()",
-					"world": "entity.level()",
+					"world": "level",
 					"entity": "entity",
 					"amplifier": "amplifier"
 				}/>
@@ -99,16 +85,16 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 	</#if>
 
 	<#if hasProcedure(data.onActiveTick)>
-		@Override public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+		@Override public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
 			<@procedureCode data.onActiveTick, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-				"world": "entity.level()",
+				"world": "level",
 				"entity": "entity",
 				"amplifier": "amplifier"
 			}/>
-			return super.applyEffectTick(entity, amplifier);
+			return super.applyEffectTick(level, entity, amplifier);
 		}
 	</#if>
 
@@ -120,7 +106,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				return false;
 			}
 
-			@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+			@Override public boolean renderInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
 				return false;
 			}
 			</#if>
@@ -133,6 +119,19 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		}, ${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}.get());
 	}
 	</#if>
+
+	<#if data.isCuredbyHoney>
+	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
+		Consumable original = Items.HONEY_BOTTLE.components().get(DataComponents.CONSUMABLE);
+		if (original != null) {
+			List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
+			onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}));
+			Consumable replacementConsumable = new Consumable(original.consumeSeconds(), original.animation(), original.sound(), original.hasConsumeParticles(), onConsumeEffects);
+			event.modify(Items.HONEY_BOTTLE, builder -> builder.set(DataComponents.CONSUMABLE, replacementConsumable));
+		}
+	}
+	</#if>
+
 }
 </#compress>
 <#-- @formatter:on -->
