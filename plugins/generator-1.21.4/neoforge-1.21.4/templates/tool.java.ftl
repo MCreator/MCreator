@@ -41,56 +41,35 @@ package ${package}.item;
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
-public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
+public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "")}Item {
 
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
-	private static final Tier TOOL_TIER = new Tier() {
-
-		@Override public int getUses() {
-			return ${data.usageCount};
-		}
-
-		@Override public float getSpeed() {
-			return ${data.efficiency}f;
-		}
-
-		@Override public float getAttackDamageBonus() {
-			return 0; <#-- handled by attributes -->
-		}
-
-		@Override public TagKey<Block> getIncorrectBlocksForDrops() {
-			<#if data.blockDropsTier == "WOOD">
-			return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
-			<#elseif data.blockDropsTier == "STONE">
-			return BlockTags.INCORRECT_FOR_STONE_TOOL;
-			<#elseif data.blockDropsTier == "IRON">
-			return BlockTags.INCORRECT_FOR_IRON_TOOL;
-			<#elseif data.blockDropsTier == "DIAMOND">
-			return BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
-			<#elseif data.blockDropsTier == "GOLD">
-			return BlockTags.INCORRECT_FOR_GOLD_TOOL;
-			<#else>
-			return BlockTags.INCORRECT_FOR_NETHERITE_TOOL;
-			</#if>
-		}
-
-		@Override public int getEnchantmentValue() {
-			return ${data.enchantability};
-		}
-
-		@Override public Ingredient getRepairIngredient() {
-			return ${mappedMCItemsToIngredient(data.repairItems)};
-		}
-
-	};
+	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
+		<#if data.blockDropsTier == "WOOD">BlockTags.INCORRECT_FOR_WOODEN_TOOL
+		<#elseif data.blockDropsTier == "STONE">BlockTags.INCORRECT_FOR_STONE_TOOL
+		<#elseif data.blockDropsTier == "IRON">BlockTags.INCORRECT_FOR_IRON_TOOL
+		<#elseif data.blockDropsTier == "DIAMOND">BlockTags.INCORRECT_FOR_DIAMOND_TOOL
+		<#elseif data.blockDropsTier == "GOLD">BlockTags.INCORRECT_FOR_GOLD_TOOL
+		<#else>BlockTags.INCORRECT_FOR_NETHERITE_TOOL
+		</#if>,
+		${data.usageCount},
+		${data.efficiency}f,
+		0,
+		${data.enchantability},
+		TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")) <#-- data.repairItems are put into a tag -->
+	);
 	</#if>
 
-	public ${name}Item () {
+	public ${name}Item (Item.Properties properties) {
 		super(
-			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
-			TOOL_TIER,
+			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe">
+			TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f,
 			</#if>
-			new Item.Properties()
+			<#if data.toolType == "MultiTool">
+			TOOL_MATERIAL.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#else>
+			properties
+			</#if>
 				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
 				.durability(${data.usageCount})
 				</#if>
@@ -101,13 +80,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.build())
-				<#elseif data.toolType == "Sword">
-				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
-				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
-				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
+				</#if>
+				<#if data.toolType == "Shield">
+				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+				</#if>
+				<#if data.enchantability != 0 && data.toolType=="Shears">
+				.enchantable(${data.enchantability})
 				</#if>
 		);
 	}
@@ -127,17 +108,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	}
 	</#if>
 
-	<#if data.toolType == "Shield" && data.repairItems?has_content>
-	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-	}
-	</#if>
-
 	<#if data.toolType=="Shears">
-		@Override public int getEnchantmentValue() {
-			return ${data.enchantability};
-		}
-
 		@Override public float getDestroySpeed(ItemStack stack, BlockState blockstate) {
 			return ${data.efficiency}f;
 		}
@@ -192,8 +163,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 <#elseif data.toolType=="Special">
 public class ${name}Item extends Item {
 
-	public ${name}Item() {
-		super(new Item.Properties()
+	public ${name}Item(Item.Properties properties) {
+		super(properties
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
 			</#if>
@@ -206,6 +177,9 @@ public class ${name}Item extends Item {
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.build())
+			<#if data.enchantability != 0>
+			.enchantable(${data.enchantability})
+			</#if>
 		);
 	}
 
@@ -219,34 +193,24 @@ public class ${name}Item extends Item {
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
-	@Override public int getEnchantmentValue() {
-		return ${data.enchantability};
-	}
-
 	<@commonMethods/>
 }
 <#elseif data.toolType=="Fishing rod">
 public class ${name}Item extends FishingRodItem {
 
-	public ${name}Item() {
-		super(new Item.Properties()
+	public ${name}Item(Item.Properties properties) {
+		super(properties
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
+			.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+			<#if data.enchantability != 0>
+			.enchantable(${data.enchantability})
+			</#if>
 		);
-	}
-
-	<#if data.repairItems?has_content>
-    	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-    	}
-	</#if>
-
-	@Override public int getEnchantmentValue() {
-		return ${data.enchantability};
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool/>
@@ -254,7 +218,7 @@ public class ${name}Item extends FishingRodItem {
 	<@onEntityHitWith data.onEntityHitWith/>
 
 	<#if hasProcedure(data.onRightClickedInAir)>
-	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+	@Override public InteractionResult use(Level world, Player entity, InteractionHand hand) {
 		super.use(world, entity, hand);
 		ItemStack itemstack = entity.getItemInHand(hand);
 		<@procedureCode data.onRightClickedInAir, {
@@ -266,7 +230,7 @@ public class ${name}Item extends FishingRodItem {
 			"itemstack": "itemstack"
 		}/>
 
-		return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 	</#if>
 
@@ -277,12 +241,8 @@ public class ${name}Item extends FishingRodItem {
 
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
-		@Override public boolean hasCraftingRemainingItem(ItemStack stack) {
-			return true;
-		}
-
 		<#if data.damageOnCrafting && data.usageCount != 0>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
 				retval.setDamageValue(itemstack.getDamageValue() + 1);
 				if(retval.getDamageValue() >= retval.getMaxDamage()) {
@@ -291,18 +251,18 @@ public class ${name}Item extends FishingRodItem {
 				return retval;
 			}
 
-			@Override public boolean isRepairable(ItemStack itemstack) {
+			@Override public boolean isCombineRepairable(ItemStack itemstack) {
 				return false;
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
+			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
 
 			<#if data.usageCount != 0>
-				@Override public boolean isRepairable(ItemStack itemstack) {
-					return false;
-				}
+			@Override public boolean isCombineRepairable(ItemStack itemstack) {
+				return false;
+			}
 			</#if>
 		</#if>
 	</#if>

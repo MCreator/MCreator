@@ -131,8 +131,8 @@
 
 <#macro onRightClickedInAir procedure="">
 <#if hasProcedure(procedure)>
-@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-	InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+@Override public InteractionResult use(Level world, Player entity, InteractionHand hand) {
+	InteractionResult ar = super.use(world, entity, hand);
 	<@procedureCode procedure, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",
