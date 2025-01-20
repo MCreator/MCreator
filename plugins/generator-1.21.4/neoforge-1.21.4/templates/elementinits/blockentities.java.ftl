@@ -55,7 +55,7 @@ public class ${JavaModName}BlockEntities {
 	// End of user code block custom block entities
 
 	private static DeferredHolder<BlockEntityType<?>, BlockEntityType<?>> register(String registryname, DeferredHolder<Block, Block> block, BlockEntityType.BlockEntitySupplier<?> supplier) {
-		return REGISTRY.register(registryname, () -> BlockEntityType.Builder.of(supplier, block.get()).build(null));
+		return REGISTRY.register(registryname, () -> new BlockEntityType(supplier, block.get()));
 	}
 
 	<#if blockentitiesWithInventory?size != 0>

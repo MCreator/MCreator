@@ -297,7 +297,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_block_destroyed_by_player"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
-				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
+				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"), ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		onStartToDestroy = new ProcedureSelector(this.withEntry("block/when_destroy_start"), mcreator,
 				L10N.t("elementgui.block.event_on_player_starts_destroy"),

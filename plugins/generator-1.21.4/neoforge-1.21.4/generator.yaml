@@ -28,6 +28,8 @@ import_formatter:
     Keyframe: net.minecraft.client.animation
     Potion: net.minecraft.world.item.alchemy
     AttachmentType: net.neoforged.neoforge.attachment
+    TriState: net.neoforged.neoforge.common.util
+    MapColor: net.minecraft.world.level.material
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
