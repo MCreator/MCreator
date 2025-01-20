@@ -406,7 +406,7 @@ block_base_properties:
   Button: [facing, face, powered]
 
 localizationkeys:
-  - key: block.@modid.@registryname
+  - key: item.@modid.@registryname
     mapto: name
   - fromlist: data.getFixedSpecialInformation()
     key: block.@modid.@registryname.description_@item_index
