@@ -93,7 +93,7 @@ public class ${name}FluidType extends FluidType {
 					}
 					</#if>
 
-					public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+					@Override public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
 						Entity entity = camera.getEntity();
 						Level world = entity.level();
 						RenderSystem.setShaderFogShape(FogShape.SPHERE);
