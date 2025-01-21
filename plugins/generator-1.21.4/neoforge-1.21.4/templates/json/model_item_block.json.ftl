@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-	"model": "${modid}:block/${registryname}"
+	"model": "${modid}:item/${registryname}"
 	<#if data.tintType != "No tint" && data.isItemTinted>,
 	"tints": [
       {
