@@ -57,7 +57,7 @@ package ${package}.fluid.types;
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.emptySound}")))
+			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.emptySound}")))
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
@@ -88,29 +88,31 @@ package ${package}.fluid.types;
 
 				<#if data.hasFog>
 					<#if data.fogColor?has_content>
-					@Override public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-						return new Vector3f(${data.fogColor.getRed()/255}f, ${data.fogColor.getGreen()/255}f, ${data.fogColor.getBlue()/255}f);
+					@Override public Vector4f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
+						return new Vector4f(${data.fogColor.getRed()/255}f, ${data.fogColor.getGreen()/255}f, ${data.fogColor.getBlue()/255}f, fluidFogColor.w);
 					}
 					</#if>
 
-					public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+					@Override public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, FogParameters fogParameters) {
+						float nearDistance = fogParameters.start();
+						float farDistance = fogParameters.end();
 						Entity entity = camera.getEntity();
 						Level world = entity.level();
-						RenderSystem.setShaderFogShape(FogShape.SPHERE);
-						RenderSystem.setShaderFogStart(
+						return new FogParameters(
 							<#if hasProcedure(data.fogStartDistance)>
 								(float) <@procedureOBJToNumberCode data.fogStartDistance/>
 							<#else>
 								${data.fogStartDistance.getFixedValue()}f
-							</#if>);
-						RenderSystem.setShaderFogEnd(
+							</#if>,
 							<#if hasProcedure(data.fogEndDistance)>
 								(float) <@procedureOBJToNumberCode data.fogEndDistance/>
 							<#elseif data.fogEndDistance.getFixedValue() gt 16>
 								Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
 							<#else>
 								${data.fogEndDistance.getFixedValue()}f
-							</#if>);
+							</#if>,
+							FogShape.SPHERE, fogParameters.red(), fogParameters.green(), fogParameters.blue(), fogParameters.alpha()
+						);
 					}
 				</#if>
 
@@ -142,11 +144,11 @@ package ${package}.fluid.types;
 					<#elseif data.tintType == "Foliage">
 						BiomeColors.getAverageFoliageColor(world, pos)
 					<#elseif data.tintType == "Default foliage">
-						FoliageColor.getDefaultColor()
+						FoliageColor.FOLIAGE_DEFAULT
 					<#elseif data.tintType == "Birch foliage">
-						FoliageColor.getBirchColor()
+						FoliageColor.FOLIAGE_BIRCH
 					<#elseif data.tintType == "Spruce foliage">
-						FoliageColor.getEvergreenColor()
+						FoliageColor.FOLIAGE_EVERGREEN
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos)
 					<#elseif data.tintType == "Sky">

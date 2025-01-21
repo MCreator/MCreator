@@ -38,9 +38,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
 public class ${name}Block extends LiquidBlock {
-	public ${name}Block() {
+	public ${name}Block(BlockBehaviour.Properties properties) {
 		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
-			BlockBehaviour.Properties.of()
+			properties
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 			<#else>
@@ -70,7 +70,7 @@ public class ${name}Block extends LiquidBlock {
 		return true;
 	}
 	<#elseif data.lightOpacity != 1>
-	@Override public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	@Override public int getLightBlock(BlockState state) {
 		return ${data.lightOpacity};
 	}
 	</#if>

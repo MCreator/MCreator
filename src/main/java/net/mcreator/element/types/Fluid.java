@@ -189,4 +189,9 @@ import java.util.List;
 		}
 		return null;
 	}
+
+	public boolean hasCustomBucketTexture() {
+		return generateBucket && textureBucket != null && !textureBucket.isEmpty();
+	}
+
 }
