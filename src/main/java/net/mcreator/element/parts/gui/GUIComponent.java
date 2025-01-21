@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
 		uuid = UUID.randomUUID();
 	}
 
-	GUIComponent(int x, int y) {
+	public GUIComponent(int x, int y) {
 		this();
 		this.x = x;
 		this.y = y;
