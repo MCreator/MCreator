@@ -10,8 +10,9 @@
       <#if data.getTextureMap()??>,
         "textures": {
         <#list data.getTextureMap().entrySet() as texture>
-          "#${texture.getKey()}": "${texture.getValue().format("%s:block/%s")}"<#sep>,
+          "${texture.getKey()}": "${texture.getValue().format("%s:block/%s")}",
         </#list>
+          "particle": "${data.getParticleTexture().format("%s:block/%s")}"
         }
       </#if>
     }

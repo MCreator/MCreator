@@ -35,6 +35,9 @@ templates:
     condition: "renderType() #?= 13,3"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/model_item_block.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/items/@registryname.json"
 
   # Normal block templates
   - template: json/block_states.json.ftl
@@ -403,7 +406,7 @@ block_base_properties:
   Button: [facing, face, powered]
 
 localizationkeys:
-  - key: block.@modid.@registryname
+  - key: item.@modid.@registryname
     mapto: name
   - fromlist: data.getFixedSpecialInformation()
     key: block.@modid.@registryname.description_@item_index

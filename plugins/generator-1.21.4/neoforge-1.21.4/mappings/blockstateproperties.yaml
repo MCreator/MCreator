@@ -1,4 +1,7 @@
 _default: ""
+ACTIVE:
+  - BlockStateProperties.ACTIVE
+  - active
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached
@@ -56,6 +59,9 @@ LIT:
 LOCKED:
   - BlockStateProperties.LOCKED
   - locked
+NATURAL:
+  - BlockStateProperties.NATURAL
+  - natural
 OCCUPIED:
   - BlockStateProperties.OCCUPIED
   - occupied
@@ -77,6 +83,9 @@ SIGNAL_FIRE:
 SNOWY:
   - BlockStateProperties.SNOWY
   - snowy
+TIP:
+  - BlockStateProperties.TIP
+  - tip
 TRIGGERED:
   - BlockStateProperties.TRIGGERED
   - triggered
