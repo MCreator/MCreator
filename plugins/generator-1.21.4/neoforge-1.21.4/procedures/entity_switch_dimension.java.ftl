@@ -7,7 +7,7 @@ if (${input$entity} instanceof ServerPlayer _player && !_player.level().isClient
 	ServerLevel nextLevel = _player.server.getLevel(destinationType);
 	if (nextLevel != null) {
 		_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
-		_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), _player.getYRot(), _player.getXRot());
+		_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), Set.of(), _player.getYRot(), _player.getXRot(), true);
 		_player.connection.send(new ClientboundPlayerAbilitiesPacket(_player.getAbilities()));
 		for (MobEffectInstance _effectinstance : _player.getActiveEffects())
 			_player.connection.send(new ClientboundUpdateMobEffectPacket(_player.getId(), _effectinstance, false));

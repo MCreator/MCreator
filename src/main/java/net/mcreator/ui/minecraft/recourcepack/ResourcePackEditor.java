@@ -72,6 +72,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final Workspace workspace;
 
+	private final String namespace;
+
 	@Nullable private final Supplier<String> filterProvider;
 
 	private final JFileTree tree;
@@ -92,13 +94,14 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private final JButton importFile;
 	private final JButton deleteOverrideOrFile;
 
-	public ResourcePackEditor(MCreator mcreator, @Nullable Supplier<String> filterProvider) {
+	public ResourcePackEditor(MCreator mcreator, String namespace, @Nullable Supplier<String> filterProvider) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.mcreator = mcreator;
 		this.workspace = mcreator.getWorkspace();
 		this.filterProvider = filterProvider;
+		this.namespace = namespace;
 
 		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 		ComponentUtils.deriveFont(originalLabel, 13);
@@ -169,7 +172,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				});
 		folderBar.add(addFolder);
 
-		File root = ResourcePackStructure.getResourcePackRoot(workspace);
+		File root = ResourcePackStructure.getResourcePackRoot(workspace, namespace);
 		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
 
 		TransparentToolBar fileBar = new TransparentToolBar();
@@ -427,8 +430,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		FilterTreeNode root = new FilterTreeNode("");
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
-		resourcePackArchive = ResourcePackStructure.getResourcePackArchive(workspace);
-		ResourcePackStructure.getResourcePackStructure(workspace, resourcePackArchive)
+		resourcePackArchive = ResourcePackStructure.getResourcePackArchive(workspace, namespace);
+		ResourcePackStructure.getResourcePackStructure(workspace, namespace, resourcePackArchive)
 				.forEach(entry -> fileTree.addElement(entry.path(), entry));
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 
