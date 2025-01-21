@@ -48,7 +48,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		WorkspacePanelStructures workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		WorkspacePanelScreenshots workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(),
+		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(), "minecraft",
 				() -> workspacePanel.search.getText().trim());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
