@@ -37,32 +37,36 @@ public class ResourcePackStructure {
 
 	private static final List<String> extensions = List.of("json", "mcmeta", "png", "ogg", "fsh", "vsh", "txt");
 
-	private static final String RESOURCES_FOLDER = "assets/minecraft";
-
 	private static final Map<File, Collection<String>> ZIP_STRUCTURE_CACHE = new HashMap<>();
 
-	public static File getResourcePackRoot(Workspace workspace) {
-		return new File(workspace.getGenerator().getResourceRoot(), RESOURCES_FOLDER);
+	private static String getResourcesFolder(String namespace) {
+		return "assets/" + namespace;
 	}
 
-	@Nullable public static File getResourcePackArchive(Workspace workspace) {
-		String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
-		if (vanillaResourcesJar != null) {
-			List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
-					workspace.getGenerator().getProjectJarManager().getClassFileSources() :
-					List.of();
-			for (LibraryInfo libraryInfo : libraryInfos) {
-				File libraryFile = new File(libraryInfo.getLocationAsString());
-				if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
-						.find()) {
-					return libraryFile;
+	public static File getResourcePackRoot(Workspace workspace, String namespace) {
+		return new File(workspace.getGenerator().getResourceRoot(), getResourcesFolder(namespace));
+	}
+
+	@Nullable public static File getResourcePackArchive(Workspace workspace, String namespace) {
+		if ("minecraft".equals(namespace)) {
+			String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
+			if (vanillaResourcesJar != null) {
+				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
+						workspace.getGenerator().getProjectJarManager().getClassFileSources() :
+						List.of();
+				for (LibraryInfo libraryInfo : libraryInfos) {
+					File libraryFile = new File(libraryInfo.getLocationAsString());
+					if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
+							.find()) {
+						return libraryFile;
+					}
 				}
 			}
 		}
 		return null;
 	}
 
-	public static Collection<Entry> getResourcePackStructure(Workspace workspace, @Nullable File resourcePackArchive) {
+	public static Collection<Entry> getResourcePackStructure(Workspace workspace, String namespace, @Nullable File resourcePackArchive) {
 		Set<Entry> entries = new TreeSet<>();
 
 		if (resourcePackArchive != null) {
@@ -71,8 +75,8 @@ public class ResourcePackStructure {
 				ZipIO.iterateZip(resourcePackArchive, entry -> {
 					if (!entry.isDirectory()) {
 						String path = entry.getName();
-						if (path.startsWith(RESOURCES_FOLDER) && extensions.contains(FilenameUtils.getExtension(path))) {
-							path = path.substring(RESOURCES_FOLDER.length());
+						if (path.startsWith(getResourcesFolder(namespace)) && extensions.contains(FilenameUtils.getExtension(path))) {
+							path = path.substring(getResourcesFolder(namespace).length());
 							zipEntriesComputed.add(path);
 						}
 					}
@@ -81,19 +85,19 @@ public class ResourcePackStructure {
 			});
 
 			for (String path : zipEntries) {
-				File override = new File(getResourcePackRoot(workspace), path);
+				File override = new File(getResourcePackRoot(workspace, namespace), path);
 				entries.add(
-						new Entry(path, override, override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
+						new Entry(namespace, path, override, override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
 			}
 		}
 
 		// Load custom resources
-		File customResources = getResourcePackRoot(workspace);
+		File customResources = getResourcePackRoot(workspace, namespace);
 		try (Stream<Path> paths = Files.walk(customResources.toPath())) {
 			paths.forEach(path -> {
 				File file = path.toFile();
 				String relativePath = "/" + customResources.toPath().relativize(path).toString().replace("\\", "/");
-				Entry toAdd = new Entry(relativePath, file, EntryType.CUSTOM);
+				Entry toAdd = new Entry(namespace, relativePath, file, EntryType.CUSTOM);
 				if (file.isDirectory()) {
 					if (file.isDirectory() && !relativePath.endsWith("/"))
 						relativePath += "/";
@@ -122,14 +126,14 @@ public class ResourcePackStructure {
 		return entries;
 	}
 
-	public record Entry(String path, File override, EntryType type) implements Comparable<Entry> {
+	public record Entry(String namespace, String path, File override, EntryType type) implements Comparable<Entry> {
 
 		public String fullPath() {
-			return RESOURCES_FOLDER + path;
+			return getResourcesFolder(namespace) + path;
 		}
 
 		public Entry parent() {
-			return new Entry(FilenameUtils.getFullPath(path), override.getParentFile(), type);
+			return new Entry(namespace, FilenameUtils.getFullPath(path), override.getParentFile(), type);
 		}
 
 		public String extension() {

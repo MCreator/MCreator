@@ -48,9 +48,6 @@ import java.util.List;
 	public String mobEffectCategory;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
-
-	public boolean isCuredByMilk;
-	public boolean isProtectedByTotem;
 	public boolean isCuredbyHoney;
 
 	@ModElementReference public List<AttributeModifierEntry> modifiers;
@@ -68,8 +65,6 @@ import java.util.List;
 		super(element);
 
 		this.mobEffectCategory = "NEUTRAL";
-		this.isCuredByMilk = true;
-		this.isProtectedByTotem = true;
 		modifiers = new ArrayList<>();
 	}
 

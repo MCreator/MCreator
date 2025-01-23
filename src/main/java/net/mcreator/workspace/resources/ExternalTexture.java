@@ -23,6 +23,7 @@ import net.mcreator.io.zip.ZipIO;
 import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
@@ -107,7 +108,11 @@ public final class ExternalTexture extends Texture {
 						break;
 					}
 				}
-				if (!found) {
+				// We don't log this warning in testing environment because GeneratorsTest already tests for this
+				// but this could still log false-positives for WorkspaceConvertersTest for workspaces using references
+				// because WorkspaceConvertersTest does not do full workspace setup (for performance reasons) and
+				// thus external textures are not loaded
+				if (!found && !TestUtil.isTestingEnvironment()) {
 					LOG.warn("Vanilla resources jar not found: {}", vanillaResourcesJar);
 				}
 			}

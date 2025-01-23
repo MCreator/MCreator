@@ -1,3 +1,8 @@
+- ACTIVE:
+  readable_name: ACTIVE
+  type: Logic
+  other:
+    registry_name: active
 - ATTACHED:
   readable_name: ATTACHED
   type: Logic
@@ -148,6 +153,11 @@
   type: Logic
   other:
     registry_name: locked
+- NATURAL:
+  readable_name: NATURAL
+  type: Logic
+  other:
+      registry_name: natural
 - OCCUPIED:
   readable_name: OCCUPIED
   type: Logic
@@ -193,6 +203,11 @@
   type: Logic
   other:
     registry_name: snowy
+- TIP:
+  readable_name: TIP
+  type: Logic
+  other:
+      registry_name: tip
 - TRIGGERED:
   readable_name: TRIGGERED
   type: Logic

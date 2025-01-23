@@ -103,8 +103,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
-
 						CountDownLatch latch = new CountDownLatch(1);
 						MCreator.create(null, workspace.get()).getGradleConsole()
 								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
@@ -194,7 +192,6 @@ import static org.junit.jupiter.api.Assertions.*;
 							() -> verifyGeneratedJSON(workspace.get())));
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));
