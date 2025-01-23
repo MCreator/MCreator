@@ -30,6 +30,9 @@ templates:
   - template: json/plant_item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/model_item_block.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/items/@registryname.json"
 
   # Block model templates
   - template: json/block.json.ftl
@@ -84,7 +87,7 @@ templates:
     name: "@MODASSETSROOT/blockstates/@registryname.json"
 
 localizationkeys:
-  - key: block.@modid.@registryname
+  - key: item.@modid.@registryname
     mapto: name
   - fromlist: data.getFixedSpecialInformation()
     key: block.@modid.@registryname.description_@item_index

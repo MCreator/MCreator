@@ -60,14 +60,14 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
 	</#if>
 
-	public ${name}Block() {
+	public ${name}Block(BlockBehaviour.Properties properties) {
 		super(
 		<#if data.plantType == "normal">
 		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
 		<#elseif data.plantType == "sapling">
 		TREE_GROWER,
 		</#if>
-		BlockBehaviour.Properties.of()
+		properties
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
@@ -78,11 +78,11 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
-				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.breakSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.stepSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.placeSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.hitSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.fallSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -140,11 +140,11 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Override public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+	@Override public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, world, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	</#if>
 
@@ -180,7 +180,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	</#if>
 
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
-	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
+	@Override public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData, Player entity) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
 	</#if>
@@ -348,17 +348,17 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
 				<#if data.tintType == "Default foliage">
-					return FoliageColor.getDefaultColor();
+					return FoliageColor.FOLIAGE_DEFAULT;
 				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirchColor();
+					return FoliageColor.FOLIAGE_BIRCH;
 				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getEvergreenColor();
+					return FoliageColor.FOLIAGE_EVERGREEN;
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
 						BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
 					<#elseif data.tintType == "Foliage">
-						BiomeColors.getAverageFoliageColor(world, pos) : FoliageColor.getDefaultColor();
+						BiomeColors.getAverageFoliageColor(world, pos) : FoliageColor.FOLIAGE_DEFAULT;
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos) : -1;
 					<#elseif data.tintType == "Sky">
@@ -371,30 +371,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 				</#if>
 			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
 		}
-
-		<#if data.isItemTinted>
-		@OnlyIn(Dist.CLIENT) public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
-			event.getItemColors().register((stack, index) -> {
-				<#if data.tintType == "Grass">
-					return GrassColor.get(0.5D, 1.0D);
-				<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
-					return FoliageColor.getDefaultColor();
-				<#elseif data.tintType == "Birch foliage">
-					return FoliageColor.getBirchColor();
-				<#elseif data.tintType == "Spruce foliage">
-					return FoliageColor.getEvergreenColor();
-				<#elseif data.tintType == "Water">
-					return 3694022;
-				<#elseif data.tintType == "Sky">
-					return 8562943;
-				<#elseif data.tintType == "Fog">
-					return 12638463;
-				<#else>
-					return 329011;
-				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
-		}
-		</#if>
 	</#if>
 }
 </#compress>
