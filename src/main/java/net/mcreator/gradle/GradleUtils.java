@@ -18,6 +18,8 @@
 
 package net.mcreator.gradle;
 
+import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
@@ -43,24 +45,33 @@ public class GradleUtils {
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
 
-	public static BuildActionExecuter<Void> getGradleSyncLauncher(ProjectConnection projectConnection) {
+	public static BuildActionExecuter<Void> getGradleSyncLauncher(GeneratorConfiguration generatorConfiguration,
+			ProjectConnection projectConnection) {
 		BuildAction<Void> syncBuildAction = GradleSyncBuildAction.loadFromIsolatedClassLoader();
 		BuildActionExecuter<Void> retval = projectConnection.action().projectsLoaded(syncBuildAction, unused -> {})
 				.build().forTasks();
-		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
+		return configureLauncher(generatorConfiguration, retval); // make sure we have proper JVM, environment, ...
 	}
 
-	public static BuildLauncher getGradleTaskLauncher(ProjectConnection projectConnection, String... tasks) {
+	public static BuildLauncher getGradleTaskLauncher(GeneratorConfiguration generatorConfiguration,
+			ProjectConnection projectConnection, String... tasks) {
 		BuildLauncher retval = projectConnection.newBuild().forTasks(tasks);
-		return configureLauncher(retval); // make sure we have proper JVM, environment, ...
+		return configureLauncher(generatorConfiguration, retval); // make sure we have proper JVM, environment, ...
 	}
 
-	public static <T> ModelBuilder<T> getGradleModelBuilder(ProjectConnection projectConnection, Class<T> clazz) {
-		return configureLauncher(projectConnection.model(clazz));
+	public static <T> ModelBuilder<T> getGradleModelBuilder(GeneratorConfiguration generatorConfiguration,
+			ProjectConnection projectConnection, Class<T> clazz) {
+		return configureLauncher(generatorConfiguration, projectConnection.model(clazz));
 	}
 
-	private static <T extends ConfigurableLauncher<T>> T configureLauncher(T launcher) {
-		launcher.addJvmArguments("-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
+	private static <T extends ConfigurableLauncher<T>> T configureLauncher(
+			GeneratorConfiguration generatorConfiguration, T launcher) {
+		// For some unexplainable reason, ForgeGradle eclipse model import does not generate
+		// all files if Xmx is passed. Likely some bug with Forge Gradle daemons where daemon
+		// fails to operate correctly so new one needs to be created for model building
+		if (!(launcher instanceof ModelBuilder<?>
+				&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE))
+			launcher.addJvmArguments("-Xmx" + PreferencesManager.PREFERENCES.gradle.xmx.get() + "m");
 
 		// make sure Gradle reports in English so our error decoder works properly
 		launcher.addJvmArguments("-Duser.language=en");
@@ -76,7 +87,7 @@ public class GradleUtils {
 			launcher.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
 					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
 
-		// some mod API toolchains need to think they are running in IDE, so we make them think we are Eclipse
+		// some mod API toolchains (NeoGradle, Mod Dev Gradle) need to think they are running in IDE, so we make them think we are Eclipse
 		launcher.addJvmArguments("-Declipse.application=net.mcreator");
 
 		return launcher;

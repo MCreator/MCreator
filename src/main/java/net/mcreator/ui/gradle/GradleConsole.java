@@ -412,9 +412,9 @@ public class GradleConsole extends JPanel {
 
 		ConfigurableLauncher<?> task;
 		if (isGradleSync) {
-			task = GradleUtils.getGradleSyncLauncher(projectConnection);
+			task = GradleUtils.getGradleSyncLauncher(ref.getGeneratorConfiguration(), projectConnection);
 		} else {
-			task = GradleUtils.getGradleTaskLauncher(projectConnection, commands);
+			task = GradleUtils.getGradleTaskLauncher(ref.getGeneratorConfiguration(), projectConnection, commands);
 
 			Map<String, String> environment = GradleUtils.getEnvironment(java_home);
 
