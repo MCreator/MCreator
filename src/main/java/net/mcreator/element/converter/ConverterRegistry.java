@@ -52,7 +52,6 @@ import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 import net.mcreator.element.converter.v2024_2.*;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
-import net.mcreator.element.converter.v2024_3.WorldDependencyAdder;
 import net.mcreator.element.converter.v2024_4.*;
 import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
@@ -183,7 +182,8 @@ public class ConverterRegistry {
 			new CallProcedureAtBlockConverter(),
 			new HarvestLevelProceduresRemover(),
 			new PlantTypeProcedureRemover(),
-			new WorldDependencyAdder()
+			new net.mcreator.element.converter.v2024_3.WorldDependencyAdder(),
+			new net.mcreator.element.converter.v2025_1.WorldDependencyAdder()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
