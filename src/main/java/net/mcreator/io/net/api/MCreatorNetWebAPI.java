@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class D8WebAPI implements IWebAPI {
+public class MCreatorNetWebAPI implements IWebAPI {
 
 	private static final Logger LOG = LogManager.getLogger("Website API");
 

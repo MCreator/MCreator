@@ -28,7 +28,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
-import net.mcreator.io.net.api.D8WebAPI;
+import net.mcreator.io.net.api.MCreatorNetWebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.MCREvent;
@@ -70,7 +70,7 @@ public final class MCreatorApplication {
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
-	public static final IWebAPI WEB_API = new D8WebAPI();
+	public static final IWebAPI WEB_API = new MCreatorNetWebAPI();
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
