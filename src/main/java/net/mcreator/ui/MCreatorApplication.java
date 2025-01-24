@@ -178,10 +178,10 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(93, "Initiating user session");
 
 			deviceInfo = new DeviceInfo();
+			isInternet = MCreatorApplication.WEB_API.initAPI();
+
 			analytics = new GoogleAnalytics(deviceInfo);
 			analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
-
-			isInternet = MCreatorApplication.WEB_API.initAPI();
 
 			discordClient = new DiscordClient();
 
