@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.variants.resourcepackmaker;
+package net.mcreator.minecraft.resourcepack;
 
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;

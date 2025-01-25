@@ -21,7 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
-import net.mcreator.ui.variants.resourcepackmaker.ResourcePackInfo;
+import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
