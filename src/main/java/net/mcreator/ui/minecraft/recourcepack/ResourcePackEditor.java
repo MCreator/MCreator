@@ -43,6 +43,7 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.resourcepackmaker.ResourcePackInfo;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -72,8 +73,6 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final Workspace workspace;
 
-	private final String namespace;
-
 	@Nullable private final Supplier<String> filterProvider;
 
 	private final JFileTree tree;
@@ -85,7 +84,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 	private final JPanel previewPanel = new JPanel(new GridLayout());
 
-	@Nullable private File resourcePackArchive = null;
+	private final ResourcePackInfo resourcePack;
 
 	private final JLabel originalLabel = L10N.label("mcreator.resourcepack.original");
 	private final JLabel overrideLabel = L10N.label("mcreator.resourcepack.override");
@@ -94,14 +93,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private final JButton importFile;
 	private final JButton deleteOverrideOrFile;
 
-	public ResourcePackEditor(MCreator mcreator, String namespace, @Nullable Supplier<String> filterProvider) {
+	public ResourcePackEditor(MCreator mcreator, ResourcePackInfo resourcePack,
+			@Nullable Supplier<String> filterProvider) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.mcreator = mcreator;
 		this.workspace = mcreator.getWorkspace();
 		this.filterProvider = filterProvider;
-		this.namespace = namespace;
+		this.resourcePack = resourcePack;
 
 		originalLabel.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 		ComponentUtils.deriveFont(originalLabel, 13);
@@ -172,7 +172,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				});
 		folderBar.add(addFolder);
 
-		File root = ResourcePackStructure.getResourcePackRoot(workspace, namespace);
+		File root = ResourcePackStructure.getResourcePackRoot(workspace, resourcePack.namespace());
 		this.breadCrumb = new JFileBreadCrumb(mcreator, root, root);
 
 		TransparentToolBar fileBar = new TransparentToolBar();
@@ -279,7 +279,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							L10N.t("mcreator.resourcepack.edit_override_confirm"), L10N.t("common.confirmation"),
 							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
-						File result = ZipIO.readFileInZip(resourcePackArchive, selectedEntry.fullPath(),
+						File result = ZipIO.readFileInZip(resourcePack.packFile(), selectedEntry.fullPath(),
 								(file, zipEntry) -> {
 									try {
 										FileUtils.copyInputStreamToFile(file.getInputStream(zipEntry),
@@ -357,7 +357,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 			}
 
 			if (extension.equals("png")) {
-				Image image = ZipIO.readFileInZip(resourcePackArchive, entry.fullPath(), (file, zipEntry) -> {
+				Image image = ZipIO.readFileInZip(resourcePack.packFile(), entry.fullPath(), (file, zipEntry) -> {
 					try {
 						return ImageIO.read(file.getInputStream(zipEntry));
 					} catch (IOException e) {
@@ -374,7 +374,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				}
 				showImageEntry(originalIcon, overrideIcon);
 			} else if (textExtensions.contains(extension.toLowerCase(Locale.ROOT))) {
-				String original = ZipIO.readCodeInZip(resourcePackArchive, entry.fullPath());
+				String original = ZipIO.readCodeInZip(resourcePack.packFile(), entry.fullPath());
 				String override = null;
 				if (entry.type() != ResourcePackStructure.EntryType.VANILLA) {
 					override = FileIO.readFileToString(entry.override());
@@ -430,8 +430,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		FilterTreeNode root = new FilterTreeNode("");
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
-		resourcePackArchive = ResourcePackStructure.getResourcePackArchive(workspace, namespace);
-		ResourcePackStructure.getResourcePackStructure(workspace, namespace, resourcePackArchive)
+		ResourcePackStructure.getResourcePackStructure(workspace, resourcePack.namespace(), resourcePack.packFile())
 				.forEach(entry -> fileTree.addElement(entry.path(), entry));
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 

@@ -94,7 +94,8 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 
 		add("North", leftPan);
 
-		resourcePackEditor = new ResourcePackEditor(mcreator, "minecraft", () -> search.getText().trim());
+		resourcePackEditor = new ResourcePackEditor(mcreator, new ResourcePackInfo.Vanilla(mcreator.getWorkspace()),
+				() -> search.getText().trim());
 
 		add("Center", resourcePackEditor);
 	}

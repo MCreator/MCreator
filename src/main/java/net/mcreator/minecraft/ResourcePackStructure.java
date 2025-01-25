@@ -22,7 +22,6 @@ package net.mcreator.minecraft;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
-import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class ResourcePackStructure {
@@ -47,26 +45,8 @@ public class ResourcePackStructure {
 		return new File(workspace.getGenerator().getResourceRoot(), getResourcesFolder(namespace));
 	}
 
-	@Nullable public static File getResourcePackArchive(Workspace workspace, String namespace) {
-		if ("minecraft".equals(namespace)) {
-			String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
-			if (vanillaResourcesJar != null) {
-				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
-						workspace.getGenerator().getProjectJarManager().getClassFileSources() :
-						List.of();
-				for (LibraryInfo libraryInfo : libraryInfos) {
-					File libraryFile = new File(libraryInfo.getLocationAsString());
-					if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
-							.find()) {
-						return libraryFile;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	public static Collection<Entry> getResourcePackStructure(Workspace workspace, String namespace, @Nullable File resourcePackArchive) {
+	public static Collection<Entry> getResourcePackStructure(Workspace workspace, String namespace,
+			@Nullable File resourcePackArchive) {
 		Set<Entry> entries = new TreeSet<>();
 
 		if (resourcePackArchive != null) {
@@ -75,7 +55,8 @@ public class ResourcePackStructure {
 				ZipIO.iterateZip(resourcePackArchive, entry -> {
 					if (!entry.isDirectory()) {
 						String path = entry.getName();
-						if (path.startsWith(getResourcesFolder(namespace)) && extensions.contains(FilenameUtils.getExtension(path))) {
+						if (path.startsWith(getResourcesFolder(namespace)) && extensions.contains(
+								FilenameUtils.getExtension(path))) {
 							path = path.substring(getResourcesFolder(namespace).length());
 							zipEntriesComputed.add(path);
 						}
@@ -86,8 +67,8 @@ public class ResourcePackStructure {
 
 			for (String path : zipEntries) {
 				File override = new File(getResourcePackRoot(workspace, namespace), path);
-				entries.add(
-						new Entry(namespace, path, override, override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
+				entries.add(new Entry(namespace, path, override,
+						override.isFile() ? EntryType.VANILLA_OVERRIDE : EntryType.VANILLA));
 			}
 		}
 
