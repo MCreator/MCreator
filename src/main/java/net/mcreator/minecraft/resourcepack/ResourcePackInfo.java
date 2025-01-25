@@ -25,6 +25,7 @@ import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class ResourcePackInfo {
@@ -43,6 +44,23 @@ public class ResourcePackInfo {
 
 	public String namespace() {
 		return namespace;
+	}
+
+	@Override public final boolean equals(Object o) {
+		if (!(o instanceof ResourcePackInfo that))
+			return false;
+
+		return Objects.equals(packFile, that.packFile) && Objects.equals(namespace, that.namespace);
+	}
+
+	@Override public int hashCode() {
+		int result = Objects.hashCode(packFile);
+		result = 31 * result + Objects.hashCode(namespace);
+		return result;
+	}
+
+	@Override public String toString() {
+		return "ResourcePackInfo [packFile=" + packFile + ", namespace=" + namespace + "]";
 	}
 
 	public static class Vanilla extends ResourcePackInfo {
