@@ -20,10 +20,13 @@
 package net.mcreator.ui.variants.resourcepackmaker;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
+import net.mcreator.minecraft.resourcepack.ResourcePackStructure;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -36,10 +39,10 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntConsumer;
 
 public class ResourcePackMakerWorkspacePanel extends JPanel {
 
@@ -117,9 +120,26 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		tabbedPane.setOpaque(false);
 		tabbedPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
 				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
-		tabbedPane.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
+
+		tabbedPane.addTab("", new JLabel());
+		tabbedPane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add")));
+		tabbedPane.addChangeListener(e -> {
+			if (tabbedPane.getSelectedIndex() == 0) { // new texture mapping
+				tabbedPane.setSelectedIndex(1);
+				File[] files = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".jar", ".zip" });
+				if (files != null) {
+					File modsDir = mcreator.getWorkspace().getFolderManager().getModsDir();
+					for (File file : files) {
+						FileIO.copyFile(file, new File(modsDir, file.getName()));
+					}
+					reloadElements();
+					tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+				}
+			}
+		});
 
 		tabbedPane.addTab(L10N.t("mcreator.resourcepack.tab.vanilla"), vanillaResourcePackEditor);
+		tabbedPane.setSelectedIndex(1);
 
 		add("Center", tabbedPane);
 	}
@@ -135,6 +155,27 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 				ResourcePackEditor editor = new ResourcePackEditor(mcreator, packInfo, () -> search.getText().trim());
 				modResourcePackEditors.put(packInfo, editor);
 				tabbedPane.addTab(tabTitle, editor);
+
+				JButton button = new JButton(UIRES.get("close_small"));
+				button.setContentAreaFilled(false);
+				button.setBorder(BorderFactory.createEmptyBorder());
+				button.setMargin(new Insets(0, 0, 0, 0));
+				button.addActionListener(e -> {
+					int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("mcreator.resourcepack.delete_pack"),
+							L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+							null);
+					if (n == JOptionPane.YES_OPTION) {
+						// Delete pack (mod) file + overrides namespace folder
+						File packFile = packInfo.packFile();
+						if (packFile != null)
+							packFile.delete();
+						FileIO.deleteDir(ResourcePackStructure.getResourcePackRoot(mcreator.getWorkspace(),
+								packInfo.namespace()));
+						reloadElements();
+					}
+				});
+				tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(editor),
+						PanelUtils.join(FlowLayout.LEFT, 8, 0, new JLabel(tabTitle), button));
 			}
 		}
 
@@ -165,6 +206,10 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		for (ResourcePackEditor editor : modResourcePackEditors.values()) {
 			editor.refilterElements();
 		}
+	}
+
+	protected JTabbedPane getTabbedPane() {
+		return tabbedPane;
 	}
 
 	@Override protected void paintComponent(Graphics g) {

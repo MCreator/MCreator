@@ -37,6 +37,8 @@
 
 package net.mcreator.ui.variants.resourcepackmaker;
 
+import net.mcreator.io.FileIO;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -77,7 +79,16 @@ record ResourcePackMakerDropTarget(ResourcePackMaker mcreator) implements DropTa
 				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
-						mcreator.getWorkspacePanel().getCurrentResourcePackEditor().importExternalFile(file);
+						if (FilenameUtils.getExtension(file.getName()).equals("jar") || FilenameUtils.getExtension(
+								file.getName()).equals("zip")) {
+							File modsDir = mcreator.getWorkspace().getFolderManager().getModsDir();
+							FileIO.copyFile(file, new File(modsDir, file.getName()));
+							mcreator.reloadWorkspaceTabContents();
+							mcreator.getWorkspacePanel().getTabbedPane()
+									.setSelectedIndex(mcreator.getWorkspacePanel().getTabbedPane().getTabCount() - 1);
+						} else {
+							mcreator.getWorkspacePanel().getCurrentResourcePackEditor().importExternalFile(file);
+						}
 					}
 				}
 			} catch (Exception ex) {

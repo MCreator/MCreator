@@ -19,7 +19,6 @@
 
 package net.mcreator.minecraft.resourcepack;
 
-import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.lang3.StringUtils;
@@ -71,12 +70,8 @@ public class ResourcePackInfo {
 
 	public static List<ResourcePackInfo> findModResourcePacks(Workspace workspace) {
 		List<ResourcePackInfo> retval = new ArrayList<>();
-		File mods = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mods_folder");
-		if (mods == null) { // if not specified, use default value
-			mods = new File(workspace.getWorkspaceFolder(), "run/mods");
-		}
-
-		for (File file : Objects.requireNonNullElse(mods.listFiles(), new File[0])) {
+		for (File file : Objects.requireNonNullElse(workspace.getFolderManager().getModsDir().listFiles(),
+				new File[0])) {
 			try {
 				if (ZipIO.checkIfZip(file)) {
 					Set<String> namespaces = new HashSet<>();
