@@ -40,9 +40,9 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ResourcePackMakerWorkspacePanel extends JPanel {
 
@@ -52,7 +52,7 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 
 	private final ResourcePackEditor vanillaResourcePackEditor;
 
-	private final Map<ResourcePackInfo, ResourcePackEditor> modResourcePackEditors = new HashMap<>();
+	private final Map<ResourcePackInfo, ResourcePackEditor> modResourcePackEditors = new ConcurrentHashMap<>();
 
 	private final JTabbedPane tabbedPane;
 
