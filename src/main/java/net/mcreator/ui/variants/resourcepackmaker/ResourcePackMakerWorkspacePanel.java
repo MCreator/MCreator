@@ -23,7 +23,9 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.util.ColorUtils;
@@ -34,16 +36,28 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.IntConsumer;
 
 public class ResourcePackMakerWorkspacePanel extends JPanel {
 
-	public final JTextField search;
+	private final MCreator mcreator;
 
-	public final ResourcePackEditor resourcePackEditor;
+	private final JTextField search;
+
+	private final ResourcePackEditor vanillaResourcePackEditor;
+
+	private final Map<ResourcePackInfo, ResourcePackEditor> modResourcePackEditors = new HashMap<>();
+
+	private final JTabbedPane tabbedPane;
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(new BorderLayout(3, 3));
+
+		this.mcreator = mcreator;
+
 		setOpaque(false);
 
 		search = new JTextField(34) {
@@ -75,15 +89,15 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override public void removeUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
+				refilterAllEditors();
 			}
 
 			@Override public void insertUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
+				refilterAllEditors();
 			}
 
 			@Override public void changedUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
+				refilterAllEditors();
 			}
 		});
 
@@ -96,18 +110,61 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 
 		add("North", leftPan);
 
-		resourcePackEditor = new ResourcePackEditor(mcreator, new ResourcePackInfo.Vanilla(mcreator.getWorkspace()),
-				() -> search.getText().trim());
+		vanillaResourcePackEditor = new ResourcePackEditor(mcreator,
+				new ResourcePackInfo.Vanilla(mcreator.getWorkspace()), () -> search.getText().trim());
 
-		add("Center", resourcePackEditor);
+		tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabbedPane.setOpaque(false);
+		tabbedPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
+		tabbedPane.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
+
+		tabbedPane.addTab(L10N.t("mcreator.resourcepack.tab.vanilla"), vanillaResourcePackEditor);
+
+		add("Center", tabbedPane);
 	}
 
 	public void reloadElements() {
-		resourcePackEditor.reloadElements();
+		List<ResourcePackInfo> modPacks = ResourcePackInfo.findModResourcePacks(mcreator.getWorkspace());
+
+		// add new mod pack editors
+		for (ResourcePackInfo packInfo : modPacks) {
+			if (!modResourcePackEditors.containsKey(packInfo)) {
+				String tabTitle = L10N.t("mcreator.resourcepack.tab.mod", packInfo.namespace());
+
+				ResourcePackEditor editor = new ResourcePackEditor(mcreator, packInfo, () -> search.getText().trim());
+				modResourcePackEditors.put(packInfo, editor);
+				tabbedPane.addTab(tabTitle, editor);
+			}
+		}
+
+		// remove mod pack editors not in the list from map and tabbed pane
+		for (ResourcePackInfo packInfo : modResourcePackEditors.keySet()) {
+			if (!modPacks.contains(packInfo)) {
+				ResourcePackEditor editor = modResourcePackEditors.get(packInfo);
+				modResourcePackEditors.remove(packInfo);
+				tabbedPane.remove(editor);
+			}
+		}
+
+		// reload all editors
+		vanillaResourcePackEditor.reloadElements();
+		for (ResourcePackEditor editor : modResourcePackEditors.values()) {
+			editor.reloadElements();
+		}
 	}
 
-	public ResourcePackEditor getResourcePackEditor() {
-		return resourcePackEditor;
+	public ResourcePackEditor getCurrentResourcePackEditor() {
+		if (tabbedPane.getSelectedComponent() instanceof ResourcePackEditor editor)
+			return editor;
+		return vanillaResourcePackEditor;
+	}
+
+	private void refilterAllEditors() {
+		vanillaResourcePackEditor.refilterElements();
+		for (ResourcePackEditor editor : modResourcePackEditors.values()) {
+			editor.refilterElements();
+		}
 	}
 
 	@Override protected void paintComponent(Graphics g) {

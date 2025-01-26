@@ -19,16 +19,22 @@
 
 package net.mcreator.minecraft.resourcepack;
 
+import net.mcreator.generator.GeneratorUtils;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class ResourcePackInfo {
+
+	private static final Logger LOG = LogManager.getLogger(ResourcePackInfo.class);
 
 	@Nullable private final File packFile;
 	private final String namespace;
@@ -61,6 +67,36 @@ public class ResourcePackInfo {
 
 	@Override public String toString() {
 		return "ResourcePackInfo [packFile=" + packFile + ", namespace=" + namespace + "]";
+	}
+
+	public static List<ResourcePackInfo> findModResourcePacks(Workspace workspace) {
+		List<ResourcePackInfo> retval = new ArrayList<>();
+		File mods = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mods_folder");
+		if (mods == null) { // if not specified, use default value
+			mods = new File(workspace.getWorkspaceFolder(), "run/mods");
+		}
+
+		for (File file : Objects.requireNonNullElse(mods.listFiles(), new File[0])) {
+			try {
+				if (ZipIO.checkIfZip(file)) {
+					Set<String> namespaces = new HashSet<>();
+					ZipIO.iterateZip(file, entry -> {
+						String name = entry.getName();
+						if (name.startsWith("assets/") && StringUtils.countMatches(name, "/") == 2) {
+							namespaces.add(name.split("/")[1]);
+						}
+					}, false);
+					for (String namespace : namespaces) {
+						if (!namespace.equals("minecraft")) {
+							retval.add(new ResourcePackInfo(file, namespace));
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.warn("Failed to read mod info from {} due to: {}", file, e.getMessage());
+			}
+		}
+		return retval;
 	}
 
 	public static class Vanilla extends ResourcePackInfo {

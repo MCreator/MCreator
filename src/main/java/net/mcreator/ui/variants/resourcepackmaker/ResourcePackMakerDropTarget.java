@@ -77,7 +77,7 @@ record ResourcePackMakerDropTarget(ResourcePackMaker mcreator) implements DropTa
 				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
-						mcreator.getWorkspacePanel().getResourcePackEditor().importExternalFile(file);
+						mcreator.getWorkspacePanel().getCurrentResourcePackEditor().importExternalFile(file);
 					}
 				}
 			} catch (Exception ex) {
