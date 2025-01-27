@@ -351,20 +351,20 @@ public class TestWorkspaceDataProvider {
 		}
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
-			byte[] emptyNbtStucture;
+			byte[] emptyNbtStructure;
 			try {
-				emptyNbtStucture = IOUtils.resourceToByteArray("/empty.nbt");
+				emptyNbtStructure = IOUtils.resourceToByteArray("/empty.nbt");
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 
-			FileIO.writeBytesToFile(emptyNbtStucture,
+			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStucture,
+			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStucture,
+			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStucture,
+			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
