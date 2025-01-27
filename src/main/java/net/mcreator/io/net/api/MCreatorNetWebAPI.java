@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class D8WebAPI implements IWebAPI {
+public class MCreatorNetWebAPI implements IWebAPI {
 
 	private static final Logger LOG = LogManager.getLogger("Website API");
 
@@ -58,7 +58,12 @@ public class D8WebAPI implements IWebAPI {
 		if (appData.isEmpty())
 			return false;
 
-		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
+		try {
+			updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
+		} catch (Exception e) {
+			updateInfo = UpdateInfo.empty();
+			LOG.warn("Failed to parse update info", e);
+		}
 
 		new Thread(() -> {
 			initAPIPrivate();
