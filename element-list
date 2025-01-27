@@ -54,6 +54,7 @@ net.mcreator.java
 net.mcreator.java.debug
 net.mcreator.java.monitoring
 net.mcreator.minecraft
+net.mcreator.minecraft.resourcepack
 net.mcreator.plugin
 net.mcreator.plugin.events
 net.mcreator.plugin.events.ui

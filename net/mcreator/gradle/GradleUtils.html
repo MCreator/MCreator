@@ -125,17 +125,21 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getEnvironment(java.lang.String)" class="member-name-link">getEnvironment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;java_home)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;org.gradle.tooling.ModelBuilder<wbr>&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleModelBuilder(org.gradle.tooling.ProjectConnection,java.lang.Class)" class="member-name-link">getGradleModelBuilder</a><wbr>(org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleModelBuilder(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.Class)" class="member-name-link">getGradleModelBuilder</a><wbr>(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.gradle.tooling.ProjectConnection</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleProjectConnection(net.mcreator.workspace.Workspace)" class="member-name-link">getGradleProjectConnection</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.gradle.tooling.BuildActionExecuter<wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleSyncLauncher(org.gradle.tooling.ProjectConnection)" class="member-name-link">getGradleSyncLauncher</a><wbr>(org.gradle.tooling.ProjectConnection&nbsp;projectConnection)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleSyncLauncher(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.String...)" class="member-name-link">getGradleSyncLauncher</a><wbr>(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;additionalTasks)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.gradle.tooling.BuildLauncher</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleTaskLauncher(org.gradle.tooling.ProjectConnection,java.lang.String...)" class="member-name-link">getGradleTaskLauncher</a><wbr>(org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGradleTaskLauncher(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.String...)" class="member-name-link">getGradleTaskLauncher</a><wbr>(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;tasks)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -182,23 +186,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGradleSyncLauncher(org.gradle.tooling.ProjectConnection)">
+<section class="detail" id="getGradleSyncLauncher(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.String...)">
 <h3>getGradleSyncLauncher</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.gradle.tooling.BuildActionExecuter&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">getGradleSyncLauncher</span><wbr><span class="parameters">(org.gradle.tooling.ProjectConnection&nbsp;projectConnection)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.gradle.tooling.BuildActionExecuter&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">getGradleSyncLauncher</span><wbr><span class="parameters">(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;additionalTasks)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="getGradleTaskLauncher(org.gradle.tooling.ProjectConnection,java.lang.String...)">
+<section class="detail" id="getGradleTaskLauncher(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.String...)">
 <h3>getGradleTaskLauncher</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.gradle.tooling.BuildLauncher</span>&nbsp;<span class="element-name">getGradleTaskLauncher</span><wbr><span class="parameters">(org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.gradle.tooling.BuildLauncher</span>&nbsp;<span class="element-name">getGradleTaskLauncher</span><wbr><span class="parameters">(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;tasks)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="getGradleModelBuilder(org.gradle.tooling.ProjectConnection,java.lang.Class)">
+<section class="detail" id="getGradleModelBuilder(net.mcreator.generator.GeneratorConfiguration,org.gradle.tooling.ProjectConnection,java.lang.Class)">
 <h3>getGradleModelBuilder</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>
-<span class="return-type">org.gradle.tooling.ModelBuilder&lt;T&gt;</span>&nbsp;<span class="element-name">getGradleModelBuilder</span><wbr><span class="parameters">(org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
+<span class="return-type">org.gradle.tooling.ModelBuilder&lt;T&gt;</span>&nbsp;<span class="element-name">getGradleModelBuilder</span><wbr><span class="parameters">(<a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ org.gradle.tooling.ProjectConnection&nbsp;projectConnection,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz)</span></div>
 </section>
 </li>
