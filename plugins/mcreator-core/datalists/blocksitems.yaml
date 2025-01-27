@@ -340,7 +340,7 @@
   texture: GRASS
 
 - Blocks.GRASS_PATH:
-  readable_name: "Grass Path"
+  readable_name: "Dirt Path"
   type: block
   texture: GRASS_PATH
 
@@ -1755,7 +1755,7 @@
   texture: TALLGRASS#0
 
 - Blocks.TALLGRASS#1:
-  readable_name: "Tall Grass"
+  readable_name: "Short Grass"
   type: block
   texture: TALLGRASS#1
 
@@ -1892,7 +1892,7 @@
   texture: DOUBLE_PLANT#1
 
 - Blocks.DOUBLE_PLANT#2:
-  readable_name: "Double Tallgrass"
+  readable_name: "Tall Grass"
   type: block
   texture: DOUBLE_PLANT#2
 
@@ -3105,12 +3105,12 @@
   texture: COMMAND_BLOCK
 
 - Blocks.REPEATING_COMMAND_BLOCK:
-  readable_name: "Command Block Repeating"
+  readable_name: "Repeating Command Block"
   type: block
   texture: REPEATING_COMMAND_BLOCK
 
 - Blocks.CHAIN_COMMAND_BLOCK:
-  readable_name: "Command Block Chain"
+  readable_name: "Chain Command Block"
   type: block
   texture: CHAIN_COMMAND_BLOCK
 
@@ -3778,7 +3778,7 @@
   texture: STONE_SLAB#1
 
 - Blocks.STONE_SLAB#2:
-  readable_name: "Petrified Wooden Slab"
+  readable_name: "Petrified Oak Slab"
   type: block
   texture: STONE_SLAB#2
 
@@ -3972,7 +3972,7 @@
   texture: POTTED_CORNFLOWER
 
 - Blocks.POTTED_LILY_OF_THE_VALLEY:
-  readable_name: "Potted Lily Of The Valley"
+  readable_name: "Potted Lily of the Valley"
   type: block_without_item
   texture: POTTED_LILY_OF_THE_VALLEY
 
@@ -4828,7 +4828,7 @@
   texture: STAINED_GLASS_PANE#7
 
 - Blocks.STAINED_GLASS_PANE#8:
-  readable_name: "Light Gray Stained Glass Pane	"
+  readable_name: "Light Gray Stained Glass Pane"
   type: block
   texture: STAINED_GLASS_PANE#8
 
@@ -5575,7 +5575,7 @@
     poi: true
 
 - Blocks.BEE_NEST:
-  readable_name: "Bee nest"
+  readable_name: "Bee Nest"
   type: block
   texture: BEE_NEST
   other:
@@ -5709,7 +5709,7 @@
   texture: VERDANT_FROGLIGHT
 
 - Blocks.PEARLESCENT_FROGLIGHT:
-  readable_name: "Pearlscent Froglight"
+  readable_name: "Pearlescent Froglight"
   type: block
   texture: PEARLESCENT_FROGLIGHT
 
@@ -5925,7 +5925,7 @@
   texture: PRISMARINE_CRYSTALS
 
 - Items.HEART_OF_THE_SEA:
-  readable_name: "Heart Of The Sea"
+  readable_name: "Heart of the Sea"
   type: item
   texture: HEART_OF_THE_SEA
 
@@ -7563,7 +7563,7 @@
   texture: CAULDRON
 
 - Items.SPECKLED_MELON:
-  readable_name: "Speckled Melon"
+  readable_name: "Glistering Melon Slice"
   type: item
   texture: SPECKLED_MELON
 
