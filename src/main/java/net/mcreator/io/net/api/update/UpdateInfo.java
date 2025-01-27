@@ -28,6 +28,13 @@ public class UpdateInfo {
 	private String latestMajor;
 	private Map<String, Release> releases;
 
+	public static UpdateInfo empty() {
+		UpdateInfo info = new UpdateInfo();
+		info.latestMajor = "0.0.0";
+		info.releases = Map.of();
+		return info;
+	}
+
 	public String getLatestMajor() {
 		return latestMajor;
 	}
