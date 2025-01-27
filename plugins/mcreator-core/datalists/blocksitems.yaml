@@ -7609,7 +7609,7 @@
   texture: SPAWN_EGG#57
 
 - Items.SPAWN_EGG#58:
-  readable_name: "Endermen Spawn Egg"
+  readable_name: "Enderman Spawn Egg"
   type: item
   texture: SPAWN_EGG#58
 
