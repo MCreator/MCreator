@@ -7574,32 +7574,32 @@
   subtypes: true
 
 - Items.SPAWN_EGG#50:
-  readable_name: "Spawn Creeper"
+  readable_name: "Creeper Spawn Egg"
   type: item
   texture: SPAWN_EGG#50
 
 - Items.SPAWN_EGG#51:
-  readable_name: "Spawn Skeleton"
+  readable_name: "Skeleton Spawn Egg"
   type: item
   texture: SPAWN_EGG#51
 
 - Items.SPAWN_EGG#52:
-  readable_name: "Spawn Spider"
+  readable_name: "Spider Spawn Egg"
   type: item
   texture: SPAWN_EGG#52
 
 - Items.SPAWN_EGG#54:
-  readable_name: "Spawn Zombie"
+  readable_name: "Zombie Spawn Egg"
   type: item
   texture: SPAWN_EGG#54
 
 - Items.SPAWN_EGG#55:
-  readable_name: "Spawn Slime"
+  readable_name: "Slime Spawn Egg"
   type: item
   texture: SPAWN_EGG#55
 
 - Items.SPAWN_EGG#56:
-  readable_name: "Spawn Ghast"
+  readable_name: "Ghast Spawn Egg"
   type: item
   texture: SPAWN_EGG#56
 
@@ -7609,102 +7609,102 @@
   texture: SPAWN_EGG#57
 
 - Items.SPAWN_EGG#58:
-  readable_name: "Spawn Endermen"
+  readable_name: "Endermen Spawn Egg"
   type: item
   texture: SPAWN_EGG#58
 
 - Items.SPAWN_EGG#59:
-  readable_name: "Spawn Cave Spider"
+  readable_name: "Cave Spider Spawn Egg"
   type: item
   texture: SPAWN_EGG#59
 
 - Items.SPAWN_EGG#60:
-  readable_name: "Spawn Silverfish"
+  readable_name: "Silverfish Spawn Egg"
   type: item
   texture: SPAWN_EGG#60
 
 - Items.SPAWN_EGG#61:
-  readable_name: "Spawn Blaze"
+  readable_name: "Blaze Spawn Egg"
   type: item
   texture: SPAWN_EGG#61
 
 - Items.SPAWN_EGG#62:
-  readable_name: "Spawn Magma Cube"
+  readable_name: "Magma Cube Spawn Egg"
   type: item
   texture: SPAWN_EGG#62
 
 - Items.SPAWN_EGG#65:
-  readable_name: "Spawn Bat"
+  readable_name: "Bat Spawn Egg"
   type: item
   texture: SPAWN_EGG#65
 
 - Items.SPAWN_EGG#66:
-  readable_name: "Spawn Witch"
+  readable_name: "Witch Spawn Egg"
   type: item
   texture: SPAWN_EGG#66
 
 - Items.SPAWN_EGG#67:
-  readable_name: "Spawn Endermite"
+  readable_name: "Endermite Spawn Egg"
   type: item
   texture: SPAWN_EGG#67
 
 - Items.SPAWN_EGG#68:
-  readable_name: "Spawn Guardian"
+  readable_name: "Guardian Spawn Egg"
   type: item
   texture: SPAWN_EGG#68
 
 - Items.SPAWN_EGG#90:
-  readable_name: "Spawn Pig"
+  readable_name: "Pig Spawn Egg"
   type: item
   texture: SPAWN_EGG#90
 
 - Items.SPAWN_EGG#91:
-  readable_name: "Spawn Sheep"
+  readable_name: "Sheep Spawn Egg"
   type: item
   texture: SPAWN_EGG#91
 
 - Items.SPAWN_EGG#92:
-  readable_name: "Spawn Cow"
+  readable_name: "Cow Spawn Egg"
   type: item
   texture: SPAWN_EGG#92
 
 - Items.SPAWN_EGG#93:
-  readable_name: "Spawn Chicken"
+  readable_name: "Chicken Spawn Egg"
   type: item
   texture: SPAWN_EGG#93
 
 - Items.SPAWN_EGG#94:
-  readable_name: "Spawn Squid"
+  readable_name: "Squid Spawn Egg"
   type: item
   texture: SPAWN_EGG#94
 
 - Items.SPAWN_EGG#95:
-  readable_name: "Spawn Wolf"
+  readable_name: "Wolf Spawn Egg"
   type: item
   texture: SPAWN_EGG#95
 
 - Items.SPAWN_EGG#96:
-  readable_name: "Spawn Mooshroom"
+  readable_name: "Mooshroom Spawn Egg"
   type: item
   texture: SPAWN_EGG#96
 
 - Items.SPAWN_EGG#98:
-  readable_name: "Spawn Ocelot"
+  readable_name: "Ocelot Spawn Egg"
   type: item
   texture: SPAWN_EGG#98
 
 - Items.SPAWN_EGG#100:
-  readable_name: "Spawn Horse"
+  readable_name: "Horse Spawn Egg"
   type: item
   texture: SPAWN_EGG#100
 
 - Items.SPAWN_EGG#101:
-  readable_name: "Spawn Rabbit"
+  readable_name: "Rabbit Spawn Egg"
   type: item
   texture: SPAWN_EGG#101
 
 - Items.SPAWN_EGG#120:
-  readable_name: "Spawn Villager"
+  readable_name: "Villager Spawn Egg"
   type: item
   texture: SPAWN_EGG#120
 
@@ -8224,114 +8224,116 @@
   texture: GOAT_HORN
 
 - Items.NETHERITE_UPGRADE:
-  readable_name: "Smithing Template"
-  description: "Netherite Upgrade"
+  readable_name: "Netherite Upgrade"
+  description: "Smithing Template"
   type: item
   texture: NETHERITE_UPGRADE
 
 - Items.SENTRY_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Sentry Armor Trim"
+  readable_name: "Sentry Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SENTRY_ARMOR_TRIM
 
 - Items.DUNE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Dune Armor Trim"
+  readable_name: "Dune Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: DUNE_ARMOR_TRIM
 
 - Items.COAST_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Coast Armor Trim"
+  readable_name: "Coast Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: COAST_ARMOR_TRIM
 
 - Items.WILD_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Wild Armor Trim"
+  readable_name: "Wild Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WILD_ARMOR_TRIM
 
 - Items.WARD_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Ward Armor Trim"
+  readable_name: "Ward Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WARD_ARMOR_TRIM
 
 - Items.EYE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Eye Armor Trim"
+  readable_name: "Eye Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: EYE_ARMOR_TRIM
 
 - Items.VEX_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Vex Armor Trim"
+  readable_name: "Vex Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: VEX_ARMOR_TRIM
 
 - Items.TIDE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Tide Armor Trim"
+  readable_name: "Tide Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: TIDE_ARMOR_TRIM
 
 - Items.SNOUT_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Snout Armor Trim"
+  readable_name: "Snout Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SNOUT_ARMOR_TRIM
 
 - Items.RIB_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Rib Armor Trim"
+  readable_name: "Rib Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: RIB_ARMOR_TRIM
 
 - Items.SPIRE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Spire Armor Trim"
+  readable_name: "Spire Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SPIRE_ARMOR_TRIM
 
 - Items.WAYFINDER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Wayfinder Armor Trim"
+  readable_name: "Wayfinder Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WAYFINDER_ARMOR_TRIM
 
 - Items.SHAPER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Shaper Armor Trim"
+  readable_name: "Shaper Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SHAPER_ARMOR_TRIM
 
 - Items.SILENCE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Silence Armor Trim"
+  readable_name: "Silence Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SILENCE_ARMOR_TRIM
 
 - Items.RAISER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Raiser Armor Trim"
+  readable_name: "Raiser Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: RAISER_ARMOR_TRIM
 
 - Items.HOST_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Host Armor Trim"
+  readable_name: "Host Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: HOST_ARMOR_TRIM
 
 - Items.FLOW_ARMOR_TRIM:
-  readable_name: "Flow Armor Trim Smithing Template"
+  readable_name: "Flow Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: FLOW_ARMOR_TRIM_SMITHING_TEMPLATE
 
 - Items.BOLT_ARMOR_TRIM:
-  readable_name: "Bolt Armor Trim Smithing Template"
+  readable_name: "Bolt Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
 
