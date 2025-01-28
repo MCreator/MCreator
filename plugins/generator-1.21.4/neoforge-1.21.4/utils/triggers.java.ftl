@@ -131,8 +131,8 @@
 
 <#macro onRightClickedInAir procedure="">
 <#if hasProcedure(procedure)>
-@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-	InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+@Override public InteractionResult use(Level world, Player entity, InteractionHand hand) {
+	InteractionResult ar = super.use(world, entity, hand);
 	<@procedureCode procedure, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",
@@ -261,7 +261,7 @@
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
-@Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
+@Override public void wasExploded(ServerLevel world, BlockPos pos, Explosion e) {
 	super.wasExploded(world, pos, e);
 	<@procedureCode procedure, {
 		"x": "pos.getX()",
@@ -313,8 +313,8 @@
 
 <#macro onRedstoneOrNeighborChanged onRedstoneOn="" onRedstoneOff="" onNeighborChanged="">
 <#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff) || hasProcedure(onNeighborChanged)>
-@Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-	super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
+@Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean moving) {
+	super.neighborChanged(blockstate, world, pos, neighborBlock, orientation, moving);
 	<#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff)>
 		if (world.getBestNeighborSignal(pos) > 0) {
 		<#if hasProcedure(onRedstoneOn)>

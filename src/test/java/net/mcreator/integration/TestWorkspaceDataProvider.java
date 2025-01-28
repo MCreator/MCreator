@@ -1254,8 +1254,6 @@ public class TestWorkspaceDataProvider {
 			potionEffect.mobEffectCategory = getRandomItem(random, new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
-			potionEffect.isCuredByMilk = !_true;
-			potionEffect.isProtectedByTotem = !_true;
 			potionEffect.isCuredbyHoney = _true;
 			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
