@@ -34,7 +34,7 @@ templates:
     writer: json
     condition: "renderType #= 2"
     name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/model_item.json.ftl
+  - template: json/model_item_states.json.ftl
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"
 
