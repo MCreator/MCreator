@@ -28,6 +28,7 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -43,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
@@ -205,8 +207,9 @@ import java.util.*;
 		List<String> builtinProperties = DataListLoader.loadDataList("itemproperties").stream()
 				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace())).map(DataListEntry::getName)
 				.toList();
+		AtomicInteger index = new AtomicInteger();
 
-		states.forEach(state -> {
+		states.stream().sorted(Comparator.comparing(state -> -state.stateMap.size())).forEach(state -> {
 			StateEntry model = new StateEntry();
 			model.setWorkspace(getModElement().getWorkspace());
 			model.renderType = state.renderType;
@@ -220,14 +223,105 @@ import java.util.*;
 					model.stateMap.put(prop, value);
 			});
 
-			// only add this state if at least one supported property is present
-			if (!model.stateMap.isEmpty())
+			// only add this state if not duplicate and at least one supported property is present
+			if (state.listIndex == -1 && !models.contains(model) && !model.stateMap.isEmpty()) {
+				model.listIndex = index.getAndIncrement();
 				models.add(model);
+			}
 		});
 		return models;
 	}
 
-	public static class StateEntry implements IWorkspaceDependent {
+	public StateEntry getBaseState() {
+		StateEntry baseState = new StateEntry();
+		baseState.renderType = renderType;
+		baseState.texture = texture;
+		baseState.customModelName = customModelName;
+		return baseState;
+	}
+
+	/**
+	 * Returns a tree-like states representation referencing only properties supported in the current workspace.
+	 * For use by 1.21.4+ generators.
+	 *
+	 * @return Models tree with contents matching current generator.
+	 */
+	public StateTreeNode getModelsTree() {
+		StateEntry baseState = getBaseState();
+
+		// initially set to item's default state
+		// if no model overrides are defined, this will return tree of depth 1
+		StateTreeNode root = baseState;
+		for (StateEntry state : getModels()) {
+			if (state.stateMap.isEmpty())
+				continue; // should never happen because states with empty StateMap are removed by getModels()
+
+			StateBranch current = new StateBranch(null, root);
+			Map.Entry<PropertyData<?>, Object> cachedPair = null;
+			for (Map.Entry<PropertyData<?>, Object> pair : state.stateMap.entrySet()) {
+				if (cachedPair != null) {
+					StateTreeNode node = current.values.get(cachedPair.getValue());
+					if (node instanceof StateBranch branch) {
+						current = branch; // switch to found branch to handle it later
+					} else { // otherwise create a new branch for current property
+						current.values.put(cachedPair.getValue(),
+								new StateBranch(pair.getKey(), Objects.requireNonNullElse(node, baseState)));
+						current = (StateBranch) current.values.get(cachedPair.getValue());
+					}
+				}
+
+				// these two will only be called if we are at a wrong branch
+				while (!pair.getKey().equals(current.property) && current.fallback instanceof StateBranch branch)
+					current = branch; // keep going to fallback node until we reach branch for given property
+				if (!pair.getKey().equals(current.property)) { // or create it if not found
+					current.fallback = new StateBranch(pair.getKey(), current.fallback);
+					current = (StateBranch) current.fallback;
+					if (root == baseState) // update reference to root node to be returned
+						root = current; // this will not happen more than once (when the first branch is created)
+				}
+
+				cachedPair = pair;
+			}
+
+			StateTreeNode node = current.values.get(cachedPair.getValue());
+			if (node instanceof StateBranch branch) {
+				// find the deepest fallback node that is a branch
+				current = branch;
+				while (current.fallback instanceof StateBranch branch2)
+					current = branch2;
+				if (current.fallback == null || current.fallback == baseState)
+					current.fallback = state; // only reassign if currently unset or set to default state
+			} else if (node == null || node == baseState) {
+				current.values.put(cachedPair.getValue(), state);
+			}
+		}
+
+		return root;
+	}
+
+	public interface StateTreeNode {
+	}
+
+	public static class StateBranch implements StateTreeNode {
+
+		public PropertyData<?> property;
+		@TextureReference(TextureType.ITEM) @ResourceReference("model")
+		public LinkedHashMap<Object, StateTreeNode> values;
+		@TextureReference(TextureType.ITEM) @ResourceReference("model") public StateTreeNode fallback;
+
+		private StateBranch() {
+		}
+
+		public StateBranch(PropertyData<?> property, StateTreeNode fallback) {
+			this.property = property;
+			this.values = new LinkedHashMap<>();
+			this.fallback = fallback;
+		}
+	}
+
+	public static class StateEntry implements StateTreeNode, IWorkspaceDependent {
+
+		public int listIndex = -1;
 
 		public int renderType;
 		@TextureReference(TextureType.ITEM) public TextureHolder texture;
@@ -243,6 +337,14 @@ import java.util.*;
 
 		@Nullable @Override public Workspace getWorkspace() {
 			return workspace;
+		}
+
+		public String indexString() {
+			return listIndex >= 0 ? "_" + listIndex : "";
+		}
+
+		public StateTreeNode getModelsTree() {
+			return this;
 		}
 
 		public Model getItemModel() {
@@ -266,6 +368,15 @@ import java.util.*;
 		public boolean hasRangedItemModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
+
+		@Override public boolean equals(Object o) {
+			return this == o || o instanceof StateEntry that && Objects.equals(stateMap, that.stateMap);
+		}
+
+		@Override public int hashCode() {
+			return Objects.hashCode(stateMap);
+		}
+
 	}
 
 	public static int encodeModelType(Model.Type modelType) {
