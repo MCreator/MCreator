@@ -224,7 +224,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 			});
 
 			// only add this state if not duplicate and at least one supported property is present
-			if (state.listIndex == -1 && !models.contains(model) && !model.stateMap.isEmpty()) {
+			if (!models.contains(model) && !model.stateMap.isEmpty()) {
 				model.listIndex = index.getAndIncrement();
 				models.add(model);
 			}
