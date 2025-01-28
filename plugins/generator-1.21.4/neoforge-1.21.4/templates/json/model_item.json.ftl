@@ -1,4 +1,4 @@
-<#assign defaultState = (data.getBaseState??)?then(data.getBaseState(), data)>
+<#assign defaultState = data.getBaseState()>
 {
   "model": <@modelCode data.getModelsTree() />
 }

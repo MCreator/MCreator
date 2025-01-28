@@ -343,6 +343,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 			return listIndex >= 0 ? "_" + listIndex : "";
 		}
 
+		public StateEntry getBaseState() {
+			return this;
+		}
+
 		public StateTreeNode getModelsTree() {
 			return this;
 		}
