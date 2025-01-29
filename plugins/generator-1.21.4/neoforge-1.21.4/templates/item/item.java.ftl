@@ -151,7 +151,7 @@ public class ${name}Item extends Item {
 				"z": "entity.getZ()",
 				"world": "world",
 				"entity": "entity",
-				"itemstack": "ar.getObject()"
+				"itemstack": "entity.getItemInHand(hand)"
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
@@ -189,7 +189,7 @@ public class ${name}Item extends Item {
 				"z": "entity.getZ()",
 				"world": "world",
 				"entity": "entity",
-				"itemstack": "ar.getObject()"
+				"itemstack": "entity.getItemInHand(hand)"
 			}/>
 		</#if>
 		return ar;
