@@ -139,7 +139,7 @@
 		"z": "entity.getZ()",
 		"world": "world",
 		"entity": "entity",
-		"itemstack": "ar.getObject()"
+		"itemstack": "entity.getItemInHand(hand)"
 	}/>
 	return ar;
 }
