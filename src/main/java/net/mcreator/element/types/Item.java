@@ -299,27 +299,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 		return root;
 	}
 
-	public interface StateTreeNode {
-	}
+	public sealed interface StateTreeNode permits StateBranch, StateEntry {}
 
-	public static class StateBranch implements StateTreeNode {
+	public static final class StateBranch implements StateTreeNode {
 
 		public PropertyData<?> property;
-		@TextureReference(TextureType.ITEM) @ResourceReference("model")
 		public LinkedHashMap<Object, StateTreeNode> values;
-		@TextureReference(TextureType.ITEM) @ResourceReference("model") public StateTreeNode fallback;
-
-		private StateBranch() {
-		}
+		public StateTreeNode fallback;
 
 		public StateBranch(PropertyData<?> property, StateTreeNode fallback) {
 			this.property = property;
 			this.values = new LinkedHashMap<>();
 			this.fallback = fallback;
 		}
+
 	}
 
-	public static class StateEntry implements StateTreeNode, IWorkspaceDependent {
+	public static final class StateEntry implements StateTreeNode, IWorkspaceDependent {
 
 		public int listIndex = -1;
 
