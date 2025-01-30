@@ -127,22 +127,8 @@ public class ${JavaModName}Items {
 			<#list items as item>
 				<#if item.getModElement().getTypeString() == "item">
 					<#list item.customProperties.entrySet() as property>
-					<#--
-					ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
-						ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
-						(itemStackToRender, clientWorld, entity, itemEntityId) ->
-							<#if hasProcedure(property.getValue())>
-								(float) <@procedureCode property.getValue(), {
-								"x": "entity != null ? entity.getX() : 0",
-								"y": "entity != null ? entity.getY() : 0",
-								"z": "entity != null ? entity.getZ() : 0",
-								"world": "entity != null ? entity.level() : clientWorld",
-								"entity": "entity",
-								"itemstack": "itemStackToRender"
-								}, false/>
-								<#else>0</#if>
-					);
-					-->
+					event.register(ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}/${property.getKey()}"),
+						${item.getModElement().getName()}Item.${StringUtils.snakeToCamel(property.getKey())}Property.MAP_CODEC);
 					</#list>
 				</#if>
 			</#list>

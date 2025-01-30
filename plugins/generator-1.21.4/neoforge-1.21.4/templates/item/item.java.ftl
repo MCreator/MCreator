@@ -294,6 +294,35 @@ public class ${name}Item extends Item {
 		</#if>
 	}
 	</#if>
+
+	<#list data.customProperties.entrySet() as property>
+		<#assign propClassName = StringUtils.snakeToCamel(property.getKey())>
+		public record ${propClassName}Property() implements RangeSelectItemModelProperty {
+			public static final MapCodec<${propClassName}Property> MAP_CODEC = MapCodec.unit(new ${propClassName}Property());
+
+			@Override
+			public float get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed) {
+				<#if hasProcedure(property.getValue())>
+				return (float) <@procedureCode property.getValue(), {
+					"x": "entity != null ? entity.getX() : 0",
+					"y": "entity != null ? entity.getY() : 0",
+					"z": "entity != null ? entity.getZ() : 0",
+					"world": "entity != null ? entity.level() : clientWorld",
+					"entity": "entity",
+					"itemstack": "itemStackToRender"
+				}, false/>;
+				<#else>
+				return 0;
+				</#if>
+			}
+
+			@Override
+			public MapCodec<${propClassName}Property> type() {
+				return MAP_CODEC;
+			}
+		}
+	</#list>
+
 }
 
 <#macro arrowShootCode>
