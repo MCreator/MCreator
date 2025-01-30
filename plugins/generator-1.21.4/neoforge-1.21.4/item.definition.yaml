@@ -34,7 +34,7 @@ templates:
     writer: json
     condition: "renderType #= 2"
     name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/model_item_states.json.ftl
+  - template: json/model_item.json.ftl
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"
 
@@ -47,27 +47,27 @@ list_templates:
         condition:
           - "renderType #= 0"
           - "hasNormalModel()"
-        name: "@MODASSETSROOT/models/item/@registryname@[item.indexString()].json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
           - "hasToolModel()"
-        name: "@MODASSETSROOT/models/item/@registryname@[item.indexString()].json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/rangeditem.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
           - "hasRangedItemModel()"
-        name: "@MODASSETSROOT/models/item/@registryname@[item.indexString()].json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_cmodel.json.ftl
         writer: json
         condition: "renderType #= 1"
-        name: "@MODASSETSROOT/models/item/@registryname@[item.indexString()].json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_cmodel_obj.json.ftl
         writer: json
         condition: "renderType #= 2"
-        name: "@MODASSETSROOT/models/item/@registryname@[item.indexString()].json"
+        name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
 tags:
   - tag: ITEMS:minecraft:meat
