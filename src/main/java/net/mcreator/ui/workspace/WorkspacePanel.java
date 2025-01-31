@@ -107,6 +107,7 @@ import java.util.stream.Collectors;
 	private final JButton upFolder;
 	private final JButton renameFolder;
 
+	private final JLabel but1 = new JLabel(UIRES.get("wrk_add"));
 	private final JLabel but2 = new JLabel(UIRES.get("wrk_edit"));
 	private final JLabel but2a = new JLabel(UIRES.get("wrk_duplicate"));
 	private final JLabel but3 = new JLabel(UIRES.get("wrk_delete"));
@@ -270,16 +271,33 @@ import java.util.stream.Collectors;
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown() && e.isShiftDown()) {
-					searchModElementsUsages();
+				if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown()) {
+					if (e.isShiftDown()) {
+						searchModElementsUsages();
+					} else {
+						search.requestFocusInWindow();
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown() && but1.isEnabled()) {
+					new ModTypeDropdown(mcreator).show(but1, but1.getWidth() + 5, -3);
+				} else if (e.getKeyCode() == KeyEvent.VK_L && e.isControlDown()) {
+					lockCode();
+				} else if (e.getKeyCode() == KeyEvent.VK_D && e.isControlDown()) {
+					duplicateCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					IElement selected = list.getSelectedValue();
+					var selectedLocation = list.indexToLocation(list.getSelectedIndex());
 					if (selected instanceof FolderElement) {
 						switchFolder((FolderElement) selected);
 					} else {
-						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+						if (e.isAltDown()) {
+							editCurrentlySelectedModElementAsCode((ModElement) selected, list, selectedLocation.x,
+									selectedLocation.y);
+						} else {
+							editCurrentlySelectedModElement((ModElement) selected, list, selectedLocation.x,
+									selectedLocation.y);
+						}
 					}
 				}
 			}
@@ -698,7 +716,6 @@ import java.util.stream.Collectors;
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
 		pne.setOpaque(false);
 
-		JLabel but1 = new JLabel(UIRES.get("wrk_add"));
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
