@@ -326,6 +326,15 @@ import java.util.stream.Collectors;
 				}
 			}
 		});
+		search.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN && list.getModel().getSize() > 0) {
+					list.clearSelection();
+					list.setSelectedIndex(0);
+					list.requestFocusInWindow();
+				}
+			}
+		});
 
 		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
 
@@ -1026,62 +1035,66 @@ import java.util.stream.Collectors;
 	private void lockCode() {
 		List<IElement> selectedElements = list.getSelectedValuesList();
 
-		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
-				UIManager.getString("OptionPane.cancelButtonText") };
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
-				L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.WARNING_MESSAGE, null, options, options[1]);
-		if (n == 0) {
-			ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
-			Thread t = new Thread(() -> {
-				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
-						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
-				dial.addProgressUnit(p0);
+		// Only show the dialog if current selection contains lockable elements
+		if (selectedElements.stream()
+				.anyMatch(i -> i instanceof ModElement me && !(me.getType() == ModElementType.CODE))) {
+			Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
+					UIManager.getString("OptionPane.cancelButtonText") };
+			int n = JOptionPane.showOptionDialog(mcreator, L10N.t("workspace.elements.lock_modelement_message"),
+					L10N.t("workspace.elements.lock_modelement_confirm"), JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+			if (n == 0) {
+				ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.lock_modelement_title"));
+				Thread t = new Thread(() -> {
+					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
+							L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
+					dial.addProgressUnit(p0);
 
-				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
-				selectedElements.forEach(el -> {
-					if (el instanceof ModElement mu) {
-						if (mu.isCodeLocked()) {
-							mu.setCodeLock(false);
-							elementsThatGotUnlocked.add(mu); // code got unlocked, add to the list
-						} else {
-							mu.setCodeLock(true);
+					List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
+					selectedElements.forEach(el -> {
+						if (el instanceof ModElement mu) {
+							if (mu.isCodeLocked()) {
+								mu.setCodeLock(false);
+								elementsThatGotUnlocked.add(mu); // code got unlocked, add to the list
+							} else {
+								mu.setCodeLock(true);
+							}
+
+							mcreator.getWorkspace().markDirty();
 						}
+					});
+					reloadElementsInCurrentTab();
 
-						mcreator.getWorkspace().markDirty();
-					}
-				});
-				reloadElementsInCurrentTab();
+					p0.markStateOk();
 
-				p0.markStateOk();
-
-				// if we have new unlocked elements, we recreate their code
-				if (!elementsThatGotUnlocked.isEmpty()) {
-					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-							L10N.t("workspace.elements.lock_modelement_regeneration"));
-					dial.addProgressUnit(p1);
-					int i = 0;
-					for (ModElement mod : elementsThatGotUnlocked) {
-						GeneratableElement generatableElement = mod.getGeneratableElement();
-						if (generatableElement != null) {
-							// generate mod element
-							mcreator.getGenerator().generateElement(generatableElement);
+					// if we have new unlocked elements, we recreate their code
+					if (!elementsThatGotUnlocked.isEmpty()) {
+						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+								L10N.t("workspace.elements.lock_modelement_regeneration"));
+						dial.addProgressUnit(p1);
+						int i = 0;
+						for (ModElement mod : elementsThatGotUnlocked) {
+							GeneratableElement generatableElement = mod.getGeneratableElement();
+							if (generatableElement != null) {
+								// generate mod element
+								mcreator.getGenerator().generateElement(generatableElement);
+							}
+							i++;
+							p1.setPercent((int) (i / (float) elementsThatGotUnlocked.size() * 100));
 						}
-						i++;
-						p1.setPercent((int) (i / (float) elementsThatGotUnlocked.size() * 100));
-					}
-					p1.markStateOk();
+						p1.markStateOk();
 
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
-					dial.addProgressUnit(p2);
-					mcreator.getActionRegistry().buildWorkspace.doAction();
-					p2.markStateOk();
-				}
-				dial.hideDialog();
-			}, "CodeLock");
-			t.start();
-			dial.setVisible(true);
+						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+								L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
+						dial.addProgressUnit(p2);
+						mcreator.getActionRegistry().buildWorkspace.doAction();
+						p2.markStateOk();
+					}
+					dial.hideDialog();
+				}, "CodeLock");
+				t.start();
+				dial.setVisible(true);
+			}
 		}
 	}
 
