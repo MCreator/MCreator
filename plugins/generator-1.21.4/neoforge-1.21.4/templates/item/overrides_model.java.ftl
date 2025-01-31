@@ -33,12 +33,12 @@ package ${package}.init;
 
 <#compress>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class LegacyOverrideSelectItemModel implements ItemModel {
+
     private final ModelOverride[] overrides;
     private final ItemModel[] models;
     private final ItemModel fallback;
 
     private LegacyOverrideSelectItemModel(ModelOverride[] overrides, ItemModel[] models, ItemModel fallback) {
-        ${JavaModName}.LOGGER.warn(fallback);
         this.overrides = overrides;
         this.models = models;
         this.fallback = fallback;
@@ -47,16 +47,14 @@ package ${package}.init;
     @Override public void update(ItemStackRenderState renderState, ItemStack itemStack, ItemModelResolver modelResolver,
             ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         ItemModel model = fallback;
-        int j = -1;
         for (int i = 0; i < overrides.length; i++) {
             if (overrides[i].test(itemStack, level, entity, seed, displayContext))
-                model = models[j = i];
+                model = models[i];
         }
-        if (Math.random() >= 0.999) ${JavaModName}.LOGGER.debug(j);
         model.update(renderState, itemStack, modelResolver, displayContext, level, entity, seed);
     }
 
-    @OnlyIn(Dist.CLIENT) public static record FloatEntry(RangeSelectItemModelProperty property, float value) implements PredicateEntry {
+    @OnlyIn(Dist.CLIENT) public record FloatEntry(RangeSelectItemModelProperty property, float value) implements PredicateEntry {
         public static final Codec<LegacyOverrideSelectItemModel.FloatEntry> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 RangeSelectItemModelProperties.MAP_CODEC.fieldOf("property").forGetter(LegacyOverrideSelectItemModel.FloatEntry::property),
@@ -69,7 +67,7 @@ package ${package}.init;
         }
     }
 
-    @OnlyIn(Dist.CLIENT) public static record BoolEntry(ConditionalItemModelProperty property, boolean value) implements PredicateEntry {
+    @OnlyIn(Dist.CLIENT) public record BoolEntry(ConditionalItemModelProperty property, boolean value) implements PredicateEntry {
         public static final Codec<LegacyOverrideSelectItemModel.BoolEntry> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 ConditionalItemModelProperties.MAP_CODEC.fieldOf("property").forGetter(LegacyOverrideSelectItemModel.BoolEntry::property),
@@ -96,7 +94,7 @@ package ${package}.init;
         boolean test(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext);
     }
 
-    @OnlyIn(Dist.CLIENT) public static record ModelOverride(List<PredicateEntry> predicate, ItemModel.Unbaked model) {
+    @OnlyIn(Dist.CLIENT) public record ModelOverride(List<PredicateEntry> predicate, ItemModel.Unbaked model) {
         public static final Codec<LegacyOverrideSelectItemModel.ModelOverride> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 LegacyOverrideSelectItemModel.PredicateEntry.CODEC.listOf().fieldOf("predicate").forGetter(LegacyOverrideSelectItemModel.ModelOverride::predicate),
@@ -112,7 +110,7 @@ package ${package}.init;
         }
     }
 
-    @OnlyIn(Dist.CLIENT) public static record Unbaked(List<LegacyOverrideSelectItemModel.ModelOverride> overrides, ItemModel.Unbaked fallback) implements ItemModel.Unbaked {
+    @OnlyIn(Dist.CLIENT) public record Unbaked(List<LegacyOverrideSelectItemModel.ModelOverride> overrides, ItemModel.Unbaked fallback) implements ItemModel.Unbaked {
         public static final MapCodec<LegacyOverrideSelectItemModel.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                 LegacyOverrideSelectItemModel.ModelOverride.CODEC.listOf().fieldOf("overrides").forGetter(LegacyOverrideSelectItemModel.Unbaked::overrides),
@@ -140,6 +138,7 @@ package ${package}.init;
     @SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelTypes(RegisterItemModelsEvent event) {
         event.register(ResourceLocation.parse("${modid}:legacy_overrides"), LegacyOverrideSelectItemModel.Unbaked.MAP_CODEC);
     }
+
 }
 </#compress>
 
