@@ -28,8 +28,12 @@
           "entries": [
             <#list pool.entries as entry>
               {
+                <#if entry.item.isAir()>
+                "type": "minecraft:empty",
+                <#else>
                 "type": "minecraft:${entry.type}",
                 "name": "${mappedMCItemToRegistryName(entry.item)}",
+                </#if>
                 "weight": ${entry.weight},
                 <#if entry.silkTouchMode == 1 && hasToolContext()>
                 "conditions": [
