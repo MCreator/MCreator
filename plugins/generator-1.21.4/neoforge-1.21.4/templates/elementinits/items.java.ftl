@@ -40,6 +40,8 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
+<#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
+	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
 <#if itemsWithInventory?size != 0>
@@ -122,6 +124,26 @@ public class ${JavaModName}Items {
 
 	<#if hasItemsWithProperties>
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
+		<#if hasItemsWithLeftHandedProperty>
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterConditionalItemModelPropertyEvent event) {
+			event.register(ResourceLocation.parse("${modid}:lefthanded"), LegacyLefthandedProperty.MAP_CODEC);
+		}
+
+		public record LegacyLefthandedProperty() implements ConditionalItemModelProperty {
+			public static final MapCodec<LegacyLefthandedProperty> MAP_CODEC = MapCodec.unit(new LegacyLefthandedProperty());
+
+			@Override
+			public boolean get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext) {
+				return entity != null && entity.getMainArm() == HumanoidArm.LEFT;
+			}
+
+			@Override
+			public MapCodec<LegacyLefthandedProperty> type() {
+				return MAP_CODEC;
+			}
+		}
+		</#if>
+
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterRangeSelectItemModelPropertyEvent event) {
 			<#compress>
 			<#list items as item>
