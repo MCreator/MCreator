@@ -35,7 +35,8 @@
 
 package ${package}.item;
 
-import java.util.Map;import java.util.function.Consumer;
+import java.util.Map;
+import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public abstract class ${name}Item extends ArmorItem {

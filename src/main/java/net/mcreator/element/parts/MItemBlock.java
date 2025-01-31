@@ -34,4 +34,10 @@ public class MItemBlock extends MappableElement {
 		super(new NameMapper(owner, "blocksitems"), name);
 	}
 
+	public boolean isAir() {
+		String unmappedValue = getUnmappedValue();
+		return unmappedValue.equals("Blocks.AIR") || unmappedValue.equals("Blocks.VOID_AIR") || unmappedValue.equals(
+				"Blocks.CAVE_AIR");
+	}
+
 }

@@ -53,6 +53,7 @@ import net.mcreator.element.converter.v2024_2.*;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_4.*;
+import net.mcreator.element.converter.v2025_1.EnchantabilityConverter;
 import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 
@@ -74,7 +75,8 @@ public class ConverterRegistry {
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
 			new SpecialInformationConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new EnchantabilityConverter()
 		));
 		put(ModElementType.BIOME, List.of(
 			new BiomeSpawnListConverter(),
@@ -209,7 +211,8 @@ public class ConverterRegistry {
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
 			new ToolHarvestLevelConverter(),
-			new ItemsCreativeTabsConverter()
+			new ItemsCreativeTabsConverter(),
+			new EnchantabilityConverter()
 		));
 		put(ModElementType.ENCHANTMENT, List.of(
 			new EnchantmentDefinitionConverter()
