@@ -12,3 +12,6 @@ public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>
 public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature m_142674_(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z #place
 </#if>
+
+# Start of user code block custom ATs
+# End of user code block custom ATs
