@@ -17,19 +17,23 @@
           </#if>
           <#if pool.hasbonusrolls>
               <#if pool.minbonusrolls == pool.maxbonusrolls>
-            "bonus_rolls": ${pool.minbonusrolls},
+              "bonus_rolls": ${pool.minbonusrolls},
               <#else>
-            "bonus_rolls": {
-              "min": ${pool.minbonusrolls},
-              "max": ${pool.maxbonusrolls}
-            },
+              "bonus_rolls": {
+                "min": ${pool.minbonusrolls},
+                "max": ${pool.maxbonusrolls}
+              },
               </#if>
           </#if>
           "entries": [
             <#list pool.entries as entry>
               {
+                <#if entry.item.isAir()>
+                "type": "minecraft:empty",
+                <#else>
                 "type": "minecraft:${entry.type}",
                 "name": "${mappedMCItemToRegistryName(entry.item)}",
+                </#if>
                 "weight": ${entry.weight},
                 <#if entry.silkTouchMode == 1 && hasToolContext()>
                 "conditions": [
@@ -55,58 +59,57 @@
                     "condition": "minecraft:inverted",
                     "term": {
                       "condition": "minecraft:match_tool",
-                        "predicate": {
-                          "predicates": {
-                            "minecraft:enchantments": [
-                              {
-                                "enchantments": "minecraft:silk_touch",
-                                "levels": {
-                                  "min": 1
-                                }
+                      "predicate": {
+                        "predicates": {
+                          "minecraft:enchantments": [
+                            {
+                              "enchantments": "minecraft:silk_touch",
+                              "levels": {
+                                "min": 1
                               }
-                            ]
-                          }
+                            }
+                          ]
                         }
+                      }
                     }
                   }
                 ],
                 </#if>
                 "functions": [
-                    {
-                      "function": "minecraft:set_count",
-                      "count": {
-                        "min": ${entry.minCount},
-                        "max": ${entry.maxCount}
-                      }
+                  {
+                    "function": "minecraft:set_count",
+                    "count": {
+                      "min": ${entry.minCount},
+                      "max": ${entry.maxCount}
                     }
-                    <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
-                    ,{
-                      "function": "minecraft:enchant_with_levels",
-                      "levels": {
-                        "min": ${entry.minEnchantmentLevel},
-                        "max": ${entry.maxEnchantmentLevel}
-                      }
+                  }
+                  <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
+                  ,{
+                    "function": "minecraft:enchant_with_levels",
+                    "levels": {
+                      "min": ${entry.minEnchantmentLevel},
+                      "max": ${entry.maxEnchantmentLevel}
                     }
-                    </#if>
-                    <#if entry.explosionDecay>
-                    ,{
-                      "function": "minecraft:explosion_decay"
-                    }
-                    </#if>
-                    <#if entry.affectedByFortune && hasToolContext()>
-                    ,{
-                      "function": "minecraft:apply_bonus",
-                      "enchantment": "minecraft:fortune",
-                      "formula": "minecraft:ore_drops"
-                    }
-                    </#if>
+                  }
+                  </#if>
+                  <#if entry.explosionDecay>
+                  ,{
+                    "function": "minecraft:explosion_decay"
+                  }
+                  </#if>
+                  <#if entry.affectedByFortune && hasToolContext()>
+                  ,{
+                    "function": "minecraft:apply_bonus",
+                    "enchantment": "minecraft:fortune",
+                    "formula": "minecraft:ore_drops"
+                  }
+                  </#if>
                 ]
               }
                 <#if entry?has_next>,</#if>
             </#list>
           ]
-        }
-        <#if pool?has_next>,</#if>
+        }<#if pool?has_next>,</#if>
     </#list>
   ],
   "random_sequence": "${data.getNamespace()}:${data.getName()}"
