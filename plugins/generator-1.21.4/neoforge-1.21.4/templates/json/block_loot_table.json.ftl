@@ -16,8 +16,18 @@
       </#if>
       "entries": [
         {
+          <#if data.customDrop?? && !data.customDrop.isEmpty()>
+            <#assign dropItem = mappedMCItemToRegistryName(data.customDrop)>
+            <#if data.customDrop.isAir() || dropItem == "minecraft:air">
+            "type": "minecraft:empty"
+            <#else>
+            "type": "minecraft:item",
+            "name": "${dropItem}"
+            </#if>
+          <#else>
           "type": "minecraft:item",
-          "name": <#if data.customDrop?? && !data.customDrop.isEmpty()>"${mappedMCItemToRegistryName(data.customDrop)}"<#else>"${modid}:${registryname}"</#if>
+          "name": "${modid}:${registryname}"
+          </#if>
           <#if data.isDoubleBlock()>,
           "conditions": [
             {
