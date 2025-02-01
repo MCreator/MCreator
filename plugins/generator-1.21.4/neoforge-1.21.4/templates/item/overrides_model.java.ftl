@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-package ${package}.init;
+package ${package}.client.model.item;
 
 <#compress>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class LegacyOverrideSelectItemModel implements ItemModel {
