@@ -40,7 +40,7 @@ templates:
 
 global_templates:
   - template: item/overrides_model.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/client/item/LegacyOverrideSelectItemModel.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/LegacyOverrideSelectItemModel.java"
     condition: "${w.getGElementsOfType('item')?filter(e -> e.getModels()?has_content)?size != 0}"
 
 list_templates:
