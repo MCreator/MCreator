@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
+import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -48,7 +49,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		WorkspacePanelStructures workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		WorkspacePanelScreenshots workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(), "minecraft",
+		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(),
+				new ResourcePackInfo.Vanilla(workspacePanel.getMCreator().getWorkspace()),
 				() -> workspacePanel.search.getText().trim());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")

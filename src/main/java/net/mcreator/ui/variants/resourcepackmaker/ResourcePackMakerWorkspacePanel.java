@@ -20,6 +20,7 @@
 package net.mcreator.ui.variants.resourcepackmaker;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
@@ -33,6 +34,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.List;
 
 public class ResourcePackMakerWorkspacePanel extends JPanel {
 
@@ -94,7 +96,8 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 
 		add("North", leftPan);
 
-		resourcePackEditor = new ResourcePackEditor(mcreator, "minecraft", () -> search.getText().trim());
+		resourcePackEditor = new ResourcePackEditor(mcreator, new ResourcePackInfo.Vanilla(mcreator.getWorkspace()),
+				() -> search.getText().trim());
 
 		add("Center", resourcePackEditor);
 	}

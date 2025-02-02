@@ -34,7 +34,7 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.5+11'
+          java-version: '21.0.5+11.0.LTS'
           distribution: 'temurin'
       - name: Install Dependencies
         run: |
@@ -110,7 +110,7 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.5+11'
+          java-version: '21.0.5+11.0.LTS'
           distribution: 'temurin'
       - name: Install Dependencies
         run: |

@@ -307,7 +307,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	@Override protected void initGUI() {
 		onStruckByLightning = new ProcedureSelector(this.withEntry("entity/when_struck_by_lightning"), mcreator,
-				L10N.t("elementgui.living_entity.event_struck_by_lightning"),
+				L10N.t("elementgui.living_entity.event_struck_by_lightning"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		whenMobFalls = new ProcedureSelector(this.withEntry("entity/when_falls"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_falls"), Dependency.fromString(
@@ -316,9 +316,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.event_mob_dies"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource"));
 		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_is_hurt"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource")).makeReturnValueOptional();
+				L10N.t("elementgui.living_entity.event_mob_is_hurt"), AbstractProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource")).makeReturnValueOptional();
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
 				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
@@ -333,7 +333,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.event_player_collides_with"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 		onInitialSpawn = new ProcedureSelector(this.withEntry("entity/on_initial_spawn"), mcreator,
-				L10N.t("elementgui.living_entity.event_initial_spawn"),
+				L10N.t("elementgui.living_entity.event_initial_spawn"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		spawningCondition = new ProcedureSelector(this.withEntry("entity/condition_natural_spawning"), mcreator,
