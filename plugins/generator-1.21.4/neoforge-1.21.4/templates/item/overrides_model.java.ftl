@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer.item;
 
-<#compress>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class LegacyOverrideSelectItemModel implements ItemModel {
 
     private final ModelOverride[] overrides;
@@ -47,9 +46,11 @@ package ${package}.client.renderer.item;
     @Override public void update(ItemStackRenderState renderState, ItemStack itemStack, ItemModelResolver modelResolver,
             ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         ItemModel model = fallback;
-        for (int i = 0; i < overrides.length; i++) {
-            if (overrides[i].test(itemStack, level, entity, seed, displayContext))
+        for (int i = overrides.length - 1; i >= 0; i--) {
+            if (overrides[i].test(itemStack, level, entity, seed, displayContext)) {
                 model = models[i];
+                break;
+            }
         }
         model.update(renderState, itemStack, modelResolver, displayContext, level, entity, seed);
     }
@@ -82,7 +83,8 @@ package ${package}.client.renderer.item;
 
     @OnlyIn(Dist.CLIENT) public interface PredicateEntry {
         Codec<LegacyOverrideSelectItemModel.PredicateEntry> CODEC = Codec.either(
-            LegacyOverrideSelectItemModel.FloatEntry.CODEC, LegacyOverrideSelectItemModel.BoolEntry.CODEC
+            LegacyOverrideSelectItemModel.FloatEntry.CODEC,
+            LegacyOverrideSelectItemModel.BoolEntry.CODEC
         ).xmap(Either::unwrap, predicate -> {
             if (predicate instanceof LegacyOverrideSelectItemModel.FloatEntry floatPredicate)
                 return Either.left(floatPredicate);
@@ -140,6 +142,4 @@ package ${package}.client.renderer.item;
     }
 
 }
-</#compress>
-
 <#-- @formatter:on -->
