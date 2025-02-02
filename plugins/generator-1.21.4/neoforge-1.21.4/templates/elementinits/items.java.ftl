@@ -39,8 +39,9 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
-<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
-	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
+<#assign hasItemsWithCustomProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
+<#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
+	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
 <#if itemsWithInventory?size != 0>
@@ -118,6 +119,48 @@ public class ${JavaModName}Items {
 	<#if hasDoubleBlocks>
 	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block) {
 		return REGISTRY.registerItem(block.getId().getPath(), properties -> new DoubleHighBlockItem(block.get(), properties), new Item.Properties());
+	}
+	</#if>
+
+	<#if hasItemsWithCustomProperties || hasItemsWithLeftHandedProperty>
+	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
+
+		<#if hasItemsWithCustomProperties>
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterRangeSelectItemModelPropertyEvent event) {
+			<#compress>
+			<#list items as item>
+				<#if item.getModElement().getTypeString() == "item">
+					<#list item.customProperties.entrySet() as property>
+					event.register(ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}/${property.getKey()}"),
+						${item.getModElement().getName()}Item.${StringUtils.snakeToCamel(property.getKey())}Property.MAP_CODEC);
+					</#list>
+				</#if>
+			</#list>
+			</#compress>
+		}
+		</#if>
+
+		<#if hasItemsWithLeftHandedProperty>
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterConditionalItemModelPropertyEvent event) {
+			event.register(ResourceLocation.parse("${modid}:lefthanded"), LegacyLeftHandedProperty.MAP_CODEC);
+		}
+
+		public record LegacyLeftHandedProperty() implements ConditionalItemModelProperty {
+
+			public static final MapCodec<LegacyLeftHandedProperty> MAP_CODEC = MapCodec.unit(new LegacyLeftHandedProperty());
+
+			@Override
+			public boolean get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext) {
+				return entity != null && entity.getMainArm() == HumanoidArm.LEFT;
+			}
+
+			@Override
+			public MapCodec<LegacyLeftHandedProperty> type() {
+				return MAP_CODEC;
+			}
+		}
+		</#if>
+
 	}
 	</#if>
 
