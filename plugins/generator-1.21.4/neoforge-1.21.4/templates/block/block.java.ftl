@@ -284,7 +284,7 @@ public class ${name}Block extends
 		<#if data.isBoundingBoxEmpty()>
 			return Shapes.empty();
 		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
+			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(pos);</#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
 		</#if>
 	}

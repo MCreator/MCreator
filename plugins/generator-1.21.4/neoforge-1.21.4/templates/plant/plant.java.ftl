@@ -153,7 +153,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		<#if data.isBoundingBoxEmpty()>
 			return Shapes.empty();
 		<#else>
-			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
+			<#if !data.disableOffset> Vec3 offset = state.getOffset(pos); </#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
 		</#if>
 	}
