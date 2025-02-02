@@ -59,11 +59,12 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
 	private final JSpinner angularAcceleration = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
 
+	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox animate = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT", "LIT" });
+	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT"});
 
 	private ProcedureSelector additionalExpiryCondition;
 
@@ -100,7 +101,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
-		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
@@ -114,6 +115,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/render_type"),
 				L10N.label("elementgui.particle.render_type")));
 		spo2.add(renderType);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/emissive_rendering"),
+				L10N.label("elementgui.common.emissive_rendering")));
+		spo2.add(emissiveRendering);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"),
 				L10N.label("elementgui.particle.visual_scale")));
@@ -153,8 +158,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2,
-						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 10), 15,
-				15)));
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 2), 15,
+				5)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -182,6 +187,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		gravity.setValue(particle.gravity);
 		speedFactor.setValue(particle.speedFactor);
 		frameDuration.setValue(particle.frameDuration);
+		emissiveRendering.setSelected(particle.emissiveRendering);
 		maxAge.setValue(particle.maxAge);
 		maxAgeDiff.setValue(particle.maxAgeDiff);
 		angularVelocity.setValue(particle.angularVelocity);
@@ -203,6 +209,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.speedFactor = (double) speedFactor.getValue();
 		particle.maxAge = (int) maxAge.getValue();
 		particle.frameDuration = (int) frameDuration.getValue();
+		particle.emissiveRendering = emissiveRendering.isSelected();
 		particle.maxAgeDiff = (int) maxAgeDiff.getValue();
 		particle.angularVelocity = (double) angularVelocity.getValue();
 		particle.angularAcceleration = (double) angularAcceleration.getValue();

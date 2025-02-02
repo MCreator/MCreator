@@ -87,7 +87,6 @@ OnlineOptions: OnlineOptionsScreen
 SymlinkWarning: SymlinkWarningScreen
 Win: WinScreen
 Advancements: AdvancementsScreen
-EffectRenderingInventory: EffectRenderingInventoryScreen
 HangingSignEdit: HangingSignEditScreen
 ItemCombiner: ItemCombinerScreen
 Warning: WarningScreen

@@ -70,7 +70,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private TextureSelectionButton texture;
 
 	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 0, 128000, 1));
+	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 1, 128000, 1));
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
 	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 128000, 1));

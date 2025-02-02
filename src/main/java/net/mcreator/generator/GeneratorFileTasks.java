@@ -136,6 +136,15 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
+					case "OBJ_referencetextures":
+						for (Model model : modelList) {
+							if (model.getType() == Model.Type.OBJ) {
+								Arrays.stream(model.getFiles())
+										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
+										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureReferences(f, new File(to, f.getName())));
+							}
+						}
+						break;
 					case "JSON":
 						for (Model model : modelList) {
 							if (model.getType() == Model.Type.JSON) {

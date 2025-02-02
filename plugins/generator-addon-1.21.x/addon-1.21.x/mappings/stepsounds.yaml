@@ -103,3 +103,9 @@ VINE: vines
 WART: nether_wart
 #WET_GRASS: WET_GRASS
 WOOD: wood
+VAULT: vault
+SPAWNER: mob_spawner
+RESIN: resin
+RESIN_BRICKS: resin_brick
+CREAKING_HEART: creaking_heart
+WET_SPONGE: wet_sponge

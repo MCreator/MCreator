@@ -77,7 +77,6 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, blockTags, "wooden_fences", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "walls", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "small_flowers", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, blockTags, "tall_flowers", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "bee_growables", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "valid_spawn", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "impermeable", "minecraft", TagType.BLOCKS, false));
@@ -92,8 +91,6 @@ public class AddCommonTagsDialog {
 
 		callables.add(addTag(mcreator, itemTags, "arrows", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "planks", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, itemTags, "flowers", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "meat", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "enchantable/weapon", "minecraft", TagType.ITEMS, false));
 		callables.add(addTag(mcreator, itemTags, "enchantable/mining", "minecraft", TagType.ITEMS, false));
