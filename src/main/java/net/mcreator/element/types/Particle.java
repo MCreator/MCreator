@@ -60,6 +60,7 @@ public class Particle extends GeneratableElement {
 
 	public boolean canCollide;
 	public boolean alwaysShow;
+	public boolean emissiveRendering;
 
 	public String renderType;
 

@@ -340,7 +340,7 @@
   texture: GRASS
 
 - Blocks.GRASS_PATH:
-  readable_name: "Grass Path"
+  readable_name: "Dirt Path"
   type: block
   texture: GRASS_PATH
 
@@ -435,6 +435,21 @@
   type: block
   texture: MOSS_CARPET
 
+- Blocks.PALE_MOSS_BLOCK:
+  readable_name: "Pale Moss Block"
+  type: block
+  texture: PALE_MOSS_BLOCK
+
+- Blocks.PALE_MOSS_CARPET:
+  readable_name: "Pale Moss Carpet"
+  type: block
+  texture: PALE_MOSS_CARPET
+
+- Blocks.PALE_HANGING_MOSS:
+  readable_name: "Pale Hanging Moss"
+  type: block
+  texture: PALE_HANGING_MOSS
+
 - Blocks.PLANKS:
   readable_name: "Any Planks"
   type: block
@@ -470,6 +485,11 @@
   readable_name: "Dark Oak Planks"
   type: block
   texture: PLANKS#5
+
+- Blocks.PALE_OAK_PLANKS:
+  readable_name: "Pale Oak Planks"
+  type: block
+  texture: PALE_OAK_PLANKS
 
 - Blocks.CRIMSON_PLANKS:
   readable_name: "Crimson Planks"
@@ -536,6 +556,11 @@
   readable_name: "Dark Oak Sapling"
   type: block
   texture: SAPLING#5
+
+- Blocks.PALE_OAK_SAPLING:
+  readable_name: "Pale Oak Sapling"
+  type: block
+  texture: PALE_OAK_SAPLING
 
 - Blocks.MANGROVE_PROPAGULE:
   readable_name: "Mangrove Propagule"
@@ -1176,6 +1201,11 @@
   type: block
   texture: LOG2#1
 
+- Blocks.PALE_OAK_LOG:
+  readable_name: "Pale Oak Log"
+  type: block
+  texture: PALE_OAK_LOG
+
 - Blocks.WARPED_STEM:
   readable_name: "Warped Stem"
   type: block
@@ -1241,6 +1271,11 @@
   type: block
   texture: STRIPPED_DARK_OAK_LOG
 
+- Blocks.STRIPPED_PALE_OAK_LOG:
+  readable_name: "Stripped Pale Oak Log"
+  type: block
+  texture: STRIPPED_PALE_OAK_LOG
+
 - Blocks.STRIPPED_WARPED_STEM:
   readable_name: "Stripped Warped Stem"
   type: block
@@ -1296,6 +1331,11 @@
   type: block
   texture: DARK_OAK_WOOD
 
+- Blocks.PALE_OAK_WOOD:
+  readable_name: "Pale Oak Wood"
+  type: block
+  texture: PALE_OAK_WOOD
+
 - Blocks.WARPED_HYPHAE:
   readable_name: "Warped Hyphae"
   type: block
@@ -1345,6 +1385,11 @@
   readable_name: "Stripped Dark Oak Wood"
   type: block
   texture: STRIPPED_DARK_OAK_WOOD
+
+- Blocks.STRIPPED_PALE_OAK_WOOD:
+  readable_name: "Stripped Pale Oak Wood"
+  type: block
+  texture: STRIPPED_PALE_OAK_WOOD
 
 - Blocks.STRIPPED_WARPED_HYPHAE:
   readable_name: "Stripped Warped Hyphae"
@@ -1407,6 +1452,11 @@
   readable_name: "Dark Oak Leaves"
   type: block
   texture: LEAVES2#1
+
+- Blocks.PALE_OAK_LEAVES:
+  readable_name: "Pale Oak Leaves"
+  type: block
+  texture: PALE_OAK_LEAVES
 
 - Blocks.MANGROVE_LEAVES:
   readable_name: "Mangrove Leaves"
@@ -1705,7 +1755,7 @@
   texture: TALLGRASS#0
 
 - Blocks.TALLGRASS#1:
-  readable_name: "Tall Grass"
+  readable_name: "Short Grass"
   type: block
   texture: TALLGRASS#1
 
@@ -1810,6 +1860,16 @@
   type: block
   texture: TORCHFLOWER
 
+- Blocks.OPEN_EYEBLOSSOM:
+  readable_name: "Open Eyeblossom"
+  type: block
+  texture: OPEN_EYEBLOSSOM
+
+- Blocks.CLOSED_EYEBLOSSOM:
+  readable_name: "Closed Eyeblossom"
+  type: block
+  texture: CLOSED_EYEBLOSSOM
+
 - Blocks.PINK_PETALS:
   readable_name: "Pink Petals"
   type: block
@@ -1832,7 +1892,7 @@
   texture: DOUBLE_PLANT#1
 
 - Blocks.DOUBLE_PLANT#2:
-  readable_name: "Double Tallgrass"
+  readable_name: "Tall Grass"
   type: block
   texture: DOUBLE_PLANT#2
 
@@ -2077,6 +2137,11 @@
   type: block
   texture: MOB_SPAWNER
 
+- Blocks.CREAKING_HEART:
+  readable_name: "Creaking Heart"
+  type: block
+  texture: CREAKING_HEART
+
 - Blocks.OAK_STAIRS:
   readable_name: "Oak Stairs"
   type: block
@@ -2106,6 +2171,11 @@
   readable_name: "Dark Oak Stairs"
   type: block
   texture: DARK_OAK_STAIRS
+
+- Blocks.PALE_OAK_STAIRS:
+  readable_name: "Pale Oak Stairs"
+  type: block
+  texture: PALE_OAK_STAIRS
 
 - Blocks.CRIMSON_STAIRS:
   readable_name: "Crimson Stairs"
@@ -2232,6 +2302,11 @@
   type: block
   texture: STANDING_DARK_OAK_SIGN
 
+- Blocks.PALE_OAK_SIGN:
+  readable_name: "Pale Oak Sign"
+  type: block
+  texture: STANDING_PALE_OAK_SIGN
+
 - Blocks.CRIMSON_SIGN:
   readable_name: "Crimson Sign"
   type: block
@@ -2286,6 +2361,11 @@
   readable_name: "Dark Oak Wall Sign"
   type: block_without_item
   texture: DARK_OAK_WALL_SIGN
+
+- Blocks.PALE_OAK_WALL_SIGN:
+  readable_name: "Pale Oak Wall Sign"
+  type: block_without_item
+  texture: PALE_OAK_WALL_SIGN
 
 - Blocks.CRIMSON_WALL_SIGN:
   readable_name: "Crimson Wall Sign"
@@ -2342,6 +2422,11 @@
   type: block
   texture: DARK_OAK_HANGING_SIGN
 
+- Blocks.PALE_OAK_HANGING_SIGN:
+  readable_name: "Pale Oak Hanging Sign"
+  type: block
+  texture: PALE_OAK_HANGING_SIGN
+
 - Blocks.CRIMSON_HANGING_SIGN:
   readable_name: "Crimson Hanging Sign"
   type: block
@@ -2397,6 +2482,11 @@
   type: block_without_item
   texture: DARK_OAK_WALL_HANGING_SIGN
 
+- Blocks.PALE_OAK_WALL_HANGING_SIGN:
+  readable_name: "Pale Oak Wall Hanging Sign"
+  type: block_without_item
+  texture: PALE_OAK_WALL_HANGING_SIGN
+
 - Blocks.CRIMSON_WALL_HANGING_SIGN:
   readable_name: "Crimson Wall Hanging Sign"
   type: block_without_item
@@ -2451,6 +2541,11 @@
   readable_name: "Dark Oak Door"
   type: block
   texture: DARK_OAK_DOOR
+
+- Blocks.PALE_OAK_DOOR:
+  readable_name: "Pale Oak Door"
+  type: block
+  texture: PALE_OAK_DOOR
 
 - Blocks.CRIMSON_DOOR:
   readable_name: "Crimson Door"
@@ -2551,6 +2646,11 @@
   readable_name: "Dark Oak Trapdoor"
   type: block
   texture: DARK_OAK_TRAPDOOR
+
+- Blocks.PALE_OAK_TRAPDOOR:
+  readable_name: "Pale Oak Trapdoor"
+  type: block
+  texture: PALE_OAK_TRAPDOOR
 
 - Blocks.CRIMSON_TRAPDOOR:
   readable_name: "Crimson Trapdoor"
@@ -2752,6 +2852,11 @@
   type: block
   texture: DARK_OAK_BUTTON
 
+- Blocks.PALE_OAK_BUTTON:
+  readable_name: "Pale Oak Button"
+  type: block
+  texture: PALE_OAK_BUTTON
+
 - Blocks.CRIMSON_BUTTON:
   readable_name: "Crimson Button"
   type: block
@@ -2806,6 +2911,11 @@
   readable_name: "Dark Oak Pressure Plate"
   type: block
   texture: DARK_OAK_PRESSURE_PLATE
+
+- Blocks.PALE_OAK_PRESSURE_PLATE:
+  readable_name: "Pale Oak Pressure Plate"
+  type: block
+  texture: PALE_OAK_PRESSURE_PLATE
 
 - Blocks.CRIMSON_PRESSURE_PLATE:
   readable_name: "Crimson Pressure Plate"
@@ -2995,12 +3105,12 @@
   texture: COMMAND_BLOCK
 
 - Blocks.REPEATING_COMMAND_BLOCK:
-  readable_name: "Command Block Repeating"
+  readable_name: "Repeating Command Block"
   type: block
   texture: REPEATING_COMMAND_BLOCK
 
 - Blocks.CHAIN_COMMAND_BLOCK:
-  readable_name: "Command Block Chain"
+  readable_name: "Chain Command Block"
   type: block
   texture: CHAIN_COMMAND_BLOCK
 
@@ -3084,6 +3194,11 @@
   type: block
   texture: DARK_OAK_FENCE
 
+- Blocks.PALE_OAK_FENCE:
+  readable_name: "Pale Oak Fence"
+  type: block
+  texture: PALE_OAK_FENCE
+
 - Blocks.CRIMSON_FENCE:
   readable_name: "Crimson Fence"
   type: block
@@ -3138,6 +3253,11 @@
   readable_name: "Dark Oak Fence Gate"
   type: block
   texture: DARK_OAK_FENCE_GATE
+
+- Blocks.PALE_OAK_FENCE_GATE:
+  readable_name: "Pale Oak Fence Gate"
+  type: block
+  texture: PALE_OAK_FENCE_GATE
 
 - Blocks.CRIMSON_FENCE_GATE:
   readable_name: "Crimson Fence Gate"
@@ -3375,6 +3495,41 @@
   type: block
   texture: WATERLILY
 
+- Blocks.RESIN_CLUMP:
+  readable_name: "Resin Clump"
+  type: block
+  texture: RESIN_CLUMP
+
+- Blocks.RESIN_BLOCK:
+  readable_name: "Block of Resin"
+  type: block
+  texture: RESIN_BLOCK
+
+- Blocks.RESIN_BRICKS:
+  readable_name: "Resin Bricks"
+  type: block
+  texture: RESIN_BRICKS
+
+- Blocks.RESIN_BRICK_STAIRS:
+  readable_name: "Resin Brick Stairs"
+  type: block
+  texture: RESIN_BRICK_STAIRS
+
+- Blocks.RESIN_BRICK_SLAB:
+  readable_name: "Resin Brick Slab"
+  type: block
+  texture: RESIN_BRICK_SLAB
+
+- Blocks.RESIN_BRICK_WALL:
+  readable_name: "Resin Brick Wall"
+  type: block
+  texture: RESIN_BRICK_WALL
+
+- Blocks.CHISELED_RESIN_BRICKS:
+  readable_name: "Chiseled Resin Bricks"
+  type: block
+  texture: CHISELED_RESIN_BRICKS
+
 - Blocks.ENCHANTING_TABLE:
   readable_name: "Enchanting Table"
   type: block
@@ -3495,38 +3650,38 @@
   texture: DRAGON_EGG
 
 - Blocks.MONSTER_EGG:
-  readable_name: "Any Monster Egg"
+  readable_name: "Any Infested Stone"
   type: block
   texture: MONSTER_EGG
   subtypes: true
 
 - Blocks.MONSTER_EGG#0:
-  readable_name: "Stone Monster Egg"
+  readable_name: "Infested Stone"
   type: block
   texture: MONSTER_EGG#0
 
 - Blocks.MONSTER_EGG#1:
-  readable_name: "Cobblestone Monster Egg"
+  readable_name: "Infested Cobblestone"
   type: block
   texture: MONSTER_EGG#1
 
 - Blocks.MONSTER_EGG#2:
-  readable_name: "Stone Brick Monster Egg"
+  readable_name: "Infested Stone Bricks"
   type: block
   texture: MONSTER_EGG#2
 
 - Blocks.MONSTER_EGG#3:
-  readable_name: "Mossy Stone Brick Monster Egg"
+  readable_name: "Infested Mossy Stone Bricks"
   type: block
   texture: MONSTER_EGG#3
 
 - Blocks.MONSTER_EGG#4:
-  readable_name: "Cracked Stone Brick Monster Egg"
+  readable_name: "Infested Cracked Stone Bricks"
   type: block
   texture: MONSTER_EGG#4
 
 - Blocks.MONSTER_EGG#5:
-  readable_name: "Chiseled Stone Brick Monster Egg"
+  readable_name: "Infested Chiseled Stone Bricks"
   type: block
   texture: MONSTER_EGG#5
 
@@ -3570,6 +3725,11 @@
   readable_name: "Dark Oak Slab"
   type: block
   texture: WOODEN_SLAB#5
+
+- Blocks.PALE_OAK_SLAB:
+  readable_name: "Pale Oak Slab"
+  type: block
+  texture: PALE_OAK_SLAB
 
 - Blocks.CRIMSON_SLAB:
   readable_name: "Crimson Slab"
@@ -3618,7 +3778,7 @@
   texture: STONE_SLAB#1
 
 - Blocks.STONE_SLAB#2:
-  readable_name: "Petrified Wooden Slab"
+  readable_name: "Petrified Oak Slab"
   type: block
   texture: STONE_SLAB#2
 
@@ -3741,6 +3901,11 @@
   type: block_without_item
   texture: POTTED_DARK_OAK_SAPLING
 
+- Blocks.POTTED_PALE_OAK_SAPLING:
+  readable_name: "Potted Pale Oak Sapling"
+  type: block_without_item
+  texture: POTTED_PALE_OAK_SAPLING
+
 - Blocks.POTTED_MANGROVE_PROPAGULE:
   readable_name: "Potted Mangrove Propagule"
   type: block_without_item
@@ -3807,7 +3972,7 @@
   texture: POTTED_CORNFLOWER
 
 - Blocks.POTTED_LILY_OF_THE_VALLEY:
-  readable_name: "Potted Lily Of The Valley"
+  readable_name: "Potted Lily of the Valley"
   type: block_without_item
   texture: POTTED_LILY_OF_THE_VALLEY
 
@@ -3880,6 +4045,16 @@
   readable_name: "Potted Torchflower"
   type: block_without_item
   texture: POTTED_TORCHFLOWER
+
+- Blocks.POTTED_OPEN_EYEBLOSSOM:
+  readable_name: "Potted Open Eyeblossom"
+  type: block_without_item
+  texture: POTTED_OPEN_EYEBLOSSOM
+
+- Blocks.POTTED_CLOSED_EYEBLOSSOM:
+  readable_name: "Potted Closed Eyeblossom"
+  type: block_without_item
+  texture: POTTED_CLOSED_EYEBLOSSOM
 
 - Blocks.DECORATED_POT:
   readable_name: "Decorated Pot"
@@ -4653,7 +4828,7 @@
   texture: STAINED_GLASS_PANE#7
 
 - Blocks.STAINED_GLASS_PANE#8:
-  readable_name: "Light Gray Stained Glass Pane	"
+  readable_name: "Light Gray Stained Glass Pane"
   type: block
   texture: STAINED_GLASS_PANE#8
 
@@ -5400,7 +5575,7 @@
     poi: true
 
 - Blocks.BEE_NEST:
-  readable_name: "Bee nest"
+  readable_name: "Bee Nest"
   type: block
   texture: BEE_NEST
   other:
@@ -5534,7 +5709,7 @@
   texture: VERDANT_FROGLIGHT
 
 - Blocks.PEARLESCENT_FROGLIGHT:
-  readable_name: "Pearlscent Froglight"
+  readable_name: "Pearlescent Froglight"
   type: block
   texture: PEARLESCENT_FROGLIGHT
 
@@ -5560,12 +5735,12 @@
   texture: GLOW_INK_SAC
 
 - Items.DYE#1:
-  readable_name: "Rose Red"
+  readable_name: "Red Dye"
   type: item
   texture: DYE#1
 
 - Items.DYE#2:
-  readable_name: "Cactus Green"
+  readable_name: "Green Dye"
   type: item
   texture: DYE#2
 
@@ -5610,7 +5785,7 @@
   texture: DYE#10
 
 - Items.DYE#11:
-  readable_name: "Dandelion Yellow"
+  readable_name: "Yellow Dye"
   type: item
   texture: DYE#11
 
@@ -5750,7 +5925,7 @@
   texture: PRISMARINE_CRYSTALS
 
 - Items.HEART_OF_THE_SEA:
-  readable_name: "Heart Of The Sea"
+  readable_name: "Heart of the Sea"
   type: item
   texture: HEART_OF_THE_SEA
 
@@ -5849,6 +6024,86 @@
   type: item
   texture: BUNDLE
 
+- Items.WHITE_BUNDLE:
+  readable_name: "White Bundle"
+  type: item
+  texture: WHITE_BUNDLE
+
+- Items.ORANGE_BUNDLE:
+  readable_name: "Orange Bundle"
+  type: item
+  texture: ORANGE_BUNDLE
+
+- Items.MAGENTA_BUNDLE:
+  readable_name: "Magenta Bundle"
+  type: item
+  texture: MAGENTA_BUNDLE
+
+- Items.LIGHT_BLUE_BUNDLE:
+  readable_name: "Light Blue Bundle"
+  type: item
+  texture: LIGHT_BLUE_BUNDLE
+
+- Items.YELLOW_BUNDLE:
+  readable_name: "Yellow Bundle"
+  type: item
+  texture: YELLOW_BUNDLE
+
+- Items.LIME_BUNDLE:
+  readable_name: "Lime Bundle"
+  type: item
+  texture: LIME_BUNDLE
+
+- Items.PINK_BUNDLE:
+  readable_name: "Pink Bundle"
+  type: item
+  texture: PINK_BUNDLE
+
+- Items.GRAY_BUNDLE:
+  readable_name: "Gray Bundle"
+  type: item
+  texture: GRAY_BUNDLE
+
+- Items.LIGHT_GRAY_BUNDLE:
+  readable_name: "Light Gray Bundle"
+  type: item
+  texture: LIGHT_GRAY_BUNDLE
+
+- Items.CYAN_BUNDLE:
+  readable_name: "Cyan Bundle"
+  type: item
+  texture: CYAN_BUNDLE
+
+- Items.PURPLE_BUNDLE:
+  readable_name: "Purple Bundle"
+  type: item
+  texture: PURPLE_BUNDLE
+
+- Items.BLUE_BUNDLE:
+  readable_name: "Blue Bundle"
+  type: item
+  texture: BLUE_BUNDLE
+
+- Items.BROWN_BUNDLE:
+  readable_name: "Brown Bundle"
+  type: item
+  texture: BROWN_BUNDLE
+
+- Items.GREEN_BUNDLE:
+  readable_name: "Green Bundle"
+  type: item
+  texture: GREEN_BUNDLE
+
+- Items.RED_BUNDLE:
+  readable_name: "Red Bundle"
+  type: item
+  texture: RED_BUNDLE
+
+- Items.BLACK_BUNDLE:
+  readable_name: "Black Bundle"
+  type: item
+  texture: BLACK_BUNDLE
+
 - Items.MAP:
   readable_name: "Empty Map"
   type: item
@@ -5865,38 +6120,32 @@
   texture: BRUSH
 
 - Items.FLOWER_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Flower"
+  readable_name: "Flower Charge Banner Pattern"
   type: item
   texture: FLOWER_BANNER_PATTERN
 
 - Items.CREEPER_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Creeper"
+  readable_name: "Creeper Charge Banner Pattern"
   type: item
   texture: CREEPER_BANNER_PATTERN
 
 - Items.SKULL_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Skull"
+  readable_name: "Skull Charge Banner Pattern"
   type: item
   texture: SKULL_BANNER_PATTERN
 
 - Items.THING_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Thing"
+  readable_name: "Thing Banner Pattern"
   type: item
   texture: THING_BANNER_PATTERN
 
 - Items.GLOBE_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Globe"
+  readable_name: "Globe Banner Pattern"
   type: item
   texture: GLOBE_BANNER_PATTERN
 
 - Items.PIGLIN_BANNER_PATTERN:
-  readable_name: "Banner Pattern"
-  description: "Snout"
+  readable_name: "Snout Banner Pattern"
   type: item
   texture: PIGLIN_BANNER_PATTERN
 
@@ -5909,6 +6158,16 @@
   readable_name: "Guster Banner Pattern"
   type: item
   texture: GUSTER_BANNER_PATTERN
+
+- Items.FIELD_MASONED_BANNER_PATTERN:
+  readable_name: "Field Masoned Banner Pattern"
+  type: item
+  texture: FIELD_MASONED_BANNER_PATTERN
+
+- Items.BORDURE_INDENTED_BANNER_PATTERN:
+  readable_name: "Bordure Indented Banner Pattern"
+  type: item
+  texture: BORDURE_INDENTED_BANNER_PATTERN
 
 - Items.TOTEM_OF_UNDYING:
   readable_name: "Totem of Undying"
@@ -6406,6 +6665,11 @@
   type: item
   texture: DARK_OAK_SIGN
 
+- Items.PALE_OAK_SIGN:
+  readable_name: "Pale Oak Sign"
+  type: item
+  texture: PALE_OAK_SIGN
+
 - Items.CRIMSON_SIGN:
   readable_name: "Crimson Sign"
   type: item
@@ -6461,6 +6725,11 @@
   type: item
   texture: DARK_OAK_HANGING_SIGN_ITEM
 
+- Items.PALE_OAK_HANGING_SIGN:
+  readable_name: "Pale Oak Hanging Sign"
+  type: item
+  texture: PALE_OAK_HANGING_SIGN_ITEM
+
 - Items.CRIMSON_HANGING_SIGN:
   readable_name: "Crimson Hanging Sign"
   type: item
@@ -6515,6 +6784,11 @@
   readable_name: "Dark Oak Door"
   type: item
   texture: DARK_OAK_DOOR
+
+- Items.PALE_OAK_DOOR:
+  readable_name: "Pale Oak Door"
+  type: item
+  texture: PALE_OAK_DOOR
 
 - Items.IRON_DOOR:
   readable_name: "Iron Door"
@@ -6661,6 +6935,11 @@
   type: item
   texture: DARK_OAK_BOAT
 
+- Items.PALE_OAK_BOAT:
+  readable_name: "Pale Oak Boat"
+  type: item
+  texture: PALE_OAK_BOAT
+
 - Items.MANGROVE_BOAT:
   readable_name: "Mangrove Boat"
   type: item
@@ -6705,6 +6984,11 @@
   readable_name: "Dark Oak Boat with Chest"
   type: item
   texture: DARK_OAK_CHEST_BOAT
+
+- Items.PALE_OAK_CHEST_BOAT:
+  readable_name: "Pale Oak Boat with Chest"
+  type: item
+  texture: PALE_OAK_CHEST_BOAT
 
 - Items.MANGROVE_CHEST_BOAT:
   readable_name: "Mangrove Boat with Chest"
@@ -6876,6 +7160,11 @@
   readable_name: "Nether Brick"
   type: item
   texture: NETHERBRICK
+
+- Items.RESIN_BRICK:
+  readable_name: "Resin Brick"
+  type: item
+  texture: RESIN_BRICK
 
 - Items.CLAY_BALL:
   readable_name: "Clay"
@@ -7274,7 +7563,7 @@
   texture: CAULDRON
 
 - Items.SPECKLED_MELON:
-  readable_name: "Speckled Melon"
+  readable_name: "Glistering Melon Slice"
   type: item
   texture: SPECKLED_MELON
 
@@ -7285,32 +7574,32 @@
   subtypes: true
 
 - Items.SPAWN_EGG#50:
-  readable_name: "Spawn Creeper"
+  readable_name: "Creeper Spawn Egg"
   type: item
   texture: SPAWN_EGG#50
 
 - Items.SPAWN_EGG#51:
-  readable_name: "Spawn Skeleton"
+  readable_name: "Skeleton Spawn Egg"
   type: item
   texture: SPAWN_EGG#51
 
 - Items.SPAWN_EGG#52:
-  readable_name: "Spawn Spider"
+  readable_name: "Spider Spawn Egg"
   type: item
   texture: SPAWN_EGG#52
 
 - Items.SPAWN_EGG#54:
-  readable_name: "Spawn Zombie"
+  readable_name: "Zombie Spawn Egg"
   type: item
   texture: SPAWN_EGG#54
 
 - Items.SPAWN_EGG#55:
-  readable_name: "Spawn Slime"
+  readable_name: "Slime Spawn Egg"
   type: item
   texture: SPAWN_EGG#55
 
 - Items.SPAWN_EGG#56:
-  readable_name: "Spawn Ghast"
+  readable_name: "Ghast Spawn Egg"
   type: item
   texture: SPAWN_EGG#56
 
@@ -7320,102 +7609,102 @@
   texture: SPAWN_EGG#57
 
 - Items.SPAWN_EGG#58:
-  readable_name: "Spawn Endermen"
+  readable_name: "Enderman Spawn Egg"
   type: item
   texture: SPAWN_EGG#58
 
 - Items.SPAWN_EGG#59:
-  readable_name: "Spawn Cave Spider"
+  readable_name: "Cave Spider Spawn Egg"
   type: item
   texture: SPAWN_EGG#59
 
 - Items.SPAWN_EGG#60:
-  readable_name: "Spawn Silverfish"
+  readable_name: "Silverfish Spawn Egg"
   type: item
   texture: SPAWN_EGG#60
 
 - Items.SPAWN_EGG#61:
-  readable_name: "Spawn Blaze"
+  readable_name: "Blaze Spawn Egg"
   type: item
   texture: SPAWN_EGG#61
 
 - Items.SPAWN_EGG#62:
-  readable_name: "Spawn Magma Cube"
+  readable_name: "Magma Cube Spawn Egg"
   type: item
   texture: SPAWN_EGG#62
 
 - Items.SPAWN_EGG#65:
-  readable_name: "Spawn Bat"
+  readable_name: "Bat Spawn Egg"
   type: item
   texture: SPAWN_EGG#65
 
 - Items.SPAWN_EGG#66:
-  readable_name: "Spawn Witch"
+  readable_name: "Witch Spawn Egg"
   type: item
   texture: SPAWN_EGG#66
 
 - Items.SPAWN_EGG#67:
-  readable_name: "Spawn Endermite"
+  readable_name: "Endermite Spawn Egg"
   type: item
   texture: SPAWN_EGG#67
 
 - Items.SPAWN_EGG#68:
-  readable_name: "Spawn Guardian"
+  readable_name: "Guardian Spawn Egg"
   type: item
   texture: SPAWN_EGG#68
 
 - Items.SPAWN_EGG#90:
-  readable_name: "Spawn Pig"
+  readable_name: "Pig Spawn Egg"
   type: item
   texture: SPAWN_EGG#90
 
 - Items.SPAWN_EGG#91:
-  readable_name: "Spawn Sheep"
+  readable_name: "Sheep Spawn Egg"
   type: item
   texture: SPAWN_EGG#91
 
 - Items.SPAWN_EGG#92:
-  readable_name: "Spawn Cow"
+  readable_name: "Cow Spawn Egg"
   type: item
   texture: SPAWN_EGG#92
 
 - Items.SPAWN_EGG#93:
-  readable_name: "Spawn Chicken"
+  readable_name: "Chicken Spawn Egg"
   type: item
   texture: SPAWN_EGG#93
 
 - Items.SPAWN_EGG#94:
-  readable_name: "Spawn Squid"
+  readable_name: "Squid Spawn Egg"
   type: item
   texture: SPAWN_EGG#94
 
 - Items.SPAWN_EGG#95:
-  readable_name: "Spawn Wolf"
+  readable_name: "Wolf Spawn Egg"
   type: item
   texture: SPAWN_EGG#95
 
 - Items.SPAWN_EGG#96:
-  readable_name: "Spawn Mooshroom"
+  readable_name: "Mooshroom Spawn Egg"
   type: item
   texture: SPAWN_EGG#96
 
 - Items.SPAWN_EGG#98:
-  readable_name: "Spawn Ocelot"
+  readable_name: "Ocelot Spawn Egg"
   type: item
   texture: SPAWN_EGG#98
 
 - Items.SPAWN_EGG#100:
-  readable_name: "Spawn Horse"
+  readable_name: "Horse Spawn Egg"
   type: item
   texture: SPAWN_EGG#100
 
 - Items.SPAWN_EGG#101:
-  readable_name: "Spawn Rabbit"
+  readable_name: "Rabbit Spawn Egg"
   type: item
   texture: SPAWN_EGG#101
 
 - Items.SPAWN_EGG#120:
-  readable_name: "Spawn Villager"
+  readable_name: "Villager Spawn Egg"
   type: item
   texture: SPAWN_EGG#120
 
@@ -7684,6 +7973,11 @@
   type: item
   texture: ARMADILLO_SPAWN_EGG
 
+- Items.CREAKING_SPAWN_EGG:
+  readable_name: "Creaking Spawn Egg"
+  type: item
+  texture: CREAKING_SPAWN_EGG
+
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
@@ -7930,114 +8224,116 @@
   texture: GOAT_HORN
 
 - Items.NETHERITE_UPGRADE:
-  readable_name: "Smithing Template"
-  description: "Netherite Upgrade"
+  readable_name: "Netherite Upgrade"
+  description: "Smithing Template"
   type: item
   texture: NETHERITE_UPGRADE
 
 - Items.SENTRY_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Sentry Armor Trim"
+  readable_name: "Sentry Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SENTRY_ARMOR_TRIM
 
 - Items.DUNE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Dune Armor Trim"
+  readable_name: "Dune Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: DUNE_ARMOR_TRIM
 
 - Items.COAST_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Coast Armor Trim"
+  readable_name: "Coast Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: COAST_ARMOR_TRIM
 
 - Items.WILD_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Wild Armor Trim"
+  readable_name: "Wild Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WILD_ARMOR_TRIM
 
 - Items.WARD_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Ward Armor Trim"
+  readable_name: "Ward Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WARD_ARMOR_TRIM
 
 - Items.EYE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Eye Armor Trim"
+  readable_name: "Eye Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: EYE_ARMOR_TRIM
 
 - Items.VEX_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Vex Armor Trim"
+  readable_name: "Vex Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: VEX_ARMOR_TRIM
 
 - Items.TIDE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Tide Armor Trim"
+  readable_name: "Tide Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: TIDE_ARMOR_TRIM
 
 - Items.SNOUT_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Snout Armor Trim"
+  readable_name: "Snout Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SNOUT_ARMOR_TRIM
 
 - Items.RIB_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Rib Armor Trim"
+  readable_name: "Rib Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: RIB_ARMOR_TRIM
 
 - Items.SPIRE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Spire Armor Trim"
+  readable_name: "Spire Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SPIRE_ARMOR_TRIM
 
 - Items.WAYFINDER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Wayfinder Armor Trim"
+  readable_name: "Wayfinder Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: WAYFINDER_ARMOR_TRIM
 
 - Items.SHAPER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Shaper Armor Trim"
+  readable_name: "Shaper Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SHAPER_ARMOR_TRIM
 
 - Items.SILENCE_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Silence Armor Trim"
+  readable_name: "Silence Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: SILENCE_ARMOR_TRIM
 
 - Items.RAISER_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Raiser Armor Trim"
+  readable_name: "Raiser Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: RAISER_ARMOR_TRIM
 
 - Items.HOST_ARMOR_TRIM:
-  readable_name: "Smithing Template"
-  description: "Host Armor Trim"
+  readable_name: "Host Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: HOST_ARMOR_TRIM
 
 - Items.FLOW_ARMOR_TRIM:
-  readable_name: "Flow Armor Trim Smithing Template"
+  readable_name: "Flow Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: FLOW_ARMOR_TRIM_SMITHING_TEMPLATE
 
 - Items.BOLT_ARMOR_TRIM:
-  readable_name: "Bolt Armor Trim Smithing Template"
+  readable_name: "Bolt Armor Trim"
+  description: "Smithing Template"
   type: item
   texture: BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
 

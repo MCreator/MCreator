@@ -91,7 +91,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Nullable @Override protected EntityHitResult findHitEntity(Vec3 projectilePosition, Vec3 deltaPosition) {
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
-		AABB lookupBox = this.getBoundingBox().expandTowards(deltaPosition).inflate(1.0D);
+		AABB lookupBox = this.getBoundingBox();
 		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
 			if (entity1 == this.getOwner()) continue;
 			AABB aabb = entity1.getBoundingBox();

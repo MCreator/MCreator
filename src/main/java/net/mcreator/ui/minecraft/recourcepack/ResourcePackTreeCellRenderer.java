@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft.recourcepack;
 
 import net.mcreator.io.tree.FileNode;
-import net.mcreator.minecraft.ResourcePackStructure;
+import net.mcreator.minecraft.resourcepack.ResourcePackStructure;
 import net.mcreator.ui.component.tree.FilterTreeNode;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;

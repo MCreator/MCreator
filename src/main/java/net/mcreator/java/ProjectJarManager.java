@@ -87,8 +87,8 @@ public class ProjectJarManager extends JarManager {
 		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(generator.getWorkspace());
 		if (projectConnection != null) {
 			try {
-				ModelBuilder<EclipseProject> modelBuilder = GradleUtils.getGradleModelBuilder(projectConnection,
-						EclipseProject.class);
+				ModelBuilder<EclipseProject> modelBuilder = GradleUtils.getGradleModelBuilder(
+						generator.getGeneratorConfiguration(), projectConnection, EclipseProject.class);
 
 				EclipseProject project = modelBuilder.get();
 

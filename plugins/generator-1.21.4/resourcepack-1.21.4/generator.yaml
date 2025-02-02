@@ -1,0 +1,27 @@
+name: Resource Pack for Java Edition @minecraft
+status: stable
+buildfileversion: 21.4.78-beta
+
+# gradle task definitions
+gradle:
+  run_client: ":packloader:runClient"
+  export_file: "build/export/export.zip"
+
+# base generator roots
+source_root: "@WORKSPACEROOT/src/main/"
+res_root: "@SRCROOT"
+mod_assets_root: "@RESROOT/assets/@modid"
+
+# vanilla resources
+vanilla_resources_jar: ".*-client-extra-.*.jar"
+
+base_templates:
+  - template: pack.mcmeta.ftl
+    writer: json
+    name: "@SRCROOT/pack.mcmeta"
+
+resources_setup_tasks:
+  - task: provide_default_pack_icon
+    width: 128
+    height: 128
+    to: "@RESROOT/pack.png"

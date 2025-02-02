@@ -138,6 +138,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
@@ -399,6 +400,13 @@ import java.util.*;
 
 	@Override public List<TabEntry> getCreativeTabs() {
 		return creativeTabs;
+	}
+
+	public List<String> getRepairItemsAsStringList() {
+		List<String> repairItems = new ArrayList<>();
+		for (MItemBlock repairItem : this.repairItems)
+			repairItems.add(repairItem.getUnmappedValue());
+		return repairItems;
 	}
 
 }

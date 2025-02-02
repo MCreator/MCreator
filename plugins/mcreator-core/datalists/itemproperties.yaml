@@ -12,9 +12,3 @@
   other:
     min: 0
     max: 1
-- custom_model_data
-- trim_type:
-  type: Number
-  other:
-    min: 0
-    max: 1

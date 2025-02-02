@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: lts
+status: legacy
 buildfileversion: 47.3.0
 subversion: 1.2 # force setup re-run to update build script for MCREATOR_JVM_OPTIONS
 
@@ -75,6 +75,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
   - template: modbase/accesstransformer.cfg.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:

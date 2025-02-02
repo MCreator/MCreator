@@ -57,10 +57,8 @@ public class ModelUtils {
 		if (FilenameUtilsPatched.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
 			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
 					workspace, model);
-
 			if (textureMappingMap != null && textureMappingMap.containsKey("default")) {
 				Map<String, TextureHolder> textureMap = textureMappingMap.get("default").getTextureMap();
-
 				try {
 					List<Mtl> mtlList = MtlReader.read(new FileInputStream(objFrom));
 					for (Mtl mtlElement : mtlList) {
@@ -73,13 +71,25 @@ public class ModelUtils {
 					MtlWriter.write(mtlList, new FileOutputStream(objTo));
 				} catch (Exception ignore) {
 				}
-
 				return;
 			}
 		}
+		FileIO.copyFile(objFrom, objTo); // fallback
+	}
 
-		// fallback
-		FileIO.copyFile(objFrom, objTo);
+	public static void copyOBJorMTLApplyTextureReferences(File objFrom, File objTo) {
+		if (FilenameUtilsPatched.getExtension(objFrom.getName()).equalsIgnoreCase("mtl")) {
+			try {
+				List<Mtl> mtlList = MtlReader.read(new FileInputStream(objFrom));
+				for (Mtl mtlElement : mtlList) {
+					mtlElement.setMapKd(mtlElement.getName());
+				}
+				MtlWriter.write(mtlList, new FileOutputStream(objTo));
+			} catch (Exception ignore) {
+			}
+			return;
+		}
+		FileIO.copyFile(objFrom, objTo); // fallback
 	}
 
 }
