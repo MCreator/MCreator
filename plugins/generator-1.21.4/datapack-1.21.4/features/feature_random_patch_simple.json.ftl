@@ -8,6 +8,7 @@
       "type": "minecraft:simple_block",
       "config": {
         "to_place": ${mappedBlockToBlockStateProvider(input$block)}
+        <#if (field$schedule_tick!"FALSE") == "TRUE">, "schedule_tick": true</#if>
       }
     },
     "placement": [
