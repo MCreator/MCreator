@@ -826,6 +826,7 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
+		openElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
 		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
 		openElement.addActionListener(e -> {
 			IElement selected = list.getSelectedValue();
@@ -835,14 +836,18 @@ import java.util.stream.Collectors;
 				editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
 		});
 
+		deleteElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		deleteElement.setIcon(UIRES.get("16px.clear"));
 		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
 
+		duplicateElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
+		searchElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> searchModElementsUsages());
 
+		codeElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK));
 		codeElement.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
@@ -857,6 +862,7 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		lockElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 		lockElement.addActionListener(e -> lockCode());
 
 		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
