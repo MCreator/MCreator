@@ -182,7 +182,9 @@ public class GeneratorSelector {
 		JScrollPane pane = new JScrollPane(statsPan);
 		pane.getVerticalScrollBar().setUnitIncrement(10);
 
-		mainPanel.add("Center", pane);
+		if (currentFlavor != GeneratorFlavor.RESOURCEPACK) {
+			mainPanel.add("Center", pane);
+		}
 
 		generator.addActionListener(e -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
