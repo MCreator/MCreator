@@ -4,6 +4,12 @@
       "type": "field_data_list_selector",
       "name": "gamerulesboolean",
       "datalist": "gamerulesboolean"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,

@@ -65,7 +65,7 @@
 - DownloadTerrain
 - EditGamerules
 - EditWorld
-- EffectRenderingInventory
+- AbstractRecipeBookScreen
 - Error
 - Experiments
 - FlatPresets

@@ -14,19 +14,23 @@
           </#if>
           <#if pool.hasbonusrolls>
               <#if pool.minbonusrolls == pool.maxbonusrolls>
-            "bonus_rolls": ${pool.minbonusrolls},
+              "bonus_rolls": ${pool.minbonusrolls},
               <#else>
-            "bonus_rolls": {
-              "min": ${pool.minbonusrolls},
-              "max": ${pool.maxbonusrolls}
-            },
+              "bonus_rolls": {
+                "min": ${pool.minbonusrolls},
+                "max": ${pool.maxbonusrolls}
+              },
               </#if>
           </#if>
           "entries": [
             <#list pool.entries as entry>
               {
+                <#if entry.item.isAir()>
+                "type": "empty",
+                <#else>
                 "type": "item",
                 "name": "${mappedMCItemToRegistryNameNoTags(entry.item)}",
+                </#if>
                 "weight": ${entry.weight},
                 <#if entry.silkTouchMode == 1>
                 "conditions": [
@@ -105,8 +109,7 @@
                 <#if entry?has_next>,</#if>
             </#list>
           ]
-        }
-        <#if pool?has_next>,</#if>
+        }<#if pool?has_next>,</#if>
     </#list>
   ]
 }

@@ -616,7 +616,6 @@ entity.goat.milk: entity.goat.milk
 entity.goat.prepare_ram: entity.goat.prepare_ram
 entity.goat.ram_impact: entity.goat.ram_impact
 entity.goat.horn_break: entity.goat.horn_break
-item.goat_horn.play: item.goat_horn.play
 entity.goat.screaming.ambient: entity.goat.screaming.ambient
 entity.goat.screaming.death: entity.goat.screaming.death
 entity.goat.screaming.eat: entity.goat.screaming.eat
@@ -625,7 +624,6 @@ entity.goat.screaming.long_jump: entity.goat.screaming.long_jump
 entity.goat.screaming.milk: entity.goat.screaming.milk
 entity.goat.screaming.prepare_ram: entity.goat.screaming.prepare_ram
 entity.goat.screaming.ram_impact: entity.goat.screaming.ram_impact
-entity.goat.screaming.horn_break: entity.goat.screaming.horn_break
 entity.goat.step: entity.goat.step
 block.grass.break: block.grass.break
 block.grass.fall: block.grass.fall

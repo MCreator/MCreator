@@ -26,7 +26,64 @@
   readable_name: "Blaze"
   type: spawnable
 - EntityBoat:
-  readable_name: "Boat"
+  readable_name: "Default (Oak) Boat"
+  type: spawnable
+- EntityChestBoat:
+  readable_name: "Default (Oak) Boat with Chest"
+  type: spawnable
+- EntityAcaciaBoat:
+  readable_name: "Acacia Boat"
+  type: spawnable
+- EntityAcaciaChestBoat:
+  readable_name: "Acacia Boat with Chest"
+  type: spawnable
+- EntityBambooChestRaft:
+  readable_name: "Bamboo Raft with Chest"
+  type: spawnable
+- EntityBambooRaft:
+  readable_name: "Bamboo Raft"
+  type: spawnable
+- EntityBirchBoat:
+  readable_name: "Birch Boat"
+  type: spawnable
+- EntityBirchChestBoat:
+  readable_name: "Birch Boat with Chest"
+  type: spawnable
+- EntityCherryBoat:
+  readable_name: "Cherry Boat"
+  type: spawnable
+- EntityCherryChestBoat:
+  readable_name: "Cherry Boat with Chest"
+  type: spawnable
+- EntityDarkOakBoat:
+  readable_name: "Dark Oak Boat"
+  type: spawnable
+- EntityDarkOakChestBoat:
+  readable_name: "Dark Oak Boat with Chest"
+  type: spawnable
+- EntityJungleBoat:
+  readable_name: "Jungle Boat"
+  type: spawnable
+- EntityJungleChestBoat:
+  readable_name: "Jungle Boat with Chest"
+  type: spawnable
+- EntityMangroveBoat:
+  readable_name: "Mangrove Boat"
+  type: spawnable
+- EntityMangroveChestBoat:
+  readable_name: "Mangrove Boat with Chest"
+  type: spawnable
+- EntityPaleOakBoat:
+  readable_name: "Pale Oak Boat"
+  type: spawnable
+- EntityPaleOakChestBoat:
+  readable_name: "Pale Oak Boat with Chest"
+  type: spawnable
+- EntitySpruceBoat:
+  readable_name: "Spruce Boat"
+  type: spawnable
+- EntitySpruceChestBoat:
+  readable_name: "Spruce Boat with Chest"
   type: spawnable
 - EntityBogged:
   readable_name: "Bogged"
@@ -36,9 +93,6 @@
   type: spawnable
 - EntityBreezeWindCharge:
   readable_name: "Breeze wind charge"
-  type: spawnable
-- EntityChestBoat:
-  readable_name: "Boat with chest"
   type: spawnable
 - EntityCat:
   readable_name: "Cat"
@@ -57,6 +111,9 @@
   type: spawnable
 - EntityCow:
   readable_name: "Cow"
+  type: spawnable
+- EntityCreaking:
+  readable_name: "Creaking"
   type: spawnable
 - EntityCreature:
   readable_name: "Creature entity"

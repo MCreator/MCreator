@@ -76,7 +76,7 @@ public class CodeErrorDialog {
 			} else if (FileIO.isFileOnFileList(moddefinitionfiles, problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
-				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");
+				LOG.warn("Error from non MCreator generated class!");
 			}
 		}
 

@@ -89,6 +89,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 
