@@ -23,7 +23,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
@@ -43,7 +42,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 
 	public final ResourcePackEditor resourcePackEditor;
 
-	@SuppressWarnings("SuspiciousNameCombination") ResourcePackMakerWorkspacePanel(MCreator mcreator) {
+	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(mcreator, new BorderLayout(3, 3));
 
 		search = new JTextField(34) {
@@ -90,15 +89,17 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
-		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		leftPan.setOpaque(false);
-		leftPan.add(search);
+		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		topPan.setOpaque(false);
+		topPan.add(search);
+
+		add("North", topPan);
 
 		resourcePackEditor = new ResourcePackEditor(mcreator, new ResourcePackInfo.Vanilla(mcreator.getWorkspace()),
 				() -> search.getText().trim());
 
 		addVerticalTab("mods", L10N.t("workspace.category.resources"),
-				new WorkspacePanelPack(PanelUtils.northAndCenterElement(leftPan, resourcePackEditor, 3, 3)));
+				new WorkspacePanelResourcePack(resourcePackEditor));
 	}
 
 	public void reloadElements() {
@@ -109,9 +110,9 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		return resourcePackEditor;
 	}
 
-	private class WorkspacePanelPack extends AbstractWorkspacePanel {
+	private class WorkspacePanelResourcePack extends AbstractWorkspacePanel {
 
-		private WorkspacePanelPack(JComponent contents) {
+		private WorkspacePanelResourcePack(JComponent contents) {
 			super(ResourcePackMakerWorkspacePanel.this);
 			add(contents);
 		}
