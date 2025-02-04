@@ -64,6 +64,7 @@ public class TagModElementConverter implements IConverter {
 				case ENTITIES -> definition.getAsJsonArray("entities");
 				case FUNCTIONS -> definition.getAsJsonArray("functions");
 				case BIOMES -> definition.getAsJsonArray("biomes");
+				case STRUCTURES -> definition.getAsJsonArray("structures");
 				case DAMAGE_TYPES -> definition.getAsJsonArray("damageTypes");
 				default -> new JsonArray(); // Other tag types did not exist before FV 60
 			}) {
@@ -89,6 +90,7 @@ public class TagModElementConverter implements IConverter {
 			case "Entities" -> TagType.ENTITIES;
 			case "Functions" -> TagType.FUNCTIONS;
 			case "Biomes" -> TagType.BIOMES;
+			case "Structures" -> TagType.STRUCTURES;
 			case "Damage types" -> TagType.DAMAGE_TYPES;
 			default -> null;
 		};
