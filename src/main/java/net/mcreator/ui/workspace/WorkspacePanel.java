@@ -30,7 +30,6 @@ import net.mcreator.generator.ListTemplate;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.UnregisteredAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JScrollablePopupMenu;
@@ -71,7 +70,6 @@ import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
@@ -87,7 +85,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
+@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends AbstractMainWorkspacePanel {
 
 	private final FilterModel dml = new FilterModel();
 	public final JTextField search;
@@ -96,13 +94,7 @@ import java.util.stream.Collectors;
 
 	public final JSelectableList<IElement> list;
 
-	private final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
-
 	public final WorkspacePanelResources resourcesPan;
-
-	@Nullable private AbstractWorkspacePanel currentTabPanel = null;
-
-	private final ModMaker mcreator;
 
 	private final JButton upFolder;
 	private final JButton renameFolder;
@@ -165,11 +157,8 @@ import java.util.stream.Collectors;
 		}
 	};
 
-	private final JTabbedPane subTabs;
-
 	public WorkspacePanel(final ModMaker mcreator) {
-		super(new BorderLayout(5, 5));
-		this.mcreator = mcreator;
+		super(mcreator, new BorderLayout(3, 3));
 
 		this.currentFolder = mcreator.getWorkspace().getFoldersRoot();
 
@@ -204,7 +193,7 @@ import java.util.stream.Collectors;
 					}
 				}
 				mcreator.getWorkspace().markDirty();
-				sectionTabs.get("mods").reloadElements();
+				getVerticalTab("mods").reloadElements();
 			} else {
 				Toolkit.getDefaultToolkit().beep();
 			}
@@ -297,8 +286,6 @@ import java.util.stream.Collectors;
 		} else {
 			modElementsPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
-
-		JPanel slo = new JPanel(new BorderLayout(0, 3));
 
 		JPanel se = new JPanel(new BorderLayout());
 
@@ -631,10 +618,9 @@ import java.util.stream.Collectors;
 			sortDateCreated.setSelected(true);
 		}
 
-		slo.setOpaque(false);
 		se.setOpaque(false);
 
-		slo.add("North", se);
+		add("North", se);
 
 		mainp.setOpaque(false);
 
@@ -645,46 +631,6 @@ import java.util.stream.Collectors;
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
-
-		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		subTabs.setOpaque(false);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
-				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
-		subTabs.setModel(new DefaultSingleSelectionModel() {
-			@Override public void setSelectedIndex(int index) {
-				if (subTabs.getComponentAt(index) instanceof AbstractWorkspacePanel tabComponent) {
-					if (tabComponent.canSwitchToSection()) {
-						currentTabPanel = tabComponent;
-					} else { // No permission to view the newly selected tab
-						return;
-					}
-				}
-
-				super.setSelectedIndex(index);
-				search.repaint();
-				reloadElementsInCurrentTab();
-				modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
-				subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
-						!(currentTabPanel instanceof WorkspacePanelMods));
-			}
-		});
-
-		slo.add("Center", subTabs);
-
-		slo.setBorder(BorderFactory.createEmptyBorder());
-
-		add("Center", slo);
-
-		setOpaque(false);
 
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
 		pne.setOpaque(false);
@@ -862,52 +808,13 @@ import java.util.stream.Collectors;
 		updateElementListRenderer();
 	}
 
-	/**
-	 * Adds a new section to this workspace as well as a vertical tab button on the left that switches
-	 * to the section panel when clicked.
-	 *
-	 * @param id      The unique identifier of the section used for reloading/filtering contained elements.
-	 * @param name    The name of the section shown in the workspace.
-	 * @param section The panel representing contents of the vertical tab being added.
-	 */
-	public void addVerticalTab(String id, String name, AbstractWorkspacePanel section) {
-		if (getVerticalTab(id) != null)
-			return;
-
-		sectionTabs.put(id, section);
-
-		if (section.isSupportedInWorkspace()) {
-			subTabs.addTab(name, section);
-		}
-	}
-
-	public AbstractWorkspacePanel getVerticalTab(String id) {
-		return sectionTabs.get(id);
-	}
-
-	public void switchToVerticalTab(AbstractWorkspacePanel panel) {
-		if (panel != null && panel.canSwitchToSection()) {
-			// Find the tab to switch to
-			for (int i = 0; i < subTabs.getTabCount(); i++) {
-				if (subTabs.getComponentAt(i) == panel) {
-					subTabs.setSelectedIndex(i);
-					break;
-				}
-			}
-		}
-	}
-
-	public void switchToVerticalTab(String id) {
-		switchToVerticalTab(sectionTabs.get(id));
-	}
-
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
 		list.cancelDND();
 
-		sectionTabs.get("mods").reloadElements();
+		getVerticalTab("mods").reloadElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -936,6 +843,13 @@ import java.util.stream.Collectors;
 		mcreator.getWorkspaceUserSettings().workspacePanelSortAscending = !desc.isSelected();
 
 		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+	}
+
+	@Override protected void afterVerticalTabChanged() {
+		search.repaint();
+		modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
+				!(currentTabPanel instanceof WorkspacePanelMods));
 	}
 
 	private void updateElementListRenderer() {
@@ -1287,7 +1201,7 @@ import java.util.stream.Collectors;
 		if (name != null) {
 			currentFolder.addChild(new FolderElement(name, currentFolder));
 			mcreator.getWorkspace().markDirty();
-			sectionTabs.get("mods").reloadElements();
+			getVerticalTab("mods").reloadElements();
 		}
 	}
 
@@ -1298,17 +1212,8 @@ import java.util.stream.Collectors;
 			selected.setName(mcreator.getWorkspace(), newName);
 
 			mcreator.getWorkspace().markDirty();
-			sectionTabs.get("mods").reloadElements();
+			getVerticalTab("mods").reloadElements();
 		}
-	}
-
-	public synchronized void reloadElementsInCurrentTab() {
-		if (currentTabPanel != null)
-			currentTabPanel.reloadElements();
-	}
-
-	public MCreator getMCreator() {
-		return mcreator;
 	}
 
 	private class FilterModel extends DefaultListModel<IElement> {
