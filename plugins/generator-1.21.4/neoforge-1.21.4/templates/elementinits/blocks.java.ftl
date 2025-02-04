@@ -56,15 +56,19 @@ public class ${JavaModName}Blocks {
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
             public static final DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
-				REGISTRY.registerBlock("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new, BlockBehaviour.Properties.of());
+				register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
 		<#else>
 			public static final DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()} =
-				REGISTRY.registerBlock("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new, BlockBehaviour.Properties.of());
+				register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
 		</#if>
 	</#list>
 
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
+
+	private static <B extends Block> DeferredBlock<B> register(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+		return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.of());
+	}
 
 	<#if hasTintedBlocks>
 	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class BlocksClientSideHandler {

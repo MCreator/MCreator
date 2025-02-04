@@ -55,46 +55,64 @@ public class ${JavaModName}Items {
 		<#if item.getModElement().getTypeString() == "armor">
 			<#if item.enableHelmet>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
 			</#if>
 			<#if item.enableBody>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new);
 			</#if>
 			<#if item.enableLeggings>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_leggings", ${item.getModElement().getName()}Item.Leggings::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_leggings", ${item.getModElement().getName()}Item.Leggings::new);
 			</#if>
 			<#if item.enableBoots>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_boots", ${item.getModElement().getName()}Item.Boots::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_boots", ${item.getModElement().getName()}Item.Boots::new);
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_spawn_egg",
-						properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties), new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_spawn_egg",
+					properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties));
 		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
 		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
 			<#if item.isDoubleBlock()>
 				<#assign hasDoubleBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
 			<#else>
 				<#assign hasBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
 			</#if>
 		<#else>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.registerItem("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new, new Item.Properties());
+				register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
 		</#if>
 	</#list>
 
 	// Start of user code block custom items
 	// End of user code block custom items
+
+	private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {
+		return REGISTRY.registerItem(name, supplier, new Item.Properties());
+	}
+
+	<#if hasBlocks>
+	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
+		return REGISTRY.registerItem(block.getId().getPath(), properties -> new BlockItem(block.get(), properties), new Item.Properties());
+	}
+	</#if>
+
+	<#if hasDoubleBlocks>
+	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block) {
+		return REGISTRY.registerItem(block.getId().getPath(), properties -> new DoubleHighBlockItem(block.get(), properties), new Item.Properties());
+	}
+	</#if>
 
 	<#if itemsWithInventory?size != 0>
 	<#compress>
@@ -108,18 +126,6 @@ public class ${JavaModName}Items {
 		</#list>
 	}
 	</#compress>
-	</#if>
-
-	<#if hasBlocks>
-	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
-		return REGISTRY.registerItem(block.getId().getPath(), properties -> new BlockItem(block.get(), properties), new Item.Properties());
-	}
-	</#if>
-
-	<#if hasDoubleBlocks>
-	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block) {
-		return REGISTRY.registerItem(block.getId().getPath(), properties -> new DoubleHighBlockItem(block.get(), properties), new Item.Properties());
-	}
 	</#if>
 
 	<#if hasItemsWithCustomProperties || hasItemsWithLeftHandedProperty>
