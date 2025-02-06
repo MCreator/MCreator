@@ -40,7 +40,10 @@ package ${package}.potion;
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
 	public ${name}MobEffect() {
-		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
+		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()}<#if data.hasCustomParticle()>, ${data.particle}</#if>);
+		<#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>
+		this.withSoundOnAdded(BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.onAddedSound}")));
+		</#if>
 		<#list data.modifiers as modifier>
 		this.addAttributeModifier(${modifier.attribute},
 				ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "effect.${data.getModElement().getRegistryName()}_${modifier?index}"),
