@@ -76,15 +76,15 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override public void removeUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+				refilterWorkspaceTab();
 			}
 
 			@Override public void insertUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+				refilterWorkspaceTab();
 			}
 
 			@Override public void changedUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+				refilterWorkspaceTab();
 			}
 
 		});
@@ -117,7 +117,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 				}
 
 				super.setSelectedIndex(index);
-				reloadElementsInCurrentTab();
+				reloadWorkspaceTab();
 				afterVerticalTabChanged();
 			}
 		});
@@ -180,9 +180,13 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 	protected void afterVerticalTabChanged() {
 	}
 
-	public synchronized void reloadElementsInCurrentTab() {
+	public synchronized void reloadWorkspaceTab() {
 		if (currentTabPanel != null)
 			currentTabPanel.reloadElements();
+	}
+
+	public synchronized void refilterWorkspaceTab() {
+		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 }

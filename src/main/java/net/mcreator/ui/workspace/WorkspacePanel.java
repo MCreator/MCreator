@@ -831,7 +831,7 @@ import java.util.stream.Collectors;
 
 		mcreator.getWorkspaceUserSettings().workspacePanelSortAscending = !desc.isSelected();
 
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+		refilterWorkspaceTab();
 	}
 
 	@Override protected void afterVerticalTabChanged() {
@@ -957,7 +957,7 @@ import java.util.stream.Collectors;
 							mcreator.getWorkspace().markDirty();
 						}
 					});
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 
 					p0.markStateOk();
 
@@ -1075,7 +1075,7 @@ import java.util.stream.Collectors;
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 				}
 			}
 		}
@@ -1178,7 +1178,7 @@ import java.util.stream.Collectors;
 							folder.getParent().removeChild(folder);
 						}
 					});
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 
 					if (buildNeeded.get())
 						mcreator.getActionRegistry().buildWorkspace.doAction();

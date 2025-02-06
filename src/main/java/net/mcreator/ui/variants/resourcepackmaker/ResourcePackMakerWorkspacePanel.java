@@ -49,10 +49,6 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 				new WorkspacePanelResourcePack(resourcePackEditor));
 	}
 
-	public void reloadElements() {
-		resourcePackEditor.reloadElements();
-	}
-
 	public ResourcePackEditor getResourcePackEditor() {
 		return resourcePackEditor;
 	}
