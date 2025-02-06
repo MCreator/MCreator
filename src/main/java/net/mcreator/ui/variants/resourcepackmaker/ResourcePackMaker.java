@@ -61,7 +61,7 @@ public final class ResourcePackMaker extends MCreator {
 		this.reloadWorkspaceTabContentsImpl();
 	}
 
-	public ResourcePackMakerWorkspacePanel getWorkspacePanel() {
+	@Override public ResourcePackMakerWorkspacePanel getWorkspacePanel() {
 		return workspacePanel;
 	}
 
