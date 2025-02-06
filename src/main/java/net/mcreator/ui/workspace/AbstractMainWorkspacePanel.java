@@ -21,17 +21,26 @@ package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 	protected final MCreator mcreator;
+
+	public final JTextField search;
 
 	protected final JTabbedPane subTabs;
 	protected final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
@@ -43,6 +52,49 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 		setBorder(BorderFactory.createEmptyBorder());
 		setOpaque(false);
+
+		search = new JTextField(34) {
+			@Override public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				if (getText().isEmpty()) {
+					g.setFont(g.getFont().deriveFont(11f));
+					g.setColor(new Color(120, 120, 120));
+					g.drawString(getSearchPlaceholderText(), 8, 19);
+				}
+			}
+		};
+		search.addFocusListener(new FocusAdapter() {
+			@Override public void focusGained(FocusEvent e) {
+				super.focusGained(e);
+				if (e.getCause() == FocusEvent.Cause.MOUSE_EVENT) {
+					search.setText(null);
+				}
+			}
+		});
+		search.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override public void removeUpdate(DocumentEvent arg0) {
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+			}
+
+			@Override public void insertUpdate(DocumentEvent arg0) {
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+			}
+
+			@Override public void changedUpdate(DocumentEvent arg0) {
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+			}
+
+		});
+
+		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
+
+		ComponentUtils.deriveFont(search, 14);
+		search.setOpaque(false);
+		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
 			@Override protected void paintComponent(Graphics g) {
@@ -80,6 +132,10 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 	public MCreator getMCreator() {
 		return mcreator;
+	}
+
+	protected String getSearchPlaceholderText() {
+		return L10N.t("workspace.elements.list.search_list");
 	}
 
 	/**

@@ -19,75 +19,22 @@
 
 package net.mcreator.ui.variants.resourcepackmaker;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
-import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel {
-
-	public final JTextField search;
 
 	public final ResourcePackEditor resourcePackEditor;
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(mcreator, new BorderLayout(3, 3));
-
-		search = new JTextField(34) {
-			@Override public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				if (getText().isEmpty()) {
-					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
-				}
-			}
-		};
-		search.addFocusListener(new FocusAdapter() {
-			@Override public void focusGained(FocusEvent e) {
-				super.focusGained(e);
-				if (e.getCause() == FocusEvent.Cause.MOUSE_EVENT) {
-					search.setText(null);
-				}
-			}
-		});
-
-		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
-
-		ComponentUtils.deriveFont(search, 14);
-		search.setOpaque(false);
-
-		search.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override public void removeUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
-			}
-
-			@Override public void insertUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
-			}
-
-			@Override public void changedUpdate(DocumentEvent arg0) {
-				resourcePackEditor.refilterElements();
-			}
-		});
-
-		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
-		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topPan.setOpaque(false);
