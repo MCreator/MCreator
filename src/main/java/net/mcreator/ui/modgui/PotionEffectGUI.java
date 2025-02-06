@@ -68,8 +68,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;
 	private ProcedureSelector onExpired;
-
 	private ProcedureSelector activeTickCondition;
+	private ProcedureSelector onMobHurt;
+	private ProcedureSelector onMobRemoved;
 
 	public PotionEffectGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -92,6 +93,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition = new ProcedureSelector(this.withEntry("potioneffect/active_tick_condition"), mcreator,
 				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("duration:number/amplifier:number"));
+		onMobHurt = new ProcedureSelector(this.withEntry("potioneffect/on_mob_hurt"), mcreator,
+				L10N.t("elementgui.potioneffect.event_mob_hurt"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number/damagesource:damagesource/amount:number"));
+		onMobRemoved = new ProcedureSelector(this.withEntry("potioneffect/on_mob_death"), mcreator,
+				L10N.t("elementgui.potioneffect.event_mob_death"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
@@ -157,12 +164,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		modifiersPage.add("Center", modifiersEditor);
 		modifiersPage.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
+		JPanel events = new JPanel(new GridLayout(2, 3, 5, 5));
 		events.setOpaque(false);
 		events.add(onStarted);
-		events.add(onExpired);
 		events.add(activeTickCondition);
 		events.add(onActiveTick);
+		events.add(onExpired);
+		events.add(onMobHurt);
+		events.add(onMobRemoved);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -194,6 +203,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.refreshListKeepSelected();
 		onExpired.refreshListKeepSelected();
 		activeTickCondition.refreshListKeepSelected();
+		onMobHurt.refreshListKeepSelected();
+		onMobRemoved.refreshListKeepSelected();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -217,6 +228,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
 		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
+		onMobHurt.setSelectedProcedure(potion.onMobHurt);
+		onMobRemoved.setSelectedProcedure(potion.onMobRemoved);
 		isCuredbyHoney.setSelected(potion.isCuredbyHoney);
 		modifierList.setEntries(potion.modifiers);
 	}
@@ -234,6 +247,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
 		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
+		potion.onMobHurt = onMobHurt.getSelectedProcedure();
+		potion.onMobRemoved = onMobRemoved.getSelectedProcedure();
 		potion.isCuredbyHoney = isCuredbyHoney.isSelected();
 		potion.modifiers = modifierList.getEntries();
 		return potion;

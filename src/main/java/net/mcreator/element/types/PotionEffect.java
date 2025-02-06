@@ -56,6 +56,8 @@ import java.util.List;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
+	public Procedure onMobHurt;
+	public Procedure onMobRemoved;
 
 	private PotionEffect() {
 		this(null);

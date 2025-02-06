@@ -106,6 +106,36 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		}
 	</#if>
 
+	<#if hasProcedure(data.onMobHurt)>
+		@Override public void onMobHurt(LivingEntity entity, int amplifier, DamageSource damagesource, float damage) {
+			<@procedureCode data.onMobHurt, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "entity.level()",
+				"entity": "entity",
+				"amplifier": "amplifier",
+				"damagesource": "damagesource",
+				"damage": "damage"
+			}/>
+		}
+	</#if>
+
+	<#if hasProcedure(data.onMobRemoved)>
+		@Override public void onMobRemoved(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
+			if (reason == Entity.RemovalReason.KILLED) {
+				<@procedureCode data.onMobRemoved, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "entity.level()",
+					"entity": "entity",
+					"amplifier": "amplifier"
+				}/>
+			}
+		}
+	</#if>
+
 	<#if data.hasCustomRenderer()>
 	@SubscribeEvent public static void registerMobEffectExtensions(RegisterClientExtensionsEvent event) {
 		event.registerMobEffect(new IClientMobEffectExtensions() {
