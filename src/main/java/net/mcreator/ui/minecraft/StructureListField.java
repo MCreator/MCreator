@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.StructureEntry;
+import net.mcreator.element.parts.StructureEntry;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
@@ -54,7 +55,7 @@ public class StructureListField extends JItemListField<StructureEntry> {
 	@Override protected List<StructureEntry> getTagsToAdd() {
 		List<StructureEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.STRUCTURES);
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.STRUCTURES, "mineshaft", "shipwreck", "village");
 		if (tag != null)
 			tags.add(new StructureEntry(mcreator.getWorkspace(), "#" + tag));
 

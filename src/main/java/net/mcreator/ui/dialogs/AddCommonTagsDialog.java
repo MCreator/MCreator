@@ -128,6 +128,9 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, structureTags, "shipwreck", "minecraft", TagType.STRUCTURES, false));
 		callables.add(addTag(mcreator, structureTags, "village", "minecraft", TagType.STRUCTURES, false));
 
+		callables.add(addTag(mcreator, functionTags, "tick", "minecraft", TagType.FUNCTIONS, false));
+		callables.add(addTag(mcreator, functionTags, "load", "minecraft", TagType.FUNCTIONS, false));
+
 		callables.add(addTag(mcreator, damageTypeTags, "is_drowning", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "is_explosion", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "is_fall", "minecraft", TagType.DAMAGE_TYPES, false));

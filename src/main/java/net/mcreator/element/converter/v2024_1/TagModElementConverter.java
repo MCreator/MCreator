@@ -90,7 +90,6 @@ public class TagModElementConverter implements IConverter {
 			case "Entities" -> TagType.ENTITIES;
 			case "Functions" -> TagType.FUNCTIONS;
 			case "Biomes" -> TagType.BIOMES;
-			case "Structures" -> TagType.STRUCTURES;
 			case "Damage types" -> TagType.DAMAGE_TYPES;
 			default -> null;
 		};
