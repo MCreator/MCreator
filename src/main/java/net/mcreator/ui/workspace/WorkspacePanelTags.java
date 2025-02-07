@@ -61,8 +61,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<BiomeEntry> listFieldBiomes = new BiomeListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
-	private final JItemListField<StructureEntry> listFieldStructures = new StructureListField(
-			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<NonMappableElement> listFieldStructures = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.STRUCTURE);
 	private final JItemListField<NonMappableElement> listFieldFunctions = new ModElementListField(
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
 	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
@@ -164,7 +164,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						}
 						case STRUCTURES -> {
 							listFieldStructures.setListElements(entries.map(
-											e -> (StructureEntry) TagElement.entryToMappableElement(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldStructures;
@@ -434,10 +434,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					yield retval;
 				}
 				case STRUCTURES -> {
-					JItemListField<StructureEntry> retval = new StructureListField(mcreator).allowTags()
-							.allowExternalElements();
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.STRUCTURE);
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
-							.map(e -> (StructureEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}

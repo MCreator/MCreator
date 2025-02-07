@@ -15,8 +15,8 @@
             "${value}"<#sep>,
           </#list>
       <#elseif type == "structures">
-          <#list w.normalizeTagElements(tag.resourcePath(), 0, elements) as value>
-            "${value}"<#sep>,
+          <#list w.filterBrokenReferences(elements) as value>
+            "${generator.getResourceLocationForModElement(value)}"<#sep>,
           </#list>
       <#elseif type == "damage_types" || type == "enchantments">
           <#list w.normalizeTagElements(tag.resourcePath(), 1, elements) as value>
