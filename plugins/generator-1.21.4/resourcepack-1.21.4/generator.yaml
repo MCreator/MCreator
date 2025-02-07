@@ -1,6 +1,6 @@
 name: Resource Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 21.4.78-beta
+buildfileversion: 21.4.86-beta
 
 # gradle task definitions
 gradle:
