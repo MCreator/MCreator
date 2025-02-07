@@ -38,6 +38,7 @@ import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
+import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
@@ -207,6 +208,8 @@ public abstract class MCreator extends MCreatorFrame {
 	protected abstract JPanel createWorkspaceTabContent();
 
 	protected abstract void reloadWorkspaceTabContentsImpl();
+
+	public abstract AbstractMainWorkspacePanel getWorkspacePanel();
 
 	public final void reloadWorkspaceTabContents() {
 		if (mcreatorTabs.getCurrentTab().equals(workspaceTab)) {

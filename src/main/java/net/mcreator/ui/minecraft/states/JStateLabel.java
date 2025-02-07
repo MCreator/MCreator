@@ -34,13 +34,14 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class JStateLabel extends JPanel {
+
 	private final MCreator mcreator;
 	private final Supplier<List<PropertyData<?>>> properties;
 	private final Supplier<Stream<JStateLabel>> otherStates;
 
 	private StateMap stateMap = new StateMap();
-	private boolean allowEmpty = false;
-	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
+	protected boolean allowEmpty = false;
+	protected NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit"));
@@ -124,14 +125,17 @@ public class JStateLabel extends JPanel {
 
 	private void refreshState() {
 		List<String> stateParts = new ArrayList<>();
-		stateMap.forEach((k, v) -> {
-			String matchSymbol = "=";
-			if (k.getClass() == PropertyData.IntegerType.class || k.getClass() == PropertyData.NumberType.class)
-				matchSymbol = numberMatchType.getSymbol();
-			stateParts.add(k.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + k.toString(v));
-		});
+		stateMap.forEach((k, v) -> stateParts.add(renderPropertyValue(k, v)));
 		label.setText(L10N.t("components.state_label.when",
 				stateParts.isEmpty() ? L10N.t("condition.common.true") : String.join("; ", stateParts)));
+	}
+
+	protected String renderPropertyValue(PropertyData<?> property, Object value) {
+		String matchSymbol = "=";
+		if (property.getClass() == PropertyData.IntegerType.class
+				|| property.getClass() == PropertyData.NumberType.class)
+			matchSymbol = numberMatchType.getSymbol();
+		return property.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + property.toString(value);
 	}
 
 	public enum NumberMatchType {
@@ -147,4 +151,5 @@ public class JStateLabel extends JPanel {
 			return symbol;
 		}
 	}
+
 }

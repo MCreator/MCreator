@@ -70,7 +70,7 @@ public final class ModMaker extends MCreator {
 		workspacePanel.reloadElementsInCurrentTab();
 	}
 
-	public WorkspacePanel getWorkspacePanel() {
+	@Override public WorkspacePanel getWorkspacePanel() {
 		return workspacePanel;
 	}
 

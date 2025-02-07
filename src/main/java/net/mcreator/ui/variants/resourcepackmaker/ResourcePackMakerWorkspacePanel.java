@@ -31,6 +31,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
+import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
@@ -44,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ResourcePackMakerWorkspacePanel extends JPanel {
+public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel {
 
 	private final MCreator mcreator;
 
@@ -57,7 +59,7 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 	private final JTabbedPane tabbedPane;
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
-		super(new BorderLayout(3, 3));
+		super(mcreator, new BorderLayout(3, 3));
 
 		this.mcreator = mcreator;
 
@@ -107,11 +109,11 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
-		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		leftPan.setOpaque(false);
-		leftPan.add(search);
+		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		topPan.setOpaque(false);
+		topPan.add(search);
 
-		add("North", leftPan);
+		add("North", topPan);
 
 		vanillaResourcePackEditor = new ResourcePackEditor(mcreator,
 				new ResourcePackInfo.Vanilla(mcreator.getWorkspace()), () -> search.getText().trim());
@@ -142,6 +144,9 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		tabbedPane.setSelectedIndex(1);
 
 		add("Center", tabbedPane);
+
+		addVerticalTab("mods", L10N.t("workspace.category.resources"),
+				new WorkspacePanelResourcePack(resourcePackEditor));
 	}
 
 	public void reloadElements() {
@@ -212,13 +217,20 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		return tabbedPane;
 	}
 
-	@Override protected void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setColor(Theme.current().getAltBackgroundColor());
-		g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.dispose();
-		super.paintComponent(g);
+	private class WorkspacePanelResourcePack extends AbstractWorkspacePanel {
+
+		private WorkspacePanelResourcePack(JComponent contents) {
+			super(ResourcePackMakerWorkspacePanel.this);
+			add(contents);
+		}
+
+		@Override public void reloadElements() {
+			resourcePackEditor.reloadElements();
+		}
+
+		@Override public void refilterElements() {
+			resourcePackEditor.refilterElements();
+		}
 	}
 
 }
