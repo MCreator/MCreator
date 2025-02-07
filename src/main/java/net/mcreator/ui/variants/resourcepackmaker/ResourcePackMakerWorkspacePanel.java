@@ -29,7 +29,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -48,8 +47,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel {
 
-	private final MCreator mcreator;
-
 	private final JTextField search;
 
 	private final ResourcePackEditor vanillaResourcePackEditor;
@@ -60,8 +57,6 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(mcreator, new BorderLayout(3, 3));
-
-		this.mcreator = mcreator;
 
 		setOpaque(false);
 
@@ -143,10 +138,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		tabbedPane.addTab(L10N.t("mcreator.resourcepack.tab.vanilla"), vanillaResourcePackEditor);
 		tabbedPane.setSelectedIndex(1);
 
-		add("Center", tabbedPane);
-
-		addVerticalTab("mods", L10N.t("workspace.category.resources"),
-				new WorkspacePanelResourcePack(resourcePackEditor));
+		addVerticalTab("mods", L10N.t("workspace.category.resources"), new WorkspacePanelResourcePack(tabbedPane));
 	}
 
 	public void reloadElements() {
@@ -206,7 +198,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		return vanillaResourcePackEditor;
 	}
 
-	private void refilterAllEditors() {
+	protected void refilterAllEditors() {
 		vanillaResourcePackEditor.refilterElements();
 		for (ResourcePackEditor editor : modResourcePackEditors.values()) {
 			editor.refilterElements();
@@ -225,11 +217,11 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		}
 
 		@Override public void reloadElements() {
-			resourcePackEditor.reloadElements();
+			ResourcePackMakerWorkspacePanel.this.reloadElements();
 		}
 
 		@Override public void refilterElements() {
-			resourcePackEditor.refilterElements();
+			ResourcePackMakerWorkspacePanel.this.refilterAllEditors();
 		}
 	}
 
