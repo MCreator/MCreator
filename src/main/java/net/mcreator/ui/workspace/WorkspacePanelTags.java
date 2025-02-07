@@ -347,7 +347,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(((WorkspacePanel) workspacePanel).search.getText()));
 		} catch (Exception ignored) {
 		}
 	}

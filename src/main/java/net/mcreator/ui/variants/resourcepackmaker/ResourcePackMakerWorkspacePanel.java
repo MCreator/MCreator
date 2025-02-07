@@ -24,8 +24,9 @@ import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
+import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
@@ -34,17 +35,15 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.List;
 
-public class ResourcePackMakerWorkspacePanel extends JPanel {
+public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel {
 
 	public final JTextField search;
 
 	public final ResourcePackEditor resourcePackEditor;
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
-		super(new BorderLayout(3, 3));
-		setOpaque(false);
+		super(mcreator, new BorderLayout(3, 3));
 
 		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
@@ -90,16 +89,17 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
-		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		leftPan.setOpaque(false);
-		leftPan.add(search);
+		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		topPan.setOpaque(false);
+		topPan.add(search);
 
-		add("North", leftPan);
+		add("North", topPan);
 
 		resourcePackEditor = new ResourcePackEditor(mcreator, new ResourcePackInfo.Vanilla(mcreator.getWorkspace()),
 				() -> search.getText().trim());
 
-		add("Center", resourcePackEditor);
+		addVerticalTab("mods", L10N.t("workspace.category.resources"),
+				new WorkspacePanelResourcePack(resourcePackEditor));
 	}
 
 	public void reloadElements() {
@@ -110,13 +110,20 @@ public class ResourcePackMakerWorkspacePanel extends JPanel {
 		return resourcePackEditor;
 	}
 
-	@Override protected void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setColor(Theme.current().getAltBackgroundColor());
-		g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.dispose();
-		super.paintComponent(g);
+	private class WorkspacePanelResourcePack extends AbstractWorkspacePanel {
+
+		private WorkspacePanelResourcePack(JComponent contents) {
+			super(ResourcePackMakerWorkspacePanel.this);
+			add(contents);
+		}
+
+		@Override public void reloadElements() {
+			resourcePackEditor.reloadElements();
+		}
+
+		@Override public void refilterElements() {
+			resourcePackEditor.refilterElements();
+		}
 	}
 
 }
