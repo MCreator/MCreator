@@ -162,6 +162,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 				editor.refilterElements();
 			}
 		}
+
 	}
 
 }
