@@ -51,7 +51,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
 		ResourcePackEditor resourcePackEditor = new ResourcePackEditor(workspacePanel.getMCreator(),
 				new ResourcePackInfo.Vanilla(workspacePanel.getMCreator().getWorkspace()),
-				() -> workspacePanel.search.getText().trim());
+				() -> workspacePanel.getSearchTerm().trim());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)

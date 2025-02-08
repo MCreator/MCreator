@@ -40,7 +40,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 	protected final MCreator mcreator;
 
-	public final JTextField search;
+	protected final JTextField search;
 
 	protected final JTabbedPane subTabs;
 	protected final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
@@ -132,6 +132,14 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 	public MCreator getMCreator() {
 		return mcreator;
+	}
+
+	public String getSearchTerm() {
+		return search.getText();
+	}
+
+	public void setSearchTerm(String term) {
+		search.setText(term);
 	}
 
 	protected String getSearchPlaceholderText() {
