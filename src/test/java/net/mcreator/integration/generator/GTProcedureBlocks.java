@@ -148,6 +148,31 @@ public class GTProcedureBlocks {
 							</value></block>
 							""".formatted(testXML, testXML));
 					break;
+				case "MCItem":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_itemstack"><value name="return">%s</value></block>
+							""".formatted(testXML));
+					break;
+				case "MCItemBlock":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_blockstate"><value name="return">%s</value></block>
+							""".formatted(testXML));
+					break;
+				case "Direction":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_direction"><value name="return">%s</value></block>
+							""".formatted(testXML));
+					break;
+				case "Entity":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_entity"><value name="return">%s</value></block>
+							""".formatted(testXML));
+					break;
+				case "DamageSource":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_damagesource"><value name="return">%s</value></block>
+							""".formatted(testXML));
+					break;
 				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
 					procedure.procedurexml = wrapWithBaseTestXML("""
 							<block type="projectile_shoot_from_entity">

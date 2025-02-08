@@ -1,6 +1,6 @@
 plugins {
     id 'eclipse'
-    id 'net.neoforged.moddev' version '2.0.77'
+    id 'net.neoforged.moddev' version '2.0.78'
 }
 
 version = '1.0'
