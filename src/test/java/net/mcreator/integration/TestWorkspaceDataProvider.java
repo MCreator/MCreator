@@ -190,8 +190,8 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("test_mod:examplestructure_1");
-				workspace.getTagElements().get(tag).add("~test_mod:examplestructure_2");
+				workspace.getTagElements().get(tag).add("Examplestructure1");
+				workspace.getTagElements().get(tag).add("~Examplestructure2");
 			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
