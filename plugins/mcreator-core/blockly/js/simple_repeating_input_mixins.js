@@ -273,3 +273,17 @@ Blockly.Extensions.registerMutator('random_feature_selector_mutator', simpleRepe
                 .appendField(javabridge.t('blockly.block.feature_random_selector.select_feature'))
         }, true, ['chance']),
     undefined, ['feature_simple_random_mutator_input']);
+
+// Mutator for fixed placement modifier
+Blockly.Extensions.registerMutator('fixed_placement_mutator', simpleRepeatingInputMixin(
+        'fixed_placement_mutator_container', 'fixed_placement_mutator_input', 'position',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.x'))
+                .appendField(new Blockly.FieldNumber(0, null, null, 1), 'x' + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.y'))
+                .appendField(new Blockly.FieldNumber(0, null, null, 1), 'y' + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.z'))
+                .appendField(new Blockly.FieldNumber(0, null, null, 1), 'z' + index)
+        }, false, ['x', 'y', 'z']),
+    undefined, ['fixed_placement_mutator_input']);

@@ -33,7 +33,7 @@
       "type": "input_dummy"
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "Feature",
   "colour": 0,
   "mcreator": {
