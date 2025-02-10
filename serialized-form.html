@@ -9909,19 +9909,27 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.variants.resourcepackmaker.ResourcePackMakerWorkspacePanel">
 <h3>Class&nbsp;<a href="net/mcreator/ui/variants/resourcepackmaker/ResourcePackMakerWorkspacePanel.html" title="class in net.mcreator.ui.variants.resourcepackmaker">net.mcreator.ui.variants.resourcepackmaker.ResourcePackMakerWorkspacePanel</a></h3>
-<div class="type-signature">class ResourcePackMakerWorkspacePanel extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class ResourcePackMakerWorkspacePanel extends <a href="net/mcreator/ui/workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractMainWorkspacePanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>resourcePackEditor</h5>
-<pre><a href="net/mcreator/ui/minecraft/recourcepack/ResourcePackEditor.html" title="class in net.mcreator.ui.minecraft.recourcepack">ResourcePackEditor</a> resourcePackEditor</pre>
+<h5>modResourcePackEditors</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="net/mcreator/minecraft/resourcepack/ResourcePackInfo.html" title="class in net.mcreator.minecraft.resourcepack">ResourcePackInfo</a>,<wbr><a href="net/mcreator/ui/minecraft/recourcepack/ResourcePackEditor.html" title="class in net.mcreator.ui.minecraft.recourcepack">ResourcePackEditor</a>&gt; modResourcePackEditors</pre>
 </li>
 <li class="block-list">
 <h5>search</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a> search</pre>
+</li>
+<li class="block-list">
+<h5>tabbedPane</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a> tabbedPane</pre>
+</li>
+<li class="block-list">
+<h5>vanillaResourcePackEditor</h5>
+<pre><a href="net/mcreator/ui/minecraft/recourcepack/ResourcePackEditor.html" title="class in net.mcreator.ui.minecraft.recourcepack">ResourcePackEditor</a> vanillaResourcePackEditor</pre>
 </li>
 </ul>
 </section>
@@ -10991,6 +10999,37 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/workspace/package-summary.html">net.mcreator.ui.workspace</a></h2>
 <ul class="block-list">
 <li>
+<section class="serialized-class-details" id="net.mcreator.ui.workspace.AbstractMainWorkspacePanel">
+<h3>Class&nbsp;<a href="net/mcreator/ui/workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">net.mcreator.ui.workspace.AbstractMainWorkspacePanel</a></h3>
+<div class="type-signature">class AbstractMainWorkspacePanel extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>currentTabPanel</h5>
+<pre><a href="net/mcreator/ui/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a> currentTabPanel</pre>
+</li>
+<li class="block-list">
+<h5>mcreator</h5>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+<li class="block-list">
+<h5>sectionTabs</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="net/mcreator/ui/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt; sectionTabs</pre>
+</li>
+<li class="block-list">
+<h5>subTabs</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a> subTabs</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="net.mcreator.ui.workspace.AbstractWorkspacePanel">
 <h3>Class&nbsp;<a href="net/mcreator/ui/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">net.mcreator.ui.workspace.AbstractWorkspacePanel</a></h3>
 <div class="type-signature">class AbstractWorkspacePanel extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -11001,7 +11040,7 @@ loadScripts(document, 'script');</script>
 <ul class="block-list">
 <li class="block-list">
 <h5>workspacePanel</h5>
-<pre><a href="net/mcreator/ui/workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">WorkspacePanel</a> workspacePanel</pre>
+<pre><a href="net/mcreator/ui/workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractMainWorkspacePanel</a> workspacePanel</pre>
 </li>
 </ul>
 </section>
@@ -11012,12 +11051,16 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.workspace.WorkspacePanel">
 <h3>Class&nbsp;<a href="net/mcreator/ui/workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">net.mcreator.ui.workspace.WorkspacePanel</a></h3>
-<div class="type-signature">class WorkspacePanel extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class WorkspacePanel extends <a href="net/mcreator/ui/workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractMainWorkspacePanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
+<li class="block-list">
+<h5>but1</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> but1</pre>
+</li>
 <li class="block-list">
 <h5>but2</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> but2</pre>
@@ -11045,10 +11088,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>currentFolder</h5>
 <pre><a href="net/mcreator/workspace/elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a> currentFolder</pre>
-</li>
-<li class="block-list">
-<h5>currentTabPanel</h5>
-<pre><a href="net/mcreator/ui/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a> currentTabPanel</pre>
 </li>
 <li class="block-list">
 <h5>deleteElement</h5>
@@ -11103,10 +11142,6 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/CardLayout.html" title="class or interface in java.awt" class="external-link">CardLayout</a> mainpcl</pre>
 </li>
 <li class="block-list">
-<h5>mcreator</h5>
-<pre><a href="net/mcreator/ui/variants/modmaker/ModMaker.html" title="class in net.mcreator.ui.variants.modmaker">ModMaker</a> mcreator</pre>
-</li>
-<li class="block-list">
 <h5>modElementsBar</h5>
 <pre><a href="net/mcreator/ui/component/TransparentToolBar.html" title="class in net.mcreator.ui.component">TransparentToolBar</a> modElementsBar</pre>
 </li>
@@ -11131,10 +11166,6 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JMenuItem.html" title="class or interface in javax.swing" class="external-link">JMenuItem</a> searchElement</pre>
 </li>
 <li class="block-list">
-<h5>sectionTabs</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="net/mcreator/ui/workspace/AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt; sectionTabs</pre>
-</li>
-<li class="block-list">
 <h5>sortDateCreated</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JRadioButtonMenuItem.html" title="class or interface in javax.swing" class="external-link">JRadioButtonMenuItem</a> sortDateCreated</pre>
 </li>
@@ -11145,10 +11176,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>sortType</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JRadioButtonMenuItem.html" title="class or interface in javax.swing" class="external-link">JRadioButtonMenuItem</a> sortType</pre>
-</li>
-<li class="block-list">
-<h5>subTabs</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a> subTabs</pre>
 </li>
 <li class="block-list">
 <h5>upFolder</h5>
