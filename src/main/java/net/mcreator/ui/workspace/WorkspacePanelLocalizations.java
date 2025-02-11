@@ -417,7 +417,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		for (TableRowSorter<TableModel> sorter : sorters)
-			sorter.setRowFilter(RowFilter.regexFilter(((WorkspacePanel) workspacePanel).search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
 	}
 
 }
