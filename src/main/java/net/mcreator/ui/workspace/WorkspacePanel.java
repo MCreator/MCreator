@@ -1304,6 +1304,15 @@ import java.util.stream.Collectors;
 						return false;
 					}).toList());
 
+			if (!sortDateCreated.isSelected()) {
+				filterItems.sort(Comparator.comparing(IElement::getName));
+			}
+
+			if (desc.isSelected()) {
+				Collections.reverse(filterItems);
+			}
+
+			//noinspection FuseStreamOperations
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().stream()
@@ -1344,25 +1353,7 @@ import java.util.stream.Collectors;
 								return true;
 						return false;
 					}).collect(Collectors.toList());
-
-			if (!sortDateCreated.isSelected()) {
-				modElements.sort((a, b) -> {
-					if (sortType.isSelected()) {
-						return a.getType().getReadableName().compareTo(b.getType().getReadableName());
-					} else {
-						return a.getName().compareTo(b.getName());
-					}
-				});
-			}
-
-			if (!sortDateCreated.isSelected()) {
-				filterItems.sort(Comparator.comparing(IElement::getName));
-			}
-
-			if (desc.isSelected()) {
-				Collections.reverse(modElements);
-				Collections.reverse(filterItems);
-			}
+			modElements.sort(ModElement.getComparator(mcreator.getWorkspace(), modElements));
 
 			filterItems.addAll(modElements);
 

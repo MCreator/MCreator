@@ -40,6 +40,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
 
@@ -88,12 +89,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-			if (mod.getType() == ModElementType.PROCEDURE) {
-				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-				if (dependenciesList == null)
-					continue;
-
+		//noinspection FuseStreamOperations
+		List<ModElement> procedureElements = mcreator.getWorkspace().getModElements().stream()
+				.filter(mod -> mod.getType() == ModElementType.PROCEDURE).collect(Collectors.toList());
+		procedureElements.sort(ModElement.getComparator(mcreator.getWorkspace(), procedureElements));
+		procedureElements.forEach(mod -> {
+			List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
+			if (dependenciesList != null) {
 				List<Dependency> realdepsList = new ArrayList<>();
 
 				boolean missing = false;
@@ -120,7 +122,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 				if (correctReturnType || (returnTypeCurrent == null && returnTypeOptional))
 					procedures.addItem(new ProcedureEntry(mod.getName(), returnTypeCurrent, !missing));
 			}
-		}
+		});
 	}
 
 	public void refreshListKeepSelected() {

@@ -237,7 +237,7 @@ public final class BlocklyJavascriptBridge {
 				}
 
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
-					yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, true, typeFilter,
+					yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, typeFilter,
 							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
