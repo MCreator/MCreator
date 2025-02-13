@@ -29,14 +29,23 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.block.entity;
 
 <#compress>
-public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
+public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
+		<#if data.sensitiveToVibration>, GameEventListener.Provider<VibrationSystem.Listener>, VibrationSystem</#if> {
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
 
 	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
+
+	<#if data.sensitiveToVibration>
+	private final VibrationSystem.Listener vibrationListener = new VibrationSystem.Listener(this);
+	private final VibrationSystem.User vibrationUser = new VibrationUser(this.getBlockPos());
+	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
+	</#if>
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
@@ -59,6 +68,16 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		if(compound.get("fluidTank") instanceof CompoundTag compoundTag)
 			fluidTank.readFromNBT(lookupProvider, compoundTag);
 		</#if>
+
+		<#if data.sensitiveToVibration>
+		RegistryOps<Tag> registryops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
+		if (compound.contains("listener", 10) {
+			VibrationSystem.Data.CODEC
+					.parse(registryops, compound.getCompound("listener"))
+					.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${data.name}: '{}'", e))
+					.ifPresent(data -> this.vibrationData = data);
+		}
+		</#if>
 	}
 
 	@Override public void saveAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
@@ -74,6 +93,14 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 		<#if data.isFluidTank>
 		compound.put("fluidTank", fluidTank.writeToNBT(lookupProvider, new CompoundTag()));
+		</#if>
+
+		<#if data.sensitiveToVibration>
+		RegistryOps<Tag> registryops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
+		VibrationSystem.Data.CODEC
+				.encodeStart(registryops, this.vibrationData)
+				.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to encode vibration listener for ${data.name}: '{}'", e))
+				.ifPresent(listener -> compound.put("listener", listener));
 		</#if>
 	}
 
@@ -201,6 +228,110 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
     </#if>
 
+    <#if data.sensitiveToVibration>
+    @Override public VibrationSystem.Data getVibrationData() {
+    	return this.vibrationData;
+    }
+
+    @Override public VibrationSystem.User getVibrationUser() {
+    	return this.vibrationUser;
+    }
+
+    @Override public VibrationSystem.Listener getListener() {
+    	return this.vibrationListener;
+    }
+
+	private class VibrationUser implements VibrationSystem.User {
+		private final int x;
+		private final int y;
+		private final int z;
+		private final BlockPos blockPos;
+
+		public VibrationUser(BlockPos blockPos) {
+			this.x = blockPos.getX();
+			this.y = blockPos.getY();
+			this.z = blockPos.getZ();
+			this.blockPos = blockPos;
+		}
+
+		@Override public PositionSource getPositionSource() {
+			return new BlockPositionSource(this.blockPos);
+		}
+
+		<#if data.vibrationalEvents?has_content>
+		@Override public TagKey<GameEvent> getListenableEvents() {
+			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.withDefaultNamespace("${data.getModElement().getRegistryName()}_can_listen"));
+		}
+		</#if>
+
+		@Override public int getListenerRadius() {
+			<#if hasProcedure(data.vibrationSensitivityRadius)>
+				Level world = ${name}BlockEntity.this.getLevel();
+				BlockState blockstate = world.getBlockState(this.blockPos);
+				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
+			<#else>
+				return ${data.vibrationSensitivityRadius.getFixedValue()};
+			</#if>
+		}
+
+		@Override public boolean isValidVibration(Holder<GameEvent> holder, GameEvent.Context context) {
+			if (!holder.is(this.getListenableEvents())) {
+                return false;
+            } else {
+                Entity entity = context.sourceEntity();
+                if (entity != null) {
+                    if (entity.isSpectator()) {
+                        return false;
+                    }
+
+                    <#if data.sneakingPreventVibration>
+                    if (entity.isSteppingCarefully() && holder.is(GameEventTags.IGNORE_VIBRATIONS_SNEAKING)) {
+                        if (this.canTriggerAvoidVibration() && entity instanceof ServerPlayer) {
+                            ServerPlayer serverplayer = (ServerPlayer)entity;
+                            CriteriaTriggers.AVOID_VIBRATION.trigger(serverplayer);
+                        }
+                        return false;
+                    }
+                    </#if>
+
+                    if (entity.dampensVibrations()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+		}
+
+		@Override public boolean canReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, GameEvent.Context context) {
+			<#if hasProcedure(data.canReceiveVibrationCondition)>
+			int vibrationX = vibrationPos.getX();
+			int vibrationY = vibrationPos.getY();
+			int vibrationZ = vibrationPos.getZ();
+			Entity entity = context.sourceEntity();
+			BlockState blockstate = ${name}BlockEntity.this.getBlockState();
+			</#if>
+			return <@procedureOBJToConditionCode data.canReceiveVibrationCondition/>;
+		}
+
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity entity, Entity entity1, float distance) {
+			<#if hasProcedure(data.onReceivedVibration)>
+			int vibrationX = vibrationPos.getX();
+			int vibrationY = vibrationPos.getY();
+			int vibrationZ = vibrationPos.getZ();
+			BlockState blockstate = ${name}BlockEntity.this.getBlockState();
+			<@procedureOBJToCode data.onReceivedVibration/>;
+			</#if>
+		}
+
+		@Override public void onDataChanged() {
+			${name}BlockEntity.this.setChanged();
+		}
+
+		@Override public boolean requiresAdjacentChunksToBeTicking() {
+			return true;
+		}
+	}
+    </#if>
 }
 </#compress>
 <#-- @formatter:on -->

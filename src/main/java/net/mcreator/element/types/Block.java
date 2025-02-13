@@ -27,6 +27,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -142,6 +143,13 @@ import java.util.stream.Collectors;
 	public Procedure isBonemealTargetCondition;
 	public Procedure bonemealSuccessCondition;
 	public Procedure onBonemealSuccess;
+
+	public boolean sensitiveToVibration;
+	public boolean sneakingPreventVibration;
+	public List<GameEventEntry> vibrationalEvents;
+	public NumberProcedure vibrationSensitivityRadius;
+	public Procedure canReceiveVibrationCondition;
+	public Procedure onReceivedVibration;
 
 	public boolean hasInventory;
 	@ModElementReference @Nullable public String guiBoundTo;
@@ -368,6 +376,10 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public Set<String> getVibrationalEvents() {
+		return vibrationalEvents.stream().map(MappableElement::getMappedValue).collect(Collectors.toSet());
 	}
 
 	public TextureHolder textureTop() {
