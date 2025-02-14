@@ -53,12 +53,8 @@ public final class ResourcePackMaker extends MCreator {
 		return ComponentUtils.applyPadding(workspacePanel, 5, true, true, true, true);
 	}
 
-	@Override public void reloadWorkspaceTabContentsImpl() {
-		workspacePanel.reloadElements();
-	}
-
 	@Override public void workspaceFullyLoaded() {
-		this.reloadWorkspaceTabContentsImpl();
+		getWorkspacePanel().reloadWorkspaceTab();
 	}
 
 	@Override public ResourcePackMakerWorkspacePanel getWorkspacePanel() {

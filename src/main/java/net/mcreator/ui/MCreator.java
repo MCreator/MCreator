@@ -207,13 +207,11 @@ public abstract class MCreator extends MCreatorFrame {
 
 	protected abstract JPanel createWorkspaceTabContent();
 
-	protected abstract void reloadWorkspaceTabContentsImpl();
-
 	public abstract AbstractMainWorkspacePanel getWorkspacePanel();
 
 	public final void reloadWorkspaceTabContents() {
 		if (mcreatorTabs.getCurrentTab().equals(workspaceTab)) {
-			reloadWorkspaceTabContentsImpl();
+			getWorkspacePanel().reloadWorkspaceTab();
 		}
 	}
 

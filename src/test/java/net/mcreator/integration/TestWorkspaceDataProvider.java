@@ -183,7 +183,7 @@ public class TestWorkspaceDataProvider {
 			workspace.getTagElements().get(tag).add("minecraft:plains");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("~test_mod:examplebiome_1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
 			}
 
 			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
@@ -198,16 +198,24 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("test_mod:exampledamagetype_1");
-				workspace.getTagElements().get(tag).add("~test_mod:exampledamagetype_2");
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampledamagetype2");
 			}
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("test_mod:exampleenchantment_1");
-				workspace.getTagElements().get(tag).add("~test_mod:exampleenchantment_2");
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
+			}
+
+			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
+			workspace.addTagElement(tag);
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("Examplefunction1");
+				workspace.getTagElements().get(tag).add("~Examplefunction2");
 			}
 		}
 
@@ -724,7 +732,7 @@ public class TestWorkspaceDataProvider {
 						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
 				components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, _true),
 						new LogicProcedure("condition1", !_true), _true, new Procedure("procedure5"), null, null,
-						new MItemBlock(modElement.getWorkspace(), "TAG:flowers")));
+						new MItemBlock(modElement.getWorkspace(), "TAG:walls")));
 				components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
 						new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
 				components.add(
@@ -960,7 +968,7 @@ public class TestWorkspaceDataProvider {
 						.skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
 						.limit(blocksAndItemsAndTags.size() / 4)
 						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
@@ -1464,7 +1472,7 @@ public class TestWorkspaceDataProvider {
 						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex))
 								.limit(blocksAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 3;
@@ -2010,8 +2018,8 @@ public class TestWorkspaceDataProvider {
 			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 			tool.blocksAffected.addAll(
 					blocksAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft/test/path"));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
 		}
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
@@ -2019,8 +2027,8 @@ public class TestWorkspaceDataProvider {
 			tool.repairItems.addAll(
 					blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
 							.toList());
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft/test/path"));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");

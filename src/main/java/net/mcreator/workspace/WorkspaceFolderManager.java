@@ -183,6 +183,14 @@ public class WorkspaceFolderManager {
 		return retval;
 	}
 
+	@Nonnull public File getModsDir() {
+		File mods = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mods_folder");
+		if (mods == null) { // if not specified, use default value
+			mods = new File(workspace.getWorkspaceFolder(), "run/mods");
+		}
+		return mods;
+	}
+
 	public File getModElementsDir() {
 		return new File(workspaceFolder, "elements/");
 	}

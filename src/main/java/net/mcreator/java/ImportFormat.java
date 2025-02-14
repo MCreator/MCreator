@@ -27,12 +27,13 @@ import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ImportFormat {
 
-	private final Map<String, List<String>> cache = new HashMap<>();
+	private final Map<String, List<String>> cache = new ConcurrentHashMap<>();
 
 	public static String removeImports(String code, String replacement) {
 		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
