@@ -202,6 +202,11 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
 			}
 
+			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:block_attach");
+			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
