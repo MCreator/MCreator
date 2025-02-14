@@ -193,6 +193,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 
+	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox sneakingPreventVibration = L10N.checkbox("elementgui.common.enable");
+	private GameEventListField vibrationalEvents;
+	private NumberProcedureSelector vibrationSensitivityRadius;
+	private ProcedureSelector canReceiveVibrationCondition;
+	private ProcedureSelector onReceivedVibration;
+
 	private final JComboBox<String> rotationMode = new JComboBox<>(
 			new String[] { "<html>No rotation<br><small>Fixed block orientation",
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from player side",
@@ -281,6 +288,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		generateFeature.setOpaque(false);
 
+		vibrationalEvents = new GameEventListField(mcreator, true);
+
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
@@ -355,6 +364,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"), mcreator,
+				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"), mcreator,
+				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.BOTH, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+						L10N.t("condition.common.true")).makeInline();
+		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
+				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.BOTH, true,
+				Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
@@ -1029,7 +1051,42 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.settings_inventory"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		invblock.add("Center", props);
+		JPanel vibrationPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		vibrationPanel.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+		sneakingPreventVibration.setOpaque(false);
+		sneakingPreventVibration.setSelected(true);
+
+		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
+		refreshVibrationProperties();
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
+				L10N.label("elementgui.block.sensitive_to_vibration")));
+		vibrationPanel.add(sensitiveToVibration);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sneaking_prevent_vibration"),
+				L10N.label("elementgui.block.sneaking_prevent_vibration")));
+		vibrationPanel.add(sneakingPreventVibration);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
+				L10N.label("elementgui.block.vibrational_events")));
+		vibrationPanel.add(vibrationalEvents);
+
+		JPanel vibrationEvents = new JPanel(new GridLayout(3, 1, 0, 2));
+		vibrationEvents.setOpaque(false);
+
+		vibrationEvents.add(vibrationSensitivityRadius);
+		vibrationEvents.add(canReceiveVibrationCondition);
+		vibrationEvents.add(onReceivedVibration);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationPanel, vibrationEvents, 2, 2);
+		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.properties_vibration"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
+		invblock.add("Center", PanelUtils.westAndEastElement(props, PanelUtils.pullElementUp(vibrationMerger)));
 
 		invblock.add("North", HelpUtils.wrapWithHelpButton(this.withEntry("block/has_inventory"), hasInventory));
 
@@ -1225,6 +1282,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onBonemealSuccess.setEnabled(isBonemealable.isSelected());
 	}
 
+	private void refreshVibrationProperties() {
+		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
+		sneakingPreventVibration.setEnabled(sensitiveToVibration.isSelected());
+		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
+		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
+		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
+	}
+
 	private void updateTextureOptions() {
 		if (normal.equals(renderType.getSelectedItem())) {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.ALL);
@@ -1288,6 +1353,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		additionalHarvestCondition.refreshListKeepSelected();
+		vibrationSensitivityRadius.refreshListKeepSelected();
+		canReceiveVibrationCondition.refreshListKeepSelected();
+		onReceivedVibration.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
@@ -1435,9 +1503,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setEntries(block.boundingBoxes);
 
+		sensitiveToVibration.setSelected(block.sensitiveToVibration);
+		sneakingPreventVibration.setSelected(block.sneakingPreventVibration);
+		vibrationSensitivityRadius.setSelectedProcedure(block.vibrationSensitivityRadius);
+		vibrationalEvents.setListElements(block.vibrationalEvents);
+		canReceiveVibrationCondition.setSelectedProcedure(block.canReceiveVibrationCondition);
+		onReceivedVibration.setSelectedProcedure(block.onReceivedVibration);
+
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 		refreshBonemealProperties();
+		refreshVibrationProperties();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1580,6 +1656,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
+
+		block.sensitiveToVibration = sensitiveToVibration.isSelected();
+		block.sneakingPreventVibration = sneakingPreventVibration.isSelected();
+		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
+		block.vibrationalEvents = vibrationalEvents.getListElements();
+		block.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();
+		block.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();

@@ -10,7 +10,7 @@
           <#list w.normalizeTagElements(tag.resourcePath(), 2, elements) as value>
             "${value.getMappedValue(2)}"<#sep>,
           </#list>
-      <#elseif type == "biomes">
+      <#elseif type == "biomes" || type == "game_events">
           <#list w.normalizeTagElements(tag.resourcePath(), 0, elements) as value>
             "${value}"<#sep>,
           </#list>
