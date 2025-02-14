@@ -71,7 +71,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 		<#if data.sensitiveToVibration>
 		RegistryOps<Tag> registryops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
-		if (compound.contains("listener", 10) {
+		if (compound.contains("listener", 10)) {
 			VibrationSystem.Data.CODEC
 					.parse(registryops, compound.getCompound("listener"))
 					.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${data.name}: '{}'", e))
