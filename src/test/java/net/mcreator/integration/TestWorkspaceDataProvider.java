@@ -186,6 +186,14 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
 			}
 
+			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
+			workspace.addTagElement(tag);
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("Examplestructure1");
+				workspace.getTagElements().get(tag).add("~Examplestructure2");
+			}
+
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
