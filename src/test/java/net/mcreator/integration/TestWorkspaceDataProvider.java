@@ -202,6 +202,11 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
 			}
 
+			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:block_attach");
+			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
@@ -1436,6 +1441,20 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(7);
 				block.inventoryInSlotIDs.add(11);
 			}
+			block.sensitiveToVibration = _true;
+			block.sneakingPreventVibration = !_true;
+			block.vibrationalEvents = new ArrayList<>();
+			if (!emptyLists) {
+				if (_true) {
+					block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+							.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+				} else {
+					block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
+				}
+			}
+			block.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
+			block.canReceiveVibrationCondition = new Procedure("condition1");
+			block.onReceivedVibration = new Procedure("procedure1");
 			block.hasEnergyStorage = _true;
 			block.energyCapacity = 123;
 			block.energyInitial = 22;
