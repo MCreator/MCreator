@@ -1271,6 +1271,10 @@ public class TestWorkspaceDataProvider {
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.isCuredbyHoney = _true;
+			potionEffect.particle = emptyLists ? null : new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
@@ -1287,6 +1291,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");
 			potionEffect.activeTickCondition = new Procedure("condition1");
+			potionEffect.onMobRemoved = new Procedure("procedure4");
+			potionEffect.onMobHurt = new Procedure("procedure5");
 			return potionEffect;
 		} else if (ModElementType.BLOCK.equals(modElement.getType())) {
 			Block block = new Block(modElement);
