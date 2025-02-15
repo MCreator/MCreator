@@ -38,7 +38,7 @@ public enum TagType {
 	ENTITIES("entity_type", Dependency.getColor("entity"), EntityEntry::new),
 	FUNCTIONS("function", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
 	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
-	STRUCTURES("worldgen/structure", new Color(0xA16350), (w, e) -> new NonMappableElement(e)),
+	STRUCTURES("worldgen/structure", new Color(0xA16350), StructureEntry::new),
 	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new),
 	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new);
 	//@formatter:on

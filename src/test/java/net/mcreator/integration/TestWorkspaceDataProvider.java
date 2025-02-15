@@ -188,10 +188,12 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stronghold");
+			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("Examplestructure1");
-				workspace.getTagElements().get(tag).add("~Examplestructure2");
+				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
 			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");

@@ -206,6 +206,10 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "enchantments", null, "enchantment");
 	}
 
+	public static List<DataListEntry> loadAllStructures(Workspace workspace) {
+		return loadDataListAndElements(workspace, "structures", null, "structure");
+	}
+
 	public static List<DataListEntry> loadMaterials() {
 		return DataListLoader.loadDataList("materials");
 	}
