@@ -186,6 +186,16 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
 			}
 
+			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stronghold");
+			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
+			}
+
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
@@ -1268,6 +1278,10 @@ public class TestWorkspaceDataProvider {
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.isCuredbyHoney = _true;
+			potionEffect.particle = emptyLists ? null : new Particle(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
@@ -1284,6 +1298,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");
 			potionEffect.activeTickCondition = new Procedure("condition1");
+			potionEffect.onMobRemoved = new Procedure("procedure4");
+			potionEffect.onMobHurt = new Procedure("procedure5");
 			return potionEffect;
 		} else if (ModElementType.BLOCK.equals(modElement.getType())) {
 			Block block = new Block(modElement);

@@ -40,7 +40,10 @@ package ${package}.potion;
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
 	public ${name}MobEffect() {
-		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()});
+		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()}<#if data.hasCustomParticle()>, ${data.particle}</#if>);
+		<#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>
+		this.withSoundOnAdded(BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.onAddedSound}")));
+		</#if>
 		<#list data.modifiers as modifier>
 		this.addAttributeModifier(${modifier.attribute},
 				ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "effect.${data.getModElement().getRegistryName()}_${modifier?index}"),
@@ -103,6 +106,36 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				"amplifier": "amplifier"
 			}/>
 			return super.applyEffectTick(entity, amplifier);
+		}
+	</#if>
+
+	<#if hasProcedure(data.onMobHurt)>
+		@Override public void onMobHurt(LivingEntity entity, int amplifier, DamageSource damagesource, float damage) {
+			<@procedureCode data.onMobHurt, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "entity.level()",
+				"entity": "entity",
+				"amplifier": "amplifier",
+				"damagesource": "damagesource",
+				"damage": "damage"
+			}/>
+		}
+	</#if>
+
+	<#if hasProcedure(data.onMobRemoved)>
+		@Override public void onMobRemoved(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
+			if (reason == Entity.RemovalReason.KILLED) {
+				<@procedureCode data.onMobRemoved, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "entity.level()",
+					"entity": "entity",
+					"amplifier": "amplifier"
+				}/>
+			}
 		}
 	</#if>
 

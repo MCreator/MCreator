@@ -4,9 +4,13 @@
       "type": "input_value",
       "name": "block",
       "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "schedule_tick"
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "Feature",
   "colour": 0,
   "extensions": [
@@ -19,6 +23,9 @@
     ],
     "inputs": [
       "block"
+    ],
+    "fields": [
+      "schedule_tick"
     ]
   }
 }

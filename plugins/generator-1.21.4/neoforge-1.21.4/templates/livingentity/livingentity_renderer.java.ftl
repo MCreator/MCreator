@@ -116,11 +116,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	private ${name}Entity entity = null;
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		<#if data.animations?has_content>
-		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
-		<#else>
-		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
-		</#if>
+		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),

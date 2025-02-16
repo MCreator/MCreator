@@ -109,7 +109,7 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	void refilter() {
 		filterItems.clear();
 		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item -> refilterItemsFilter.apply(item,
-				workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))).toList());
+				workspacePanel.getSearchTerm().toLowerCase(Locale.ENGLISH))).toList());
 
 		if (workspacePanel.sortName.isSelected())
 			filterItems.sort(Comparator.comparing(resourceNameSupplier));
