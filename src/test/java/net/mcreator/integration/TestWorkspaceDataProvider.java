@@ -1435,6 +1435,8 @@ public class TestWorkspaceDataProvider {
 			block.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
 			block.openGUIOnRightClick = !_true;
 			block.inventorySize = 10;
+			block.inventoryAutomationTakeCondition = random.nextBoolean() ? null : new Procedure("condition1");
+			block.inventoryAutomationPlaceCondition = random.nextBoolean() ? null : new Procedure("condition2");
 			block.inventoryStackSize = 42;
 			block.inventoryDropWhenDestroyed = !_true;
 			block.inventoryComparatorPower = !_true;
