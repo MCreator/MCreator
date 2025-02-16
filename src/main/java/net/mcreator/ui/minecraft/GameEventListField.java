@@ -34,8 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameEventListField extends JItemListField<GameEventEntry> {
-	public GameEventListField(MCreator mCreator) {
-		super(mCreator);
+
+	public GameEventListField(MCreator mcreator) {
+		super(mcreator);
 	}
 
 	public GameEventListField(MCreator mcreator, boolean allowTags) {
@@ -46,15 +47,15 @@ public class GameEventListField extends JItemListField<GameEventEntry> {
 
 	@Override protected List<GameEventEntry> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.loadAllGameEvents(),
-						L10N.t("dialog.list_field.game_event_list_title"), L10N.t("dialog.list_field.game_event_list_message")).stream()
-				.map(e -> new GameEventEntry(mcreator.getWorkspace(), e)).toList();
+						L10N.t("dialog.list_field.game_event_list_title"), L10N.t("dialog.list_field.game_event_list_message"))
+				.stream().map(e -> new GameEventEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
 	@Override protected List<GameEventEntry> getTagsToAdd() {
 		List<GameEventEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.GAME_EVENTS, "vibrations", "warden_can_listen",
-				"shrieker_can_listen", "ignore_vibrations_sneaking", "allay_can_listen");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.GAME_EVENTS, "vibrations",
+				"warden_can_listen", "shrieker_can_listen", "allay_can_listen");
 		if (tag != null)
 			tags.add(new GameEventEntry(mcreator.getWorkspace(), "#" + tag));
 
@@ -64,4 +65,5 @@ public class GameEventListField extends JItemListField<GameEventEntry> {
 	@Nullable @Override protected GameEventEntry fromExternalToElement(String external) {
 		return new GameEventEntry(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
 	}
+
 }
