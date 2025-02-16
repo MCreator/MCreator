@@ -361,7 +361,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryAutomationTakeCondition = new ProcedureSelector(this.withEntry("block/inventory_automation_take_condition"),
 				mcreator, L10N.t("elementgui.block.inventory_automation_take_condition"),
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/entity:entity/world:world/blockstate:blockstate")).setDefaultName(
+				"index:number/itemstack:itemstack/direction:direction")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 		inventoryAutomationPlaceCondition = new ProcedureSelector(this.withEntry("block/inventory_automation_place_condition"),
 				mcreator, L10N.t("elementgui.block.inventory_automation_place_condition"),
