@@ -70,7 +70,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
-			workspacePanel.getMCreator()).allowTags();
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -479,7 +479,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					yield retval;
 				}
 				case GAME_EVENTS -> {
-					JItemListField<GameEventEntry> retval = new GameEventListField(mcreator);
+					JItemListField<GameEventEntry> retval = new GameEventListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (GameEventEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
