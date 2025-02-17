@@ -40,7 +40,8 @@ public enum TagType {
 	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
 	STRUCTURES("worldgen/structure", new Color(0xA16350), StructureEntry::new),
 	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new),
-	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new);
+	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new),
+	GAME_EVENTS("game_event", new Color(0x5057A1), GameEventEntry::new);
 	//@formatter:on
 
 	private final String folder;

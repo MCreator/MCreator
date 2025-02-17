@@ -50,6 +50,7 @@ public class AddCommonTagsDialog {
 		JPanel functionTags = new JPanel(new GridLayout(0, 1, 2, 2));
 		JPanel damageTypeTags = new JPanel(new GridLayout(0, 1, 2, 2));
 		JPanel enchantmentTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel gameEventTags = new JPanel(new GridLayout(0, 1, 2, 2));
 
 		JTabbedPane tabPanel = new JTabbedPane();
 
@@ -61,6 +62,7 @@ public class AddCommonTagsDialog {
 		tabPanel.add(L10N.t("tag.type.functions"), makePage(functionTags));
 		tabPanel.add(L10N.t("tag.type.damage_types"), makePage(damageTypeTags));
 		tabPanel.add(L10N.t("tag.type.enchantments"), makePage(enchantmentTags));
+		tabPanel.add(L10N.t("tag.type.game_events"), makePage(gameEventTags));
 
 		dialog.add("Center", tabPanel);
 
@@ -147,6 +149,10 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, enchantmentTags, "treasure", "minecraft", TagType.ENCHANTMENTS, false));
 		callables.add(addTag(mcreator, enchantmentTags, "tradeable", "minecraft", TagType.ENCHANTMENTS, false));
 		callables.add(addTag(mcreator, enchantmentTags, "smelts_loot", "minecraft", TagType.ENCHANTMENTS, false));
+
+		callables.add(addTag(mcreator, gameEventTags, "warden_can_listen", "minecraft", TagType.GAME_EVENTS, false));
+		callables.add(addTag(mcreator, gameEventTags, "shrieker_can_listen", "minecraft", TagType.GAME_EVENTS, false));
+		callables.add(addTag(mcreator, gameEventTags, "allay_can_listen", "minecraft", TagType.GAME_EVENTS, false));
 		//@formatter:on
 
 		ok.addActionListener(e -> {
