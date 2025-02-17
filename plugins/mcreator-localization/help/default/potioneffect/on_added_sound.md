@@ -1,0 +1,1 @@
+If a sound is selected, it will be played when this potion effect is added to an entity.

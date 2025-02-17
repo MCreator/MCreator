@@ -72,8 +72,6 @@ import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -88,7 +86,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends AbstractMainWorkspacePanel {
 
 	private final FilterModel dml = new FilterModel();
-	public final JTextField search;
 
 	public FolderElement currentFolder;
 
@@ -307,30 +304,6 @@ import java.util.stream.Collectors;
 
 		JPanel se = new JPanel(new BorderLayout());
 
-		search = new JTextField(34) {
-			@Override public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				if (getText().isEmpty()) {
-					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
-					if (currentTabPanel instanceof WorkspacePanelMods) {
-						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 19);
-					} else {
-						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
-					}
-				}
-			}
-		};
-		search.addFocusListener(new FocusAdapter() {
-			@Override public void focusGained(FocusEvent e) {
-				super.focusGained(e);
-				if (e.getCause() == FocusEvent.Cause.MOUSE_EVENT) {
-					search.setText(null);
-				}
-			}
-		});
 		search.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DOWN && list.getModel().getSize() > 0) {
@@ -338,26 +311,6 @@ import java.util.stream.Collectors;
 					list.setSelectedIndex(0);
 					list.requestFocusInWindow();
 				}
-			}
-		});
-
-		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
-
-		ComponentUtils.deriveFont(search, 14);
-		search.setOpaque(false);
-
-		search.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override public void removeUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
-			}
-
-			@Override public void insertUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
-			}
-
-			@Override public void changedUpdate(DocumentEvent arg0) {
-				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 		});
 
@@ -554,9 +507,7 @@ import java.util.stream.Collectors;
 		JPanel filterSort = new JPanel(new GridLayout(1, 2, 0, 0));
 		filterSort.setOpaque(false);
 
-		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, filterSort);
-		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		JButton filter = L10N.button("workspace.elements.list.filter");
 		JButton sort = L10N.button("workspace.elements.list.sort");
@@ -840,6 +791,12 @@ import java.util.stream.Collectors;
 		updateElementListRenderer();
 	}
 
+	@Override protected String getSearchPlaceholderText() {
+		return currentTabPanel instanceof WorkspacePanelMods ?
+				L10N.t("workspace.elements.list.search_folder") :
+				L10N.t("workspace.elements.list.search_list");
+	}
+
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
@@ -874,7 +831,7 @@ import java.util.stream.Collectors;
 
 		mcreator.getWorkspaceUserSettings().workspacePanelSortAscending = !desc.isSelected();
 
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+		refilterWorkspaceTab();
 	}
 
 	@Override protected void afterVerticalTabChanged() {
@@ -1000,7 +957,7 @@ import java.util.stream.Collectors;
 							mcreator.getWorkspace().markDirty();
 						}
 					});
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 
 					p0.markStateOk();
 
@@ -1118,7 +1075,7 @@ import java.util.stream.Collectors;
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 				}
 			}
 		}
@@ -1221,7 +1178,7 @@ import java.util.stream.Collectors;
 							folder.getParent().removeChild(folder);
 						}
 					});
-					reloadElementsInCurrentTab();
+					reloadWorkspaceTab();
 
 					if (buildNeeded.get())
 						mcreator.getActionRegistry().buildWorkspace.doAction();
@@ -1347,6 +1304,15 @@ import java.util.stream.Collectors;
 						return false;
 					}).toList());
 
+			if (!sortDateCreated.isSelected()) {
+				filterItems.sort(Comparator.comparing(IElement::getName));
+			}
+
+			if (desc.isSelected()) {
+				Collections.reverse(filterItems);
+			}
+
+			//noinspection FuseStreamOperations
 			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().stream()
@@ -1387,25 +1353,7 @@ import java.util.stream.Collectors;
 								return true;
 						return false;
 					}).collect(Collectors.toList());
-
-			if (!sortDateCreated.isSelected()) {
-				modElements.sort((a, b) -> {
-					if (sortType.isSelected()) {
-						return a.getType().getReadableName().compareTo(b.getType().getReadableName());
-					} else {
-						return a.getName().compareTo(b.getName());
-					}
-				});
-			}
-
-			if (!sortDateCreated.isSelected()) {
-				filterItems.sort(Comparator.comparing(IElement::getName));
-			}
-
-			if (desc.isSelected()) {
-				Collections.reverse(modElements);
-				Collections.reverse(filterItems);
-			}
+			modElements.sort(ModElement.getComparator(mcreator.getWorkspace(), modElements));
 
 			filterItems.addAll(modElements);
 

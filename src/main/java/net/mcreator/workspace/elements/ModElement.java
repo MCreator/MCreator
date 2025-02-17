@@ -30,6 +30,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -298,6 +299,28 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 			return gson.fromJson(json, ModElement.class);
 		}
+	}
+
+	public static Comparator<ModElement> getComparator(Workspace workspace, List<ModElement> originalOrder) {
+		return (a, b) -> {
+			if (workspace.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
+				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+					return a.getName().compareToIgnoreCase(b.getName());
+				else
+					return b.getName().compareToIgnoreCase(a.getName());
+			} else if (workspace.getWorkspaceUserSettings().workspacePanelSortType
+					== WorkspaceUserSettings.SortType.TYPE) {
+				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+					return a.getType().getReadableName().compareTo(b.getType().getReadableName());
+				else
+					return b.getType().getReadableName().compareTo(a.getType().getReadableName());
+			} else {
+				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+					return originalOrder.indexOf(a) - originalOrder.indexOf(b);
+				else
+					return originalOrder.indexOf(b) - originalOrder.indexOf(a);
+			}
+		};
 	}
 
 }

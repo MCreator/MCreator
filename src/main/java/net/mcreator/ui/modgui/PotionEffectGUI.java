@@ -29,6 +29,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.SingleParticleEntryField;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -51,6 +53,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final VTextField effectName = new VTextField(20);
 	private final JColor color = new JColor(mcreator, false, false);
+	private SingleParticleEntryField particle;
+	private final SoundSelector onAddedSound = new SoundSelector(mcreator);
 	private TextureSelectionButton icon;
 
 	private final JCheckBox isInstant = L10N.checkbox("elementgui.potioneffect.is_instant");
@@ -68,8 +72,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;
 	private ProcedureSelector onExpired;
-
 	private ProcedureSelector activeTickCondition;
+	private ProcedureSelector onMobHurt;
+	private ProcedureSelector onMobRemoved;
 
 	public PotionEffectGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -92,6 +97,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition = new ProcedureSelector(this.withEntry("potioneffect/active_tick_condition"), mcreator,
 				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("duration:number/amplifier:number"));
+		onMobHurt = new ProcedureSelector(this.withEntry("potioneffect/on_mob_hurt"), mcreator,
+				L10N.t("elementgui.potioneffect.event_mob_hurt"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number/damagesource:damagesource/amount:number"));
+		onMobRemoved = new ProcedureSelector(this.withEntry("potioneffect/on_mob_death"), mcreator,
+				L10N.t("elementgui.potioneffect.event_mob_death"), ProcedureSelector.Side.SERVER,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 
 		renderStatusInInventory.setSelected(true);
 		renderStatusInHUD.setSelected(true);
@@ -100,17 +111,21 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		JPanel modifiersPage = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 50, 2));
 
 		ComponentUtils.deriveFont(effectName, 16);
 
 		isInstant.setOpaque(false);
+		isInstant.addActionListener(e -> particle.setEnabled(!isInstant.isSelected()));
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 		isCuredbyHoney.setOpaque(false);
 
 		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
 		icon.setOpaque(false);
+
+		particle = new SingleParticleEntryField(mcreator);
+		particle.setDefaultText(L10N.t("elementgui.potioneffect.particles.default"));
 
 		JComponent iconComponent = PanelUtils.totalCenterInPanel(
 				ComponentUtils.squareAndBorder(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/icon"), icon),
@@ -140,6 +155,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 				L10N.label("elementgui.potioneffect.color")));
 		selp.add(color);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/particles"),
+				L10N.label("elementgui.potioneffect.particles")));
+		selp.add(particle);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/on_added_sound"),
+				L10N.label("elementgui.potioneffect.on_added_sound")));
+		selp.add(onAddedSound);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/cured_by_honey"),
 				L10N.label("elementgui.potioneffect.cured_by_honey")));
 		selp.add(isCuredbyHoney);
@@ -157,12 +180,14 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		modifiersPage.add("Center", modifiersEditor);
 		modifiersPage.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
+		JPanel events = new JPanel(new GridLayout(2, 3, 5, 5));
 		events.setOpaque(false);
 		events.add(onStarted);
-		events.add(onExpired);
 		events.add(activeTickCondition);
 		events.add(onActiveTick);
+		events.add(onExpired);
+		events.add(onMobHurt);
+		events.add(onMobRemoved);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -194,6 +219,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.refreshListKeepSelected();
 		onExpired.refreshListKeepSelected();
 		activeTickCondition.refreshListKeepSelected();
+		onMobHurt.refreshListKeepSelected();
+		onMobRemoved.refreshListKeepSelected();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -209,6 +236,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		effectName.setText(potion.effectName);
 		icon.setTexture(potion.icon);
 		color.setColor(potion.color);
+		particle.setEntry(potion.particle);
+		onAddedSound.setSound(potion.onAddedSound);
 		isInstant.setSelected(potion.isInstant);
 		mobEffectCategory.setSelectedItem(potion.mobEffectCategory);
 		renderStatusInInventory.setSelected(potion.renderStatusInInventory);
@@ -217,8 +246,12 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
 		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
+		onMobHurt.setSelectedProcedure(potion.onMobHurt);
+		onMobRemoved.setSelectedProcedure(potion.onMobRemoved);
 		isCuredbyHoney.setSelected(potion.isCuredbyHoney);
 		modifierList.setEntries(potion.modifiers);
+
+		particle.setEnabled(!isInstant.isSelected());
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -226,6 +259,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.effectName = effectName.getText();
 		potion.icon = icon.getTextureHolder();
 		potion.color = color.getColor();
+		potion.particle = particle.getEntry();
+		potion.onAddedSound = onAddedSound.getSound();
 		potion.isInstant = isInstant.isSelected();
 		potion.mobEffectCategory = (String) mobEffectCategory.getSelectedItem();
 		potion.renderStatusInInventory = renderStatusInInventory.isSelected();
@@ -234,6 +269,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
 		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
+		potion.onMobHurt = onMobHurt.getSelectedProcedure();
+		potion.onMobRemoved = onMobRemoved.getSelectedProcedure();
 		potion.isCuredbyHoney = isCuredbyHoney.isSelected();
 		potion.modifiers = modifierList.getEntries();
 		return potion;

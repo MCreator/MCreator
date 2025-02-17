@@ -1,0 +1,1 @@
+This procedure is executed every time a mob with this effect is hurt.
