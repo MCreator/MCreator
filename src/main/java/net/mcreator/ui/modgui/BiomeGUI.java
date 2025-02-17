@@ -153,12 +153,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		spawnEntries = new JSpawnEntriesList(mcreator, this);
 
-		JPanel sbbp2 = new JPanel(new GridLayout(13, 2, 4, 2));
-
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(sbbp2, PanelUtils.pullElementUp(pane5), 20, 20)));
-
-		sbbp2.setOpaque(false);
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
