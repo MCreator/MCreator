@@ -84,27 +84,6 @@ import java.util.List;
 
 	public List<String> defaultFeatures;
 
-	public boolean spawnStronghold;
-	public boolean spawnMineshaft;
-	public boolean spawnMineshaftMesa;
-	public boolean spawnPillagerOutpost;
-	public String villageType;
-	public boolean spawnWoodlandMansion;
-	public boolean spawnJungleTemple;
-	public boolean spawnDesertPyramid;
-	public boolean spawnSwampHut;
-	public boolean spawnIgloo;
-	public boolean spawnOceanMonument;
-	public boolean spawnShipwreck;
-	public boolean spawnShipwreckBeached;
-	public boolean spawnBuriedTreasure;
-	public String oceanRuinType;
-	public boolean spawnNetherBridge;
-	public boolean spawnNetherFossil;
-	public boolean spawnBastionRemnant;
-	public boolean spawnEndCity;
-	public String spawnRuinedPortal;
-
 	@ModElementReference public List<SpawnEntry> spawnEntries;
 
 	private Biome() {
@@ -120,13 +99,7 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		name = "";
-		spawnStronghold = true;
-		spawnMineshaft = true;
-		spawnPillagerOutpost = true;
 		vanillaTreeType = "Default";
-		villageType = "none";
-		oceanRuinType = "NONE";
-		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 	}

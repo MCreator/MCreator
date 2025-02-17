@@ -1,1 +1,0 @@
-Select this setting to have Jungle Temples in your biome.

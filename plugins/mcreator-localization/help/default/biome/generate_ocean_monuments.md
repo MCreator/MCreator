@@ -1,1 +1,0 @@
-Select this setting to have Ocean Monuments in your biome.

@@ -1,1 +1,0 @@
-Select this setting to have End cities in your biome.
