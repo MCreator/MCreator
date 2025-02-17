@@ -140,7 +140,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.ui.workspace.AbstractMainWorkspacePanel">Fields inherited from class&nbsp;net.mcreator.ui.workspace.<a href="../../workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractMainWorkspacePanel</a></h3>
-<code><a href="../../workspace/AbstractMainWorkspacePanel.html#currentTabPanel">currentTabPanel</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#mcreator">mcreator</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#sectionTabs">sectionTabs</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#subTabs">subTabs</a></code></div>
+<code><a href="../../workspace/AbstractMainWorkspacePanel.html#currentTabPanel">currentTabPanel</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#mcreator">mcreator</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#search">search</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#sectionTabs">sectionTabs</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#subTabs">subTabs</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JComponent">Fields inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#listenerList" title="class or interface in javax.swing" class="external-link">listenerList</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#TOOL_TIP_TEXT_KEY" title="class or interface in javax.swing" class="external-link">TOOL_TIP_TEXT_KEY</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#ui" title="class or interface in javax.swing" class="external-link">ui</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#UNDEFINED_CONDITION" title="class or interface in javax.swing" class="external-link">UNDEFINED_CONDITION</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT" title="class or interface in javax.swing" class="external-link">WHEN_ANCESTOR_OF_FOCUSED_COMPONENT</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_FOCUSED" title="class or interface in javax.swing" class="external-link">WHEN_FOCUSED</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_IN_FOCUSED_WINDOW" title="class or interface in javax.swing" class="external-link">WHEN_IN_FOCUSED_WINDOW</a></code></div>
@@ -169,18 +169,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabbedPane()" class="member-name-link">getTabbedPane</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refilterAllEditors()" class="member-name-link">refilterAllEditors</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadElements()" class="member-name-link">reloadElements</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.workspace.AbstractMainWorkspacePanel">Methods inherited from class&nbsp;net.mcreator.ui.workspace.<a href="../../workspace/AbstractMainWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractMainWorkspacePanel</a></h3>
-<code><a href="../../workspace/AbstractMainWorkspacePanel.html#addVerticalTab(java.lang.String,java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)">addVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#afterVerticalTabChanged()">afterVerticalTabChanged</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getMCreator()">getMCreator</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getVerticalTab(java.lang.String)">getVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#reloadElementsInCurrentTab()">reloadElementsInCurrentTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#switchToVerticalTab(java.lang.String)">switchToVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#switchToVerticalTab(net.mcreator.ui.workspace.AbstractWorkspacePanel)">switchToVerticalTab</a></code></div>
+<code><a href="../../workspace/AbstractMainWorkspacePanel.html#addVerticalTab(java.lang.String,java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)">addVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#afterVerticalTabChanged()">afterVerticalTabChanged</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getMCreator()">getMCreator</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getSearchPlaceholderText()">getSearchPlaceholderText</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getSearchTerm()">getSearchTerm</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#getVerticalTab(java.lang.String)">getVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#refilterWorkspaceTab()">refilterWorkspaceTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#reloadWorkspaceTab()">reloadWorkspaceTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#setSearchTerm(java.lang.String)">setSearchTerm</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#switchToVerticalTab(java.lang.String)">switchToVerticalTab</a>, <a href="../../workspace/AbstractMainWorkspacePanel.html#switchToVerticalTab(net.mcreator.ui.workspace.AbstractWorkspacePanel)">switchToVerticalTab</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-javax.swing.JPanel">Methods inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#getUI()" title="class or interface in javax.swing" class="external-link">getUI</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#getUIClassID()" title="class or interface in javax.swing" class="external-link">getUIClassID</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#setUI(javax.swing.plaf.PanelUI)" title="class or interface in javax.swing" class="external-link">setUI</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html#updateUI()" title="class or interface in javax.swing" class="external-link">updateUI</a></code></div>
@@ -208,21 +202,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="reloadElements()">
-<h3>reloadElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadElements</span>()</div>
-</section>
-</li>
-<li>
 <section class="detail" id="getCurrentResourcePackEditor()">
 <h3>getCurrentResourcePackEditor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../minecraft/recourcepack/ResourcePackEditor.html" title="class in net.mcreator.ui.minecraft.recourcepack">ResourcePackEditor</a></span>&nbsp;<span class="element-name">getCurrentResourcePackEditor</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="refilterAllEditors()">
-<h3>refilterAllEditors</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refilterAllEditors</span>()</div>
 </section>
 </li>
 <li>

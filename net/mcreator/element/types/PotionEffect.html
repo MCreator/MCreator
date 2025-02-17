@@ -150,11 +150,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
 <div class="col-second even-row-color"><code><a href="#onActiveTick" class="member-name-link">onActiveTick</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onExpired" class="member-name-link">onExpired</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onAddedSound" class="member-name-link">onAddedSound</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onStarted" class="member-name-link">onStarted</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onExpired" class="member-name-link">onExpired</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onMobHurt" class="member-name-link">onMobHurt</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onMobRemoved" class="member-name-link">onMobRemoved</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onStarted" class="member-name-link">onStarted</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/Particle.html" title="class in net.mcreator.element.parts">Particle</a></code></div>
+<div class="col-second even-row-color"><code><a href="#particle" class="member-name-link">particle</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#renderStatusInHUD" class="member-name-link">renderStatusInHUD</a></code></div>
@@ -202,8 +214,11 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateModElementPicture()" class="member-name-link">generateModElementPicture</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasCustomRenderer()" class="member-name-link">hasCustomRenderer</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasCustomParticle()" class="member-name-link">hasCustomParticle</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasCustomRenderer()" class="member-name-link">hasCustomRenderer</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -240,6 +255,19 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="color">
 <h3>color</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">color</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="particle">
+<h3>particle</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/Particle.html" title="class in net.mcreator.element.parts">Particle</a></span>&nbsp;<span class="element-name">particle</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="onAddedSound">
+<h3>onAddedSound</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></span>&nbsp;<span class="element-name">onAddedSound</span></div>
 </section>
 </li>
 <li>
@@ -302,6 +330,18 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">activeTickCondition</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="onMobHurt">
+<h3>onMobHurt</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onMobHurt</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="onMobRemoved">
+<h3>onMobRemoved</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onMobRemoved</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -353,6 +393,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hasCustomRenderer()">
 <h3>hasCustomRenderer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasCustomRenderer</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="hasCustomParticle()">
+<h3>hasCustomParticle</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasCustomParticle</span>()</div>
 </section>
 </li>
 </ul>
