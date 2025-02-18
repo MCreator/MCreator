@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -163,6 +164,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
+	private ModElementListField providedBannerPatterns;
+
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -220,6 +223,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
+
+		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
 
 		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
@@ -286,7 +291,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -349,6 +354,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
 				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/provided_banner_patterns"),
+				L10N.label("elementgui.item.provided_banner_patterns")));
+		subpane2.add(providedBannerPatterns);
 
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
@@ -715,6 +724,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscDescription.setText(item.musicDiscDescription);
 		musicDiscLengthInTicks.setValue(item.musicDiscLengthInTicks);
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
+		providedBannerPatterns.setListElements(
+				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
 
 		updateFoodPanel();
 		updateRangedPanel();
@@ -780,6 +791,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.musicDiscDescription = musicDiscDescription.getText();
 		item.musicDiscLengthInTicks = (int) musicDiscLengthInTicks.getValue();
 		item.musicDiscAnalogOutput = (int) musicDiscAnalogOutput.getValue();
+		item.providedBannerPatterns = providedBannerPatterns.getListElements().stream()
+				.map(NonMappableElement::getUnmappedValue).collect(Collectors.toList());
 
 		item.texture = texture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
