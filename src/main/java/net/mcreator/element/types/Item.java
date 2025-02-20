@@ -180,6 +180,14 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 	}
 
+	public boolean hasJavaModel() {
+		return decodeModelType(renderType) == Model.Type.JAVA;
+	}
+
+	public boolean hasItemProperties() {
+		return renderType != 0 && hasNormalModel();
+	}
+
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty();
 	}
@@ -266,12 +274,21 @@ import java.util.*;
 		public boolean hasRangedItemModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
+
+		public boolean hasJavaModel() {
+			return decodeModelType(renderType) == Model.Type.JAVA;
+		}
+
+		public boolean hasItemProperties() {
+			return renderType != 0 && hasNormalModel();
+		}
 	}
 
 	public static int encodeModelType(Model.Type modelType) {
 		return switch (modelType) {
 			case JSON -> 1;
 			case OBJ -> 2;
+			case JAVA -> 3;
 			default -> 0;
 		};
 	}
@@ -280,6 +297,7 @@ import java.util.*;
 		return switch (modelType) {
 			case 1 -> Model.Type.JSON;
 			case 2 -> Model.Type.OBJ;
+			case 3 -> Model.Type.JAVA;
 			default -> Model.Type.BUILTIN;
 		};
 	}
