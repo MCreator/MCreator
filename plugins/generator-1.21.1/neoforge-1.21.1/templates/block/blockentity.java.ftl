@@ -164,16 +164,31 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return IntStream.range(0, this.getContainerSize()).toArray();
 	}
 
-	@Override public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
-		return this.canPlaceItem(index, stack);
+	@Override public boolean canPlaceItemThroughFace(int index, ItemStack itemstack, @Nullable Direction direction) {
+		return this.canPlaceItem(index, itemstack)
+		<#if hasProcedure(data.inventoryAutomationPlaceCondition)>&&
+			<@procedureCode data.inventoryAutomationPlaceCondition, {
+				"index": "index",
+				"itemstack": "itemstack",
+				"direction": "direction"
+			}, false/>
+		</#if>;
 	}
 
-	@Override public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+	@Override public boolean canTakeItemThroughFace(int index, ItemStack itemstack, Direction direction) {
 		<#list data.inventoryInSlotIDs as id>
 		if (index == ${id})
 			return false;
-        </#list>
-		return true;
+		</#list>
+		<#if hasProcedure(data.inventoryAutomationTakeCondition)>
+			return <@procedureCode data.inventoryAutomationTakeCondition, {
+				"index": "index",
+				"itemstack": "itemstack",
+				"direction": "direction"
+			}, false/>;
+		<#else>
+			return true;
+		</#if>
 	}
 	<#-- END: WorldlyContainer -->
 

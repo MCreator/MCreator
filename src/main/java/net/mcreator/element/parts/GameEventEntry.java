@@ -27,7 +27,6 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nonnull;
 
 public class GameEventEntry extends MappableElement {
-
 	private GameEventEntry() {
 		super(new NameMapper(null, "gameevents"));
 	}

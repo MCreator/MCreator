@@ -38,7 +38,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private CanvasRenderer canvasRenderer;
 	private boolean drawPreview;
 	private MouseEvent previewEvent;
-	private Shape shape;
+	private Shape shape = Shape.SQUARE;
 	private int size;
 
 	private Image previewImage;

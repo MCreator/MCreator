@@ -23,14 +23,13 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class DataListEntry implements Comparable<DataListEntry> {
+public class DataListEntry {
 
 	private final String name;
 	private String readableName;
@@ -124,18 +123,32 @@ public class DataListEntry implements Comparable<DataListEntry> {
 		return name.hashCode();
 	}
 
-	@Override public int compareTo(DataListEntry o) {
-		String a = this.getReadableName();
-		String b = o.getReadableName();
+	public static <T extends DataListEntry> Comparator<T> getComparator(Workspace workspace, List<T> originalOrder) {
+		return (o1, o2) -> {
+			String a = o1.getReadableName();
+			String b = o2.getReadableName();
 
-		String a_ = this.getName();
-		String b_ = o.getName();
+			String a_ = o1.getName();
+			String b_ = o2.getName();
 
-		if (a_.startsWith(NameMapper.MCREATOR_PREFIX) && !b_.startsWith(NameMapper.MCREATOR_PREFIX))
-			return -1;
-		else if (!a_.startsWith(NameMapper.MCREATOR_PREFIX) && b_.startsWith(NameMapper.MCREATOR_PREFIX))
-			return 1;
-		return a.compareToIgnoreCase(b);
+			if (a_.startsWith(NameMapper.MCREATOR_PREFIX) && !b_.startsWith(NameMapper.MCREATOR_PREFIX))
+				return -1;
+			else if (!a_.startsWith(NameMapper.MCREATOR_PREFIX) && b_.startsWith(NameMapper.MCREATOR_PREFIX))
+				return 1;
+
+			if (workspace.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME
+					|| !a_.startsWith(NameMapper.MCREATOR_PREFIX) || !b_.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+					return a.compareToIgnoreCase(b);
+				else
+					return b.compareToIgnoreCase(a);
+			} else {
+				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+					return originalOrder.indexOf(o1) - originalOrder.indexOf(o2);
+				else
+					return originalOrder.indexOf(o2) - originalOrder.indexOf(o1);
+			}
+		};
 	}
 
 	public void addSupportedGenerator(GeneratorConfiguration generatorConfiguration) {

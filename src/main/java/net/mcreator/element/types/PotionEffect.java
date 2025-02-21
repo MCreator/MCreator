@@ -20,6 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AttributeEntry;
+import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
@@ -31,6 +33,7 @@ import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -44,6 +47,8 @@ import java.util.List;
 	public String effectName;
 	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
 	public Color color;
+	@Nullable public Particle particle;
+	public Sound onAddedSound;
 	public boolean isInstant;
 	public String mobEffectCategory;
 	public boolean renderStatusInInventory;
@@ -56,6 +61,8 @@ import java.util.List;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
+	public Procedure onMobHurt;
+	public Procedure onMobRemoved;
 
 	private PotionEffect() {
 		this(null);
@@ -91,5 +98,9 @@ import java.util.List;
 
 	public boolean hasCustomRenderer() {
 		return !renderStatusInHUD || !renderStatusInInventory;
+	}
+
+	public boolean hasCustomParticle() {
+		return particle != null && !isInstant;
 	}
 }

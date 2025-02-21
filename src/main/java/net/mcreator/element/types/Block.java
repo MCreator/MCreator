@@ -160,6 +160,8 @@ import java.util.stream.Collectors;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
 	public List<Integer> inventoryInSlotIDs;
+	public Procedure inventoryAutomationTakeCondition;
+	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
 	public int energyInitial;

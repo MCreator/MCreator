@@ -23,7 +23,7 @@
 - DRINK:
   readable_name: Drink
 - EAT:
-  readable_name: eat
+  readable_name: Eat
 - ELYTRA_GLIDE:
   readable_name: Elytra Glide
 - ENTITY_DAMAGE:

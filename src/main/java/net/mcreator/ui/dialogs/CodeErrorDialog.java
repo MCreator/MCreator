@@ -126,7 +126,7 @@ public class CodeErrorDialog {
 		if (n == 0) {
 			mcreator.getTabs().showTab(mcreator.workspaceTab);
 			if (mcreator instanceof ModMaker modMaker)
-				modMaker.getWorkspacePanel().search.setText("f:err");
+				modMaker.getWorkspacePanel().setSearchTerm("f:err");
 		} else if (n == 1) {
 			mcreator.getTabs().showTab(mcreator.consoleTab);
 		} else if (n == 3) {

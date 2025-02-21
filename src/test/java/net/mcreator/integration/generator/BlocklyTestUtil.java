@@ -283,7 +283,7 @@ public class BlocklyTestUtil {
 						StringUtils.removeStart(datalist, "procedure_retval_"));
 				return ElementUtil.getProceduresOfType(workspace, variableType);
 			} else if (!DataListLoader.loadDataList(datalist).isEmpty()) {
-				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
+				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,
 								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
 						.toArray(String[]::new);
 			}
