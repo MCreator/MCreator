@@ -1,0 +1,120 @@
+- BLOCK_ACTIVATE:
+  readable_name: Block Activate
+- BLOCK_ATTACH:
+  readable_name: Block Attach
+- BLOCK_CHANGE:
+  readable_name: Block Change
+- BLOCK_CLOSE:
+  readable_name: Block Close
+- BLOCK_DEACTIVATE:
+  readable_name: Block Deactivate
+- BLOCK_DESTROY:
+  readable_name: Block Destroy
+- BLOCK_DETACH:
+  readable_name: Block Detach
+- BLOCK_OPEN:
+  readable_name: Block Open
+- BLOCK_PLACE:
+  readable_name: Block Place
+- CONTAINER_CLOSE:
+  readable_name: Container Close
+- CONTAINER_OPEN:
+  readable_name: Container Open
+- DRINK:
+  readable_name: Drink
+- EAT:
+  readable_name: Eat
+- ELYTRA_GLIDE:
+  readable_name: Elytra Glide
+- ENTITY_DAMAGE:
+  readable_name: Entity Damage
+- ENTITY_DIE:
+  readable_name: Entity Die
+- ENTITY_DISMOUNT:
+  readable_name: Entity Dismount
+- ENTITY_INTERACT:
+  readable_name: Entity Interact
+- ENTITY_MOUNT:
+  readable_name: Entity Mount
+- ENTITY_PLACE:
+  readable_name: Entity Place
+- ENTITY_ACTION:
+  readable_name: Entity Action
+- EQUIP:
+  readable_name: Equip
+- EXPLODE:
+  readable_name: Explode
+- FLAP:
+  readable_name: Flap
+- FLUID_PICKUP:
+  readable_name: Fluid Pickup
+- FLUID_PLACE:
+  readable_name: Fluid Place
+- HIT_GROUND:
+  readable_name: Hit Ground
+- INSTRUMENT_PLAY:
+  readable_name: Instrument Play
+- ITEM_INTERACT_FINISH:
+  readable_name: Item Interact Finish
+- ITEM_INTERACT_START:
+  readable_name: Item Interact Start
+- JUKEBOX_PLAY:
+  readable_name: Jukebox Play
+- JUKEBOX_STOP_PLAY:
+  readable_name: Jukebox Stop Play
+- LIGHTNING_STRIKE:
+  readable_name: Lightning Strike
+- NOTE_BLOCK_PLAY:
+  readable_name: Note Block Play
+- PRIME_FUSE:
+  readable_name: Prime Fuse
+- PROJECTILE_LAND:
+  readable_name: Projectile Land
+- PROJECTILE_SHOOT:
+  readable_name: Projectile Shoot
+- SCULK_SENSOR_TENDRILS_CLICKING:
+  readable_name: Sculk Sensor Tendrils Clicking
+- SHEAR:
+  readable_name: Shear
+- SHRIEK:
+  readable_name: Shriek
+- SPLASH:
+  readable_name: Splash
+- STEP:
+  readable_name: Step
+- SWIM:
+  readable_name: Swim
+- TELEPORT:
+  readable_name: Teleport
+- UNEQUIP:
+  readable_name: Unequip
+- RESONATE_1:
+  readable_name: Resonate 1
+- RESONATE_2:
+  readable_name: Resonate 2
+- RESONATE_3:
+  readable_name: Resonate 3
+- RESONATE_4:
+  readable_name: Resonate 4
+- RESONATE_5:
+  readable_name: Resonate 5
+- RESONATE_6:
+  readable_name: Resonate 6
+- RESONATE_7:
+  readable_name: Resonate 7
+- RESONATE_8:
+  readable_name: Resonate 8
+- RESONATE_9:
+  readable_name: Resonate 9
+- RESONATE_10:
+  readable_name: Resonate 10
+- RESONATE_11:
+  readable_name: Resonate 11
+- RESONATE_12:
+  readable_name: Resonate 12
+- RESONATE_13:
+  readable_name: Resonate 13
+- RESONATE_14:
+  readable_name: Resonate 14
+- RESONATE_15:
+  readable_name: Resonate 15
