@@ -1,10 +1,17 @@
+<#if !data.hasJavaModel()>
+	<#assign parent = "item/generated">
+	<#assign texture = "layer0">
+<#else>
+	<#assign parent = "builtin/entity">
+	<#assign texture = "particle">
+</#if>
 {
-    "parent": "item/generated",
+    "parent": "${parent}",
     "textures": {
         <#if var_item??>
-            "layer0": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
+            "${texture}": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
         <#else>
-            "layer0": "${data.texture.format("%s:item/%s")}"
+            "${texture}": "${data.texture.format("%s:item/%s")}"
         </#if>
     }
 }

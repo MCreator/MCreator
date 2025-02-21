@@ -185,7 +185,7 @@ import java.util.*;
 	}
 
 	public boolean hasItemProperties() {
-		return renderType != 0 && hasNormalModel();
+		return renderType == 0 && hasNormalModel();
 	}
 
 	public boolean hasInventory() {
@@ -280,7 +280,7 @@ import java.util.*;
 		}
 
 		public boolean hasItemProperties() {
-			return renderType != 0 && hasNormalModel();
+			return renderType == 0 && hasNormalModel();
 		}
 	}
 
