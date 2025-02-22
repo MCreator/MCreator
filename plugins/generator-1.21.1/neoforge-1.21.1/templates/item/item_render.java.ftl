@@ -45,6 +45,7 @@ public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} extends Blo
         if (this.model == null) {
             this.model = new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
         }
+
         return this.model;
     }
 

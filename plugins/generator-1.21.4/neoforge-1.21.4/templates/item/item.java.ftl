@@ -36,7 +36,7 @@
 package ${package}.item;
 
 <#compress>
-<#if data.hasJavaModel()>@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)</#if> public class ${name}Item extends Item {
+public class ${name}Item extends Item {
 
 	public ${name}Item(Item.Properties properties) {
 		super(properties
@@ -74,22 +74,6 @@ package ${package}.item;
 				</#if>
 		);
 	}
-
-	<#if data.hasJavaModel()>
-    @SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new IClientItemExtensions() {
-                private ${name}ItemRenderer renderer;
-
-                @Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    if (this.renderer == null) {
-                        this.renderer = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(),
-                            Minecraft.getInstance().getEntityModels());
-                    }
-                    return this.renderer;
-                }
-            }, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
-    }
-	</#if>
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {

@@ -410,6 +410,6 @@ import java.util.*;
 	}
 
 	public boolean hasJavaModel() {
-		return false; //at the moment
+		return false; //for the moment
 	}
 }

@@ -31,29 +31,35 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer;
 <#compress>
-public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} extends BlockEntityWithoutLevelRenderer {
+<#assign renderModel = data.customModelName.split(":")[0]>
+@OnlyIn(Dist.CLIENT)
+public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} implements NoDataSpecialModelRenderer {
     private static final ResourceLocation TEXTURE = ResourceLocation.parse("${modid}:textures/item/${data.texture}.png");
-    private ${data.customModelName.split(":")[0]} model;
+    private ${renderModel} model;
     private final EntityModelSet entityModelSet;
 
-    public ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
-        super(pBlockEntityRenderDispatcher, pEntityModelSet);
-        this.entityModelSet = pEntityModelSet;
+    public ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}(${renderModel} model) {
+    	this.model = model;
     }
 
-    private ${data.customModelName.split(":")[0]} getModel() {
-        if (this.model == null) {
-            this.model = new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-        }
-        return this.model;
-    }
-
-    @Override public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    @Override public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
     	poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, getModel().renderType(TEXTURE), false, stack.hasFoil());
-        this.getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(TEXTURE), false, glint);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
+    }
+
+    @OnlyIn(Dist.CLIENT) public static record Unbaked() implements SpecialModelRenderer.Unbaked {
+    	public static final MapCodec<${name}ItemRenderer${(itemindex??)?then(itemindex, "")}.Unbaked> MAP_CODEC = MapCodec.unit(new ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}.Unbaked());
+
+    	@Override public MapCodec<${name}ItemRenderer${(itemindex??)?then(itemindex, "")}.Unbaked> type() {
+    		return MAP_CODEC;
+    	}
+
+    	@Override public SpecialModelRenderer<?> bake(EntityModelSet entityModelSet) {
+    		return new ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}(new ${renderModel}(entityModelSet.bakeLayer(${renderModel}.LAYER_LOCATION)));
+    		}
     }
 }
 </#compress>

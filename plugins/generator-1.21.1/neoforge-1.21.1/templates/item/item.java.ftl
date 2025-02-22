@@ -82,6 +82,7 @@ package ${package}.item;
                         this.renderer = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(),
                             Minecraft.getInstance().getEntityModels());
                     }
+
                     return this.renderer;
                 }
             }, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
