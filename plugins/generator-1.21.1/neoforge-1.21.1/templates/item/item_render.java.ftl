@@ -30,19 +30,13 @@
 
 <#-- @formatter:off -->
 package ${package}.client.renderer;
-<#if var_ismain?? && var_ismain != "true" && var_index??>
-	<#assign index = var_index?number>
-	<#assign model = data.getModels()[index]>
-<#else>
-	<#assign model = data.customModelName.split(":")[0]>
-</#if>
 <#compress>
-public class ${name}ItemRenderer<#if var_ismain?? && var_ismain != "true">${index}</#if> extends BlockEntityWithoutLevelRenderer {
+public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation TEXTURE = ResourceLocation.parse("${modid}:textures/item/${data.texture}.png");
     private ${data.customModelName.split(":")[0]} model;
     private final EntityModelSet entityModelSet;
 
-    public ${name}ItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
+    public ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
         super(pBlockEntityRenderDispatcher, pEntityModelSet);
         this.entityModelSet = pEntityModelSet;
     }

@@ -5,7 +5,6 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
     condition: hasInventory()
   - template: item/item_render.java.ftl
-    variables: "ismain=true"
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMEItemRenderer.java"
     condition: hasJavaModel()
   - template: json/musicdisc.json.ftl
@@ -70,9 +69,6 @@ list_templates:
         condition: "renderType #= 2"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: item/item_render.java.ftl
-        variables:
-          - "ismain=false"
-          - "index=@itemindex?number"
         name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMEItemRenderer@itemindex.java"
         condition: hasJavaModel()
 
