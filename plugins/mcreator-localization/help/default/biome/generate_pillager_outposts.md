@@ -1,1 +1,0 @@
-Select this setting to have Pillager Outposts in your biome.

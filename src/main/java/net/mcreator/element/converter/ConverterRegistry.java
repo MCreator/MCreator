@@ -53,6 +53,7 @@ import net.mcreator.element.converter.v2024_2.*;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_4.*;
+import net.mcreator.element.converter.v2025_1.BiomeTagConverter;
 import net.mcreator.element.converter.v2025_1.EnchantabilityConverter;
 import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
@@ -84,7 +85,8 @@ public class ConverterRegistry {
 			new BiomeFrozenTopLayerConverter(),
 			new BiomeGenParametersConverter(),
 			new BiomeCustomFeaturesConverter(),
-			new BiomeFogColorConverter()
+			new BiomeFogColorConverter(),
+			new BiomeTagConverter()
 		));
 		put(ModElementType.BLOCK, List.of(
 			new BlockLuminanceFixer(),
