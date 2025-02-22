@@ -212,6 +212,11 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
 			}
 
+			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:block_attach");
+			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
@@ -1787,6 +1792,7 @@ public class TestWorkspaceDataProvider {
 			attribute.minValue = 24.42;
 			attribute.maxValue = 200d;
 			attribute.entities = new ArrayList<>();
+			attribute.sentiment = new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE", "NEUTRAL" }[valueIndex];
 			if (!emptyLists) {
 				attribute.entities.addAll(ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace()).stream()
 						.map(e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()))

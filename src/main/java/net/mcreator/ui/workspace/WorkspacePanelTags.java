@@ -69,6 +69,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -85,6 +87,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.disableItemCentering();
 		listFieldDamageTypes.disableItemCentering();
 		listFieldEnchantment.disableItemCentering();
+		listFieldGameEvents.disableItemCentering();
 
 		listFieldBlocksItems.hideButtons();
 		listFieldEntities.hideButtons();
@@ -93,6 +96,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.hideButtons();
 		listFieldDamageTypes.hideButtons();
 		listFieldEnchantment.hideButtons();
+		listFieldGameEvents.hideButtons();
 
 		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
@@ -101,6 +105,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.setEnabled(false);
 		listFieldDamageTypes.setEnabled(false);
 		listFieldEnchantment.setEnabled(false);
+		listFieldGameEvents.setEnabled(false);
 
 		listFieldBlocksItems.setOpaque(false);
 		listFieldEntities.setOpaque(false);
@@ -109,6 +114,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.setOpaque(false);
 		listFieldDamageTypes.setOpaque(false);
 		listFieldEnchantment.setOpaque(false);
+		listFieldGameEvents.setOpaque(false);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -189,6 +195,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldEnchantment;
+						}
+						case GAME_EVENTS -> {
+							listFieldGameEvents.setListElements(entries.map(
+											e -> (GameEventEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldGameEvents;
 						}
 					};
 					listField.setBorder(retval.getBorder());
@@ -462,6 +475,14 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case GAME_EVENTS -> {
+					JItemListField<GameEventEntry> retval = new GameEventListField(mcreator).allowTags()
+							.allowExternalElements();
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (GameEventEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
