@@ -62,6 +62,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -646,10 +647,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Model.getJavaModels(mcreator.getWorkspace()).stream()
+				.filter(el -> el.getType() == Model.Type.JAVA)
+				.collect(Collectors.toList()),ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()))));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
