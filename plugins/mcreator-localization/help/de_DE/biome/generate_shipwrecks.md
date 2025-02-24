@@ -1,1 +1,0 @@
-Wählen Sie diese Einstellung, um Schiffswracks in Ihrem Biom zu haben.

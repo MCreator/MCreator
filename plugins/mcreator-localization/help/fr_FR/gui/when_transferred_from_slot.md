@@ -1,1 +1,0 @@
-Déclenche une procédure quand des items de ce slot y sont transférés.

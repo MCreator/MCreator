@@ -1,1 +1,0 @@
-Tham số này xác định âm thanh nào sẽ được chơi khi xô được làm rỗng. Nếu không có âm thanh nào được chọn, âm thanh xô mặc định sẽ được chơi.

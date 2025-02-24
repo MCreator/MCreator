@@ -1,1 +1,0 @@
-Eğer öge seçildiyse bloğu "elinize aldığında" (orta fare tuşu ile) seçtiğiniz öge gelir. Eğer boşsa bloğun kendisi gelir.

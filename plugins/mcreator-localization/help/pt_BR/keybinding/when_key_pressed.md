@@ -1,1 +1,0 @@
-Este procedimento será executado quando a tecla selecionada for pressionada.

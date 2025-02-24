@@ -1,1 +1,0 @@
-Utilizza il valore restituito della procedura selezionata per determinare il modello che verrà visualizzato. Il valore restituito deve essere un'entità.

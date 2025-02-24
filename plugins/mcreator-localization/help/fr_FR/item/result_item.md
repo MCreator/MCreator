@@ -1,1 +1,0 @@
-Ce paramètre définit quel item doit être ajouté à l'inventaire de l'entité qui a mangé cette nourriture.

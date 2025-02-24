@@ -1,1 +1,0 @@
-L'animazione è l'animazione utilizzata quando il giocatore esegue un'azione con l'oggetto.

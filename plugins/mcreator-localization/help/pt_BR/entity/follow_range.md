@@ -1,1 +1,0 @@
-O alcance de acompanhamento define a que distância o grupo notará/continuará perseguindo o jogador/alvo

@@ -1,1 +1,0 @@
-Se a condição for especificada, este rótulo apenas poderá ser exibido caso a condição passe.

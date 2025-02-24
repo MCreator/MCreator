@@ -1,1 +1,0 @@
-Seleziona per rendere questa particella in grado di scontrarsi con i blocchi (come gocce di fluido o particelle che rompono i blocchi).

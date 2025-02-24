@@ -1,1 +1,0 @@
-Wenn diese Option aktiviert ist, können sich Entitäten nicht durch die Pflanze bewegen.

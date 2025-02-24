@@ -1,1 +1,0 @@
-Löst eine Prozedur aus, wenn der Block der Welt hinzugefügt wird (kann nicht von einigen natürlichen Generatoren aufgerufen werden).

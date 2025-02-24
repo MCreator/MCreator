@@ -1,1 +1,0 @@
-Tùy chọn này sẽ nhuộm màu khối dựa trên màu của quần xã, tương tự như cỏ, lá cây, và nước. Để có kết quả tốt nhất, các mặt được nhuộm màu nên dùng kết cấu thang độ xám.

@@ -1,1 +1,0 @@
-Tích hộp này để biến vật phẩm được chọn làm nhiên liệu cho lò nung (như than, ván gỗ, v.v.).

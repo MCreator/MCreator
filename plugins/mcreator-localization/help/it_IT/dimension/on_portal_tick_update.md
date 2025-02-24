@@ -1,1 +1,0 @@
-Quando il blocco del portale è presente nel mondo, la procedura verrà eseguita ogni tick.

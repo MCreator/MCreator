@@ -1,1 +1,0 @@
-Ce paramètre définit combient de temps l'effet lié dure.

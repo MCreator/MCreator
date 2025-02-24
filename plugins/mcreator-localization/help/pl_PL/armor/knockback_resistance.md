@@ -1,1 +1,0 @@
-Ten parametr kontroluje odporność zbroi na odrzut.

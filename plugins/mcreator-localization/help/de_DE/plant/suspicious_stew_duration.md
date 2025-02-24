@@ -1,1 +1,0 @@
-Dieser Parameter legt die Dauer der Wirkung des verdächtigen Eintopfes fest, der mit dieser Anlage hergestellt wird.

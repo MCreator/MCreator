@@ -1,1 +1,0 @@
-Sonido adicional reproducido en el bioma.

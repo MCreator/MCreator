@@ -1,1 +1,0 @@
-Âm thanh này được chơi khi khối rơi.

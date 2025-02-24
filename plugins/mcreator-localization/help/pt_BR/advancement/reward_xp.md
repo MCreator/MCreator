@@ -1,1 +1,0 @@
-Esta é a quantidade de experiência que o jogador receberá após concluir a conquista.

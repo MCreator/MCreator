@@ -1,1 +1,0 @@
-Abilitare questo parametro permette al giocatore di mangiare il cibo anche se la sua barra del cibo è piena. (es. mela d'oro)

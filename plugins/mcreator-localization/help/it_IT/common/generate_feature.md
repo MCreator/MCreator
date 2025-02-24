@@ -1,1 +1,0 @@
-Se questo parametro è abilitato, l'elemento genererà la funzionalità worldgen nel mondo.

@@ -1,1 +1,0 @@
-Dacă progresul dumneavoastră este primul dintr-o cale nouă, puteți alege fundalul filei de avansare cu această opțiune.

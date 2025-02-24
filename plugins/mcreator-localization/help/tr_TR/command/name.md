@@ -1,1 +1,0 @@
-Komutu tanımlamak için oyuncunun yazması gereken /'den sonraki kelime, örneğin gamemode, give, setblock vb.

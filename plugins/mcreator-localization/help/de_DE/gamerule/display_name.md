@@ -1,1 +1,0 @@
-Dies ist der Anzeigename für Spielregeln. Er wird in der Einstellung Spielregeln verwendet.

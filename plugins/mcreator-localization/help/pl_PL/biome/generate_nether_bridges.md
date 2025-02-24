@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować netherową fortece w swoim biomie.

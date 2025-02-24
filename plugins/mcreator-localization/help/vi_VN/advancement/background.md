@@ -1,1 +1,0 @@
-Nếu thành tựu của bạn là đầu tiên của một nhánh mới, bạn có thể chọn nền của tab thành tựu với tùy chọn này.

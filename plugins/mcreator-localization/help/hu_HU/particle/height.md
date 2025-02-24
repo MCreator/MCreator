@@ -1,1 +1,0 @@
-Ez a paraméter szabályozza hogy milyen magas a részecske (blockkokban mérve).

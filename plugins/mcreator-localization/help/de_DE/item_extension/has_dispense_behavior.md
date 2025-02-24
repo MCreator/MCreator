@@ -1,1 +1,0 @@
-Wenn diese Option aktiviert ist, wird der Gegenstand nicht von Spendern mit Standard-Aktion weggelassen, sondern die "${l10n.t("elementgui. tem_extension.dispense_success_condition")}" und "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}" stattdessen Prozeduren.

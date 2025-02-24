@@ -1,1 +1,0 @@
-Déclenche une procédure chaque tick tant que ce GUI est ouvert.

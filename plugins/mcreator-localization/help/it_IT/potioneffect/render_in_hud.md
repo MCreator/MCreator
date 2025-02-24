@@ -1,1 +1,0 @@
-Spunta la casella per rendere visibile l'effetto nel gioco

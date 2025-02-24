@@ -1,1 +1,0 @@
-Die Prozedur wird jedes Häkchen ausgeführt, wenn der Gegenstand vom Spieler in der Hand gehalten wird.

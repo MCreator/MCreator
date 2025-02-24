@@ -1,1 +1,0 @@
-Se specificato, l'entità eseguirà questa attività finché soddisfa questa condizione.

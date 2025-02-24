@@ -1,1 +1,0 @@
-Bu, oyun kuralı varsayılan değeridir. Oyun kuralı, oyundaki bir şey (oyuncu veya komut) onu değiştirene kadar bu değere sahip olacaktır.

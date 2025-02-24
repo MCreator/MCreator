@@ -1,1 +1,0 @@
-Questa condizione controlla se il pezzo di armatura rende neutrali i piglin vicini, come un'armatura d'oro.

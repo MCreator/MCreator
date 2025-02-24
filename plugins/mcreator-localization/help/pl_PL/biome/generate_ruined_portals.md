@@ -1,1 +1,0 @@
-To ustawienie pozwala ci na generowanie zrujnowanych portalów w twoim biomie.

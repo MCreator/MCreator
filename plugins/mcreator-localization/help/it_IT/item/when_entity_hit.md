@@ -1,1 +1,0 @@
-Questa procedura viene eseguita quando un'entità vivente (mucca, pianta rampicante, giocatore, ecc.) viene colpita utilizzando questo oggetto.

@@ -1,1 +1,0 @@
-Marque esta caixa para fazer com que este bioma apareça no subsolo (em cavernas) no mundo superior.

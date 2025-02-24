@@ -1,1 +1,0 @@
-Questo parametro definisce la priorità dell'overlay. Gli overlay con "Alto" saranno visualizzati sopra gli overlay con questo parametro impostato su "Low".

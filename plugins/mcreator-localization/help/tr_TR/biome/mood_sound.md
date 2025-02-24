@@ -1,1 +1,0 @@
-Ortam sesi, mağaralar için kullanılan sestir (örn. Ortam Mağaraları)

@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie viele Pflanzen maximal in einem einzigen Patch generieren können. Höhere Werte bedeuten mehr Pflanzen in einem einzigen -Patch.

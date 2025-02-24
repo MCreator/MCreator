@@ -1,1 +1,0 @@
-Aciona um procedimento quando um bloco próximo a este é atualizado (o estado do bloco muda, um novo bloco é colocado ou um bloco é removido).

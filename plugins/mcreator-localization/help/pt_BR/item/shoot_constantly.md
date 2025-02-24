@@ -1,1 +1,0 @@
-Se marcado, o item de longa distância irá atirar constantemente quando o jogador o clica com o botão direito.

@@ -1,1 +1,0 @@
-Il nome dell'incantesimo come usato nel gioco.

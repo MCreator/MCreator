@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan las mineshafts de meseta en tu bioma.

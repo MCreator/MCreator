@@ -1,1 +1,0 @@
-Bu prosedür, bu eşya işlendiğinde veya eritildiğinde yürütülür.

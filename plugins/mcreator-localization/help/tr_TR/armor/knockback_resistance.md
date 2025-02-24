@@ -1,1 +1,0 @@
-Bu parametre zırhın geri tepme direncini kontrol eder.

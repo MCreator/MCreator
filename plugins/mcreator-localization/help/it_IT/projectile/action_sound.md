@@ -1,1 +1,0 @@
-Questo parametro controlla il suono riprodotto quando il proiettile viene sparato.

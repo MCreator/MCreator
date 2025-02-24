@@ -1,1 +1,0 @@
-Koşul belirtilirse, seçilen öğe yalnızca koşul geçerse yakıt olarak kullanılabilir.

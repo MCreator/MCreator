@@ -1,1 +1,0 @@
-Zırhı giyince oyunun çıkaracağı ses.

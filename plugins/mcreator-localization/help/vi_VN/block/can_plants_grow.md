@@ -1,1 +1,0 @@
-Nếu tham số này được tích, bất kì cây cối nào đều có thể được đặt và phát triển trên khối.

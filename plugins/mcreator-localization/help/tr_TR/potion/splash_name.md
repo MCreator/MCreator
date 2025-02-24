@@ -1,1 +1,0 @@
-Bu parametre sıçrama iksiri şişesinin adını kontrol eder.

@@ -1,1 +1,0 @@
-Số kinh nghiệm mà dân làng nhận được.

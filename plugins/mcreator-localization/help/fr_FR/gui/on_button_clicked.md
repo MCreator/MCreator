@@ -1,1 +1,0 @@
-Déclenche une procédure quand ce bouton est utilisé.

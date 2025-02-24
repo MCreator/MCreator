@@ -1,1 +1,0 @@
-Giá trị này xác định thời gian, tính bằng tick, trước khi âm thanh được chơi (lặp lại).

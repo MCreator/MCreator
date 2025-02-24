@@ -1,1 +1,0 @@
-Zaznacz ten parametr, aby ukryć osiągnięcie w zakładce postępów do momentu jego zdobycia.

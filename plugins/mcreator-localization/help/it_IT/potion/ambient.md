@@ -1,1 +1,0 @@
-Questo parametro definisce se l'effetto viene applicato come ambientale.

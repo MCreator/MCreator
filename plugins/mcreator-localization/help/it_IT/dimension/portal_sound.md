@@ -1,1 +1,0 @@
-Questo parametro controlla il suono riprodotto dal portale in modo casuale quando attivo.

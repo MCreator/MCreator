@@ -1,1 +1,0 @@
-Marque esta caixa para tornar o item selecionado um combustível para fornalhas (como carvão, tábuas, etc.).

@@ -1,1 +1,0 @@
-Tham số này xác định cần bao lâu để đào khối. Giá trị cao hơn sẽ làm cho thời gian đào khối này lâu hơn.

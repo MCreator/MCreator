@@ -1,1 +1,0 @@
-İşaretlenirse, oyuncu sağ tıkladığında menzilli eşya sürekli ateş eder.

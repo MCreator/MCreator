@@ -1,1 +1,0 @@
-Aciona um procedimento quando esta interface é aberta.

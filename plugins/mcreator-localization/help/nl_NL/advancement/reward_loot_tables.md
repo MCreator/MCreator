@@ -1,1 +1,0 @@
-De speler zal een voorwerp van de geselecteerde loottabel ontvangen die in dit veld gedefinieerd is wanneer de voorgang is voltooid.

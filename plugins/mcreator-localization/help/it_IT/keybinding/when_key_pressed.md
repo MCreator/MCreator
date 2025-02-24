@@ -1,1 +1,0 @@
-Questa procedura verrà eseguita alla pressione del tasto selezionato.

@@ -1,1 +1,0 @@
-Chọn cài đặt này để có kim tự tháp sa mạc trong biome của bạn.

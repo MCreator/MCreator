@@ -1,1 +1,0 @@
-Quando essa condição for verdadeira, a entidade conseguirá respirar debaixo d'água indefinidamente, como peixes ou lulas.

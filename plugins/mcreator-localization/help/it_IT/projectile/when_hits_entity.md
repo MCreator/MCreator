@@ -1,1 +1,0 @@
-Se il proiettile colpisce un'entità vivente (mucca, creeper, giocatore, ecc.), eseguirà la procedura selezionata.

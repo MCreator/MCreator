@@ -1,1 +1,0 @@
-Bu paremetre biyom içindeki suyun rengini kontrol eder

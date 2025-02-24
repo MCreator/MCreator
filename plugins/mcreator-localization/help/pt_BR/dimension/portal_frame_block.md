@@ -1,1 +1,0 @@
-O bloco de estrutura do portal é o bloco usado para criar a estrutura do portal para a dimensão se o portal estiver habilitado.

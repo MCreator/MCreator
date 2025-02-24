@@ -1,1 +1,0 @@
-Eğer bu parametre işaretlendiyse bloğun karşılaştırıcı ile birlikte çalışır.

@@ -1,1 +1,0 @@
-Schreibt eine Nachricht in den Chat, wenn der Spieler den Fortschritt erhalten hat.

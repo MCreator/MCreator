@@ -1,1 +1,0 @@
-Quando o item de longa distância é usado, o procedimento selecionado será acionado.

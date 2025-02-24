@@ -1,1 +1,0 @@
-Puoi scegliere una funzione da eseguire quando il giocatore completa l'avanzamento con questo parametro.

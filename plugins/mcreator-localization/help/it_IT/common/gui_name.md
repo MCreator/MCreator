@@ -1,1 +1,0 @@
-Il nome in gioco è il nome dell'elemento della mod come mostrato nei menu di gioco, suggerimenti item e altri luoghi dove è possibile visualizzare il nome.

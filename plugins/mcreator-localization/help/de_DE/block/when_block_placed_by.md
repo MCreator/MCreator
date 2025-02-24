@@ -1,1 +1,0 @@
-Löst eine Prozedur aus, wenn etwas den Block (Entity/Block) neben diesem Block platziert.

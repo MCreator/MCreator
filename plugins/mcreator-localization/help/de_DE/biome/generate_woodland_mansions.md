@@ -1,1 +1,0 @@
-Wähle diese Einstellung, um Waldanwesen in deinem Biom zu haben.

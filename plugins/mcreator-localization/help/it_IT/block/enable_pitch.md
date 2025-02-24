@@ -1,1 +1,0 @@
-Se il tuo blocco ruota orizzontalmente, spunta questa casella per permettergli di rivolgersi verso il pavimento, pareti o il soffitto in qualsiasi direzione. Questa opzione è usata dalla leva, dalla mola ecc.

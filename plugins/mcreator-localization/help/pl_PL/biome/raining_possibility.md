@@ -1,1 +1,0 @@
-Ten parametr kontroluje możliwość deszczu wewnątrz biomu.

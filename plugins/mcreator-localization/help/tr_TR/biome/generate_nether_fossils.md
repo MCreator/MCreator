@@ -1,1 +1,0 @@
-Biyomunuzda Nether fosilleri olması için bu ayarı seçin.

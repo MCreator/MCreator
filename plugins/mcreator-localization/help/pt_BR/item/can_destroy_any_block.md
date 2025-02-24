@@ -1,1 +1,0 @@
-Marque este parâmetro se você deseja que este item ou ferramenta possa destruir qualquer bloco, até uma Rocha matriz.

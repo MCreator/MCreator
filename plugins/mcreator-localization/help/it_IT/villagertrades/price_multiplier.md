@@ -1,1 +1,0 @@
-Definisce l'aumento del prezzo quando il giocatore scambia più volte lo stesso oggetto.

@@ -1,1 +1,0 @@
-Der Umgebungssound wird ständig im Biom gespielt.

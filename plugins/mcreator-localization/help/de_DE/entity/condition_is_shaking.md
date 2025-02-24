@@ -1,1 +1,0 @@
-Solange der zurückgegebene Wert wahr ist, wird die Entität schütteln. Zombie-Dorfbewohner verwenden diese Funktion während ihrer Heilung.

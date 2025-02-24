@@ -1,1 +1,0 @@
-Ten warunek kontroluje, czy część zbroi sprawia, że pobliskie pigliny są neutralne (gdy założone), podobnie jak złoty pancerz.

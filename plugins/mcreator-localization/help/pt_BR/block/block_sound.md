@@ -1,1 +1,0 @@
-Grupo de som que define este bloco. Este parâmetro afeta sons como som de posicionamento de bloco, som de quebra de bloco e som tocado ao andar no bloco.

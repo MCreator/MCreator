@@ -1,1 +1,0 @@
-Para restringir seu bloco a fluidos específicos, escolha-os nesta opção.

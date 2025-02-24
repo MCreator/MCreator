@@ -1,1 +1,0 @@
-﻿Quy trình này xác định liệu hộp kiểm có nên được tích sẵn hay không khi GUI được mở.

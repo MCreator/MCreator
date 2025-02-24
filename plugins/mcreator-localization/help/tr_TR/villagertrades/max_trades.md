@@ -1,1 +1,0 @@
-Köylünün kendini yeniden şarj etmeden yapabileceği bu ticaretin maksimum sayısı.

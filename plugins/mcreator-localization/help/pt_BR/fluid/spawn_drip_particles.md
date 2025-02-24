@@ -1,1 +1,0 @@
-Se esta opção estiver habilitada, o fluido gerará partículas quando estiver acima de um bloco sólido e houver ar abaixo dele.

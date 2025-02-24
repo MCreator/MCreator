@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować dżunglowe świątynie w swoim biomie.

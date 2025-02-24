@@ -1,1 +1,0 @@
-Aktivieren Sie diesen Parameter, wenn der Block mit Vergleichern arbeiten soll.

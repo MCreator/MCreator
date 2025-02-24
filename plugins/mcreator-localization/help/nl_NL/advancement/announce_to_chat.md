@@ -1,1 +1,0 @@
-Schrijft een bericht in de chat als de speler de vooruitgang voltooit.

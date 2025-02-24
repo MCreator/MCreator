@@ -1,1 +1,0 @@
-Tham số này xác định mức độ ánh sáng khối phát ra. Nó là một giá trị giữa 0 và 15. Nếu được đặt thành 0, khối sẽ không phát sáng. Nếu được đặt thành 15, khối sẽ phát sáng tương tự đá phát sáng.

@@ -1,1 +1,0 @@
-Se você tiver habilitado "${l10n.t("elementgui.item.container_item")}", você pode habilitar esta opção para que o item danifique ao invés de só permanecer na grade de fabricação.

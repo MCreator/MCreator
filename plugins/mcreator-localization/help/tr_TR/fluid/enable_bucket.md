@@ -1,1 +1,0 @@
-Bu parametre, bu sıvının bir kovaya konulup konulamayacağını kontrol eder.

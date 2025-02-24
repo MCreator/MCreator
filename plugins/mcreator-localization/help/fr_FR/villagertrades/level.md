@@ -1,1 +1,0 @@
-Niveau minimum requis pour que le Villageois propose l'échange.

@@ -1,1 +1,0 @@
-Chọn cài đặt này để có tượng đài đại dương trong biome của bạn.

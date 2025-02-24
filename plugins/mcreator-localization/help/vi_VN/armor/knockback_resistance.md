@@ -1,1 +1,0 @@
-Tham số này điều khiển sự kháng đánh bật xa của bộ giáp này.

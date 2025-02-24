@@ -1,1 +1,0 @@
-Scrie un mesaj în chat atunci când jucătorul completează avansul.

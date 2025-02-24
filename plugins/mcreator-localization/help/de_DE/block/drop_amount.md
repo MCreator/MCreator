@@ -1,1 +1,0 @@
-Dieser Parameter bestimmt, wie viele Drop-Elemente oder Blöcke der Block droppt, wenn dieser Block kaputt ist.

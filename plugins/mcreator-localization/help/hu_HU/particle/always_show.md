@@ -1,1 +1,0 @@
-Ez a paraméter befolyásolja hogy a részecske minden helyzetben látható legyen, akkor is ha a részecskse láthatósága a videó beállításokban minimálisra van beállítva.

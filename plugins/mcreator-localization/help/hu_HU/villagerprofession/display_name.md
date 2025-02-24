@@ -1,1 +1,0 @@
-A falusi szakmájának a neve. A kereskedelmi felületen lesz látható.

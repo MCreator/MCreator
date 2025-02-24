@@ -1,1 +1,0 @@
-Selecciona esta opción para habilitar la aparición de partículas ambientales en el bioma.

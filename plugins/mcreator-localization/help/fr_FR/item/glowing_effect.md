@@ -1,1 +1,0 @@
-L'effet lumineux fait briller l'objet comme une pomme d'or ou un objet enchanté, sauf que la lueur est permanente.

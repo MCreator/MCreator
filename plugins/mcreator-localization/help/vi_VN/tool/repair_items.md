@@ -1,1 +1,0 @@
-(Các) vật phẩm mà có thể sửa chữa được công cụ bằng cái đe.

@@ -1,1 +1,0 @@
-Il modello che gli strumenti tipo scudo usano durante il blocco.

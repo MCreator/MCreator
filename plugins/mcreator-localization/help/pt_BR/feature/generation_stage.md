@@ -1,1 +1,0 @@
-Esta opção determina em que estágio da geração do mundo o recurso deve ser adicionado.

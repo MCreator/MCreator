@@ -1,1 +1,0 @@
-Plus le nombre est élevé, plus les dégâts que le projectile inflige à l'entité touchée seront élevés.

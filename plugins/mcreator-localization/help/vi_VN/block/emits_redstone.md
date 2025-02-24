@@ -1,1 +1,0 @@
-Nếu bạn tích tham số này, khối này sẽ có thể tỏa ra năng lượng redstone.

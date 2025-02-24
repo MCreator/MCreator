@@ -1,1 +1,0 @@
-El sonido cuando el jugador equipa una pieza de la armadura.

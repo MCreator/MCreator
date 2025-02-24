@@ -1,1 +1,0 @@
-Blok redstone gücü ile beslenmediğinde bir prosedürü tetikler.

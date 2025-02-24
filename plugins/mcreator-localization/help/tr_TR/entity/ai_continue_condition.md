@@ -1,1 +1,0 @@
-Söz konusu varlık, bu koşulu geçtiği süre boyunca bu görev yürütülecektir.

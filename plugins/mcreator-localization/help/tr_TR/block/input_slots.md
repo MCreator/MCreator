@@ -1,1 +1,0 @@
-Giriş yuvaları, hazne ögesi aktarımı için çıkış/kaynak olarak kullanılmayacaktır.

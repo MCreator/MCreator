@@ -1,1 +1,0 @@
-O nome da conquista. Se não possuir parente (conquista raiz) então ela terá o nome do caminho.

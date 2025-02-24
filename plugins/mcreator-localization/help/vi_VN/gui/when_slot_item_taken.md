@@ -1,1 +1,0 @@
-Kích hoạt một quy trình khi một vật phẩm được đặt vào/lấy ra khỏi ô này.

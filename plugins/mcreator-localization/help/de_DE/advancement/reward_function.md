@@ -1,1 +1,0 @@
-Mit diesem Parameter kannst du eine Funktion auswählen, die ausgeführt werden soll, wenn der Spieler den Fortschritt erhalten hat.

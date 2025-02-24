@@ -1,1 +1,0 @@
-Selecione esta configuração para ter mineshafts usados nos biomas de mesa no seu bioma.

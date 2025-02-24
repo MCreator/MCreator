@@ -1,1 +1,0 @@
-Wenn die Bedingung angegeben ist, kann das ausgewählte Element nur als Treibstoff verwendet werden, wenn der Zustand übergeht.

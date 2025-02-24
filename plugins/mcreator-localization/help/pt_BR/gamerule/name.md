@@ -1,1 +1,0 @@
-Este é o nome da regra de jogo que será mostrado no jogo em comandos para modificar/habilitar regras.

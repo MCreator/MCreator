@@ -1,1 +1,0 @@
-Bu parametre bloğunuzun GUI'sini kontrol eder. Örneğin bir sandık veya zanaat bloğu yapmak için gereklidir.

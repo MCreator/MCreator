@@ -1,1 +1,0 @@
-Nếu bạn muốn thay đổi một bảng lợi phẩm vanilla, bạn cần phải chọn "minecraft", nhưng nếu bạn muốn tạo một bảng lợi phẩm mới cho các phần tử mod của bạn, hãy chọn "mod".

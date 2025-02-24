@@ -1,1 +1,0 @@
-Questo è il suono riprodotto quando un'entità cammina sul blocco.

@@ -1,1 +1,0 @@
-Ten parametr kontroluje kolor liści w twoim biomie.

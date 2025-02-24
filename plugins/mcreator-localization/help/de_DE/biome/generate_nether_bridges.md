@@ -1,1 +1,0 @@
-Wähle diese Einstellung, um Netherfestungen in deinem Biom zu haben.

@@ -1,1 +1,0 @@
-Ez a paraméter engedélyezi az egyéni színeket a biomodhoz.

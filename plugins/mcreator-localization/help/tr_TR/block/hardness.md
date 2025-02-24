@@ -1,1 +1,0 @@
-Bu parametre bloğu ne kadar uzun sürede kıracağını kontrol eder. Büyük rakamlar kırma süresinin daha çok uzayacağı anlamına gelir.

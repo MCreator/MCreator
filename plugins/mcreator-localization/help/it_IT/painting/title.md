@@ -1,1 +1,0 @@
-Questo parametro definisce il titolo del dipinto.

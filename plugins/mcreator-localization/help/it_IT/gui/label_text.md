@@ -1,1 +1,0 @@
-Questo parametro definisce il testo visualizzato dall'etichetta quando la GUI è aperta. È possibile utilizzare la procedura del tipo di ritorno stringa per testi più complessi.

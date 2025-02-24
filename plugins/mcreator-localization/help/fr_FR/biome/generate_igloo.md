@@ -1,1 +1,0 @@
-Utilisez ce paramètre pour avoir des Igloos dans votre biome.

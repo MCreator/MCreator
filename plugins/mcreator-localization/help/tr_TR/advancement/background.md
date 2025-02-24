@@ -1,1 +1,0 @@
-Eğer seçtiğiniz başarım bu başarım ağacının ilk basamağı ise, başarı ekranının arkaplanını bu ayarla değiştirebilirsiniz.

@@ -1,1 +1,0 @@
-Kích hoạt tham số này cho phép người chơi ăn thức ăn kể cả khi thanh thức ăn đã đầy. (ví dụ: Táo Vàng)

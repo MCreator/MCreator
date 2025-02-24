@@ -1,1 +1,0 @@
-Khi giá trị được trả lại là đúng, thực thể sẽ trở nên run rẩy. Dân làng thây ma sử dụng tính năng này trong quá trình chữa trị.

@@ -1,1 +1,0 @@
-Especifique valores a serem aceitos pelas propriedades do seu elemento para este estado. Se você desmarcar a caixa à esquerda de uma propriedade, isso não afetará este estado de forma alguma.

@@ -1,1 +1,0 @@
-Dieser Parameter steuert den Rückstoßwiderstand der Rüstung.

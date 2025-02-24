@@ -1,1 +1,0 @@
-Âm thanh môi trường là âm thanh được dùng trong các hang động (VD: Ambient Caves)

@@ -1,1 +1,0 @@
-Questo trigger attiva la procedura quando l'entità cade.

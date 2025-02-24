@@ -1,1 +1,0 @@
-Aktivieren Sie diesen Parameter, wenn Sie wollen, dass alle Blöcke mit diesem Element oder Werkzeug, sogar Stein, gelöscht werden.

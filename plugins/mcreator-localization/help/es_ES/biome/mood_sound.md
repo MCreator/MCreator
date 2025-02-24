@@ -1,1 +1,0 @@
-El sonido ambiental es el sonido utilizado para las cuevas (por ejemplo, Cuevas Ambientales)

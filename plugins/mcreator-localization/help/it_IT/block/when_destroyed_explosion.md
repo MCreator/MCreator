@@ -1,1 +1,0 @@
-Attiva una procedura quando il blocco viene distrutto da un'esplosione.

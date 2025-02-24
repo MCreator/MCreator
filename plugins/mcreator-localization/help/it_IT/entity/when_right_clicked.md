@@ -1,3 +1,0 @@
-Questo trigger attiva la procedura quando un giocatore fa clic destro su questa entità.
-
-La procedura dovrebbe restituire un risultato dell'azione di tipo SUCCESS/CONSUME se si è verificata un'interazione con l'entità FAIL se l'interazione non è riuscita e PASS se non c'è stata alcuna interazione. Se la procedura non restituisce alcun valore, il tipo di risultato dell'azione sarà determinato dal fatto che l'entità sia percorribile, addomesticabile o apre una GUI.

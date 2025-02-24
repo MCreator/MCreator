@@ -1,1 +1,0 @@
-Se a condição for especificada, o item selecionado só poderá ser usado como combustível se a condição for aprovada.

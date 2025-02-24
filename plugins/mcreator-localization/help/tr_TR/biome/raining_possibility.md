@@ -1,1 +1,0 @@
-Bu parametre biyom içinde yağmur yağma olasılığını kontrol eder.

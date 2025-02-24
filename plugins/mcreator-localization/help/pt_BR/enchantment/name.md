@@ -1,1 +1,0 @@
-O nome do encantamento usado no jogo.

@@ -1,1 +1,0 @@
-Attiva una procedura quando un oggetto viene messo/preso da questo slot.

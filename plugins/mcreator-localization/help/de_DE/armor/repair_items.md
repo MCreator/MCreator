@@ -1,1 +1,0 @@
-Der Parameter Reparaturgegenstände kontrolliert, welche Gegenstände zur Reparatur der Rüstung im Amboss verwendet werden können.

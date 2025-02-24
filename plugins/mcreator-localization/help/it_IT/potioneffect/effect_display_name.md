@@ -1,1 +1,0 @@
-Questo parametro controlla il nome dell'effetto (il nome visualizzato all'interno dell'inventario del giocatore).

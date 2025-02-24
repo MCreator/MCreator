@@ -1,1 +1,0 @@
-Tham số này xác định liệu vật phẩm có kháng lửa hay không, giống như đồ Netherit.

@@ -1,1 +1,0 @@
-Ez a paraméter határozza meg a mob kezdeti (és maximális alap) egészségi állapotát. 2 egészség = 1 szív

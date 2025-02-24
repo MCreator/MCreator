@@ -1,1 +1,0 @@
-Se selezionato, i dungeon (strutture con uno spawner di mob) potrebbero generare con la tua entità nello spawner.

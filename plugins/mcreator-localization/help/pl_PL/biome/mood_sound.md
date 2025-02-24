@@ -1,1 +1,0 @@
-Dźwięk otoczenia to dźwięk używany w jaskiniach (np. Ambient jaskiń)

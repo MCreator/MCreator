@@ -1,1 +1,0 @@
-Tên của quần xã là tên được sử dụng bởi một số mod hoặc bởi chính Minecraft với Thế giới tự chọn (Quần xã đơn), chẳng hạn. Dù vậy, nó sẽ không thay đổi tên trong menu F3.

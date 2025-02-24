@@ -1,1 +1,0 @@
-Este parâmetro controla o bloco usado para fazer o tronco da sua árvore, isso se árvores personalizadas forem selecionadas.

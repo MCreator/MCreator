@@ -1,1 +1,0 @@
-O som tocado quando a entidade morre.

@@ -1,1 +1,0 @@
-Đây là danh mục luật chơi. Nó dùng để phân loại các luật chơi dựa vào chúng làm những gì.

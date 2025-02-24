@@ -1,1 +1,0 @@
-Meslek bloklarını kullandıklarında köylü sesi.

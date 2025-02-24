@@ -1,1 +1,0 @@
-A tárgy(ak) amivel a szerszám az üllőnél megjavítható.

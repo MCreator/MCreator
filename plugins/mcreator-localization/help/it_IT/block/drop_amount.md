@@ -1,1 +1,0 @@
-Questo parametro controlla quanti item o blocchi rilascerà quando questo blocco è rotto.

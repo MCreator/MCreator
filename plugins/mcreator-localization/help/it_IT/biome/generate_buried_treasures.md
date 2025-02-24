@@ -1,1 +1,0 @@
-Seleziona questa impostazione per avere tesori sepolti nel tuo bioma.

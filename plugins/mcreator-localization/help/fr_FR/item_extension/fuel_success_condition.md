@@ -1,1 +1,0 @@
-La condition doit être valide pour utiliser l'l'item sélectionné comme carburant. Si la condition échoue, l'objet ne fonctionnera pas comme carburant jusqu'à ce que la condition réussisse.

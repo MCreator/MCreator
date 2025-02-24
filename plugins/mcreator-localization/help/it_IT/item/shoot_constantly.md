@@ -1,1 +1,0 @@
-Se selezionato, l'oggetto a distanza sparerà costantemente quando il giocatore fa clic con il pulsante destro del mouse.

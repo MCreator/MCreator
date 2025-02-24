@@ -1,1 +1,0 @@
-Este ajuste te permite generar portales en ruinas dentro de tu bioma.

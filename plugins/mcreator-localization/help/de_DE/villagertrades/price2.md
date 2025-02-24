@@ -1,1 +1,0 @@
-Das zweite (optionale) Element für den Handel.

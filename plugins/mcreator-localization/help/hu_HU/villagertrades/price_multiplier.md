@@ -1,1 +1,0 @@
-Meghatározza az árnövekedést, amikor a játékos többször is ugyanazt az elemet kereskedik.

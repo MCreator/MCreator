@@ -1,1 +1,0 @@
-Minimalny poziom wymagany do zaoferowania handlu przez Wieśniaka.

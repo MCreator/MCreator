@@ -1,1 +1,0 @@
-Mentre il valore restituito è vero, l'entità sarà trasparente. Mentre un giocatore è in modalità spettatore, soddisfa questa condizione.

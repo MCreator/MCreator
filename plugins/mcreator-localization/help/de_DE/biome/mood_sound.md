@@ -1,1 +1,0 @@
-Der Umgebungston ist der Klang für Höhlen (z.B. Umgebungshöhlen)

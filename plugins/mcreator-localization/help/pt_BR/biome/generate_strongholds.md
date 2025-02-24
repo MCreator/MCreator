@@ -1,1 +1,0 @@
-Selecione esta configuração para ter Fortalezas em seu bioma.

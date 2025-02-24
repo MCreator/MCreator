@@ -1,1 +1,0 @@
-Bu mesleğe sahip zombi köylünün dokusu.

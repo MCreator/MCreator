@@ -1,1 +1,0 @@
-Este procedimento determina o que acontece quando a farinha de ossos é usada com sucesso neste bloqueio.

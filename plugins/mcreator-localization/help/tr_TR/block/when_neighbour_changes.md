@@ -1,1 +1,0 @@
-Bu bloğun yanındaki bir blok güncellendiğinde (blok durumu değiştiğinde, yeni bir blok yerleştirildiğinde veya bir blok kırıldığında) bir prosedürü tetikler.

@@ -1,1 +1,0 @@
-Wenn du eine GUI an deine Entität binden möchtest (um einen Dorfbewohner oder einen Pferd nach Maß zu machen, zum Beispiel), aktivieren Sie dieses Kontrollkästchen, um das Inventar zu aktivieren und es an eine ausgewählte GUI zu binden.

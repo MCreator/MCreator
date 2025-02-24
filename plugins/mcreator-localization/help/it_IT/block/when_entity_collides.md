@@ -1,1 +1,0 @@
-Attiva una procedura quando un'entità si trova all'interno del blocco.

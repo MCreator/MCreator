@@ -1,1 +1,0 @@
-Wenn sich dein Block horizontal dreht, aktivieren Sie dieses Kontrollkästchen, um ihn in jede Richtung zu bewegen, mit Wänden oder Decken. Diese Option wird durch Hebel, Schleifstein usw. verwendet.

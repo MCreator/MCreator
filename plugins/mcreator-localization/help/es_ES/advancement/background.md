@@ -1,1 +1,0 @@
-Si este logro es el primero de una nueva rama, puedes elegir el fondo de la ventana con esta opción.

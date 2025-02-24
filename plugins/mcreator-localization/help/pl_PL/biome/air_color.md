@@ -1,1 +1,0 @@
-Ten parametr kontroluje kolor nieba w tym biomie.

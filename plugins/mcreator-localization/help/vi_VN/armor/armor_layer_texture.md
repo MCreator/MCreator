@@ -1,1 +1,0 @@
-Lớp kết cấu bộ giáp là các kết cấu được hiển thị trên người chơi khi họ mặc bộ giáp.

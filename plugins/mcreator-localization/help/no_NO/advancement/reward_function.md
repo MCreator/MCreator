@@ -1,1 +1,0 @@
-Du kan velge en funksjon å kjøre når spilleren fullfører en avansering med denne parameteren.

@@ -1,1 +1,0 @@
-Varlığınıza bir GUI bağlamak istiyorsanız (örneğin bir köylü veya özel at benzeri envanter yapmak için), Envanteri etkinleştirmek ve seçilen bir GUI'ye bağlamak için bu kutuyu işaretleyin.

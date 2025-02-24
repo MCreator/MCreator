@@ -1,1 +1,0 @@
-Se la condizione è specificata, la voce selezionata può essere utilizzata come carburante solo se la condizione passa.

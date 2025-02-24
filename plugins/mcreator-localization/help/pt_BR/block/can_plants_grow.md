@@ -1,1 +1,0 @@
-Se este parâmetro for marcado, qualquer planta poderá ser colocada e crescer no bloco.

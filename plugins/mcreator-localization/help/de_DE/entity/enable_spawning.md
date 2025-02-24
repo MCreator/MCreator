@@ -1,1 +1,0 @@
-Wenn diese Option aktiviert ist, wird die Entität in der Welt auf natürliche Weise über den Mob-Laichprozess spawnen.

@@ -1,1 +1,0 @@
-Wenn dieser Parameter aktiviert ist, wird der Block wie Sand herunterfallen.

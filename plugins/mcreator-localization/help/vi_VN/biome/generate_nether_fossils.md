@@ -1,1 +1,0 @@
-Chọn cài đặt này để có bộ xương Nether trong quần xã của bạn.

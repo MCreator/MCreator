@@ -1,1 +1,0 @@
-Если флажок установлен, раздатчик не выбросит данную стопку (действие по умолчанию), а вызовет процедуры "${l10n.t("elementgui.item_extension.dispense_success_condition")}" и "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}".

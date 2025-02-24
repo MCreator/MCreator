@@ -1,1 +1,0 @@
-Selecione esta configuração para ter Mansões da Floresta em seu bioma.

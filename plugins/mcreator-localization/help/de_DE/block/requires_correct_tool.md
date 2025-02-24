@@ -1,1 +1,0 @@
-Wenn diese Option aktiviert ist, wird der Block nur fallenlassen, wenn er mit dem angegebenen Erntewerkzeug kaputt geht.

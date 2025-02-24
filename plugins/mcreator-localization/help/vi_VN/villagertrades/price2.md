@@ -1,1 +1,0 @@
-Vật phẩm thứ hai (tùy chọn) để trao đổi.

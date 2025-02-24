@@ -1,1 +1,0 @@
-Dieser Parameter definiert das visuelle Modell (die visuelle Form) der Entität.

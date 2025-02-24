@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować pustynną piramidę w swoim biomie.

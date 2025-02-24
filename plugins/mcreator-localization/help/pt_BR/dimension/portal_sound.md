@@ -1,1 +1,0 @@
-Este parâmetro controla o som reproduzido aleatoriamente pelo portal quando ativo.

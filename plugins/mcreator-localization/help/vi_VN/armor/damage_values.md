@@ -1,1 +1,0 @@
-Những giá trị này xác định độ sát thương đến thực thể được giảm đi bởi một phần bộ giáp được cho.

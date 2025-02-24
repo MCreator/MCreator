@@ -1,1 +1,0 @@
-Ez a paraméter szabályozza, hogy hány "tick" teljen el, mielőtt átvált a következő animációs keretbe.

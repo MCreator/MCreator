@@ -1,1 +1,0 @@
-Si l'outil détruit un bloc, cette procédure sera exécutée.

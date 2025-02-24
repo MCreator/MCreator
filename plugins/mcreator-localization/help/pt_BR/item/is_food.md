@@ -1,1 +1,0 @@
-﻿Marque esta caixa para tornar este item comestível (habilite para que possua propriedades alimentícias).

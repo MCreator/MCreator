@@ -1,1 +1,0 @@
-Questo parametro definisce la durata dell'effetto scelto.

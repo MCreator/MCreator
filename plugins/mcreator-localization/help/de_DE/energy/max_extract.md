@@ -1,1 +1,0 @@
-Dieser Wert ist der maximale Wert der Energie, die das Energie-Element (Block, Gegenstand, ...) aus einem anderen Energie-Element extrahieren kann.

@@ -1,1 +1,0 @@
-Ortam sesi biyomda sürekli olarak çalınır.

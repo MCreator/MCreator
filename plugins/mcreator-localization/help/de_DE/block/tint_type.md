@@ -1,1 +1,0 @@
-Diese Option verwendet einen Farbton auf den Block basierend auf Biomfarben, ähnlich wie Gras, Blättern und Wasser. Für beste Ergebnisse sollten die gefärbten Gesichter eine Graustufentextur verwenden.

@@ -1,1 +1,0 @@
-Questo parametro definisce quanto deve essere ridimensionata la texture della particella.

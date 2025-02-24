@@ -1,1 +1,0 @@
-Ce paramètre contrôle ce qui se passe quand un joueur essaie de dormir dans un lit dans cette dimension.

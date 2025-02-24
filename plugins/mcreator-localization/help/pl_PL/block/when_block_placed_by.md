@@ -1,1 +1,0 @@
-Wywołuje procedurę, gdy coś umieści blok (byt/blok) obok tego bloku.

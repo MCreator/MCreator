@@ -1,1 +1,0 @@
-Le son ambiant est constamment joué dans le biome.

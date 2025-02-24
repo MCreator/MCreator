@@ -1,1 +1,0 @@
-Varlık yürüdüğünde çalınan ses.

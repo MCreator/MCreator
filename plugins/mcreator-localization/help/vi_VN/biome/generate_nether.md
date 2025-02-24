@@ -1,1 +1,0 @@
-Tích cái này để làm cho quần xã xuất hiện trong chiều không gian Nether.

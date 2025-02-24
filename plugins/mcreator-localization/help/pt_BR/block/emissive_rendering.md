@@ -1,1 +1,0 @@
-Marque esta propriedade para aplicar um efeito brilhante (semelhante ao bloco de magma) ao seu bloco.

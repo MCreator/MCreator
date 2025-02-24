@@ -1,1 +1,0 @@
-Tham số này cho phép dùng màu tùy chỉnh cho quần xã của bạn.

@@ -1,1 +1,0 @@
-Selecciona esta opción para hacer que este bioma aparezca en la dimensión del nether.

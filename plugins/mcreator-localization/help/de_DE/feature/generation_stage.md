@@ -1,1 +1,0 @@
-Diese Option legt fest, in welchem Stadium der Weltgenerierung das Feature hinzugefügt werden soll.

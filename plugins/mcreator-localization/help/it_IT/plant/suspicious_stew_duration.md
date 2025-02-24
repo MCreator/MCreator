@@ -1,1 +1,0 @@
-Questo parametro determina la durata dell'effetto della zuppa sospetta preparata con questa pianta.

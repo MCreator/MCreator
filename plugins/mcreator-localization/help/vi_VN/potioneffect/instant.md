@@ -1,1 +1,0 @@
-Tích tham số này nếu hiệu ứng của bạn nên được áp dụng một lần như Hồi máu tức thì.

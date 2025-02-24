@@ -1,1 +1,0 @@
-Quando questa condizione è vera, l'entità sarà in grado di respirare sott'acqua indefinitamente come pesci o calamari.

@@ -1,1 +1,0 @@
-Oyuncu bloğu kırdığında bir prosedürü tetikler.

@@ -1,1 +1,0 @@
-Aciona um procedimento quando um item é colocado/retirado deste slot.

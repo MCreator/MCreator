@@ -1,1 +1,0 @@
-Xác định kích cỡ của mô hình thực thể được hiển thị.

@@ -1,1 +1,0 @@
-Tham số này xác định tên của phím được hiển thị trong tab Điều khiển trong cài đặt Minecraft.

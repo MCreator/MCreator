@@ -1,1 +1,0 @@
-Escribe un mensaje en el chat cuando un jugador complete un logro.

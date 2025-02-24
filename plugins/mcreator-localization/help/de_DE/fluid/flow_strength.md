@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie sehr die Flüssigkeit Entitäten während des Fließens weckt. Mit negativen Werten werden Entitäten gezogen, anstatt sie wegzuschieben.

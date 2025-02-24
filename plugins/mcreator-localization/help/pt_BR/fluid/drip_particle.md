@@ -1,1 +1,0 @@
-Este parâmetro controla a partícula que o fluido irá gerar ao pingar de um bloco.

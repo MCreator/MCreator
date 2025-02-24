@@ -1,1 +1,0 @@
-Nếu tham số này được tích, khối này sẽ mở GUI được gắn khi nhấn chuột phải.

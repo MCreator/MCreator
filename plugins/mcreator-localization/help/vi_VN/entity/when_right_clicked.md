@@ -1,3 +1,0 @@
-Trình kích hoạt nào kích hoạt quy trình khi người chơi nhấn chuột phải lên thực thể này.
-
-Quy trình sẽ trả lại một kết quả hành động thuộc loại SUCCESS/CONSUME khi có sự tương tác với thực thể, FAIL khi tương tác không thành công, và PASS nếu không có sự tương tác. Nếu quy trình không trả lại các giá trị nào, loại kết quả hành động sẽ được xác định qua việc thực thể có thể cưỡi được, thuần phục được, hoặc mở một GUI hay không.

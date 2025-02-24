@@ -1,1 +1,0 @@
-Der Anzeigename dieses Dorfbewohner-Berufs. Er wird in der Handelsoberfläche angezeigt.

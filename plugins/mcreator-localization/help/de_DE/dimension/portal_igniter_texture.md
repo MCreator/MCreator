@@ -1,1 +1,0 @@
-Die Textur des Portalzünders zur Erstellung des Portals aus dem Portalrahmen.

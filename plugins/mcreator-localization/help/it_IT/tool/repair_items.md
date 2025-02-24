@@ -1,1 +1,0 @@
-Gli item con cui lo strumento può essere riparato in un incudine.

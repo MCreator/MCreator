@@ -1,1 +1,0 @@
-Dieser Parameter steuert den Namen des Effekts (der im Inventar des Spielers angezeigte Name).

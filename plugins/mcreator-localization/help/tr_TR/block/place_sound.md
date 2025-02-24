@@ -1,1 +1,0 @@
-Bu, oyuncu bloğu dünyaya yerleştirdiğinde çalınan sestir.

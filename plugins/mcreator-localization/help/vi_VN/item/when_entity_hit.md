@@ -1,1 +1,0 @@
-Quy trình này được thực thi khi một thực thể sống (bò, creeper, người chơi, v.v.) bị trúng bởi vật phẩm này.

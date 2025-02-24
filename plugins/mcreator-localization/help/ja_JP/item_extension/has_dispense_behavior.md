@@ -1,1 +1,0 @@
-このオプションがチェックされている場合、アイテムはディスペンサーによってデフォルトアクションでドロップされませんが、代わりに "${l10n.t("elementgui.item_extension.dispense_success_condition")}" および "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}" の手続きを呼び出します。

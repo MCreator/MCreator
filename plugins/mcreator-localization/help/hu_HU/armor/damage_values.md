@@ -1,1 +1,0 @@
-Ezek a számok határozzák meg hogy egy bizonyos páncél darab mennyivel csökkenti a sebzést a játékoson.

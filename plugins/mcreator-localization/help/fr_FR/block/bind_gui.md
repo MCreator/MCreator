@@ -1,1 +1,0 @@
-Ce paramètre contrôle l'interface graphique de votre bloc. Il est nécessaire pour fabriquer un coffre ou un bloc d'artisanat par exemple.

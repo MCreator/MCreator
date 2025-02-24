@@ -1,1 +1,0 @@
-Questa procedura viene eseguita quando l'item viene rilasciato.

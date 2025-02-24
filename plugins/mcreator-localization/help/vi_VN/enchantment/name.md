@@ -1,1 +1,0 @@
-Tên của phù phép được dùng trong trò chơi.

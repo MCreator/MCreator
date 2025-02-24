@@ -1,1 +1,0 @@
-Più grande è il numero, più lontano l'entità colpita verrà spinta del proiettile.

@@ -1,1 +1,0 @@
-Déclenche une procédure lorsque le bloc est détruit par une explosion.

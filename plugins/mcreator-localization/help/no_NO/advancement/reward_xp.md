@@ -1,1 +1,0 @@
-Det er hvor mange erfaringer spilleren vil motta etter at avansering er fullført.

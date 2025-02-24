@@ -1,1 +1,0 @@
-Ce paramètre contrôle le nombre d'items déposés ou de blocs que le bloc supprime lorsque ce bloc est cassé.

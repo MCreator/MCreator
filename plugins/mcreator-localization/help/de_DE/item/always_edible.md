@@ -1,1 +1,0 @@
-Durch das Aktivieren dieses Parameters kann der Spieler das Futter auch in seiner Nahrung Bar voll essen (zB. Goldener Apfel)

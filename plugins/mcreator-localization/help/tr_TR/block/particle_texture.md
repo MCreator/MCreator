@@ -1,1 +1,0 @@
-Bu isteğe bağlı özellik, blok kırıldığında parçacıkların dokusunu değiştirecektir, bir varlık bloğa iner ve bu böyle devam eder.

@@ -1,1 +1,0 @@
-Este parâmetro habilita cores personalizadas para seu bioma.

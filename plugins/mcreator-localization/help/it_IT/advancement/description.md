@@ -1,1 +1,0 @@
-Qui è dove si mettono le informazioni su come realizzare il compito.

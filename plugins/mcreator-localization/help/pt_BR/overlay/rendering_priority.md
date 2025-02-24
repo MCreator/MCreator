@@ -1,1 +1,0 @@
-Este parâmetro define a prioridade da sua sobreposição. Sobreposições com "Alta" serão renderizadas acima de sobreposições com este parâmetro definido como "Baixa".

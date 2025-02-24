@@ -1,1 +1,0 @@
-Danh mục sách nấu nướng xác định công thức sẽ xuất hiện ở tab nào trong sách nấu nướng.

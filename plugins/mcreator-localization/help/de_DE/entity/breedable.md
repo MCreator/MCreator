@@ -1,1 +1,0 @@
-Die Gegenstände, die verwendet werden, um die Entität mit einem anderen zu züchten, wenn der Parameter Zucht aktiviert ist.

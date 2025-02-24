@@ -1,1 +1,0 @@
-Ce paramètre contrôle l'accélération de rotation de la particule.

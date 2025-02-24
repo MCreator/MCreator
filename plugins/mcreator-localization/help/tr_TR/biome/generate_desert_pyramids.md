@@ -1,1 +1,0 @@
-Biyomunuzda Çöl Piramidleri olması için bu ayarı seçin.

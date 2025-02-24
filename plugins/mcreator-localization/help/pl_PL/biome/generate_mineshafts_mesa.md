@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować kopalnie typu messa w twoim biomie.

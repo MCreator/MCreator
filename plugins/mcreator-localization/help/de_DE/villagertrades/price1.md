@@ -1,1 +1,0 @@
-Der erste für den Handel erforderliche Gegenstand.

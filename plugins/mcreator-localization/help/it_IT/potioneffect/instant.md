@@ -1,1 +1,0 @@
-Controlla questo parametro se il tuo effetto dovrebbe essere applicato istantaneamente come la Salute Istantanea.

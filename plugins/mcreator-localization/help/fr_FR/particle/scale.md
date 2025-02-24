@@ -1,1 +1,0 @@
-Ce paramètre définit la mise à l'échelle de la texture de la particule.

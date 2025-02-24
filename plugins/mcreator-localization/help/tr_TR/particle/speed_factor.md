@@ -1,1 +1,0 @@
-Bu parametre parçacığı oluştururken dış hız parametresinin ne kadar dikkate alınacağını kontrol eder. 0 olarak ayarlandığında, parçacığın yerçekiminin 0'dan büyük olması durumunda parçacık hareket etmeyecek ve sadece düşecektir.

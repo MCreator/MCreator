@@ -1,1 +1,0 @@
-Questo parametro controlla quale suono verrà riprodotto quando il secchio viene svuotato. Se non è selezionato alcun suono, viene utilizzato il bucket predefinito verrà riprodotto il suono.

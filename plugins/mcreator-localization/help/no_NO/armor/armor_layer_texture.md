@@ -1,1 +1,0 @@
-Rustninglagsteksturen er teksturene som vises på spilleren når han har rustningen på seg.

@@ -1,1 +1,0 @@
-Aktivieren, um dieses Partikel, das Blöcke kollidieren kann (wie Flüssigkeitsdrips oder blockierende Partikel).

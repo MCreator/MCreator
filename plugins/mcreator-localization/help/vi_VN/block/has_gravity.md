@@ -1,1 +1,0 @@
-Nếu tham số này được tích, khối sẽ rơi xuống giống như cát.

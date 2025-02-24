@@ -1,1 +1,0 @@
-Pisze wiadomość na czacie, gdy gracz otrzyma osiągnięcie.

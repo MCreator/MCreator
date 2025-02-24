@@ -1,1 +1,0 @@
-Este parâmetro controla quanto tempo leva para minerar o bloco. Um valor mais alto significa que leva mais tempo para minerar este bloco.

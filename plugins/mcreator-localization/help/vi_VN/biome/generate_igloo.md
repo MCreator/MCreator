@@ -1,1 +1,0 @@
-Chọn cài đặt này để có Lều tuyết trong quần xã của bạn.

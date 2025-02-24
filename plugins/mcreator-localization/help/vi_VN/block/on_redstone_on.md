@@ -1,1 +1,0 @@
-Kích hoạt một quy trình khi khối được cấp năng lượng redstone.

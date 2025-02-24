@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować igloo w swoim biomie.

@@ -1,1 +1,0 @@
-Köylünün kazandığı deneyim sayısı.

@@ -1,3 +1,0 @@
-Ce déclencheur déclenche la procédure lorsqu'un joueur fait un clic droit sur cette entité.
-
-La procédure devrait renvoyer un résultat de l'action de type SUCCESS/CONSUME s'il y a eu une interaction avec l'entité, FAIL si l'interaction a échoué, et PASS s'il n'y a pas d'interaction. Si la procédure ne renvoie aucune valeur, le type de résultat de l'action sera déterminé par si l'entité est pilotable, apprivoisable, ou ouvre une GUI.

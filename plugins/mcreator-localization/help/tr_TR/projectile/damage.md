@@ -1,1 +1,0 @@
-Sayı ne kadar yüksek olursa, fırlatılan cismin isabet ettiği varlığa verdiği hasar da o kadar güçlü olur.

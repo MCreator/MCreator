@@ -1,1 +1,0 @@
-Questa è la quantità di esperienza che il giocatore riceverà dopo aver completato l'avanzamento.

@@ -1,1 +1,0 @@
-Esta es la música del bioma. Este sonido será reproducido de forma aleatoria.

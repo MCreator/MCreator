@@ -1,1 +1,0 @@
-Cette option détermine à quel stade de la génération du monde, la structure doit être ajoutée.

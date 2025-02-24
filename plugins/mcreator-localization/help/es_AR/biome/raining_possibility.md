@@ -1,1 +1,0 @@
-Este parámetro controla la posibilidad de llover dentro del bioma.

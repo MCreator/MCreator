@@ -1,1 +1,0 @@
-Este é o valor padrão da regra de jogo. A regra terá este valor até que algo no jogo (jogador ou comando) o mude.

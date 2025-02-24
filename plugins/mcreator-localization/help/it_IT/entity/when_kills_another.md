@@ -1,1 +1,0 @@
-Questo trigger avvia la procedura quando questa entità uccide un'altra entità.

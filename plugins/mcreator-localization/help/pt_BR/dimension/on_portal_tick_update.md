@@ -1,1 +1,0 @@
-Quando o bloco do portal estiver presente no mundo, o procedimento será executado a cada tick.

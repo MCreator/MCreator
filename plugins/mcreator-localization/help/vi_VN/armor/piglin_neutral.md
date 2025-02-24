@@ -1,1 +1,0 @@
-Điều kiện này xác định mảnh giáp làm cho những piglin ở gần trung lập, giống như giáp vàng.

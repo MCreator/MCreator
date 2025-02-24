@@ -1,1 +1,0 @@
-Seleziona questa impostazione per avere piramidi nel tuo bioma.

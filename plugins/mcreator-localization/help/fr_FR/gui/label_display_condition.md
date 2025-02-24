@@ -1,1 +1,0 @@
-Si une condition est spécifiée, ce texte ne sera affiché que si la condition est vrai.

@@ -1,1 +1,0 @@
-Aktivieren Sie dieses Kontrollkästchen, um das ausgewählte Element zu einem Brennstoff für Öfen zu machen (z. B. Kohle, Pfannen, etc.).

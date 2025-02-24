@@ -1,1 +1,0 @@
-Ezt a hangot játssza le amikor felveszed a páncélszett egy darabját.

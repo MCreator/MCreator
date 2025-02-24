@@ -1,1 +1,0 @@
-Diese optionale Eigenschaft wird die Textur der Partikel ändern, wenn der Block kaputt ist, eine Entität landet im Block und so weiter.

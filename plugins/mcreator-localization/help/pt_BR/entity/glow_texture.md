@@ -1,1 +1,0 @@
-A textura Glow será usada para definir a camada brilhante do mob. Áreas de textura mais brilhantes irão resultar nessas partes do mob brilharem mais.

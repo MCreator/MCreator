@@ -1,1 +1,0 @@
-﻿Cette procédure détermine s'il faut initialement cocher cette case ou non lors de l'ouverture de l'interface graphique.

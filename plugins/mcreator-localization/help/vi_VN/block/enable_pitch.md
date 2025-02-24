@@ -1,1 +1,0 @@
-Nếu khối của bạn xoay theo chiều ngang, tích hộp này để cho phép nó hướng mặt vào sàn, tường hay trần ở bất kì chiều nào. Tùy chọn này được dùng bởi cần gạt, đá mài, v.v.

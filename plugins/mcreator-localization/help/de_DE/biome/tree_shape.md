@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, auf welchem Baumtyp die benutzerdefinierte Baumstruktur basieren soll.

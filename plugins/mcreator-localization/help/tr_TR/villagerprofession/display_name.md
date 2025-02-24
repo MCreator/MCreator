@@ -1,1 +1,0 @@
-Bu köylü mesleğinin görünen adı. Ticaret arayüzünde görüntülenir.

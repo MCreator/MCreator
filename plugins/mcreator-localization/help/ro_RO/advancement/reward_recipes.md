@@ -1,1 +1,0 @@
-Rețetele de deblocat atunci când jucătorul completează progresul.

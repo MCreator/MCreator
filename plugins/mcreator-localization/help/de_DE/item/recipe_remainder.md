@@ -1,1 +1,0 @@
-Dieser Parameter steuert den Gegenstand, der bei der Herstellung von Tabellen ersetzt wird. Das bedeutet, dass der Artikel Teil des Rezepts ist, aber durch einen anderen Artikel ersetzt wird.

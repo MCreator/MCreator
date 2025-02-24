@@ -1,1 +1,0 @@
-Yaratıcı menü sekmesinde gösterilen ad.

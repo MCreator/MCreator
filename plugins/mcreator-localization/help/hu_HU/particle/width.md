@@ -1,1 +1,0 @@
-Ez a paraméter szabályozza, hogy mekkora szélességű a részecske (blokk egységekben mérve).

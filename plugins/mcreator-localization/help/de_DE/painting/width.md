@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie weit dieses Bild (in Blockeinheiten) ist.

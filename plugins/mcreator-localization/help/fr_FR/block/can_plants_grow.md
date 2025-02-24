@@ -1,1 +1,0 @@
-Si ce paramètre est coché, n'importe quelle plante peut être placée et pousser sur le bloc.

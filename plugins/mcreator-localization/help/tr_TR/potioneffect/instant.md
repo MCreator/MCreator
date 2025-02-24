@@ -1,1 +1,0 @@
-Efektinizin Anında sağlık gibi bir kez uygulanması gerekiyorsa bu parametreyi işaretleyin.

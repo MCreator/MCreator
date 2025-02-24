@@ -1,1 +1,0 @@
-Model kalkan tipi araçlar bloklama sırasında kullanılır.

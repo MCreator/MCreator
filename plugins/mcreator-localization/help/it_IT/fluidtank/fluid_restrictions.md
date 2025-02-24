@@ -1,1 +1,0 @@
-Per limitare il blocco a liquidi specifici, scegliere in questa opzione.

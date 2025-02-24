@@ -1,1 +1,0 @@
-Döndürülen değer "evet" olduğu sürece varlık sallanacaktır. Zombi köylüler bu özelliği tedavileri sırasında kullanırlar.

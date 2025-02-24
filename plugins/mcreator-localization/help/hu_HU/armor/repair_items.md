@@ -1,1 +1,0 @@
-Ez a paraméter szabályozza milyen tárgyakkal tudod megjavítani a páncélt az üllőnél.

@@ -1,1 +1,0 @@
-Questo parametro controlla la velocità con cui il fuoco si diffonde ad altri blocchi.

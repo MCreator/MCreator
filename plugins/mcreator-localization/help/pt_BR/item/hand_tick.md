@@ -1,1 +1,0 @@
-O procedimento é executado a cada tick quando o item é segurado na mão do jogador.

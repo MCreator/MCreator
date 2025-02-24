@@ -1,1 +1,0 @@
-Wenn Sie diesen Parameter aktivieren, wird dieser Block in der Lage sein, Redstone-Kraft zu emittieren.

@@ -1,1 +1,0 @@
-Wählen Sie diese Einstellung, um Iglus in Ihrem Biom zu haben.

@@ -1,1 +1,0 @@
-Chọn cài đặt này để có đền chùa trong rừng trong quần xã của bạn.

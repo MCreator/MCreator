@@ -1,1 +1,0 @@
-Se questo parametro è selezionato, il blocco cadrà come la sabbia.

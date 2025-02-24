@@ -1,1 +1,0 @@
-Seleziona questa impostazione per avere miniere abbandonate nel tuo bioma.

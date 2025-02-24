@@ -1,1 +1,0 @@
-Dieser Parameter steuert den Sound des Portals zufällig bei aktivierter Option.

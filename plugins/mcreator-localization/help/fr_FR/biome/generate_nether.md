@@ -1,1 +1,0 @@
-Cocher cette case pour générer le biome dans le Nether.

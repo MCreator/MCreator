@@ -1,1 +1,0 @@
-﻿Este procedimento determina quando ou não se deve checar esta caixa inicialmente quando a interface é aberta.

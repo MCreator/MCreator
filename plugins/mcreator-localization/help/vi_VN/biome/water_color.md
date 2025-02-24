@@ -1,1 +1,0 @@
-Tham số này điều khiển màu của nước trong quần xã

@@ -1,1 +1,0 @@
-Die Textur der Zombie-Dorfbewohner mit diesem Beruf.

@@ -1,1 +1,0 @@
-Bu seçenek seçilirse, varlıklar tesis içinde hareket edemeyecektir.

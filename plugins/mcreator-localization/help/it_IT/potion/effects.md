@@ -1,1 +1,0 @@
-Gli effetti nella lista qui sotto saranno applicati alle entità colpite dalla tua pozione.

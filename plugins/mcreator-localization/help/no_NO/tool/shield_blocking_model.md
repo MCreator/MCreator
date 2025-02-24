@@ -1,1 +1,0 @@
-Modellen skjoldtype verktøy som brukes under blokkering.

@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie hoch diese Partikel (in Blockeinheiten) ist.

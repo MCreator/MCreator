@@ -1,1 +1,0 @@
-Dieser Parameter bestimmt, ob der Gegenstand immun gegen Feuer ist, wie z. B. Netherliches.

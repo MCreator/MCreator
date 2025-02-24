@@ -1,1 +1,0 @@
-Utilisez ce paramètre pour avoir des Pyramides de Désert dans votre biome.

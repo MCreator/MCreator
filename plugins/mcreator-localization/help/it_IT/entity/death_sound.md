@@ -1,1 +1,0 @@
-Il suono riprodotto quando l'entità muore.

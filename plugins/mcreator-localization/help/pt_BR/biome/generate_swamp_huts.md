@@ -1,1 +1,0 @@
-Selecione esta configuração para ter cabanas de pântano em seu bioma.

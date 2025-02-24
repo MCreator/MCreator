@@ -1,1 +1,0 @@
-Questa categoria definisce sotto quale scheda la ricetta sarà mostrata nel ricettario per la cottura.

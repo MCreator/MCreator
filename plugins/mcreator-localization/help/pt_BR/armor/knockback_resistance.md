@@ -1,1 +1,0 @@
-Este parâmetro controla a resistência à repulsão da armadura.

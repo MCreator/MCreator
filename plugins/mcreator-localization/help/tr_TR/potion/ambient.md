@@ -1,1 +1,0 @@
-Bu parametre efektin ortam olarak uygulanıp uygulanmayacağını tanımlar.

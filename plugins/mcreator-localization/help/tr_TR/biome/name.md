@@ -1,1 +1,0 @@
-Biyomun adı, bazı modlar tarafından veya Minecraft'ın kendisi tarafından örneğin Büfe (Tek Biyom) ile kullanılan addır. Ancak, F3 menüsündeki adı değiştirmez.

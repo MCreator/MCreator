@@ -1,1 +1,0 @@
-Il nome dell'avanzamento. Se non ha un genitore (avanzamento root), allora sarà anche il nome del percorso.

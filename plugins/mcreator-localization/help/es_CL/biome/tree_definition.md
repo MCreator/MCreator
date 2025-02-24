@@ -1,1 +1,0 @@
-Este parámetro controla si usar la altura de los árboles de vanilla y datos de bloques, o usar los datos proporcionados en los campos de abajo.

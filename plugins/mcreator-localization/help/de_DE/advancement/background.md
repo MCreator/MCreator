@@ -1,1 +1,0 @@
-Wenn dein Fortschritt der erste eines neuen Pfades ist, kannst du mit dieser Option den Hintergrund der Fortschrittsregisterkarte auswählen.

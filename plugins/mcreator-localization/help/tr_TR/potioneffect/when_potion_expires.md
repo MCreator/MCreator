@@ -1,1 +1,0 @@
-Bu prosedür, bir varlık iksir etkisini kaybettiğinde yürütülür.

@@ -1,1 +1,0 @@
-﻿Diese Prozedur bestimmt, ob dieses Kontrollkästchen angewählt wird oder nicht, wenn die GUI geöffnet wird.

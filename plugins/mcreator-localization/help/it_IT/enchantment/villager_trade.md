@@ -1,1 +1,0 @@
-Seleziona questa opzione se vuoi che il tuo incantesimo venga venduto come scambio da parte degli abitanti del villaggio.

@@ -1,1 +1,0 @@
-Koşul belirtilirse, oyuncunun bu boyuta bir portal oluşturmak için koşulu geçmesi gerekir. Itemstack bağımlılığı, portal aktivasyonu için kullanılan öğedir.

@@ -1,1 +1,0 @@
-Este parámetro controla el color del agua en este bioma

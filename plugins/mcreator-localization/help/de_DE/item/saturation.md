@@ -1,1 +1,0 @@
-Sättigung ist die erste statistische Verringerung, wenn ein Spieler energieintensive Aktionen durchführt und es muss vollständig ausgeschöpft sein, bevor das sichtbare Hungermesser abnimmt.

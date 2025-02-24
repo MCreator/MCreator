@@ -1,1 +1,0 @@
-Diese Bedingung bestimmt, ob das Rüstungsstück naheliegende Piglins neutral macht, wie Goldrüstung.

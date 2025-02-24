@@ -1,1 +1,0 @@
-Đây là vật phẩm mục tiêu của phần mở rộng này.

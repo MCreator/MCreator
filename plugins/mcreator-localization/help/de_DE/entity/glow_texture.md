@@ -1,1 +1,0 @@
-Glow-Textur wird verwendet, um Mob leuchtende Schicht zu definieren. Mehr helle Texturbereiche werden dazu führen, dass diese Teile des Mobs mehr leuchten.

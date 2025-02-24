@@ -1,1 +1,0 @@
-Thuộc tính tùy chọn này sẽ thay đổi kết cấu của hạt hiệu ứng khi khối bị phá vỡ, một thực thể rơi xuống khối và hơn thế nữa.

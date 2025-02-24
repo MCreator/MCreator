@@ -1,1 +1,0 @@
-Chọn cài đặt này để có khu mỏ được dùng trong các quần xã cằn cỗi trong quần xã của bạn.

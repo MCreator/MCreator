@@ -1,1 +1,0 @@
-Dieser Parameter definiert den Text, der beim Öffnen der GUI angezeigt wird. Sie können die Rückgabetyp-Prozedur für komplexere Texte verwenden.

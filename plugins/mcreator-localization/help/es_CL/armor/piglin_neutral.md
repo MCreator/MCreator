@@ -1,1 +1,0 @@
-Esta condición controla si la pieza de armadura hace neutrales a los piglins cercanos, como a la armadura de oro.

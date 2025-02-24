@@ -1,1 +1,0 @@
-Si ce paramètre est activé, l'élément générera une caractéristique de génération mondiale dans le monde.

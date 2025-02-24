@@ -1,1 +1,0 @@
-Amikor egy blockot széttörsz ezzel a tárggyal, ez a a procedúra végrehajtódik.

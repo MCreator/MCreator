@@ -1,1 +1,0 @@
-Cisim canlı bir varlığa (inek, sürüngen, oyuncu, vb.) isabet ederse, seçilen prosedürü uygular.

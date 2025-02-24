@@ -1,1 +1,0 @@
-Ce paramètre contrôle combien l'âge maximal réel des particules peut varier en valeur positive ou négative par rapport à l'âge maximal spécifié

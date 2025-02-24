@@ -1,1 +1,0 @@
-Este parâmetro controla qual som será tocado quando o balde for esvaziado. Se nenhum som for selecionado, o som padrão do balde será tocado.

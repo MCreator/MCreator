@@ -1,1 +1,0 @@
-Si este parámetro está habilitado, este bloque abrirá la GUI adherida con el botón derecho del ratón.

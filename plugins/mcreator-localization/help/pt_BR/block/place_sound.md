@@ -1,1 +1,0 @@
-Este é o som tocado quando o jogador coloca o bloco no mundo.

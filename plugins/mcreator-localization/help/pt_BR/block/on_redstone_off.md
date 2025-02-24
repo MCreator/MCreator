@@ -1,1 +1,0 @@
-Aciona um procedimento quando o bloco não é alimentado pelo poder da redstone.

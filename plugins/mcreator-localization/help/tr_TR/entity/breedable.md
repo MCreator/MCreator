@@ -1,1 +1,0 @@
-Üretilebilir parametre etkinleştirilmişse, varlığı başka bir varlıkla üretmek için kullanılan öğeler.

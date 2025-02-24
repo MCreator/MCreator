@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan tesoros enterrados en tu bioma.

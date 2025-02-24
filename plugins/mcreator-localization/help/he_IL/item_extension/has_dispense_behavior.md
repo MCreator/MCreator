@@ -1,1 +1,0 @@
-אם אפשרות זו מסומנת, הפריט לא יוסר על ידי מכשירי ברירת מחדל, אלא יקרא ל- "${l10n.t("elementgui.item_extension.dispense_success_condition")}" ו-"${l10n.t("elementgui.item_extension.dispense_result_itemstack")}" נהלים במקום.

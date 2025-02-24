@@ -1,1 +1,0 @@
-Bloğun depolayabileceği maksimum milibucket (1 kova = 1 000 milibucket) değeridir.

@@ -1,1 +1,0 @@
-Takas için ikinci (isteğe bağlı) öğe.

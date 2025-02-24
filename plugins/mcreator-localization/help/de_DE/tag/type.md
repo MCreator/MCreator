@@ -1,4 +1,0 @@
-* **Gegenstände:** verwenden Sie dies, um mehrere Gegenstände für Rezepte, Prozeduren, ... Artikel-Tags ersetzen das alte Erzwörtersystem
-* **Blöcke:** benutzt nur den Blocktyp, wenn du einen Block anvisierst und nicht dessen Gegenstand (_diese Tags können nicht in Rezepten_ verwendet werden)
-* **Entitäten:** verwenden Sie diesen Tag-Typ, um mehrere Entitäten zu einem gleichen Zweck zusammenzufassen.
-* **Funktionen:** dieser Tag-Typ wird für Tagging-Funktionen in Gruppen verwendet. Eine solche Gruppe heißt "tick" aus dem "minecraft"-Namensraum. Funktionen, die unter dem "tick" Namensraum getaggt sind, werden jedes Spiel-Tick ausgeführt.

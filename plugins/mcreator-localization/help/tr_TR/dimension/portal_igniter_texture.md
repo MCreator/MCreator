@@ -1,1 +1,0 @@
-Portal çerçevesinden portalı oluşturmak için kullanılan portal ateşleyicisinin dokusu.

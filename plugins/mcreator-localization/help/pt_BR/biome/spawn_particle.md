@@ -1,1 +1,0 @@
-Marque este parâmetro para habilitar a geração de partículas ambientais no bioma.

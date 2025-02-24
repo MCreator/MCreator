@@ -1,1 +1,0 @@
-﻿Marca questa casella per rendere questo articolo commestibile (attivalo per avere le proprietà di un cibo).

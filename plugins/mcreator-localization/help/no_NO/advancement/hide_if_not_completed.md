@@ -1,1 +1,0 @@
-Dette parameteret skjuler avanseringen på avanserings fanen inntil den er fullført.

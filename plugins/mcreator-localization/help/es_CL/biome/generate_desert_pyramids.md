@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan piramides del desierto en tu bioma.

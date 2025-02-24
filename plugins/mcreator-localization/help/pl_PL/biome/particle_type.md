@@ -1,1 +1,0 @@
-Te cząsteczki będą pojawiać się w tym biomie.

@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan cabañas de pantano en tu bioma.

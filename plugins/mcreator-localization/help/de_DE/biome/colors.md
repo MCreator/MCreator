@@ -1,1 +1,0 @@
-Dieser Parameter erlaubt benutzerdefinierte Farben für dein Biom.

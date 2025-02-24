@@ -1,1 +1,0 @@
-Bu parametre parçacık dokusunun ne kadar ölçeklendirilmesi gerektiğini tanımlar.

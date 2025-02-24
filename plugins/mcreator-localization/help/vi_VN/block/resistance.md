@@ -1,1 +1,0 @@
-Tham số này điều khiển cách khối phản ứng với vụ nổ. Giá trị cao hơn làm cho khối kháng cự tốt hơn với vụ nổ.

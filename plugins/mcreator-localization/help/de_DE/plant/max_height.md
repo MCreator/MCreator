@@ -1,1 +1,0 @@
-Die anbaubare Pflanze wird wachsen, bis sie diese Höhe erreicht.

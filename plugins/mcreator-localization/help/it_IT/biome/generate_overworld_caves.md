@@ -1,1 +1,0 @@
-Seleziona questa casella per far nascere questo bioma sottoterra (in grotte) in tutto il mondo.

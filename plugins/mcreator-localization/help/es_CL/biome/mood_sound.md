@@ -1,1 +1,0 @@
-El sonido de ambiente es el sonido que se usará en las cuevas (p.ej. el ambiente de las cuevas)

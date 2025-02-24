@@ -1,1 +1,0 @@
-Aktivieren Sie diesen Parameter, wenn Ihr Effekt einmal wie die Sofortgesundheit angewendet werden soll.

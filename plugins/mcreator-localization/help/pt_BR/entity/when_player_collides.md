@@ -1,1 +1,0 @@
-Este gatilho aciona o procedimento quando o jogador colide com esta entidade.

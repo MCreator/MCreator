@@ -1,1 +1,0 @@
-Dies ist die Musik des Biomes. Dieser Sound wird zufällig abgespielt.

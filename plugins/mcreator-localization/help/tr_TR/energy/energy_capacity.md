@@ -1,1 +1,0 @@
-Bu parametre, enerji elementinizin (blok, öge, ...) depolayabileceği maksimum enerji değerini kontrol eder.

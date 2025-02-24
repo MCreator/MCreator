@@ -1,1 +1,0 @@
-Se abiliti questo parametro, questo blocco sarà in grado di emettere un segnale di pietrarossa.

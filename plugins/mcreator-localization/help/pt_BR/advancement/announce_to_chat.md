@@ -1,1 +1,0 @@
-Escreve uma mensagem no chat quando o jogador completar a conquista.

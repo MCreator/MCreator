@@ -1,1 +1,0 @@
-Questo parametro controlla il nome della pozione lanciabile.

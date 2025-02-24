@@ -1,1 +1,0 @@
-Se esta opção estiver marcada, o item não será descartado por dispensadores com ação padrão, mas chamará os procedimentos "${l10n.t("elementgui.item_extension.dispense_success_condition")}" e "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}".

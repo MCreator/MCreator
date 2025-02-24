@@ -1,1 +1,0 @@
-Biyomunuzda Nether kaleleri olması için bu ayarı seçin.

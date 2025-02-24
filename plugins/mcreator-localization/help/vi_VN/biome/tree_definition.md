@@ -1,1 +1,0 @@
-Tham số này xác định liệu sẽ sử dụng chiều cao cây và dữ liệu khối vanilla, hoặc dùng dữ liệu được cung cấp ở trường phía dưới.

@@ -1,1 +1,0 @@
-Selecione esta configuração para ter fortalezas do Nether em seu bioma.

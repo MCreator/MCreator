@@ -1,1 +1,0 @@
-Legt die Preiserhöhung fest, wenn der Spieler den gleichen Gegenstand mehrmals handelt.

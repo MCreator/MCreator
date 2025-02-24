@@ -1,1 +1,0 @@
-Wählen Sie diese Option, wenn Sie das Begrenzungsfeld dieser Anlage anpassen möchten. Wenn dies nicht aktiviert ist, wird die Begrenzungsbox auf dem Pflanzentyp basieren. 

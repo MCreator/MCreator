@@ -1,1 +1,0 @@
-Este parâmetro define o modelo visual (a forma visual) da entidade.

@@ -1,1 +1,0 @@
-Bu, mobun, oyuncu adlarının veya isim etiketlerinin gösterilmesine benzer şekilde başlarının üzerinde gösterilecek bir ad belirlemesine olanak tanır.

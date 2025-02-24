@@ -1,1 +1,0 @@
-Tích tùy chọn này nếu bạn muốn phù phép của bạn có trong các trao đổi với dân làng.

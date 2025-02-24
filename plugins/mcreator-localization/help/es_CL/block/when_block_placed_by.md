@@ -1,1 +1,0 @@
-Gatilla un procedimiento cuando algo coloca el bloque (entidad/bloque) al lado de este bloque.

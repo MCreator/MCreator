@@ -1,1 +1,0 @@
-Questo trigger avvia la procedura quando il giocatore collide con questa entità.

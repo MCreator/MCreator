@@ -1,1 +1,0 @@
-Nhóm âm thanh được xác định cho khối này. Tham số này ảnh hưởng đến các âm thanh như tiếng đặt khối, tiếng phá khối và tiếng đi bộ trên khối.

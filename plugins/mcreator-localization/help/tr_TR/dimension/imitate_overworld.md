@@ -1,1 +1,0 @@
-Bu parametre hava durumu, pusula işlevi ve yaratık yumurtlama ile ilgili olarak boyutun belirli yönlerini kontrol eder.

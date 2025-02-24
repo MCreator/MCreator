@@ -1,1 +1,0 @@
-Tham số này sẽ được thực thi mỗi tick cho mỗi thực thể có hiệu ứng thuốc này.

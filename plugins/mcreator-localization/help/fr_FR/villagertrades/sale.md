@@ -1,1 +1,0 @@
-L'item obtenu comme résultat de l'échange.

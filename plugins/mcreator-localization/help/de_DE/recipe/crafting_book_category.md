@@ -1,1 +1,0 @@
-Die Herstellungsbuchkategorie legt fest, unter welchem Tab das Rezept im Handwerksbuch angezeigt wird.

@@ -1,1 +1,0 @@
-Ten parametr odpowiada za to, jak wysoki jest ten obraz (w jednostkach bloku).

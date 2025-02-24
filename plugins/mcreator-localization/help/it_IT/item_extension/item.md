@@ -1,1 +1,0 @@
-Questo è l'item di destinazione di questa estensione.

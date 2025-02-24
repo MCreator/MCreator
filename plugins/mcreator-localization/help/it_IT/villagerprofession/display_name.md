@@ -1,1 +1,0 @@
-Il nome visualizzato di questa professione. Viene visualizzato nell'interfaccia di trading.

@@ -1,1 +1,0 @@
-Se este parâmetro estiver habilitado, o elemento gerará o recurso worldgen no mundo.

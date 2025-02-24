@@ -1,1 +1,0 @@
-Der Spieler erhält einige Gegenstände von der ausgewählten Beutetabelle, die in diesem Feld definiert ist, wenn der Fortschritt erhalten wurde.

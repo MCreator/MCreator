@@ -1,1 +1,0 @@
-Nếu điều kiện thỏa mãn, người chơi sẽ không thể lấy vật phẩm ra khỏi ô này. Dù vậy, họ vẫn có thể đặt vật phẩm vào mà không có hạn chế.

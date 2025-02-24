@@ -1,1 +1,0 @@
-Isso determina qual item é selecionado quando você "escolhe" (clique com o botão do meio do mouse) o bloco. Se estiver vazio, o item de seleção criativa é o próprio bloco.

@@ -1,1 +1,0 @@
-Attiva una procedura quando gli elementi in questo slot vengono trasferiti da esso.

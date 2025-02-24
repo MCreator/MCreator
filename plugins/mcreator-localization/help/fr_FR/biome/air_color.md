@@ -1,1 +1,0 @@
-Ce paramètre contrôle la couleur du ciel dans ce biome.

@@ -1,1 +1,0 @@
-Chọn cài đặt này để có thuyền đắm dạt bờ trong quần xã của bạn.

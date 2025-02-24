@@ -1,1 +1,0 @@
-Saldırı sırasında mafyanın varlıklara verdiği hasar miktarı.

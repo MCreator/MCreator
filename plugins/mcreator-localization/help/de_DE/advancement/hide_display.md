@@ -1,1 +1,0 @@
-Aktiviere diesen Parameter, um den Fortschritt auf der Fortschrittsregisterkarte auszublenden, bis er abgeschlossen ist.

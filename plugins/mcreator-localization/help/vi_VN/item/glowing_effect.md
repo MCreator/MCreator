@@ -1,1 +1,0 @@
-Hiệu ứng phát sáng làm cho vật phẩm phát sáng tương tự táo vàng phù phép hay các vật phẩm được phù phép, ngoại trừ sự phát sáng đó là vĩnh viễn.

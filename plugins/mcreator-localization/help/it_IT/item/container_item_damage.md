@@ -1,1 +1,0 @@
-Se hai abilitato "${l10n.t("elementgui.item.container_item")}", puoi invece abilitare questa opzione per danneggiare l'oggetto al posto di tenerlo semplicemente nella griglia di creazione.

@@ -1,1 +1,0 @@
-La procedura viene eseguita ogni tick quando l'oggetto viene tenuto in mano dal giocatore.

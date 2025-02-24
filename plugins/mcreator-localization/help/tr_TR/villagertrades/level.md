@@ -1,1 +1,0 @@
-Köylünün takas teklif edebilmesi için gereken minimum seviye.

@@ -1,1 +1,0 @@
-Adiciones de sonido reproducidas en el bioma.

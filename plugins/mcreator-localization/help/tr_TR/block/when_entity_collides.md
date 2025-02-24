@@ -1,1 +1,0 @@
-Bir varlık bloğun içinde olduğunda bir prosedürü tetikler.

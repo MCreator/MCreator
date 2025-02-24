@@ -1,1 +1,0 @@
-Ce paramètre contrôle le bloc utilisé pour créer le tronc de votre arbre si les arbres personnalisés sont sélectionnés.

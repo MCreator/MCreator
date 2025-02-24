@@ -1,1 +1,0 @@
-Este parámetro controla la GUI de tu bloque (por ejemplo: es necesario para crear bloques de almacenamiento, crafteo, etc).

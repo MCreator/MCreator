@@ -1,1 +1,0 @@
-Tích tham số này nếu bạn muốn vật phẩm hoặc công cụ này có thể phá bất kì khối nào, kể cả đá nền.

@@ -1,1 +1,0 @@
-Bu parametre, eğer başarı henüz tamamlanmamış ise başarıyı başarı ekranında göstertmez.

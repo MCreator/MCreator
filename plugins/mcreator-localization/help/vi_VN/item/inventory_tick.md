@@ -1,1 +1,0 @@
-Quy trình này sẽ được thực thi mỗi tick khi vật phẩm ở trong kho đồ của một người chơi.

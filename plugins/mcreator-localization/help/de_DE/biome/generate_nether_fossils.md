@@ -1,1 +1,0 @@
-Wählen Sie diese Einstellung, um Nether Fossilien in Ihrem Biom zu haben.

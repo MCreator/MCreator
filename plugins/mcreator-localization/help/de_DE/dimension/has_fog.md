@@ -1,1 +1,0 @@
-Aktivieren Sie diesen Parameter, um einen dichten Nebel in der Dimension zu aktivieren, auch wenn die Distanz des Renders auf große Werte gesetzt ist. Ein Beispiel dafür ist zu sehen, wenn man im Nether ist.

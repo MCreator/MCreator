@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie stark die Partikeltextur skaliert werden soll.

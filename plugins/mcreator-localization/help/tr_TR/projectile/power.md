@@ -1,1 +1,0 @@
-Bu parametre cismin hızını (kinetik enerjisini) kontrol eder.

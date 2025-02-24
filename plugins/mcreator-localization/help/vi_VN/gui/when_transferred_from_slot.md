@@ -1,1 +1,0 @@
-Kích hoạt một quy trình khi vật phẩm trong ô này được chuyển đi.

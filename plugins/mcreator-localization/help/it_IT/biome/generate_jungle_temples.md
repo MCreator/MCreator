@@ -1,1 +1,0 @@
-Seleziona questa impostazione per avere i templi della giungla nel tuo bioma.

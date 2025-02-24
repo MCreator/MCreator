@@ -1,1 +1,0 @@
-Aktivieren Sie diese Eigenschaft, um einen glühenden Effekt (wie der Magma-Block) auf Ihren Block anzuwenden.

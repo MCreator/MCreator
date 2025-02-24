@@ -1,1 +1,0 @@
-Đặt giá trị của độ đặc với đơn vị đo là kg/m3.

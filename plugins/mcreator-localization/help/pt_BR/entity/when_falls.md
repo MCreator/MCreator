@@ -1,1 +1,0 @@
-Este gatilho aciona o procedimento quando a entidade cai.

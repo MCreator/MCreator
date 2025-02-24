@@ -1,1 +1,0 @@
-Il suono quando il giocatore equipaggia un pezzo dell'armatura.

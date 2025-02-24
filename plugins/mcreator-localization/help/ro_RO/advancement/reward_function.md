@@ -1,1 +1,0 @@
-Poți alege o funcție de executat atunci când jucătorul completează progresul cu acest parametru.

@@ -1,1 +1,0 @@
-Glühender Effekt lässt den Gegenstand wie ein goldener Apfel oder verzauberte Gegenstände leuchten, außer das Glühen ist bleibend.

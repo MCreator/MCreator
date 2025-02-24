@@ -1,1 +1,0 @@
-Questo parametro definisce il modello visivo (la forma visiva) dell'entità.

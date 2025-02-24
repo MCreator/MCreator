@@ -1,1 +1,0 @@
-Le texte qui sera affiché sur cette info-bulle lorsqu'un joueur pointera la zone couverte par ce composant.

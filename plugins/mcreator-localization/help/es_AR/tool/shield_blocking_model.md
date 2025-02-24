@@ -1,1 +1,0 @@
-El modelo que las herramientas tipo escudo utilizan cuando están bloqueando.

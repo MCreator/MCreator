@@ -1,1 +1,0 @@
-Tích để làm cho hiệu ứng có thể thấy được trong trò chơi

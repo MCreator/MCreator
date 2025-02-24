@@ -1,1 +1,0 @@
-La partícula a generar en este bioma.

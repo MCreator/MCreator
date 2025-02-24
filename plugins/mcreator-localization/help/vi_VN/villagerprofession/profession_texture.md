@@ -1,1 +1,0 @@
-Kết cấu của dân làng với nghề nghiệp này.

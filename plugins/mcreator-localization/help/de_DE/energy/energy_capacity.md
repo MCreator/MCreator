@@ -1,1 +1,0 @@
-Dieser Parameter steuert den maximalen Wert der Energie, die Ihr Energie-Element (Block, Artikel, ...) speichern kann.

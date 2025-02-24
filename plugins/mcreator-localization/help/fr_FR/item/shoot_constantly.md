@@ -1,1 +1,0 @@
-Si coché, l'item à distance tirera constamment lorsque le joueur fera clic-droit avec.

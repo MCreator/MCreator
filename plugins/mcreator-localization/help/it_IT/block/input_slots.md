@@ -1,1 +1,0 @@
-Gli slot di input non verranno utilizzati come output per la trasmissione degli articoli alla tramoggia.

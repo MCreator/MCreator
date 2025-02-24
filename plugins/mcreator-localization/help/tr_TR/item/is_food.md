@@ -1,1 +1,0 @@
-﻿Bu öğeyi yenilebilir yapmak için bu kutuyu işaretleyin (gıda özelliklerine sahip olmasını sağlayın).

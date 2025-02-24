@@ -1,1 +1,0 @@
-Se a conquista é a primeira de um novo ramo, você consegue escolher a imagem de fundo da aba de conquistas com esta opção.

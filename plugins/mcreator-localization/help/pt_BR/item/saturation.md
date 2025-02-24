@@ -1,1 +1,0 @@
-Saturação é a primeira estatística a diminuir quando um jogador executa ações intensivas em energia, e deve estar completamente esgotada antes que o medidor de fome visível comece a diminuir.

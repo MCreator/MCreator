@@ -1,1 +1,0 @@
-Chat kutucuğuna, oyuncu bir başarımı tamamladığı zaman mesaj gönderir.

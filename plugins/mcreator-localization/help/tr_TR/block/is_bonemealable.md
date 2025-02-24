@@ -1,1 +1,0 @@
-Bu seçenek etkinleştirilirse blok kemik tozu ile büyütülebilir.

@@ -1,1 +1,0 @@
-Déclenche une procédure quand ce GUI est ouvert.

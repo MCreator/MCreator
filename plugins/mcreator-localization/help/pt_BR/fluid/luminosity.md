@@ -1,1 +1,0 @@
-Defina o valor de luz do seu fluido. Definir o valor para 0 desabilitará a luz.

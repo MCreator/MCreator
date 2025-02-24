@@ -1,1 +1,0 @@
-Alcuni tipi di piante ticckeranno naturalmente, ma altri no. Controllare questo parametro per forzare ciò in tutti i casi.

@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować wraki statków w swoim biomie.

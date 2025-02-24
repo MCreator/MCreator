@@ -1,1 +1,0 @@
-Questo parametro definisce la potenza di questa effetto scelto.

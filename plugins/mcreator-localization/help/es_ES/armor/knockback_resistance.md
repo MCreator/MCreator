@@ -1,1 +1,0 @@
-Este parámetro controla la resistencia al empuje de la armadura.

@@ -1,1 +1,0 @@
-Alle Angriffstypen, die du hier wählst, wirken sich nicht auf den Mob aus.

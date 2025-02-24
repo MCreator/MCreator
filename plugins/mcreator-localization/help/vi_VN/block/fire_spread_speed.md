@@ -1,1 +1,0 @@
-Tham số này điều khiển tốc độ lửa bén sang các khối khác.

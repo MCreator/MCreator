@@ -1,1 +1,0 @@
-Wähle diese Einstellung, um Festungen in deinem Biom zu haben.

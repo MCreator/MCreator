@@ -1,1 +1,0 @@
-Este parâmetro oculta a conquista na aba de conquistas até que seja concluída.

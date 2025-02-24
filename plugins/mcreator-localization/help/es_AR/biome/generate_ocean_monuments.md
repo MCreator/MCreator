@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan monumentos oceánicos en tu bioma.

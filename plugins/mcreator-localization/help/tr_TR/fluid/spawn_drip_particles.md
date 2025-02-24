@@ -1,1 +1,0 @@
-Bu seçenek etkinleştirilirse, akışkan katı bir bloğun üzerindeyken ve altında hava varken parçacıklar üretecektir.

@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan minas usadas en el bioma de mesa en tu bioma.

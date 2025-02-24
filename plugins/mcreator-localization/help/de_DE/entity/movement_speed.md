@@ -1,1 +1,0 @@
-Legt die Bewegungsgeschwindigkeit des Mobs fest. Normalste Mobs bewegen sich mit der Geschwindigkeit um 0. 5, während sich die schnelleren wie Spinnen und Wölfe bei 0,3 bewegen.

@@ -1,1 +1,0 @@
-Cấp độ tối thiểu mà Dân làng cần có để cung cấp trao đổi.

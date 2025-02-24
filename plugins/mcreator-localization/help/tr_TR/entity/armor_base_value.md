@@ -1,1 +1,0 @@
-Mafyanın (saldırgan varlığın) sahip olduğu yerleşik zırh puanı miktarı. (Zombilerin varsayılan olarak 2 zırh puanı vardır.)

@@ -1,1 +1,0 @@
-Définit l'augmentation du prix quand un joueur échange un même item plusieurs fois.

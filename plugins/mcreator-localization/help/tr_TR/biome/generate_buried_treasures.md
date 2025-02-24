@@ -1,1 +1,0 @@
-Biyomunuzda gömülü hazineler olması için bu ayarı seçin.

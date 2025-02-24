@@ -1,1 +1,0 @@
-Während der zurückgegebene Wert wahr ist, wird die Entität transparent sein. während ein Spieler im Zuschauermodus ist, erfüllt er diese Bedingung.

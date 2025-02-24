@@ -1,3 +1,0 @@
-Per aggiungere più condizioni al posizionamento della tua pianta, nonostante il blocco in cui deve trovarsi, aggiungi la tua procedura con il valore restituito qui.
-
-NOTA: sostituisce la condizione di posizionamento del tipo di pianta ed estende l'elenco dei blocchi "può essere posizionato su" con questa condizione aggiuntiva. Se l'elenco dei blocchi "inseribili" è vuoto, questa procedura viene utilizzata come condizione principale di posizionamento/crescita.

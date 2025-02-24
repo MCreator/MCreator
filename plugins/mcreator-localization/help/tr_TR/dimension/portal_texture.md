@@ -1,1 +1,0 @@
-Bu parametre, Nether portalının mor animasyonlu dokusu gibi portalın dokusunu kontrol eder.

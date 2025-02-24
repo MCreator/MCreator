@@ -1,1 +1,0 @@
-Se una condizione è specificata, il giocatore deve superarla per viaggiare in questa dimensione.

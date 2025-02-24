@@ -1,1 +1,0 @@
-Bu, blok kırıldığında duyulan sestir.

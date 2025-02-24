@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan fósiles del nether en tu bioma.

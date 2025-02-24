@@ -1,1 +1,0 @@
-Chọn cài đặt này để có pháo đài trong quần xã của bạn.

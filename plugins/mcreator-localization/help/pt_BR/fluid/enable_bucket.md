@@ -1,1 +1,0 @@
-Este parâmetro controla se este fluido pode ser colocado em um balde.

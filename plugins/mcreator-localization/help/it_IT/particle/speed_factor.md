@@ -1,1 +1,0 @@
-Questo parametro controlla quanto i parametri di velocità esterni sono presi in considerazione quando si genera la particella. Se impostato su 0, la particella non si muoverà e cadrà solo, in caso la gravità della particella è maggiore di 0.

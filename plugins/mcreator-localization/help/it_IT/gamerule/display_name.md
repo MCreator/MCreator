@@ -1,1 +1,0 @@
-Questo è il nome visualizzato della regola del gioco. Viene utilizzato nella schermata di impostazione delle regole del gioco.

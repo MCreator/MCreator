@@ -1,1 +1,0 @@
-Dieser Parameter steuert die Farbe des Laubes (Blätter) in diesem Biom.

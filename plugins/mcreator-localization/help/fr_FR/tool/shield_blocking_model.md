@@ -1,1 +1,0 @@
-Le modèle utilisée par les types d'outils boucliers en bloquant.

@@ -1,1 +1,0 @@
-Người chơi sẽ nhận được một số vật phẩm từ bảng lợi phẩm được chọn trong trường này khí hoàn thành thành tựu.

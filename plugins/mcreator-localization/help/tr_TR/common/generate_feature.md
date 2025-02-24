@@ -1,1 +1,0 @@
-Bu parametre etkinleştirilirse element dünyada dünya üretimi (world generation) özelliğini oluşturacaktır.

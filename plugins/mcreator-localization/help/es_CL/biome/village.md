@@ -1,1 +1,0 @@
-Esta opción te habilita para generar Aldeas de Minecraft en tu bioma.

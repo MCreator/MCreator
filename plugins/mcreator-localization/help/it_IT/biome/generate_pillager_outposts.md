@@ -1,1 +1,0 @@
-Seleziona questa impostazione per avere Avamposti dei Pillager nel tuo bioma.

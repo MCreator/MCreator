@@ -1,1 +1,0 @@
-Questo parametro controlla la quantità di luce emessa dal blocco. È un valore compreso tra 0 e 15. Se impostato su 0, il blocco non emetterà luce. Se impostato su 15, il blocco emetterà la stessa quantità di luce della luminite.

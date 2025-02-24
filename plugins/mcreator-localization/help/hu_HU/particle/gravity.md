@@ -1,1 +1,0 @@
-Ez a paraméter meghatározza a részecske lezuhanási sebességét. Negatív értékek azt eredményezik, hogy a részecske az ég felé száll.

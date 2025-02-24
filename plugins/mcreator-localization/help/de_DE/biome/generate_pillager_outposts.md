@@ -1,1 +1,0 @@
-Wähle diese Einstellung, um Pillager-Außenposten in deinem Biom zu haben.

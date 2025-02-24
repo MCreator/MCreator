@@ -1,1 +1,0 @@
-Ez a paraméter szabályozza a levegő színét az adott biomban.

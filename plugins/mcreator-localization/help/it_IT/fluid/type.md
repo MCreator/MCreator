@@ -1,1 +1,0 @@
-Scegli il tipo di fluido tra Acqua e Lava

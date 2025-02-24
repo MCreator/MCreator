@@ -1,1 +1,0 @@
-Se questa opzione è selezionata, l'elemento non verrà gettato dai dispenser con azione predefinita, ma chiamerà invece le procedure "${l10n.t("elementgui. tem_extension.dispense_success_condition")}" e "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}".

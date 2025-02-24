@@ -1,1 +1,0 @@
-Bu seçenek etkinleştirilirse, blok yalnızca belirtilen hasat aracıyla kırıldığında düşecektir.

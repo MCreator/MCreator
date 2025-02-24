@@ -1,1 +1,0 @@
-Este es el sonido que se reproduce cuando una entidad camina encima de este bloque.

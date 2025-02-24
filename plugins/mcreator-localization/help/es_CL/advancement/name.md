@@ -1,1 +1,0 @@
-El nombre del logro. Si no tiene padre (logro raíz) también será el nombre de la rama.

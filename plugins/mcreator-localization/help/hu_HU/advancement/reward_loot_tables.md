@@ -1,1 +1,0 @@
-A játékos tárgyakat kaphat a kiválasztott és ebben a mezőben meghatározott loot táblázatból ha a játékos elér egy eredményt.

@@ -1,1 +1,0 @@
-Chỉ định các giá trị sẽ được chấp nhận bởi thuộc tính của phần tử của bạn cho trạng thái này. Nếu bạn bỏ tích hộp ở bên trái của một thuộc tính, nó sẽ không làm ảnh hưởng đến trạng thái này theo bất kì hướng nào.

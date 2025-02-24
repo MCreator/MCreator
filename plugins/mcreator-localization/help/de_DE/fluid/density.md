@@ -1,1 +1,0 @@
-Legen Sie einen Dichtewert in kg/m3 Einheiten fest.

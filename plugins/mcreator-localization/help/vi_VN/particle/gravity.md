@@ -1,1 +1,0 @@
-Tham số này xác định tốc độ rơi của hạt hiệu ứng. Giá trị âm sẽ khiến hạt hiệu ứng này bay lên trời.

@@ -1,1 +1,0 @@
-Bu parametre yangının diğer bloklara ne kadar hızlı yayılacağını kontrol eder.

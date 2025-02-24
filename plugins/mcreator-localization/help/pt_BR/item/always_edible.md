@@ -1,1 +1,0 @@
-Habilitar este parâmetro permite que o jogador possa consumir a comida mesmo com sua barra de fome cheia. (ex. Maçã dourada)

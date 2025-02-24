@@ -1,1 +1,0 @@
-Diese Prozedur wird ausgeführt, wenn eine lebende Entität (Kuh, Creeper, Spieler, usw.) mit diesem Gegenstand getroffen wird.

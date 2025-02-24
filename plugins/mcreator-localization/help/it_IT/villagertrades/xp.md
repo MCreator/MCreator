@@ -1,1 +1,0 @@
-Quantità di esperienza che il Villico ottiene.

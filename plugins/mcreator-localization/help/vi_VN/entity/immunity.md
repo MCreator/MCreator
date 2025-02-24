@@ -1,1 +1,0 @@
-Các loại tấn công bạn chọn ở đây sẽ không ảnh hưởng đến mob.

@@ -1,1 +1,0 @@
-Se questa opzione è selezionata, le entità non saranno in grado di muoversi attraverso la pianta.

@@ -1,1 +1,0 @@
-Das Partikel, das in diesem Biom spawnen soll.

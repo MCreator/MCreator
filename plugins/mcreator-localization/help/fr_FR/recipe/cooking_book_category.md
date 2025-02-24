@@ -1,1 +1,0 @@
-La catégorie du livre de cuisine définit sous quel onglet la recette sera affichée dans le livre de cuisine.

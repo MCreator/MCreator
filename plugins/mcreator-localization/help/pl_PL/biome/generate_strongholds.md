@@ -1,1 +1,0 @@
-Wybierz to ustawienie, aby generować twierdzę w swoim biomie.

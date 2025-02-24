@@ -1,1 +1,0 @@
-Vật phẩm bạn nhận được sau khi trao đổi.

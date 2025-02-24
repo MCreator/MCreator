@@ -1,1 +1,0 @@
-Este é o item alvo desta extensão.

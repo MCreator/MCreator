@@ -1,1 +1,0 @@
-Diese Prozedur wird ausgeführt, wenn dieses Element gelöscht wird.

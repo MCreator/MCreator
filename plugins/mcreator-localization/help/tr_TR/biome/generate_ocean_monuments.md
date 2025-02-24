@@ -1,1 +1,0 @@
-Biyomunuzda Okyanus Anıtları olması için bu ayarı seçin.

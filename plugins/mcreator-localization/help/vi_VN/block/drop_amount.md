@@ -1,1 +1,0 @@
-Tham số này điều khiển số lượng vật phẩm hay khối rơi ra khi khối này bị phá hủy.

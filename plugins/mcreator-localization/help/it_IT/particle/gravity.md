@@ -1,1 +1,0 @@
-Questo parametro specifica la velocità di caduta delle particelle. I valori negativi faranno volare questa particella fino al cielo.

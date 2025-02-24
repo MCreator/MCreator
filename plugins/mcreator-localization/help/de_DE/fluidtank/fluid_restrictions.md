@@ -1,1 +1,0 @@
-Um den Block auf bestimmte Flüssigkeiten zu beschränken, wählen Sie diese in dieser Option.

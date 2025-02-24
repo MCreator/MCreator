@@ -1,1 +1,0 @@
-Sons adicionais tocados no bioma.

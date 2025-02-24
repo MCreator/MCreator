@@ -1,1 +1,0 @@
-Este parâmetro define a cor da folhagem (folhas) deste bioma.

@@ -1,1 +1,0 @@
-Die Textur der Dorfbewohner mit diesem Beruf.

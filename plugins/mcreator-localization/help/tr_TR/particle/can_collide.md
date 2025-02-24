@@ -1,1 +1,0 @@
-Bu parçacığın bloklarla çarpışabilmesi için kontrol edin (sıvı damlaları veya blok kıran parçacıklar gibi).

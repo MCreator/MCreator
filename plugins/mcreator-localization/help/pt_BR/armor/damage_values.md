@@ -1,1 +1,0 @@
-Estes números definem o quão bem o dano causado na entidade será reduzido por uma determinada parte da armadura.

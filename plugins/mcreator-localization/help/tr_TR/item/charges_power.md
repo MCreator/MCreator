@@ -1,1 +1,0 @@
-İşaretlenirse, menzilli eşyanın fırlatma gücü menzilli eşyanın ne kadar süredir şarj edildiğine bağlı olarak değişir.

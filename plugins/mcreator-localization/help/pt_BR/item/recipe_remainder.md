@@ -1,1 +1,0 @@
-Este parâmetro controla o item a sobrepor o utilizado na bancada de trabalho. Isso significa que este item fará parte da receita, mas será substituído por outro.

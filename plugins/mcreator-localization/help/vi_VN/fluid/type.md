@@ -1,1 +1,0 @@
-Chọn loại chất lỏng giữa Nước và Dung nham

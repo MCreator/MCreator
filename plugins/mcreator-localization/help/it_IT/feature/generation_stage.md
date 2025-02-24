@@ -1,1 +1,0 @@
-Questa opzione determina in quale fase della generazione mondiale la feature dovrebbe essere aggiunta.

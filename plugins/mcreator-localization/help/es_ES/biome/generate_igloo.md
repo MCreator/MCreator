@@ -1,1 +1,0 @@
-Selecciona esta opción para que aparezcan iglús en tu bioma.

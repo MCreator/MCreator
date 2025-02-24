@@ -1,1 +1,0 @@
-Đây là tên hiển thị của luật chơi. Nó được sử dụng trên màn hình cài đặt luật chơi.

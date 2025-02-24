@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, wie weit eine Hanglage die Verbreitung dieser Flüssigkeit beeinflussen kann. Anstatt sich gleichmäßig auszubreiten, wird die Flüssigkeit versuchen, die Piste zu erreichen. Bei niedrigeren Werten wird die Flüssigkeit meist größere Flächen bedecken, wenn der Boden ungleich ist.

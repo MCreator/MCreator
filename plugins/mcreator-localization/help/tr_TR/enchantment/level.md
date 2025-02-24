@@ -1,1 +1,0 @@
-Büyünüzün desteklediği maksimum seviye.

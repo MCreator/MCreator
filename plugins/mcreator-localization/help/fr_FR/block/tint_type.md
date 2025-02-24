@@ -1,1 +1,0 @@
-Cette option applique une teinte au bloc en fonction des couleurs du biome, similaire à l'herbe, aux feuilles et à l'eau. Pour de meilleurs résultats, les faces teintées doivent utiliser une texture en niveaux de gris.

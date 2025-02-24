@@ -1,1 +1,0 @@
-Ce paramètre contrôle le son joué par le portail quand ce-dernier est actif.

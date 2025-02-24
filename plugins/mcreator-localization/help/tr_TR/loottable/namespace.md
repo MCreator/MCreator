@@ -1,1 +1,0 @@
-Bir vanilya yağma tablosunu değiştirmek istiyorsanız, "minecraft" ı seçmelisiniz, ancak mod öğeleriniz için yeni bir yağma tablosu oluşturmak istiyorsanız, "mod" u seçin.

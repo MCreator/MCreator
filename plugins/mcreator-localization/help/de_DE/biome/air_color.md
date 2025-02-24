@@ -1,1 +1,0 @@
-Dieser Parameter steuert die Farbe des Himmels in diesem Biom.

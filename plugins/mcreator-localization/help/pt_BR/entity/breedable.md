@@ -1,1 +1,0 @@
-Os itens usados ​​para reproduzir a entidade com outra se o parâmetro reproduzível estiver habilitado.

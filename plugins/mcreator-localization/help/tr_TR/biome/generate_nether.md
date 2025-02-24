@@ -1,1 +1,0 @@
-Bu biyomun nether boyutunda ortaya çıkmasını sağlamak için bunu işaretleyin.

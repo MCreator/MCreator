@@ -1,1 +1,0 @@
-Tham số này điều khiến số tick cần trôi đi trước khi chuyển đến khung hình hoạt ảnh tiếp theo.

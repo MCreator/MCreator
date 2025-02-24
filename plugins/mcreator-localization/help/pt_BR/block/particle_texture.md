@@ -1,1 +1,0 @@
-Esta propriedade opcional mudará a textura das partículas quando o bloco for quebrado, uma entidade pousar no bloco e assim por diante.

@@ -1,1 +1,0 @@
-Questo parametro controlla l'ampiezza della particella (in unità blocco).

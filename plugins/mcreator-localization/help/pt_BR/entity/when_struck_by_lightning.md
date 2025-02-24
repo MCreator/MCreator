@@ -1,1 +1,0 @@
-Este gatilho aciona o procedimento quando esta entidade é atingida por um raio.

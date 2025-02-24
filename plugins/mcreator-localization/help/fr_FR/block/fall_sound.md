@@ -1,1 +1,0 @@
-Ce son est joué quand le bloc tombe.

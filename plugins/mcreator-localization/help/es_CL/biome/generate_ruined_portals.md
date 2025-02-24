@@ -1,1 +1,0 @@
-Esta opción te habilita para generar portales en ruinas en tu bioma.

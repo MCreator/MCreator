@@ -1,1 +1,0 @@
-Marca aquí para hacer que este bioma se genere en la dimensión del nether.

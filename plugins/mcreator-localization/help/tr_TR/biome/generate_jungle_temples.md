@@ -1,1 +1,0 @@
-Biyomunuzda Orman Tapınakları olması için bu ayarı seçin.

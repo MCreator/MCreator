@@ -1,1 +1,0 @@
-Esta é a descrição da regra de jogo. É usada na tela de opções de regras de jogo quando é passado o cursor do mouse.

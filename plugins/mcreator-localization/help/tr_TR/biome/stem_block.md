@@ -1,1 +1,0 @@
-Bu parametre, özel ağaçlar seçildiğinde ağacınızın gövdesini oluşturmak için kullanılan bloğu kontrol eder.

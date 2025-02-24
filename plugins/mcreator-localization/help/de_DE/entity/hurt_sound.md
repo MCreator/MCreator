@@ -1,1 +1,0 @@
-Der Klang gespielt, wenn die Einheit verletzt wird.

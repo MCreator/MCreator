@@ -1,1 +1,0 @@
-Tham số này điều khiển chiều rộng của bức tranh (đơn vị là khối).

@@ -1,1 +1,0 @@
-Se la condizione è specificata, il giocatore deve passarla per costruire un portale a questa dimensione. Dipendenza Itemstack è l'elemento utilizzato per l'attivazione del portale.

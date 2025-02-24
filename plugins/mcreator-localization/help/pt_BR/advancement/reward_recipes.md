@@ -1,1 +1,0 @@
-Receitas para desbloquear quando o jogador concluir a conquista.

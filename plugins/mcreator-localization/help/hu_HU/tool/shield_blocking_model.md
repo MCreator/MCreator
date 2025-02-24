@@ -1,1 +1,0 @@
-Modell amit a pajzs tárgyak védekezés közben mutatnak.

@@ -1,1 +1,0 @@
-Dieser Parameter bestimmt, wie schnell sich das Feuer auf andere Blöcke ausbreitet.

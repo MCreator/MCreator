@@ -1,1 +1,0 @@
-Le second item (facultatif) pour l'échange.

@@ -1,1 +1,0 @@
-Attiva una procedura quando il blocco è alimentato dal potere della pietra rossa.

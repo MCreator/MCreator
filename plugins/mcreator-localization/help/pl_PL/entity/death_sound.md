@@ -1,1 +1,0 @@
-Dźwięk odtwarzany po śmierci bytu.

@@ -1,1 +1,0 @@
-Der Name des Fortschritts. Wenn dieser kein Hauptfortschritt hat (erster Fortschritt), ist es der Name der Fortschrittsregisterkarte.

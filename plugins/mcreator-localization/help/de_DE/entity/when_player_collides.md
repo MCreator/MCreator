@@ -1,1 +1,0 @@
-Dieser Trigger löst die Prozedur aus, wenn der Spieler mit dieser Einheit kollidiert.

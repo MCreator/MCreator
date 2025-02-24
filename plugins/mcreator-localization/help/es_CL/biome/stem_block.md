@@ -1,1 +1,0 @@
-Este parámetro controla que bloque se usa como tronco de tu árbol en caso de que los árboles personalizados esten activados.

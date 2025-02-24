@@ -1,1 +1,0 @@
-Selezionare questa casella per rendere l'elemento selezionato un combustibile per le fornaci (come carbone, assi di legno, ecc.).

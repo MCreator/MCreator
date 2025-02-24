@@ -1,1 +1,0 @@
-Il s'agit de la catégorie de règles du jeu. Elle est utilisé pour la classification des règles du jeu en fonction de ce qu'elles font.

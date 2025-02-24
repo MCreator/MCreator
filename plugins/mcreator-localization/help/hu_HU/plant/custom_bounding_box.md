@@ -1,1 +1,0 @@
-Jelöld be ezt a lehetőséget, ha testre szabnád ennek a növénynek a határoló dobozát. Ha ez nincs engedélyezve, akkor a határoló doboz a növény típusán alapul. 

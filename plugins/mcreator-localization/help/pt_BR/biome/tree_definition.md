@@ -1,1 +1,0 @@
-Este parâmetro controla se deve usar dados de altura e bloco da árvore de baunilha ou usar dados fornecidos pelos campos abaixo.

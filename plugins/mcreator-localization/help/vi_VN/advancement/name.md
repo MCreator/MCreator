@@ -1,1 +1,0 @@
-Tên của thành tựu. Nếu nó không có cha mẹ (thành tựu gốc) thì nó sẽ là tên của nhánh.

@@ -1,1 +1,0 @@
-Tham số này xác định liệu hạt hiệu ứng sẽ hiển thị trong mọi trường hợp, kể cả khi cài đặt hiển thị hạt hiệu ứng được đặt thành tối thiểu trong cài đặt đồ họa hay không.

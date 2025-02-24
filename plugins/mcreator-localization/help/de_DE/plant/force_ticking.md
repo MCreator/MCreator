@@ -1,1 +1,0 @@
-Einige Pflanzentypen ticken natürlich, aber einige nicht. Überprüfen Sie diesen Parameter, um in allen Fällen das Ticken zu erzwingen.

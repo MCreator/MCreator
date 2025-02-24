@@ -1,1 +1,0 @@
-Se questa opzione è abilitata, il blocco dropperà solo quando rotto con lo strumento di raccolta specificato.

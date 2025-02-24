@@ -1,1 +1,0 @@
-Attiva una procedura quando viene aperta questa GUI.

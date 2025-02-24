@@ -1,1 +1,0 @@
-La texture luminescente sera utilisée pour définir la couche luminescente de l'entité. Des zones de texture plus brillantes rendront les parties correspondantes de l'entité plus luminescentes.

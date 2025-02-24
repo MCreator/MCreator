@@ -1,1 +1,0 @@
-Tham số này xác định độ mạnh của hiệu ứng này.

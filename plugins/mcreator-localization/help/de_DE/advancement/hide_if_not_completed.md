@@ -1,1 +1,0 @@
-Mit diesem Parameter wird der Fortschritt auf der Fortschrittsregisterkarte ausgeblendet, bis er abgeschlossen ist.

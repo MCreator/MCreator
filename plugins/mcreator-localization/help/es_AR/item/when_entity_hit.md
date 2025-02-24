@@ -1,1 +1,0 @@
-Este procedimiento se ejecuta cuando una entidad viviente (vaca, creeper, jugador, etc.) es golpeada usando este objeto.

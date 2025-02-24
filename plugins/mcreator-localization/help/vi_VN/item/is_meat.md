@@ -1,1 +1,0 @@
-Tham số này xác định liệu thức ăn này dành cho chó và các động vật ăn thịt khác.

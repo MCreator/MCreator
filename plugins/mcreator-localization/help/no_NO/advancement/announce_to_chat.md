@@ -1,1 +1,0 @@
-Skriver en melding i chatten når spilleren fullfører avanseringen.

@@ -1,1 +1,0 @@
-Esta opção aplica uma tonalidade ao bloco com base nas cores do bioma, semelhante à grama, folhas e água. Para melhores resultados, as faces coloridas devem usar uma textura em tons de cinza.

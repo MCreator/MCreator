@@ -1,1 +1,0 @@
-Dieser Auslöser löst die Prozedur aus, wenn diese Entität von einem Blitz getroffen wird.

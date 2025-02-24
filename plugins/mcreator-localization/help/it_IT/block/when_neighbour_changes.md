@@ -1,1 +1,0 @@
-Attiva una procedura quando un blocco accanto a questo viene aggiornato (i cambiamenti di stato del blocco, un nuovo blocco viene posizionato o viene rimosso un blocco).

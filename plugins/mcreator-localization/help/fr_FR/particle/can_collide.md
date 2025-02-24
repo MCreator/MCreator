@@ -1,1 +1,0 @@
-Cochez pour faire en sorte que la particule soit capable de heurter des blocs (comme les gouttes de fluide ou les particules des blocs cassés).

@@ -1,1 +1,0 @@
-Les slots de sortie ne seront pas utilisés comme entrée pour la transmission d'items d'un entonnoir.

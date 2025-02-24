@@ -1,1 +1,0 @@
-Este parámetro controla que bloque se usa como follaje en caso de que los árboles personalizados esten activados
