@@ -1,0 +1,1 @@
+Cochez ce paramètre si vous souhaitez que le bloc fonctionne avec des comparateurs.

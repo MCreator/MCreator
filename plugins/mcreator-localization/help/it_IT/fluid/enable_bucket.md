@@ -1,0 +1,1 @@
+Questo parametro controlla se questo fluido può essere messo in un secchio.

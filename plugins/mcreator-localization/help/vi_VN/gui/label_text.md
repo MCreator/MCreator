@@ -1,0 +1,1 @@
+Tham số này xác định văn bản sẽ được hiển thị bởi nhãn khi GUI được mở. Bạn có thể dùng quy trình loại trả về văn bản để có văn bản phức tạp hơn.

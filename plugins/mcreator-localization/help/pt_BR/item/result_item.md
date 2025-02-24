@@ -1,0 +1,1 @@
+Este parâmetro define qual item deverá ser adicionado no inventário da entidade que comeu o alimento.

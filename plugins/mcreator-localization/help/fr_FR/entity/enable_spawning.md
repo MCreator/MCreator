@@ -1,0 +1,1 @@
+Si coché, l'entité apparaîtra dans le monde naturellement via le processus d'apparition d'entité.

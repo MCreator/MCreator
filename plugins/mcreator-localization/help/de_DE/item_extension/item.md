@@ -1,0 +1,1 @@
+Dies ist der Zielpunkt dieser Erweiterung.

@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, ob der Effekt als Ambient angewendet wird.

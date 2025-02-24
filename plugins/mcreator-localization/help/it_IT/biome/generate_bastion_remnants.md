@@ -1,0 +1,1 @@
+Seleziona questa impostazione per avere bastioni nel tuo bioma.

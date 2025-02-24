@@ -1,0 +1,1 @@
+Aciona um procedimento quando uma entidade está no bloco.

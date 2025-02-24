@@ -1,0 +1,1 @@
+Controlla questa proprietà per avere un effetto luminoso (simile al blocco magma) applicato al tuo blocco.

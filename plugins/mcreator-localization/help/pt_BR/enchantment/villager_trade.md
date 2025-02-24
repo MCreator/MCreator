@@ -1,0 +1,1 @@
+Marque esta opção se quiser que seu encantamento seja vendido como uma troca de aldeão.

@@ -1,0 +1,1 @@
+Selecione esta configuração para ter Monumentos oceânicos em seu bioma.

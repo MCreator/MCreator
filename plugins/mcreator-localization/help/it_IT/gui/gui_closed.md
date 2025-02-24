@@ -1,0 +1,1 @@
+Attiva una procedura quando questa GUI viene chiusa.

@@ -1,0 +1,1 @@
+Attiva una procedura quando si fa clic su questo pulsante.

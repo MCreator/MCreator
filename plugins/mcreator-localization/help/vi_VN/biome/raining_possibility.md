@@ -1,0 +1,1 @@
+Tham số này điều khiển khả năng xảy ra mưa trong quần xã của bạn.

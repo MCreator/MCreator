@@ -1,0 +1,1 @@
+Büyünüzün bir köylü ticareti olarak satılmasını istiyorsanız bu seçeneği işaretleyin.

@@ -1,0 +1,1 @@
+Se specificato, l'entità inizierà a eseguire questa attività solo se supera questa condizione.

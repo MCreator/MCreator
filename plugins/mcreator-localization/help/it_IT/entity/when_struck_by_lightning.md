@@ -1,0 +1,1 @@
+Questo trigger avvia la procedura quando questa entità viene colpita da un fulmine.

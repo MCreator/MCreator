@@ -1,0 +1,1 @@
+Klanggruppe, die diesen Block definiert. Dieser Parameter beeinflusst Geräusche als Blockplatzierungston, Blockieren von Klang und Klang, die beim Gehen im Block abgespielt werden.

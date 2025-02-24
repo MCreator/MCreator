@@ -1,0 +1,1 @@
+Bu parametre, vanilya ağacı yüksekliği ve blok verilerinin mi kullanılacağını yoksa sağlanan verilerin mi kullanılacağını kontrol eder aşağıdaki alanlara göre.

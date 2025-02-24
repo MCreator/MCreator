@@ -1,0 +1,1 @@
+Si vous voulez lier un GUI à votre entité (pour faire un villageois ou un inventaire personnalisé de type cheval, par exemple), cochez cette option pour activer l'inventaire et le lier au GUI sélectionné.

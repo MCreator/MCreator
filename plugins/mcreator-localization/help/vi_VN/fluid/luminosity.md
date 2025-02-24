@@ -1,0 +1,1 @@
+Đặt giá trị phát sáng của chất lỏng của bạn. Đặt giá trị này thành 0 sẽ tắt sự phát sáng.

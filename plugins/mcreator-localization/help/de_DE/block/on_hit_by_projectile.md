@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn ein Projektil den Block trifft.

@@ -1,0 +1,1 @@
+Questo è il suono riprodotto quando il giocatore posiziona il blocco nel mondo.

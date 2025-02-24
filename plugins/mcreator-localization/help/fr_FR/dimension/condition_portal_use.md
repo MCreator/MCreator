@@ -1,0 +1,1 @@
+Si la condition est spécifiée, le joueur doit la passer afin de voyager vers cette dimension.

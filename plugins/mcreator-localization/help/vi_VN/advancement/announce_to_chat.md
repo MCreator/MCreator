@@ -1,0 +1,1 @@
+Viết một tin nhắn vào chat khi người chơi hoàn thành thành tựu.

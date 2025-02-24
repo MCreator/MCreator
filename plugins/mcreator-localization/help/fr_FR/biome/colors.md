@@ -1,0 +1,1 @@
+Ce paramètre active les couleurs personnalisées pour votre biome.

@@ -1,0 +1,1 @@
+Ce paramètre définit l'auteur du tableau.

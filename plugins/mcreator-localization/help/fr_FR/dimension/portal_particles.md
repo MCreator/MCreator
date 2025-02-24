@@ -1,0 +1,1 @@
+Ce paramètre sélectionne le type de particule émis par le portail quand ce-dernier est actif.

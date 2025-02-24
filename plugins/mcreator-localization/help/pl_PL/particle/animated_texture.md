@@ -1,0 +1,1 @@
+Zaznacz, jeśli tekstura cząsteczek powinna być animowana.

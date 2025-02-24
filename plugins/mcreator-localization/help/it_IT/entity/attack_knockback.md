@@ -1,0 +1,1 @@
+Il contraccolpo dell'attacco definisce il valore di contraccolpo di ogni attacco di questa entità La maggior parte delle entità Vanilla non lo utilizzano. Alcuni lo fanno, come il devastatore, che ha un valore di respingimento di 1,5.

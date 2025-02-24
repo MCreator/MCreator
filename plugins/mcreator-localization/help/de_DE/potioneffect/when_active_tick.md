@@ -1,0 +1,1 @@
+Diese Prozedur wird für jede Entität, die diesen Trankeffekt hat, ausgeführt.

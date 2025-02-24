@@ -1,0 +1,1 @@
+Cette procédure est exécutée quand une entité (vache, creeper, joueur, etc.) est frappée avec cet item.

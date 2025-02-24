@@ -1,0 +1,1 @@
+Tham số này xác định khối được dùng để làm thân cây của bạn nếu như cây tùy chỉnh được chọn.

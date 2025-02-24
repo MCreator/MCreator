@@ -1,0 +1,1 @@
+Este gatilho aciona o procedimento quando esta entidade mata outra entidade.

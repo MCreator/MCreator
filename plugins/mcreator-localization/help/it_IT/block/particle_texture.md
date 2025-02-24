@@ -1,0 +1,1 @@
+Questa proprietà opzionale cambierà la texture delle particelle quando il blocco è rotto, un'entità atterra sul blocco e così via.

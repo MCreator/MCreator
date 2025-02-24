@@ -1,0 +1,1 @@
+Il primo item richiesto dallo scambio.

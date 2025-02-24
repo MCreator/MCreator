@@ -1,0 +1,1 @@
+Ce paramètre détermine la durée de l'effet de la soupe suspecte fabriquée avec cette plante.

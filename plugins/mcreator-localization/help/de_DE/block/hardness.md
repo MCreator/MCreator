@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie lange es dauert, den Block abzubauen. Ein höherer Wert bedeutet, dass es länger dauert, diesen Block abzubauen.

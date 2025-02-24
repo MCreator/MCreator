@@ -1,0 +1,1 @@
+Das Wort nach dem "/", das der Spieler schreiben muss, um den Befehl zu definieren, wie gamemode, give, setblock, usw.

@@ -1,0 +1,1 @@
+Sélectionner ce paramètre pour générer des fossiles du Nether dans le biome.

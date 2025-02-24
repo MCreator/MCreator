@@ -1,0 +1,1 @@
+Quand cette condition est vraie, l’entité pourra respirer sous l’eau indéfiniment comme des poissons ou des calamars.

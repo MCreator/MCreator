@@ -1,0 +1,1 @@
+Boyutun içindeki sisin rengi. 

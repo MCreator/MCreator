@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn ein Gegenstand von diesem Platz eingeht/genommen wird.

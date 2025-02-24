@@ -1,0 +1,1 @@
+Si spécifié, l'entité commencera à exécuter cette tâche seulement si elle passe la condition.

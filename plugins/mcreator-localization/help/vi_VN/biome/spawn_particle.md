@@ -1,0 +1,1 @@
+Tích tham số này để kích hoạt sự sinh ra của các hiệu ứng trong quần xã.

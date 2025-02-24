@@ -1,0 +1,1 @@
+Vannak olyan növények amik maguktól tickelnek de vannak amik nem. Jelöld be ezt a dobozt ha azt szeretnéd hogy ez a növény tickeljen folyamatosan.

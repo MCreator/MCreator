@@ -1,0 +1,1 @@
+Dieser Parameter steuert den Namen der Spritzwasserflasche.

@@ -1,0 +1,1 @@
+Se este parâmetro for marcado, o bloco cairá como areia.

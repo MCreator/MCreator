@@ -1,0 +1,1 @@
+Tham số này xác định loại cây mà hình dạng của tính năng cây tùy chỉnh sẽ dựa trên.

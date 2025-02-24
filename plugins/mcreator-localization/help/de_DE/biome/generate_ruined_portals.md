@@ -1,0 +1,1 @@
+Diese Einstellung erlaubt dir, zerstörte Portale in deinem Biom zu generieren.

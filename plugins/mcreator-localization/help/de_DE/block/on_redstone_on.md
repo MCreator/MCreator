@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn der Block mit der Redstone-Energie betrieben wird.

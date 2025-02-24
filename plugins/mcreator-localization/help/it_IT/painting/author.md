@@ -1,0 +1,1 @@
+Questo parametro definisce l'autore del dipinto.

@@ -1,0 +1,1 @@
+Questo valore definisce il tempo, in tick, prima che il suono venga riprodotto (loop).

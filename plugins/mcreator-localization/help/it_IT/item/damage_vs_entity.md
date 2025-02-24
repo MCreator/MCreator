@@ -1,0 +1,1 @@
+Puoi attivare il danno corpo a corpo per il tuo oggetto con questo parametro e impostare un valore di danno.

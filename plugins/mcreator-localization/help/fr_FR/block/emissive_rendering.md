@@ -1,0 +1,1 @@
+Cochez cette propriété pour avoir un effet lumineux (similaire au bloc de magma) appliqué à votre bloc.

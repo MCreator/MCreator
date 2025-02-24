@@ -1,0 +1,1 @@
+İşaretlenirse, zindanlar (mob spawner'lı yapılar) bir mob spawner'da varlığınızla birlikte ortaya çıkabilir.

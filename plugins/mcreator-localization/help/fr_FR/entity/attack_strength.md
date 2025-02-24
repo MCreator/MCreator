@@ -1,0 +1,1 @@
+Le nombre de dégâts que l'entité inflige quand elle attaque.

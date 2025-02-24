@@ -1,0 +1,1 @@
+Questo parametro controlla quanti tick devono trascorrere prima di passare al prossimo frame di animazione.

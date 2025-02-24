@@ -1,0 +1,1 @@
+Wählen Sie diese Einstellung, um Endsiedlungen in Ihrem Biom zu haben.

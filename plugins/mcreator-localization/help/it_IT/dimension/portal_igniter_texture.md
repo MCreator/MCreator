@@ -1,0 +1,1 @@
+La texture dell'accenditore utilizzato per creare il portale dalla cornice.

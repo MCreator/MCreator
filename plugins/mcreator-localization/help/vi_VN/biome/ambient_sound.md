@@ -1,0 +1,1 @@
+Âm thanh môi trường được chơi liên tục trong quần xã.

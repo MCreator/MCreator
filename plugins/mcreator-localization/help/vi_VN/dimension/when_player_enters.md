@@ -1,0 +1,1 @@
+Quy trình này sẽ được thục thi khi một người choi đi vào một chiều không gian.

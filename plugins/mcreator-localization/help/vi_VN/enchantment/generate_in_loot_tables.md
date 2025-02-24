@@ -1,0 +1,1 @@
+Tích tùy chọn này nếu bạn muốn phù phép của bạn có thể được khởi tạo trong các bảng lợi phẩm.

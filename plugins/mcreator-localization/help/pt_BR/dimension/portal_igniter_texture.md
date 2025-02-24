@@ -1,0 +1,1 @@
+A textura do acendedor de portal usado para criar o portal a partir da moldura do portal.

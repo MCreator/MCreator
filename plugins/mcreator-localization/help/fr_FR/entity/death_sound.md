@@ -1,0 +1,1 @@
+Le son joué quand l'entité meurt.

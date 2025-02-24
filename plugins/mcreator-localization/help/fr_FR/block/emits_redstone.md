@@ -1,0 +1,1 @@
+Si vous cochez ce parametre, ce bloc pourra émettre du courant de redstone.

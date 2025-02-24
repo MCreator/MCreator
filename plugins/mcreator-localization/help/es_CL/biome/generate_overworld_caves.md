@@ -1,0 +1,1 @@
+Marca esta casilla para hacer que este bioma se genere bajo tierra (en las cuevas) en el overworld.

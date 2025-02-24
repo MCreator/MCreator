@@ -1,0 +1,1 @@
+Chọn cài đặt này để có khu mỏ trong quần xã của bạn.

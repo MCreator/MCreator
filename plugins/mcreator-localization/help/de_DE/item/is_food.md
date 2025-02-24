@@ -1,0 +1,1 @@
+﻿Aktivieren Sie dieses Kästchen, um dieses Item essbar zu machen (aktivieren Sie es um Lebensmittel Eigenschaften zu haben).

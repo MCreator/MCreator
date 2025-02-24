@@ -1,0 +1,1 @@
+Seleziona questo parametro se vuoi che le particelle siano emesse a mezz'aria.

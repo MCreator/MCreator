@@ -1,0 +1,1 @@
+Déclenche une procédure lorsque le bloc est ajouté au monde (peut ne pas être appelé par certains générateurs naturels).

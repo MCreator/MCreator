@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, wieviel die äußere Geschwindigkeit bei der Partikelspawnung berücksichtigt wird. Wenn auf 0 gesetzt, bewegt sich Partikel nicht und fällt nur, falls die Schwerkraft der Partikel größer als 0 ist.

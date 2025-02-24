@@ -1,0 +1,1 @@
+Si este parámetro está activado, el elemento generará una característica de generación de mundo en el mundo.

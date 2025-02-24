@@ -1,0 +1,1 @@
+Tham số này xác định liệu hạt hiệu ứng được hiện gần người chơi hay không.

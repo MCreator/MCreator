@@ -1,0 +1,1 @@
+Eingangslots werden nicht als Ausgabe/Quelle für die Übertragung von Trichtergegenständen verwendet.

@@ -1,0 +1,1 @@
+Il secondo oggetto (facoltativo) per lo scambio.

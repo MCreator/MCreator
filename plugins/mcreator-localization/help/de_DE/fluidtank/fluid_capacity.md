@@ -1,0 +1,1 @@
+Es sind die maximalen Milizen (1 Eimer = 1 000 Milize), die der Block speichern kann.

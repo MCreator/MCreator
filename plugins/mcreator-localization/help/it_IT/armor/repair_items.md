@@ -1,0 +1,1 @@
+Il paramentro oggetti da riparazione i controlla quali oggetti possono essere utilizzati per riparare l'armatura all'interno dell'incudine.

@@ -1,0 +1,1 @@
+Qualquer categoria de ataque que você escolher aqui não afetará o mob.

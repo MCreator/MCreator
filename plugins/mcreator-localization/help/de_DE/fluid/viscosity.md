@@ -1,0 +1,1 @@
+Die Viskosität ist, wie schwierig es ist, in der Flüssigkeit zu laufen.

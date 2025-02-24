@@ -1,0 +1,1 @@
+Aktivieren Sie diese Option, wenn die Textur Ihrer Partikel animiert werden soll.

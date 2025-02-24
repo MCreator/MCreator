@@ -1,0 +1,1 @@
+Wenn das Werkzeug einen Block zerstört, wird diese Prozedur ausgeführt.

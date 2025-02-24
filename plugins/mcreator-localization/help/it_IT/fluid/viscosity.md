@@ -1,0 +1,1 @@
+La viscosità indica quanto è difficile camminare nel fluido.

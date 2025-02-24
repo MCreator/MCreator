@@ -1,0 +1,1 @@
+Se la condizione ritorna vera, i giocatori non potranno prendere gli oggetti all'interno di questo slot. Tuttavia, potranno comunque posizionare oggetti senza alcuna restrizione.

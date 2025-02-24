@@ -1,0 +1,1 @@
+Nombre d'expérience que le Villageois obtient.

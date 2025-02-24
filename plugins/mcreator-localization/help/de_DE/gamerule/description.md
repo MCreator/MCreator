@@ -1,0 +1,1 @@
+Dies ist die Beschreibung der Spielregeln. Sie wird auf dem Bildschirm der Spielregeln verwendet, wenn sie über den Bildschirm gedrückt werden.

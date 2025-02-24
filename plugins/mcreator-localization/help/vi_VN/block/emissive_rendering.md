@@ -1,0 +1,1 @@
+Tích thuộc tính này để có hiệu ứng phát sáng (tương tự như khối dung nham) được áp dụng cho khối của bạn.

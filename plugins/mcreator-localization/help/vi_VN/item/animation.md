@@ -1,0 +1,1 @@
+Hoạt ảnh là hoạt ảnh được dùng khi người chơi thực hiện một hành động với vật phẩm.

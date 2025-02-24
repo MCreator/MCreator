@@ -1,0 +1,1 @@
+Seleziona questa impostazione per avere fortezze del Nether nel tuo bioma.

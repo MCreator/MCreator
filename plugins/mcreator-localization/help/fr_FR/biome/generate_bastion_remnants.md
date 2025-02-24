@@ -1,0 +1,1 @@
+Sélectionner ce paramètre pour générer des vestiges de bastion dans le biome.

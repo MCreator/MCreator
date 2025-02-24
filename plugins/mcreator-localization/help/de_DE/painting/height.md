@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie hoch dieses Bild (in Blockeinheiten) ist.

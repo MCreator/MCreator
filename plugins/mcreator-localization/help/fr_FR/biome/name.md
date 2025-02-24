@@ -1,0 +1,1 @@
+Le nom de votre biome est le nom utilisé par des mods ou par Minecraft avec le Buffet (Biome seul), par exemple. Par contre, le nom dans le menu F3 ne changera pas.

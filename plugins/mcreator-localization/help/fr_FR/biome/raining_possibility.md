@@ -1,0 +1,1 @@
+Ce paramètre contrôle la possibilité de pluie à l'intérieur du biome.

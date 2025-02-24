@@ -1,0 +1,1 @@
+Seleziona questo parametro se vuoi che questo oggetto o strumento distrugga qualsiasi blocco, anche la bedrock.

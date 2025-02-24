@@ -1,0 +1,1 @@
+Si spécifié, l'entité exécutera cette tâche tant que la condition est passée.

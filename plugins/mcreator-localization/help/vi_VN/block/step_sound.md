@@ -1,0 +1,1 @@
+Đây là âm thanh được chơi khi thực thể đi trên khối này.

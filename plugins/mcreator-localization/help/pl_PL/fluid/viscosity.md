@@ -1,0 +1,1 @@
+Lepkość sprawia, jak trudno jest chodzić w danej cieczy.

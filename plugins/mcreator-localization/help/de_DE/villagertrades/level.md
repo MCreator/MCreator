@@ -1,0 +1,1 @@
+Minimales Level für den Handel des Dorfbewohners.
