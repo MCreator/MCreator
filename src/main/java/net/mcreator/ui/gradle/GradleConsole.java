@@ -414,7 +414,8 @@ public class GradleConsole extends JPanel {
 		if (isGradleSync) {
 			String extraSyncTask = ref.getGeneratorConfiguration().getGradleTaskFor("sync_task");
 			if (extraSyncTask != null) {
-				task = GradleUtils.getGradleSyncLauncher(ref.getGeneratorConfiguration(), projectConnection, extraSyncTask);
+				task = GradleUtils.getGradleSyncLauncher(ref.getGeneratorConfiguration(), projectConnection,
+						extraSyncTask);
 			} else {
 				task = GradleUtils.getGradleSyncLauncher(ref.getGeneratorConfiguration(), projectConnection);
 			}
@@ -614,7 +615,9 @@ public class GradleConsole extends JPanel {
 							if (!rerunFlag) {
 								rerunFlag = true;
 
-								LOG.warn("Gradle task failed due to JMX port issues. Disabling JMX and attempting re-running task: {}", command);
+								LOG.warn(
+										"Gradle task failed due to JMX port issues. Disabling JMX and attempting re-running task: {}",
+										command);
 
 								PreferencesManager.PREFERENCES.gradle.enablePerformanceMonitor.set(false);
 

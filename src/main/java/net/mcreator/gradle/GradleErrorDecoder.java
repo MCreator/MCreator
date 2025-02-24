@@ -137,7 +137,8 @@ public class GradleErrorDecoder {
 
 	public static boolean isErrorDueToJMXPortIssues(String errortext) {
 		errortext = errortext.replace('\u00a0', ' '); // normalize spaces
-		return errortext.contains("java.rmi.server.ExportException: Port already in use:") && errortext.contains(".jmxremote.");
+		return errortext.contains("java.rmi.server.ExportException: Port already in use:") && errortext.contains(
+				".jmxremote.");
 	}
 
 }
