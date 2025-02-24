@@ -1,0 +1,1 @@
+È il massimo millibuckets (1 secchio = 1 000 millibuckets) che il blocco può memorizzare.

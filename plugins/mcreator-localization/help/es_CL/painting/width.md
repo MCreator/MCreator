@@ -1,0 +1,1 @@
+Este parámetro controla la anchura de este cuadro (en unidad de bloques).

@@ -1,0 +1,1 @@
+Il nome del bioma è il nome utilizzato da alcune mod o dallo stesso Minecraft con Buffet (Bioma Singolo), ad esempio. Tuttavia, non cambierà il nome nel menu F3.

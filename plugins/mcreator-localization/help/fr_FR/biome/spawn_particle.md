@@ -1,0 +1,1 @@
+Cochez ce paramètre pour activer les particules d'ambiance dans ce biome.

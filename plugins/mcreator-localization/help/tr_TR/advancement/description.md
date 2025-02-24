@@ -1,0 +1,1 @@
+Başarımın nasıl alınacağı ile ilgili bilgileri yazacağınız kısım burası.

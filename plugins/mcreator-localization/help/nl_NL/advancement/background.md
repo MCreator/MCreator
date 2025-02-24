@@ -1,0 +1,1 @@
+Als je vooruitgang het eerste van een nieuw pad is, kun je de achtergrond van het tabblad vooruitgang kiezen met deze optie.

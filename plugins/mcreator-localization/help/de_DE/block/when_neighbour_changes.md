@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn ein Block neben diesem aktualisiert wird (Blockzustandsänderungen, neuer Block oder ein Block wird entfernt).

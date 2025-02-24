@@ -1,0 +1,1 @@
+Seleziona questo parametro se vuoi che il blocco funzioni con i comparatori.

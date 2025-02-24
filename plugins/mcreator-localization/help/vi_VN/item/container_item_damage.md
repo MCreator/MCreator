@@ -1,0 +1,1 @@
+Nếu bạn đã bật "${l10n.t("elementgui.item.container_item")}", bạn có thể bật tùy chọn này để làm hỏng vật phẩm thay vì giữ nó trong khung chế tạo.

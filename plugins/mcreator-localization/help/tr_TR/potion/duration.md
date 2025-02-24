@@ -1,0 +1,1 @@
+Bu parametre, efekt girişinin ne kadar süreceğini tanımlar.

@@ -1,0 +1,1 @@
+Ten parametr ustala jak długo, dany efekt trwa.

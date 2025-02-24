@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan bastiones en ruinas en tu bioma.

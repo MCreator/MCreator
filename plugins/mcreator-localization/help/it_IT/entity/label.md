@@ -1,0 +1,1 @@
+Questo permette al mob di impostare un nome che verrà mostrato sopra la loro testa simile a come vengono mostrati i nomi dei giocatori o delle targhette.

@@ -1,0 +1,1 @@
+O texto que será exibido na descrição para o jogador que passe o mouse na área coberta por este componente.

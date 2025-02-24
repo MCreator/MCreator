@@ -1,0 +1,1 @@
+Este valor é o valor máximo de energia que o elemento energético (bloco, item, ...) pode receber de outro elemento energético.

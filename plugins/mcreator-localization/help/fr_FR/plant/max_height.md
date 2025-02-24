@@ -1,0 +1,1 @@
+La plante grandissante grandira jusqu'à ce qu'elle atteigne cette hauteur.

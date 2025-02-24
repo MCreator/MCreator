@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan naufragios en tu bioma.

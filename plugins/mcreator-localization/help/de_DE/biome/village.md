@@ -1,0 +1,1 @@
+Mit dieser Einstellung kannst du Minecraft Dörfer in deinem Biom erzeugen.

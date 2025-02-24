@@ -1,0 +1,1 @@
+Seleziona questa impostazione per avere fossili nel tuo bioma.

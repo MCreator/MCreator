@@ -1,0 +1,1 @@
+Dieser Parameter regelt, wie der Block auf Explosionen reagiert. Ein höherer Wert macht den Block widerstandsfähiger gegen Explosionen.

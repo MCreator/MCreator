@@ -1,0 +1,1 @@
+Este parâmetro define em qual categoria de árvore o formato do recurso de árvore personalizado deve ser baseado.

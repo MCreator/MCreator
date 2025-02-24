@@ -1,0 +1,1 @@
+Maksymalna liczba transakcji, dany wieśniak może wykonać bez dorabiania towaru.

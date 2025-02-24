@@ -1,0 +1,1 @@
+To jest maksymalny poziom miliwiader (1 wiadro = 1000 miliwiader), które blok może magazynować.

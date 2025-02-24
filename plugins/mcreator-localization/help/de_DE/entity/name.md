@@ -1,0 +1,1 @@
+Der Mob-Name wird in Todesnachrichten verwendet, wird in Spielmenüs und anderen angezeigt, an denen visuelle Namensanzeige möglich ist.

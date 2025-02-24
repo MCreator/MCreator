@@ -1,0 +1,1 @@
+Déclenche la procédure quand l'entité est frappée par un éclair.

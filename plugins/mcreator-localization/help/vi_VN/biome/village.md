@@ -1,0 +1,1 @@
+Cài đặt này cho phép bạn khởi tạo các Ngôi làng Minecraft trong quần xã của bạn.

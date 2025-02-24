@@ -1,0 +1,1 @@
+Questo parametro determina quanto lontano un pendio può influenzare la diffusione di questo fluido. Invece di diffondersi uniformemente, il fluido cercherà di raggiungere il pendio. Con valori più bassi, il fluido di solito copre aree più grandi se il terreno è irregolare.

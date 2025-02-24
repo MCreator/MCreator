@@ -1,0 +1,1 @@
+Dies ist der Klang, der gespielt wird, wenn eine Entität auf diesem Block geht.

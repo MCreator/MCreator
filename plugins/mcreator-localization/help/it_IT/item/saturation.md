@@ -1,0 +1,1 @@
+La saturazione è la prima statistica a diminuire quando un giocatore esegue azioni ad alta intensità energetica, e deve essere completamente esaurito prima che il misuratore della fame visibile inizi a diminuire.

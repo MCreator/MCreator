@@ -1,0 +1,1 @@
+Ce paramètre contrôle si l'item est immunisé au feu comme les affaires en Netherite.

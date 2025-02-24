@@ -1,0 +1,1 @@
+Cette procédure est exécutée chaque tick quand l'item est dans l'inventaire du joueur.

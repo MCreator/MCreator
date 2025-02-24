@@ -1,0 +1,1 @@
+Verifică acest parametru pentru a ascunde avansul în fila de avansare până când este complet.

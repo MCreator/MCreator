@@ -1,0 +1,1 @@
+La texture de l'allumeur du portail utilisé pour créer le portail avec le cadre du portail.

@@ -1,0 +1,1 @@
+Ce paramètre contrôle la particule que le fluide va générer lorsqu'il s'égoutte d'un bloc.

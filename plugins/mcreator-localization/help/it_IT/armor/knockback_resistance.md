@@ -1,0 +1,1 @@
+Questo parametro controlla la resistenza al contraccolpo dell'armatura.

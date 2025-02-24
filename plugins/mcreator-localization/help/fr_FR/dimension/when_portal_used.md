@@ -1,0 +1,3 @@
+La procédure sera exécutée lorsque le joueur a utilisé le déclencheur du portail sur un bloc.
+
+La procédure devrait retourner le résultat d'une action de type SUCCESS/CONSUME si le déclencheur interagit avec le bloc, FAIL si l'interaction a échoué, et PASS s'il n'y a pas eu d'interaction. Si le déclencheur a créé avec succès un portail, ou si la procédure ne retourne aucune valeur, alors le type de résultat de l'action sera SUCCÈS.

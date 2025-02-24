@@ -1,0 +1,1 @@
+Ce paramètre définit sur quel type d'arbre la forme de l'arbre personnalisée doit être basée.

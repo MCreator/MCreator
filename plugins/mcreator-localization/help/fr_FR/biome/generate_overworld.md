@@ -1,0 +1,1 @@
+Si vous souhaitez utiliser ce biome uniquement dans des dimensions personnalisées, désactivez cette option.

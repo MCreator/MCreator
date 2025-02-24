@@ -1,0 +1,1 @@
+Ten parametr kontroluje teksturę portalu tak jak fioletowa animowana tekstura portalu Netheru.

@@ -1,0 +1,1 @@
+Atılan cisim havadayken, seçilen prosedür her tikte yürütülecektir.

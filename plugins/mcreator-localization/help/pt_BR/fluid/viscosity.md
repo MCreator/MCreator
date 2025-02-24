@@ -1,0 +1,1 @@
+A viscosidade é o quão difícil é andar no fluido.

@@ -1,0 +1,1 @@
+Büyünün oyun içinde kullanılan adı.

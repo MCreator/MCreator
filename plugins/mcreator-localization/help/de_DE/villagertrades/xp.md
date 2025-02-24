@@ -1,0 +1,1 @@
+Anzahl der Erfahrungen, die der Dorfbewohner erhält.

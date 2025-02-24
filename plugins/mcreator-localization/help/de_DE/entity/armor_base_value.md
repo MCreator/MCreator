@@ -1,0 +1,1 @@
+Die Anzahl an eingebauten Rüstungspunkten, die der Mob hat. Standardmäßig haben Zombies 2 Rüstungspunkte.

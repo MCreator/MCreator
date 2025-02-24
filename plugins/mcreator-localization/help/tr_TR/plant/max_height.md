@@ -1,0 +1,1 @@
+Yetiştirilebilir bitki bu yüksekliğe ulaşana kadar büyüyecektir.

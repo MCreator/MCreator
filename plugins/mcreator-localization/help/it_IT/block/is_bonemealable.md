@@ -1,0 +1,1 @@
+Se questa opzione è abilitata, il blocco può essere fertilizzato con farina d'ossa.

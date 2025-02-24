@@ -1,0 +1,1 @@
+Wenn du einen Vanille-Beutetisch ändern möchtest, musst du "Minecraft" wählen, aber wenn du eine neue Beute Tabelle für deine Mod Elemente erstellen möchtest, wähle "Mod".

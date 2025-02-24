@@ -1,0 +1,1 @@
+Il livello massimo supportato dall'incantesimo.

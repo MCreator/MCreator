@@ -1,0 +1,1 @@
+Đây là giá trị mặc định của luật chơi. Luật chơi sẽ có giá trị này cho đến khi thứ gì đó trong trò chơi (người chơi hoặc câu lệnh) thay đổi nó.

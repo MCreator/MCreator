@@ -1,0 +1,1 @@
+Các hiệu ứng thuốc trong danh sách dưới đây sẽ được áp dụng với những thực thể bị ảnh hưởng bởi vật phẩm thuốc của bạn.

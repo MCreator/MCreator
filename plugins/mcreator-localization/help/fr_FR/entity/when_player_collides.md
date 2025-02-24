@@ -1,0 +1,1 @@
+Déclenche la procédure quand le joueur rentre en contact physique avec l'entité.

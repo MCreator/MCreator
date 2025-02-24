@@ -1,0 +1,1 @@
+Tham số này điều khiển tên của mũi tên tẩm thuốc.

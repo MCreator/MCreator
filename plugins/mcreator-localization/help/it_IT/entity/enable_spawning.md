@@ -1,0 +1,1 @@
+Se selezionato, l'entità verrà generata nel mondo in modo naturale tramite il processo di generazione dei mob.

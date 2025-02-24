@@ -1,0 +1,1 @@
+Kích hoạt một quy trình khi một khối bên cạnh khối này được cập nhật (thay đổi trạng thái khối, khối mới được đặt hoặc một khối bị phá).

@@ -1,0 +1,1 @@
+Ce paramètre définit si des particules apparaissent près du joueur.

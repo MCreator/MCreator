@@ -1,0 +1,1 @@
+Questo parametro definisce il gruppo all'interno del libro di ricette sotto il quale verrà mostrata questa ricetta.

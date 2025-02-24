@@ -1,0 +1,1 @@
+Dit is hoeveel ervaringspunten de speler zal krijgen na het voltooien van de voortgang.

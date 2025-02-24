@@ -1,0 +1,1 @@
+Se questo parametro è selezionato, questo blocco aprirà la GUI con il click del tasto destro del mouse.

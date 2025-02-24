@@ -1,0 +1,1 @@
+Legt die Größe des angezeigten Entitätsmodells fest.

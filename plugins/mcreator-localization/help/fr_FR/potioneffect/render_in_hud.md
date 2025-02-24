@@ -1,0 +1,1 @@
+Cochez pour rendre l'effet visible dans le jeu

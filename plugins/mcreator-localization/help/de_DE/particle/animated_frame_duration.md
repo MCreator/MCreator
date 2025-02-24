@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie viele Ticks übergeben werden sollen, bevor zum nächsten Animationsrahmen gewechselt wird.

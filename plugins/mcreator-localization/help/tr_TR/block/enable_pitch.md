@@ -1,0 +1,1 @@
+Bloğunuz yatay olarak dönüyorsa, herhangi bir yönde zemine, duvarlara veya tavana bakmasına izin vermek için bu kutuyu işaretleyin. Bu seçenek kaldıraç, bileme taşı vb. tarafından kullanılır.

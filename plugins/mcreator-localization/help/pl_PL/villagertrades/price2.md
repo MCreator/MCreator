@@ -1,0 +1,1 @@
+Drugi(opcjonalny) przedmiot do handlu.

@@ -1,0 +1,1 @@
+Dieser Auslöser löst die Prozedur aus, wenn die Entität stirbt.

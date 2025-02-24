@@ -1,0 +1,1 @@
+Jeśli twoje osiągnięcie jest pierwszym z nowej ścieżki, możesz wybrać tło zakładki postępów korzystając z tej opcji.

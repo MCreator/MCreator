@@ -1,0 +1,1 @@
+Tham số này điều khiển màu của sương nước trong quần xã

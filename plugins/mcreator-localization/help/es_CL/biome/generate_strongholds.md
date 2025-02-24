@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan fortalezas en tu bioma.

@@ -1,0 +1,1 @@
+Nazwa osiągnięcia. Jeśli nie ma ono nadrzędnego osiągnięcia (osiągnięcie główne), to będzie to nazwa ścieżki.

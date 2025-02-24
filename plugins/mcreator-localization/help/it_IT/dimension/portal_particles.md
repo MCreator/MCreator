@@ -1,0 +1,1 @@
+Questo parametro seleziona il tipo di particella che viene emessa dal portale quando è attivo.

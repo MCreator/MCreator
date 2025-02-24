@@ -1,0 +1,1 @@
+Questo parametro determina quante piante al massimo possono generare in una singola patch. Valori più alti significano più piante in una singola patch.

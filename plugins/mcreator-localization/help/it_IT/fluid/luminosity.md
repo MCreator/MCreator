@@ -1,0 +1,1 @@
+Imposta il valore della luce emessa del tuo fluido. Impostando il valore su 0 disabiliterà la luce.

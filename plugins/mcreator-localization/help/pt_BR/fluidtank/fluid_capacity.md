@@ -1,0 +1,1 @@
+São os milibuckets máximos (1 balde = 1.000 milibuckets) que o bloco pode armazenar.

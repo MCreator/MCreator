@@ -1,0 +1,1 @@
+Der Klang, der abgespielt wird, wenn die Entität geht.

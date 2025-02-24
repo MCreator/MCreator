@@ -1,0 +1,1 @@
+Dieser Parameter steuert die GUI deines Blocks. Es wird zum Beispiel benötigt, um eine Truhe oder einen Handwerksblock herzustellen.

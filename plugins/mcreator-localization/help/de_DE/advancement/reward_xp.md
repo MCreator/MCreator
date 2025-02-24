@@ -1,0 +1,1 @@
+Dies ist die Anzahl der Erfahrungspunkte, die der Spieler erhält, nachdem er den Fortschritt erhalten hat.

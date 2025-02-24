@@ -1,0 +1,1 @@
+Déclenche une procédure lorsque le bloc n'est plus alimenté par la redstone.

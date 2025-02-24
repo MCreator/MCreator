@@ -1,0 +1,1 @@
+Ce paramètre définit la vie initiale (et maximale) de l'entité. 2 unités de vie = 1 coeur.

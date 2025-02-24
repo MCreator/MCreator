@@ -1,0 +1,1 @@
+Tham số này xác định nhóm nào trong sách công thức mà công thức này sẽ xuất hiện.

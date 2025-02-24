@@ -1,0 +1,1 @@
+Wähle diese Einstellung, um Wüstenpyramiden in deinem Biom zu haben.

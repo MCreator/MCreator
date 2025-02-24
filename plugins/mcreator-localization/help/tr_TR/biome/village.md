@@ -1,0 +1,1 @@
+Bu ayar, biyomunuz içerisinde Minecraft Köyleri oluşturmanıza olanak tanır.

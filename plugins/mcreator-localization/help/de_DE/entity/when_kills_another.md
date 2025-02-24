@@ -1,0 +1,1 @@
+Dieser Auslöser löst die Prozedur aus, wenn diese Entität eine andere Entität tötet.

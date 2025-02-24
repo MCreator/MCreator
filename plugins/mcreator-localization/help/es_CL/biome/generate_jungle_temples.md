@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan templos de jungla en tu bioma.

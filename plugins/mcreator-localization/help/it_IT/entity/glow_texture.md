@@ -1,0 +1,1 @@
+La texture luminosa verrà utilizzata per definire il livello luminoso del mob. Aree di texture più luminose lo faranno fanno sì che queste parti del mob brillino di più.

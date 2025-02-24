@@ -1,0 +1,1 @@
+Selecione esta configuração para ter Postos Avançados de Saqueadores em seu bioma.

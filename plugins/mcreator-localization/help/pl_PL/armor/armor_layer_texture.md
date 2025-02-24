@@ -1,0 +1,1 @@
+Tekstury warstwy zbroi są teksturami wyświetlanymi na graczu, w momencie gdy ten nosi zbroję.
