@@ -151,6 +151,9 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	private void editSelectedModelAnimations() {
 		Model model = elementList.getSelectedValue();
+		if (model == null) {
+			return;
+		}
 		if (model.getType() == Model.Type.JAVA) {
 			File file = model.getFile();
 			String code = FileIO.readFileToString(file);

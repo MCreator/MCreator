@@ -43,7 +43,8 @@ public class ${JavaModName}Attributes {
 
 	<#list attributes as attribute>
 	public static final DeferredHolder<Attribute, Attribute> ${attribute.getModElement().getRegistryNameUpper()} = REGISTRY.register("${attribute.getModElement().getRegistryName()}",
-		() -> new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setSyncable(true));
+		() -> new RangedAttribute("attribute.${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setSyncable(true)
+		<#if attribute.sentiment != "POSITIVE">.setSentiment(Attribute.Sentiment.${attribute.sentiment})</#if>);
 	</#list>
 
 	@SubscribeEvent public static void addAttributes(EntityAttributeModificationEvent event) {
