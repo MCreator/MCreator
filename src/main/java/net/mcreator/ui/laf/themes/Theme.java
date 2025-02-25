@@ -110,6 +110,9 @@ public class Theme {
 			overrides.put("@disabledForeground", ColorUtils.formatColor(Theme.current().getAltForegroundColor()));
 			overrides.put("@selectionInactiveBackground", "@accentSelectionBackground");
 			overrides.put("@selectionInactiveForeground", "@selectionForeground");
+
+			// Color overrides for com.formdev.flatlaf.FlatIconColors used in SVG icons
+			overrides.put("Objects.BlackText", ColorUtils.formatColor(Theme.current().getForegroundColor()));
 		}
 
 		if (!disableMCreatorOverrides) {
