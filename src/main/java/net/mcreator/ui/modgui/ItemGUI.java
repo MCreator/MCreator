@@ -291,7 +291,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -354,10 +354,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
 				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/provided_banner_patterns"),
-				L10N.label("elementgui.item.provided_banner_patterns")));
-		subpane2.add(providedBannerPatterns);
 
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
@@ -455,38 +451,42 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		JPanel musicDiscProperties = new JPanel(new GridLayout(5, 2, 35, 2));
-		musicDiscProperties.setBorder(BorderFactory.createTitledBorder(
+		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
+		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.section_musicdisc"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.item.section_musicdisc_banner"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-		musicDiscProperties.setOpaque(false);
+		musicDiscBannerProperties.setOpaque(false);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
 				L10N.label("elementgui.item.musicdisc")));
-		musicDiscProperties.add(isMusicDisc);
+		musicDiscBannerProperties.add(isMusicDisc);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_music"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_music"),
 				L10N.label("elementgui.item.musicdisc_music")));
-		musicDiscProperties.add(musicDiscMusic);
+		musicDiscBannerProperties.add(musicDiscMusic);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_description"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_description"),
 				L10N.label("elementgui.item.musicdisc_description")));
-		musicDiscProperties.add(musicDiscDescription);
+		musicDiscBannerProperties.add(musicDiscDescription);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_length"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_length"),
 				L10N.label("elementgui.item.musicdisc_length")));
-		musicDiscProperties.add(musicDiscLengthInTicks);
+		musicDiscBannerProperties.add(musicDiscLengthInTicks);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_analog_output"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_analog_output"),
 				L10N.label("elementgui.item.musicdisc_analog_output")));
-		musicDiscProperties.add(musicDiscAnalogOutput);
+		musicDiscBannerProperties.add(musicDiscAnalogOutput);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/provided_banner_patterns"),
+				L10N.label("elementgui.item.provided_banner_patterns")));
+		musicDiscBannerProperties.add(providedBannerPatterns);
 
 		ComponentUtils.deriveFont(musicDiscDescription, 16);
 
-		updateMusicDiscPanel();
+		updateMusicDiscBannerPanel();
 
-		isMusicDisc.addActionListener(e -> updateMusicDiscPanel());
+		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
 
 		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
 		rangedProperties.setOpaque(false);
@@ -537,8 +537,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(inventoryProperties, musicDiscProperties)),
-				rangedPanel, 10, 10)));
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
+				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -571,18 +571,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
-	private void updateMusicDiscPanel() {
-		if (isMusicDisc.isSelected()) {
-			musicDiscMusic.setEnabled(true);
-			musicDiscDescription.setEnabled(true);
-			musicDiscLengthInTicks.setEnabled(true);
-			musicDiscAnalogOutput.setEnabled(true);
-		} else {
-			musicDiscMusic.setEnabled(false);
-			musicDiscDescription.setEnabled(false);
-			musicDiscLengthInTicks.setEnabled(false);
-			musicDiscAnalogOutput.setEnabled(false);
-		}
+	private void updateMusicDiscBannerPanel() {
+		boolean isDisc = isMusicDisc.isSelected();
+		musicDiscMusic.setEnabled(isDisc);
+		musicDiscDescription.setEnabled(isDisc);
+		musicDiscLengthInTicks.setEnabled(isDisc);
+		musicDiscAnalogOutput.setEnabled(isDisc);
+		providedBannerPatterns.setEnabled(!isDisc);
 	}
 
 	private void updateFoodPanel() {
@@ -729,7 +724,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateFoodPanel();
 		updateRangedPanel();
-		updateMusicDiscPanel();
+		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
 		Model model = item.getItemModel();

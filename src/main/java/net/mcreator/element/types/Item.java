@@ -197,7 +197,20 @@ import java.util.*;
 	}
 
 	public boolean hasBannerPatterns() {
-		return !providedBannerPatterns.isEmpty();
+		return !isMusicDisc && !providedBannerPatterns.isEmpty();
+	}
+
+	public String getItemDescription() {
+		if (isMusicDisc) {
+			return musicDiscDescription;
+		} else if (!providedBannerPatterns.isEmpty()) {
+			List<String> names = providedBannerPatterns.stream()
+					.map(e -> getModElement().getWorkspace().getModElementByName(e))
+					.map(me -> me != null && me.getGeneratableElement() instanceof BannerPattern bp ? bp.name : "")
+					.toList();
+			return String.join(", ", names);
+		}
+		return "";
 	}
 
 	/**
