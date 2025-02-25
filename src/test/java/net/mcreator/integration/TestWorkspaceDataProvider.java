@@ -87,6 +87,7 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.GUI);
 		retval.add(ModElementType.ATTRIBUTE);
 		retval.add(ModElementType.POTIONEFFECT);
+		retval.add(ModElementType.BANNERPATTERN);
 
 		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
 
@@ -449,6 +450,13 @@ public class TestWorkspaceDataProvider {
 					+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
 					+ "<block type=\"tick\"></block></next></block></xml>";
 			return achievement;
+		} else if (ModElementType.BANNERPATTERN.equals(modElement.getType())) {
+			BannerPattern bannerPattern = new BannerPattern(modElement);
+			bannerPattern.texture = new TextureHolder(modElement.getWorkspace(), "other0");
+			bannerPattern.shieldTexture = new TextureHolder(modElement.getWorkspace(), "other0");
+			bannerPattern.name = modElement.getName();
+			bannerPattern.requireItem = _true;
+			return bannerPattern;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
 			biome.name = modElement.getName();
@@ -1204,6 +1212,10 @@ public class TestWorkspaceDataProvider {
 			item.musicDiscAnalogOutput = 6;
 			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			if (!emptyLists) {
+				item.providedBannerPatterns.add("ExampleBannerPattern1");
+				item.providedBannerPatterns.add("ExampleBannerPattern2");
+			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
@@ -2384,6 +2396,22 @@ public class TestWorkspaceDataProvider {
 				lootTable.pools = Collections.emptyList();
 
 				addGeneratableElementAndAssert(workspace, lootTable);
+			}
+		}
+
+		// add sample banner (used by test mod elements) if supported
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BANNERPATTERN)
+				!= GeneratorStats.CoverageStatus.NONE) {
+			for (int i = 1; i <= 2; i++) {
+				ModElement me = new ModElement(workspace, "ExampleBannerPattern" + i, ModElementType.BANNERPATTERN);
+
+				BannerPattern bannerPattern = new BannerPattern(me);
+				bannerPattern.texture = new TextureHolder(workspace, "other0");
+				bannerPattern.shieldTexture = new TextureHolder(workspace, "other0");
+				bannerPattern.name = me.getName();
+				bannerPattern.requireItem = true;
+
+				addGeneratableElementAndAssert(workspace, bannerPattern);
 			}
 		}
 	}
