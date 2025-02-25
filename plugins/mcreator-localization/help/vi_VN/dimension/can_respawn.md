@@ -1,1 +1,0 @@
-Nếu được tích, nó sẽ cho phép người chơi được hồi sinh trong chiều không gian khi người chơi chết trong chiều không gian này.

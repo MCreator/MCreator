@@ -1,1 +1,0 @@
-Se selezionato, consentirà al giocatore di rigenerarsi all'interno della dimensione quando il giocatore muore all'interno di questa dimensione.

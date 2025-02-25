@@ -1,0 +1,1 @@
+Kolor mgły w wymiarze. 

@@ -41,8 +41,7 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.modid"),
-				workspaceDialogPanel.modID));
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.modid"), workspaceDialogPanel.modID));
 
 		add(new JEmptyBox(10, 10));
 

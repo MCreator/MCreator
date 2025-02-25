@@ -47,6 +47,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
+	private final JComboBox<String> sentiment = new JComboBox<>(new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE" });
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");
@@ -59,7 +60,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel pane1 = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel pane1 = new JPanel(new GridLayout(7, 2, 5, 2));
 		pane1.setOpaque(false);
 
 		minMaxValue.setPreferredSize(new Dimension(20, 20));
@@ -74,6 +75,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/min_max_value"),
 				L10N.label("elementgui.attribute.min_max_value")));
 		pane1.add(minMaxValue);
+		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/sentiment"),
+				L10N.label("elementgui.attribute.sentiment")));
+		pane1.add(sentiment);
 
 		pane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("attribute/add_to_all_entities"),
 				L10N.label("elementgui.attribute.add_to_all_entities")));
@@ -113,6 +117,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		defaultValue.setValue(attribute.defaultValue);
 		minMaxValue.setMinValue(attribute.minValue);
 		minMaxValue.setMaxValue(attribute.maxValue);
+		sentiment.setSelectedItem(attribute.sentiment);
 		addToAllEntities.setSelected(attribute.addToAllEntities);
 		addToPlayers.setSelected(attribute.addToPlayers);
 		entities.setListElements(attribute.entities);
@@ -128,6 +133,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.defaultValue = (Double) defaultValue.getValue();
 		attribute.minValue = minMaxValue.getMinValue();
 		attribute.maxValue = minMaxValue.getMaxValue();
+		attribute.sentiment = (String) sentiment.getSelectedItem();
 		attribute.addToAllEntities = addToAllEntities.isSelected();
 		attribute.addToPlayers = addToPlayers.isSelected();
 		attribute.entities = entities.getListElements();

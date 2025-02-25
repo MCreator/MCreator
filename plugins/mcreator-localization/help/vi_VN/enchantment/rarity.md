@@ -1,1 +1,0 @@
-Đây là độ hiếm của phù phép để xuất hiện trên một vật phẩm (trong bàn phù phép và cho các bảng loot).

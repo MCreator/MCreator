@@ -1,3 +1,3 @@
-Ikona służąca identyfikacji zakładki menu trybu kreatywnego, taka jak czerwony proszek w przypadku zakładki z redstonem.
+Tylko przedmioty są wspierane. Bloki bez ikonki nie mogą być pokazane jako ikony..
 
-Tylko przedmioty są tutaj obsługiwane. Bloki nieposiadające przedmiotu nie mogą być ukazane jako ikona.
+Tylko przedmioty są wspierane. Bloki bez ikonki nie mogą być pokazane jako ikony.

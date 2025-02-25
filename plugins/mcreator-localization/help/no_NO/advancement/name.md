@@ -1,1 +1,0 @@
-Navnet på avanseringen. Hvis den ikke har en forelder (rotavansering), vil det være navnet på banen.

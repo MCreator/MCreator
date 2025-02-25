@@ -1,1 +1,0 @@
-Ce paramètre conrôle le bloc généré sous l'eau. La plupart des biomes vanilla utilisent la terre, le gravier ou le sable (océans chauds) pour ceci.

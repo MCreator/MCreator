@@ -43,7 +43,8 @@ public enum GeneratorFlavor {
 	/**
 	 * Official flavors are flavors that MCreator supports in its core.
 	 */
-	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, RESOURCEPACK, ADDON, NEOFORGE);
+	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, RESOURCEPACK, ADDON,
+			NEOFORGE);
 
 	/**
 	 * Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.

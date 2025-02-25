@@ -1,1 +1,0 @@
-Bu parametre bir biyom yığınındaki ölü çalıların sayısını kontrol eder

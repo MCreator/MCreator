@@ -1,1 +1,0 @@
-Dieser Parameter steuert den Block, der unter Wasser generiert. Die meisten Vanille-Biome verwenden hierfür Schmutz- oder Kiesblock.

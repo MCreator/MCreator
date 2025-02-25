@@ -1,0 +1,1 @@
+Kategoria książki z przepisami ustala, pod jaką zakładką dany przepis będzie się znajdował.
