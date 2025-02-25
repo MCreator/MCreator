@@ -59,8 +59,8 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel page = new JPanel(new GridLayout(2, 2, 5, 2));
-		page.setOpaque(false);
+		JPanel properties = new JPanel(new GridLayout(2, 2, 5, 2));
+		properties.setOpaque(false);
 
 		JPanel texturesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		texturesPanel.setOpaque(false);
@@ -73,12 +73,14 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		texturesPanel.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.banner_pattern.texture")));
 		texturesPanel.add(ComponentUtils.squareAndBorder(shieldTexture, L10N.t("elementgui.banner_pattern.shield_texture")));
 
-		page.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/name"),
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/name"),
 				L10N.label("elementgui.banner_pattern.name")));
-		page.add(name);
-		page.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/require_item"),
+		properties.add(name);
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/require_item"),
 				L10N.label("elementgui.banner_pattern.require_item")));
-		page.add(requireItem);
+		properties.add(requireItem);
+
+		name.setPreferredSize(new Dimension(0, 32));
 
 		requireItem.setOpaque(false);
 
@@ -91,7 +93,7 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		page1group.addValidationElement(shieldTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(texturesPanel, page)));
+		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(texturesPanel, properties, 25, 25)));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
