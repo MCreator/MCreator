@@ -1,1 +1,0 @@
-Select this setting to have Nether fortresses in your biome.
