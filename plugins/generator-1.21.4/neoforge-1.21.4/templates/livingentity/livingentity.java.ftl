@@ -970,6 +970,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		builder = builder.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
 		</#if>
 
+		<#if aiblocks?seq_contains("follow_item_in_hands")>
+		builder = builder.add(Attributes.TEMPT_RANGE, 10);
+		</#if>
+
 		return builder;
 	}
 
