@@ -1,0 +1,1 @@
+Ten parametr kontroluje nazwę strzały z miksturą.

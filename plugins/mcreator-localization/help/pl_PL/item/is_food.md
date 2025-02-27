@@ -1,0 +1,1 @@
+﻿Zaznacz, jeżeli ten przedmiot ma być jadalny(włącz, żeby miał właściwości jadalne).

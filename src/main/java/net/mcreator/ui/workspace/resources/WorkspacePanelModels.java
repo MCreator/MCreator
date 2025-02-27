@@ -179,8 +179,9 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
 				if (textureMappingMap != null) {
 					String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-					FileIO.writeStringToFile(data, new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
-							model.getFile().getName() + ".textures"));
+					FileIO.writeStringToFile(data,
+							new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
+									model.getFile().getName() + ".textures"));
 				}
 			} else {
 				JOptionPane.showMessageDialog(workspacePanel.getMCreator(),

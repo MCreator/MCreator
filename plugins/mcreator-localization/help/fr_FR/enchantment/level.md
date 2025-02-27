@@ -1,1 +1,0 @@
-Le niveau minimal et maximal de l'enchantement.

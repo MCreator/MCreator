@@ -1,1 +1,0 @@
-Ten parametr kontroluje ilość martwych krzaków na jeden chunk biomu

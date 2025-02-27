@@ -1,1 +1,0 @@
-Tham số này xác định bảng lợi phẩm bạn tạo thuộc loại nào.

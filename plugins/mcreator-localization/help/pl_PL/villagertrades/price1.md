@@ -1,0 +1,1 @@
+Pierwszy przedmiot wymagany do handlu.

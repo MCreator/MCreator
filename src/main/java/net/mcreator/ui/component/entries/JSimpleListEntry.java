@@ -109,7 +109,8 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		parent.repaint();
 	}
 
-	private static void swapEntries(JPanel parent, List<? extends JSimpleListEntry<?>> entryList, int thisIndex, int otherIndex) {
+	private static void swapEntries(JPanel parent, List<? extends JSimpleListEntry<?>> entryList, int thisIndex,
+			int otherIndex) {
 		Collections.swap(entryList, thisIndex, otherIndex);
 		// Also swap entries in the parent panel
 		Component[] components = parent.getComponents();

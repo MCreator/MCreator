@@ -1,0 +1,1 @@
+Jeżeli ta opcja jest włączona, chmury pojawiają się w wymiarze.

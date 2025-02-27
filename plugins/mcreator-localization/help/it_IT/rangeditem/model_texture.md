@@ -1,1 +1,0 @@
-Questa texture è la texture del modello proiettile se viene utilizzato il modello personalizzato.

@@ -41,8 +41,7 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.modid"),
-				workspaceDialogPanel.modID));
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.modid"), workspaceDialogPanel.modID));
 
 		add(new JEmptyBox(10, 10));
 
