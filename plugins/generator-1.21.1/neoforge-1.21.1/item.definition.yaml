@@ -8,7 +8,6 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
     condition_any:
       - hasJavaModel()
-      - "${data.getModels()?filter(e -> e.hasJavaModel())?has_content}"
   - template: json/musicdisc.json.ftl
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
@@ -74,7 +73,6 @@ list_templates:
         name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
         condition_any:
           - hasJavaModel()
-          - "${data.getModels()?filter(e -> e.hasJavaModel())?has_content}"
 
 tags:
   - tag: ITEMS:minecraft:meat
