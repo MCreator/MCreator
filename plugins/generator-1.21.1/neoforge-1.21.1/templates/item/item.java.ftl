@@ -36,7 +36,7 @@
 package ${package}.item;
 
 <#compress>
-<#if data.isUsingJavaModel()>@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)</#if> public class ${name}Item extends Item {
+<#if data.isUsingJavaModel() || data.getModels()?filter(e -> e.isUsingJavaModel())?has_content>@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)</#if> public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
@@ -72,7 +72,7 @@ package ${package}.item;
 		);
 	}
 
-	<#if data.isUsingJavaModel()>
+	<#if data.isUsingJavaModel() || data.getModels()?filter(e -> e.isUsingJavaModel())?has_content>
     @SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(new IClientItemExtensions() {
                 private ${name}ItemRenderer renderer;

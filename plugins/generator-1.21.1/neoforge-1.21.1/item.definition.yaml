@@ -8,6 +8,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
     condition_any:
       - isUsingJavaModel()
+      - "${data.getModels()?filter(e -> e.isUsingJavaModel())?has_content}"
   - template: json/musicdisc.json.ftl
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
@@ -69,10 +70,6 @@ list_templates:
         writer: json
         condition: "renderType #= 2"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
-      - template: item/item_renderer.java.ftl
-        name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer@itemindex.java"
-        condition_any:
-          - isUsingJavaModel()
 
 tags:
   - tag: ITEMS:minecraft:meat

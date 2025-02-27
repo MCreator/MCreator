@@ -31,29 +31,36 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer.item;
 <#compress>
-public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} extends BlockEntityWithoutLevelRenderer {
-    private static final ResourceLocation TEXTURE = ResourceLocation.parse("${modid}:textures/item/${data.texture}.png");
-    private ${data.customModelName.split(":")[0]} model;
+public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final EntityModelSet entityModelSet;
 
-    public ${name}ItemRenderer${(itemindex??)?then(itemindex, "")}(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
+    public ${name}ItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
         super(pBlockEntityRenderDispatcher, pEntityModelSet);
         this.entityModelSet = pEntityModelSet;
     }
 
-    private ${data.customModelName.split(":")[0]} getModel() {
-        if (this.model == null) {
-            this.model = new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-        }
-
-        return this.model;
-    }
-
     @Override public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        Model model = <#if data.isUsingJavaModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+        ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
+        LivingEntity entity = stack.getEntityRepresentation() instanceof LivingEntity le ? le : Minecraft.getInstance().player;
+        ClientLevel level = entity.level() instanceof ClientLevel cl ? cl : null;
+        <#list data.getModels() as model>
+        <#if model.isUsingJavaModel()>
+        if (<#list model.stateMap.entrySet() as entry>
+                ItemProperties.getProperty(stack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+                    .call(stack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}F
+            <#sep> && </#list>) {
+            model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
+            texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
+        }
+        </#if>
+        </#list>
+        if (model == null)
+            return;
     	poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, getModel().renderType(TEXTURE), false, stack.hasFoil());
-        getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, stack.hasFoil());
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
     }
 }
