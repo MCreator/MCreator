@@ -1,0 +1,1 @@
+Ten parametr ustala grupę w książce receptur, gdzie dany przepis ma być pokazany.

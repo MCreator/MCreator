@@ -1,0 +1,1 @@
+Ustala wzrost ceny, gdy gracz handluje wielokrotnie tym samym przedmiotem.

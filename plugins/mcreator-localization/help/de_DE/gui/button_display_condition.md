@@ -1,1 +1,0 @@
-Wenn die Bedingung angegeben ist, ist der Button nur sichtbar (angezeigt/angezeigt), wenn die Bedingung übergeben wird.

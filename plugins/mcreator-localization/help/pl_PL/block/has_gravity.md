@@ -1,0 +1,1 @@
+Jeżeli ten parametr jest włączony, blok spadnie jak piasek.

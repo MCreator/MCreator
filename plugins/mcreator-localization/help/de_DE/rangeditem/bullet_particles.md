@@ -1,1 +1,0 @@
-Aktivieren Sie diesen Parameter, wenn Sie möchten, dass Partikel in der Mitte ausgestrahlt werden.

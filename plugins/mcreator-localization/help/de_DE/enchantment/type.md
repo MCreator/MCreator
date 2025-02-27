@@ -1,1 +1,0 @@
-Diese Eigenschaft legt fest, welche Art von Gegenstand Ihre Verzauberung anwenden kann (nur in der Verzauberungstabelle).

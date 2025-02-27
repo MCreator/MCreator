@@ -1,5 +1,0 @@
-Hier können Sie zusätzliche Eigenschaften dieses Elements auflisten und festlegen, wie seine Textur/Modell ändert, abhängig von der Kombination der Werte der Eigenschaften, die einen Status bilden. Eine Objekteigenschaft kann eine beliebige Zahl (ganze Zahl oder Bruchteil) als Wert nehmen so dass die Notwendigkeit vermieden wird, einer Granularität zu folgen und nahe Werte bereitzustellen ein Status übereinstimmt, wenn die tatsächlichen Eigenschaften, die aus dem Artikel extrahiert werden, _die gleichen sind wie oder größer als_ erwartet (hier angegeben) Werte. Wenn es mehrere Zustände mit übereinstimmenden Werten gibt, wird der letzte dieser Zustände verwendet. Wenn keine Zustände übereinstimmen, wird das Element seinen Standard-visuellen Look verwenden.
-
-Neben benutzerdefinierten Eigenschaften kannst du auch eingebaute Gegenstände für alle Gegenstände im Namen von Minecraft verwenden.
-
-HINWEIS: Doppelte Zustände sind nicht erlaubt. Wenn zwei oder mehr Zustände nur den Wert eines einzelnen Objekts unterscheiden, dann entfernen Sie, dass Eigenschaft automatisch Duplikate der ersten dieser Zustände entfernt.

@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, was passiert, wenn der Spieler versucht, in dieser Dimension im Bett zu schlafen.

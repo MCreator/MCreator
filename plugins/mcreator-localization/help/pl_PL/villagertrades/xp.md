@@ -1,0 +1,1 @@
+Liczba doświadczenia, które daje Wieśniak.

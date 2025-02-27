@@ -64,7 +64,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox animate = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT"});
+	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT" });
 
 	private ProcedureSelector additionalExpiryCondition;
 

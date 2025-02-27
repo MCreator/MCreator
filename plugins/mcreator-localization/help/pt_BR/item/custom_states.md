@@ -1,5 +1,0 @@
-Aqui você pode listar propriedades adicionais deste item e especificar como sua textura/modelo mudam dependendo do valor dado de uma combinação de propriedades que formam um estado. Uma propriedade de item pode conter qualquer número (inteiro ou fracional) como seu valor, então para evitar a necessidade de seguir qualquer granularidade e para permitir o fornecimento de valores fechados, um estado combina se valores de propriedades extraídos do item são _iguais ou maiores que_ o valor esperado (especificado aqui). Se houverem vários estados com valores iguais, o último destes estados iguais será utilizado. Se nenhum estado igualar, o item usará seu visual padrão.
-
-Juntamente com as personalizadas, você também pode usar algumas propriedades de item embutidas definidas para todos os itens pertencentes do Minecraft.
-
-NOTA: Estados duplicados não são permitidos. Se dois ou mais estados só se diferenciarem no valor de uma única propriedade, então remover essa propriedade automaticamente removerá as duplicatas do primeiro desses estados.

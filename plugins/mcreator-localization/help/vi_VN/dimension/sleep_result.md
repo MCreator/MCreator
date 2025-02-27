@@ -1,1 +1,0 @@
-Tham số này xác định điều gì sẽ xảy ra khi người chơi ngủ trong giường trong chiều không gian này.

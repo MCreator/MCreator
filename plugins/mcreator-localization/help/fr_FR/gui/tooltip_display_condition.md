@@ -1,1 +1,0 @@
-Si une condition est spécifiée, cette info-bulle pourra seulement être affiché dans le cas où la condition sera remplie.

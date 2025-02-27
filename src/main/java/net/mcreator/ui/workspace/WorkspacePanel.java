@@ -740,7 +740,8 @@ import java.util.stream.Collectors;
 		duplicateElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
-		searchElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		searchElement.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> searchModElementsUsages());
 

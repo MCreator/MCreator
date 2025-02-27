@@ -27,7 +27,10 @@ import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DataListEntry {
 
