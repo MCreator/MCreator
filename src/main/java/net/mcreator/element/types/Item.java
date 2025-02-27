@@ -180,7 +180,7 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 	}
 
-	public boolean isUsingJavaModel() {
+	public boolean hasJavaModel() {
 		return decodeModelType(renderType) == Model.Type.JAVA;
 	}
 
@@ -275,7 +275,7 @@ import java.util.*;
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
 
-		public boolean isUsingJavaModel() {
+		public boolean hasJavaModel() {
 			return decodeModelType(renderType) == Model.Type.JAVA;
 		}
 

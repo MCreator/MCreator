@@ -37,7 +37,7 @@
 </#if>
 
 <#macro modelRef model suffix="" itemIndex=-1>
-	<#if model.isUsingJavaModel()>
+	<#if model.hasJavaModel()>
     {
       "type": "minecraft:special",
       "base": "${modid}:item/${registryname}${suffix}",

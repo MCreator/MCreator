@@ -409,7 +409,7 @@ import java.util.*;
 		return repairItems;
 	}
 
-	public boolean isUsingJavaModel() {
+	public boolean hasJavaModel() {
 		return false; //for the moment
 	}
 }
