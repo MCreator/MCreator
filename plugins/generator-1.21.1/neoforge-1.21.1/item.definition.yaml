@@ -70,7 +70,7 @@ list_templates:
         condition: "renderType #= 2"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: item/item_renderer.java.ftl
-        name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
+        name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer@itemindex.java"
         condition_any:
           - isUsingJavaModel()
 
