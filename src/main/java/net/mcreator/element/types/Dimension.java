@@ -205,4 +205,7 @@ import java.util.*;
 				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
 	}
 
+	public boolean hasJavaModel() {
+		return false; //for the moment
+	}
 }
