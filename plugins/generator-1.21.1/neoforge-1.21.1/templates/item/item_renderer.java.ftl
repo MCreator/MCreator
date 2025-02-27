@@ -53,7 +53,7 @@ public class ${name}ItemRenderer${(itemindex??)?then(itemindex, "")} extends Blo
     	poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, getModel().renderType(TEXTURE), false, stack.hasFoil());
-        this.getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        getModel().renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
     }
 }

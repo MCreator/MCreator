@@ -205,7 +205,7 @@ import java.util.*;
 				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
 	}
 
-	public boolean hasJavaModel() {
+	public boolean isUsingJavaModel() {
 		return false; //for the moment
 	}
 }

@@ -32,11 +32,11 @@
 package ${package}.client.renderer.item;
 
 <#assign models = []>
-<#if data.hasJavaModel()>
+<#if data.isUsingJavaModel()>
     <#assign models += [[-1, data.customModelName.split(":")[0], data.texture]]>
 </#if>
 <#list data.getModels() as model>
-    <#if model.hasJavaModel()>
+    <#if model.isUsingJavaModel()>
         <#assign models += [[model?index, model.customModelName.split(":")[0], model.texture]]>
     </#if>
 </#list>

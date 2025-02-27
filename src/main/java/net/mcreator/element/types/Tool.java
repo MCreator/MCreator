@@ -178,4 +178,7 @@ import java.util.*;
 		return repairItems;
 	}
 
+	public boolean isUsingJavaModel() {
+		return false; //for the moment
+	}
 }

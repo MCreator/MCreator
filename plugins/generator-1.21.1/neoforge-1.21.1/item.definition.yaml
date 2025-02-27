@@ -7,7 +7,7 @@ templates:
   - template: item/item_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
     condition_any:
-      - hasJavaModel()
+      - isUsingJavaModel()
   - template: json/musicdisc.json.ftl
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
@@ -15,7 +15,7 @@ templates:
   - template: json/item.json.ftl
     writer: json
     condition_any:
-      - "hasJavaModel()"
+      - "isUsingJavaModel()"
       - "hasNormalBuiltinModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
@@ -46,7 +46,7 @@ list_templates:
       - template: json/item.json.ftl
         writer: json
         condition_any:
-          - "hasJavaModel()"
+          - "isUsingJavaModel()"
           - "hasNormalBuiltinModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
@@ -72,7 +72,7 @@ list_templates:
       - template: item/item_renderer.java.ftl
         name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
         condition_any:
-          - hasJavaModel()
+          - isUsingJavaModel()
 
 tags:
   - tag: ITEMS:minecraft:meat

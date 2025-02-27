@@ -72,7 +72,7 @@ package ${package}.item;
 		);
 	}
 
-	<#if data.hasJavaModel()>
+	<#if data.isUsingJavaModel()>
     @SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(new IClientItemExtensions() {
                 private ${name}ItemRenderer renderer;
