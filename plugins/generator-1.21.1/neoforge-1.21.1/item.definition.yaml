@@ -4,9 +4,11 @@ templates:
   - template: item/item_container.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
     condition: hasInventory()
-  - template: item/item_render.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMEItemRenderer.java"
-    condition: hasJavaModel()
+  - template: item/item_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
+    condition_any:
+      - hasJavaModel()
+      - "${data.getModels()?filter(e -> e.hasJavaModel())?has_content}"
   - template: json/musicdisc.json.ftl
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
@@ -15,7 +17,7 @@ templates:
     writer: json
     condition_any:
       - "hasJavaModel()"
-      - "hasItemProperties()"
+      - "hasNormalBuiltinModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
     writer: json
@@ -46,7 +48,7 @@ list_templates:
         writer: json
         condition_any:
           - "hasJavaModel()"
-          - "hasItemProperties()"
+          - "hasNormalBuiltinModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json
@@ -68,9 +70,11 @@ list_templates:
         writer: json
         condition: "renderType #= 2"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
-      - template: item/item_render.java.ftl
-        name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMEItemRenderer@itemindex.java"
-        condition: hasJavaModel()
+      - template: item/item_renderer.java.ftl
+        name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
+        condition_any:
+          - hasJavaModel()
+          - "${data.getModels()?filter(e -> e.hasJavaModel())?has_content}"
 
 tags:
   - tag: ITEMS:minecraft:meat

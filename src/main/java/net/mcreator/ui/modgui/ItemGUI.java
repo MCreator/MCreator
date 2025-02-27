@@ -647,12 +647,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Model.getJavaModels(mcreator.getWorkspace()).stream()
-				.filter(el -> el.getType() == Model.Type.JAVA)
-				.collect(Collectors.toList()),ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList()))));
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
+				ListUtils.merge(Model.getJavaModels(mcreator.getWorkspace()),
+						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+								.collect(Collectors.toList()))));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

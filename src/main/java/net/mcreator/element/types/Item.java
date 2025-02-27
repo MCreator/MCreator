@@ -184,7 +184,7 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.JAVA;
 	}
 
-	public boolean hasItemProperties() {
+	public boolean hasNormalBuiltinModel() {
 		return renderType == 0 && hasNormalModel();
 	}
 
@@ -279,7 +279,7 @@ import java.util.*;
 			return decodeModelType(renderType) == Model.Type.JAVA;
 		}
 
-		public boolean hasItemProperties() {
+		public boolean hasNormalBuiltinModel() {
 			return renderType == 0 && hasNormalModel();
 		}
 	}
