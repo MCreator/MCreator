@@ -1,0 +1,1 @@
+Zaznacz opcję, jeżeli chcesz, żeby twoje zaklęcie było sprzedawane przez wieśniaka.

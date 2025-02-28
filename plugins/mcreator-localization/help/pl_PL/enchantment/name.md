@@ -1,0 +1,1 @@
+Nazwa zaklęcia używana w grze

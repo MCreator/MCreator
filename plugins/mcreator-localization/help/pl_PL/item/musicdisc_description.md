@@ -1,0 +1,1 @@
+Wstaw opis swojej płyty. Zazwyczaj jest to kompozytor–nazwa utworu.

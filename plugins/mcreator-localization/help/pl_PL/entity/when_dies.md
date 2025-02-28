@@ -1,0 +1,1 @@
+Ten wyzwalacz wywołuje procedurę, kiedy byt umiera.

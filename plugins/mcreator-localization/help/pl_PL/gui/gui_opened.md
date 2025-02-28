@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy interfejs jest otwarty.

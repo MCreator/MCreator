@@ -1,0 +1,1 @@
+Maksymalny poziom twojego zaklęcia.

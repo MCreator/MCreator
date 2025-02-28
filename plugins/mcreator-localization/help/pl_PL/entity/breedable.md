@@ -1,0 +1,1 @@
+Przedmioty użyte, by rozmnożyć byty, jeżeli parament rozmnażalności jest włączony.

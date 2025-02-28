@@ -1,0 +1,1 @@
+Ten parametr wyłącza wodę w wymiarze. Kiedy umieści się wodę, ona od razu zniknie, sprawiając, że nie możliwe jest posiadanie wody w wymiarze.
