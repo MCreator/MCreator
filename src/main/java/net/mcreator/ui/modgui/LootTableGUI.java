@@ -49,7 +49,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter" });
+					"Barter", "Archaeology", "Dispensers", "Pots", "Shearing", "Equipment", "Spawners" });
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -102,6 +102,24 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 					case "Advancement reward":
 						name.getEditor().setItem("entities/" + currNameNoType);
 						break;
+					case "Archaeology":
+						name.getEditor().setItem("archaeology/" + currNameNoType);
+						break;
+					case "Dispensers":
+						name.getEditor().setItem("dispensers/" + currNameNoType);
+						break;
+					case "Equipment":
+						name.getEditor().setItem("equipment/" + currNameNoType);
+						break;
+					case "Pots":
+						name.getEditor().setItem("pots/" + currNameNoType);
+						break;
+					case "Shearing":
+						name.getEditor().setItem("shearing/" + currNameNoType);
+						break;
+					case "Spawners":
+						name.getEditor().setItem("spawners/" + currNameNoType);
+						break;
 					default:
 						name.getEditor().setItem("gameplay/" + currNameNoType);
 						break;
@@ -123,6 +141,18 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 						type.setSelectedItem("Block");
 					} else if (currName.startsWith("entities/")) {
 						type.setSelectedItem("Entity");
+					} else if (currName.startsWith("archaeology/")) {
+						type.setSelectedItem("Archaeology");
+					} else if (currName.startsWith("dispensers/")) {
+						type.setSelectedItem("Dispensers");
+					} else if (currName.startsWith("equipment/")) {
+						type.setSelectedItem("Equipment");
+					} else if (currName.startsWith("pots/")) {
+						type.setSelectedItem("Pots");
+					} else if (currName.startsWith("shearing/")) {
+						type.setSelectedItem("Shearing");
+					} else if (currName.startsWith("spawners/")) {
+						type.setSelectedItem("Spawners");
 					}
 				}
 			});
