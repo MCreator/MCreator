@@ -395,6 +395,10 @@ public class ElementUtil {
 		return blocks;
 	}
 
+	public static List<DataListEntry> loadAllGameEvents() {
+		return DataListLoader.loadDataList("gameevents");
+	}
+
 	public static String[] getDataListAsStringArray(String dataList) {
 		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}

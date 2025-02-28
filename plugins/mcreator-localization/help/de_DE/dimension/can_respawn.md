@@ -1,1 +1,0 @@
-Wenn diese Option aktiviert ist, kann der Spieler innerhalb der Dimension wiederbelebt werden, wenn der Spieler in dieser Dimension stirbt.

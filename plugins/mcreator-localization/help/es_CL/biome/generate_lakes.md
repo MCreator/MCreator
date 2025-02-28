@@ -1,1 +1,0 @@
-Este parámetro controla si lagos deberian generarse en este bioma.

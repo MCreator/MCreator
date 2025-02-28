@@ -1,0 +1,1 @@
+Ten parametr ustala czy efekt jest zastosowany dookoła.

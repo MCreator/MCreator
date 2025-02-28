@@ -1,0 +1,1 @@
+To jest opis zasady w grze. Używana jest podczas przejeżdżania na opcje zasad.

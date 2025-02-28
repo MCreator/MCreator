@@ -61,7 +61,8 @@ public class JMXMonitorClient {
 				" -Dcom.sun.management.jmxremote.authenticate=false";
 		//@formatter:on
 		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
-			environment.put("MCREATOR_JVM_OPTIONS", environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
+			environment.put("MCREATOR_JVM_OPTIONS",
+					environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
 		} else {
 			environment.put("MCREATOR_JVM_OPTIONS", mcreatorJvmOptions);
 		}

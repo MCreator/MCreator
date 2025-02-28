@@ -1,1 +1,0 @@
-Wenn die Bedingung angegeben ist, kann dieser Tooltip nur angezeigt werden, wenn die Bedingung übergeben wird.

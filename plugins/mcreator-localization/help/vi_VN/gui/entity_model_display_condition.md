@@ -1,1 +1,0 @@
-Nếu điều kiện được chỉ định, mô hình thực thể này sẽ chỉ được hiển thị khi điều kiện được thỏa mãn.

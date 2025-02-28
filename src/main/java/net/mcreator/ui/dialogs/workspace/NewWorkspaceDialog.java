@@ -336,7 +336,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			break;
 		}
 	}
-	
+
 	private void styleButton(JToggleButton button) {
 		button.setHorizontalAlignment(SwingConstants.LEFT);
 		button.setBackground(Theme.current().getBackgroundColor());

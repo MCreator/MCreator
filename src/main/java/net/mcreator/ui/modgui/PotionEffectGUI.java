@@ -98,8 +98,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("duration:number/amplifier:number"));
 		onMobHurt = new ProcedureSelector(this.withEntry("potioneffect/on_mob_hurt"), mcreator,
-				L10N.t("elementgui.potioneffect.event_mob_hurt"), ProcedureSelector.Side.SERVER,
-				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number/damagesource:damagesource/amount:number"));
+				L10N.t("elementgui.potioneffect.event_mob_hurt"), ProcedureSelector.Side.SERVER, Dependency.fromString(
+				"entity:entity/x:number/y:number/z:number/world:world/amplifier:number/damagesource:damagesource/amount:number"));
 		onMobRemoved = new ProcedureSelector(this.withEntry("potioneffect/on_mob_death"), mcreator,
 				L10N.t("elementgui.potioneffect.event_mob_death"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
@@ -169,7 +169,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		selp.setOpaque(false);
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
+		pane3.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
 		pane3.setOpaque(false);
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(

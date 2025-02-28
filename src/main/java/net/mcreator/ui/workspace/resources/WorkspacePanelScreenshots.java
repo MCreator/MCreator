@@ -77,11 +77,13 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 	}
 
 	private void useSelectedAsBackgrounds() {
-		elementList.getSelectedValuesList().forEach(
-				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
-		JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
-				L10N.t("workspace.screenshots.use_background_message"), L10N.t("workspace.screenshots.action_complete"),
-				JOptionPane.INFORMATION_MESSAGE);
+		if (!elementList.getSelectedValuesList().isEmpty()) {
+			elementList.getSelectedValuesList().forEach(f -> FileIO.copyFile(f,
+					new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
+			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.screenshots.use_background_message"),
+					L10N.t("workspace.screenshots.action_complete"), JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	private void exportSelectedScreenshots() {
