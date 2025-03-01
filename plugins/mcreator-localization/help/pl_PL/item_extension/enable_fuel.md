@@ -1,0 +1,1 @@
+Zaznacz, aby wybrany przedmiot stał się paliwem do pieca (jak węgiel, deski itd.).

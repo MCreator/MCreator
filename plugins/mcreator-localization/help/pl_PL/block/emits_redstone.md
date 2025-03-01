@@ -1,0 +1,1 @@
+Zaznacz parametr, jeśli blok ma być w stanie emitować sygnał redstone.
