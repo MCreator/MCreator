@@ -1,0 +1,1 @@
+Żaden typ ataku, który tutaj wybierzesz, nie wpłynie na moba. (będzie odporny).

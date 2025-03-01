@@ -1,0 +1,1 @@
+Ten parametr kontroluje interfejs twojego bloku. Jest potrzebne, gdy tworzysz np. skrzynię czy crafting
