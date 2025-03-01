@@ -1,0 +1,1 @@
+This condition specifies whether the block should receive the detected vibration or not.
