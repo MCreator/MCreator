@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg width="20" height="20" version="1.1" viewBox="0 0 5.2917 5.2917" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <mask id="mask-powermask-path-effect59" maskUnits="userSpaceOnUse">
-            <path id="mask-powermask-path-effect59_box" d="m0.05834 1.9104h5.175v3.4552h-5.175z" fill="#231F20"/>
-            <g style="">
-                <ellipse cx="1.0583" cy="2.9104" rx="1.3229" ry="1.3229" style="paint-order:normal" />
-                <ellipse cx="4.2334" cy="2.9104" rx="1.3229" ry="1.3229" style="paint-order:normal" />
-            </g>
-        </mask>
-    </defs>
     <rect x=".52917" y="4.7625" width="4.2334" height=".26458" fill="#9AA7B0" style="paint-order:normal"/>
-    <g fill="#231F20"><rect x=".26458" y="4.2334" width="4.7625" height=".52917" style="paint-order:normal"/>
-        <path d="m1.0583 2.9104h3.175v1.4552h-3.175z" mask="url(#mask-powermask-path-effect59)" style="paint-order:normal"/>
+    <g fill="#231F20">
+        <path d="m2.3812 2.715v0.2q-0.1 1.2229 -1.3229 1.3229h-0.79372v0.52917h4.7625v-0.52917h-0.79372q-1.2229 -0.1 -1.3229 -1.3229v-0.2z" style="paint-order:normal"/>
         <rect x="2.3813" y="2.3813" width=".52917" height=".79375" style="paint-order:normal"/>
         <ellipse cx="2.6458" cy="1.5875" rx=".79375" ry="1.3229" style="paint-order:normal"/>
     </g>
