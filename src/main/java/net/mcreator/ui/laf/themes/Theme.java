@@ -33,7 +33,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -113,10 +112,9 @@ public class Theme {
 			overrides.put("@selectionInactiveForeground", "@selectionForeground");
 
 			// Color overrides for com.formdev.flatlaf.FlatIconColors used in SVG icons
-			overrides.put("Objects.BlackText",
-					ColorUtils.formatColor(brightenColor(Theme.current().getForegroundColor())));
-			overrides.put("Objects.Grey", ColorUtils.formatColor(darkenColor(Theme.current().getAltForegroundColor())));
-			overrides.put("Objects.GreenAndroid", ColorUtils.formatColor(Theme.current().getInterfaceAccentColor()));
+			overrides.put("Objects.BlackText", "@foreground");
+			overrides.put("Objects.Grey", "@buttonDisabledArrowColor");
+			overrides.put("Objects.GreenAndroid", "@accentColor");
 		}
 
 		if (!disableMCreatorOverrides) {
@@ -313,30 +311,6 @@ public class Theme {
 		} else {
 			return UIManager.getColor("Component.accentColor").darker();
 		}
-	}
-
-	/**
-	 * This method darkens the color in context of dark theme.
-	 * If the theme is light, it will lighten the color instead.
-	 *
-	 * @param color Color to darken
-	 */
-	private Color darkenColor(Color color) {
-		return isDark() ? color.darker() : color.brighter();
-	}
-
-	/**
-	 * This method lightens the color in context of dark theme.
-	 * If the theme is light, it will darken the color instead.
-	 *
-	 * @param color Color to lighten
-	 */
-	private Color brightenColor(Color color) {
-		return isDark() ? color.brighter() : color.darker();
-	}
-
-	public boolean isDark() {
-		return flatLafTheme.toLowerCase(Locale.ENGLISH).contains("dark");
 	}
 
 }
