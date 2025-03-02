@@ -113,7 +113,7 @@ public class Theme {
 
 			// Color overrides for com.formdev.flatlaf.FlatIconColors used in SVG icons
 			overrides.put("Objects.BlackText", "@foreground");
-			overrides.put("Objects.Grey", "@buttonDisabledArrowColor");
+			overrides.put("Objects.Grey", "@buttonArrowColor");
 			overrides.put("Objects.GreenAndroid", "@accentColor");
 		}
 
