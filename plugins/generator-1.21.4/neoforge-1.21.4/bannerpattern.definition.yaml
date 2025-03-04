@@ -1,0 +1,60 @@
+templates:
+  - template: bannerpattern/banner_pattern.json.ftl
+    writer: json
+    name: "@MODDATAROOT/banner_pattern/@registryname.json"
+
+global_templates:
+  - template: bannerpattern/banner_pattern_tag.json.ftl
+    writer: json
+    condition: "${w.getGElementsOfType('bannerpattern')?filter(e -> !e.requireItem)?size != 0}"
+    name: "@RESROOT/data/minecraft/tags/banner_pattern/no_item_required.json"
+
+localizationkeys:
+  - key: block.@modid.banner.@registryname.white
+    mapto: name
+    prefix: "White "
+  - key: block.@modid.banner.@registryname.orange
+    mapto: name
+    prefix: "Orange "
+  - key: block.@modid.banner.@registryname.magenta
+    mapto: name
+    prefix: "Magenta "
+  - key: block.@modid.banner.@registryname.light_blue
+    mapto: name
+    prefix: "Light Blue "
+  - key: block.@modid.banner.@registryname.yellow
+    mapto: name
+    prefix: "Yellow "
+  - key: block.@modid.banner.@registryname.lime
+    mapto: name
+    prefix: "Lime "
+  - key: block.@modid.banner.@registryname.pink
+    mapto: name
+    prefix: "Pink "
+  - key: block.@modid.banner.@registryname.gray
+    mapto: name
+    prefix: "Gray "
+  - key: block.@modid.banner.@registryname.light_gray
+    mapto: name
+    prefix: "Light Gray "
+  - key: block.@modid.banner.@registryname.cyan
+    mapto: name
+    prefix: "Cyan "
+  - key: block.@modid.banner.@registryname.purple
+    mapto: name
+    prefix: "Purple "
+  - key: block.@modid.banner.@registryname.blue
+    mapto: name
+    prefix: "Blue "
+  - key: block.@modid.banner.@registryname.brown
+    mapto: name
+    prefix: "Brown "
+  - key: block.@modid.banner.@registryname.green
+    mapto: name
+    prefix: "Green "
+  - key: block.@modid.banner.@registryname.red
+    mapto: name
+    prefix: "Red "
+  - key: block.@modid.banner.@registryname.black
+    mapto: name
+    prefix: "Black "
