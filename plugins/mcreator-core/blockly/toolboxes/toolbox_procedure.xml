@@ -41,6 +41,7 @@
         <block type="logic_binary_ops"/>
         <block type="math_binary_ops"/>
         <block type="text_binary_ops"/>
+        <block type="logic_null_comparison"/>
         <custom-logicoperations/>
     </category>
     <category name="${t:blockly.category.math}" colour="%{BKY_MATH_HUE}">
