@@ -528,7 +528,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		visualRenderingSettings.setOpaque(false);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
-				L10N.label("elementgui.block.has_trasparency")));
+				L10N.label("elementgui.block.has_transparency")));
 		visualRenderingSettings.add(hasTransparency);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
