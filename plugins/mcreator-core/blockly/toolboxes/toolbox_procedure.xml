@@ -41,7 +41,6 @@
         <block type="logic_binary_ops"/>
         <block type="math_binary_ops"/>
         <block type="text_binary_ops"/>
-        <block type="logic_null_comparison"/>
         <custom-logicoperations/>
     </category>
     <category name="${t:blockly.category.math}" colour="%{BKY_MATH_HUE}">
@@ -131,6 +130,7 @@
         <block type="java_code"/>
         <block type="java_code_get"/>
         <block type="debug_marker"/>
+        <block type="logic_null_comparison"/>
         <block type="entity_none"/>
         <custom-advanced/>
     </category>
