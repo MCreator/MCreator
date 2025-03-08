@@ -399,7 +399,14 @@ public class WYSIWYGEditor extends JPanel {
 		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
-			sidebar.add("North", adds2);
+			JScrollPane scrollPane = new JScrollPane(adds2);
+			scrollPane.setOpaque(false);
+			scrollPane.getViewport().setOpaque(false);
+			scrollPane.setBorder(BorderFactory.createEmptyBorder());
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			sidebar.add("North", scrollPane);
 		} else {
 			ovst.setOpaque(false);
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));
