@@ -31,6 +31,8 @@ import net.mcreator.util.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+import java.text.ParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,17 +75,12 @@ public class ExternalBlockLoader {
 					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.getMachineName());
 
 					if (localized_message != null) {
-						int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message,
-								"%[0-9]+");
-						int parameters_count_en = net.mcreator.util.StringUtils.countRegexMatches(localized_message_en,
-								"%[0-9]+");
-
-						if (parameters_count == parameters_count_en) {
+						try {
+							validateTranslation(localized_message, localized_message_en);
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
-						} else {
-							LOG.warn(
-									"Not all procedure block inputs are defined using %N for block {} for the selected language",
-									toolboxBlock.getMachineName());
+						} catch (ParseException e) {
+							LOG.warn("Block {} translation \"{}\" for the selected language is not valid. Reason: {}",
+									toolboxBlock.getMachineName(), localized_message, e.getMessage());
 							if (localized_message_en != null) {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}
@@ -252,6 +249,33 @@ public class ExternalBlockLoader {
 			return null;
 
 		return translation.replace("'", "\\'").replace("\"", "&quot;");
+	}
+
+	private final static Pattern N_PLACEHOLDER_MATCHER = Pattern.compile("%\\d+"); // Matches %1, %2, etc.
+
+	private static void validateTranslation(@Nullable String localized_message, @Nullable String localized_message_en)
+			throws ParseException {
+		if (localized_message == null)
+			return; // Nothing to validate
+
+		// Make sure original string and translation have the same number of parameters
+		if (localized_message_en != null) {
+			int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message, "%[0-9]+");
+			int parameters_count_en = net.mcreator.util.StringUtils.countRegexMatches(localized_message_en, "%[0-9]+");
+			if (parameters_count != parameters_count_en) {
+				throw new ParseException("%N placeholder count mismatch", 0);
+			}
+		}
+
+		// Make sure all parameters are only used once
+		Matcher matcher = N_PLACEHOLDER_MATCHER.matcher(localized_message);
+		Set<String> seen = new HashSet<>();
+		while (matcher.find()) {
+			String placeholder = matcher.group();
+			if (!seen.add(placeholder)) {
+				throw new ParseException("Duplicate %N placeholder", 0);
+			}
+		}
 	}
 
 }
