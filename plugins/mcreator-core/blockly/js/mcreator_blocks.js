@@ -269,6 +269,18 @@ Blockly.Blocks['logic_ternary_op'] = {
     }
 };
 
+Blockly.Blocks['logic_null_comparison'] = {
+    init: function () {
+        this.appendValueInput('value');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["\u2260", "!="], ["=", "=="]]), 'operation')
+            .appendField(javabridge.t("blockly.block.logic_null_comparison"));
+        this.setColour('%{BKY_LOGIC_HUE}');
+        this.setOutput(true, 'Boolean');
+        Blockly.Extensions.apply('null_comparison_exclude_primitive_types', this, false);
+    }
+};
+
 Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')

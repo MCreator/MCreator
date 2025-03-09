@@ -130,6 +130,7 @@
         <block type="java_code"/>
         <block type="java_code_get"/>
         <block type="debug_marker"/>
+        <block type="logic_null_comparison"/>
         <block type="entity_none"/>
         <custom-advanced/>
     </category>
