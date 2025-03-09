@@ -56,8 +56,8 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext {
 

@@ -49,8 +49,8 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
