@@ -46,6 +46,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
@@ -111,8 +112,10 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 	public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
+				ListUtils.merge(Model.getJavaModels(mcreator.getWorkspace()),
+						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+								.collect(Collectors.toList()))));
 	}
 
 	JStateLabel getStateLabel() {
