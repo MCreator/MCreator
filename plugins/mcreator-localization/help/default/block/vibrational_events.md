@@ -1,0 +1,1 @@
+Game events whose vibrations this block can receive.
