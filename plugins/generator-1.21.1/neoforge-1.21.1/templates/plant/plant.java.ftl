@@ -417,12 +417,12 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 <#macro toTreeGrower secondaryChance megaTree="" megaTree2="" tree="" tree2="" flowerTree="" flowerTree2="">
 	<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
-	new TreeGrower("${data.getModElement().getRegistryName()}", ${secondaryChance}f,
+	new TreeGrower("${registryname}", ${secondaryChance}f,
 		<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
 		<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
 	);
 	<#else>
-	new TreeGrower("${data.getModElement().getRegistryName()}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
+	new TreeGrower("${registryname}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
 	</#if>
 </#macro>
 
