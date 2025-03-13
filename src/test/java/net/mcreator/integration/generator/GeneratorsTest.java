@@ -25,7 +25,6 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
@@ -129,8 +128,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
 							() -> TestWorkspaceDataProvider.provideAndGenerateSampleElements(random, workspace.get())));
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
-							() -> GTModElements.runTest(LOG, generator, random, workspace.get())));
+					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation", () -> {
+						GTModElements.runTest(LOG, generator, random, workspace.get());
+						// Fill workspace with sample tags after the elements the tags reference actually exist
+						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
+					}));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {

@@ -20,8 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -44,8 +44,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement

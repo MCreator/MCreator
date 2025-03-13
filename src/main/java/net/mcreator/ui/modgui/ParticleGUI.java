@@ -56,7 +56,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
-	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
 	private final JSpinner angularAcceleration = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
 
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");

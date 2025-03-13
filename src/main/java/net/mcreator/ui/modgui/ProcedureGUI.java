@@ -55,8 +55,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
