@@ -1465,7 +1465,7 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(11);
 			}
 			block.sensitiveToVibration = _true;
-			block.sneakingPreventVibration = !_true;
+			block.sneakingPreventVibration = emptyLists;
 			block.vibrationalEvents = new ArrayList<>();
 			if (!emptyLists) {
 				if (_true) {
@@ -1493,12 +1493,9 @@ public class TestWorkspaceDataProvider {
 			}
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
-				if (_true) {
-					block.restrictionBiomes.addAll(
-							biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				} else {
-					block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				}
+				block.restrictionBiomes.addAll(
+						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
