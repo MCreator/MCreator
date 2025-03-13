@@ -1468,12 +1468,9 @@ public class TestWorkspaceDataProvider {
 			block.sneakingPreventVibration = emptyLists;
 			block.vibrationalEvents = new ArrayList<>();
 			if (!emptyLists) {
-				if (_true) {
-					block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
-							.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
-				} else {
-					block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
-				}
+				block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+						.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
 			}
 			block.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
 			block.canReceiveVibrationCondition = new Procedure("condition1");
@@ -1493,9 +1490,12 @@ public class TestWorkspaceDataProvider {
 			}
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
-				block.restrictionBiomes.addAll(
-						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				if (_true) {
+					block.restrictionBiomes.addAll(
+							biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				} else {
+					block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				}
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
