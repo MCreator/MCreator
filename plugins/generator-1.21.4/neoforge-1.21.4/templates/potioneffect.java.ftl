@@ -149,7 +149,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				return false;
 			}
 			</#if>
-		}, ${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}MobEffects.${REGISTRYNAME}.get());
 	}
 	</#if>
 
@@ -158,7 +158,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		Consumable original = Items.HONEY_BOTTLE.components().get(DataComponents.CONSUMABLE);
 		if (original != null) {
 			List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
-			onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}));
+			onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${REGISTRYNAME}));
 			Consumable replacementConsumable = new Consumable(original.consumeSeconds(), original.animation(), original.sound(), original.hasConsumeParticles(), onConsumeEffects);
 			event.modify(Items.HONEY_BOTTLE, builder -> builder.set(DataComponents.CONSUMABLE, replacementConsumable));
 		}

@@ -163,7 +163,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				return false;
 			}
 			</#if>
-		}, ${JavaModName}MobEffects.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}MobEffects.${REGISTRYNAME}.get());
 	}
 	</#if>
 }

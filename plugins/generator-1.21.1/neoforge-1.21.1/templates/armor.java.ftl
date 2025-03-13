@@ -88,7 +88,7 @@ import net.minecraft.client.model.Model;
 				armorModel.young = living.isBaby();
 				return armorModel;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_HELMET.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_HELMET.get());
 		</#if>
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -108,7 +108,7 @@ import net.minecraft.client.model.Model;
 				armorModel.young = living.isBaby();
 				return armorModel;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_CHESTPLATE.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
 		</#if>
 
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -128,7 +128,7 @@ import net.minecraft.client.model.Model;
 				armorModel.young = living.isBaby();
 				return armorModel;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_LEGGINGS.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
 		</#if>
 
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
@@ -148,7 +148,7 @@ import net.minecraft.client.model.Model;
 				armorModel.young = living.isBaby();
 				return armorModel;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BOOTS.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get());
 		</#if>
 	}
 	</#if>
