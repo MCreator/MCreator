@@ -19,12 +19,12 @@
 package net.mcreator.ui.wysiwyg;
 
 import net.mcreator.element.parts.IWorkspaceDependent;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
-import net.mcreator.element.parts.gui.*;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
@@ -53,8 +53,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class WYSIWYGEditor extends JPanel {
 
@@ -399,7 +399,14 @@ public class WYSIWYGEditor extends JPanel {
 		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
-			sidebar.add("North", adds2);
+			JScrollPane scrollPane = new JScrollPane(adds2);
+			scrollPane.setOpaque(false);
+			scrollPane.getViewport().setOpaque(false);
+			scrollPane.setBorder(BorderFactory.createEmptyBorder());
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			sidebar.add("North", scrollPane);
 		} else {
 			ovst.setOpaque(false);
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));

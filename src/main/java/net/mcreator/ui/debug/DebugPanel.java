@@ -22,8 +22,8 @@ package net.mcreator.ui.debug;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VirtualMachine;
-import com.sun.jdi.event.Event;
 import com.sun.jdi.event.*;
+import com.sun.jdi.event.Event;
 import com.sun.jdi.request.StepRequest;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
@@ -143,7 +143,7 @@ public class DebugPanel extends JPanel {
 		markersScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		markersScroll.getViewport().setOpaque(false);
 
-		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
+		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.markers")));
 		markersParent.setLayout(markersLayout);
 		markersParent.add(markersScroll, "markers");
 		markersParent.add(nomarkerwrap, "no_markers");

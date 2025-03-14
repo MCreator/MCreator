@@ -28,8 +28,8 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
-import java.awt.Image;
 import java.awt.*;
+import java.awt.Image;
 
 public class ImageButton extends GUIComponent {
 

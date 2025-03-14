@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg width="20" height="20" version="1.1" viewBox="0 0 5.2917 5.2917" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
-    <path d="m0.79375 3.7042v-1.8521h1.3229" fill="none" stroke="#b2b2b2" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917" style="paint-order:normal"/>
-    <path d="m2.3813 5.0271 2.6458-1.3229-1.4552-2.9104-2.6458 1.3229z" fill="#fff" style="paint-order:normal"/>
-    <path d="m2.9104 0.52917v2.1167" fill="#fff" stroke="#b2b2b2" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917" style="mix-blend-mode:normal;paint-order:normal"/>
+    <path d="m0.79375 3.7042v-1.8521h1.3229" fill="none" stroke="#9AA7B0" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917" style="paint-order:normal"/>
+    <path d="m2.3813 5.0271 2.6458-1.3229-1.4552-2.9104-2.6458 1.3229z" fill="#231F20" style="paint-order:normal"/>
+    <path d="m2.9104 0.52917v2.1167" fill="#231F20" stroke="#9AA7B0" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52917" style="mix-blend-mode:normal;paint-order:normal"/>
 </svg>

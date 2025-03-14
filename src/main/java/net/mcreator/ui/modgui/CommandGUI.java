@@ -47,8 +47,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
