@@ -407,4 +407,5 @@ import java.util.stream.Collectors;
 	public List<String> getRepairItemsAsStringList() {
 		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
+
 }
