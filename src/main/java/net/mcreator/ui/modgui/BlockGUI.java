@@ -1071,9 +1071,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		sneakingPreventVibration.setOpaque(false);
 		sneakingPreventVibration.setSelected(true);
 
-		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
-		refreshVibrationProperties();
-
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
@@ -1296,6 +1293,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isFluidTank.setEnabled(hasInventory.isSelected());
 		fluidCapacity.setEnabled(hasInventory.isSelected());
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
+		sensitiveToVibration.setEnabled(hasInventory.isSelected());
+		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
+		sneakingPreventVibration.setEnabled(hasInventory.isSelected());
+		vibrationalEvents.setEnabled(hasInventory.isSelected());
+		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
+		onReceivedVibration.setEnabled(hasInventory.isSelected());
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1306,14 +1309,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.setEnabled(isBonemealable.isSelected());
 		bonemealSuccessCondition.setEnabled(isBonemealable.isSelected());
 		onBonemealSuccess.setEnabled(isBonemealable.isSelected());
-	}
-
-	private void refreshVibrationProperties() {
-		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
-		sneakingPreventVibration.setEnabled(sensitiveToVibration.isSelected());
-		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
-		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
-		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
 	}
 
 	private void updateTextureOptions() {
@@ -1544,7 +1539,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 		refreshBonemealProperties();
-		refreshVibrationProperties();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
