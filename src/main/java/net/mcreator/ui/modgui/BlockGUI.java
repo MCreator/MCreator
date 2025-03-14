@@ -1083,6 +1083,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.vibrational_events")));
 		vibrationPanel.add(vibrationalEvents);
 
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
 		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
 		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
 
