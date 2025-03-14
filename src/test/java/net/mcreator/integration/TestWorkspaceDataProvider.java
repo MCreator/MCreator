@@ -1465,7 +1465,6 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(11);
 			}
 			block.sensitiveToVibration = _true;
-			block.sneakingPreventVibration = emptyLists;
 			block.vibrationalEvents = new ArrayList<>();
 			if (!emptyLists) {
 				block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()

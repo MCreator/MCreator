@@ -289,34 +289,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			</#if>
 		}
 
-		@Override public boolean isValidVibration(Holder<GameEvent> holder, GameEvent.Context context) {
-			if (!holder.is(this.getListenableEvents())) {
-                return false;
-            } else {
-                Entity entity = context.sourceEntity();
-                if (entity != null) {
-                    if (entity.isSpectator()) {
-                        return false;
-                    }
-
-                    <#if data.sneakingPreventVibration>
-                    if (entity.isSteppingCarefully() && holder.is(GameEventTags.IGNORE_VIBRATIONS_SNEAKING)) {
-                        if (this.canTriggerAvoidVibration() && entity instanceof ServerPlayer) {
-                            ServerPlayer serverplayer = (ServerPlayer)entity;
-                            CriteriaTriggers.AVOID_VIBRATION.trigger(serverplayer);
-                        }
-                        return false;
-                    }
-                    </#if>
-
-                    if (entity.dampensVibrations()) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-		}
-
 		@Override public boolean canReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, GameEvent.Context context) {
 			<#if hasProcedure(data.canReceiveVibrationCondition)>
 			int vibrationX = vibrationPos.getX();

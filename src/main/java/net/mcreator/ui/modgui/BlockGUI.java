@@ -194,7 +194,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox sneakingPreventVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
 	private NumberProcedureSelector vibrationSensitivityRadius;
 	private ProcedureSelector canReceiveVibrationCondition;
@@ -1064,20 +1063,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		invpropsbottom.add(inventoryAutomationTakeCondition);
 		invpropsbottom.add(inventoryAutomationPlaceCondition);
 
-		JPanel vibrationPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel vibrationPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		vibrationPanel.setOpaque(false);
 
 		sensitiveToVibration.setOpaque(false);
-		sneakingPreventVibration.setOpaque(false);
-		sneakingPreventVibration.setSelected(true);
 
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
-
-		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sneaking_prevent_vibration"),
-				L10N.label("elementgui.block.sneaking_prevent_vibration")));
-		vibrationPanel.add(sneakingPreventVibration);
 
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
 				L10N.label("elementgui.block.vibrational_events")));
@@ -1297,7 +1290,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
 		sensitiveToVibration.setEnabled(hasInventory.isSelected());
 		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
-		sneakingPreventVibration.setEnabled(hasInventory.isSelected());
 		vibrationalEvents.setEnabled(hasInventory.isSelected());
 		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
 		onReceivedVibration.setEnabled(hasInventory.isSelected());
@@ -1532,7 +1524,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList.setEntries(block.boundingBoxes);
 
 		sensitiveToVibration.setSelected(block.sensitiveToVibration);
-		sneakingPreventVibration.setSelected(block.sneakingPreventVibration);
 		vibrationSensitivityRadius.setSelectedProcedure(block.vibrationSensitivityRadius);
 		vibrationalEvents.setListElements(block.vibrationalEvents);
 		canReceiveVibrationCondition.setSelectedProcedure(block.canReceiveVibrationCondition);
@@ -1687,7 +1678,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.jumpFactor = (double) jumpFactor.getValue();
 
 		block.sensitiveToVibration = sensitiveToVibration.isSelected();
-		block.sneakingPreventVibration = sneakingPreventVibration.isSelected();
 		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
 		block.vibrationalEvents = vibrationalEvents.getListElements();
 		block.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();

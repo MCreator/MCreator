@@ -145,7 +145,6 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean sensitiveToVibration;
-	public boolean sneakingPreventVibration;
 	public List<GameEventEntry> vibrationalEvents;
 	public NumberProcedure vibrationSensitivityRadius;
 	public Procedure canReceiveVibrationCondition;
