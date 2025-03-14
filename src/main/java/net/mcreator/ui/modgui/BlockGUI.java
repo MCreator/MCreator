@@ -1086,12 +1086,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.vibrational_events")));
 		vibrationPanel.add(vibrationalEvents);
 
-		JPanel vibrationEvents = new JPanel(new GridLayout(3, 1, 0, 2));
-		vibrationEvents.setOpaque(false);
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
 
-		vibrationEvents.add(vibrationSensitivityRadius);
-		vibrationEvents.add(canReceiveVibrationCondition);
-		vibrationEvents.add(onReceivedVibration);
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
 
 		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationPanel, vibrationEvents, 2, 2);
 		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
