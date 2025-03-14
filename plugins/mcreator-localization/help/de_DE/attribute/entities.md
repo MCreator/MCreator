@@ -1,0 +1,1 @@
+Hier ausgewählte Entitäten werden das Attribut erhalten und auf den zugehörigen Standardwert gesetzt haben, wenn sie gespawnt werden.
