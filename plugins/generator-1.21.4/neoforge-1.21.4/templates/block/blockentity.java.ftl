@@ -306,7 +306,9 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			int vibrationY = vibrationPos.getY();
 			int vibrationZ = vibrationPos.getZ();
 			BlockState blockstate = ${name}BlockEntity.this.getBlockState();
-			<@procedureOBJToCode data.onReceivedVibration/>;
+			if (entity instanceof Projectile)
+				entity = entity1;
+			<@procedureOBJToCode data.onReceivedVibration/>
 			</#if>
 		}
 
