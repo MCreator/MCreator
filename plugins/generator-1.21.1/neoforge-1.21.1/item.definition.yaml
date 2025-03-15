@@ -16,7 +16,7 @@ templates:
   - template: json/item.json.ftl
     writer: json
     condition_any:
-      - "hasJavaModel()"
+      - hasJavaModel()
       - hasNormalModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
@@ -43,8 +43,8 @@ list_templates:
       - template: json/item.json.ftl
         writer: json
         condition_any:
-          - "hasJavaModel()"
-          - "hasNormalModel()"
+          - hasJavaModel()
+          - hasNormalModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json
