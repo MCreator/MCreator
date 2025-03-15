@@ -1,4 +1,4 @@
-<#if data.hasJavaModel?? && !data.hasJavaModel()>
+<#if data.hasCustomJAVAModel?? && !data.hasCustomJAVAModel()>
 	<#assign parent = "item/generated">
 	<#assign texture = "layer0">
 <#else>

@@ -93,7 +93,7 @@ base_templates:
       - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
+    condition: hasCustomJAVAModels()
 
 sources_setup_tasks:
   - task: copy_models
