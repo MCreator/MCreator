@@ -1,1 +1,0 @@
-If this parameter is checked, Sneaking will not cause any vibration for this block.
