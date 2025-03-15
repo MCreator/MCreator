@@ -180,16 +180,16 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 	}
 
-	public boolean hasCustomJAVAModel() {
-		return decodeModelType(renderType) == Model.Type.JAVA;
-	}
-
 	public boolean hasCustomJSONModel() {
 		return decodeModelType(renderType) == Model.Type.JSON;
 	}
 
 	public boolean hasCustomOBJModel() {
 		return decodeModelType(renderType) == Model.Type.OBJ;
+	}
+
+	public boolean hasCustomJAVAModel() {
+		return decodeModelType(renderType) == Model.Type.JAVA;
 	}
 
 	public boolean hasInventory() {
@@ -279,16 +279,16 @@ import java.util.*;
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
 
-		public boolean hasCustomJAVAModel() {
-			return decodeModelType(renderType) == Model.Type.JAVA;
-		}
-
 		public boolean hasCustomJSONModel() {
 			return decodeModelType(renderType) == Model.Type.JSON;
 		}
 
 		public boolean hasCustomOBJModel() {
 			return decodeModelType(renderType) == Model.Type.OBJ;
+		}
+
+		public boolean hasCustomJAVAModel() {
+			return decodeModelType(renderType) == Model.Type.JAVA;
 		}
 	}
 
