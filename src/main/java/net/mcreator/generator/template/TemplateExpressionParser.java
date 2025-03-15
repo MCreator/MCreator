@@ -20,6 +20,7 @@ package net.mcreator.generator.template;
 
 import freemarker.template.Template;
 import net.mcreator.generator.Generator;
+import net.mcreator.util.TestUtil;
 import org.apache.commons.io.output.NullWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,6 +100,7 @@ public class TemplateExpressionParser {
 			}
 		} catch (Exception e) {
 			LOG.error("Failed to parse condition: {}", condition, e);
+			TestUtil.failIfTestingEnvironment();
 		}
 
 		return false;
@@ -130,6 +132,7 @@ public class TemplateExpressionParser {
 			return retVal.get();
 		} catch (Exception e) {
 			LOG.error("Failed to parse FTL expression: {}", expression, e);
+			TestUtil.failIfTestingEnvironment();
 			return null;
 		}
 	}
