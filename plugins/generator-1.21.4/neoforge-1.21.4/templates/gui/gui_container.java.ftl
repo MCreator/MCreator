@@ -61,7 +61,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	private BlockEntity boundBlockEntity = null;
 
 	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
-		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
+		super(${JavaModName}Menus.${REGISTRYNAME}.get(), id);
 
 		this.entity = inv.player;
 		this.world = inv.player.level();

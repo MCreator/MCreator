@@ -91,7 +91,7 @@ import net.minecraft.client.model.Model;
 				return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 				</#if>
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_HELMET.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_HELMET.get());
 		</#if>
 
 		<#if data.enableBody>
@@ -118,7 +118,7 @@ import net.minecraft.client.model.Model;
 				return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 				</#if>
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_CHESTPLATE.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
 		</#if>
 
 		<#if data.enableLeggings>
@@ -145,7 +145,7 @@ import net.minecraft.client.model.Model;
 				return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png");
 				</#if>
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_LEGGINGS.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
 		</#if>
 
 		<#if data.enableBoots>
@@ -172,7 +172,7 @@ import net.minecraft.client.model.Model;
 				return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 				</#if>
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BOOTS.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get());
 		</#if>
 	}
 
