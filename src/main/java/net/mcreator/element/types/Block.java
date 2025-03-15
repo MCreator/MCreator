@@ -227,6 +227,8 @@ import java.util.stream.Collectors;
 		this.energyMaxReceive = 200;
 		this.energyMaxExtract = 200;
 		this.fluidCapacity = 8000;
+
+		this.vibrationalEvents = new ArrayList<>();
 	}
 
 	public int renderType() {
