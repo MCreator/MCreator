@@ -817,21 +817,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updateSoundType() {
-		if (customSoundType.isSelected()) {
-			breakSound.setEnabled(true);
-			stepSound.setEnabled(true);
-			placeSound.setEnabled(true);
-			hitSound.setEnabled(true);
-			fallSound.setEnabled(true);
-			soundOnStep.setEnabled(false);
-		} else {
-			breakSound.setEnabled(false);
-			stepSound.setEnabled(false);
-			placeSound.setEnabled(false);
-			hitSound.setEnabled(false);
-			fallSound.setEnabled(false);
-			soundOnStep.setEnabled(true);
-		}
+		breakSound.setEnabled(customSoundType.isSelected());
+		stepSound.setEnabled(customSoundType.isSelected());
+		placeSound.setEnabled(customSoundType.isSelected());
+		hitSound.setEnabled(customSoundType.isSelected());
+		fallSound.setEnabled(customSoundType.isSelected());
+		soundOnStep.setEnabled(!customSoundType.isSelected());
 	}
 
 	private void refreshBonemealProperties() {
