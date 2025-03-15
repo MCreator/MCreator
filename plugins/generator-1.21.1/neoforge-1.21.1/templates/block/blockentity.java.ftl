@@ -70,10 +70,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		</#if>
 
 		<#if data.sensitiveToVibration>
-		RegistryOps<Tag> registryops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
 		if (compound.contains("listener", 10)) {
-			VibrationSystem.Data.CODEC
-					.parse(registryops, compound.getCompound("listener"))
+			VibrationSystem.Data.CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), compound.getCompound("listener"))
 					.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${data.name}: '{}'", e))
 					.ifPresent(data -> this.vibrationData = data);
 		}
@@ -96,9 +94,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		</#if>
 
 		<#if data.sensitiveToVibration>
-		RegistryOps<Tag> registryops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
-		VibrationSystem.Data.CODEC
-				.encodeStart(registryops, this.vibrationData)
+		VibrationSystem.Data.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), this.vibrationData)
 				.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to encode vibration listener for ${data.name}: '{}'", e))
 				.ifPresent(listener -> compound.put("listener", listener));
 		</#if>
@@ -257,20 +253,21 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
     }
 
 	private class VibrationUser implements VibrationSystem.User {
+
 		private final int x;
 		private final int y;
 		private final int z;
-		private final BlockPos blockPos;
+		private final PositionSource positionSource;
 
 		public VibrationUser(BlockPos blockPos) {
 			this.x = blockPos.getX();
 			this.y = blockPos.getY();
 			this.z = blockPos.getZ();
-			this.blockPos = blockPos;
+			this.positionSource = new BlockPositionSource(blockPos);
 		}
 
 		@Override public PositionSource getPositionSource() {
-			return new BlockPositionSource(this.blockPos);
+			return this.positionSource;
 		}
 
 		<#if data.vibrationalEvents?has_content>
@@ -282,7 +279,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		@Override public int getListenerRadius() {
 			<#if hasProcedure(data.vibrationSensitivityRadius)>
 				Level world = ${name}BlockEntity.this.getLevel();
-				BlockState blockstate = world.getBlockState(this.blockPos);
+				BlockState blockstate = ${name}BlockEntity.this.getBlockState();
 				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
 			<#else>
 				return ${data.vibrationSensitivityRadius.getFixedValue()};
