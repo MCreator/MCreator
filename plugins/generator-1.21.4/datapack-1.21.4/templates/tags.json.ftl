@@ -28,10 +28,8 @@
 
 <#macro tagEntry valueObject name>
     <#assign value = valueObject.getUnmappedValue()>
-    <#-- make external entries and tag entries not using the minecraft namespace optional -->
-    <#if value?starts_with("EXTERNAL:") ||
-        (value?starts_with("TAG:") && !value?starts_with("TAG:minecraft:") && value?contains(":")) ||
-        (value?starts_with("#") && !value?starts_with("#minecraft:") && value?contains(":"))>
+    <#-- make external entries and tag entries optional -->
+    <#if value?starts_with("EXTERNAL:") || value?starts_with("TAG:") || value?starts_with("#")>
 		{
           "id": "${name}",
           "required": false
