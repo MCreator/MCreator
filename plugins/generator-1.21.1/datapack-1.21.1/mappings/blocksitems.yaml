@@ -237,7 +237,7 @@ Blocks.EMERALD_BLOCK:
   - "emerald_block"
 Blocks.QUARTZ_BLOCK:
   - Blocks.QUARTZ_BLOCK
-  - "#forge:ores/quartz"
+  - "#c:ores/quartz"
 Blocks.QUARTZ_BLOCK#0:
   - Blocks.SMOOTH_QUARTZ
   - "smooth_quartz"
@@ -1120,7 +1120,7 @@ Blocks.HAY_BLOCK:
   - "hay_block"
 Blocks.SKULL:
   - Blocks.SKELETON_SKULL
-  - "#forge:heads"
+  - "#c:skulls"
 Blocks.SKULL#0:
   - Blocks.SKELETON_SKULL
   - "skeleton_skull"
@@ -1447,7 +1447,7 @@ Blocks.GLASS:
   - "glass"
 Blocks.STAINED_GLASS:
   - Blocks.WHITE_STAINED_GLASS
-  - "#forge:stained_glass"
+  - "#c:glass_blocks/cheap"
 Blocks.STAINED_GLASS#0:
   - Blocks.WHITE_STAINED_GLASS
   - "white_stained_glass"
@@ -1501,7 +1501,7 @@ Blocks.GLASS_PANE:
   - "glass_pane"
 Blocks.STAINED_GLASS_PANE:
   - Blocks.WHITE_STAINED_GLASS_PANE
-  - "#forge:stained_glass_panes"
+  - "#c:glass_panes"
 Blocks.STAINED_GLASS_PANE#0:
   - Blocks.WHITE_STAINED_GLASS_PANE
   - "white_stained_glass_pane"
@@ -3305,7 +3305,7 @@ Blocks.SNIFFER_EGG:
   - "sniffer_egg"
 Items.DYE:
   - Items.INK_SAC
-  - "#forge:dyes"
+  - "#c:dyes"
 Items.DYE#0:
   - Items.INK_SAC
   - "ink_sac"
@@ -4070,7 +4070,7 @@ Items.SPECKLED_MELON:
   - "glistering_melon_slice"
 Items.SPAWN_EGG:
   - Items.CREEPER_SPAWN_EGG
-  - "#forge:eggs"
+  - "#c:eggs"
 Items.SPAWN_EGG#50:
   - Items.CREEPER_SPAWN_EGG
   - "creeper_spawn_egg"
@@ -4244,7 +4244,7 @@ Items.DISC_FRAGMENT_5:
   - "disc_fragment_5"
 Items.SKULL:
   - Items.SKELETON_SKULL
-  - "#forge:heads"
+  - "#c:skulls"
 Items.SKULL#0:
   - Items.SKELETON_SKULL
   - "skeleton_skull"
