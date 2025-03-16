@@ -26,7 +26,7 @@
             <#return "\"item\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.toString().startsWith("TAG:")>
-        <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace("mod:", modid + ":").replace(":", "").replace("/", "") + "\"">
+        <#return "\"item\": \"minecraft:air\"">
     <#else>
         <#assign mapped = mappedBlock.toString()>
         <#if mapped.toString().contains("#")>
