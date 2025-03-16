@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 package ${package}.client.renderer.item;
+
 <#compress>
 public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final EntityModelSet entityModelSet;
