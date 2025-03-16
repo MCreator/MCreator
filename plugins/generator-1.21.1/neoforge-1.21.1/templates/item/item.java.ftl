@@ -36,7 +36,10 @@
 package ${package}.item;
 
 <#compress>
-<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)</#if> public class ${name}Item extends Item {
+<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)
+</#if>
+public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
