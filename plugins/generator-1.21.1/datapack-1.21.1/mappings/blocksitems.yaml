@@ -450,7 +450,7 @@ Blocks.PINK_PETALS:
   - "pink_petals"
 Blocks.DOUBLE_PLANT:
   - Blocks.SUNFLOWER
-  - "#minecraft:small_flowers"
+  - "#c:flowers/tall"
 Blocks.DOUBLE_PLANT#0:
   - Blocks.SUNFLOWER
   - "sunflower"
