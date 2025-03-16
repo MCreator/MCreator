@@ -388,7 +388,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
 				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.BOTH, true,
 				Dependency.fromString(
-				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab

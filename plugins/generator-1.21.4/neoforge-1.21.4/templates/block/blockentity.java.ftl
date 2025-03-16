@@ -297,15 +297,20 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			return <@procedureOBJToConditionCode data.canReceiveVibrationCondition/>;
 		}
 
-		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity entity, Entity entity1, float distance) {
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity entity, Entity projectileShooter, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
-			int vibrationX = vibrationPos.getX();
-			int vibrationY = vibrationPos.getY();
-			int vibrationZ = vibrationPos.getZ();
-			BlockState blockstate = ${name}BlockEntity.this.getBlockState();
-			if (entity instanceof Projectile)
-				entity = entity1;
-			<@procedureOBJToCode data.onReceivedVibration/>
+				<@procedureCode data.onReceivedVibration {
+					"x": "x",
+					"y": "y",
+					"z": "z",
+					"vibrationX": "vibrationPos.getX()",
+					"vibrationY": "vibrationPos.getY()",
+					"vibrationZ": "vibrationPos.getZ()",
+					"world": "world",
+					"blockstate": "${name}BlockEntity.this.getBlockState()",
+					"entity": "entity",
+					"sourceentity": "projectileShooter"
+				}/>
 			</#if>
 		}
 
