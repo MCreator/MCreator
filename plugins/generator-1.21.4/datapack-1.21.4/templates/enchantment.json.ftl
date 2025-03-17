@@ -41,7 +41,11 @@
   </#if>
   <#if data.damageModifier != 0>,
   "effects": {
-    "minecraft:damage_protection": [
+      <#if data.damageModifier gt 0>
+       "minecraft:damage_protection"
+       <#else>
+       "minecraft:damage"
+       </#if>: [
       {
         "effect": {
           "type": "minecraft:add",
