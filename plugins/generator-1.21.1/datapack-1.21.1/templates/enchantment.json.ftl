@@ -45,8 +45,7 @@
     "minecraft:damage_protection"
     <#else>
     "minecraft:damage"
-    </#if>
-    :[
+    </#if>:[
       {
         "effect": {
           "type": "minecraft:add",
