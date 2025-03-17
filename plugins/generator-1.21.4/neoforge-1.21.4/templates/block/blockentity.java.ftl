@@ -296,8 +296,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 					"vibrationY": "vibrationPos.getY()",
 					"vibrationZ": "vibrationPos.getZ()",
 					"world": "world",
-					"blockstate", "${name}BlockEntity.this.getBlockState()",
-					"entity": "context.sourceEntity()"
+					"entity": "context.sourceEntity()",
+					"blockstate": "${name}BlockEntity.this.getBlockState()"
 				}/>
 			<#else>
 				return true;
