@@ -41,14 +41,19 @@
   </#if>
   <#if data.damageModifier != 0>,
   "effects": {
-    "minecraft:damage_protection": [
+  	<#if data.damageModifier gt 0>
+    "minecraft:damage_protection"
+    <#else>
+    "minecraft:damage"
+    </#if>
+    :[
       {
         "effect": {
           "type": "minecraft:add",
           "value": {
             "type": "minecraft:linear",
-            "base": ${data.damageModifier},
-            "per_level_above_first": ${data.damageModifier}
+            "base": ${data.damageModifier?abs},
+            "per_level_above_first": ${data.damageModifier?abs}
           }
         }
       }

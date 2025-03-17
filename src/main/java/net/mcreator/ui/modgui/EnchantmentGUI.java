@@ -56,7 +56,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(4, 1, 255, 1));
 
-	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 1));
 
 	private final JCheckBox isTreasureEnchantment = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCurse = L10N.checkbox("elementgui.common.enable");
