@@ -107,7 +107,7 @@ dependencies {
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
-    implementation (group: 'com.google.code.gson', name: 'gson', version: '2.12.1') {
+    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.12.1') {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
@@ -126,14 +126,14 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.5.4'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.6.0'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.2'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.16.0' // needed by discord-rpc.jar
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.17.0' // needed by discord-rpc.jar
 
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.7.0'
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.7.1'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'no-natives'
     implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.4') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
@@ -144,7 +144,9 @@ dependencies {
     linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.11.4'
+    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '5.12.1')
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 javafx {
