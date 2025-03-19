@@ -1,26 +1,5 @@
-<!--
-  - MCreator (https://mcreator.net/)
-  - Copyright (C) 2012-2020, Pylo
-  - Copyright (C) 2020-2024, Pylo, opensource contributors
-  -
-  - This program is free software: you can redistribute it and/or modify
-  - it under the terms of the GNU General Public License as published by
-  - the Free Software Foundation, either version 3 of the License, or
-  - (at your option) any later version.
-  -
-  - This program is distributed in the hope that it will be useful,
-  - but WITHOUT ANY WARRANTY; without even the implied warranty of
-  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  - GNU General Public License for more details.
-  -
-  - You should have received a copy of the GNU General Public License
-  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
 <svg width="18" height="18" version="1.1" viewBox="0 0 4.7625 4.7625" xmlns="http://www.w3.org/2000/svg">
- <g>
-  <path d="m0.79375 3.9688 3.175-3.175" stroke="#c43b39" stroke-width=".52917"/>
-  <path d="m0.79375 0.79375 3.175 3.175" stroke="#c43b39" stroke-width=".52917"/>
-  <text x="2.3848729" y="4.2333331" fill="#ffffff" font-family="roboto" font-size="1.0583px" stroke-width=".21167" xml:space="preserve"><tspan x="2.3848729" y="4.2333331" fill="#ffffff" font-family="roboto" font-size="1.0583px" font-weight="900" stroke-width=".21167">ALL</tspan></text>
- </g>
+ <path d="m0.79375 3.9688 3.175-3.175" stroke="#c43b39" stroke-width=".52917"/>
+ <path d="m0.79375 0.79375 3.175 3.175" stroke="#c43b39" stroke-width=".52917"/>
+ <path d="m3.1941 4.2333h-0.20515l-0.053225-0.15554h-0.28524l-0.053225 0.15554h-0.19998l0.28421-0.76944h0.2284zm-0.30643-0.29661-0.094565-0.27594-0.094565 0.27594zm0.972 0.29661h-0.55499v-0.76944h0.19843v0.62061h0.35656zm0.67436 0h-0.55499v-0.76944h0.19843v0.62061h0.35656z" fill="#231F20" stroke-width=".21167" aria-label="ALL"/>
 </svg>

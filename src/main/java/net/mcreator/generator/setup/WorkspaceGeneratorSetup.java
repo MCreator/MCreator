@@ -28,6 +28,7 @@ import net.mcreator.generator.template.InlineTemplatesHandler;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -153,7 +154,8 @@ public class WorkspaceGeneratorSetup {
 					}
 				}
 			} catch (Exception e) {
-				LOG.error(file, e);
+				LOG.error("Failed to copy workspace base file", e);
+				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

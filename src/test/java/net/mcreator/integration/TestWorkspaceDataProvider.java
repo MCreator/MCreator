@@ -22,20 +22,20 @@ package net.mcreator.integration;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
-import net.mcreator.element.parts.gui.*;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.*;
+import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
-import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -62,8 +62,8 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -89,7 +89,8 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
 
-		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
+		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
+				.getSupportedModElementTypes();
 
 		// Remove METs not supported by the generator
 		retval.retainAll(supportedMETs);
@@ -160,70 +161,6 @@ public class TestWorkspaceDataProvider {
 			for (int i = 1; i <= 3; i++) {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
-			}
-		}
-
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
-			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-
-			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-
-			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:creeper");
-			workspace.getTagElements().get(tag).add("~minecraft:zombie");
-
-			tag = new TagElement(TagType.BIOMES, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:plains");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
-			}
-
-			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stronghold");
-			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
-			}
-
-			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
-			workspace.addTagElement(tag);
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampledamagetype2");
-			}
-
-			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
-			workspace.addTagElement(tag);
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
-			}
-
-			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
-			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:block_attach");
-			workspace.getTagElements().get(tag).add("~minecraft:container_open");
-
-			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
-			workspace.addTagElement(tag);
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("Examplefunction1");
-				workspace.getTagElements().get(tag).add("~Examplefunction2");
 			}
 		}
 
@@ -390,6 +327,72 @@ public class TestWorkspaceDataProvider {
 					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
 			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+		}
+	}
+
+	public static void filleWorkspaceWithSampleTags(Workspace workspace) {
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
+			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+
+			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+
+			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:creeper");
+			workspace.getTagElements().get(tag).add("~minecraft:zombie");
+
+			tag = new TagElement(TagType.BIOMES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:plains");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
+			}
+
+			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stronghold");
+			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
+			}
+
+			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
+			workspace.addTagElement(tag);
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampledamagetype2");
+			}
+
+			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
+			}
+
+			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:block_attach");
+			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+
+			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
+			workspace.addTagElement(tag);
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("ExampleFunction1");
+				workspace.getTagElements().get(tag).add("~ExampleFunction2");
+			}
 		}
 	}
 
@@ -1290,8 +1293,10 @@ public class TestWorkspaceDataProvider {
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.isCuredbyHoney = _true;
-			potionEffect.particle = emptyLists ? null : new Particle(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			potionEffect.particle = emptyLists ?
+					null :
+					new Particle(modElement.getWorkspace(),
+							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
@@ -1665,7 +1670,7 @@ public class TestWorkspaceDataProvider {
 			particle.animate = _true;
 			particle.maxAge = 12;
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
-			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT"}[valueIndex];
+			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {

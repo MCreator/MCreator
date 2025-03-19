@@ -172,8 +172,8 @@ public class TemplateGenerator {
 					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
 			} catch (Exception e) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Failed to parse hardcoded variables", e);
+				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

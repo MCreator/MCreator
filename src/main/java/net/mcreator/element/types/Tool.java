@@ -26,6 +26,7 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -40,6 +41,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
@@ -172,10 +174,7 @@ import java.util.*;
 	}
 
 	public List<String> getRepairItemsAsStringList() {
-		List<String> repairItems = new ArrayList<>();
-		for (MItemBlock repairItem : this.repairItems)
-			repairItems.add(repairItem.getUnmappedValue());
-		return repairItems;
+		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
 
 }
