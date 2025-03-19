@@ -197,13 +197,11 @@ import java.util.*;
 	}
 
 	public boolean hasBannerPatterns() {
-		return !isMusicDisc && !providedBannerPatterns.isEmpty();
+		return !providedBannerPatterns.isEmpty();
 	}
 
-	public String getItemDescription() {
-		if (isMusicDisc) {
-			return musicDiscDescription;
-		} else if (!providedBannerPatterns.isEmpty()) {
+	public String getPatternDescription() {
+		if (!providedBannerPatterns.isEmpty()) {
 			List<String> names = providedBannerPatterns.stream()
 					.map(e -> getModElement().getWorkspace().getModElementByName(e))
 					.map(me -> me != null && me.getGeneratableElement() instanceof BannerPattern bp ? bp.name : "")

@@ -577,7 +577,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscDescription.setEnabled(isDisc);
 		musicDiscLengthInTicks.setEnabled(isDisc);
 		musicDiscAnalogOutput.setEnabled(isDisc);
-		providedBannerPatterns.setEnabled(!isDisc);
 	}
 
 	private void updateFoodPanel() {

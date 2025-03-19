@@ -82,9 +82,10 @@ localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
   - key: item.@modid.@registryname.desc
-    mapto: getItemDescription()
-    condition_any:
-    - isMusicDisc
-    - hasBannerPatterns()
+    mapto: musicDiscDescription
+    condition: isMusicDisc
+  - key: item.@modid.@registryname.patterns
+    mapto: getPatternDescription()
+    condition: hasBannerPatterns()
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index

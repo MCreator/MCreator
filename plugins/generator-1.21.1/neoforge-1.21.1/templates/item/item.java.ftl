@@ -75,6 +75,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		);
 	}
 
+	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
+	public MutableComponent getDisplayName() {
+		return Component.translatable(this.getDescriptionId() + ".patterns");
+	}
+	</#if>
+
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
