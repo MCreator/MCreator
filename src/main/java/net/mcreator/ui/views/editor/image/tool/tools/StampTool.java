@@ -59,8 +59,8 @@ public class StampTool extends AbstractDrawingTool {
 				colorSelector, versionManager);
 		setLayerPanel(layerPanel);
 
-		width = new JSlidingSpinner(L10N.t("dialog.imageeditor.width"), 16, 0, 10000, 1);
-		height = new JSlidingSpinner(L10N.t("dialog.imageeditor.height"), 16, 0, 10000, 1);
+		width = new JSlidingSpinner(L10N.t("dialog.imageeditor.width"), 16, 1, 10000, 1);
+		height = new JSlidingSpinner(L10N.t("dialog.imageeditor.height"), 16, 1, 10000, 1);
 
 		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
