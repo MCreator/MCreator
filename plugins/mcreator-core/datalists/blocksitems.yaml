@@ -7567,12 +7567,6 @@
   type: item
   texture: SPECKLED_MELON
 
-- Items.SPAWN_EGG:
-  readable_name: "Any Spawn Egg"
-  type: item
-  texture: SPAWN_EGG
-  subtypes: true
-
 - Items.SPAWN_EGG#50:
   readable_name: "Creeper Spawn Egg"
   type: item

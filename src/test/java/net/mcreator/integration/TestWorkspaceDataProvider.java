@@ -1784,7 +1784,7 @@ public class TestWorkspaceDataProvider {
 								.limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
