@@ -4068,9 +4068,6 @@ Items.CAULDRON:
 Items.SPECKLED_MELON:
   - Items.GLISTERING_MELON_SLICE
   - "glistering_melon_slice"
-Items.SPAWN_EGG:
-  - Items.CREEPER_SPAWN_EGG
-  - "#c:eggs"
 Items.SPAWN_EGG#50:
   - Items.CREEPER_SPAWN_EGG
   - "creeper_spawn_egg"
