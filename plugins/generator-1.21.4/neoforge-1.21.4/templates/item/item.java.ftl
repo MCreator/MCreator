@@ -72,6 +72,9 @@ public class ${name}Item extends Item {
 				<#if data.enchantability != 0>
 				.enchantable(${data.enchantability})
 				</#if>
+				<#if data.stayInGridWhenCrafting && (!data.recipeRemainder?? || data.recipeRemainder.isEmpty()) && data.damageCount != 0>
+				.setNoCombineRepair()
+				</#if>
 		);
 	}
 
@@ -95,20 +98,10 @@ public class ${name}Item extends Item {
 				}
 				return retval;
 			}
-
-			@Override public boolean isCombineRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.damageCount != 0>
-			@Override public boolean isCombineRepairable(ItemStack itemstack) {
-				return false;
-			}
-			</#if>
 		</#if>
 	</#if>
 
