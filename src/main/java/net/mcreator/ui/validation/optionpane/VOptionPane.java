@@ -92,6 +92,11 @@ public class VOptionPane {
 
 		});
 
+		return getResult(frame, title, icon, ok, cancel, inp, textField);
+	}
+
+	private static @Nullable String getResult(Window frame, String title, ImageIcon icon, String ok, String cancel,
+			JPanel inp, VTextField textField) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
 		if (option == 0
@@ -101,6 +106,7 @@ public class VOptionPane {
 			JOptionPane.showMessageDialog(frame,
 					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
 					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
+			return getResult(frame, title, icon, ok, cancel, inp, textField);
 		}
 
 		return null;
