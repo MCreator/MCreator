@@ -1216,8 +1216,8 @@ public class TestWorkspaceDataProvider {
 			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
-				item.providedBannerPatterns.add("ExampleBannerPattern1");
-				item.providedBannerPatterns.add("ExampleBannerPattern2");
+				item.providedBannerPatterns.add("Examplebannerpattern1");
+				item.providedBannerPatterns.add("Examplebannerpattern2");
 			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
@@ -2401,22 +2401,6 @@ public class TestWorkspaceDataProvider {
 				lootTable.pools = Collections.emptyList();
 
 				addGeneratableElementAndAssert(workspace, lootTable);
-			}
-		}
-
-		// add sample banner (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BANNERPATTERN)
-				!= GeneratorStats.CoverageStatus.NONE) {
-			for (int i = 1; i <= 2; i++) {
-				ModElement me = new ModElement(workspace, "ExampleBannerPattern" + i, ModElementType.BANNERPATTERN);
-
-				BannerPattern bannerPattern = new BannerPattern(me);
-				bannerPattern.texture = new TextureHolder(workspace, "other0");
-				bannerPattern.shieldTexture = new TextureHolder(workspace, "other0");
-				bannerPattern.name = me.getName();
-				bannerPattern.requireItem = true;
-
-				addGeneratableElementAndAssert(workspace, bannerPattern);
 			}
 		}
 	}
