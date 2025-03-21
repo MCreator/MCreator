@@ -42,7 +42,7 @@ import ${package}.${JavaModName};
 <#if hasProcedure(data.onTick)>
 @EventBusSubscriber
 </#if>
-public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>, ${JavaModName}Menus.${JavaModName}MenuAccessor {
 
 	public final static HashMap<String, Object> guistate = new HashMap<>();
 
@@ -54,6 +54,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	private IItemHandler internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
+	private final HashMap<String, String> textFieldsContent = new HashMap<>();
 
 	private boolean bound = false;
 	private Supplier<Boolean> boundItemMatcher = null;
@@ -295,6 +296,14 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	public Map<Integer, Slot> get() {
 		return customSlots;
 	}
+
+	public HashMap<String, String> getTextFieldsContent() {
+        return this.textFieldsContent;
+    }
+
+    public void setTextInTextField(String textFieldName, String content) {
+        this.textFieldsContent.put(textFieldName, content);
+    }
 
 	<#if hasProcedure(data.onTick)>
 		@SubscribeEvent public static void onPlayerTick(PlayerTickEvent.Post event) {

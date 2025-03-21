@@ -201,27 +201,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.init();
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
-			<#if component.placeholder?has_content>
-			{
-				@Override public void insertText(String text) {
-					super.insertText(text);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-
-				@Override public void moveCursorTo(int pos, boolean flag) {
-					super.moveCursorTo(pos, flag);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-			}
-			</#if>;
+			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
+                PacketDistributor.sendToServer(new ${name}TextFieldContentMessage("${component.getName()}", content));
+                if (entity.containerMenu instanceof ${name}Menu menu) {
+                    menu.setTextInTextField("${component.getName()}", content);
+                }
+            }, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
