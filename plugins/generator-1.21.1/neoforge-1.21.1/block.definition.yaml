@@ -438,3 +438,10 @@ tags:
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+
+  - tag: GAME_EVENTS:minecraft:@registryname_can_listen
+    condition:
+      - hasInventory
+      - sensitiveToVibration
+      - "${data.vibrationalEvents?has_content}"
+    entryprovider: data.getVibrationalEvents()
