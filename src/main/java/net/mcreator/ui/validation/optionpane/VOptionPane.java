@@ -100,10 +100,10 @@ public class VOptionPane {
 
 		});
 
-		return getResult(frame, title, icon, ok, cancel, inp, textField, failToReopen);
+		return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, failToReopen);
 	}
 
-	private static @Nullable String getResult(Window frame, String title, ImageIcon icon, String ok, String cancel,
+	private static @Nullable String showSwingOriginalInputDialog(Window frame, String title, ImageIcon icon, String ok, String cancel,
 			JPanel inp, VTextField textField, boolean failToReopen) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
@@ -115,7 +115,7 @@ public class VOptionPane {
 					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
 					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
 			if (failToReopen)
-				return getResult(frame, title, icon, ok, cancel, inp, textField, true);
+				return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, true);
 		}
 
 		return null;
