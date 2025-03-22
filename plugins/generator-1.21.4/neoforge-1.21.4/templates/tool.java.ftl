@@ -95,7 +95,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
 	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
-		event.modify(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
 	}
 	</#if>
 

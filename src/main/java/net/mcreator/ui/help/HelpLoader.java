@@ -109,6 +109,8 @@ public class HelpLoader {
 								dataModel.put("data", meHelpContext.getModElementFromGUI());
 								dataModel.put("registryname",
 										meHelpContext.getModElementFromGUI().getModElement().getRegistryName());
+								dataModel.put("REGISTRYNAME",
+										meHelpContext.getModElementFromGUI().getModElement().getRegistryNameUpper());
 								dataModel.put("name", meHelpContext.getModElementFromGUI().getModElement().getName());
 								dataModel.put("elementtype",
 										meHelpContext.getModElementFromGUI().getModElement().getType()

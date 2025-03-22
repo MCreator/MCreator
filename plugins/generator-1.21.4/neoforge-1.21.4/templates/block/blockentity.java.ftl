@@ -41,7 +41,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
-		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
+		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
 
 	@Override public void loadAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
