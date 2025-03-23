@@ -107,15 +107,16 @@ public class VOptionPane {
 			JPanel inp, VTextField textField, boolean failToReopen) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
-		if (option == 0
-				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			return textField.getText();
-		} else if (option == 0) { // user confirmed, but the validation returned error
-			JOptionPane.showMessageDialog(frame,
-					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
-					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
-			if (failToReopen)
-				return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, true);
+		if (option == 0){
+			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR){
+				return textField.getText();
+			} else { // user confirmed, but the validation returned error
+				JOptionPane.showMessageDialog(frame,
+						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
+				if (failToReopen)
+					return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, true);
+			}
 		}
 
 		return null;
