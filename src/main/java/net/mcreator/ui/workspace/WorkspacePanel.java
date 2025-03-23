@@ -1027,7 +1027,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
-						mu.getName(), breadcrumb.getInScrollPane(), null);
+						mu.getName(), breadcrumb.getInScrollPane(), null, true);
 				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 

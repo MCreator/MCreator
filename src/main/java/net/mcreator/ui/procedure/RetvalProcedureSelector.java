@@ -157,7 +157,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
-						breadcrumb.getInScrollPane(), null);
+						breadcrumb.getInScrollPane(), null, true);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
