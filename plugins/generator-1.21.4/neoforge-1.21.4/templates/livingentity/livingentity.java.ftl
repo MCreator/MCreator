@@ -779,17 +779,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.yBodyRot = entity.getYRot();
 				this.yHeadRot = entity.getYRot();
 
-				if (entity instanceof LivingEntity passenger) {
+				if (entity instanceof ServerPlayer passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
 
 					<#if data.canControlForward>
-						float forward = passenger.zza;
+						float forward = passenger.getLastClientInput().forward() == passenger.getLastClientInput().backward() ? 0 : (passenger.getLastClientInput().forward() ? 1 : -1);
 					<#else>
 						float forward = 0;
 					</#if>
 
 					<#if data.canControlStrafe>
-						float strafe = passenger.xxa;
+						float strafe = passenger.getLastClientInput().left() == passenger.getLastClientInput().right() ? 0 : (passenger.getLastClientInput().left() ? 1 : -1);
 					<#else>
 						float strafe = 0;
 					</#if>

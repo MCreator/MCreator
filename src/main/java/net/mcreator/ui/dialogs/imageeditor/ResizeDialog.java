@@ -42,8 +42,8 @@ public class ResizeDialog extends MCreatorDialog {
 
 		JPanel constraints = new JPanel(new GridLayout(4, 2, 5, 5));
 
-		JSpinner width = new JSpinner(new SpinnerNumberModel(layer.getWidth(), 0, 10000, 1));
-		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 0, 10000, 1));
+		JSpinner width = new JSpinner(new SpinnerNumberModel(layer.getWidth(), 1, 10000, 1));
+		JSpinner height = new JSpinner(new SpinnerNumberModel(layer.getHeight(), 1, 10000, 1));
 		JCheckBox type = new JCheckBox();
 		JCheckBox affectCanvas = new JCheckBox();
 
