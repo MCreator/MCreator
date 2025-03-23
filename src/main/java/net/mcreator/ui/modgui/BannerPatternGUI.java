@@ -70,8 +70,12 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		shieldTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		shieldTexture.setOpaque(false);
 
-		texturesPanel.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.banner_pattern.texture")));
-		texturesPanel.add(ComponentUtils.squareAndBorder(shieldTexture, L10N.t("elementgui.banner_pattern.shield_texture")));
+		texturesPanel.add(ComponentUtils.squareAndBorder(
+				HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/texture"), texture),
+				L10N.t("elementgui.banner_pattern.texture")));
+		texturesPanel.add(ComponentUtils.squareAndBorder(
+				HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/shield_texture"), shieldTexture),
+				L10N.t("elementgui.banner_pattern.shield_texture")));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/name"),
 				L10N.label("elementgui.banner_pattern.name")));
