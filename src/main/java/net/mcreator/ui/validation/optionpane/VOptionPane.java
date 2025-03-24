@@ -111,6 +111,8 @@ public class VOptionPane {
 			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
+				//warning sound
+				textField.getToolkit().beep();
 				JOptionPane.showMessageDialog(frame,
 						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
 						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);

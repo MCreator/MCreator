@@ -101,6 +101,7 @@ public class NewVariableDialog {
 					return element;
 				}
 			} else {
+				textField.getToolkit().beep();
 				return getVariableElement(mcreator, showScope, inp, textField, type, scope);
 			}
 		}
