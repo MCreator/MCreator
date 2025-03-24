@@ -51,7 +51,7 @@ public class VOptionPane {
 			OptionPaneValidator validator, String ok, String cancel, String defaultValue,
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
 		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, optionalNorthComponent,
-				optionalSouthComponent, false);
+				optionalSouthComponent, true);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
@@ -103,12 +103,12 @@ public class VOptionPane {
 		return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, failToReopen);
 	}
 
-	private static @Nullable String showSwingOriginalInputDialog(Window frame, String title, ImageIcon icon, String ok, String cancel,
-			JPanel inp, VTextField textField, boolean failToReopen) {
+	private static @Nullable String showSwingOriginalInputDialog(Window frame, String title, ImageIcon icon, String ok,
+			String cancel, JPanel inp, VTextField textField, boolean failToReopen) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
-		if (option == 0){
-			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR){
+		if (option == 0) {
+			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
 				JOptionPane.showMessageDialog(frame,
