@@ -239,7 +239,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
-						breadcrumb.getInScrollPane(), null, true);
+						breadcrumb.getInScrollPane(), null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
