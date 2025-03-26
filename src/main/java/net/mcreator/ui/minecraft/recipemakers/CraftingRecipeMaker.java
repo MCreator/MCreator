@@ -45,10 +45,6 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 	public CraftingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		super(UIRES.get("recipe.crafting").getImage());
 
-		JLabel cb = new JLabel();
-		cb.setBackground(new Color(139, 139, 139));
-		cb.setHorizontalAlignment(SwingConstants.CENTER);
-
 		MouseAdapter cloneAdapter = new MouseAdapter() {
 			private static final int buttonsDownMask =
 					MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
@@ -77,9 +73,7 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 
 		outputItem = new MCItemHolder(mcreator, items);
 		outputItem.setMargin(new Insets(0, 0, 0, 0));
-		outputItem.setBounds(212, 60, 28, 28);
-
-		cb.setBounds(205, 53, 40, 40);
+		outputItem.setBounds(210, 58, 28, 28);
 
 		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 		sp.setBounds(210, 109, 42, 17);
@@ -99,7 +93,6 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		shapeless.setBounds(156, 97, 23, 19);
 
 		imagePanel.add(shapeless);
-		imagePanel.add(cb);
 
 		setPreferredSize(new Dimension(300, 145));
 	}
