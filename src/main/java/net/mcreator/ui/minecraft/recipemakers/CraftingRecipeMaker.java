@@ -19,12 +19,9 @@
 package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
@@ -32,10 +29,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
-public class CraftingRecipeMaker extends JPanel {
+public class CraftingRecipeMaker extends AbstractRecipeMaker {
 
 	public final JSpinner sp;
 	public final MCItemHolder[] recipeSlots = new MCItemHolder[9];
@@ -43,14 +38,12 @@ public class CraftingRecipeMaker extends JPanel {
 
 	private final JLabel shapeless = new JLabel(UIRES.get("recipe.shapeless"));
 
-	private final JButton export = new JButton(UIRES.get("18px.export"));
+	private final JLabel drop = new JLabel("1");
 
 	private MItemBlock lastItemBlock = null;
 
 	public CraftingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.crafting").getImage());
-		ip.fitToImage();
-		ip.setLayout(null);
+		super(UIRES.get("recipe.crafting").getImage());
 
 		JLabel cb = new JLabel();
 		cb.setBackground(new Color(139, 139, 139));
@@ -90,60 +83,24 @@ public class CraftingRecipeMaker extends JPanel {
 
 		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 		sp.setBounds(210, 109, 42, 17);
-		ip.add(sp);
-
-		JLabel drop = new JLabel("1");
-
-		export.setContentAreaFilled(false);
-		export.setMargin(new Insets(0, 0, 0, 0));
-		export.setBounds(260, 13, 24, 24);
-		export.setFocusPainted(false);
-		export.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ip.add(export);
-		export.addActionListener(event -> {
-			export.setVisible(false);
-			for (int i = 0; i < 9; i++) {
-				recipeSlots[i].setValidationShownFlag(false);
-			}
-			outputItem.setValidationShownFlag(false);
-			sp.setVisible(false);
-			drop.setText(sp.getValue().toString());
-			drop.setVisible(true);
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			BufferedImage im = new BufferedImage(ip.getWidth(), ip.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			ip.paint(im.getGraphics());
-			File fl = FileDialogs.getSaveDialog(null, new String[] { ".png" });
-			if (fl != null)
-				FileIO.writeImageToPNGFile(im, fl);
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			export.setVisible(true);
-			drop.setVisible(false);
-			for (int i = 0; i < 9; i++) {
-				recipeSlots[i].setValidationShownFlag(true);
-			}
-			outputItem.setValidationShownFlag(true);
-			sp.setVisible(true);
-
-		});
+		imagePanel.add(sp);
 
 		drop.setBounds(212, 109, 38, 17);
 		drop.setVisible(false);
 		drop.setForeground(Color.white);
-		ip.add(ComponentUtils.deriveFont(drop, 16));
+		imagePanel.add(ComponentUtils.deriveFont(drop, 16));
 
 		for (int i = 0; i < 9; i++) {
-			ip.add(recipeSlots[i]);
+			imagePanel.add(recipeSlots[i]);
 		}
-
-		ip.add(outputItem);
+		imagePanel.add(outputItem);
 
 		shapeless.setVisible(false);
 		shapeless.setBounds(156, 97, 23, 19);
 
-		ip.add(shapeless);
-		ip.add(cb);
+		imagePanel.add(shapeless);
+		imagePanel.add(cb);
 
-		add(ip);
 		setPreferredSize(new Dimension(300, 145));
 	}
 
@@ -167,7 +124,15 @@ public class CraftingRecipeMaker extends JPanel {
 		outputItem.setEnabled(enabled);
 		sp.setEnabled(enabled);
 		shapeless.setEnabled(enabled);
-		export.setEnabled(enabled);
 	}
 
+	@Override protected void setupImageExport(boolean exportedYet) {
+		for (int i = 0; i < 9; i++) {
+			recipeSlots[i].setValidationShownFlag(exportedYet);
+		}
+		outputItem.setValidationShownFlag(exportedYet);
+		sp.setVisible(exportedYet);
+		drop.setText(sp.getValue().toString());
+		drop.setVisible(!exportedYet);
+	}
 }
