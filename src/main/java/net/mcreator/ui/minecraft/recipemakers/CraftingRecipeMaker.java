@@ -38,16 +38,8 @@ import java.io.File;
 public class CraftingRecipeMaker extends JPanel {
 
 	public final JSpinner sp;
-	public final MCItemHolder cb1;
-	public final MCItemHolder cb2;
-	public final MCItemHolder cb3;
-	public final MCItemHolder cb4;
-	public final MCItemHolder cb5;
-	public final MCItemHolder cb6;
-	public final MCItemHolder cb7;
-	public final MCItemHolder cb8;
-	public final MCItemHolder cb9;
-	public final MCItemHolder cb10;
+	public final MCItemHolder[] recipeSlots = new MCItemHolder[9];
+	public final MCItemHolder outputItem;
 
 	private final JLabel shapeless = new JLabel(UIRES.get("recipe.shapeless"));
 
@@ -63,16 +55,6 @@ public class CraftingRecipeMaker extends JPanel {
 		JLabel cb = new JLabel();
 		cb.setBackground(new Color(139, 139, 139));
 		cb.setHorizontalAlignment(SwingConstants.CENTER);
-
-		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb3 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb4 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb5 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb6 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb7 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb8 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb9 = new MCItemHolder(mcreator, itemsWithTags, true);
 
 		MouseAdapter cloneAdapter = new MouseAdapter() {
 			private static final int buttonsDownMask =
@@ -92,40 +74,17 @@ public class CraftingRecipeMaker extends JPanel {
 				}
 			}
 		};
-		cb1.addMouseListener(cloneAdapter);
-		cb2.addMouseListener(cloneAdapter);
-		cb3.addMouseListener(cloneAdapter);
-		cb4.addMouseListener(cloneAdapter);
-		cb5.addMouseListener(cloneAdapter);
-		cb6.addMouseListener(cloneAdapter);
-		cb7.addMouseListener(cloneAdapter);
-		cb8.addMouseListener(cloneAdapter);
-		cb9.addMouseListener(cloneAdapter);
 
-		cb10 = new MCItemHolder(mcreator, items);
+		for (int i = 0; i < 9; i++) {
+			recipeSlots[i] = new MCItemHolder(mcreator, itemsWithTags, true);
+			recipeSlots[i].addMouseListener(cloneAdapter);
+			recipeSlots[i].setMargin(new Insets(0, 0, 0, 0));
+			recipeSlots[i].setBounds(51 + 31 * (i % 3), 29 + 31 * (i / 3), 28, 28);
+		}
 
-		cb1.setMargin(new Insets(0, 0, 0, 0));
-		cb2.setMargin(new Insets(0, 0, 0, 0));
-		cb3.setMargin(new Insets(0, 0, 0, 0));
-		cb4.setMargin(new Insets(0, 0, 0, 0));
-		cb5.setMargin(new Insets(0, 0, 0, 0));
-		cb6.setMargin(new Insets(0, 0, 0, 0));
-		cb7.setMargin(new Insets(0, 0, 0, 0));
-		cb8.setMargin(new Insets(0, 0, 0, 0));
-		cb9.setMargin(new Insets(0, 0, 0, 0));
-
-		cb10.setMargin(new Insets(0, 0, 0, 0));
-
-		cb1.setBounds(51, 29, 28, 28);
-		cb2.setBounds(51, 60, 28, 28);
-		cb3.setBounds(51, 90, 28, 28);
-		cb4.setBounds(82, 29, 28, 28);
-		cb5.setBounds(82, 60, 28, 28);
-		cb6.setBounds(82, 90, 28, 28);
-		cb7.setBounds(112, 29, 28, 28);
-		cb8.setBounds(112, 60, 28, 28);
-		cb9.setBounds(112, 90, 28, 28);
-		cb10.setBounds(212, 60, 28, 28);
+		outputItem = new MCItemHolder(mcreator, items);
+		outputItem.setMargin(new Insets(0, 0, 0, 0));
+		outputItem.setBounds(212, 60, 28, 28);
 
 		cb.setBounds(205, 53, 40, 40);
 
@@ -143,16 +102,10 @@ public class CraftingRecipeMaker extends JPanel {
 		ip.add(export);
 		export.addActionListener(event -> {
 			export.setVisible(false);
-			cb1.setValidationShownFlag(false);
-			cb2.setValidationShownFlag(false);
-			cb3.setValidationShownFlag(false);
-			cb4.setValidationShownFlag(false);
-			cb5.setValidationShownFlag(false);
-			cb6.setValidationShownFlag(false);
-			cb7.setValidationShownFlag(false);
-			cb8.setValidationShownFlag(false);
-			cb9.setValidationShownFlag(false);
-			cb10.setValidationShownFlag(false);
+			for (int i = 0; i < 9; i++) {
+				recipeSlots[i].setValidationShownFlag(false);
+			}
+			outputItem.setValidationShownFlag(false);
 			sp.setVisible(false);
 			drop.setText(sp.getValue().toString());
 			drop.setVisible(true);
@@ -165,16 +118,10 @@ public class CraftingRecipeMaker extends JPanel {
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			export.setVisible(true);
 			drop.setVisible(false);
-			cb1.setValidationShownFlag(true);
-			cb2.setValidationShownFlag(true);
-			cb3.setValidationShownFlag(true);
-			cb4.setValidationShownFlag(true);
-			cb5.setValidationShownFlag(true);
-			cb6.setValidationShownFlag(true);
-			cb7.setValidationShownFlag(true);
-			cb8.setValidationShownFlag(true);
-			cb9.setValidationShownFlag(true);
-			cb10.setValidationShownFlag(true);
+			for (int i = 0; i < 9; i++) {
+				recipeSlots[i].setValidationShownFlag(true);
+			}
+			outputItem.setValidationShownFlag(true);
 			sp.setVisible(true);
 
 		});
@@ -184,17 +131,11 @@ public class CraftingRecipeMaker extends JPanel {
 		drop.setForeground(Color.white);
 		ip.add(ComponentUtils.deriveFont(drop, 16));
 
-		ip.add(cb1);
-		ip.add(cb2);
-		ip.add(cb3);
-		ip.add(cb4);
-		ip.add(cb5);
-		ip.add(cb6);
-		ip.add(cb7);
-		ip.add(cb8);
-		ip.add(cb9);
+		for (int i = 0; i < 9; i++) {
+			ip.add(recipeSlots[i]);
+		}
 
-		ip.add(cb10);
+		ip.add(outputItem);
 
 		shapeless.setVisible(false);
 		shapeless.setBounds(156, 97, 23, 19);
@@ -210,18 +151,20 @@ public class CraftingRecipeMaker extends JPanel {
 		this.shapeless.setVisible(shapeless);
 	}
 
+	public boolean hasInputItems() {
+		for (int i = 0; i < 9; i++) {
+			if (recipeSlots[i].containsItem())
+				return true;
+		}
+		return false;
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		cb1.setEnabled(enabled);
-		cb2.setEnabled(enabled);
-		cb3.setEnabled(enabled);
-		cb4.setEnabled(enabled);
-		cb5.setEnabled(enabled);
-		cb6.setEnabled(enabled);
-		cb7.setEnabled(enabled);
-		cb8.setEnabled(enabled);
-		cb9.setEnabled(enabled);
-		cb10.setEnabled(enabled);
+		for (int i = 0; i < 9; i++) {
+			recipeSlots[i].setEnabled(enabled);
+		}
+		outputItem.setEnabled(enabled);
 		sp.setEnabled(enabled);
 		shapeless.setEnabled(enabled);
 		export.setEnabled(enabled);
