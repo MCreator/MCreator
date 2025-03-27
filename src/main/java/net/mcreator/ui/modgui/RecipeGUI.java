@@ -264,13 +264,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if ("Crafting".equals(recipeType.getSelectedItem())) {
-			if (!craftingRecipeMaker.cb10.containsItem()) {
+			if (!craftingRecipeMaker.outputItem.containsItem()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
-			} else if (!(craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem()
-					|| craftingRecipeMaker.cb3.containsItem() || craftingRecipeMaker.cb4.containsItem()
-					|| craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem()
-					|| craftingRecipeMaker.cb7.containsItem() || craftingRecipeMaker.cb8.containsItem()
-					|| craftingRecipeMaker.cb9.containsItem())) {
+			} else if (!craftingRecipeMaker.hasInputItems()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
 			}
 		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
@@ -331,16 +327,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
-			craftingRecipeMaker.cb1.setBlock(recipe.recipeSlots[0]);
-			craftingRecipeMaker.cb2.setBlock(recipe.recipeSlots[3]);
-			craftingRecipeMaker.cb3.setBlock(recipe.recipeSlots[6]);
-			craftingRecipeMaker.cb4.setBlock(recipe.recipeSlots[1]);
-			craftingRecipeMaker.cb5.setBlock(recipe.recipeSlots[4]);
-			craftingRecipeMaker.cb6.setBlock(recipe.recipeSlots[7]);
-			craftingRecipeMaker.cb7.setBlock(recipe.recipeSlots[2]);
-			craftingRecipeMaker.cb8.setBlock(recipe.recipeSlots[5]);
-			craftingRecipeMaker.cb9.setBlock(recipe.recipeSlots[8]);
-			craftingRecipeMaker.cb10.setBlock(recipe.recipeReturnStack);
+			for (int i = 0; i < 9; i++) {
+				craftingRecipeMaker.recipeSlots[i].setBlock(recipe.recipeSlots[i]);
+			}
+			craftingRecipeMaker.outputItem.setBlock(recipe.recipeReturnStack);
 			craftingRecipeMaker.sp.setValue(recipe.recipeRetstackSize);
 			craftingRecipeMaker.setShapeless(recipeShapeless.isSelected());
 		}
@@ -394,18 +384,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
-			recipeSlots[0] = craftingRecipeMaker.cb1.getBlock();
-			recipeSlots[3] = craftingRecipeMaker.cb2.getBlock();
-			recipeSlots[6] = craftingRecipeMaker.cb3.getBlock();
-			recipeSlots[1] = craftingRecipeMaker.cb4.getBlock();
-			recipeSlots[4] = craftingRecipeMaker.cb5.getBlock();
-			recipeSlots[7] = craftingRecipeMaker.cb6.getBlock();
-			recipeSlots[2] = craftingRecipeMaker.cb7.getBlock();
-			recipeSlots[5] = craftingRecipeMaker.cb8.getBlock();
-			recipeSlots[8] = craftingRecipeMaker.cb9.getBlock();
+			for (int i = 0; i < 9; i++) {
+				recipeSlots[i] = craftingRecipeMaker.recipeSlots[i].getBlock();
+			}
 			recipe.recipeRetstackSize = (int) craftingRecipeMaker.sp.getValue();
 			recipe.recipeShapeless = recipeShapeless.isSelected();
-			recipe.recipeReturnStack = craftingRecipeMaker.cb10.getBlock();
+			recipe.recipeReturnStack = craftingRecipeMaker.outputItem.getBlock();
 			recipe.recipeSlots = recipeSlots;
 		}
 		case "Smelting" -> {

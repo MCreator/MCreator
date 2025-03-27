@@ -19,75 +19,30 @@
 package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
-public class SmeltingRecipeMaker extends JPanel {
+public class SmeltingRecipeMaker extends AbstractRecipeMaker {
 
 	public final MCItemHolder cb1;
 	public final MCItemHolder cb2;
 
-	private final JButton export = new JButton(UIRES.get("18px.export"));
-
 	public SmeltingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
-		ImagePanel ip = new ImagePanel(UIRES.get("recipe.furnace").getImage());
-
-		ip.fitToImage();
-		ip.setLayout(null);
+		super(UIRES.get("recipe.furnace").getImage());
 
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb2 = new MCItemHolder(mcreator, items);
 
-		JLabel drop = new JLabel("1");
-
-		export.setContentAreaFilled(false);
-		export.setMargin(new Insets(0, 0, 0, 0));
-		export.setBounds(260, 13, 24, 24);
-		export.setFocusPainted(false);
-		export.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ip.add(export);
-		export.addActionListener(event -> {
-			export.setVisible(false);
-			cb1.setValidationShownFlag(false);
-			cb2.setValidationShownFlag(false);
-			drop.setVisible(true);
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			BufferedImage im = new BufferedImage(ip.getWidth(), ip.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			ip.paint(im.getGraphics());
-			File fi = FileDialogs.getSaveDialog(null, new String[] { ".png" });
-			if (fi != null)
-				FileIO.writeImageToPNGFile(im, fi);
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			export.setVisible(true);
-			cb1.setValidationShownFlag(true);
-			cb2.setValidationShownFlag(true);
-			drop.setVisible(false);
-
-		});
-
-		drop.setBounds(203, 109, 38, 17);
-		drop.setVisible(false);
-		drop.setForeground(Color.white);
-		ip.add(ComponentUtils.deriveFont(drop, 16));
-
 		cb1.setBounds(97, 30, 28, 28);
 		cb2.setBounds(200, 61, 28, 28);
 
-		ip.add(cb1);
-		ip.add(cb2);
+		imagePanel.add(cb1);
+		imagePanel.add(cb2);
 
-		add(ip);
 		setPreferredSize(new Dimension(306, 145));
 	}
 
@@ -103,6 +58,10 @@ public class SmeltingRecipeMaker extends JPanel {
 		super.setEnabled(enabled);
 		cb1.setEnabled(enabled);
 		cb2.setEnabled(enabled);
-		export.setEnabled(enabled);
+	}
+
+	@Override protected void setupImageExport(boolean exportedYet) {
+		cb1.setValidationShownFlag(exportedYet);
+		cb2.setValidationShownFlag(exportedYet);
 	}
 }
