@@ -29,6 +29,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * Abstract class for recipe makers used in the Recipe element GUI. This class handles the background panel and the
+ * export button.
+ */
 public abstract class AbstractRecipeMaker extends JPanel {
 
 	protected final JButton export = new JButton(UIRES.get("18px.export"));
@@ -69,5 +73,9 @@ public abstract class AbstractRecipeMaker extends JPanel {
 		export.setEnabled(enabled);
 	}
 
+	/**
+	 * This method is called before and after the recipe is exported as a .png file.
+	 * @param exportedYet This parameter is false before the image is generated, true after.
+	 */
 	protected abstract void setupImageExport(boolean exportedYet);
 }
