@@ -63,10 +63,6 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		villagerTradeProfessions.reloadDataLists();
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
 		villagerTradeProfessions.setEntries(villagerTrade.tradeEntries);
 	}

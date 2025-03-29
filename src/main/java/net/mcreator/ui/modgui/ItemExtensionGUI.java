@@ -147,11 +147,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		parameters.add(new JEmptyBox(10, 10));
 		parameters.add(dispenserBehaviourPanel);
 
-		addPage(PanelUtils.totalCenterInPanel(parameters));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(pageGroup);
+		addPage(PanelUtils.totalCenterInPanel(parameters)).validate(pageGroup);
 	}
 
 	@Override public void reloadDataLists() {

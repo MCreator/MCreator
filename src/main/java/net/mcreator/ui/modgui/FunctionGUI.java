@@ -128,11 +128,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel),
 				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"), sp, 10, 10), 15, 15));
 
-		addPage(pane3);
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
+		addPage(pane3).validate(name);
 	}
 
 	@Override public void openInEditingMode(Function function) {
