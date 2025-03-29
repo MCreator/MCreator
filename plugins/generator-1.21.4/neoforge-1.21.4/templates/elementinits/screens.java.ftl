@@ -80,6 +80,11 @@ package ${package}.init;
             		setSuggestion(null);
             }
 
+            @Override public void setValue(String newText) {
+                super.setValue(newText);
+                listener.accept(this.getValue());
+            }
+
         };
     }
     </#if>

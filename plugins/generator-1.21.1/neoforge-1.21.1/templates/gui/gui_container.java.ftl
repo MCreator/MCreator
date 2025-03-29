@@ -44,7 +44,7 @@ import ${package}.${JavaModName};
 </#if>
 public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>, ${JavaModName}Menus.${JavaModName}MenuAccessor {
 
-	public final static HashMap<String, Object> guistate = new HashMap<>();
+	public final HashMap<String, Object> guistate = new HashMap<>();
 
 	public final Level world;
 	public final Player entity;
@@ -297,12 +297,20 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		return customSlots;
 	}
 
-	public HashMap<String, String> getTextFieldsContent() {
-        return this.textFieldsContent;
+	public String getTextFieldValue(String name) {
+    	if (world.isClientSide) {
+    	    return guistate.containsKey("text:" + name) ? ((EditBox)guistate.get("text:" + name)).getValue() : "";
+    	} else {
+    	    return (String)guistate.getOrDefault("text:" + name, "");
+    	}
     }
 
-    public void setTextInTextField(String textFieldName, String content) {
-        this.textFieldsContent.put(textFieldName, content);
+    public boolean getCheckBoxValue(String name) {
+        if (world.isClientSide) {
+            return guistate.containsKey("checkbox:" + name) ? ((Checkbox)guistate.get("checkbox:" + name)).selected() : false;
+        } else {
+            return (boolean)guistate.getOrDefault("checkbox:" + name, false);
+        }
     }
 
 	<#if hasProcedure(data.onTick)>

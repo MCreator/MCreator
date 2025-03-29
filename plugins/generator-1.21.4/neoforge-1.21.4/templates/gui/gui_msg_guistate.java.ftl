@@ -33,28 +33,35 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}TextFieldContentMessage(String name, String content) implements CustomPacketPayload {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}GuistateUpdateMessage(int elementType, String name, String content) implements CustomPacketPayload {
 
-	public static final Type<${name}TextFieldContentMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_textfields"));
+	public static final Type<${name}GuistateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_guistate"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}TextFieldContentMessage> STREAM_CODEC = StreamCodec.of(
-			(RegistryFriendlyByteBuf buffer, ${name}TextFieldContentMessage message) -> {
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}GuistateUpdateMessage> STREAM_CODEC = StreamCodec.of(
+			(RegistryFriendlyByteBuf buffer, ${name}GuistateUpdateMessage message) -> {
+			    buffer.writeInt(message.elementType);
 				buffer.writeUtf(message.name);
 				buffer.writeUtf(message.content);
 			},
-			(RegistryFriendlyByteBuf buffer) -> new ${name}TextFieldContentMessage(buffer.readUtf(), buffer.readUtf())
+			(RegistryFriendlyByteBuf buffer) -> new ${name}GuistateUpdateMessage(buffer.readInt(), buffer.readUtf(), buffer.readUtf())
 	);
 
-	@Override public Type<${name}TextFieldContentMessage> type() {
+	@Override public Type<${name}GuistateUpdateMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${name}TextFieldContentMessage message, final IPayloadContext context) {
+	public static void handleData(final ${name}GuistateUpdateMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
 			context.enqueueWork(() -> {
 				Player entity = context.player();
 				if (entity.containerMenu instanceof ${name}Menu menu) {
-				    menu.setTextInTextField(message.name, message.content);
+				    HashMap<String, Object> guistate = menu.guistate;
+				    int elementType = message.elementType;
+                    if (elementType == 0) {
+                    	guistate.put("text:" + message.name, message.content);
+                    } else if (elementType == 1) {
+                    	guistate.put("checkbox:" + message.name, message.content.equals("true") ? true : false);
+                    }
 				}
 			}).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
@@ -64,7 +71,7 @@ package ${package}.network;
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}TextFieldContentMessage.TYPE, ${name}TextFieldContentMessage.STREAM_CODEC, ${name}TextFieldContentMessage::handleData);
+		${JavaModName}.addNetworkMessage(${name}GuistateUpdateMessage.TYPE, ${name}GuistateUpdateMessage.STREAM_CODEC, ${name}GuistateUpdateMessage::handleData);
 	}
 
 }

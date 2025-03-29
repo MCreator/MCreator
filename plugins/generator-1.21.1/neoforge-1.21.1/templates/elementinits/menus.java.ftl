@@ -46,7 +46,8 @@ public class ${JavaModName}Menus {
 	</#list>
 
 	public interface ${JavaModName}MenuAccessor {
-    	HashMap<String, String> getTextFieldsContent();
+    	String getTextFieldValue(String name);
+    	boolean getCheckBoxValue(String name);
     }
 
 }

@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
+import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.ImageButton;
@@ -113,9 +114,9 @@ import java.util.List;
 		return false;
 	}
 
-	public boolean hasTextFields() {
+	public boolean hasGuistateElements() {
 		for (GUIComponent component : components)
-			if (component instanceof TextField)
+			if (component instanceof TextField || component instanceof Checkbox)
 				return true;
 		return false;
 	}

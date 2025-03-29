@@ -36,7 +36,7 @@ package ${package}.client.gui;
 
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
-	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
+	private final HashMap<String, Object> guistate;
 
 	private final Level world;
 	private final int x, y, z;
@@ -60,6 +60,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
 		super(container, inventory, text);
+		this.guistate = container.guistate;
 		this.world = container.world;
 		this.x = container.x;
 		this.y = container.y;
@@ -67,6 +68,16 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.entity = container.entity;
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
+		this.initCheckBoxes();
+	}
+
+	private void initCheckBoxes() {
+	    <#list data.getComponentsOfType("Checkbox") as component>
+        	<#if hasProcedure(component.isCheckedProcedure)>
+        	    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)
+        		    PacketDistributor.sendToServer(new ${name}GuistateUpdateMessage(1, "${component.getName()}", "true"));
+        	</#if>
+        </#list>
 	}
 
 	<#if data.doesPauseGame>
@@ -203,10 +214,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("TextField") as component>
 			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-			    PacketDistributor.sendToServer(new ${name}TextFieldContentMessage("${component.getName()}", content));
-                if (entity.containerMenu instanceof ${name}Menu menu) {
-                    menu.setTextInTextField("${component.getName()}", content);
-                }
+			    PacketDistributor.sendToServer(new ${name}GuistateUpdateMessage(0, "${component.getName()}", content));
 			}, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
@@ -238,7 +246,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					</#if>
 			</#if>
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
@@ -263,7 +270,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 			};
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
@@ -273,7 +279,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
-				.build();
+				.onValueChange((checkbox, value) -> {
+				     PacketDistributor.sendToServer(new ${name}GuistateUpdateMessage(1, "${component.getName()}", value ? "true" : "false"));
+				}).build();
 
 			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
