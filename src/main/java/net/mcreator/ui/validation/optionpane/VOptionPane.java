@@ -99,7 +99,7 @@ public class VOptionPane {
 			String cancel, JPanel inp, VTextField textField) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
-		if (option == 0) {
+		if (option == JOptionPane.OK_OPTION) {
 			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
