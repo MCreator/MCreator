@@ -192,7 +192,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					StringBuilder missingdeps = new StringBuilder();
 					boolean warn = false;
 					for (Dependency dependency : dependenciesArrayList) {
-						if (trigger.dependencies_provided != null && !trigger.dependencies_provided.contains(
+						if (trigger.dependencies_provided == null || !trigger.dependencies_provided.contains(
 								dependency)) {
 							warn = true;
 							missingdeps.append(" ").append(dependency.getName());
