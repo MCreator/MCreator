@@ -687,4 +687,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		}
 	}
 
+	@Override @Nullable public abstract URI contextURL() throws URISyntaxException;
+
 }
