@@ -79,7 +79,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		ComponentUtils.deriveFont(keyBindingName, 16);
 
-		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 10));
+		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/key"),
 				L10N.label("elementgui.keybind.key_trigger_event")));
@@ -97,7 +97,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		enderpanel.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(1, 2, 5, 5));
+		JPanel events = new JPanel(new GridLayout(1, 2, 2, 2));
 		events.setOpaque(false);
 		events.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -108,12 +108,12 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		pane5.setOpaque(false);
 
-		JPanel merge = new JPanel(new BorderLayout(20, 20));
+		JPanel merge = new JPanel(new BorderLayout(0, 5));
 		merge.setOpaque(false);
 		merge.add("North", PanelUtils.centerInPanel(enderpanel));
 		merge.add("South", events);
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(merge));
 
 		keyBindingName.setValidator(
 				new TextFieldValidator(keyBindingName, L10N.t("elementgui.keybind.error_key_needs_name")));
