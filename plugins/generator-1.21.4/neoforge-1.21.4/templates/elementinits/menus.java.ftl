@@ -45,6 +45,10 @@ public class ${JavaModName}Menus {
 		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
 	</#list>
 
+	public interface ${JavaModName}MenuAccessor {
+	    HashMap<String, String> getTextFieldsContent();
+	}
+
 }
 
 <#-- @formatter:on -->

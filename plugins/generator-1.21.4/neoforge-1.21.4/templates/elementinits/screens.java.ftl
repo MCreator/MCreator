@@ -34,6 +34,8 @@
  *	MCreator note: This file will be REGENERATED on each build.
  */
 
+<#assign hasTextField = false>
+
 package ${package}.init;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
@@ -41,8 +43,46 @@ package ${package}.init;
 	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
 		<#list guis as gui>
 		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+		<#if gui.getComponentsOfType("TextField")?has_content>
+            <#assign hasTextField = true>
+		</#if>
 		</#list>
 	}
+
+    <#if hasTextField>
+	public static EditBox createListenerTextField(Font font, int x, int y, int width, int height, Component narratable, Consumer<String> listener, boolean suggest) {
+        return new EditBox(font, x, y, width, height, narratable) {
+        	@Override public boolean keyPressed(int key, int b, int c) {
+        	    boolean flag = super.keyPressed(key, b, c);
+          	    listener.accept(this.getValue());
+          	    return flag;
+        	}
+
+            @Override public boolean charTyped(char c, int type) {
+        	    boolean flag = super.charTyped(c, type);
+          	    listener.accept(this.getValue());
+          	    return flag;
+            }
+
+            @Override public void insertText(String text) {
+            	super.insertText(text);
+                if (getValue().isEmpty() && suggest)
+            		setSuggestion(narratable.getString());
+            	else
+            		setSuggestion(null);
+            }
+
+            @Override public void moveCursorTo(int pos, boolean flag) {
+            	super.moveCursorTo(pos, flag);
+            	if (getValue().isEmpty() && suggest)
+            		setSuggestion(narratable.getString());
+            	else
+            		setSuggestion(null);
+            }
+
+        };
+    }
+    </#if>
 
 }
 
