@@ -21,12 +21,14 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class JMinMaxSpinner extends JPanel {
+public class JMinMaxSpinner extends JPanel implements IValidable {
 
 	private final JSpinner min;
 	private final JSpinner max;
@@ -149,6 +151,34 @@ public class JMinMaxSpinner extends JPanel {
 	public JMinMaxSpinner allowEqualValues() {
 		this.allowEqualValues = true;
 		return this;
+	}
+
+	//validation code
+	private Validator validator = null;
+
+	@Override public Validator.ValidationResult getValidationStatus() {
+		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+
+		if (validator != null && validationResult != null && (
+				validationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
+						|| validationResult.getValidationResultType() == Validator.ValidationResultType.WARNING)) {
+			setBorder(BorderFactory.createLineBorder(validationResult.getValidationResultType().getColor(), 1));
+		} else {
+			setBorder(BorderFactory.createEmptyBorder());
+		}
+
+		//repaint as new validation status might have to be rendered
+		repaint();
+
+		return validationResult;
+	}
+
+	@Override public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	@Override public Validator getValidator() {
+		return validator;
 	}
 
 }
