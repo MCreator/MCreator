@@ -71,6 +71,13 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 								String.join(", ", skippedDepsNames))));
 			}
 
+			VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
+			if (typeObject == null || !typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.variables.not_supported", type)));
+				return;
+			}
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());

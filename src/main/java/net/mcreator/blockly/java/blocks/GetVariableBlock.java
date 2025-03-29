@@ -99,6 +99,12 @@ public class GetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				if (!typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.variables.not_supported", type)));
+					return;
+				}
+
 				Object getterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
 						scope.toUpperCase(Locale.ENGLISH)).get("get");
 				if (getterTemplate == null) {
