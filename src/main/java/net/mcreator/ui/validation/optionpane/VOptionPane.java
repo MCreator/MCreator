@@ -50,14 +50,6 @@ public class VOptionPane {
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidator validator, String ok, String cancel, String defaultValue,
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
-		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, optionalNorthComponent,
-				optionalSouthComponent, true);
-	}
-
-	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidator validator, String ok, String cancel, String defaultValue,
-			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent,
-			boolean failToReopen) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(20);
@@ -100,24 +92,21 @@ public class VOptionPane {
 
 		});
 
-		return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, failToReopen);
+		return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
 	}
 
-	private static @Nullable String showSwingOriginalInputDialog(Window frame, String title, ImageIcon icon, String ok,
-			String cancel, JPanel inp, VTextField textField, boolean failToReopen) {
+	private static @Nullable String showSwingOptionDialog(Window frame, String title, ImageIcon icon, String ok,
+			String cancel, JPanel inp, VTextField textField) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
 		if (option == 0) {
 			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
-				//warning sound
-				textField.getToolkit().beep();
 				JOptionPane.showMessageDialog(frame,
 						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
 						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
-				if (failToReopen)
-					return showSwingOriginalInputDialog(frame, title, icon, ok, cancel, inp, textField, true);
+				return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
 			}
 		}
 
