@@ -252,7 +252,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					</#if>
 			</#if>
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
@@ -277,7 +276,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 			};
 
-			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 
 			<#assign btid +=1>
