@@ -35,7 +35,7 @@ public class GTProcedureTriggers {
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
 		Set<String> generatorTriggers = workspace.getGeneratorStats().getProcedureTriggers();
 
-		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
+		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
 				continue;
 			}

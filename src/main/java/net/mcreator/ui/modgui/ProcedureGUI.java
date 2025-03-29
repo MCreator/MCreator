@@ -175,7 +175,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			hasDependencyErrors = false;
 			if (blocklyToJava.getExternalTrigger() != null) {
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers();
+						.getExternalTriggers();
 
 				for (ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
@@ -539,7 +539,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
-			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()
 					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());

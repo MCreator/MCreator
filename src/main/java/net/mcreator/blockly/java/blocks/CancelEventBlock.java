@@ -39,7 +39,7 @@ public class CancelEventBlock implements IBlockGenerator {
 				ExternalTrigger trigger = null;
 
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers();
+						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
 						trigger = externalTrigger;

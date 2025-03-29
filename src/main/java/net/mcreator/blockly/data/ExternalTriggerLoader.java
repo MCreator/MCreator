@@ -52,7 +52,7 @@ public class ExternalTriggerLoader {
 				Comparator.comparing(ExternalTrigger::getGroupEstimate).thenComparing(ExternalTrigger::getName));
 	}
 
-	public List<ExternalTrigger> getExternalTrigers() {
+	public List<ExternalTrigger> getExternalTriggers() {
 		return externalTriggers;
 	}
 
