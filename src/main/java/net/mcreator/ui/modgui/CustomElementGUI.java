@@ -67,10 +67,6 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 	@Override protected void initGUI() {
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void openInEditingMode(CustomElement generatableElement) {
 	}
 

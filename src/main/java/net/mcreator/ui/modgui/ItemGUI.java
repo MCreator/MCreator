@@ -44,7 +44,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -549,11 +548,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
+		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false).lazyValidate(
+				customProperties::getValidationResult);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
-		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
@@ -650,18 +650,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return customProperties.getValidationResult();
-		else if (page == 2)
-			return new AggregatedValidationResult(name);
-		else if (page == 4)
-			return new AggregatedValidationResult(page5group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Item item) {

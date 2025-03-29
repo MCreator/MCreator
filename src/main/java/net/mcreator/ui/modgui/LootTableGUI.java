@@ -146,7 +146,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
-		addPage(pane3, false);
+
+		addPage(pane3, false).validate(name);
 
 		// add first pool
 		if (!isEditingMode())
@@ -156,10 +157,6 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		lootTablePools.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
 	}
 
 	@Override public void openInEditingMode(LootTable loottable) {

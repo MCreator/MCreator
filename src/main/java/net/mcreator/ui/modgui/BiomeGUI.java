@@ -542,9 +542,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
 
-		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
-		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
-		addPage(L10N.t("elementgui.biome.features"), pane3);
+		addPage(L10N.t("elementgui.biome.general_properties"), pane4).validate(page1group);
+		addPage(L10N.t("elementgui.biome.biome_generation"), pane5).validate(page2group);
+		addPage(L10N.t("elementgui.biome.features"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1, false);
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
@@ -592,16 +592,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 		spawnEntries.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
-		else if (page == 2)
-			return new AggregatedValidationResult(page3group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void updateBiomeTreesForm() {

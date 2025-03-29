@@ -123,7 +123,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));
 		keyBindingCategoryKey.enableRealtimeValidation();
 
-		addPage(pane5);
+		addPage(pane5).validate(keyBindingName).validate(keyBindingCategoryKey);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -135,10 +135,6 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		super.reloadDataLists();
 		onKeyPressed.refreshListKeepSelected();
 		onKeyReleased.refreshListKeepSelected();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(keyBindingName, keyBindingCategoryKey);
 	}
 
 	@Override public void openInEditingMode(KeyBinding keyBinding) {

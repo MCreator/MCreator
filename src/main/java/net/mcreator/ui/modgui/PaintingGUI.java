@@ -106,19 +106,13 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		page1group.addValidationElement(title);
 		page1group.addValidationElement(author);
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
 					modElement.getName());
 			title.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Painting painting) {

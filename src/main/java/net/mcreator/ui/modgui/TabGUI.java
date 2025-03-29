@@ -102,16 +102,12 @@ public class TabGUI extends ModElementGUI<Tab> {
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(icon);
 
-		addPage(pane3);
+		addPage(pane3).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Tab tab) {

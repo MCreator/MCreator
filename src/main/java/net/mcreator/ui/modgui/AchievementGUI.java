@@ -45,7 +45,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -236,7 +235,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-		addPage(wrap, false);
+
+		addPage(wrap, false).validate(page1group).lazyValidate(
+				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -274,12 +276,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
 		background.reload();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group,
-				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 	}
 
 	@Override public void openInEditingMode(Achievement achievement) {

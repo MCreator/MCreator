@@ -165,16 +165,12 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		page1group.addValidationElement(supportedItems);
 		page1group.addValidationElement(incompatibleEnchantments);
 
-		addPage(pane1);
+		addPage(pane1).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Enchantment enchantment) {

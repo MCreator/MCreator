@@ -114,7 +114,8 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		page1group.addValidationElement(arrowName);
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), mainEditor));
-		addPage(pane3, false);
+
+		addPage(pane3, false).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = "Potion of " + StringUtils.machineToReadableName(modElement.getName());
@@ -136,12 +137,6 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		super.reloadDataLists();
 
 		effectList.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override protected void openInEditingMode(Potion potion) {

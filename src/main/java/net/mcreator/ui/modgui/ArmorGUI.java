@@ -778,8 +778,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		group2page.addValidationElement(armorTextureFile);
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(group1page);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5).validate(group2page);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
@@ -871,14 +871,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModel.addActionListener(bodyModelListener);
 		leggingsModel.addActionListener(leggingsModelListener);
 		bootsModel.addActionListener(bootsModelListener);
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(group2page);
-		else if (page == 0)
-			return new AggregatedValidationResult(group1page);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void updateArmorTexturePreview() {

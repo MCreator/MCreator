@@ -55,7 +55,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -907,16 +906,19 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane1.setOpaque(false);
 
-		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
-		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
+		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2).validate(mobModelTexture).validate(mobName);
+		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
+				modelLayers::getValidationResult);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
-		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
+		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3).lazyValidate(
+				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						compileNote -> "Living entity AI builder: " + compileNote));
+		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5).validate(restrictionBiomes);
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "MISC")));
@@ -970,20 +972,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						.collect(Collectors.toList())), "Default item");
 
 		disableMobModelCheckBoxListener = false;
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0) {
-			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 1) {
-			return modelLayers.getValidationResult();
-		} else if (page == 8) {
-			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-					compileNote -> "Living entity AI builder: " + compileNote);
-		} else if (page == 9) {
-			return new AggregatedValidationResult(restrictionBiomes);
-		}
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void enableOrDisableFields() {

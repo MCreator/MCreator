@@ -43,8 +43,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -163,7 +161,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				featureProcedure));
 
 		page1.setOpaque(false);
-		addPage(page1);
+
+		addPage(page1).validate(restrictionBiomes)
+				.lazyValidate(() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
 	}
 
 	private synchronized void regenerateFeature() {
@@ -196,11 +196,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(new ValidationGroup().addValidationElement(restrictionBiomes),
-				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
 	}
 
 	@Override public void reloadDataLists() {
