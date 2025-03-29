@@ -80,8 +80,8 @@ public class NewImageDialog extends MCreatorDialog {
 		templateSettings.add(PanelUtils.totalCenterInPanel(templateChooserButton));
 
 		//Constraints
-		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
-		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
+		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 1, 10000, 1));
+		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 1, 10000, 1));
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");

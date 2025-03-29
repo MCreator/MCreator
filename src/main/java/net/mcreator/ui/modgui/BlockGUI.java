@@ -826,7 +826,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
-		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
+		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);

@@ -37,8 +37,8 @@ public class ResizeCanvasDialog extends MCreatorDialog {
 
 		JPanel constraints = new JPanel(new GridLayout(4, 2, 5, 5));
 
-		JSpinner width = new JSpinner(new SpinnerNumberModel(canvas.getWidth(), 0, 10000, 1));
-		JSpinner height = new JSpinner(new SpinnerNumberModel(canvas.getHeight(), 0, 10000, 1));
+		JSpinner width = new JSpinner(new SpinnerNumberModel(canvas.getWidth(), 1, 10000, 1));
+		JSpinner height = new JSpinner(new SpinnerNumberModel(canvas.getHeight(), 1, 10000, 1));
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.resize");
