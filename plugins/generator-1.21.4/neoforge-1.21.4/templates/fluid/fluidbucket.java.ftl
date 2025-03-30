@@ -38,7 +38,7 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends BucketItem {
 
 	public ${name}Item(Item.Properties properties) {
-		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			properties.craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity}));
 	}
 
