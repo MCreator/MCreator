@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#compress>
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block(BlockBehaviour.Properties properties) {
-		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			properties
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
