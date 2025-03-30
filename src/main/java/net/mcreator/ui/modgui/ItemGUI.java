@@ -73,7 +73,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
+	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
 	private final VTextField name = new VTextField(20);
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
@@ -354,10 +354,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
+		damageCount.addChangeListener(e -> updateCraftingSettings());
 		immuneToFire.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
+
+		updateCraftingSettings();
 
 		subpane2.setOpaque(false);
 
@@ -562,6 +566,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void updateCraftingSettings() {
+		recipeRemainder.setEnabled(stayInGridWhenCrafting.isSelected());
+		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) damageCount.getValue() > 0));
+	}
+
 	private void updateMusicDiscPanel() {
 		if (isMusicDisc.isSelected()) {
 			musicDiscMusic.setEnabled(true);
@@ -715,6 +724,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscLengthInTicks.setValue(item.musicDiscLengthInTicks);
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
 
+		updateCraftingSettings();
 		updateFoodPanel();
 		updateRangedPanel();
 		updateMusicDiscPanel();

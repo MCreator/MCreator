@@ -373,72 +373,51 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		blockBase.addActionListener(e -> {
-			renderType.setEnabled(true);
-			disableOffset.setEnabled(true);
-			boundingBoxList.setEnabled(true);
-			rotationMode.setEnabled(true);
-			hasGravity.setEnabled(true);
+			boolean hasBlockBase = blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0;
+			renderType.setEnabled(!hasBlockBase);
+			disableOffset.setEnabled(!hasBlockBase);
+			boundingBoxList.setEnabled(!hasBlockBase);
+			rotationMode.setEnabled(!hasBlockBase);
+			isWaterloggable.setEnabled(!hasBlockBase);
+			hasGravity.setEnabled(!hasBlockBase);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
-			isWaterloggable.setEnabled(true);
 
-			if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Pane")) {
-				connectedSides.setEnabled(false);
-				renderType.setEnabled(false);
-				isWaterloggable.setEnabled(false);
-				rotationMode.setEnabled(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-
-				connectedSides.setSelected(false);
+			if (hasBlockBase) {
+				rotationMode.setSelectedIndex(0);
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
-				rotationMode.setSelectedIndex(0);
-
-				if (!isEditingMode()) {
-					transparencyType.setSelectedItem("CUTOUT_MIPPED");
-					lightOpacity.setValue(0);
-				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
-				renderType.setEnabled(false);
-				rotationMode.setEnabled(false);
-				hasTransparency.setEnabled(false);
-				transparencyType.setEnabled(false);
-				isWaterloggable.setSelected(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-
-				renderType.setSelectedItem(singleTexture);
-				rotationMode.setSelectedIndex(0);
-				hasTransparency.setSelected(false);
-				transparencyType.setSelectedItem("SOLID");
-				isWaterloggable.setEnabled(false);
-
-				if (!isEditingMode()) {
-					lightOpacity.setValue(1);
-				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0) {
-				renderType.setSelectedItem(singleTexture);
-				renderType.setEnabled(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-				hasGravity.setEnabled(false);
-				rotationMode.setEnabled(false);
-				isWaterloggable.setEnabled(false);
-
 				hasGravity.setSelected(false);
-				rotationMode.setSelectedIndex(0);
-				isWaterloggable.setSelected(false);
 
-				if (!isEditingMode()) {
-					lightOpacity.setValue(0);
-					if ("Wall".equals(blockBase.getSelectedItem()) || "Fence".equals(blockBase.getSelectedItem())
-							|| "TrapDoor".equals(blockBase.getSelectedItem()) || "Door".equals(
-							blockBase.getSelectedItem()) || "FenceGate".equals(blockBase.getSelectedItem())
-							|| "EndRod".equals(blockBase.getSelectedItem()) || "PressurePlate".equals(
-							blockBase.getSelectedItem()) || "Button".equals(blockBase.getSelectedItem())) {
-						hasTransparency.setSelected(true);
+				String selectedBlockBase = blockBase.getSelectedItem();
+				if (selectedBlockBase.equals("Pane")) {
+					connectedSides.setEnabled(false);
+					connectedSides.setSelected(false);
+
+					if (!isEditingMode()) {
+						transparencyType.setSelectedItem("CUTOUT_MIPPED");
+						lightOpacity.setValue(0);
+					}
+				} else if (selectedBlockBase.equals("Leaves")) {
+					hasTransparency.setEnabled(false);
+					transparencyType.setEnabled(false);
+
+					hasTransparency.setSelected(false);
+					transparencyType.setSelectedItem("SOLID");
+
+					if (!isEditingMode()) {
+						lightOpacity.setValue(1);
+					}
+				} else  {
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase)
+								|| "TrapDoor".equals(selectedBlockBase) || "Door".equals(selectedBlockBase)
+								|| "FenceGate".equals(selectedBlockBase) || "EndRod".equals(selectedBlockBase)
+								|| "PressurePlate".equals(selectedBlockBase) || "Button".equals(selectedBlockBase)) {
+							hasTransparency.setSelected(true);
+						}
 					}
 				}
 			}
@@ -826,7 +805,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.offset_type")));
 		advancedProperties.add(offsetType);
 
-		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 5);
+		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
