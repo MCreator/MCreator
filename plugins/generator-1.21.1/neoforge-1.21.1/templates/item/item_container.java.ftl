@@ -35,7 +35,7 @@ package ${package}.item.inventory;
 @EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ComponentItemHandler {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
-		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
+		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
 			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
 				Minecraft.getInstance().player.closeContainer();
 			}
@@ -51,7 +51,7 @@ package ${package}.item.inventory;
 	}
 
 	@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
+		return stack.getItem() != ${JavaModName}Items.${REGISTRYNAME}.get();
 	}
 
 	@Override public ItemStack getStackInSlot(int slot) {

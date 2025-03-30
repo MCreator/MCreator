@@ -193,7 +193,7 @@ public class GeneratorStats {
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers().size()) * 100, 100));
+						.getExternalTriggers().size()) * 100, 100));
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
