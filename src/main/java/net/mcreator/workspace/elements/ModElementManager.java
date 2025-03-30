@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -210,6 +211,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 					element.getModElement().getName() + ".png");
 			if (modImage != null) {
 				FileIO.writeImageToPNGFile(modImage, modImageFile);
+				Image image = new ImageIcon(modImage).getImage();
+				if (image != null)
+					image.flush();
 			} else if (modImageFile.isFile()) {
 				// If there is no preview image generated, we revert back to default one
 				modImageFile.delete();

@@ -53,7 +53,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.mobBehaviourType == "Raider">
 	public static final EnumProxy<Raid.RaiderType> RAIDER_TYPE = new EnumProxy<>(Raid.RaiderType.class,
-		${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}, new int[] {0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}}
+		${JavaModName}Entities.${REGISTRYNAME}, new int[] {0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}}
 	);
 	</#if>
 
@@ -664,7 +664,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
 				<#if !data.rangedAttackItem.isEmpty()>
-				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.level());
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${REGISTRYNAME}_PROJECTILE.get(), this, this.level());
 				<#else>
 				Arrow entityarrow = new Arrow(this.level(), this, new ItemStack(Items.ARROW), null);
 				</#if>
@@ -681,7 +681,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld, EntitySpawnReason.BREEDING);
+			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
 			return retval;
 		}
@@ -847,7 +847,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType == "creature">
-			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -864,7 +864,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
-			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -879,7 +879,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
-			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -896,7 +896,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
 			<#elseif data.mobSpawningType == "undergroundWaterCreature">
-			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
@@ -915,7 +915,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
 			<#else>
-			event.register(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(),
+			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
 					(entityType, world, reason, pos, random) -> {
