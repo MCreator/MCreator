@@ -1,9 +1,9 @@
-<#if data.hasCustomJAVAModel?? && !data.hasCustomJAVAModel()>
-	<#assign parent = "item/generated">
-	<#assign texture = "layer0">
-<#else>
+<#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
 	<#assign parent = "builtin/entity">
 	<#assign texture = "particle">
+<#else>
+	<#assign parent = "item/generated">
+	<#assign texture = "layer0">
 </#if>
 {
     "parent": "${parent}",
