@@ -33,45 +33,68 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}GuistateUpdateMessage(int elementType, String name, String content) implements CustomPacketPayload {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${JavaModName}GuistateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
 
-	public static final Type<${name}GuistateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_guistate"));
+	public static final Type<${JavaModName}GuistateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "guistate_update"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}GuistateUpdateMessage> STREAM_CODEC = StreamCodec.of(
-			(RegistryFriendlyByteBuf buffer, ${name}GuistateUpdateMessage message) -> {
-			    buffer.writeInt(message.elementType);
-				buffer.writeUtf(message.name);
-				buffer.writeUtf(message.content);
-			},
-			(RegistryFriendlyByteBuf buffer) -> new ${name}GuistateUpdateMessage(buffer.readInt(), buffer.readUtf(), buffer.readUtf())
-	);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${JavaModName}GuistateUpdateMessage> STREAM_CODEC = StreamCodec.of(${JavaModName}GuistateUpdateMessage::write, ${JavaModName}GuistateUpdateMessage::read);
 
-	@Override public Type<${name}GuistateUpdateMessage> type() {
+    public static void write(FriendlyByteBuf buffer, ${JavaModName}GuistateUpdateMessage message) {
+        int elementType = message.elementType;
+        Object data = message.elementState;
+        buffer.writeInt(elementType);
+        buffer.writeUtf(message.name);
+        if (elementType == 0) {
+            buffer.writeUtf((String)data);
+        }
+        if (elementType == 1) {
+            buffer.writeBoolean((boolean)data);
+        }
+    }
+
+    public static ${JavaModName}GuistateUpdateMessage read(FriendlyByteBuf buffer) {
+        int elementType = buffer.readInt();
+        String name = buffer.readUtf();
+        Object data = null;
+        if (elementType == 0) {
+            data = buffer.readUtf();
+        }
+        if (elementType == 1) {
+            data = buffer.readBoolean();
+        }
+        return new ${JavaModName}GuistateUpdateMessage(elementType, name, data);
+    }
+
+	@Override public Type<${JavaModName}GuistateUpdateMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${name}GuistateUpdateMessage message, final IPayloadContext context) {
-		if (context.flow() == PacketFlow.SERVERBOUND) {
-			context.enqueueWork(() -> {
-				Player entity = context.player();
-				if (entity.containerMenu instanceof ${name}Menu menu) {
-				    HashMap<String, Object> guistate = menu.guistate;
-				    int elementType = message.elementType;
-                    if (elementType == 0) {
-                    	guistate.put("text:" + message.name, message.content);
-                    } else if (elementType == 1) {
-                    	guistate.put("checkbox:" + message.name, message.content.equals("true") ? true : false);
-                    }
-				}
-			}).exceptionally(e -> {
-				context.connection().disconnect(Component.literal(e.getMessage()));
-				return null;
-			});
-		}
+	public static void handleData(final ${JavaModName}GuistateUpdateMessage message, final IPayloadContext context) {
+	    context.enqueueWork(() -> {
+        	Player entity = context.player();
+        	updateGuistate(entity, message.elementType, message.name, message.elementState);
+        	if (context.flow() == PacketFlow.CLIENTBOUND) {
+        	    ${JavaModName}Screens.onGuistateUpdate(message.elementType, message.name, message.elementState);
+        	}
+        }).exceptionally(e -> {
+        	context.connection().disconnect(Component.literal(e.getMessage()));
+        	return null;
+        });
+	}
+
+	public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
+	    if (entity.containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
+        	HashMap<String, Object> guistate = menu.getGuistate();
+            if (elementType == 0) {
+                guistate.put("textfield:" + name, elementState);
+            } else if (elementType == 1) {
+                guistate.put("checkbox:" + name, elementState);
+            }
+        }
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}GuistateUpdateMessage.TYPE, ${name}GuistateUpdateMessage.STREAM_CODEC, ${name}GuistateUpdateMessage::handleData);
+		${JavaModName}.addNetworkMessage(${JavaModName}GuistateUpdateMessage.TYPE, ${JavaModName}GuistateUpdateMessage.STREAM_CODEC, ${JavaModName}GuistateUpdateMessage::handleData);
 	}
 
 }

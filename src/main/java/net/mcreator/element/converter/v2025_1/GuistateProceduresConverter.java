@@ -21,11 +21,8 @@ package net.mcreator.element.converter.v2025_1;
 
 import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.util.BlocklyHelper;
-import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -38,9 +35,11 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class GetTextTextfieldConverter extends ProcedureConverter {
+import static net.mcreator.util.XMLUtil.getFirstChildrenWithName;
 
-	// Added an input for the entity, because now the content of the text fields is bound to
+public class GuistateProceduresConverter extends ProcedureConverter {
+
+	// Added an input for the entity, because now the content of the text fields/checkboxes is bound to
 	// the player's open container, and not to the client data of the guistate
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -51,10 +50,11 @@ public class GetTextTextfieldConverter extends ProcedureConverter {
 		NodeList nodeList = doc.getElementsByTagName("block");
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
-			if ("gui_get_text_textfield".equals(element.getAttribute("type"))) {
-				Element entityValue = XMLUtil.getFirstChildrenWithName(element, "value", "name", "entity");
+			String attributeValue = element.getAttribute("type");
+			if ("gui_get_text_textfield".equals(attributeValue) || "gui_get_value_checkbox".equals(attributeValue) || "gui_set_text_textfield".equals(attributeValue)) {
+				Element entityValue = getFirstChildrenWithName(element, "value", "name", "entity");
 
-				if (entityValue == null) {
+				if (entityValue == null || !("entity".equals(entityValue.getAttribute("name")))) {
 					Element entityValueNew = doc.createElement("value");
 					entityValueNew.setAttribute("name", "entity");
 

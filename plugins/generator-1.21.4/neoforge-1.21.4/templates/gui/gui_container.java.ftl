@@ -43,7 +43,7 @@ import ${package}.${JavaModName};
 @EventBusSubscriber
 </#if>
 
-public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>, ${JavaModName}Menus.${JavaModName}MenuAccessor {
+public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>, ${JavaModName}Menus.MenuAccessor {
 
 	public final HashMap<String, Object> guistate = new HashMap<>();
 
@@ -297,21 +297,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		return customSlots;
 	}
 
-	public String getTextFieldValue(String name) {
-	    if (world.isClientSide) {
-	        return guistate.containsKey("text:" + name) ? ((EditBox)guistate.get("text:" + name)).getValue() : "";
-	    } else {
-	        return (String)guistate.getOrDefault("text:" + name, "");
-	    }
+	public HashMap<String, Object> getGuistate() {
+	    return guistate;
 	}
-
-    public boolean getCheckBoxValue(String name) {
-        if (world.isClientSide) {
-        	return guistate.containsKey("checkbox:" + name) ? ((Checkbox)guistate.get("checkbox:" + name)).selected() : false;
-        } else {
-        	return (boolean)guistate.getOrDefault("checkbox:" + name, false);
-        }
-    }
 
 	<#if hasProcedure(data.onTick)>
 		@SubscribeEvent public static void onPlayerTick(PlayerTickEvent.Post event) {

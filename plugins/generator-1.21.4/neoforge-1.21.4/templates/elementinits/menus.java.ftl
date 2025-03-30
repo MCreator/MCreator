@@ -45,10 +45,35 @@ public class ${JavaModName}Menus {
 		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
 	</#list>
 
-	public interface ${JavaModName}MenuAccessor {
-	    String getTextFieldValue(String name);
-	    boolean getCheckBoxValue(String name);
+	public interface MenuAccessor {
+	    HashMap<String, Object> getGuistate();
 	}
+
+	public static void sendGuistateUpdate(Player entity, int elementType, String name, Object elementState) {
+	    if (entity instanceof ServerPlayer _entity) {
+	        PacketDistributor.sendToPlayer(_entity, new ${JavaModName}GuistateUpdateMessage(elementType, name, elementState));
+	    } else {
+	        PacketDistributor.sendToServer(new ${JavaModName}GuistateUpdateMessage(elementType, name, elementState));
+	    }
+	    ${JavaModName}GuistateUpdateMessage.updateGuistate(entity, elementType, name, elementState);
+	}
+
+	public static <T> T getGuistateState(Entity entity, int elementType, String name, T defaultValue) {
+        if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
+            HashMap<String, Object> guistate = accessor.getGuistate();
+            try {
+                if (elementType == 0) {
+                    return (T) guistate.getOrDefault("textfield:" + name, defaultValue);
+                }
+                if (elementType == 1) {
+                    return (T) guistate.getOrDefault("checkbox:" + name, defaultValue);
+                }
+            } catch (ClassCastException e) {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
+    }
 
 }
 

@@ -1,3 +1,3 @@
 <#if w.hasElementsOfType("gui")>
-(${input$entity} instanceof Player _player ? (_player.containerMenu instanceof ${JavaModName}Menus.${JavaModName}MenuAccessor acc ? acc.getTextFieldValue("${field$textfield}") : ""): "")
+${JavaModName}Menus.getGuistateState(${input$entity}, 0, "${field$textfield}", "")
 <#else>""</#if>

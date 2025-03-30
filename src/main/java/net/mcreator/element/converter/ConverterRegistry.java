@@ -184,8 +184,7 @@ public class ConverterRegistry {
 			new PlantTypeProcedureRemover(),
 			new net.mcreator.element.converter.v2024_3.WorldDependencyAdder(),
 			new net.mcreator.element.converter.v2025_1.WorldDependencyAdder(),
-			new GetTextTextfieldConverter(),
-			new GetCheckboxValueConverter()
+			new GuistateProceduresConverter()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()

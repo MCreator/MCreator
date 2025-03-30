@@ -20,12 +20,10 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
-import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.ImageButton;
 import net.mcreator.element.parts.gui.Slot;
-import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.io.FileIO;
@@ -111,13 +109,6 @@ import java.util.List;
 						((Slot) component).onStackTransfer != null
 								&& ((Slot) component).onStackTransfer.getName() != null))
 					return true;
-		return false;
-	}
-
-	public boolean hasGuistateElements() {
-		for (GUIComponent component : components)
-			if (component instanceof TextField || component instanceof Checkbox)
-				return true;
 		return false;
 	}
 

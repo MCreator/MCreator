@@ -1,3 +1,3 @@
 <#if w.hasElementsOfType("gui")>
-(${input$entity} instanceof Player _player ? (_player.containerMenu instanceof ${JavaModName}Menus.${JavaModName}MenuAccessor acc ? acc.getCheckBoxValue("${field$checkbox}") : false): false)
+${JavaModName}Menus.getGuistateState(${input$entity}, 1, "${field$checkbox}", false)
 <#else>false</#if>
