@@ -1234,8 +1234,13 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = "Default";
 			projectile.customModelTexture = "";
-			projectile.modelWidth = 0.4;
-			projectile.modelHeight = 1.3;
+			if (emptyLists) {
+				projectile.modelWidth = 4.4;
+				projectile.modelHeight = 5.3;
+			} else {
+				projectile.modelWidth = 0.3;
+				projectile.modelHeight = 0.2;
+			}
 			projectile.onHitsBlock = new Procedure("procedure1");
 			projectile.onHitsEntity = new Procedure("procedure2");
 			projectile.onHitsPlayer = new Procedure("procedure3");
@@ -1794,7 +1799,7 @@ public class TestWorkspaceDataProvider {
 								.limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
