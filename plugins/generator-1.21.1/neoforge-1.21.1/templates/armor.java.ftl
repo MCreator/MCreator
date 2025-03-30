@@ -68,10 +68,10 @@ import net.minecraft.client.model.Model;
 		});
 	}
 
-	<#if (data.helmetModelName != "Default" && data.getHelmetModel()??) || (data.bodyModelName != "Default" && data.getBodyModel()??) ||
-		 (data.leggingsModelName != "Default" && data.getLeggingsModel()??) || (data.bootsModelName != "Default" && data.getBootsModel()??)>
+	<#if (data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet) || (data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody) ||
+		 (data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings) || (data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots)>
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {
-		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
+		<#if data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet>
 		event.registerItem(new IClientItemExtensions() {
 			@Override public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -91,7 +91,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_HELMET.get());
 		</#if>
 
-		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
+		<#if data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -111,7 +111,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
 		</#if>
 
-		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
+		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -131,7 +131,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
 		</#if>
 
-		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
+		<#if data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
