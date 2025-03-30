@@ -54,7 +54,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	private IItemHandler internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
-	private final HashMap<String, String> textFieldsContent = new HashMap<>();
 
 	private boolean bound = false;
 	private Supplier<Boolean> boundItemMatcher = null;
