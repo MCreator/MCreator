@@ -42,11 +42,12 @@ package ${package}.client.renderer.item;
 </#list>
 
 <#compress>
+@OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
     private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
         <#list models as model>
             Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(new ${model[1]}(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
-                ResourceLocation.parse("${modid}:textures/item/${model[2]}.png")))<#sep>,
+                ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")))<#sep>,
         </#list>
     );
 
