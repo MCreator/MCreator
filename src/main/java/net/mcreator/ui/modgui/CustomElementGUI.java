@@ -23,7 +23,6 @@ import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.CodeEditorView;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.workspace.elements.ModElement;
 

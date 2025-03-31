@@ -28,7 +28,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -98,7 +97,8 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		page1group.addValidationElement(shieldTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(texturesPanel, properties, 25, 25))).validate(page1group);
+		addPage(PanelUtils.totalCenterInPanel(
+				PanelUtils.northAndCenterElement(texturesPanel, properties, 25, 25))).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());

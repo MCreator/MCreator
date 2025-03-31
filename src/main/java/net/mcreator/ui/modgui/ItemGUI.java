@@ -540,7 +540,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
+				PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));

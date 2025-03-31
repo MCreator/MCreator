@@ -408,13 +408,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
 					}
-				} else  {
+				} else {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase)
-								|| "TrapDoor".equals(selectedBlockBase) || "Door".equals(selectedBlockBase)
-								|| "FenceGate".equals(selectedBlockBase) || "EndRod".equals(selectedBlockBase)
-								|| "PressurePlate".equals(selectedBlockBase) || "Button".equals(selectedBlockBase)) {
+						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase) || "TrapDoor".equals(
+								selectedBlockBase) || "Door".equals(selectedBlockBase) || "FenceGate".equals(
+								selectedBlockBase) || "EndRod".equals(selectedBlockBase) || "PressurePlate".equals(
+								selectedBlockBase) || "Button".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
 						}
 					}
