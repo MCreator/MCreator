@@ -44,7 +44,6 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.*;
@@ -143,8 +142,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private ProcedureSelector onPlayerEntersDimension;
 	private ProcedureSelector onPlayerLeavesDimension;
 
-	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
+	private final ValidationGroup portalPageGroup = new ValidationGroup();
+	private final ValidationGroup generationPageGroup = new ValidationGroup();
 
 	public DimensionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -540,23 +539,23 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
-		page1group.addValidationElement(igniterName);
-		page1group.addValidationElement(portalTexture);
-		page1group.addValidationElement(texture);
-		page1group.addValidationElement(portalFrame);
+		portalPageGroup.addValidationElement(igniterName);
+		portalPageGroup.addValidationElement(portalTexture);
+		portalPageGroup.addValidationElement(texture);
+		portalPageGroup.addValidationElement(portalFrame);
 
 		biomesInDimension.setValidator(
 				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
 		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock).considerAirAsEmpty());
 		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 
-		page2group.addValidationElement(biomesInDimension);
-		page2group.addValidationElement(mainFillerBlock);
-		page2group.addValidationElement(fluidBlock);
+		generationPageGroup.addValidationElement(biomesInDimension);
+		generationPageGroup.addValidationElement(mainFillerBlock);
+		generationPageGroup.addValidationElement(fluidBlock);
 
-		addPage(L10N.t("elementgui.dimension.page_generation"), generationPage);
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPage);
-		addPage(L10N.t("elementgui.dimension.page_portal"), pane2);
+		addPage(L10N.t("elementgui.dimension.page_generation"), generationPage).validate(generationPageGroup);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPage).validate(infiniburnTag);
+		addPage(L10N.t("elementgui.dimension.page_portal"), pane2).validate(portalPageGroup);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
 		if (!isEditingMode()) {
@@ -637,16 +636,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("PORTAL"));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page2group);
-		else if (page == 1)
-			return new AggregatedValidationResult(infiniburnTag);
-		else if (page == 2)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Dimension dimension) {

@@ -67,10 +67,6 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		addPage(pane5, false);
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 

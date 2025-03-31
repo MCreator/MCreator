@@ -308,8 +308,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.tool.needs_a_name")));
 		name.enableRealtimeValidation();
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane4);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
+		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
@@ -391,14 +391,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(name);
-		else if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Tool tool) {

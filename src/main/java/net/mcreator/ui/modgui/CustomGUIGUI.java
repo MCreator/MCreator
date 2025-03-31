@@ -82,10 +82,6 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		onClosed.refreshListKeepSelected();
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void openInEditingMode(GUI gui) {
 		editor.setOpening(true);
 
