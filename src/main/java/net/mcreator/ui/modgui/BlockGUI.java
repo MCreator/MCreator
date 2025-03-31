@@ -1237,6 +1237,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
 		}
+
+		Model model = renderType.getSelectedItem();
+		if (model != null && model.getType() == Model.Type.JAVA) {
+			hasInventory.setSelected(true);
+			hasInventory.setEnabled(false);
+		} else {
+			hasInventory.setEnabled(true);
+		}
 	}
 
 	public void updateParametersBasedOnBoundingBoxSize() {
@@ -1296,7 +1304,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-								.collect(Collectors.toList())));
+								.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
@@ -1583,6 +1591,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 2;
 		else if (model.getType() == Model.Type.OBJ)
 			block.renderType = 3;
+		else if (model.getType() == Model.Type.JAVA)
+			block.renderType = 4;
 		else if (model.equals(singleTexture))
 			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 11 : 110;
 		else if (model.equals(cross))

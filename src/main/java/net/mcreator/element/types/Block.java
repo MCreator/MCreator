@@ -271,6 +271,8 @@ import java.util.stream.Collectors;
 			modelType = Model.Type.JSON;
 		else if (renderType == 3)
 			modelType = Model.Type.OBJ;
+		else if (renderType == 4)
+			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
