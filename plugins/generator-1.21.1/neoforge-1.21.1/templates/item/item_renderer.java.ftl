@@ -60,10 +60,38 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (model == null)
             return;
     	poseStack.pushPose();
-        poseStack.scale(1.0F, -1.0F, -1.0F);
+        applyTransformation(displayContext, poseStack);
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, stack.hasFoil());
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
+    }
+
+    private void applyTransformation(ItemDisplayContext displayContext, PoseStack poseStack) {
+    	switch(displayContext) {
+    		case FIXED:
+				poseStack.translate(0.5F, 1.35F, 0.5F);
+				poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+				poseStack.scale(1.0F, -1.0F, -1.0F);
+				break;
+    		case GROUND:
+				poseStack.translate(0.5F, 0.65F, 0.5F);
+				poseStack.scale(0.25F, -0.25F, -0.25F);
+				break;
+    		case GUI:
+				poseStack.translate(0.5F, 1.5F, 1F);
+				poseStack.scale(1.0F, -1.0F, -1.0F);
+				break;
+    		case HEAD:
+				poseStack.translate(0.5F, 2.45F, 0.5F);
+				poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+				poseStack.scale(1.0F, -1.0F, -1.0F);
+				break;
+    		default:
+    			poseStack.translate(0.5F, 2.0F, 0.9F);
+    			poseStack.scale(1.0F, -1.0F, -1.0F);
+    	}
     }
 }
 </#compress>
