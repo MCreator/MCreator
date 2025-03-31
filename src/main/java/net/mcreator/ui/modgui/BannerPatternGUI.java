@@ -45,6 +45,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
+
 	private TextureSelectionButton texture;
 	private TextureSelectionButton shieldTexture;
 	private final VTextField name = new VTextField(28);
@@ -97,18 +98,12 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		page1group.addValidationElement(shieldTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(texturesPanel, properties, 25, 25)));
+		addPage(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(texturesPanel, properties, 25, 25))).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override protected void openInEditingMode(BannerPattern bannerPattern) {
@@ -130,4 +125,5 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-banner-pattern");
 	}
+
 }
