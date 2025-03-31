@@ -178,6 +178,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel();
@@ -269,12 +270,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(immuneToFire);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				L10N.label("elementgui.tool.stays_in_grid_when_crafting")));
+				L10N.label("elementgui.item.container_item")));
 		selp.add(stayInGridWhenCrafting);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.tool.damaged_on_crafting")));
+				L10N.label("elementgui.item.container_item_damage")));
 		selp.add(damageOnCrafting);
+
+		usageCount.addChangeListener(e -> updateCraftingSettings());
 
 		blocksAffected.setEnabled(false);
 
@@ -316,7 +319,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			name.setText(readableNameFromModElement);
 		}
 
+		updateCraftingSettings();
 		updateFields();
+	}
+
+	private void updateCraftingSettings() {
+		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) usageCount.getValue() > 0));
 	}
 
 	private void updateFields() {
@@ -414,6 +422,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		blocksAffected.setListElements(tool.blocksAffected);
 
+		updateCraftingSettings();
 		updateFields();
 
 		if (toolType.getSelectedItem() != null)

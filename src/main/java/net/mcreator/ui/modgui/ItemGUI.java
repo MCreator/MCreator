@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -72,7 +73,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
+	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
 	private final VTextField name = new VTextField(20);
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
@@ -162,6 +163,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
+	private ModElementListField providedBannerPatterns;
+
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -219,6 +222,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
+
+		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
 
 		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
@@ -353,10 +358,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
+		damageCount.addChangeListener(e -> updateCraftingSettings());
 		immuneToFire.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
+
+		updateCraftingSettings();
 
 		subpane2.setOpaque(false);
 
@@ -445,38 +454,42 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		JPanel musicDiscProperties = new JPanel(new GridLayout(5, 2, 35, 2));
-		musicDiscProperties.setBorder(BorderFactory.createTitledBorder(
+		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
+		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.section_musicdisc"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.item.section_musicdisc_banner"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-		musicDiscProperties.setOpaque(false);
+		musicDiscBannerProperties.setOpaque(false);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
 				L10N.label("elementgui.item.musicdisc")));
-		musicDiscProperties.add(isMusicDisc);
+		musicDiscBannerProperties.add(isMusicDisc);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_music"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_music"),
 				L10N.label("elementgui.item.musicdisc_music")));
-		musicDiscProperties.add(musicDiscMusic);
+		musicDiscBannerProperties.add(musicDiscMusic);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_description"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_description"),
 				L10N.label("elementgui.item.musicdisc_description")));
-		musicDiscProperties.add(musicDiscDescription);
+		musicDiscBannerProperties.add(musicDiscDescription);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_length"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_length"),
 				L10N.label("elementgui.item.musicdisc_length")));
-		musicDiscProperties.add(musicDiscLengthInTicks);
+		musicDiscBannerProperties.add(musicDiscLengthInTicks);
 
-		musicDiscProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_analog_output"),
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_analog_output"),
 				L10N.label("elementgui.item.musicdisc_analog_output")));
-		musicDiscProperties.add(musicDiscAnalogOutput);
+		musicDiscBannerProperties.add(musicDiscAnalogOutput);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/provided_banner_patterns"),
+				L10N.label("elementgui.item.provided_banner_patterns")));
+		musicDiscBannerProperties.add(providedBannerPatterns);
 
 		ComponentUtils.deriveFont(musicDiscDescription, 16);
 
-		updateMusicDiscPanel();
+		updateMusicDiscBannerPanel();
 
-		isMusicDisc.addActionListener(e -> updateMusicDiscPanel());
+		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
 
 		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
 		rangedProperties.setOpaque(false);
@@ -527,8 +540,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(inventoryProperties, musicDiscProperties)),
-				rangedPanel, 10, 10)));
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
+				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -562,18 +575,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
-	private void updateMusicDiscPanel() {
-		if (isMusicDisc.isSelected()) {
-			musicDiscMusic.setEnabled(true);
-			musicDiscDescription.setEnabled(true);
-			musicDiscLengthInTicks.setEnabled(true);
-			musicDiscAnalogOutput.setEnabled(true);
-		} else {
-			musicDiscMusic.setEnabled(false);
-			musicDiscDescription.setEnabled(false);
-			musicDiscLengthInTicks.setEnabled(false);
-			musicDiscAnalogOutput.setEnabled(false);
-		}
+	private void updateCraftingSettings() {
+		recipeRemainder.setEnabled(stayInGridWhenCrafting.isSelected());
+		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) damageCount.getValue() > 0));
+	}
+
+	private void updateMusicDiscBannerPanel() {
+		boolean isDisc = isMusicDisc.isSelected();
+		musicDiscMusic.setEnabled(isDisc);
+		musicDiscDescription.setEnabled(isDisc);
+		musicDiscLengthInTicks.setEnabled(isDisc);
+		musicDiscAnalogOutput.setEnabled(isDisc);
 	}
 
 	private void updateFoodPanel() {
@@ -703,10 +715,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscDescription.setText(item.musicDiscDescription);
 		musicDiscLengthInTicks.setValue(item.musicDiscLengthInTicks);
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
+		providedBannerPatterns.setListElements(
+				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
 
+		updateCraftingSettings();
 		updateFoodPanel();
 		updateRangedPanel();
-		updateMusicDiscPanel();
+		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
 		Model model = item.getItemModel();
@@ -768,6 +783,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.musicDiscDescription = musicDiscDescription.getText();
 		item.musicDiscLengthInTicks = (int) musicDiscLengthInTicks.getValue();
 		item.musicDiscAnalogOutput = (int) musicDiscAnalogOutput.getValue();
+		item.providedBannerPatterns = providedBannerPatterns.getListElements().stream()
+				.map(NonMappableElement::getUnmappedValue).collect(Collectors.toList());
 
 		item.texture = texture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
