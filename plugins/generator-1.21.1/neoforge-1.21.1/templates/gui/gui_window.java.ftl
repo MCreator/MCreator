@@ -34,12 +34,10 @@ package ${package}.client.gui;
 
 <#assign hasEntityModels = false>
 
-public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
+public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
-
-	private boolean updateLock;
 
 	<#list data.getComponentsOfType("TextField") as component>
 	EditBox ${component.getName()};
@@ -66,42 +64,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.entity = container.entity;
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
-		this.initCheckBoxes();
 	}
 
-	public void onGuistateUpdate(int elementType, String name, Object elementState) {
-	    <#if data.getComponentsOfType("TextField")?has_content>
-	    if (elementType == 0 && elementState instanceof String stringState) {
-	        <#list data.getComponentsOfType("TextField") as component>
-	            if (name.equals("${component.getName()}")) {
-	                ${component.getName()}.setValue(stringState);
-	            }
-	        </#list>
-	    }
-	    </#if>
-
-	    <#if data.getComponentsOfType("Checkbox")?has_content>
-	    if (elementType == 1 && elementState instanceof Boolean logicState) {
-	       this.updateLock = true;
-	       <#list data.getComponentsOfType("Checkbox") as component>
-	            if (name.equals("${component.getName()}")) {
-                	if (${component.getName()}.selected() != logicState.booleanValue()) ${component.getName()}.onPress();
-                }
-           </#list>
-           this.updateLock = false;
-	    }
-	    </#if>
-	}
-
-	private void initCheckBoxes() {
-	    <#list data.getComponentsOfType("Checkbox") as component>
-        	<#if hasProcedure(component.isCheckedProcedure)>
-        	    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>) {
-                    ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", true);
-                }
-        	</#if>
-        </#list>
-	}
+	<#-- There will be a method here that updates the states of the GUI elements when receiving guistate from the server. -->
 
 	<#if data.doesPauseGame>
 	@Override public boolean isPauseScreen() {
@@ -300,11 +265,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		<#list data.getComponentsOfType("Checkbox") as component>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
-				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
 				.onValueChange((checkbox, value) -> {
-                	 if (!this.updateLock)
-                    	 ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", value);
-                }).build();
+				     ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", value);
+				}).build();
+			<#if hasProcedure(component.isCheckedProcedure)>
+			    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)
+			        ${component.getName()}.onPress();
+			</#if>
 
 			this.addRenderableWidget(${component.getName()});
 		</#list>

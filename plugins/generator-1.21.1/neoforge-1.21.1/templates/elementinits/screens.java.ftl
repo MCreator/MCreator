@@ -49,16 +49,6 @@ package ${package}.init;
 		</#list>
 	}
 
-	public static void onGuistateUpdate(int elementType, String name, Object elementState) {
-	    if (Minecraft.getInstance().screen instanceof ScreenAccessor accessor) {
-	        accessor.onGuistateUpdate(elementType, name, elementState);
-	    }
-	}
-
-	public interface ScreenAccessor {
-	    void onGuistateUpdate(int elementType, String name, Object elementState);
-	}
-
 	<#if hasTextField>
     public static EditBox createListenerTextField(Font font, int x, int y, int width, int height, Component narratable, Consumer<String> listener, boolean suggest) {
         return new EditBox(font, x, y, width, height, narratable) {
