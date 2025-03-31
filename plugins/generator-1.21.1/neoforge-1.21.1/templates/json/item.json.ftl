@@ -2,7 +2,7 @@
 <#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
 	<#assign parent = "builtin/entity">
 	<#assign texture = "particle">
-    "gui_light": "front",
+	"gui_light": "front",
 <#else>
 	<#assign parent = "item/generated">
 	<#assign texture = "layer0">
