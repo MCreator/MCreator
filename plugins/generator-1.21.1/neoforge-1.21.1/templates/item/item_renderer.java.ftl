@@ -47,19 +47,20 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
         LivingEntity entity = stack.getEntityRepresentation() instanceof LivingEntity le ? le : Minecraft.getInstance().player;
         ClientLevel level = entity.level() instanceof ClientLevel cl ? cl : null;
         <#list data.getModels() as model>
-        <#if model.hasCustomJAVAModel()>
-        if (<#list model.stateMap.entrySet() as entry>
-                ItemProperties.getProperty(stack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
-                    .call(stack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}F
-            <#sep> && </#list>) {
-            model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
-            texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
-        }
-        </#if>
+			<#if model.hasCustomJAVAModel()>
+			if (<#list model.stateMap.entrySet() as entry>
+					ItemProperties.getProperty(stack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+						.call(stack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}f
+				<#sep> && </#list>) {
+				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
+				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
+			}
+			</#if>
         </#list>
         if (model == null)
             return;
-    	poseStack.pushPose();
+
+        poseStack.pushPose();
         applyTransformation(displayContext, poseStack);
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, stack.hasFoil());
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
