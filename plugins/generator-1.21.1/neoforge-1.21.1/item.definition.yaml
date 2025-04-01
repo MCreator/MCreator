@@ -13,6 +13,10 @@ templates:
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
     condition: isMusicDisc
+  - template: json/banner_pattern_item_tag.json.ftl
+    writer: json
+    name: "@MODDATAROOT/tags/banner_pattern/pattern_item/@registryname.json"
+    condition: hasBannerPatterns()
   - template: json/item.json.ftl
     writer: json
     condition_any:
@@ -77,5 +81,8 @@ localizationkeys:
   - key: item.@modid.@registryname.desc
     mapto: musicDiscDescription
     condition: isMusicDisc
+  - key: item.@modid.@registryname.patterns
+    mapto: getPatternDescription()
+    condition: hasBannerPatterns()
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index

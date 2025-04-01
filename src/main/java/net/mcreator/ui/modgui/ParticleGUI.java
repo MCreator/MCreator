@@ -32,7 +32,6 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
@@ -163,7 +162,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(texture);
 	}
 
 	@Override public void reloadDataLists() {
@@ -171,12 +170,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		additionalExpiryCondition.refreshListKeepSelected();
 		scale.refreshListKeepSelected();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(texture);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Particle particle) {

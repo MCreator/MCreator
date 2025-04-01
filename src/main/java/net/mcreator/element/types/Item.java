@@ -115,6 +115,8 @@ import java.util.*;
 	public int musicDiscLengthInTicks;
 	public int musicDiscAnalogOutput;
 
+	@ModElementReference public List<String> providedBannerPatterns;
+
 	private Item() {
 		this(null);
 	}
@@ -132,6 +134,8 @@ import java.util.*;
 		this.inventoryStackSize = 64;
 		this.saturation = 0.3f;
 		this.animation = "eat";
+
+		this.providedBannerPatterns = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -202,6 +206,21 @@ import java.util.*;
 
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
+	}
+
+	public boolean hasBannerPatterns() {
+		return !providedBannerPatterns.isEmpty();
+	}
+
+	public String getPatternDescription() {
+		if (!providedBannerPatterns.isEmpty()) {
+			List<String> names = providedBannerPatterns.stream()
+					.map(e -> getModElement().getWorkspace().getModElementByName(e))
+					.map(me -> me != null && me.getGeneratableElement() instanceof BannerPattern bp ? bp.name : "")
+					.toList();
+			return String.join(", ", names);
+		}
+		return "";
 	}
 
 	/**
