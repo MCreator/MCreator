@@ -79,20 +79,19 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 
 	<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
-    @SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new IClientItemExtensions() {
-                private ${name}ItemRenderer renderer;
+	@SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		event.registerItem(new IClientItemExtensions() {
+			private ${name}ItemRenderer renderer;
 
-                @Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    if (this.renderer == null) {
-                        this.renderer = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(),
-                            Minecraft.getInstance().getEntityModels());
-                    }
+			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				if (this.renderer == null)
+					this.renderer = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
 
-                    return this.renderer;
-                }
-            }, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
-    }
+				return this.renderer;
+			}
+		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
+	}
+	</#if>
 
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
 	public MutableComponent getDisplayName() {
