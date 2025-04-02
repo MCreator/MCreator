@@ -41,11 +41,6 @@ public class TextureSelectionButtonValidator implements Validator {
 
 	public TextureSelectionButtonValidator(TextureSelectionButton holder, Supplier<Boolean> requirement) {
 		this.holder = holder;
-		this.requirement = requirement::isSelected;
-	}
-
-	public TileHolderValidator(TextureSelectionButton holder, Supplier<Boolean> requirement) {
-		this.holder = holder;
 		this.requirement = requirement;
 	}
 

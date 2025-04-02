@@ -1133,7 +1133,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
 
-		itemTexture.setValidator(new TileHolderValidator(itemTexture, () -> {
+		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
 			Model model = renderType.getSelectedItem();
 			return model != null && model.getType() == Model.Type.JAVA;
 		}));
