@@ -31,7 +31,7 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -88,8 +88,8 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 		requireItem.setOpaque(false);
 
-		texture.setValidator(new TileHolderValidator(texture));
-		shieldTexture.setValidator(new TileHolderValidator(shieldTexture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
+		shieldTexture.setValidator(new TextureSelectionButtonValidator(shieldTexture));
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.banner_pattern.pattern_needs_name")));
 		name.enableRealtimeValidation();
 
