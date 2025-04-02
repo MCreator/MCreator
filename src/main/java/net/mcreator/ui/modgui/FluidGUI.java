@@ -44,7 +44,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -460,8 +459,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		page1group.addValidationElement(bucketName);
 
-		addPage(L10N.t("elementgui.common.page_visual"), visualsPage);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_visual"), visualsPage).validate(texturesValidationGroup);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
@@ -494,14 +493,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogEndDistance.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(texturesValidationGroup);
-		else if (page == 1)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Fluid fluid) {

@@ -761,12 +761,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		page3group.addValidationElement(hitSound.getVTextField());
 		page3group.addValidationElement(fallSound.getVTextField());
 
-		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2);
+		addPage(L10N.t("elementgui.plant.page_visual_and_type"), pane2).validate(texture)
+				.lazyValidate(this::validateSaplingTrees);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane5);
 		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(events));
-		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
+		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4)).validate(
+				restrictionBiomes);
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
@@ -893,16 +895,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComboBoxUtil.updateComboBoxContents(suspiciousStewEffect,
 				ElementUtil.loadAllPotionEffects(mcreator.getWorkspace()).stream().map(DataListEntry::getName)
 						.collect(Collectors.toList()), "SPEED");
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(new AggregatedValidationResult(texture), validateSaplingTrees());
-		else if (page == 2)
-			return new AggregatedValidationResult(page3group);
-		else if (page == 5)
-			return new AggregatedValidationResult(restrictionBiomes);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Plant plant) {

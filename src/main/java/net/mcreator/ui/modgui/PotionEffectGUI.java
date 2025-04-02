@@ -34,7 +34,6 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -206,8 +205,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			effectName.setText(readableNameFromModElement);
 		}
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
+		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage).lazyValidate(
+				modifierList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 
@@ -222,15 +222,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 		onMobHurt.refreshListKeepSelected();
 		onMobRemoved.refreshListKeepSelected();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0) {
-			return new AggregatedValidationResult(page1group);
-		} else if (page == 1) {
-			return modifierList.getValidationResult();
-		}
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(PotionEffect potion) {
