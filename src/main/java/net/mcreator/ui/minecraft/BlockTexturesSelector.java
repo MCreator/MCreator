@@ -27,7 +27,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 
 import javax.swing.*;
@@ -91,7 +91,7 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 			}
 		});
 
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 	}
 
 	public void setTextures(TextureHolder texture, TextureHolder textureTop, TextureHolder textureLeft,

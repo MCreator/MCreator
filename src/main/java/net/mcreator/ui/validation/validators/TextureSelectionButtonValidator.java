@@ -25,16 +25,21 @@ import net.mcreator.ui.validation.Validator;
 import javax.swing.*;
 import java.util.function.Supplier;
 
-public class TileHolderValidator implements Validator {
+public class TextureSelectionButtonValidator implements Validator {
 
 	private Supplier<Boolean> requirement;
 	private final TextureSelectionButton holder;
 
-	public TileHolderValidator(TextureSelectionButton holder) {
+	public TextureSelectionButtonValidator(TextureSelectionButton holder) {
 		this.holder = holder;
 	}
 
-	public TileHolderValidator(TextureSelectionButton holder, JToggleButton requirement) {
+	public TextureSelectionButtonValidator(TextureSelectionButton holder, JToggleButton requirement) {
+		this.holder = holder;
+		this.requirement = requirement::isSelected;
+	}
+
+	public TextureSelectionButtonValidator(TextureSelectionButton holder, Supplier<Boolean> requirement) {
 		this.holder = holder;
 		this.requirement = requirement::isSelected;
 	}

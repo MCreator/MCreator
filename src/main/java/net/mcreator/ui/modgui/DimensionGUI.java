@@ -534,8 +534,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
 				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
-		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
-		texture.setValidator(new TileHolderValidator(texture, enableIgniter));
+		portalTexture.setValidator(new TextureSelectionButtonValidator(portalTexture, enablePortal));
+		texture.setValidator(new TextureSelectionButtonValidator(texture, enableIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 

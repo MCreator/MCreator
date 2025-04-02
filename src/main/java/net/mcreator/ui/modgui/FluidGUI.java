@@ -47,7 +47,7 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -444,8 +444,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		textureStill.setValidator(new TileHolderValidator(textureStill));
-		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
+		textureStill.setValidator(new TextureSelectionButtonValidator(textureStill));
+		textureFlowing.setValidator(new TextureSelectionButtonValidator(textureFlowing));
 
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
