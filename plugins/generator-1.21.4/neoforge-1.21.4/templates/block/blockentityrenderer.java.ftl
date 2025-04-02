@@ -91,26 +91,13 @@ package ${package}.client.renderer.block;
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
 
-		private final ModelPart root;
-
-		private final HierarchicalModel animator = new HierarchicalModel<Entity>() {
-			@Override public ModelPart root() {
-				return root;
-			}
-
-			@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-				this.root().getAllParts().forEach(ModelPart::resetPose);
-			}
-		};
-
 		public CustomHierarchicalModel(ModelPart root) {
 			super(root);
-			this.root = root;
 		}
 
 		@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			this.root().getAllParts().forEach(ModelPart::resetPose);
 		}
 
 		public ModelPart getRoot() {

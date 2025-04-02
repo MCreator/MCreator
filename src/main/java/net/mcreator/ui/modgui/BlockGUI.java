@@ -55,10 +55,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -1134,6 +1131,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
 		page1group.addValidationElement(textures);
+		page1group.addValidationElement(itemTexture);
+
+		itemTexture.setValidator(new TileHolderValidator(itemTexture, () -> {
+			Model model = renderType.getSelectedItem();
+			return model != null && model.getType() == Model.Type.JAVA;
+		}));
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();

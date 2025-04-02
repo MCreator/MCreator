@@ -48,7 +48,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
-    condition: "renderType() #= 11"
+    condition: "renderType() #?= 11,4"
     writer: json
     variables: "model=cube_all;txname=all"
     name: "@MODASSETSROOT/models/block/@registryname.json"
