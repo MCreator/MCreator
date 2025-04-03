@@ -165,6 +165,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox noteBlockInstrument = new DataListComboBox(mcreator,
+			ElementUtil.loadNoteBlockInstruments());
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -612,7 +614,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -769,6 +771,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.block.color_on_map")));
 		advancedProperties.add(colorOnMap);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/note_block_instrument"),
+				L10N.label("elementgui.block.note_block_instrument")));
+		advancedProperties.add(noteBlockInstrument);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_plants_grow"),
 				L10N.label("elementgui.block.can_plants_grow")));
@@ -1413,6 +1419,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setSelected(block.isReplaceable);
 		canProvidePower.setSelected(block.canProvidePower);
 		colorOnMap.setSelectedItem(block.colorOnMap);
+		noteBlockInstrument.setSelectedItem(block.noteBlockInstrument);
 		offsetType.setSelectedItem(block.offsetType);
 		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
 		creativePickItem.setBlock(block.creativePickItem);
@@ -1567,6 +1574,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.noteBlockInstrument = noteBlockInstrument.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
