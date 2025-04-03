@@ -218,6 +218,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("mapcolors");
 	}
 
+	public static List<DataListEntry> loadNoteBlockInstruments() {
+		return DataListLoader.loadDataList("noteblockinstruments");
+	}
+
 	public static List<DataListEntry> loadAnimations(Workspace workspace) {
 		List<DataListEntry> animations = new ArrayList<>();
 		for (Animation animation : Animation.getAnimations(workspace)) {

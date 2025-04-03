@@ -1,0 +1,32 @@
+- HARP:
+  texture: DIRT
+- BASEDRUM:
+  texture: STONE#0
+- SNARE:
+  texture: SAND#0
+- HAT:
+  texture: GLASS
+- BASS:
+  texture: LOG#0
+- FLUTE:
+  texture: CLAY
+- BELL:
+  texture: GOLD_BLOCK
+- GUITAR:
+  texture: WOOL#0
+- CHIME:
+  texture: PACKED_ICE
+- XYLOPHONE:
+  texture: BONE_BLOCK
+- IRON_XYLOPHONE:
+  texture: IRON_BLOCK
+- COW_BELL:
+  texture: SOUL_SAND
+- DIDGERIDOO:
+  texture: FULL_PUMPKIN
+- BIT:
+  texture: EMERALD_BLOCK
+- BANJO:
+  texture: HAY_BLOCK
+- PLING:
+  texture: GLOWSTONE
