@@ -1399,6 +1399,29 @@ public class MinecraftImageGenerator {
 			return icon;
 		}
 
+		/**
+		 * This method generates an element preview for banner patterns.
+		 *
+		 * @param texture The pattern texture
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateBannerPatternPreviewPicture(Image texture) {
+			BufferedImage patternOverlay = new BufferedImage(48, 48, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = patternOverlay.createGraphics();
+			// Draw banner background
+			g2d.setColor(Color.gray);
+			g2d.fillRect(14, 0, 20, 2);
+			g2d.fillRect(23, 42, 2, 6);
+			g2d.setColor(Color.black);
+			g2d.fillRect(14, 2, 20, 40);
+			// Get white overlay
+			var patternFront = ImageUtils.crop(ImageUtils.toBufferedImage(ImageUtils.resize(texture, 64)),
+					new Rectangle(1, 1, 20, 40));
+			g2d.drawImage(patternFront, 14, 2, 20, 40, null);
+			g2d.dispose();
+			return patternOverlay;
+		}
+
 		public static Image generateBannerPatternPreview() {
 			BufferedImage image = new BufferedImage(210, 210, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = (Graphics2D) image.getGraphics();
