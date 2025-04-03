@@ -32,7 +32,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -147,11 +146,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		parameters.add(new JEmptyBox(10, 10));
 		parameters.add(dispenserBehaviourPanel);
 
-		addPage(PanelUtils.totalCenterInPanel(parameters));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(pageGroup);
+		addPage(PanelUtils.totalCenterInPanel(parameters)).validate(pageGroup);
 	}
 
 	@Override public void reloadDataLists() {

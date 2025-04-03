@@ -23,23 +23,29 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
+import java.util.function.Supplier;
 
-public class TileHolderValidator implements Validator {
+public class TextureSelectionButtonValidator implements Validator {
 
-	private JToggleButton requirement;
+	private Supplier<Boolean> requirement;
 	private final TextureSelectionButton holder;
 
-	public TileHolderValidator(TextureSelectionButton holder) {
+	public TextureSelectionButtonValidator(TextureSelectionButton holder) {
 		this.holder = holder;
 	}
 
-	public TileHolderValidator(TextureSelectionButton holder, JToggleButton requirement) {
+	public TextureSelectionButtonValidator(TextureSelectionButton holder, JToggleButton requirement) {
+		this.holder = holder;
+		this.requirement = requirement::isSelected;
+	}
+
+	public TextureSelectionButtonValidator(TextureSelectionButton holder, Supplier<Boolean> requirement) {
 		this.holder = holder;
 		this.requirement = requirement;
 	}
 
 	@Override public ValidationResult validate() {
-		if (holder.hasTexture() || (requirement != null && !requirement.isSelected()))
+		if (holder.hasTexture() || (requirement != null && !requirement.get()))
 			return Validator.ValidationResult.PASSED;
 		else
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,

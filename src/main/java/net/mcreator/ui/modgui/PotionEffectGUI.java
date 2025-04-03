@@ -34,11 +34,10 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -192,7 +191,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		icon.setValidator(new TileHolderValidator(icon));
+		icon.setValidator(new TextureSelectionButtonValidator(icon));
 		effectName.setValidator(
 				new TextFieldValidator(effectName, L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();
@@ -206,8 +205,9 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 			effectName.setText(readableNameFromModElement);
 		}
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
-		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
+		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage).lazyValidate(
+				modifierList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
 
@@ -222,15 +222,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		activeTickCondition.refreshListKeepSelected();
 		onMobHurt.refreshListKeepSelected();
 		onMobRemoved.refreshListKeepSelected();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0) {
-			return new AggregatedValidationResult(page1group);
-		} else if (page == 1) {
-			return modifierList.getValidationResult();
-		}
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(PotionEffect potion) {
