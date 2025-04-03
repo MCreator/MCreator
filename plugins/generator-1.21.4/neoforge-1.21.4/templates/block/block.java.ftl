@@ -174,6 +174,9 @@ public class ${name}Block extends
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
+		<#if data.ignitedByLava>
+			.ignitedByLava()
+		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||

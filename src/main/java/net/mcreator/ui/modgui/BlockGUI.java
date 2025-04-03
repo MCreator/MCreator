@@ -250,6 +250,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
+	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -611,10 +612,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
+		ignitedByLava.setOpaque(false);
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
 		requiresCorrectTool.setOpaque(false);
@@ -783,6 +785,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enchantments_bonus"),
 				L10N.label("elementgui.block.enchantments_bonus")));
 		advancedProperties.add(enchantPowerBonus);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		advancedProperties.add(ignitedByLava);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.block.flammability")));
@@ -1414,6 +1420,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		beaconColorModifier.setColor(block.beaconColorModifier);
 
+		ignitedByLava.setSelected(block.ignitedByLava);
 		flammability.setValue(block.flammability);
 		fireSpreadSpeed.setValue(block.fireSpreadSpeed);
 
@@ -1565,6 +1572,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 
+		block.ignitedByLava = ignitedByLava.isSelected();
 		block.flammability = (int) flammability.getValue();
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 

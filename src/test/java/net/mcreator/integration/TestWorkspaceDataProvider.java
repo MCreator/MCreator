@@ -1413,6 +1413,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
+			block.ignitedByLava = _true;
 			block.flammability = 5;
 			block.fireSpreadSpeed = 12;
 			block.dropAmount = 3;

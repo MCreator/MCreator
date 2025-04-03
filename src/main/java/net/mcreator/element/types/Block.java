@@ -112,6 +112,7 @@ import java.util.stream.Collectors;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
 
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 
