@@ -1398,6 +1398,32 @@ public class MinecraftImageGenerator {
 			graphics2D.dispose();
 			return icon;
 		}
+
+		public static Image generateBannerPatternPreview() {
+			BufferedImage image = new BufferedImage(210, 210, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			g.setColor(Color.white);
+			g.drawRect(5, 0, 99, 4); // TOP
+			g.drawRect(0, 5, 4, 199); // LEFT
+			g.drawRect(5, 5, 99, 199); // FRONT
+			g.drawRect(105, 5, 4, 199); // RIGHT
+			g.drawRect(110, 5, 99, 199); // BACK
+			g.drawRect(5, 205, 99, 4); // BOTTOM
+			return image;
+		}
+
+		public static Image generateShieldPatternPreview() {
+			BufferedImage image = new BufferedImage(130, 120, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			g.setColor(Color.white);
+			g.drawRect(5, 0, 59, 4); // TOP
+			g.drawRect(0, 5, 4, 109); // LEFT
+			g.drawRect(5, 5, 59, 109); // FRONT
+			g.drawRect(65, 5, 4, 109); // RIGHT
+			g.drawRect(70, 5, 59, 109); // BACK
+			g.drawRect(5, 115, 59, 4); // BOTTOM
+			return image;
+		}
 	}
 
 }
