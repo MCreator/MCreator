@@ -336,20 +336,39 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
 			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:item");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleitem1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleitem2");
+			}
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
 			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:block");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleblock1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleblock2");
+			}
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:creeper");
 			workspace.getTagElements().get(tag).add("~minecraft:zombie");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:entity");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Examplelivingentity1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplelivingentity2");
+			}
 
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:plains");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:biome");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
@@ -359,6 +378,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stronghold");
 			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:structure");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
@@ -367,6 +387,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:damage_type");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
@@ -375,6 +396,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:enchantment");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
@@ -383,6 +405,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:game_event");
 			workspace.getTagElements().get(tag).add("minecraft:block_attach");
 			workspace.getTagElements().get(tag).add("~minecraft:container_open");
 
