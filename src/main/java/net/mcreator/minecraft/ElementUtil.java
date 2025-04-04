@@ -210,10 +210,6 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "structures", null, "structure");
 	}
 
-	public static List<DataListEntry> loadMaterials() {
-		return DataListLoader.loadDataList("materials");
-	}
-
 	public static List<DataListEntry> loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors");
 	}
