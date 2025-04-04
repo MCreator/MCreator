@@ -67,6 +67,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
+	public String blockSetType;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -202,6 +203,7 @@ import java.util.stream.Collectors;
 
 		this.customProperties = new ArrayList<>();
 
+		this.blockSetType = "OAK";
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
