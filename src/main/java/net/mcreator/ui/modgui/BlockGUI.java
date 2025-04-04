@@ -429,10 +429,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 						hasTransparency.setSelected(true);
 					}
 				}
-				case "Wall", "FenceGate", "EndRod" -> {
+				default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						hasTransparency.setSelected(true);
+						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate") ||
+								selectedBlockBase.equals("EndRod")) {
+							hasTransparency.setSelected(true);
+						}
 					}
 				}
 				}
