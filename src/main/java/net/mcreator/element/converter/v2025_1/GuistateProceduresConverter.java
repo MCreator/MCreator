@@ -54,6 +54,7 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 				Element entityValue = XMLUtil.getFirstChildrenWithName(element, "value", "name", "entity");
 
 				if (entityValue == null || !("entity".equals(entityValue.getAttribute("name")))) {
+					reportDependenciesChanged();
 					Element entityValueNew = doc.createElement("value");
 					entityValueNew.setAttribute("name", "entity");
 
