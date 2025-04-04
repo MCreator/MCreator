@@ -1,1 +1,3 @@
-(guistate.containsKey("checkbox:${field$checkbox}") && ((Checkbox) guistate.get("checkbox:${field$checkbox}")).selected())
+<#if w.hasElementsOfType("gui")>
+${JavaModName}Menus.getGuistateState(${input$entity}, 1, "${field$checkbox}", false)
+<#else>false</#if>
