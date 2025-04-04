@@ -1,0 +1,17 @@
+_default: NoteBlockInstrument.HARP
+HARP: NoteBlockInstrument.HARP
+BASEDRUM: NoteBlockInstrument.BASEDRUM
+SNARE: NoteBlockInstrument.SNARE
+HAT: NoteBlockInstrument.HAT
+BASS: NoteBlockInstrument.BASS
+FLUTE: NoteBlockInstrument.FLUTE
+BELL: NoteBlockInstrument.BELL
+GUITAR: NoteBlockInstrument.GUITAR
+CHIME: NoteBlockInstrument.CHIME
+XYLOPHONE: NoteBlockInstrument.XYLOPHONE
+IRON_XYLOPHONE: NoteBlockInstrument.IRON_XYLOPHONE
+COW_BELL: NoteBlockInstrument.COW_BELL
+DIDGERIDOO: NoteBlockInstrument.DIDGERIDOO
+BIT: NoteBlockInstrument.BIT
+BANJO: NoteBlockInstrument.BANJO
+PLING: NoteBlockInstrument.PLING

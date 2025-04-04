@@ -1,0 +1,1 @@
+If this option is checked, this block can catch fire when it's close to lava.
