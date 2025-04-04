@@ -38,51 +38,50 @@ package ${package}.client.renderer.block;
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
 		model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-
 		texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
 	@Override public void render(BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
+		<#compress>
 		poseStack.pushPose();
-
-		poseStack.translate(0.5, 1.0, 0.5);
-		poseStack.mulPose(Axis.XP.rotationDegrees(180));
-
+		poseStack.scale(-1, -1, 1);
+		poseStack.translate(-0.5, -0.5, 0.5);
 		<#if data.rotationMode != 0>
-			DirectionProperty facing = state.getValue(${name}Block.FACING);
+			BlockState state = blockEntity.getBlockState();
         	<#if data.rotationMode != 5>
-				<#assign pitch = (data.rotationMode == 1 || data.rotationMode == 3) && data.enablePitch>
+				Direction facing = state.getValue(${name}Block.FACING);
         	    switch (facing) {
 					case NORTH -> {}
 					case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
 					case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
 					case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
         	    	<#if data.rotationMode == 2 || data.rotationMode == 4>
-        	    		case UP -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-        	    		case DOWN -> poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+        	    		case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+        	    		case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
 					</#if>
 				}
 				<#if data.enablePitch>
-				if (facing != UP && facing != DOWN) {
+				if (facing != Direction.UP && facing != Direction.DOWN) {
 					switch (state.getValue(${name}Block.FACE)) {
 						case FLOOR -> {}
 						case WALL -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-						case CEILING -> poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+						case CEILING -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
 					};
 				}
 				</#if>
 			<#else>
         	    switch (state.getValue(${name}Block.AXIS)) {
-					case X -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+					case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
 					case Y -> {}
-					case Z -> poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+					case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
 				}
 			</#if>
 		</#if>
-
+		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
+		</#compress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
