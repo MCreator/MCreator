@@ -271,6 +271,8 @@ import java.util.stream.Collectors;
 			modelType = Model.Type.JSON;
 		else if (renderType == 3)
 			modelType = Model.Type.OBJ;
+		else if (renderType == 4)
+			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
@@ -321,6 +323,8 @@ import java.util.stream.Collectors;
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					side, side);
+		} else if (renderType() == 4) {
+			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
