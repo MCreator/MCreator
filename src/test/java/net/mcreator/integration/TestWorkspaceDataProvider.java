@@ -1431,8 +1431,6 @@ public class TestWorkspaceDataProvider {
 			block.lightOpacity = new int[] { 7, 2, 0,
 					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
-			block.material = new Material(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
 			block.tickRate = _true ? 0 : 24;
 			block.isCustomSoundType = !_true;
 			block.soundOnStep = new StepSound(modElement.getWorkspace(),

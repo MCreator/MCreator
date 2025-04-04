@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
@@ -31,7 +30,6 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -78,8 +76,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BlockGUI extends ModElementGUI<Block> {
-
-	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
 	private BlockTexturesSelector textures;
 
@@ -282,8 +278,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
-
-		material.setPrototypeDisplayValue(new DataListEntry.Dummy("No legacy material"));
 
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
@@ -631,7 +625,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", blockStates);
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -706,10 +700,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
-				L10N.label("elementgui.block.material")));
-		selp.add(material);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -881,7 +871,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+						PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1409,7 +1400,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.setSelectedProcedure(block.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(block.onBonemealSuccess);
 		lightOpacity.setValue(block.lightOpacity);
-		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
@@ -1521,7 +1511,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
 		block.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
 		block.lightOpacity = (int) lightOpacity.getValue();
-		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
 		block.isCustomSoundType = customSoundType.isSelected();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
