@@ -33,7 +33,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -124,7 +123,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 
-		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel));
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(
+				page1group);
 
 		if (!isEditingMode()) {
 			displayName.setText(StringUtils.machineToReadableName(modElement.getName()));
@@ -136,12 +136,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		professionTextureFile.reload();
 		zombifiedProfessionTextureFile.reload();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(VillagerProfession profession) {

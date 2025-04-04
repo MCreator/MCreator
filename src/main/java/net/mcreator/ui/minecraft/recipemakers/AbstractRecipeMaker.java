@@ -54,8 +54,8 @@ public abstract class AbstractRecipeMaker extends JPanel {
 			export.setVisible(false);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			setupImageExport(false);
-			BufferedImage outputImage =
-					new BufferedImage(imagePanel.getWidth(), imagePanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage outputImage = new BufferedImage(imagePanel.getWidth(), imagePanel.getHeight(),
+					BufferedImage.TYPE_INT_ARGB);
 			imagePanel.paint(outputImage.getGraphics());
 			File file = FileDialogs.getSaveDialog(null, new String[] { ".png" });
 			if (file != null)
@@ -75,6 +75,7 @@ public abstract class AbstractRecipeMaker extends JPanel {
 
 	/**
 	 * This method is called before and after the recipe is exported as a .png file.
+	 *
 	 * @param exportedYet This parameter is false before the image is generated, true after.
 	 */
 	protected abstract void setupImageExport(boolean exportedYet);

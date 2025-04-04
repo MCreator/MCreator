@@ -23,7 +23,6 @@ import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -61,10 +60,6 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		villagerTradeProfessions.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
