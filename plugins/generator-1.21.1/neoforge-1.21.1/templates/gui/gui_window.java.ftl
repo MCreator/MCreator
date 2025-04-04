@@ -35,9 +35,6 @@ package ${package}.client.gui;
 <#assign hasEntityModels = false>
 
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
-
-	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
-
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
@@ -68,6 +65,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
 	}
+
+	<#-- There will be a method here that updates the states of the GUI elements when receiving guistate from the server. -->
 
 	<#if data.doesPauseGame>
 	@Override public boolean isPauseScreen() {
@@ -201,33 +200,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.init();
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
-			<#if component.placeholder?has_content>
-			{
-				@Override public void insertText(String text) {
-					super.insertText(text);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-
-				@Override public void moveCursorTo(int pos, boolean flag) {
-					super.moveCursorTo(pos, flag);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-			}
-			</#if>;
+			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
+                ${JavaModName}Menus.sendGuistateUpdate(entity, 0, "${component.getName()}", content);
+            }, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
 
-			guistate.put("text:${component.getName()}", ${component.getName()});
 			this.addWidget(this.${component.getName()});
 		</#list>
 
@@ -284,10 +265,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("Checkbox") as component>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
-				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
-				.build();
+				.onValueChange((checkbox, value) -> {
+				     ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", value);
+				}).build();
+			<#if hasProcedure(component.isCheckedProcedure)>
+			    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)
+			        ${component.getName()}.onPress();
+			</#if>
 
-			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}

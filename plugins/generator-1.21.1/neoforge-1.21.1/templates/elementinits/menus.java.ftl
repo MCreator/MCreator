@@ -45,6 +45,46 @@ public class ${JavaModName}Menus {
 		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
 	</#list>
 
+	public interface MenuAccessor {
+	    HashMap<String, Object> getGuistate();
+	}
+
+	public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
+	    if (entity.containerMenu instanceof MenuAccessor menu) {
+        	HashMap<String, Object> guistate = menu.getGuistate();
+            if (elementType == 0) {
+                guistate.put("textfield:" + name, elementState);
+            } else if (elementType == 1) {
+                guistate.put("checkbox:" + name, elementState);
+            }
+        }
+	}
+
+	public static void sendGuistateUpdate(Player entity, int elementType, String name, Object elementState) {
+	    /*
+	     * There should be a synchronization code here to send data to the opposite side.
+	     */
+	    updateGuistate(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
+	}
+
+    <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
+	public static <T> T getGuistateState(Entity entity, int elementType, String name, T defaultValue) {
+        if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
+            HashMap<String, Object> guistate = accessor.getGuistate();
+            try {
+                if (elementType == 0) {
+                    return (T) guistate.getOrDefault("textfield:" + name, defaultValue);
+                }
+                if (elementType == 1) {
+                    return (T) guistate.getOrDefault("checkbox:" + name, defaultValue);
+                }
+            } catch (ClassCastException e) {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
+    }
+
 }
 
 <#-- @formatter:on -->

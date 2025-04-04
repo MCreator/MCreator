@@ -50,7 +50,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		ProcedureSelector entityModel = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/entity_model"),
 				editor.mcreator, L10N.t("dialog.gui.entity_model_procedure"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.ENTITY,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		entityModel.refreshList();
 		entityModel.setValidator(new ProcedureSelectorValidator(entityModel));
 
@@ -58,7 +58,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				IHelpContext.NONE.withEntry("gui/entity_model_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.model_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
