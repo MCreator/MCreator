@@ -226,7 +226,56 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		updateUIFields();
 
-		addPage(pane5);
+		addPage(pane5).validate(name).validate(group).lazyValidate(() -> {
+			if ("Crafting".equals(recipeType.getSelectedItem())) {
+				if (!craftingRecipeMaker.outputItem.containsItem()) {
+					return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
+				} else if (!craftingRecipeMaker.hasInputItems()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
+				}
+			} else if ("Smelting".equals(recipeType.getSelectedItem())) {
+				if (!smeltingRecipeMaker.cb1.containsItem() || !smeltingRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
+				}
+			} else if ("Blasting".equals(recipeType.getSelectedItem())) {
+				if (!blastFurnaceRecipeMaker.cb1.containsItem() || !blastFurnaceRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
+				}
+			} else if ("Smoking".equals(recipeType.getSelectedItem())) {
+				if (!smokerRecipeMaker.cb1.containsItem() || !smokerRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
+				}
+			} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
+				if (!stoneCutterRecipeMaker.cb1.containsItem() || !stoneCutterRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
+				}
+			} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
+				if (!campfireCookingRecipeMaker.cb1.containsItem() || !campfireCookingRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
+				}
+			} else if ("Smithing".equals(recipeType.getSelectedItem())) {
+				if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
+						|| !smithingRecipeMaker.cb3.containsItem() ||
+						// We request smithing recipe to have template for new recipes
+						(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
+				}
+			} else if ("Brewing".equals(recipeType.getSelectedItem())) {
+				if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
+						|| !brewingRecipeMaker.cb3.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
+				}
+			}
+			return new AggregatedValidationResult.PASS();
+		});
 	}
 
 	private void updateUIFields() {
@@ -260,57 +309,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 			recipesPanelLayout.show(recipesPanel, recipeTypeValue.toLowerCase(Locale.ENGLISH));
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ("Crafting".equals(recipeType.getSelectedItem())) {
-			if (!craftingRecipeMaker.outputItem.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
-			} else if (!craftingRecipeMaker.hasInputItems()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
-			}
-		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
-			if (!smeltingRecipeMaker.cb1.containsItem() || !smeltingRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
-			}
-		} else if ("Blasting".equals(recipeType.getSelectedItem())) {
-			if (!blastFurnaceRecipeMaker.cb1.containsItem() || !blastFurnaceRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
-			}
-		} else if ("Smoking".equals(recipeType.getSelectedItem())) {
-			if (!smokerRecipeMaker.cb1.containsItem() || !smokerRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
-			}
-		} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
-			if (!stoneCutterRecipeMaker.cb1.containsItem() || !stoneCutterRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
-			}
-		} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
-			if (!campfireCookingRecipeMaker.cb1.containsItem() || !campfireCookingRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
-			}
-		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
-			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
-					|| !smithingRecipeMaker.cb3.containsItem() ||
-					// We request smithing recipe to have template for new recipes
-					(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
-			}
-		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
-			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
-					|| !brewingRecipeMaker.cb3.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
-			}
-		}
-
-		return new AggregatedValidationResult(name, group);
 	}
 
 	@Override public void openInEditingMode(Recipe recipe) {

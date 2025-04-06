@@ -53,7 +53,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
@@ -430,13 +429,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
 					}
-				} else  {
+				} else {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase)
-								|| "TrapDoor".equals(selectedBlockBase) || "Door".equals(selectedBlockBase)
-								|| "FenceGate".equals(selectedBlockBase) || "EndRod".equals(selectedBlockBase)
-								|| "PressurePlate".equals(selectedBlockBase) || "Button".equals(selectedBlockBase)) {
+						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase) || "TrapDoor".equals(
+								selectedBlockBase) || "Door".equals(selectedBlockBase) || "FenceGate".equals(
+								selectedBlockBase) || "EndRod".equals(selectedBlockBase) || "PressurePlate".equals(
+								selectedBlockBase) || "Button".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
 						}
 					}
@@ -1211,15 +1210,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(placeSound.getVTextField());
 		page3group.addValidationElement(stepSound.getVTextField());
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
-		addPage(L10N.t("elementgui.block.page_states"), bsPane, false);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.block.page_states"), bsPane, false).lazyValidate(blockStates::getValidationResult);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
-		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
+		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8).validate(outSlotIDs).validate(inSlotIDs);
 		addPage(L10N.t("elementgui.block.page_energy_fluid_storage"), pane10);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.common.page_generation"), pane9);
+		addPage(L10N.t("elementgui.common.page_generation"), pane9).validate(restrictionBiomes);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -1362,20 +1361,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 2)
-			return blockStates.getValidationResult();
-		else if (page == 3)
-			return new AggregatedValidationResult(page3group);
-		else if (page == 5)
-			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 8)
-			return new AggregatedValidationResult(restrictionBiomes);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Block block) {

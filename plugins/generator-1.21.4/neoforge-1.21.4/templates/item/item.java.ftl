@@ -36,10 +36,13 @@
 package ${package}.item;
 
 <#compress>
-public class ${name}Item extends Item {
+public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
+	<#if data.hasBannerPatterns()>
+	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
+	</#if>
 
 	public ${name}Item(Item.Properties properties) {
-		super(properties
+		super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS, </#if>properties
 				.rarity(Rarity.${data.rarity})
 				<#if data.hasInventory()>
 				.stacksTo(1)
