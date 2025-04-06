@@ -387,7 +387,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 <#macro canPlaceOnList blockList condition>
 	<#if (blockList?size > 1) && condition>(</#if>
 	<#list blockList as canBePlacedOn>
-	<#if canBePlacedOn.getUnmappedValue()?starts_with("TAG:")>
+	<#if canBePlacedOn.getUnmappedValue().startsWith("TAG:")>
 	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
 	<#elseif canBePlacedOn.getMappedValue(1).startsWith("#")>
 	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
