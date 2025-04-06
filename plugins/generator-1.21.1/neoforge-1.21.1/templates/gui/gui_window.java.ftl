@@ -38,8 +38,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
-
-	private boolean updateLock;
+	<#if data.getComponentsOfType("Checkbox")?has_content>private boolean updateLock;</#if>
 
 	<#list data.getComponentsOfType("TextField") as component>
 	EditBox ${component.getName()};
@@ -68,9 +67,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageHeight = ${data.height};
 	}
 
-	public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+	public void onMenuStateUpdate(String elementType, String name, Object elementState) {
 	    <#if data.getComponentsOfType("TextField")?has_content>
-	    if (elementType == 0 && elementState instanceof String stringState) {
+	    if (elementType.equals("textfield") && elementState instanceof String stringState) {
 	        <#list data.getComponentsOfType("TextField") as component>
 	            if (name.equals("${component.getName()}")) {
 	                ${component.getName()}.setValue(stringState);
@@ -79,7 +78,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	    }
 	    </#if>
 	    <#if data.getComponentsOfType("Checkbox")?has_content>
-	    if (elementType == 1 && elementState instanceof Boolean logicState) {
+	    if (elementType.equals("checkbox") && elementState instanceof Boolean logicState) {
 	        this.updateLock = true;
 	        <#list data.getComponentsOfType("Checkbox") as component>
             	if (name.equals("${component.getName()}") && logicState.booleanValue() != ${component.getName()}.selected()) {
@@ -225,7 +224,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		<#list data.getComponentsOfType("TextField") as component>
 			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-                ${JavaModName}Menus.sendMenuStateUpdate(entity, 0, "${component.getName()}", content);
+                ${JavaModName}Menus.sendMenuStateUpdate(entity, "textfield", "${component.getName()}", content);
             }, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
@@ -290,7 +289,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
 				     if (!this.updateLock)
-				         ${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", value);
+				         ${JavaModName}Menus.sendMenuStateUpdate(entity, "checkbox", "${component.getName()}", value);
 				}).build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 			    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)
