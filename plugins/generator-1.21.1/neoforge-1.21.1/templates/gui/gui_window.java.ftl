@@ -34,10 +34,12 @@ package ${package}.client.gui;
 
 <#assign hasEntityModels = false>
 
-public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
+public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
+
+	private boolean updateLock;
 
 	<#list data.getComponentsOfType("TextField") as component>
 	EditBox ${component.getName()};
@@ -66,7 +68,28 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.imageHeight = ${data.height};
 	}
 
-	<#-- There will be a method here that updates the states of the GUI elements when receiving menuState from the server. -->
+	public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+	    <#if data.getComponentsOfType("TextField")?has_content>
+	    if (elementType == 0 && elementState instanceof String stringState) {
+	        <#list data.getComponentsOfType("TextField") as component>
+	            if (name.equals("${component.getName()}")) {
+	                ${component.getName()}.setValue(stringState);
+	            }
+	        </#list>
+	    }
+	    </#if>
+	    <#if data.getComponentsOfType("Checkbox")?has_content>
+	    if (elementType == 1 && elementState instanceof Boolean logicState) {
+	        this.updateLock = true;
+	        <#list data.getComponentsOfType("Checkbox") as component>
+            	if (name.equals("${component.getName()}") && logicState.booleanValue() != ${component.getName()}.selected()) {
+            	    ${component.getName()}.onPress();
+            	}
+            </#list>
+            this.updateLock = false;
+	    }
+	    </#if>
+	}
 
 	<#if data.doesPauseGame>
 	@Override public boolean isPauseScreen() {
@@ -266,7 +289,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
-				     ${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", value);
+				     if (!this.updateLock)
+				         ${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", value);
 				}).build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 			    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)
