@@ -202,7 +202,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("TextField") as component>
 			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-			    ${JavaModName}Menus.sendGuistateUpdate(entity, 0, "${component.getName()}", content);
+			    ${JavaModName}Menus.sendMenuStateUpdate(entity, 0, "${component.getName()}", content);
 			}, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
@@ -266,7 +266,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
-				     ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", value);
+				     ${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", value);
 				}).build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 			    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>)

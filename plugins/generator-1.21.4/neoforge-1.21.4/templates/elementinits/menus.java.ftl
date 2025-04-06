@@ -49,7 +49,7 @@ public class ${JavaModName}Menus {
 	    HashMap<String, Object> getMenuState();
 	}
 
-	public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
+	public static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof MenuAccessor menu) {
         	HashMap<String, Object> menuState = menu.getMenuState();
             if (elementType == 0) {
@@ -60,11 +60,11 @@ public class ${JavaModName}Menus {
         }
 	}
 
-	public static void sendGuistateUpdate(Player entity, int elementType, String name, Object elementState) {
+	public static void sendMenuStateUpdate(Player entity, int elementType, String name, Object elementState) {
 	    /*
 	     * There should be a synchronization code here to send data to the opposite side.
 	     */
-	    updateGuistate(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
+	    updateMenuState(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
 	}
 
     <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
