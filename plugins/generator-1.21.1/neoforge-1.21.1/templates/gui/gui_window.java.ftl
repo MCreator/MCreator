@@ -66,7 +66,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.imageHeight = ${data.height};
 	}
 
-	<#-- There will be a method here that updates the states of the GUI elements when receiving guistate from the server. -->
+	<#-- There will be a method here that updates the states of the GUI elements when receiving menuState from the server. -->
 
 	<#if data.doesPauseGame>
 	@Override public boolean isPauseScreen() {
