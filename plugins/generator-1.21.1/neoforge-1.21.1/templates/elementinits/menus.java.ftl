@@ -68,7 +68,7 @@ public class ${JavaModName}Menus {
 	}
 
     <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
-	public static <T> T getGuistateState(Entity entity, int elementType, String name, T defaultValue) {
+	public static <T> T getGuistate(Entity entity, int elementType, String name, T defaultValue) {
         if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
             HashMap<String, Object> guistate = accessor.getGuistate();
             try {
