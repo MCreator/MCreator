@@ -1504,6 +1504,16 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(7);
 				block.inventoryInSlotIDs.add(11);
 			}
+			block.sensitiveToVibration = _true;
+			block.vibrationalEvents = new ArrayList<>();
+			if (!emptyLists) {
+				block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+						.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
+			}
+			block.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
+			block.canReceiveVibrationCondition = new Procedure("condition1");
+			block.onReceivedVibration = new Procedure("procedure1");
 			block.hasEnergyStorage = _true;
 			block.energyCapacity = 123;
 			block.energyInitial = 22;
