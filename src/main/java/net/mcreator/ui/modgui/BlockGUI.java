@@ -376,16 +376,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("index:number/itemstack:itemstack/direction:direction")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"), mcreator,
-				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.BOTH,
+				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.SERVER,
 				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate"));
 		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"), mcreator,
-				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.BOTH, true,
+				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
 				L10N.t("condition.common.true")).makeInline();
 		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
-				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.BOTH, true,
+				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
 				Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
