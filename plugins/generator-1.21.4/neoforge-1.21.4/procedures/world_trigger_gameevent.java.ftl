@@ -1,0 +1,1 @@
+world.gameEvent(${input$trigger}, GameEvent.${field$gameevent}, new Vec3(${input$x}, ${input$y}, ${input$z}));
