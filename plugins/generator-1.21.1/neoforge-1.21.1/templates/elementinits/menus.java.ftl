@@ -52,7 +52,7 @@ public class ${JavaModName}Menus {
     private static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof MenuAccessor menu) {
 	        menu.getMenuState().put(elementType + ":" + name, elementState);
-        }
+            }
     }
 
     public static void sendMenuStateUpdate(Player entity, int elementType, String name, Object elementState) {
