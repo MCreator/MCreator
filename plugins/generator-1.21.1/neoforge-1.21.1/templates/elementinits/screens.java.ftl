@@ -40,16 +40,16 @@ package ${package}.init;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
-	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
-		<#list guis as gui>
+   @SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
+	<#list guis as gui>
 		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
-		<#if gui.getComponentsOfType("TextField")?has_content>
+	<#if gui.getComponentsOfType("TextField")?has_content>
             <#assign hasTextField = true>
         </#if>
-		</#list>
-	}
+	</#list>
+    }
 
-	<#if hasTextField>
+    <#if hasTextField>
     public static EditBox createListenerTextField(Font font, int x, int y, int width, int height, Component narratable, Consumer<String> listener, boolean suggest) {
         return new EditBox(font, x, y, width, height, narratable) {
             @Override public boolean keyPressed(int key, int b, int c) {
