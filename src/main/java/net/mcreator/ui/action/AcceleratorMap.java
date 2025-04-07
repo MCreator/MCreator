@@ -105,6 +105,7 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSaveAs, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorSwapColors, KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
 		//IE Tools
 		actionKeyStrokeMap.put(actionRegistry.imageEditorResizeCanvas, KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
