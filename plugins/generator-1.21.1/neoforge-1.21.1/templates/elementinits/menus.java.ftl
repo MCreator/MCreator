@@ -49,7 +49,7 @@ public class ${JavaModName}Menus {
 	    HashMap<String, Object> getMenuState();
 	}
 
-	public static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
+	private static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof MenuAccessor menu) {
 	        HashMap<String, Object> menuState = menu.getMenuState();
 	        if (elementType == 0) {
@@ -73,16 +73,10 @@ public class ${JavaModName}Menus {
 	}
 
     <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
-	public static <T> T getMenuState(Entity entity, int elementType, String name, T defaultValue) {
+	public static <T> T getMenuState(Entity entity, String elementType, String name, T defaultValue) {
         if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
-            HashMap<String, Object> menuState = accessor.getMenuState();
             try {
-                 if (elementType == 0) {
-                     return (T) menuState.getOrDefault("textfield:" + name, defaultValue);
-                 }
-                 if (elementType == 1) {
-                     return (T) menuState.getOrDefault("checkbox:" + name, defaultValue);
-                 }
+                 return (T) accessor.getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
             } catch (ClassCastException e) {
                 return defaultValue;
             }
