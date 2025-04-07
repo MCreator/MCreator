@@ -38,18 +38,18 @@ package ${package}.init;
 
 public class ${JavaModName}Menus {
 
-	public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(Registries.MENU, ${JavaModName}.MODID);
+    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(Registries.MENU, ${JavaModName}.MODID);
 
-	<#list guis as gui>
-	public static final DeferredHolder<MenuType<?>, MenuType<${gui.getModElement().getName()}Menu>> ${gui.getModElement().getRegistryNameUpper()}
-		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
-	</#list>
+    <#list guis as gui>
+    public static final DeferredHolder<MenuType<?>, MenuType<${gui.getModElement().getName()}Menu>> ${gui.getModElement().getRegistryNameUpper()}
+	= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
+    </#list>
 
-	public interface MenuAccessor {
-	    HashMap<String, Object> getMenuState();
-	}
+    public interface MenuAccessor {
+	HashMap<String, Object> getMenuState();
+    }
 
-	private static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
+    private static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof MenuAccessor menu) {
 	        HashMap<String, Object> menuState = menu.getMenuState();
 	        if (elementType == 0) {
@@ -59,20 +59,20 @@ public class ${JavaModName}Menus {
             	menuState.put("checkbox:" + name, elementState);
             }
         }
-	}
+    }
 
-	public static void sendMenuStateUpdate(Player entity, int elementType, String name, Object elementState) {
-	    /*
-	     * There should be a synchronization code here to send data to the opposite side.
-	     */
-	    updateMenuState(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
-	    if (entity.level().isClientSide) {
-	        ${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState);
-	    }
+    public static void sendMenuStateUpdate(Player entity, int elementType, String name, Object elementState) {
+	/*
+	* There should be a synchronization code here to send data to the opposite side.
+	*/
+	updateMenuState(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
+	if (entity.level().isClientSide) {
+	    ${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState);
 	}
+    }
 
     <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
-	public static <T> T getMenuState(Entity entity, String elementType, String name, T defaultValue) {
+    public static <T> T getMenuState(Entity entity, String elementType, String name, T defaultValue) {
         if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
             try {
                  return (T) accessor.getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
