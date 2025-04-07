@@ -1,32 +1,46 @@
-- HARP:
+- harp:
   texture: DIRT
-- BASEDRUM:
+- basedrum:
   texture: STONE#0
-- SNARE:
+- snare:
   texture: SAND#0
-- HAT:
+- hat:
   texture: GLASS
-- BASS:
+- bass:
   texture: LOG#0
-- FLUTE:
+- flute:
   texture: CLAY
-- BELL:
+- bell:
   texture: GOLD_BLOCK
-- GUITAR:
+- guitar:
   texture: WOOL#0
-- CHIME:
+- chime:
   texture: PACKED_ICE
-- XYLOPHONE:
+- xylophone:
   texture: BONE_BLOCK
-- IRON_XYLOPHONE:
+- iron_xylophone:
   texture: IRON_BLOCK
-- COW_BELL:
+- cow_bell:
   texture: SOUL_SAND
-- DIDGERIDOO:
+- didgeridoo:
   texture: FULL_PUMPKIN
-- BIT:
+- bit:
   texture: EMERALD_BLOCK
-- BANJO:
+- banjo:
   texture: HAY_BLOCK
-- PLING:
+- pling:
   texture: GLOWSTONE
+- zombie:
+  texture: SKULL#2
+- skeleton:
+  texture: SKULL#0
+- creeper:
+  texture: SKULL#4
+- dragon:
+  texture: SKULL#5
+- wither_skeleton:
+  texture: SKULL#1
+- piglin:
+  texture: PIGLIN_HEAD
+- custom_head:
+  texture: SKULL#3
