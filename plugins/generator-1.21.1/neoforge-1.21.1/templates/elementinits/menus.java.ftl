@@ -51,13 +51,7 @@ public class ${JavaModName}Menus {
 
     private static void updateMenuState(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof MenuAccessor menu) {
-	        HashMap<String, Object> menuState = menu.getMenuState();
-	        if (elementType == 0) {
-	            menuState.put("textfield:" + name, elementState);
-	        }
-	        if (elementType == 1) {
-            	menuState.put("checkbox:" + name, elementState);
-            }
+	        menu.getMenuState().put(elementType + ":" + name, elementState);
         }
     }
 
@@ -72,7 +66,7 @@ public class ${JavaModName}Menus {
     }
 
     <#-- At the moment this getter method returns a value only from the called side, it is not synchronized with the opposite side. -->
-    public static <T> T getMenuState(Entity entity, String elementType, String name, T defaultValue) {
+    public static <T> T getMenuState(Entity entity, int elementType, String name, T defaultValue) {
         if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
             try {
                  return (T) accessor.getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
