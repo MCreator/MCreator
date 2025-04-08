@@ -1155,7 +1155,7 @@
   texture: SMALL_AMETHYST_BUD
 
 - Blocks.LOG:
-  readable_name: "Oak/Spruce/Birch/Jungle Log"
+  readable_name: "Any Log"
   type: block
   texture: LOG
   subtypes: true
@@ -1179,12 +1179,6 @@
   readable_name: "Jungle Log"
   type: block
   texture: LOG#3
-
-- Blocks.LOG2:
-  readable_name: "Acacia/Dark Oak Log"
-  type: block
-  texture: LOG2
-  subtypes: true
 
 - Blocks.LOG2#0:
   readable_name: "Acacia Log"
@@ -1407,7 +1401,7 @@
   texture: STRIPPED_CHERRY_WOOD
 
 - Blocks.LEAVES:
-  readable_name: "Oak/Spruce/Birch/Jungle Leaves"
+  readable_name: "Any Leaves"
   type: block
   texture: LEAVES
   subtypes: true
@@ -1431,12 +1425,6 @@
   readable_name: "Jungle Leaves"
   type: block
   texture: LEAVES#3
-
-- Blocks.LEAVES2:
-  readable_name: "Acacia/Dark Leaves"
-  type: block
-  texture: LEAVES2
-  subtypes: true
 
 - Blocks.LEAVES2#0:
   readable_name: "Acacia Leaves"

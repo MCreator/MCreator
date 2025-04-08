@@ -271,9 +271,6 @@ Blocks.LOG#2:
 Blocks.LOG#3:
   - Blocks.JUNGLE_LOG
   - "jungle_log"
-Blocks.LOG2:
-  - Blocks.ACACIA_LOG
-  - "#minecraft:logs"
 Blocks.LOG2#0:
   - Blocks.ACACIA_LOG
   - "acacia_log"
@@ -307,9 +304,6 @@ Blocks.LEAVES#2:
 Blocks.LEAVES#3:
   - Blocks.JUNGLE_LEAVES
   - "jungle_leaves"
-Blocks.LEAVES2:
-  - Blocks.ACACIA_LEAVES
-  - "#minecraft:leaves"
 Blocks.LEAVES2#0:
   - Blocks.ACACIA_LEAVES
   - "acacia_leaves"
