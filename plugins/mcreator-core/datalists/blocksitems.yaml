@@ -613,13 +613,8 @@
   type: block
   texture: SUSPICIOUS_GRAVEL
 
-- Blocks.FLOWING_WATER:
-  readable_name: "Water"
-  type: block_without_item
-  texture: FLOWING_WATER
-
 - Blocks.WATER:
-  readable_name: "Water Still"
+  readable_name: "Water"
   type: block_without_item
   texture: WATER
 
@@ -628,13 +623,8 @@
   type: block_without_item
   texture: BUBBLE_COLUMN
 
-- Blocks.FLOWING_LAVA:
-  readable_name: "Lava"
-  type: block_without_item
-  texture: FLOWING_LAVA
-
 - Blocks.LAVA:
-  readable_name: "Lava Still"
+  readable_name: "Lava"
   type: block_without_item
   texture: LAVA
 

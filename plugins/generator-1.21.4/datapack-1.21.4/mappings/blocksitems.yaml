@@ -148,15 +148,9 @@ Blocks.GRAVEL:
 Blocks.SUSPICIOUS_GRAVEL:
   - Blocks.SUSPICIOUS_GRAVEL
   - "suspicious_gravel"
-Blocks.FLOWING_WATER:
-  - Blocks.WATER
-  - "water"
 Blocks.WATER:
   - Blocks.WATER
   - "water"
-Blocks.FLOWING_LAVA:
-  - Blocks.LAVA
-  - "lava"
 Blocks.LAVA:
   - Blocks.LAVA
   - "lava"
