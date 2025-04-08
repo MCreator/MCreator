@@ -62,7 +62,7 @@ public class ${JavaModName}Menus {
 	updateMenuState(entity, elementType, name, elementState); //This method will also be called from the network packet on the opposite side.
 	if (entity.level().isClientSide) {
 	    ${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState); // This method updates the state of the GUI elements
-	                                                                              when menuState changes from the client side.
+	                                                                              //when menuState changes from the client side.
 	}
     }
 
