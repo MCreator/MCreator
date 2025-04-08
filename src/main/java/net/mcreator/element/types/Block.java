@@ -211,7 +211,7 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
-		this.noteBlockInstrument = "HARP";
+		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";

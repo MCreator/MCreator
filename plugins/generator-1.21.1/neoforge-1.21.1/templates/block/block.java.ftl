@@ -176,7 +176,7 @@ public class ${name}Block extends
 		<#if data.ignitedByLava>
 			.ignitedByLava()
 		</#if>
-		<#if data.noteBlockInstrument != "HARP">
+		<#if data.noteBlockInstrument != "harp">
 			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
 		</#if>
 		<#if data.blockBase?has_content && (
