@@ -175,9 +175,6 @@ Blocks.IRON_ORE:
 Blocks.REDSTONE_ORE:
   - Blocks.REDSTONE_ORE
   - "redstone_ore"
-Blocks.LIT_REDSTONE_ORE:
-  - Blocks.REDSTONE_ORE
-  - "redstone_ore"
 Blocks.GOLD_ORE:
   - Blocks.GOLD_ORE
   - "gold_ore"
@@ -395,12 +392,6 @@ Blocks.WEB:
   - Blocks.COBWEB
   - "cobweb"
 Blocks.DEADBUSH:
-  - Blocks.DEAD_BUSH
-  - "dead_bush"
-Blocks.TALLGRASS:
-  - Blocks.SHORT_GRASS
-  - "short_grass"
-Blocks.TALLGRASS#0:
   - Blocks.DEAD_BUSH
   - "dead_bush"
 Blocks.TALLGRASS#1:
@@ -754,13 +745,7 @@ Blocks.TRIPWIRE:
 Blocks.DAYLIGHT_DETECTOR:
   - Blocks.DAYLIGHT_DETECTOR
   - "daylight_detector"
-Blocks.DAYLIGHT_DETECTOR_INVERTED:
-  - Blocks.DAYLIGHT_DETECTOR
-  - "daylight_detector"
 Blocks.REDSTONE_TORCH:
-  - Blocks.REDSTONE_TORCH
-  - "redstone_torch"
-Blocks.UNLIT_REDSTONE_TORCH:
   - Blocks.REDSTONE_TORCH
   - "redstone_torch"
 Blocks.REDSTONE_WIRE:
@@ -769,19 +754,10 @@ Blocks.REDSTONE_WIRE:
 Blocks.UNPOWERED_REPEATER:
   - Blocks.REPEATER
   - "repeater"
-Blocks.POWERED_REPEATER:
-  - Blocks.REPEATER
-  - "repeater"
 Blocks.UNPOWERED_COMPARATOR:
   - Blocks.COMPARATOR
   - "comparator"
-Blocks.POWERED_COMPARATOR:
-  - Blocks.COMPARATOR
-  - "comparator"
 Blocks.REDSTONE_LAMP:
-  - Blocks.REDSTONE_LAMP
-  - "redstone_lamp"
-Blocks.LIT_REDSTONE_LAMP:
   - Blocks.REDSTONE_LAMP
   - "redstone_lamp"
 Blocks.DISPENSER:
@@ -1027,9 +1003,6 @@ Blocks.PURPUR_PILLAR:
 Blocks.PURPUR_SLAB:
   - Blocks.PURPUR_SLAB
   - "purpur_slab"
-Blocks.PURPUR_DOUBLE_SLAB:
-  - Blocks.PURPUR_SLAB
-  - "purpur_slab"
 Blocks.BEETROOTS:
   - Blocks.BEETROOTS
   - "beetroots"
@@ -1099,7 +1072,6 @@ Blocks.CHERRY_SLAB:
 Blocks.BAMBOO_SLAB:
   - Blocks.BAMBOO_SLAB
   - "bamboo_slab"
-
 Blocks.BAMBOO_MOSAIC_SLAB:
   - Blocks.BAMBOO_MOSAIC_SLAB
   - "bamboo_mosaic_slab"
@@ -1683,18 +1655,6 @@ Blocks.STRUCTURE_VOID:
   - Blocks.STRUCTURE_VOID
   - "structure_void"
 Blocks.STRUCTURE_BLOCK:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#1:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#2:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#3:
-  - Blocks.STRUCTURE_BLOCK
-  - "structure_block"
-Blocks.STRUCTURE_BLOCK#4:
   - Blocks.STRUCTURE_BLOCK
   - "structure_block"
 Blocks.NORMAL_STONE_STAIRS:
