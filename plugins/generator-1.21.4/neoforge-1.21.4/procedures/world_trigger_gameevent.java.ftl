@@ -1,1 +1,1 @@
-world.gameEvent(${input$trigger}, ${generator.map(field$gameevent, "gameevents", 1)}, new Vec3(${input$x}, ${input$y}, ${input$z}));
+world.gameEvent(${input$trigger}, ${generator.map(field$gameevent, "gameevents")}, new Vec3(${input$x}, ${input$y}, ${input$z}));

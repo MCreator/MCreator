@@ -1,180 +1,180 @@
 BLOCK_ACTIVATE:
-  - block_activate
   - GameEvent.BLOCK_ACTIVATE
+  - block_activate
 BLOCK_ATTACH:
-  - block_attach
   - GameEvent.BLOCK_ATTACH
+  - block_attach
 BLOCK_CHANGE:
-  - block_change
   - GameEvent.BLOCK_CHANGE
+  - block_change
 BLOCK_CLOSE:
-  - block_close
   - GameEvent.BLOCK_CLOSE
+  - block_close
 BLOCK_DEACTIVATE:
-  - block_deactivate
   - GameEvent.BLOCK_DEACTIVATE
+  - block_deactivate
 BLOCK_DESTROY:
-  - block_destroy
   - GameEvent.BLOCK_DESTROY
+  - block_destroy
 BLOCK_DETACH:
-  - block_detach
   - GameEvent.BLOCK_DETACH
+  - block_detach
 BLOCK_OPEN:
-  - block_open
   - GameEvent.BLOCK_OPEN
+  - block_open
 BLOCK_PLACE:
-  - block_place
   - GameEvent.BLOCK_PLACE
+  - block_place
 CONTAINER_CLOSE:
-  - container_close
   - GameEvent.CONTAINER_CLOSE
+  - container_close
 CONTAINER_OPEN:
-  - container_open
   - GameEvent.CONTAINER_OPEN
+  - container_open
 DRINK:
-  - drink
   - GameEvent.DRINK
+  - drink
 EAT:
-  - eat
   - GameEvent.EAT
+  - eat
 ELYTRA_GLIDE:
-  - elytra_glide
   - GameEvent.ELYTRA_GLIDE
+  - elytra_glide
 ENTITY_DAMAGE:
-  - entity_damage
   - GameEvent.ENTITY_DAMAGE
+  - entity_damage
 ENTITY_DIE:
-  - entity_die
   - GameEvent.ENTITY_DIE
+  - entity_die
 ENTITY_DISMOUNT:
-  - entity_dismount
   - GameEvent.ENTITY_DISMOUNT
+  - entity_dismount
 ENTITY_INTERACT:
-  - entity_interact
   - GameEvent.ENTITY_INTERACT
+  - entity_interact
 ENTITY_MOUNT:
-  - entity_mount
   - GameEvent.ENTITY_MOUNT
+  - entity_mount
 ENTITY_PLACE:
-  - entity_place
   - GameEvent.ENTITY_PLACE
+  - entity_place
 ENTITY_ACTION:
-  - entity_action
   - GameEvent.ENTITY_ACTION
+  - entity_action
 EQUIP:
-  - equip
   - GameEvent.EQUIP
+  - equip
 EXPLODE:
-  - explode
   - GameEvent.EXPLODE
+  - explode
 FLAP:
-  - flap
   - GameEvent.FLAP
+  - flap
 FLUID_PICKUP:
-  - fluid_pickup
   - GameEvent.FLUID_PICKUP
+  - fluid_pickup
 FLUID_PLACE:
-  - fluid_place
   - GameEvent.FLUID_PLACE
+  - fluid_place
 HIT_GROUND:
-  - hit_ground
   - GameEvent.HIT_GROUND
+  - hit_ground
 INSTRUMENT_PLAY:
-  - instrument_play
   - GameEvent.INSTRUMENT_PLAY
+  - instrument_play
 ITEM_INTERACT_FINISH:
-  - item_interact_finish
   - GameEvent.ITEM_INTERACT_FINISH
+  - item_interact_finish
 ITEM_INTERACT_START:
-  - item_interact_start
   - GameEvent.ITEM_INTERACT_START
+  - item_interact_start
 JUKEBOX_PLAY:
-  - jukebox_play
   - GameEvent.JUKEBOX_PLAY
+  - jukebox_play
 JUKEBOX_STOP_PLAY:
-  - jukebox_stop_play
   - GameEvent.JUKEBOX_STOP_PLAY
+  - jukebox_stop_play
 LIGHTNING_STRIKE:
-  - lightning_strike
   - GameEvent.LIGHTNING_STRIKE
+  - lightning_strike
 NOTE_BLOCK_PLAY:
-  - note_block_play
   - GameEvent.NOTE_BLOCK_PLAY
+  - note_block_play
 PRIME_FUSE:
-  - prime_fuse
   - GameEvent.PRIME_FUSE
+  - prime_fuse
 PROJECTILE_LAND:
-  - projectile_land
   - GameEvent.PROJECTILE_LAND
+  - projectile_land
 PROJECTILE_SHOOT:
-  - projectile_shoot
   - GameEvent.PROJECTILE_SHOOT
+  - projectile_shoot
 SCULK_SENSOR_TENDRILS_CLICKING:
-  - sculk_sensor_tendrils_clicking
   - GameEvent.SCULK_SENSOR_TENDRILS_CLICKING
+  - sculk_sensor_tendrils_clicking
 SHEAR:
-  - shear
   - GameEvent.SHEAR
+  - shear
 SHRIEK:
-  - shriek
   - GameEvent.SHRIEK
+  - shriek
 SPLASH:
-  - splash
   - GameEvent.SPLASH
+  - splash
 STEP:
-  - step
   - GameEvent.STEP
+  - step
 SWIM:
-  - swim
   - GameEvent.SWIM
+  - swim
 TELEPORT:
-  - teleport
   - GameEvent.TELEPORT
+  - teleport
 UNEQUIP:
-  - unequip
   - GameEvent.UNEQUIP
+  - unequip
 RESONATE_1:
-  - resonate_1
   - GameEvent.RESONATE_1
+  - resonate_1
 RESONATE_2:
-  - resonate_2
   - GameEvent.RESONATE_2
+  - resonate_2
 RESONATE_3:
-  - resonate_3
   - GameEvent.RESONATE_3
+  - resonate_3
 RESONATE_4:
-  - resonate_4
   - GameEvent.RESONATE_4
+  - resonate_4
 RESONATE_5:
-  - resonate_5
   - GameEvent.RESONATE_5
+  - resonate_5
 RESONATE_6:
-  - resonate_6
   - GameEvent.RESONATE_6
+  - resonate_6
 RESONATE_7:
-  - resonate_7
   - GameEvent.RESONATE_7
+  - resonate_7
 RESONATE_8:
-  - resonate_8
   - GameEvent.RESONATE_8
+  - resonate_8
 RESONATE_9:
-  - resonate_9
   - GameEvent.RESONATE_9
+  - resonate_9
 RESONATE_10:
-  - resonate_10
   - GameEvent.RESONATE_10
+  - resonate_10
 RESONATE_11:
-  - resonate_11
   - GameEvent.RESONATE_11
+  - resonate_11
 RESONATE_12:
-  - resonate_12
   - GameEvent.RESONATE_12
+  - resonate_12
 RESONATE_13:
-  - resonate_13
   - GameEvent.RESONATE_13
+  - resonate_13
 RESONATE_14:
-  - resonate_14
   - GameEvent.RESONATE_14
+  - resonate_14
 RESONATE_15:
-  - resonate_15
   - GameEvent.RESONATE_15
+  - resonate_15
