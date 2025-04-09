@@ -169,6 +169,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			((AnimatedModel) this.model).setEntity(entity);
 		}
 		</#if>
+		<#if data.mobModelName == "Villager" || data.mobModelName == "Witch">
+		if (state instanceof HoldingEntityRenderState holdingState) {
+			this.itemModelResolver.updateForLiving(holdingState.heldItem, entity.getMainHandItem(), ItemDisplayContext.GROUND, false, entity);
+		}
+		</#if>
 	}
 
 	@Override public ResourceLocation getTextureLocation(${renderState} state) {
