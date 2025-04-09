@@ -209,3 +209,31 @@ function checkIfWithin(block, predicate) {
     } while (block);
     return null;
 }
+
+// Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
+Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
+    {
+    	onchange: function (changeEvent) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            var isValid = true;
+            // Check if the block attached to the "value" input isn't Number or Boolean
+            const attachedType = this.getInput('value').connection.targetBlock()?.outputConnection.getCheck();
+            if (attachedType && (attachedType.includes('Number') || attachedType.includes('Boolean'))) {
+                isValid = false;
+            }
+            if (!this.isInFlyout) {
+                this.setWarningText(isValid ? null : javabridge.t('blockly.block.logic_null_comparison.invalid_input'));
+                const group = Blockly.Events.getGroup();
+                // Makes it so the block change and the disable event get undone together.
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setEnabled(isValid);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
