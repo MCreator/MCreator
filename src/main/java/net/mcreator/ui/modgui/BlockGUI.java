@@ -53,7 +53,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
@@ -193,6 +192,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 
+	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
+	private GameEventListField vibrationalEvents;
+	private NumberProcedureSelector vibrationSensitivityRadius;
+	private ProcedureSelector canReceiveVibrationCondition;
+	private ProcedureSelector onReceivedVibration;
+
 	private final JComboBox<String> rotationMode = new JComboBox<>(
 			new String[] { "<html>No rotation<br><small>Fixed block orientation",
 					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from player side",
@@ -283,6 +288,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		generateFeature.setOpaque(false);
 
+		vibrationalEvents = new GameEventListField(mcreator, true);
+
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
@@ -368,77 +375,69 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.inventory_automation_place_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("index:number/itemstack:itemstack/direction:direction")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"), mcreator,
+				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.SERVER,
+				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"), mcreator,
+				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+				L10N.t("condition.common.true")).makeInline();
+		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
+				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
+				Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		blockBase.addActionListener(e -> {
-			renderType.setEnabled(true);
-			disableOffset.setEnabled(true);
-			boundingBoxList.setEnabled(true);
-			rotationMode.setEnabled(true);
-			hasGravity.setEnabled(true);
+			boolean hasBlockBase = blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0;
+			renderType.setEnabled(!hasBlockBase);
+			disableOffset.setEnabled(!hasBlockBase);
+			boundingBoxList.setEnabled(!hasBlockBase);
+			rotationMode.setEnabled(!hasBlockBase);
+			isWaterloggable.setEnabled(!hasBlockBase);
+			hasGravity.setEnabled(!hasBlockBase);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
-			isWaterloggable.setEnabled(true);
 
-			if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Pane")) {
-				connectedSides.setEnabled(false);
-				renderType.setEnabled(false);
-				isWaterloggable.setEnabled(false);
-				rotationMode.setEnabled(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-
-				connectedSides.setSelected(false);
+			if (hasBlockBase) {
+				rotationMode.setSelectedIndex(0);
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
-				rotationMode.setSelectedIndex(0);
-
-				if (!isEditingMode()) {
-					transparencyType.setSelectedItem("CUTOUT_MIPPED");
-					lightOpacity.setValue(0);
-				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Leaves")) {
-				renderType.setEnabled(false);
-				rotationMode.setEnabled(false);
-				hasTransparency.setEnabled(false);
-				transparencyType.setEnabled(false);
-				isWaterloggable.setSelected(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-
-				renderType.setSelectedItem(singleTexture);
-				rotationMode.setSelectedIndex(0);
-				hasTransparency.setSelected(false);
-				transparencyType.setSelectedItem("SOLID");
-				isWaterloggable.setEnabled(false);
-
-				if (!isEditingMode()) {
-					lightOpacity.setValue(1);
-				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0) {
-				renderType.setSelectedItem(singleTexture);
-				renderType.setEnabled(false);
-				disableOffset.setEnabled(false);
-				boundingBoxList.setEnabled(false);
-				hasGravity.setEnabled(false);
-				rotationMode.setEnabled(false);
-				isWaterloggable.setEnabled(false);
-
 				hasGravity.setSelected(false);
-				rotationMode.setSelectedIndex(0);
-				isWaterloggable.setSelected(false);
 
-				if (!isEditingMode()) {
-					lightOpacity.setValue(0);
-					if ("Wall".equals(blockBase.getSelectedItem()) || "Fence".equals(blockBase.getSelectedItem())
-							|| "TrapDoor".equals(blockBase.getSelectedItem()) || "Door".equals(
-							blockBase.getSelectedItem()) || "FenceGate".equals(blockBase.getSelectedItem())
-							|| "EndRod".equals(blockBase.getSelectedItem()) || "PressurePlate".equals(
-							blockBase.getSelectedItem()) || "Button".equals(blockBase.getSelectedItem())) {
-						hasTransparency.setSelected(true);
+				String selectedBlockBase = blockBase.getSelectedItem();
+				if (selectedBlockBase.equals("Pane")) {
+					connectedSides.setEnabled(false);
+					connectedSides.setSelected(false);
+
+					if (!isEditingMode()) {
+						transparencyType.setSelectedItem("CUTOUT_MIPPED");
+						lightOpacity.setValue(0);
+					}
+				} else if (selectedBlockBase.equals("Leaves")) {
+					hasTransparency.setEnabled(false);
+					transparencyType.setEnabled(false);
+
+					hasTransparency.setSelected(false);
+					transparencyType.setSelectedItem("SOLID");
+
+					if (!isEditingMode()) {
+						lightOpacity.setValue(1);
+					}
+				} else {
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase) || "TrapDoor".equals(
+								selectedBlockBase) || "Door".equals(selectedBlockBase) || "FenceGate".equals(
+								selectedBlockBase) || "EndRod".equals(selectedBlockBase) || "PressurePlate".equals(
+								selectedBlockBase) || "Button".equals(selectedBlockBase)) {
+							hasTransparency.setSelected(true);
+						}
 					}
 				}
 			}
@@ -1042,6 +1041,38 @@ public class BlockGUI extends ModElementGUI<Block> {
 		invpropsbottom.add(inventoryAutomationTakeCondition);
 		invpropsbottom.add(inventoryAutomationPlaceCondition);
 
+		JPanel vibrationPanel = new JPanel(new GridLayout(2, 2, 0, 2));
+		vibrationPanel.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
+				L10N.label("elementgui.block.sensitive_to_vibration")));
+		vibrationPanel.add(sensitiveToVibration);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
+				L10N.label("elementgui.block.vibrational_events")));
+		vibrationPanel.add(vibrationalEvents);
+
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
+
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationPanel, vibrationEvents, 2, 2);
+		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.properties_vibration"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
 		JComponent invpropsall = PanelUtils.centerAndSouthElement(props, invpropsbottom, 2, 2);
 
 		invpropsall.setBorder(BorderFactory.createTitledBorder(
@@ -1049,7 +1080,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.settings_inventory"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		invblock.add("Center", invpropsall);
+		invblock.add("Center", PanelUtils.westAndEastElement(invpropsall, PanelUtils.pullElementUp(vibrationMerger)));
 
 		invblock.add("North", HelpUtils.wrapWithHelpButton(this.withEntry("block/has_inventory"), hasInventory));
 
@@ -1179,15 +1210,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(placeSound.getVTextField());
 		page3group.addValidationElement(stepSound.getVTextField());
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
-		addPage(L10N.t("elementgui.block.page_states"), bsPane, false);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.block.page_states"), bsPane, false).lazyValidate(blockStates::getValidationResult);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
-		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
+		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8).validate(outSlotIDs).validate(inSlotIDs);
 		addPage(L10N.t("elementgui.block.page_energy_fluid_storage"), pane10);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.common.page_generation"), pane9);
+		addPage(L10N.t("elementgui.common.page_generation"), pane9).validate(restrictionBiomes);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -1235,6 +1266,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isFluidTank.setEnabled(hasInventory.isSelected());
 		fluidCapacity.setEnabled(hasInventory.isSelected());
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
+		sensitiveToVibration.setEnabled(hasInventory.isSelected());
+		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
+		vibrationalEvents.setEnabled(hasInventory.isSelected());
+		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
+		onReceivedVibration.setEnabled(hasInventory.isSelected());
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1303,6 +1339,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
+		onReceivedVibration.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1310,6 +1347,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		additionalHarvestCondition.refreshListKeepSelected();
+		vibrationSensitivityRadius.refreshListKeepSelected();
+		canReceiveVibrationCondition.refreshListKeepSelected();
 
 		inventoryAutomationTakeCondition.refreshListKeepSelected();
 		inventoryAutomationPlaceCondition.refreshListKeepSelected();
@@ -1322,20 +1361,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 2)
-			return blockStates.getValidationResult();
-		else if (page == 3)
-			return new AggregatedValidationResult(page3group);
-		else if (page == 5)
-			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
-		else if (page == 8)
-			return new AggregatedValidationResult(restrictionBiomes);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Block block) {
@@ -1461,6 +1486,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setEntries(block.boundingBoxes);
+
+		sensitiveToVibration.setSelected(block.sensitiveToVibration);
+		vibrationSensitivityRadius.setSelectedProcedure(block.vibrationSensitivityRadius);
+		vibrationalEvents.setListElements(block.vibrationalEvents);
+		canReceiveVibrationCondition.setSelectedProcedure(block.canReceiveVibrationCondition);
+		onReceivedVibration.setSelectedProcedure(block.onReceivedVibration);
 
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
@@ -1609,6 +1640,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
+
+		block.sensitiveToVibration = sensitiveToVibration.isSelected();
+		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
+		block.vibrationalEvents = vibrationalEvents.getListElements();
+		block.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();
+		block.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();

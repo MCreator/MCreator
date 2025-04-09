@@ -158,6 +158,6 @@ package ${package}.fluid.types;
 					</#if> | 0xFF000000;
 				}
 				</#if>
-		}, ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get());
+		}, ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get());
 	}
 }</#compress>

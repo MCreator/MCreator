@@ -90,12 +90,15 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.enchantability != 0 && data.toolType=="Shears">
 				.enchantable(${data.enchantability})
 				</#if>
+				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+				.setNoCombineRepair()
+				</#if>
 		);
 	}
 
 	<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
 	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
-		event.modify(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
 	}
 	</#if>
 
@@ -180,6 +183,9 @@ public class ${name}Item extends Item {
 			<#if data.enchantability != 0>
 			.enchantable(${data.enchantability})
 			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoCombineRepair()
+			</#if>
 		);
 	}
 
@@ -209,6 +215,9 @@ public class ${name}Item extends FishingRodItem {
 			.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
 			<#if data.enchantability != 0>
 			.enchantable(${data.enchantability})
+			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoCombineRepair()
 			</#if>
 		);
 	}
@@ -250,20 +259,10 @@ public class ${name}Item extends FishingRodItem {
 				}
 				return retval;
 			}
-
-			@Override public boolean isCombineRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.usageCount != 0>
-			@Override public boolean isCombineRepairable(ItemStack itemstack) {
-				return false;
-			}
-			</#if>
 		</#if>
 	</#if>
 

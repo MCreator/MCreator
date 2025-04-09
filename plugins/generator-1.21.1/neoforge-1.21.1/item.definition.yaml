@@ -8,31 +8,29 @@ templates:
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
     condition: isMusicDisc
+  - template: json/banner_pattern_item_tag.json.ftl
+    writer: json
+    name: "@MODDATAROOT/tags/banner_pattern/pattern_item/@registryname.json"
+    condition: hasBannerPatterns()
   - template: json/item.json.ftl
     writer: json
-    condition:
-      - "renderType #= 0"
-      - "hasNormalModel()"
+    condition: hasNormalModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
     writer: json
-    condition:
-      - "renderType #= 0"
-      - "hasToolModel()"
+    condition: hasToolModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/rangeditem.json.ftl
     writer: json
-    condition:
-      - "renderType #= 0"
-      - "hasRangedItemModel()"
+    condition: hasRangedItemModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
-    condition: "renderType #= 1"
+    condition: hasCustomJSONModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel_obj.json.ftl
     writer: json
-    condition: "renderType #= 2"
+    condition: hasCustomOBJModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
 list_templates:
@@ -41,29 +39,23 @@ list_templates:
     forEach:
       - template: json/item.json.ftl
         writer: json
-        condition:
-          - "renderType #= 0"
-          - "hasNormalModel()"
+        condition: hasNormalModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json
-        condition:
-          - "renderType #= 0"
-          - "hasToolModel()"
+        condition: hasToolModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/rangeditem.json.ftl
         writer: json
-        condition:
-          - "renderType #= 0"
-          - "hasRangedItemModel()"
+        condition: hasRangedItemModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_cmodel.json.ftl
         writer: json
-        condition: "renderType #= 1"
+        condition: hasCustomJSONModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_cmodel_obj.json.ftl
         writer: json
-        condition: "renderType #= 2"
+        condition: hasCustomOBJModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
 tags:
@@ -80,5 +72,8 @@ localizationkeys:
   - key: item.@modid.@registryname.desc
     mapto: musicDiscDescription
     condition: isMusicDisc
+  - key: item.@modid.@registryname.patterns
+    mapto: getPatternDescription()
+    condition: hasBannerPatterns()
   - fromlist: data.getFixedSpecialInformation()
     key: item.@modid.@registryname.description_@item_index

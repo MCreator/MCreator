@@ -42,13 +42,20 @@ public class CustomDependencyBlock implements IBlockGenerator {
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()) {
 			String depname = element.getTextContent();
 
-			String deptype = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_");
-			master.addDependency(new Dependency(depname, deptype));
+			String type = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_");
+			master.addDependency(new Dependency(depname, type));
 
-			if (deptype.equalsIgnoreCase("itemstack"))
+			if (type.equalsIgnoreCase("itemstack"))
 				master.append("/*@ItemStack*/");
-			else if (deptype.equalsIgnoreCase("blockstate"))
+			else if (type.equalsIgnoreCase("blockstate"))
 				master.append("/*@BlockState*/");
+
+			VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
+			if (typeObject == null || !typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.variables.not_supported", type)));
+				return;
+			}
 
 			master.append(element.getTextContent());
 		} else {

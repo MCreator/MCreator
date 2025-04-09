@@ -25,7 +25,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -119,7 +118,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 		gameruleType.addActionListener(e -> updateDefaultValueUI());
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
@@ -129,12 +128,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	private void updateDefaultValueUI() {
 		cl.show(defaultValue, (String) gameruleType.getSelectedItem());
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(GameRule gamerule) {

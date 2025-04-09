@@ -36,7 +36,7 @@ import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.resources.Model;
@@ -67,7 +67,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		ComponentUtils.deriveFont(model, 16);
 		model.setPreferredSize(new Dimension(350, 42));

@@ -27,8 +27,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalItemListFieldValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -97,6 +97,18 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.attribute.needs_name")));
 		name.enableRealtimeValidation();
+
+		minMaxValue.setValidator(() -> {
+			if (minMaxValue.getMinValue() > (double) defaultValue.getValue())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.attribute.default_lower_than_min"));
+			else if (minMaxValue.getMaxValue() < (double) defaultValue.getValue())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.attribute.default_higher_than_max"));
+			return Validator.ValidationResult.PASSED;
+		});
+
+		page1group.addValidationElement(minMaxValue);
 		page1group.addValidationElement(name);
 
 		entities.setValidator(
@@ -104,7 +116,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 						() -> addToAllEntities.isSelected() || addToPlayers.isSelected(), false));
 		page1group.addValidationElement(entities);
 
-		addPage(PanelUtils.totalCenterInPanel(pane1));
+		addPage(PanelUtils.totalCenterInPanel(pane1)).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -139,14 +151,6 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.entities = entities.getListElements();
 
 		return attribute;
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (minMaxValue.getMinValue() > (double) defaultValue.getValue())
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_lower_than_min"));
-		else if (minMaxValue.getMaxValue() < (double) defaultValue.getValue())
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.attribute.default_higher_than_max"));
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
