@@ -1,43 +1,43 @@
 - SPEED:
-  texture: 8171462
+  texture: 3402751
 - SLOWNESS:
-  texture: 5926017
+  texture: 9154528
 - HASTE:
   texture: 14270531
 - MINING_FATIGUE:
   texture: 4866583
 - STRENGTH:
-  texture: 9643043
+  texture: 16762624
 - INSTANT_HEALTH:
   texture: 16262179
 - INSTANT_DAMAGE:
-  texture: 4393481
+  texture: 11101546
 - JUMP_BOOST:
-  texture: 2293580
+  texture: 16646020
 - NAUSEA:
   texture: 5578058
 - REGENERATION:
   texture: 13458603
 - RESISTANCE:
-  texture: 10044730
+  texture: 9520880
 - FIRE_RESISTANCE:
-  texture: 14981690
+  texture: 16750848
 - WATER_BREATHING:
-  texture: 3035801
+  texture: 10017472
 - INVISIBILITY:
-  texture: 8356754
+  texture: 16185078
 - BLINDNESS:
   texture: 2039587
 - NIGHT_VISION:
-  texture: 2039713
+  texture: 12779366
 - HUNGER:
   texture: 5797459
 - WEAKNESS:
   texture: 4738376
 - POISON:
-  texture: 5149489
+  texture: 8889187
 - WITHER:
-  texture: 3484199
+  texture: 7561558
 - HEALTH_BOOST:
   texture: 16284963
 - ABSORPTION:
@@ -49,11 +49,11 @@
 - LEVITATION:
   texture: 13565951
 - LUCK:
-  texture: 3381504
+  texture: 5882118
 - UNLUCK:
   texture: 12624973
 - SLOW_FALLING:
-  texture: 16773073
+  texture: 15978425
 - CONDUIT_POWER:
   texture: 1950417
 - DOLPHINS_GRACE:

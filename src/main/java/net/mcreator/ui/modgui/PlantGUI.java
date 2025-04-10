@@ -51,7 +51,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -737,7 +737,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		pane4.setOpaque(false);
 
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.plant.error_plant_needs_name")));
 		name.enableRealtimeValidation();

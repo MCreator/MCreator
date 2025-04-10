@@ -46,7 +46,7 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -300,7 +300,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		page1group.addValidationElement(texture);
 
