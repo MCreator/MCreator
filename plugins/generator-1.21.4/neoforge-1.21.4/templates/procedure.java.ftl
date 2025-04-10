@@ -34,6 +34,7 @@ package ${package}.procedures;
 import net.neoforged.bus.api.Event;
 
 <#assign nullableDependencies = []/>
+<#if !(data.skipDependencyNullCheck)>
 <#list dependencies as dependency>
 	<#if dependency.getRawType() != "number"
 		&& dependency.getRawType() != "world"
@@ -45,6 +46,7 @@ import net.neoforged.bus.api.Event;
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>
+</#if>
 
 <#compress>
 
