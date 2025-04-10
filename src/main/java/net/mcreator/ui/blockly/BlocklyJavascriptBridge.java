@@ -321,9 +321,6 @@ public final class BlocklyJavascriptBridge {
 			retval = workspace.getModElements().stream().filter(mu -> mu.getType() == ModElementType.DIMENSION)
 					.map(mu -> NameMapper.MCREATOR_PREFIX + mu.getName()).collect(Collectors.toList());
 			break;
-		case "material":
-			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
-			break;
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
