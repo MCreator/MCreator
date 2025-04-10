@@ -107,15 +107,13 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 		requireItem.setOpaque(false);
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-		shieldTexture.setValidator(new TextureSelectionButtonValidator(shieldTexture));
 		JPanel texturesWithProperties = new JPanel(new BorderLayout(35, 35));
 		texturesWithProperties.add("Center", texturesPanel);
 		texturesWithProperties.add("South", properties);
 		texturesWithProperties.setOpaque(false);
 
-		texture.setValidator(new TileHolderValidator(texture));
-		shieldTexture.setValidator(new TileHolderValidator(shieldTexture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
+		shieldTexture.setValidator(new TextureSelectionButtonValidator(shieldTexture));
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.banner_pattern.pattern_needs_name")));
 		name.enableRealtimeValidation();
 
