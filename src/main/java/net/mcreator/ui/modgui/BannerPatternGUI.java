@@ -29,6 +29,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -42,6 +43,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -88,13 +90,28 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 				L10N.t("elementgui.banner_pattern.shield_texture")));
 
 		// Pattern previews
-		bannerPreview.setPreferredSize(new Dimension(42 * PREVIEW_SCALE, 42 * PREVIEW_SCALE));
-		shieldPreview.setPreferredSize(new Dimension(26 * PREVIEW_SCALE, 24 * PREVIEW_SCALE));
+		bannerPreview.setPreferredSize(new Dimension(44 * PREVIEW_SCALE, 42 * PREVIEW_SCALE));
+		shieldPreview.setPreferredSize(new Dimension(28 * PREVIEW_SCALE, 24 * PREVIEW_SCALE));
+
+		JPanel previewDescrPanel = new JPanel(new GridLayout(1, 2, 30, 0));
+		previewDescrPanel.setOpaque(false);
+		previewDescrPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/banner_preview"),
+				L10N.label("elementgui.banner_pattern.banner_preview")));
+		previewDescrPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/shield_preview"),
+				L10N.label("elementgui.banner_pattern.shield_preview")));
+
+		JPanel previewImagesPanel = new JPanel(new GridLayout(1, 2, 30, 0));
+		previewImagesPanel.setOpaque(false);
+		previewImagesPanel.add(bannerPreview);
+		previewImagesPanel.add(shieldPreview);
 
 		JPanel previewsPanel = new JPanel();
 		previewsPanel.setOpaque(false);
-		previewsPanel.add(bannerPreview);
-		previewsPanel.add(shieldPreview);
+		previewsPanel.add(PanelUtils.northAndCenterElement(previewDescrPanel, previewImagesPanel));
+		previewsPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.banner_pattern.previews"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/name"),
 				L10N.label("elementgui.banner_pattern.name")));
