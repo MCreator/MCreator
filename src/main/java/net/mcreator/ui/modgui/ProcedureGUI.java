@@ -29,6 +29,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
+import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
@@ -64,7 +65,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
-	private final JPanel topPanel = new JPanel(new GridLayout(1, 2, 0, 2));
 
 	private BlocklyPanel blocklyPanel;
 
@@ -297,11 +297,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	@Override protected void initGUI() {
 		skipDependencyNullCheck.setOpaque(false);
-		topPanel.setOpaque(false);
 
-		topPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("procedure/skip_dependency_null_check"),
+		JPanel skipDependencyWrapper = new JPanel(new GridLayout(1, 2, 0, 2));
+		skipDependencyWrapper.setOpaque(false);
+		skipDependencyWrapper.add(HelpUtils.wrapWithHelpButton(this.withEntry("procedure/skip_dependency_null_check"),
 				L10N.label("elementgui.procedure.skip_dependency_null_check")));
-		topPanel.add(skipDependencyNullCheck);
+		skipDependencyWrapper.add(skipDependencyNullCheck);
+
+		CollapsiblePanel procedureSettings = new CollapsiblePanel(L10N.t("elementgui.procedure.additional_settings"),
+				PanelUtils.join(FlowLayout.LEFT, 1, 1, skipDependencyWrapper));
 
 		pane5.setOpaque(false);
 
@@ -573,8 +577,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, topPanel), pane5)), false).lazyValidate(() -> {
+		addPage(PanelUtils.gridElements(1, 1, PanelUtils.centerAndSouthElement(pane5, procedureSettings)), false)
+				.lazyValidate(() -> {
 			if (hasDependencyErrors)
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
