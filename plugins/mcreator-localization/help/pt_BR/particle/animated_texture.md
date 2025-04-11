@@ -1,0 +1,1 @@
+Marque esta caixa se a textura da sua partícula deve ser animada.

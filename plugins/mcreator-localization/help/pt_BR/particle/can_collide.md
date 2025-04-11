@@ -1,0 +1,1 @@
+Marque para fazer com que esta partícula possa colidir com blocos (como gotas de fluidos ou partículas de quebra de blocos).

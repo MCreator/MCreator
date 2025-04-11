@@ -1,0 +1,1 @@
+To jest nazwa wzoru, kiedy pokazywana jest w krośnie i opisie sztandarów i tarcz.

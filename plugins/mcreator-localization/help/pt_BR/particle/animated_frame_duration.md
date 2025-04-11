@@ -1,0 +1,1 @@
+Este parâmetro controla quantos ticks devem passar antes de alternar para o próximo quadro de animação.
