@@ -61,7 +61,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator, L10N.t("dialog.gui.sprite_index"),
 				ProcedureSelector.Side.CLIENT, false, spinner, 80,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		spriteIndex.refreshList();
 
 		JPanel opts = new JPanel(new GridLayout(2, 2, 2, 2));
@@ -78,7 +78,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				IHelpContext.NONE.withEntry("gui/sprite_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.sprite_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		final int[] previousSpritesCount = { (int) spritesCount.getValue() };

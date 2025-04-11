@@ -1,1 +1,3 @@
-(guistate.containsKey("text:${field$textfield}") ? ((EditBox) guistate.get("text:${field$textfield}")).getValue() : "")
+<#if w.hasElementsOfType("gui")>
+${JavaModName}Menus.getMenuState(${input$entity}, 0, "${field$textfield}", "")
+<#else>""</#if>
