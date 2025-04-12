@@ -2,6 +2,7 @@
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() != null) {
+			AtomicDouble amountAccessor = new AtomicDouble(event.getAmount());
 			<#assign dependenciesCode><#compress>
 				<@procedureDependenciesCode dependencies, {
 					"x": "event.getEntity().getX()",
@@ -10,6 +11,7 @@
 					"amount": "event.getAmount()",
 					"world": "event.getEntity().level()",
 					"entity": "event.getEntity()",
+					"amountaccessor": "amountAccessor",
 					"damagesource": "event.getSource()",
 					"sourceentity": "event.getSource().getEntity()",
 					"immediatesourceentity": "event.getSource().getDirectEntity()",
@@ -17,5 +19,6 @@
 				}/>
 			</#compress></#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
+			event.setAmount(amountAccessor.floatValue());
 		}
 	}

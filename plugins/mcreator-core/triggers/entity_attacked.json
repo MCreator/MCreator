@@ -29,6 +29,10 @@
       "type": "number"
     },
     {
+      "name": "amountaccessor",
+      "type": "atomicnumber"
+    },
+    {
       "name": "immediatesourceentity",
       "type": "entity"
     },

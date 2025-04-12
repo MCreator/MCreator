@@ -13,3 +13,4 @@ dimensiontype: ResourceKey<Level>
 actionresulttype: InteractionResult
 cmdcontext: CommandContext<CommandSourceStack>
 damagesource: DamageSource
+atomicnumber: AtomicDouble

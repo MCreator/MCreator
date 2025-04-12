@@ -1,0 +1,1 @@
+${input$key}.set(${input$value});

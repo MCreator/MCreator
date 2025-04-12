@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "key",
+      "check": "AtomicNumber"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "nextStatement": null,
+  "previousStatement": null,
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "toolbox_id": "math",
+    "inputs": [
+      "key",
+      "value"
+    ]
+  }
+}
