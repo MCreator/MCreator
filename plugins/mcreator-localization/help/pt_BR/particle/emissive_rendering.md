@@ -1,0 +1,1 @@
+Marque esta propriedade para aplicar um efeito brilhante (semelhante à partícula de chama) na sua partícula.

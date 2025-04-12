@@ -1,0 +1,1 @@
+Este parâmetro controla o quanto de velocidade externa é levado em conta ao gerar a partícula. Quando posto em 0, a partícula não se moverá e somente cairá, caso a gravidade da partícula seja maior que 0.
