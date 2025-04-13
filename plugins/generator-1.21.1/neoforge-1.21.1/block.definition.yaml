@@ -4,7 +4,7 @@ templates:
   - template: block/blockentity.java.ftl
     condition: hasInventory
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
-  - template: block/blockentityrenderer.java.ftl
+  - template: block/blockentity_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/block/@NAMERenderer.java"
     condition: "renderType() #=  4"
 
