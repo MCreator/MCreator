@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "parameter",
+      "datalist": "eventnumberparameters",
+      "testValue": "amount"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "nextStatement": null,
+  "previousStatement": null,
+  "mcreator": {
+    "group": "name",
+    "toolbox_id": "advanced",
+    "inputs": [
+      "value"
+    ],
+    "fields": [
+      "parameter"
+    ]
+  }
+}
