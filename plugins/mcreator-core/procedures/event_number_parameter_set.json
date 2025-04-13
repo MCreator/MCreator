@@ -18,11 +18,14 @@
   "mcreator": {
     "group": "name",
     "toolbox_id": "advanced",
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
     "inputs": [
       "value"
     ],
     "fields": [
-      "parameter"
+      "eventparametersnumber"
     ]
   }
 }
