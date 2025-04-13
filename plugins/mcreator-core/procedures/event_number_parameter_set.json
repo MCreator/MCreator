@@ -3,8 +3,7 @@
     {
       "type": "field_data_list_selector",
       "name": "parameter",
-      "datalist": "eventnumberparameters",
-      "testValue": "amount"
+      "datalist": "eventparametersnumber"
     },
     {
       "type": "input_value",
