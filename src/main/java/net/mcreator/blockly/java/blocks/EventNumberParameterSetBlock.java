@@ -64,7 +64,9 @@ public class EventNumberParameterSetBlock implements IBlockGenerator {
 					for (Element element : elements) {
 						if (element.getNodeName().equals("field")) {
 							if (element.getAttribute("name").equals("eventparametersnumber")) {
-								parameter = element.getFirstChild().getNodeValue();
+								if (element.getFirstChild() != null) {
+									parameter = element.getFirstChild().getNodeValue();
+								}
 							}
 						} else if (element.getNodeName().equals("value")) {
 							if (element.getAttribute("name").equals("value")) {
