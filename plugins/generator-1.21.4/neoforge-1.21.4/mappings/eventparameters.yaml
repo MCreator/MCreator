@@ -11,6 +11,6 @@ FALL_DISTANCE:
   - setDistance
   - entity_falls
 ITEM_PICKUP_RESULT:
-  - ItemPickupEvent.Pre
+  - ItemEntityPickupEvent.Pre
   - setCanPickup
   - entity_item_pickup
