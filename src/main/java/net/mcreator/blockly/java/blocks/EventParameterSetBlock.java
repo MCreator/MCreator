@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class EventNumberParameterSetBlock implements IBlockGenerator {
+public class EventParameterSetBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		if (master instanceof BlocklyToProcedure procedure) {
 			if (procedure.getExternalTrigger() != null) {
@@ -76,28 +76,27 @@ public class EventNumberParameterSetBlock implements IBlockGenerator {
 					}
 					if (parameter != null) {
 						String needEvent = generatorWrapper.map(parameter, "eventparameters", 0);
-						if (needEvent == null) {
+						String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
+						String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
+						if ("null".equals(needEvent) || "null".equals(needTrigger) || "null".equals(needMethod)) {
 							return;
 						}
-						String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
 						if (!trigger.getID().equals(needTrigger)) {
 							master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-									L10N.t("blockly.errors.event_number_parameter_set.invalid_trigger", needTrigger,
-											trigger.getID())));
+									L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
+											L10N.t("trigger." + needTrigger), L10N.t("trigger." + trigger.getID()))));
 							return;
 						}
 						if (value != null) {
 							//if event is null, the instanceof will ignore it.
 							master.append("if (event instanceof ").append(needEvent).append(" _event) {");
-							master.append("_event.")
-									.append(generatorWrapper.map(parameter, "eventparameters", 1)).append("(")
-									.append(value).append(");}");
+							master.append("_event.").append(needMethod).append("(").append(value).append(");}");
 						}
 					}
 				}
 			} else {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.event_number_parameter_set.not_setter")));
+						L10N.t("blockly.errors.event_parameter_set.not_setter")));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
