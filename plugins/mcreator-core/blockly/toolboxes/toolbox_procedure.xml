@@ -107,6 +107,13 @@
     <sep/>
     <custom-apis/>
     <category name="${t:blockly.category.advanced}" colour="250">
+        <block type="event_number_parameter_set">
+            <value name="value">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
         <block type="cancel_event"/>
         <block type="set_event_result"/>
         <block type="call_procedure">

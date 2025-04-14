@@ -39,6 +39,22 @@ Blockly.Blocks['event_trigger'] = {
     }
 };
 
+Blockly.Blocks["event_number_parameter_set"] = {
+	init: function () {
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
+			.appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparametersnumber');
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.set_to"))
+		this.appendValueInput('value')
+			.setCheck("Number");
+		this.setInputsInline(true);
+		this.setNextStatement(true);
+		this.setPreviousStatement(true);
+		this.setColour(90);
+	}
+}
+
 Blockly.Blocks['cancel_event'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.cancel_event.line1"));

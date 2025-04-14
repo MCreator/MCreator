@@ -2,3 +2,4 @@ _default: null
 DAMAGE_AMOUNT:
   - LivingIncomingDamageEvent
   - setAmount
+  - entity_attacked

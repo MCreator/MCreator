@@ -167,6 +167,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new DebugMarkerBlock());
 
 		// add Minecraft related blocks
+		blockGenerators.add(new EventNumberParameterSetBlock());
 		blockGenerators.add(new CoordinateBlock());
 		blockGenerators.add(new EventOrTargetEntityDependencyBlock());
 		blockGenerators.add(new SourceEntityDependencyBlock());
