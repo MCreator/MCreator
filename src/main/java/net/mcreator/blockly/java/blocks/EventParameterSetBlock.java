@@ -97,7 +97,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							datamodel.put("input_id$value", valueType);
 							datamodel.put("eventClass", needEventClass);
 							datamodel.put("method", needMethod);
-							datamodel.put("triggerName",needTrigger);
+							datamodel.put("triggerName", needTrigger);
 							master.append(master.getTemplateGenerator()
 									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
@@ -109,7 +109,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.errors.unsupported", "blockly.block.event_number_parameter_set")));
+					L10N.t("blockly.errors.unsupported", "blockly.block." + block.getAttribute("type"))));
 		}
 	}
 
