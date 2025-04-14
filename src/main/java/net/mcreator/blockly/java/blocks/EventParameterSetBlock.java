@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EventParameterSetBlock implements IBlockGenerator {
@@ -91,7 +92,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 						if (value != null) {
 							//if event is null, the instanceof will ignore it.
 							master.append("if (event instanceof ").append(needEvent).append(" _event) {");
-							master.append("_event.").append(needMethod).append("(").append(processValue(value,parameter)).append(");}");
+							master.append("_event.").append(needMethod).append("(")
+									.append(processValue(value, parameter)).append(");}");
 						}
 					}
 				}
@@ -114,11 +116,12 @@ public class EventParameterSetBlock implements IBlockGenerator {
 	 * 		return "Tristat."+value.toUpperCase();
 	 * }
 	 * </pre></blockquote>
-	 * @param value the value
+	 *
+	 * @param value     the value
 	 * @param parameter the parameterName
 	 * @return processed data
 	 */
-	protected String processValue(String value,String parameter){
+	@Nonnull protected String processValue(@Nonnull String value, @Nonnull String parameter) {
 		return value;
 	}
 
