@@ -97,6 +97,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							datamodel.put("input_id$value", valueType);
 							datamodel.put("eventClass", needEventClass);
 							datamodel.put("method", needMethod);
+							datamodel.put("triggerName",needTrigger);
 							master.append(master.getTemplateGenerator()
 									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
