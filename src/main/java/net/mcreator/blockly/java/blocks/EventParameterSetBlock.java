@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
 import java.util.List;
 
 public class EventParameterSetBlock implements IBlockGenerator {
+
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		if (master instanceof BlocklyToProcedure procedure) {
 			if (procedure.getExternalTrigger() != null) {
@@ -42,7 +43,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
-					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
+					if (externalTrigger.getID().equals((procedure.getExternalTrigger()))) {
 						trigger = externalTrigger;
 						break;
 					}
@@ -50,7 +51,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 				if (trigger == null) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.event_number_parameter_set.not_setter")));
+							L10N.t("blockly.errors.event_parameter_set.not_setter")));
 					return;
 				}
 
@@ -90,7 +91,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 						if (value != null) {
 							//if event is null, the instanceof will ignore it.
 							master.append("if (event instanceof ").append(needEvent).append(" _event) {");
-							master.append("_event.").append(needMethod).append("(").append(value).append(");}");
+							master.append("_event.").append(needMethod).append("(").append(processValue(value,parameter)).append(");}");
 						}
 					}
 				}
@@ -102,6 +103,23 @@ public class EventParameterSetBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.unsupported", "blockly.block.event_number_parameter_set")));
 		}
+	}
+
+	/**
+	 * a method to process the value.
+	 * for example, you hope that true -> Tristat.TRUE.
+	 * you can code like below
+	 * <blockquote><pre>
+	 * if (parameter.equals("example"){
+	 * 		return "Tristat."+value.toUpperCase();
+	 * }
+	 * </pre></blockquote>
+	 * @param value the value
+	 * @param parameter the parameterName
+	 * @return processed data
+	 */
+	protected String processValue(String value,String parameter){
+		return value;
 	}
 
 	@Override public String[] getSupportedBlocks() {
