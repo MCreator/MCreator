@@ -1,5 +1,16 @@
 _default: null
 DAMAGE_AMOUNT:
+  # the event class
   - LivingIncomingDamageEvent
+  # the method name
   - setAmount
+  # the trigger name
   - entity_attacked
+FALL_DISTANCE:
+  - LivingFallEvent
+  - setDistance
+  - entity_falls
+ITEM_PICKUP_RESULT:
+  - ItemPickupEvent.Pre
+  - setCanPickup
+  - entity_item_pickup

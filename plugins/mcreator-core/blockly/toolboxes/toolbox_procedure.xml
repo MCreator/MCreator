@@ -114,6 +114,13 @@
                 </block>
             </value>
         </block>
+        <block type="event_logic_parameter_set">
+            <value name="value">
+                <block type="logic_boolean">
+                    <field name="BOOL">TRUE</field>
+                </block>
+            </value>
+        </block>
         <block type="cancel_event"/>
         <block type="set_event_result"/>
         <block type="call_procedure">

@@ -19,6 +19,7 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -31,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
 
 public class EventParameterSetBlock implements IBlockGenerator {
@@ -61,26 +62,25 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					GeneratorWrapper generatorWrapper = new GeneratorWrapper(procedure.getParent().getGenerator());
 
 					List<Element> elements = XMLUtil.getDirectChildren(block);
-					String value = null, parameter = null;
+					String value = null, parameter = null, valueType = null;
 					//values
 					for (Element element : elements) {
 						if (element.getNodeName().equals("field")) {
-							if (element.getAttribute("name").equals("eventparametersnumber")) {
-								if (element.getFirstChild() != null) {
-									parameter = element.getFirstChild().getNodeValue();
-								}
+							if (element.getAttribute("name").equals("eventparameter")) {
+								parameter = element.getTextContent();
 							}
 						} else if (element.getNodeName().equals("value")) {
 							if (element.getAttribute("name").equals("value")) {
 								value = BlocklyToCode.directProcessOutputBlock(master, element);
+								valueType = BlocklyBlockUtil.getInputBlockType(element);
 							}
 						}
 					}
-					if (parameter != null) {
-						String needEvent = generatorWrapper.map(parameter, "eventparameters", 0);
+					if (parameter != null && value != null && !parameter.isEmpty() && !value.isEmpty()) {
+						String needEventClass = generatorWrapper.map(parameter, "eventparameters", 0);
 						String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
 						String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
-						if ("null".equals(needEvent) || "null".equals(needTrigger) || "null".equals(needMethod)) {
+						if ("null".equals(needEventClass) || "null".equals(needTrigger) || "null".equals(needMethod)) {
 							return;
 						}
 						if (!trigger.getID().equals(needTrigger)) {
@@ -89,11 +89,16 @@ public class EventParameterSetBlock implements IBlockGenerator {
 											L10N.t("trigger." + needTrigger), L10N.t("trigger." + trigger.getID()))));
 							return;
 						}
-						if (value != null) {
-							//if event is null, the instanceof will ignore it.
-							master.append("if (event instanceof ").append(needEvent).append(" _event) {");
-							master.append("_event.").append(needMethod).append("(")
-									.append(processValue(value, parameter)).append(");}");
+						if (master.getTemplateGenerator() != null) {
+							//if event is null, the instanceof will ignore it
+							HashMap<String, Object> datamodel = new HashMap<>();
+							datamodel.put("field$parameter", parameter);
+							datamodel.put("input$value", value);
+							datamodel.put("input_id$value", valueType);
+							datamodel.put("eventClass", needEventClass);
+							datamodel.put("method", needMethod);
+							master.append(master.getTemplateGenerator()
+									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
 					}
 				}
@@ -107,26 +112,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 		}
 	}
 
-	/**
-	 * a method to process the value.
-	 * for example, you hope that true -> Tristat.TRUE.
-	 * you can code like below
-	 * <blockquote><pre>
-	 * if (parameter.equals("example"){
-	 * 		return "Tristat."+value.toUpperCase();
-	 * }
-	 * </pre></blockquote>
-	 *
-	 * @param value     the value
-	 * @param parameter the parameterName
-	 * @return processed data
-	 */
-	@Nonnull protected String processValue(@Nonnull String value, @Nonnull String parameter) {
-		return value;
-	}
-
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "event_number_parameter_set" };
+		return new String[] { "event_number_parameter_set", "event_logic_parameter_set" };
 	}
 
 	@Override public BlockType getBlockType() {
