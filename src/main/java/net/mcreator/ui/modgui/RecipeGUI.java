@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -61,6 +62,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private CampfireCookingRecipeMaker campfireCookingRecipeMaker;
 	private SmithingRecipeMaker smithingRecipeMaker;
 	private BrewingRecipeMaker brewingRecipeMaker;
+
+	private MCItemListField unlockingItems;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
@@ -93,6 +96,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private JComponent shapelessPanel;
 	private JComponent cookingBookCategoryPanel;
 	private JComponent craftingBookCategoryPanel;
+	private JComponent unlockRecipePanel;
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -117,6 +121,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		brewingRecipeMaker = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTagsAndPotions,
 				ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItemsAndPotions);
+
+		unlockingItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+		unlockingItems.setPreferredSize(new Dimension(260, 0));
 
 		craftingRecipeMaker.setOpaque(false);
 		smeltingRecipeMaker.setOpaque(false);
@@ -201,6 +208,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		northPanel.add(cookingBookCategoryPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_book_category"),
 						L10N.label("elementgui.recipe.cooking_book_category")), cookingBookCategory));
+
+		northPanel.add(unlockRecipePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/unlocking_items"),
+						L10N.label("elementgui.recipe.unlocking_items")), unlockingItems));
 
 		northPanel.add(shapelessPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"),
@@ -292,6 +303,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
+			unlockRecipePanel.setVisible(isRecipeJSON);
 
 			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
 			shapelessPanel.setVisible(isRecipeCrafting);
@@ -321,6 +333,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		cookingBookCategory.setSelectedItem(recipe.cookingBookCategory);
 		craftingBookCategory.setSelectedItem(recipe.craftingBookCategory);
+
+		unlockingItems.setListElements(recipe.unlockingItems);
 
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
@@ -439,6 +453,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		recipe.cookingBookCategory = (String) cookingBookCategory.getSelectedItem();
 		recipe.craftingBookCategory = (String) craftingBookCategory.getSelectedItem();
+
+		recipe.unlockingItems = unlockingItems.getListElements();
 
 		return recipe;
 	}
