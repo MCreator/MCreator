@@ -36,13 +36,21 @@ package ${package}.client.renderer.block;
 	private final CustomHierarchicalModel model;
 	private final ResourceLocation texture;
 
+	private final LivingEntityRenderState renderState;
+
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
-		model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-		texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
+		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
+		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
+		this.renderState = new LivingEntityRenderState();
+	}
+
+	private void updateRenderState(BlockEntity blockEntity, float partialTick) {
+		renderState.ageInTicks = blockEntity.getLevel().getGameTime() + partialTick;
 	}
 
 	@Override public void render(BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
 		<#compress>
+		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
 		poseStack.translate(-0.5, -0.5, 0.5);
@@ -79,6 +87,7 @@ package ${package}.client.renderer.block;
 		</#if>
 		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
+		model.setupAnim(renderState);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
 		</#compress>
@@ -95,8 +104,8 @@ package ${package}.client.renderer.block;
 		}
 
 		@Override public void setupAnim(LivingEntityRenderState state) {
-			super.setupAnim(state);
 			this.root().getAllParts().forEach(ModelPart::resetPose);
+			super.setupAnim(state);
 		}
 
 		public ModelPart getRoot() {
