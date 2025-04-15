@@ -237,6 +237,20 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		updateUIFields();
 
+		// Automatically update the unlocking items when creating a new single input recipe
+		if (!isEditingMode()) {
+			smeltingRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(smeltingRecipeMaker.getBlock())));
+			blastFurnaceRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(blastFurnaceRecipeMaker.getBlock())));
+			smokerRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(smokerRecipeMaker.getBlock())));
+			campfireCookingRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(campfireCookingRecipeMaker.getBlock())));
+			stoneCutterRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(stoneCutterRecipeMaker.getBlock())));
+		}
+
 		addPage(pane5).validate(name).validate(group).lazyValidate(() -> {
 			if ("Crafting".equals(recipeType.getSelectedItem())) {
 				if (!craftingRecipeMaker.outputItem.containsItem()) {
