@@ -239,8 +239,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					${component.width}, ${component.height},
 					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-					<@buttonOnClick component/>, this.font
-				)<@buttonDisplayCondition component/>;
+					<@buttonOnClick component/>, this.font);
 			<#else>
 				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
 					.bounds(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
