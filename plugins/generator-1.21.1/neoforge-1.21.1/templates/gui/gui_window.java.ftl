@@ -239,17 +239,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					${component.width}, ${component.height},
 					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-					<@buttonOnClick component/>, this.font
-				)<@buttonDisplayCondition component/>;
+					<@buttonOnClick component/>, this.font);
 			<#else>
 				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
 					.bounds(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-					${component.width}, ${component.height})
-					<#if hasProcedure(component.displayCondition)>
-						.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
-					<#else>
-						.build();
-					</#if>
+					${component.width}, ${component.height}).build();
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
@@ -292,6 +286,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 	}
 
+	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+	@Override protected void containerTick() {
+		super.containerTick();
+
+		<#list data.getComponentsOfType("Button") as component>
+			<#if hasProcedure(component.displayCondition)>
+				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+			</#if>
+		</#list>
+	}
+	</#if>
+
 	<#if hasEntityModels>
 	private void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
 		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
@@ -327,17 +333,6 @@ e -> {
 		}
 	</#if>
 }
-</#macro>
-
-<#macro buttonDisplayCondition component>
-<#if hasProcedure(component.displayCondition)>
-{
-	@Override public void renderWidget(GuiGraphics guiGraphics, int gx, int gy, float ticks) {
-		this.visible = <@procedureOBJToConditionCode component.displayCondition/>;
-		super.renderWidget(guiGraphics, gx, gy, ticks);
-	}
-}
-</#if>
 </#macro>
 
 <#macro getSpriteByIndex component dim>
