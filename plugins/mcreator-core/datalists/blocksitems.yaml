@@ -613,13 +613,8 @@
   type: block
   texture: SUSPICIOUS_GRAVEL
 
-- Blocks.FLOWING_WATER:
-  readable_name: "Water"
-  type: block_without_item
-  texture: FLOWING_WATER
-
 - Blocks.WATER:
-  readable_name: "Water Still"
+  readable_name: "Water"
   type: block_without_item
   texture: WATER
 
@@ -628,13 +623,8 @@
   type: block_without_item
   texture: BUBBLE_COLUMN
 
-- Blocks.FLOWING_LAVA:
-  readable_name: "Lava"
-  type: block_without_item
-  texture: FLOWING_LAVA
-
 - Blocks.LAVA:
-  readable_name: "Lava Still"
+  readable_name: "Lava"
   type: block_without_item
   texture: LAVA
 
@@ -737,11 +727,6 @@
   readable_name: "Redstone Ore"
   type: block
   texture: REDSTONE_ORE
-
-- Blocks.LIT_REDSTONE_ORE:
-  readable_name: "Redstone Ore Lit"
-  type: block
-  texture: LIT_REDSTONE_ORE
 
 - Blocks.GOLD_ORE:
   readable_name: "Gold Ore"
@@ -1160,7 +1145,7 @@
   texture: SMALL_AMETHYST_BUD
 
 - Blocks.LOG:
-  readable_name: "Oak/Spruce/Birch/Jungle Log"
+  readable_name: "Any Log"
   type: block
   texture: LOG
   subtypes: true
@@ -1184,12 +1169,6 @@
   readable_name: "Jungle Log"
   type: block
   texture: LOG#3
-
-- Blocks.LOG2:
-  readable_name: "Acacia/Dark Oak Log"
-  type: block
-  texture: LOG2
-  subtypes: true
 
 - Blocks.LOG2#0:
   readable_name: "Acacia Log"
@@ -1412,7 +1391,7 @@
   texture: STRIPPED_CHERRY_WOOD
 
 - Blocks.LEAVES:
-  readable_name: "Oak/Spruce/Birch/Jungle Leaves"
+  readable_name: "Any Leaves"
   type: block
   texture: LEAVES
   subtypes: true
@@ -1436,12 +1415,6 @@
   readable_name: "Jungle Leaves"
   type: block
   texture: LEAVES#3
-
-- Blocks.LEAVES2:
-  readable_name: "Acacia/Dark Leaves"
-  type: block
-  texture: LEAVES2
-  subtypes: true
 
 - Blocks.LEAVES2#0:
   readable_name: "Acacia Leaves"
@@ -1742,17 +1715,6 @@
   readable_name: "Dead Bush"
   type: block
   texture: DEADBUSH
-
-- Blocks.TALLGRASS:
-  readable_name: "Shrub/Tall Grass/Fern"
-  type: block
-  texture: TALLGRASS
-  subtypes: true
-
-- Blocks.TALLGRASS#0:
-  readable_name: "Shrub"
-  type: block
-  texture: TALLGRASS#0
 
 - Blocks.TALLGRASS#1:
   readable_name: "Short Grass"
@@ -2977,11 +2939,6 @@
   type: block
   texture: DAYLIGHT_DETECTOR
 
-- Blocks.DAYLIGHT_DETECTOR_INVERTED:
-  readable_name: "Daylight Sensor Inverted"
-  type: block
-  texture: DAYLIGHT_DETECTOR_INVERTED
-
 - Blocks.REDSTONE_TORCH:
   readable_name: "Redstone Torch"
   type: block_without_item
@@ -2992,45 +2949,25 @@
   type: block_without_item
   texture: REDSTONE_TORCH
 
-- Blocks.UNLIT_REDSTONE_TORCH:
-  readable_name: "Redstone Torch (inactive)"
-  type: block
-  texture: UNLIT_REDSTONE_TORCH
-
 - Blocks.REDSTONE_WIRE:
   readable_name: "Redstone"
   type: block_without_item
   texture: REDSTONE_WIRE
 
 - Blocks.UNPOWERED_REPEATER:
-  readable_name: "Redstone Repeater Block (Unpowered)"
+  readable_name: "Redstone Repeater"
   type: block
   texture: UNPOWERED_REPEATER
 
-- Blocks.POWERED_REPEATER:
-  readable_name: "Redstone Repeater Block (Powered)"
-  type: block
-  texture: POWERED_REPEATER
-
 - Blocks.UNPOWERED_COMPARATOR:
-  readable_name: "Redstone Comparator Block (Unpowered)"
+  readable_name: "Redstone Comparator"
   type: block
   texture: UNPOWERED_COMPARATOR
-
-- Blocks.POWERED_COMPARATOR:
-  readable_name: "Redstone Comparator Block (Powered)"
-  type: block
-  texture: POWERED_COMPARATOR
 
 - Blocks.REDSTONE_LAMP:
   readable_name: "Redstone Lamp"
   type: block
   texture: REDSTONE_LAMP
-
-- Blocks.LIT_REDSTONE_LAMP:
-  readable_name: "Redstone Lamp Lit"
-  type: block
-  texture: LIT_REDSTONE_LAMP
 
 - Blocks.DISPENSER:
   readable_name: "Dispenser"
@@ -3623,11 +3560,6 @@
   readable_name: "Purpur Slab"
   type: block
   texture: PURPUR_SLAB
-
-- Blocks.PURPUR_DOUBLE_SLAB:
-  readable_name: "Purpur Double Slab"
-  type: block
-  texture: PURPUR_DOUBLE_SLAB
 
 - Blocks.BEETROOTS:
   readable_name: "Beetroot"
@@ -5197,26 +5129,6 @@
   readable_name: "Structure Block"
   type: block
   texture: STRUCTURE_BLOCK
-
-- Blocks.STRUCTURE_BLOCK#1:
-  readable_name: "Structure Block (Data)"
-  type: block
-  texture: STRUCTURE_BLOCK#1
-
-- Blocks.STRUCTURE_BLOCK#2:
-  readable_name: "Structure Block (Save)"
-  type: block
-  texture: STRUCTURE_BLOCK#2
-
-- Blocks.STRUCTURE_BLOCK#3:
-  readable_name: "Structure Block (Load)"
-  type: block
-  texture: STRUCTURE_BLOCK#3
-
-- Blocks.STRUCTURE_BLOCK#4:
-  readable_name: "Structure Block (Corner)"
-  type: block
-  texture: STRUCTURE_BLOCK#4
 
 - Blocks.JIGSAW:
   readable_name: "Jigsaw"

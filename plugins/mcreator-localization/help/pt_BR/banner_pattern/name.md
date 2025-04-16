@@ -1,0 +1,1 @@
+Este é o nome da figura, exibido em teares e nas descrições de estandartes e escudos.
