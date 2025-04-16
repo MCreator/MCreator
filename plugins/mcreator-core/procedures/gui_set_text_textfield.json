@@ -6,10 +6,9 @@
       "text": "textFieldName"
     },
     {
-      "type": "field_image",
-      "src": "./res/client.png",
-      "width": 8,
-      "height": 24
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
     },
     {
       "type": "input_value",
@@ -25,19 +24,15 @@
     "group": "components",
     "toolbox_id": "guimanagement",
     "toolbox_init": [
-      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Text</field></block></value>"
+      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Text</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "fields": [
       "textfield"
     ],
     "inputs": [
-      "text"
-    ],
-    "dependencies": [
-      {
-        "name": "guistate",
-        "type": "map"
-      }
+      "text",
+      "entity"
     ]
   }
 }
