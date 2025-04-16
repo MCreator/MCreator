@@ -42,7 +42,7 @@ public class ${JavaModName}Menus {
 
 	<#list guis as gui>
 	public static final DeferredHolder<MenuType<?>, MenuType<${gui.getModElement().getName()}Menu>> ${gui.getModElement().getRegistryNameUpper()}
-			= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
+		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IMenuTypeExtension.create(${gui.getModElement().getName()}Menu::new));
 	</#list>
 
 	public interface MenuAccessor {

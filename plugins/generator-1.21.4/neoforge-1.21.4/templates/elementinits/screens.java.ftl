@@ -41,12 +41,12 @@ package ${package}.init;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
 	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
-			<#list guis as gui>
-			event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
-			<#if gui.getComponentsOfType("TextField")?has_content>
-				<#assign hasTextField = true>
-			</#if>
-			</#list>
+		<#list guis as gui>
+		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+		<#if gui.getComponentsOfType("TextField")?has_content>
+			<#assign hasTextField = true>
+		</#if>
+		</#list>
 	}
 
 	<#if hasTextField>
