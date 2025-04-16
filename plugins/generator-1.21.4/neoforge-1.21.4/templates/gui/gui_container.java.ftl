@@ -298,7 +298,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	}
 
 	public HashMap<String, Object> getMenuState() {
-	    return menuState;
+		return menuState;
 	}
 
 	<#if hasProcedure(data.onTick)>
