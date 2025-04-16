@@ -121,6 +121,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
 						new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
+		<#elseif data.mobModelName == "Villager" || data.mobModelName == "Witch">
+		this.addLayer(new CrossedArmsItemLayer<>(this));
 		</#if>
 
 		<#list data.modelLayers as layer>
@@ -165,6 +167,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#if data.animations?has_content>
 		if (this.model instanceof AnimatedModel) {
 			((AnimatedModel) this.model).setEntity(entity);
+		}
+		</#if>
+		<#if data.mobModelName == "Villager" || data.mobModelName == "Witch">
+		if (state instanceof HoldingEntityRenderState holdingState) {
+			this.itemModelResolver.updateForLiving(holdingState.heldItem, entity.getMainHandItem(), ItemDisplayContext.GROUND, false, entity);
 		}
 		</#if>
 	}

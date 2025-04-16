@@ -99,12 +99,7 @@ public class ColorSelector extends JPanel {
 			updateColors();
 		});
 
-		swap.addActionListener(e -> {
-			Color temp = foreground;
-			foreground = background;
-			background = temp;
-			updateColors();
-		});
+		swap.addActionListener(e -> swapColors());
 
 		updateColors();
 
@@ -154,6 +149,13 @@ public class ColorSelector extends JPanel {
 
 	public void setBackgroundColor(Color background) {
 		this.background = background;
+		updateColors();
+	}
+
+	public void swapColors() {
+		Color temp = foreground;
+		foreground = background;
+		background = temp;
 		updateColors();
 	}
 }
