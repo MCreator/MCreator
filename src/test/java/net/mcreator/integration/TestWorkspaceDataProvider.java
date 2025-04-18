@@ -2240,7 +2240,6 @@ public class TestWorkspaceDataProvider {
 		}
 		default -> throw new RuntimeException("Unknown recipe type");
 		}
-
 		return recipe;
 	}
 
