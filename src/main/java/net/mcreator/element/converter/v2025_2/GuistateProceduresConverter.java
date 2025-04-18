@@ -77,6 +77,6 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 78;
+		return 79;
 	}
 }
