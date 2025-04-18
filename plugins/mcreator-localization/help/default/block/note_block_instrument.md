@@ -1,0 +1,1 @@
+This parameter controls the instrument of note blocks placed on this block.
