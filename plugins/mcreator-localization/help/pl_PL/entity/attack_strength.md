@@ -1,0 +1,1 @@
+Ilość obrażeń, które zadają potwory bytom.
