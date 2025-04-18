@@ -37,8 +37,8 @@ package ${package}.client.renderer.block;
 	private final ResourceLocation texture;
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
-		model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-		texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
+		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
+		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
 	@Override public void render(BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
@@ -79,6 +79,7 @@ package ${package}.client.renderer.block;
 		</#if>
 		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
+		model.setupAnim(null, 0, 0, blockEntity.getLevel().getGameTime() + partialTick, 0, 0);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
 		</#compress>
@@ -108,8 +109,8 @@ package ${package}.client.renderer.block;
 		}
 
 		@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
 
 		public ModelPart getRoot() {

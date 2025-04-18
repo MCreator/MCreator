@@ -32,6 +32,11 @@
 <#include "../procedures.java.ftl">
 package ${package}.client.gui;
 
+<#assign textFields = data.getComponentsOfType("TextField")>
+<#assign checkboxes = data.getComponentsOfType("Checkbox")>
+<#assign buttons = data.getComponentsOfType("Button")>
+<#assign imageButtons = data.getComponentsOfType("ImageButton")>
+
 <#assign hasEntityModels = false>
 
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
@@ -42,19 +47,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final int x, y, z;
 	private final Player entity;
 
-	<#list data.getComponentsOfType("TextField") as component>
+	<#list textFields as component>
 	EditBox ${component.getName()};
 	</#list>
 
-	<#list data.getComponentsOfType("Checkbox") as component>
+	<#list checkboxes as component>
 	Checkbox ${component.getName()};
 	</#list>
 
-	<#list data.getComponentsOfType("Button") as component>
+	<#list buttons as component>
 	Button ${component.getName()};
 	</#list>
 
-	<#list data.getComponentsOfType("ImageButton") as component>
+	<#list imageButtons as component>
 	ImageButton ${component.getName()};
 	</#list>
 
@@ -82,7 +87,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		<#list data.getComponentsOfType("TextField") as component>
+		<#list textFields as component>
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
@@ -166,7 +171,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			return true;
 		}
 
-		<#list data.getComponentsOfType("TextField") as component>
+		<#list textFields as component>
 			if(${component.getName()}.isFocused())
 				return ${component.getName()}.keyPressed(key, b, c);
 		</#list>
@@ -174,13 +179,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		return super.keyPressed(key, b, c);
 	}
 
-	<#if data.getComponentsOfType("TextField")?has_content>
+	<#if textFields?has_content>
 	@Override public void resize(Minecraft minecraft, int width, int height) {
-		<#list data.getComponentsOfType("TextField") as component>
+		<#list textFields as component>
 		String ${component.getName()}Value = ${component.getName()}.getValue();
 		</#list>
 		super.resize(minecraft, width, height);
-		<#list data.getComponentsOfType("TextField") as component>
+		<#list textFields as component>
 		${component.getName()}.setValue(${component.getName()}Value);
 		</#list>
 	}
@@ -200,7 +205,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	@Override public void init() {
 		super.init();
 
-		<#list data.getComponentsOfType("TextField") as component>
+		<#list textFields as component>
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
 			<#if component.placeholder?has_content>
@@ -233,23 +238,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#assign btid = 0>
 
-		<#list data.getComponentsOfType("Button") as component>
+		<#list buttons as component>
 			<#if component.isUndecorated>
 				${component.getName()} = new PlainTextButton(
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					${component.width}, ${component.height},
 					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-					<@buttonOnClick component/>, this.font
-				)<@buttonDisplayCondition component/>;
+					<@buttonOnClick component/>, this.font);
 			<#else>
 				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
 					.bounds(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-					${component.width}, ${component.height})
-					<#if hasProcedure(component.displayCondition)>
-						.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
-					<#else>
-						.build();
-					</#if>
+					${component.width}, ${component.height}).build();
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
@@ -257,7 +256,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#assign btid +=1>
 		</#list>
 
-		<#list data.getComponentsOfType("ImageButton") as component>
+		<#list imageButtons as component>
 			${component.getName()} = new ImageButton(
 				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
@@ -281,7 +280,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#assign btid +=1>
 		</#list>
 
-		<#list data.getComponentsOfType("Checkbox") as component>
+		<#list checkboxes as component>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
@@ -291,6 +290,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
+
+	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+	@Override protected void containerTick() {
+		super.containerTick();
+
+		<#list data.getComponentsOfType("Button") as component>
+			<#if hasProcedure(component.displayCondition)>
+				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+			</#if>
+		</#list>
+	}
+	</#if>
 
 	<#if hasEntityModels>
 	private void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
@@ -327,17 +338,6 @@ e -> {
 		}
 	</#if>
 }
-</#macro>
-
-<#macro buttonDisplayCondition component>
-<#if hasProcedure(component.displayCondition)>
-{
-	@Override public void renderWidget(GuiGraphics guiGraphics, int gx, int gy, float ticks) {
-		this.visible = <@procedureOBJToConditionCode component.displayCondition/>;
-		super.renderWidget(guiGraphics, gx, gy, ticks);
-	}
-}
-</#if>
 </#macro>
 
 <#macro getSpriteByIndex component dim>
