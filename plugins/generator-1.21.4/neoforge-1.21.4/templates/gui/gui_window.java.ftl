@@ -229,7 +229,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		<#list textFields as component>
 			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-				${JavaModName}Menus.sendMenuStateUpdate(entity, 0, "${component.getName()}", content);
+				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content);
 			}, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
@@ -289,13 +289,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
 					if (!this.updateLock)
-						${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", value);
+						menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value);
 				})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 				if (${component.getName()}Selected)
-					${JavaModName}Menus.sendMenuStateUpdate(entity, 1, "${component.getName()}", true);
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true);
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});

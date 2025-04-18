@@ -47,26 +47,21 @@ public class ${JavaModName}Menus {
 
 	public interface MenuAccessor {
 		HashMap<String, Object> getMenuState();
-	}
 
-	public static void sendMenuStateUpdate(Player entity, int elementType, String name, Object elementState) {
-		if (entity.containerMenu instanceof MenuAccessor menu) {
-			menu.getMenuState().put(elementType + ":" + name, elementState);
+		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState) {
+			getMenuState().put(elementType + ":" + name, elementState);
+			if (world.isClientSide) {
+				${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState);
+			}
 		}
-		if (entity.level().isClientSide) {
-			${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState);
-		}
-	}
 
-	public static <T> T getMenuState(Entity entity, int elementType, String name, T defaultValue) {
-		if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
+		default <T> T getMenuState(int elementType, String name, T defaultValue) {
 			try {
-				return (T) accessor.getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
+				return (T) getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
 			} catch (ClassCastException e) {
 				return defaultValue;
 			}
 		}
-		return defaultValue;
 	}
 
 }
