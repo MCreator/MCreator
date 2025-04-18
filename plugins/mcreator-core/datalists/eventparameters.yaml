@@ -2,5 +2,3 @@
   type: number
 - FALL_DISTANCE:
   type: number
-- ITEM_PICKUP_RESULT:
-  type: logic
