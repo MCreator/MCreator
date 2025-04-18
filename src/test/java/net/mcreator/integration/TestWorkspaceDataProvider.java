@@ -2119,6 +2119,7 @@ public class TestWorkspaceDataProvider {
 
 	private static GeneratableElement getRecipeExample(ModElement modElement, String recipeType, Random random,
 			boolean _true) {
+		var blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		Recipe recipe = new Recipe(modElement);
 		recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
 		recipe.cookingBookCategory = getRandomItem(random, new String[] { "MISC", "FOOD", "BLOCKS" });
@@ -2126,8 +2127,7 @@ public class TestWorkspaceDataProvider {
 				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
 
-		List<MCItem> blocksAndItemsAndTagsNoAir = filterAir(
-				ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()));
+		List<MCItem> blocksAndItemsAndTagsNoAir = filterAir(blocksAndItemsAndTags);
 		List<MCItem> blocksAndItemsNoAir = filterAir(ElementUtil.loadBlocksAndItems(modElement.getWorkspace()));
 
 		switch (recipe.recipeType) {
@@ -2165,6 +2165,11 @@ public class TestWorkspaceDataProvider {
 			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.recipeSlots = recipeSlots;
+
+			recipe.unlockingItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+					.skip(blocksAndItemsAndTags.size() / 4)
+					.limit(blocksAndItemsAndTags.size() / 64)
+					.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 		}
 		case "Smelting" -> {
 			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2173,6 +2178,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 1.234;
 			recipe.cookingTime = 123;
+			recipe.unlockingItems = List.of(recipe.smeltingInputStack);
 		}
 		case "Smoking" -> {
 			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2181,6 +2187,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 1.34;
 			recipe.cookingTime = 42;
+			recipe.unlockingItems = List.of(recipe.smokingInputStack);
 		}
 		case "Blasting" -> {
 			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2189,6 +2196,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 6.45;
 			recipe.cookingTime = 1000;
+			recipe.unlockingItems = List.of(recipe.blastingInputStack);
 		}
 		case "Stone cutting" -> {
 			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2196,6 +2204,7 @@ public class TestWorkspaceDataProvider {
 			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.recipeRetstackSize = 32;
+			recipe.unlockingItems = List.of(recipe.stoneCuttingInputStack);
 		}
 		case "Campfire cooking" -> {
 			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2204,6 +2213,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 24.234;
 			recipe.cookingTime = 2983;
+			recipe.unlockingItems = List.of(recipe.campfireCookingInputStack);
 		}
 		case "Smithing" -> {
 			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(),
@@ -2214,6 +2224,11 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
+
+			recipe.unlockingItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+					.skip(blocksAndItemsAndTags.size() / 4)
+					.limit(blocksAndItemsAndTags.size() / 64)
+					.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 		}
 		case "Brewing" -> {
 			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
@@ -2225,6 +2240,7 @@ public class TestWorkspaceDataProvider {
 		}
 		default -> throw new RuntimeException("Unknown recipe type");
 		}
+
 		return recipe;
 	}
 
