@@ -22,12 +22,14 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class BannerPattern extends GeneratableElement {
@@ -41,6 +43,10 @@ public class BannerPattern extends GeneratableElement {
 
 	public BannerPattern(ModElement element) {
 		super(element);
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return MinecraftImageGenerator.Preview.generateBannerPatternPreviewPicture(texture.getImage(TextureType.OTHER));
 	}
 
 	@Override public void finalizeModElementGeneration() {
