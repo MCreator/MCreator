@@ -50,8 +50,8 @@ public class ${JavaModName}Menus {
 
 		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState) {
 			getMenuState().put(elementType + ":" + name, elementState);
-			if (world.isClientSide) {
-				${JavaModName}Screens.onMenuStateUpdate(elementType, name, elementState);
+			if (world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+				accessor.onMenuStateUpdate(elementType, name, elementState);
 			}
 		}
 

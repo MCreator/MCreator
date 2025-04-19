@@ -88,12 +88,6 @@ package ${package}.init;
 		void onMenuStateUpdate(int elementType, String name, Object elementState);
 	}
 
-	public static void onMenuStateUpdate(int elementType, String name, Object elementState) {
-		if (Minecraft.getInstance().screen instanceof ScreenAccessor accessor) {
-			accessor.onMenuStateUpdate(elementType, name, elementState);
-		}
-	}
-
 }
 
 <#-- @formatter:on -->
