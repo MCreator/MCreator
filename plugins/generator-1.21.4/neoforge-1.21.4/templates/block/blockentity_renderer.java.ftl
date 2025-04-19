@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer.block;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<BlockEntity> {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity> {
 
 	private final CustomHierarchicalModel model;
 	private final ResourceLocation texture;
@@ -44,11 +44,11 @@ package ${package}.client.renderer.block;
 		this.renderState = new LivingEntityRenderState();
 	}
 
-	private void updateRenderState(BlockEntity blockEntity, float partialTick) {
+	private void updateRenderState(${name}BlockEntity blockEntity, float partialTick) {
 		renderState.ageInTicks = blockEntity.getLevel().getGameTime() + partialTick;
 	}
 
-	@Override public void render(BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
+	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
 		<#compress>
 		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
@@ -87,7 +87,7 @@ package ${package}.client.renderer.block;
 		</#if>
 		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
-		model.setupAnim(renderState);
+		model.setupBlockEntityAnim(blockEntity, renderState);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
 		</#compress>
@@ -103,8 +103,11 @@ package ${package}.client.renderer.block;
 			super(root);
 		}
 
-		@Override public void setupAnim(LivingEntityRenderState state) {
+		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, LivingEntityRenderState state) {
 			this.root().getAllParts().forEach(ModelPart::resetPose);
+			<#list data.animations as animation>
+				this.animate(blockEntity.animationState${animation?index}, ${animation.animation}, state.ageInTicks, ${animation.speed}f);
+			</#list>
 			super.setupAnim(state);
 		}
 

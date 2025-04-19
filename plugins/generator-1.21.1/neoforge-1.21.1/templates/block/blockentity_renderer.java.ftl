@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer.block;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<BlockEntity> {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity> {
 
 	private final CustomHierarchicalModel model;
 	private final ResourceLocation texture;
@@ -41,7 +41,7 @@ package ${package}.client.renderer.block;
 		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
-	@Override public void render(BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
+	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
 		<#compress>
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
@@ -79,7 +79,7 @@ package ${package}.client.renderer.block;
 		</#if>
 		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
-		model.setupAnim(null, 0, 0, blockEntity.getLevel().getGameTime() + partialTick, 0, 0);
+		model.setupBlockEntityAnim(blockEntity, blockEntity.getLevel().getGameTime() + partialTick);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
 		</#compress>
@@ -93,13 +93,12 @@ package ${package}.client.renderer.block;
 
 		private final ModelPart root;
 
-		private final HierarchicalModel animator = new HierarchicalModel<Entity>() {
+		private final HierarchicalModel<Entity> animator = new HierarchicalModel<Entity>() {
 			@Override public ModelPart root() {
 				return root;
 			}
 
 			@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-				this.root().getAllParts().forEach(ModelPart::resetPose);
 			}
 		};
 
@@ -108,9 +107,12 @@ package ${package}.client.renderer.block;
 			this.root = root;
 		}
 
-		@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
+			animator.root().getAllParts().forEach(ModelPart::resetPose);
+			<#list data.animations as animation>
+				animator.animate(blockEntity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
+			</#list>
+			super.setupAnim(null, 0, 0, ageInTicks, 0, 0);
 		}
 
 		public ModelPart getRoot() {
