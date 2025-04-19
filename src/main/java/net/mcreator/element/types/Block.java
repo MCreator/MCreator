@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
+	public String blockSetType;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -99,7 +100,6 @@ import java.util.stream.Collectors;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public int lightOpacity;
-	public Material material;
 
 	public int tickRate;
 	public boolean tickRandomly;
@@ -108,11 +108,13 @@ import java.util.stream.Collectors;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
+	public String noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	public String offsetType;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
 
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 
@@ -207,6 +209,7 @@ import java.util.stream.Collectors;
 
 		this.customProperties = new ArrayList<>();
 
+		this.blockSetType = "OAK";
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -215,6 +218,7 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
+		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
@@ -280,6 +284,8 @@ import java.util.stream.Collectors;
 			modelType = Model.Type.JSON;
 		else if (renderType == 3)
 			modelType = Model.Type.OBJ;
+		else if (renderType == 4)
+			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
@@ -330,6 +336,8 @@ import java.util.stream.Collectors;
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					side, side);
+		} else if (renderType() == 4) {
+			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
