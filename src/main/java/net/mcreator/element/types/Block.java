@@ -236,6 +236,8 @@ import java.util.stream.Collectors;
 		this.fluidCapacity = 8000;
 
 		this.vibrationalEvents = new ArrayList<>();
+
+		this.animations = new ArrayList<>();
 	}
 
 	public int renderType() {
