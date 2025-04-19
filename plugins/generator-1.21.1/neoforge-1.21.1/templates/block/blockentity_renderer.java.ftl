@@ -29,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.block;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity> {
@@ -41,8 +43,30 @@ package ${package}.client.renderer.block;
 		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
 	}
 
+	<#if data.animations?has_content>
+	private void updateRenderState(${name}BlockEntity blockEntity) {
+		int tickCount = (int) blockEntity.getLevel().getGameTime();
+		<#list data.animations as animation>
+			<#if hasProcedure(animation.condition)>
+				blockEntity.animationState${animation?index}.animateWhen(<@procedureCode animation.condition, {
+					"x": "blockEntity.getBlockPos().getX()",
+					"y": "blockEntity.getBlockPos().getY()",
+					"z": "blockEntity.getBlockPos().getZ()",
+					"blockstate": "blockEntity.getBlockState()",
+					"world": "blockEntity.getLevel()"
+				}, false/>, tickCount);
+			<#else>
+				blockEntity.animationState${animation?index}.animateWhen(true, tickCount);
+			</#if>
+		</#list>
+	}
+	</#if>
+
 	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
 		<#compress>
+		<#if data.animations?has_content>
+		updateRenderState(blockEntity);
+		</#if>
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
 		poseStack.translate(-0.5, -0.5, 0.5);
@@ -93,14 +117,7 @@ package ${package}.client.renderer.block;
 
 		private final ModelPart root;
 
-		private final HierarchicalModel<Entity> animator = new HierarchicalModel<Entity>() {
-			@Override public ModelPart root() {
-				return root;
-			}
-
-			@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-			}
-		};
+		private final BlockEntityHierarchicalModel animator = new BlockEntityHierarchicalModel();
 
 		public CustomHierarchicalModel(ModelPart root) {
 			super(root);
@@ -108,15 +125,30 @@ package ${package}.client.renderer.block;
 		}
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
-			animator.root().getAllParts().forEach(ModelPart::resetPose);
-			<#list data.animations as animation>
-				animator.animate(blockEntity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
-			</#list>
+			animator.setupBlockEntityAnim(blockEntity, ageInTicks);
 			super.setupAnim(null, 0, 0, ageInTicks, 0, 0);
 		}
 
 		public ModelPart getRoot() {
 			return root;
+		}
+
+		private class BlockEntityHierarchicalModel extends HierarchicalModel<Entity> {
+
+			@Override public ModelPart root() {
+				return root;
+			}
+
+			@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			}
+
+			public void setupBlockEntityAnim(${name}BlockEntity blockEntity, float ageInTicks) {
+				animator.root().getAllParts().forEach(ModelPart::resetPose);
+				<#list data.animations as animation>
+				animator.animate(blockEntity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
+				</#list>
+			}
+
 		}
 
 	}
