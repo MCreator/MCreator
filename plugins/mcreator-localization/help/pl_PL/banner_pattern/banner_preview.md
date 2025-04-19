@@ -1,0 +1,1 @@
+To jest podgląd białego wzoru, kiedy jest nakładany na czarny sztandar, z częścią przednią po lewej stronie.
