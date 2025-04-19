@@ -69,7 +69,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							String name = element.getAttribute("name");
 							if ("eventparameter".equals(name)) {
 								parameter = element.getTextContent();
-							} else if ("value".equals(name)){
+							} else if ("value".equals(name)) {
 								value = element.getTextContent();
 							}
 						} else if (element.getNodeName().equals("value")) {
@@ -99,7 +99,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 								datamodel.put("input$value", value);
 								datamodel.put("input_id$value", valueType);
 							} else {
-								datamodel.put("field$value",value);
+								datamodel.put("field$value", value);
 							}
 							datamodel.put("_eventClass", needEventClass);
 							datamodel.put("_method", needMethod);
