@@ -70,6 +70,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							if ("eventparameter".equals(name)) {
 								parameter = element.getTextContent();
 							} else if ("value".equals(name)) {
+								//compatibility with datalist selector
 								value = element.getTextContent();
 							}
 						} else if (element.getNodeName().equals("value")) {
@@ -87,6 +88,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							return;
 						}
 						if (!trigger.getID().equals(needTrigger)) {
+							//if trigger is wrong
 							master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 									L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
 											L10N.t("trigger." + needTrigger), L10N.t("trigger." + trigger.getID()))));
@@ -101,10 +103,11 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							} else {
 								datamodel.put("field$value", value);
 							}
+							//if template need them, they will need generator.map. We may help them here.
 							datamodel.put("_eventClass", needEventClass);
 							datamodel.put("_method", needMethod);
 							datamodel.put("_triggerName", needTrigger);
-							master.append(master.getTemplateGenerator()
+							master.append("_"+master.getTemplateGenerator()
 									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
 					}
