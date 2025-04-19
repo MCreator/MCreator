@@ -48,26 +48,24 @@ public class JBlockEntityAnimationListEntry extends JSimpleListEntry<Block.Anima
 
 	public JBlockEntityAnimationListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JBlockEntityAnimationListEntry> entryList) {
-		// TODO: translations
-
 		super(parent, entryList);
 		this.mcreator = mcreator;
 
 		line.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
-		condition = new ProcedureSelector(gui.withEntry("entity/condition_animation"), mcreator,
-				L10N.t("elementgui.living_entity.animation_condition"), ProcedureSelector.Side.CLIENT, true,
+		condition = new ProcedureSelector(gui.withEntry("animations/condition_animation"), mcreator,
+				L10N.t("elementgui.animations.animation_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		animation = new DataListComboBox(mcreator);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation"),
-				L10N.label("elementgui.living_entity.animation")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("animations/animation"),
+				L10N.label("elementgui.animations.animation")));
 		line.add(animation);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/animation_speed"),
-				L10N.label("elementgui.living_entity.animation_speed")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("animations/animation_speed"),
+				L10N.label("elementgui.animations.animation_speed")));
 		line.add(speed);
 
 		line.add(condition);

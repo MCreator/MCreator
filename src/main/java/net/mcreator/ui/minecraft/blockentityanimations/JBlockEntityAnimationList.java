@@ -32,8 +32,6 @@ import java.util.List;
 public class JBlockEntityAnimationList extends JSimpleEntriesList<JBlockEntityAnimationListEntry, Block.AnimationEntry> {
 
 	public JBlockEntityAnimationList(MCreator mcreator, IHelpContext gui) {
-		// TODO: translations
-
 		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.living_entity.add_playable_animation"));
