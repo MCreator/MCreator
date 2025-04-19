@@ -1,0 +1,12 @@
+_default: null
+DAMAGE_AMOUNT:
+  # the event class
+  - LivingIncomingDamageEvent
+  # the method name
+  - setAmount
+  # the trigger name
+  - entity_attacked
+FALL_DISTANCE:
+  - LivingFallEvent
+  - setDistance
+  - entity_falls
