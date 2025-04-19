@@ -95,7 +95,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 						if (master.getTemplateGenerator() != null) {
 							HashMap<String, Object> datamodel = new HashMap<>();
 							datamodel.put("field$parameter", parameter);
-							if (valueType == null) {
+							if (valueType != null) {
 								datamodel.put("input$value", value);
 								datamodel.put("input_id$value", valueType);
 							} else {
