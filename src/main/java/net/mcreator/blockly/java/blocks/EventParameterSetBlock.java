@@ -58,7 +58,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				}
 
 				if (procedure.getParent().getGenerator() != null) {
-					//parameters
+					//generator wrapper
 					GeneratorWrapper generatorWrapper = new GeneratorWrapper(procedure.getParent().getGenerator());
 
 					List<Element> elements = XMLUtil.getDirectChildren(block);
@@ -66,8 +66,11 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					//values
 					for (Element element : elements) {
 						if (element.getNodeName().equals("field")) {
-							if (element.getAttribute("name").equals("eventparameter")) {
+							String name = element.getAttribute("name");
+							if ("eventparameter".equals(name)) {
 								parameter = element.getTextContent();
+							} else if ("value".equals(name)){
+								value = element.getTextContent();
 							}
 						} else if (element.getNodeName().equals("value")) {
 							if (element.getAttribute("name").equals("value")) {
@@ -90,14 +93,17 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							return;
 						}
 						if (master.getTemplateGenerator() != null) {
-							//if event is null, the instanceof will ignore it
 							HashMap<String, Object> datamodel = new HashMap<>();
 							datamodel.put("field$parameter", parameter);
-							datamodel.put("input$value", value);
-							datamodel.put("input_id$value", valueType);
-							datamodel.put("eventClass", needEventClass);
-							datamodel.put("method", needMethod);
-							datamodel.put("triggerName", needTrigger);
+							if (valueType == null) {
+								datamodel.put("input$value", value);
+								datamodel.put("input_id$value", valueType);
+							} else {
+								datamodel.put("field$value",value);
+							}
+							datamodel.put("_eventClass", needEventClass);
+							datamodel.put("_method", needMethod);
+							datamodel.put("_triggerName", needTrigger);
 							master.append(master.getTemplateGenerator()
 									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
