@@ -104,9 +104,9 @@ public class EventParameterSetBlock implements IBlockGenerator {
 								datamodel.put("field$value", value);
 							}
 							//if template need them, they will need generator.map. We may help them here.
-							datamodel.put("_eventClass", needEventClass);
-							datamodel.put("_method", needMethod);
-							datamodel.put("_triggerName", needTrigger);
+							datamodel.put("eventClass", needEventClass);
+							datamodel.put("method", needMethod);
+							datamodel.put("triggerName", needTrigger);
 							master.append("_"+master.getTemplateGenerator()
 									.generateFromTemplate(block.getAttribute("type") + ".java.ftl", datamodel));
 						}
