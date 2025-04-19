@@ -43,7 +43,7 @@ import java.util.List;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 78;
+	public static final int formatVersion = 79;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 

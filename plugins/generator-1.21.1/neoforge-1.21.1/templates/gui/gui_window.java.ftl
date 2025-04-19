@@ -39,13 +39,11 @@ package ${package}.client.gui;
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
 
-public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
-
-	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
-
+public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
+	<#if data.getComponentsOfType("Checkbox")?has_content>private boolean updateLock;</#if>
 
 	<#list textFields as component>
 	EditBox ${component.getName()};
@@ -72,6 +70,29 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.entity = container.entity;
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
+	}
+
+	public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+		<#if data.getComponentsOfType("TextField")?has_content>
+		if (elementType == 0 && elementState instanceof String stringState) {
+			<#list data.getComponentsOfType("TextField") as component>
+				if (name.equals("${component.getName()}")) {
+					${component.getName()}.setValue(stringState);
+				}
+			</#list>
+		}
+		</#if>
+		<#if data.getComponentsOfType("Checkbox")?has_content>
+		if (elementType == 1 && elementState instanceof Boolean logicState) {
+			this.updateLock = true;
+			<#list data.getComponentsOfType("Checkbox") as component>
+				if (name.equals("${component.getName()}") && logicState.booleanValue() != ${component.getName()}.selected()) {
+					${component.getName()}.onPress();
+				}
+			</#list>
+			this.updateLock = false;
+		}
+		</#if>
 	}
 
 	<#if data.doesPauseGame>
@@ -206,33 +227,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
-			<#if component.placeholder?has_content>
-			{
-				@Override public void insertText(String text) {
-					super.insertText(text);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-
-				@Override public void moveCursorTo(int pos, boolean flag) {
-					super.moveCursorTo(pos, flag);
-					if (getValue().isEmpty())
-						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-					else
-						setSuggestion(null);
-				}
-			}
-			</#if>;
+			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
+				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content);
+			}, <#if component.placeholder?has_content> true <#else> false </#if>);
 			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
 
-			guistate.put("text:${component.getName()}", ${component.getName()});
 			this.addWidget(this.${component.getName()});
 		</#list>
 
@@ -281,12 +284,20 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list checkboxes as component>
+			<#if hasProcedure(component.isCheckedProcedure)>boolean ${component.getName()}Selected = <@procedureOBJToConditionCode component.isCheckedProcedure/>;</#if>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
-				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
+				.onValueChange((checkbox, value) -> {
+					if (!this.updateLock)
+						menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value);
+				})
+				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
+			<#if hasProcedure(component.isCheckedProcedure)>
+				if (${component.getName()}Selected)
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true);
+			</#if>
 
-			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}

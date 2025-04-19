@@ -61,7 +61,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
