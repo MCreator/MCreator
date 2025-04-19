@@ -70,7 +70,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							if ("eventparameter".equals(name)) {
 								parameter = element.getTextContent();
 							} else if ("value".equals(name)) {
-								//compatibility with datalist selector,dropdown for later extension
+								//compatibility with datalist selector, dropdown and so on for later extension
 								value = element.getTextContent();
 							}
 						} else if (element.getNodeName().equals("value")) {
