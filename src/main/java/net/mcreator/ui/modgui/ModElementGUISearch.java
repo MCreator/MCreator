@@ -128,18 +128,27 @@ public class ModElementGUISearch extends JTextField {
 
 		boolean found = false;
 		for (Component comp : rootComponent.getComponents()) {
-			if (comp instanceof JLabel label) {
+			if (!comp.isVisible() || !comp.isDisplayable())
+				continue; // Skip invisible components
+
+			switch (comp) {
+			case JLabel label -> {
 				if (handleHighlighting(label, label::getText, label::setText, searchText))
 					found = true;
-			} else if (comp instanceof AbstractButton button) {
+			}
+			case AbstractButton button -> {
 				if (handleHighlighting(button, button::getText, button::setText, searchText))
 					found = true;
-			} else if (comp instanceof Container container) {
+			}
+			case Container container -> {
 				// Recurse into sub-containers
 				boolean subfound = highlightMatchingLabels(container, searchText);
 				if (subfound) {
 					found = true;
 				}
+			}
+			default -> {
+			}
 			}
 		}
 
