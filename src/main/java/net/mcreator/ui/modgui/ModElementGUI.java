@@ -346,6 +346,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				LOG.warn("Failed to create help context", e);
 			}
 
+			toolBarLeft.add(new ModElementGUISearch(this));
+
 			add("North",
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
