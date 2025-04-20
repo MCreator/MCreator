@@ -1,6 +1,6 @@
 {
     <#if parent??><#assign guiTexture = parent.guiTexture><#elseif data.guiTexture??><#assign guiTexture = data.guiTexture></#if>
-    <#if guiTexture??>
+    <#if guiTexture?has_content>
     "loader": "neoforge:separate_transforms",
     "base": { <@modelDefinition/> },
     "perspectives": {
