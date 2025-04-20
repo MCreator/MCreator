@@ -51,6 +51,8 @@ import java.util.*;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 
+	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
+
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
@@ -139,7 +141,11 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		if (hasGUITexture()) {
+			return ImageUtils.resizeAndCrop(guiTexture.getImage(TextureType.ITEM), 32);
+		} else {
+			return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		}
 	}
 
 	@Override public Model getItemModel() {
@@ -170,6 +176,10 @@ import java.util.*;
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
 		return specialInformation;
+	}
+
+	public boolean hasGUITexture() {
+		return guiTexture != null && !guiTexture.isEmpty();
 	}
 
 	public boolean hasNormalModel() {

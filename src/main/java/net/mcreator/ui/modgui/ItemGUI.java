@@ -70,6 +70,7 @@ import java.util.stream.Collectors;
 public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureSelectionButton texture;
+	private TextureSelectionButton guiTexture;
 
 	private StringListProcedureSelector specialInformation;
 
@@ -253,6 +254,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
+		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		guiTexture.setOpaque(false);
+
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
 
@@ -260,13 +264,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(renderType, 16);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
+		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
-				PanelUtils.join(renderType)));
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"), L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -669,6 +675,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTexture(item.texture);
+		guiTexture.setTexture(item.guiTexture);
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -788,6 +795,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				.map(NonMappableElement::getUnmappedValue).collect(Collectors.toList());
 
 		item.texture = texture.getTextureHolder();
+		item.guiTexture = guiTexture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
