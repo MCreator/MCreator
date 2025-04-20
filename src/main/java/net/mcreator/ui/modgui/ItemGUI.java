@@ -265,7 +265,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComponentUtils.deriveFont(renderType, 16);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
-
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
