@@ -46,14 +46,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 	// Preview changed event
 	private transient MouseEvent previewEvent;
 
+	// Pasted layer reference
+	private transient Layer floatingLayer = null;
+
 
 	//** Saved image properties **//
 	// Canvas size
 	private int width;
 	private int height;
-
-	// Pasted layer (with the floating effect)
-	private Layer floatingLayer;
 
 	// Selection object
 	private final Selection selection;
@@ -69,6 +69,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 		this.imageMakerView = imageMakerView;
 		imageMakerView.getLayerPanel().setCanvas(this);
 		imageMakerView.getLayerPanel().updateSelection();
+		for (Layer layer : this) {
+			layer.setCanvas(this);
+			floatingCheck(layer);
+		}
+		selection.setCanvas(this);
 	}
 
 	public boolean add(Layer layer, UUID group) {
@@ -242,11 +247,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 	}
 
 	public boolean consolidateFloating() {
-		Consolidation consolidation = new Consolidation(this, floatingLayer);
-		floatingLayer.setPasted(false);
-		consolidation.setAfter(floatingLayer);
-		imageMakerView.getVersionManager().addRevision(consolidation);
-		return true;
+		if (floatingLayer != null) {
+			Consolidation consolidation = new Consolidation(this, floatingLayer);
+			floatingLayer.setPasted(false);
+			consolidation.setAfter(floatingLayer);
+			imageMakerView.getVersionManager().addRevision(consolidation);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean mergeSelectedDown() {

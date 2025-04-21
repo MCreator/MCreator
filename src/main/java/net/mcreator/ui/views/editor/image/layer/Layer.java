@@ -29,20 +29,33 @@ import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public class Layer {
+
+	//** Transient references and fields **//
+	// Canvas reference (needs to be set right after creation)
 	private transient Canvas canvas;
 
-	private int x, y;
-	private String name;
-	private boolean visible = true;
+	// Rendering mode for eraser function
+	private transient boolean renderingMode = false;
+
+	// Change preview overlay
+	private transient BufferedImage overlay = null;
+	private transient double overlayOpacity = 1;
+
+
+	//** Saved layer properties **//
+
+	// Layer properties
 	private final UUID uuid;
+	private String name;
+	private int x, y;
+	private boolean visible = true;
 
+	// Image data
 	private BufferedImage raster;
-	private BufferedImage overlay;
-	private double overlayOpacity = 1;
 
-	private boolean renderingMode = false;
-
+	// If the layer is pasted and not yet solidified/merged down (adds the floating effect)
 	private boolean isPasted = false;
+
 
 	public Layer(int width, int height, String name) {
 		this(width, height, 0, 0, name);
@@ -188,8 +201,8 @@ public class Layer {
 		} else {
 			Composite composite = g2d.getComposite();
 			if (overlay != null) {
-				AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) overlayOpacity);
-				g2d.setComposite(alcom);
+				AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) overlayOpacity);
+				g2d.setComposite(alphaComposite);
 				g2d.drawImage(overlay, 0, 0, null);
 				g2d.setComposite(composite);
 			}
@@ -320,8 +333,8 @@ public class Layer {
 		raster = new BufferedImage(image.getWidth(), image.getHeight(), getType());
 		Graphics2D g = createGraphics();
 		Composite composite = g.getComposite();
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.CLEAR);
-		g.setComposite(alcom);
+		AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.CLEAR);
+		g.setComposite(alphaComposite);
 		g.fillRect(0, 0, image.getWidth(), getHeight());
 		g.setComposite(composite);
 		g.drawImage(image, 0, 0, null);
