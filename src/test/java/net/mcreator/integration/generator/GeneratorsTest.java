@@ -67,7 +67,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: {}", rgenseed);
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		Set<String> fileNames;
+		if (System.getenv("MCREATOR_TEST_GENERATORS") != null) {
+			// comma separated to set, use stream oneliner
+			fileNames = Arrays.stream(System.getenv("MCREATOR_TEST_GENERATORS").split(","))
+					.map(generator -> generator + "/generator.yaml").collect(Collectors.toSet());
+		} else {
+			fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		}
 
 		// Sort generators, so they are tested in predictable order
 		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
