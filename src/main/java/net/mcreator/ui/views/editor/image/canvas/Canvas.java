@@ -59,12 +59,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private int height;
 
 	// Selection object
-	private final Selection selection;
+	private final Selection selection = new Selection(this);
 
 	public Canvas(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.selection = new Selection(this);
 	}
 
 	public void initReferences(ImageMakerView imageMakerView) {
