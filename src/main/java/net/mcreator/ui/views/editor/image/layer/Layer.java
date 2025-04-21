@@ -31,6 +31,8 @@ import java.util.UUID;
 public class Layer {
 
 	//** Transient references and fields **//
+	private transient final UUID uuid;
+
 	// Canvas reference (needs to be set right after creation)
 	private transient Canvas canvas;
 
@@ -45,7 +47,6 @@ public class Layer {
 	//** Saved layer properties **//
 
 	// Layer properties
-	private final UUID uuid;
 	private String name;
 	private int x, y;
 	private boolean visible = true;
@@ -56,6 +57,11 @@ public class Layer {
 	// If the layer is pasted and not yet solidified/merged down (adds the floating effect)
 	private boolean isPasted = false;
 
+
+	// Only used by serialization
+	private Layer(){
+		this.uuid = UUID.randomUUID();
+	}
 
 	public Layer(int width, int height, String name) {
 		this(width, height, 0, 0, name);
