@@ -5,7 +5,7 @@
     "property": "minecraft:display_context",
     "cases": [
       {
-        "when": ["gui", "fixed"],
+        "when": ["gui", "fixed", "ground"],
         "model": {
           "type": "minecraft:model",
           "model": "${modid}:item/${registryname}_gui"

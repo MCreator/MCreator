@@ -5,11 +5,11 @@
     "property": "minecraft:display_context",
     "cases": [
       {
-        "when": ["gui", "fixed"],
-          "model": {
-            "type": "minecraft:model",
-            "model": "${modid}:item/${registryname}_gui"
-          }
+        "when": ["gui", "fixed", "ground"],
+        "model": {
+          "type": "minecraft:model",
+          "model": "${modid}:item/${registryname}_gui"
+        }
       }
     ],
     "fallback": {
