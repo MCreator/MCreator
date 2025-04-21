@@ -37,9 +37,8 @@ package ${package}.client.gui;
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
 
-<#assign hasEntityModels = false>
-
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
+
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
@@ -103,8 +102,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
+		<#compress>
 		<#list data.getComponentsOfType("EntityModel") as component>
-			<#assign hasEntityModels = true>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
@@ -112,13 +111,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				this.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
+				${JavaModName}Screens.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
 					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
 					livingEntity
 				);
 			}
 		</#list>
+		</#compress>
 
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
 
@@ -302,30 +302,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
 		</#list>
-	}
-	</#if>
-
-	<#if hasEntityModels>
-	private void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
-		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
-		Quaternionf cameraOrientation = new Quaternionf().rotateX(angleYComponent * 20 * ((float) Math.PI / 180F));
-		pose.mul(cameraOrientation);
-		float f2 = entity.yBodyRot;
-		float f3 = entity.getYRot();
-		float f4 = entity.getXRot();
-		float f5 = entity.yHeadRotO;
-		float f6 = entity.yHeadRot;
-		entity.yBodyRot = 180.0F + angleXComponent * 20.0F;
-		entity.setYRot(180.0F + angleXComponent * 40.0F);
-		entity.setXRot(-angleYComponent * 20.0F);
-		entity.yHeadRot = entity.getYRot();
-		entity.yHeadRotO = entity.getYRot();
-		InventoryScreen.renderEntityInInventory(guiGraphics, x, y, scale, new Vector3f(0, 0, 0), pose, cameraOrientation, entity);
-		entity.yBodyRot = f2;
-		entity.setYRot(f3);
-		entity.setXRot(f4);
-		entity.yHeadRotO = f5;
-		entity.yHeadRot = f6;
 	}
 	</#if>
 
