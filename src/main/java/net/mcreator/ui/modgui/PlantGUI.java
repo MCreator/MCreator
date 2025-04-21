@@ -897,6 +897,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updateBlockItemSettings() {
+		itemTexture.setEnabled(hasBlockItem.isSelected());
+		isItemTinted.setEnabled(hasBlockItem.isSelected());
 		maxStackSize.setEnabled(hasBlockItem.isSelected());
 		rarity.setEnabled(hasBlockItem.isSelected());
 		immuneToFire.setEnabled(hasBlockItem.isSelected());
