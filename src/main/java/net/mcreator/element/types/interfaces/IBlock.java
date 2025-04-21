@@ -24,7 +24,7 @@ import net.mcreator.element.BaseType;
 import java.util.Collection;
 import java.util.List;
 
-public interface IBlock extends IItem {
+@SuppressWarnings("unused") public interface IBlock extends IItem {
 
 	@Override default Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.BLOCK, BaseType.ITEM);
@@ -35,7 +35,6 @@ public interface IBlock extends IItem {
 	default boolean isDoubleBlock() {
 		return false;
 	}
-
 
 	default boolean hasCustomItemProperties() {
 		return false;
