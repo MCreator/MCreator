@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage;
  */
 public class Selection {
 	private final int HANDLE_SIZE = 10;
-	private final Stroke handleStroke = new BasicStroke(HANDLE_SIZE);
+	private final Stroke HANDLE_STROKE = new BasicStroke(HANDLE_SIZE);
 
 	/*
 	 * Transient references and fields
@@ -81,14 +81,6 @@ public class Selection {
 
 	public void setEditing(SelectedBorder editing) {
 		this.editing = editing;
-	}
-
-	public int getHandleSize() {
-		return HANDLE_SIZE;
-	}
-
-	public Stroke getHandleStroke() {
-		return handleStroke;
 	}
 
 	public int getLeft() {
@@ -245,7 +237,7 @@ public class Selection {
 
 			g2d.setPaint(strokeColor);
 
-			int handleSize = getHandleSize();
+			int handleSize = HANDLE_SIZE;
 
 			double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 			int x_left = (int) Math.round(getLeft() * zoom);
@@ -284,7 +276,7 @@ public class Selection {
 				}
 			}
 
-			g2d.setStroke(getHandleStroke());
+			g2d.setStroke(HANDLE_STROKE);
 
 			if (horizontalHandlesVisible()) {
 				// Add highlight to the selected horizontal handle
