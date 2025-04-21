@@ -21,7 +21,6 @@ package net.mcreator.element.converter.v2025_2;
 
 import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,7 +38,7 @@ import java.io.StringWriter;
 public class GuistateProceduresConverter extends ProcedureConverter {
 
 	// Added an input for the entity, because now the content of the text fields/checkboxes is bound to
-	// the player's open container, and not to the client data of the guistate
+	// the player's open container, and not to the client data of the menustate
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -51,18 +50,14 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 			Element element = (Element) nodeList.item(i);
 			String attributeValue = element.getAttribute("type");
 			if ("gui_get_text_textfield".equals(attributeValue) || "gui_get_value_checkbox".equals(attributeValue) || "gui_set_text_textfield".equals(attributeValue)) {
-				Element entityValue = XMLUtil.getFirstChildrenWithName(element, "value", "name", "entity");
+				reportDependenciesChanged();
 
-				if (entityValue == null) {
-					reportDependenciesChanged();
-
-					Element value = doc.createElement("value");
-					value.setAttribute("name", "entity");
-					Element deps_block = doc.createElement("block");
-					deps_block.setAttribute("type", "entity_from_deps");
-					value.appendChild(deps_block);
-					element.appendChild(value);
-				}
+				Element value = doc.createElement("value");
+				value.setAttribute("name", "entity");
+				Element deps_block = doc.createElement("block");
+				deps_block.setAttribute("type", "entity_from_deps");
+				value.appendChild(deps_block);
+				element.appendChild(value);
 			}
 		}
 
