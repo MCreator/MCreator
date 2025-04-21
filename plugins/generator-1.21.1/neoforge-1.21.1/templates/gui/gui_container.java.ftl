@@ -296,6 +296,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		return customSlots;
 	}
 
+	@Override
 	public HashMap<String, Object> getMenuState() {
 		return menuState;
 	}

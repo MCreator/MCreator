@@ -53,7 +53,7 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 			if ("gui_get_text_textfield".equals(attributeValue) || "gui_get_value_checkbox".equals(attributeValue) || "gui_set_text_textfield".equals(attributeValue)) {
 				Element entityValue = XMLUtil.getFirstChildrenWithName(element, "value", "name", "entity");
 
-				if (entityValue == null || !("entity".equals(entityValue.getAttribute("name")))) {
+				if (entityValue == null) {
 					reportDependenciesChanged();
 					Element entityValueNew = doc.createElement("value");
 					entityValueNew.setAttribute("name", "entity");

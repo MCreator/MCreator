@@ -72,27 +72,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageHeight = ${data.height};
 	}
 
+	@Override
 	public void onMenuStateUpdate(int elementType, String name, Object elementState) {
-		<#if data.getComponentsOfType("TextField")?has_content>
+		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
-			<#list data.getComponentsOfType("TextField") as component>
-				if (name.equals("${component.getName()}")) {
+			<#list textFields as component>
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
 					${component.getName()}.setValue(stringState);
 				}
 			</#list>
 		}
 		</#if>
-		<#if data.getComponentsOfType("Checkbox")?has_content>
-		if (elementType == 1 && elementState instanceof Boolean logicState) {
-			this.updateLock = true;
-			<#list data.getComponentsOfType("Checkbox") as component>
-				if (name.equals("${component.getName()}") && logicState.booleanValue() != ${component.getName()}.selected()) {
-					${component.getName()}.onPress();
-				}
-			</#list>
-			this.updateLock = false;
-		}
-		</#if>
+		<#-- onMenuStateUpdate is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 	}
 
 	<#if data.doesPauseGame>
