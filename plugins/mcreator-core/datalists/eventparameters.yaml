@@ -1,4 +1,4 @@
-- DAMAGE_AMOUNT:
+- INCOMING_DAMAGE_AMOUNT:
   type: number
 - FALL_DISTANCE:
   type: number
