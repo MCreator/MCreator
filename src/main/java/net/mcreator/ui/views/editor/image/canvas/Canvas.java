@@ -61,7 +61,6 @@ public class Canvas extends ArrayListListModel<Layer> {
 	// Selection object
 	private final Selection selection;
 
-
 	public Canvas(int width, int height) {
 		this.width = width;
 		this.height = height;

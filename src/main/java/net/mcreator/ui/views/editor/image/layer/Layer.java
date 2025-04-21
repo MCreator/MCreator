@@ -59,7 +59,6 @@ public class Layer {
 	// If the layer is pasted and not yet solidified/merged down (adds the floating effect)
 	private boolean isPasted = false;
 
-
 	// Only used by serialization
 	private Layer(){
 		this.uuid = UUID.randomUUID();
