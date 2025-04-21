@@ -88,6 +88,11 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
+
+	public boolean hasBlockItem;
+	public int maxStackSize;
+	public String rarity;
+	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
@@ -205,6 +210,9 @@ import java.util.stream.Collectors;
 	public Block(ModElement element) {
 		super(element);
 
+		this.hasBlockItem = true;
+		this.maxStackSize = 64;
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 
 		this.customProperties = new ArrayList<>();

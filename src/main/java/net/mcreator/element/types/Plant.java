@@ -81,6 +81,11 @@ import java.util.stream.Collectors;
 	public boolean isSolid;
 	public boolean isWaterloggable;
 
+	public boolean hasBlockItem;
+	public int maxStackSize;
+	public String rarity;
+	public boolean immuneToFire;
+
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
 	public Sound breakSound;
@@ -143,6 +148,9 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.hasBlockItem = true;
+		this.maxStackSize = 64;
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 
 		this.canBePlacedOn = new ArrayList<>();
