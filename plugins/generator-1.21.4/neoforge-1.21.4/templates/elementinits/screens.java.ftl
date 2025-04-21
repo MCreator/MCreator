@@ -43,9 +43,9 @@ package ${package}.init;
 
 	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
 		<#list guis as gui>
+			<#if gui.getComponentsOfType("EntityModel")?has_content><#assign hasEntityModels = true></#if>
 			event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
 			<#if gui.getComponentsOfType("TextField")?has_content><#assign hasTextField = true></#if>
-			<#if gui.getComponentsOfType("EntityModel")?has_content><#assign hasEntityModels = true></#if>
 		</#list>
 	}
 

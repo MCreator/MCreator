@@ -70,8 +70,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageHeight = ${data.height};
 	}
 
-	@Override
-	public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
