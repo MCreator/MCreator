@@ -30,7 +30,8 @@ import java.awt.image.BufferedImage;
  * Class used to transfer selection data between objects
  */
 public class Selection {
-	private final Canvas canvas;
+	private transient final Canvas canvas;
+
 	private final Point first, second;
 	private final int handleSize = 10;
 	private final Stroke handleStroke = new BasicStroke(handleSize);
@@ -229,7 +230,7 @@ public class Selection {
 
 			int handleSize = getHandleSize();
 
-			double zoom = canvas.getCanvasRenderer().getZoom();
+			double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 			int x_left = (int) Math.round(getLeft() * zoom);
 			int y_top = (int) Math.round(getTop() * zoom);
 			int x_right = (int) Math.round(getRight() * zoom);
@@ -308,19 +309,19 @@ public class Selection {
 	}
 
 	public boolean verticalHandlesVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int height = (int) Math.round(getHeight() * zoom);
 		return height > 4 * handleSize;
 	}
 
 	public boolean horizontalHandlesVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int width = (int) Math.round(getWidth() * zoom);
 		return width > 4 * handleSize;
 	}
 
 	public boolean cornersVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int height = (int) Math.round(getHeight() * zoom);
 		int width = (int) Math.round(getWidth() * zoom);
 		return height > handleSize && width > handleSize;
@@ -330,7 +331,7 @@ public class Selection {
 		SelectedBorder detected = SelectedBorder.ANY;
 
 		if (editing != SelectedBorder.NONE) {
-			double zoom = canvas.getCanvasRenderer().getZoom();
+			double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 			int x_left = (int) Math.round(getLeft() * zoom);
 			int y_top = (int) Math.round(getTop() * zoom);
 			int x_right = (int) Math.round(getRight() * zoom);

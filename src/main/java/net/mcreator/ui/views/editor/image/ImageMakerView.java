@@ -73,8 +73,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		return thread;
 	});
 
-	private final CanvasRenderer canvasRenderer;
 	private final JZoomPane zoomPane;
+	private final CanvasRenderer canvasRenderer;
 	private final JSplitPane leftSplitPane;
 	private final JSplitPane rightSplitPane;
 	private final JSplitPane paletteLayerSplitPane;
@@ -213,7 +213,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			this.image = image;
 			Layer layer = Layer.toLayer(ImageIO.read(image), image.getName());
-			canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+			canvas = new Canvas(layer.getWidth(), layer.getHeight());
+			canvas.initReferences(this);
 			canvasRenderer.setCanvas(canvas);
 			toolPanel.setCanvas(canvas);
 			canvas.add(layer);
@@ -238,7 +239,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 						return null;
 					}
 				}), "Could not read source image asset!"), name);
-		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		canvas = new Canvas(layer.getWidth(), layer.getHeight());
+		canvas.initReferences(this);
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
 		canvas.add(layer);
@@ -338,7 +340,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	public void newImage(int width, int height, String name) {
-		canvas = new Canvas(width, height, layerPanel, versionManager);
+		canvas = new Canvas(width, height);
+		canvas.initReferences(this);
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
 		this.name = name + ".png";
@@ -347,7 +350,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	public void newImage(Layer layer) {
-		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		canvas = new Canvas(layer.getWidth(), layer.getHeight());
+		canvas.initReferences(this);
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
 		canvas.add(layer);
@@ -458,6 +462,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			title = L10N.t("dialog.image_maker.info_bar.new_image");
 
 		imageInfo.setText(L10N.t("dialog.image_maker.info_bar", title, canvas.getWidth(), canvas.getHeight(), x, y));
+	}
+
+	public CanvasRenderer getCanvasRenderer() {
+		return canvasRenderer;
 	}
 
 	public VersionManager getVersionManager() {

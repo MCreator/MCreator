@@ -29,10 +29,11 @@ import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public class Layer {
+	private transient Canvas canvas;
+
 	private int x, y;
 	private String name;
 	private boolean visible = true;
-	private Canvas canvas;
 	private final UUID uuid;
 
 	private BufferedImage raster;
@@ -236,7 +237,7 @@ public class Layer {
 
 	public void setRaster(BufferedImage raster) {
 		this.raster = raster;
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	public int getType() {
@@ -335,8 +336,8 @@ public class Layer {
 	}
 
 	public void deleteSelection() {
-		Layer selected = canvas.getLayerPanel().selected();
+		Layer selected = canvas.getImageMakerView().getLayerPanel().selected();
 		selected.clearSelection();
-		canvas.getVersionManager().addRevision(new Modification(canvas, selected));
+		canvas.getImageMakerView().getVersionManager().addRevision(new Modification(canvas, selected));
 	}
 }
