@@ -248,6 +248,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				int finalIdx = idx;
 				page.addActionListener(e -> split.setPage(finalIdx));
 
+				pageEntry.setShowThisPageAction(page::doClick);
+
 				if (idx == 0)
 					page.setSelected(true);
 
@@ -642,6 +644,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public final boolean isEditingMode() {
 		return editingMode;
+	}
+
+	final List<ModElementGUIPage> getPages() {
+		return pages;
 	}
 
 	public final AggregatedValidationResult validateAllPages() {
