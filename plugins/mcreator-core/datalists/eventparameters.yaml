@@ -1,4 +1,6 @@
 - INCOMING_DAMAGE_AMOUNT:
+  readable_name: "Entity is attacked - Incoming Damage Amount"
   type: number
 - FALL_DISTANCE:
+  readable_name: "Entity falls - Fall Distance"
   type: number
