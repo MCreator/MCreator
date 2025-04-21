@@ -61,12 +61,13 @@ public class Canvas extends ArrayListListModel<Layer> {
 	// Selection object
 	private final Selection selection = new Selection(this);
 
-	public Canvas(int width, int height) {
+	public Canvas(ImageMakerView imageMakerView, int width, int height) {
+		initReferences(imageMakerView);
 		this.width = width;
 		this.height = height;
 	}
 
-	public void initReferences(ImageMakerView imageMakerView) {
+	private void initReferences(ImageMakerView imageMakerView) {
 		this.imageMakerView = imageMakerView;
 		imageMakerView.getLayerPanel().setCanvas(this);
 		imageMakerView.getLayerPanel().updateSelection();
@@ -75,6 +76,8 @@ public class Canvas extends ArrayListListModel<Layer> {
 			floatingCheck(layer);
 		}
 		selection.setCanvas(this);
+		imageMakerView.getCanvasRenderer().setCanvas(this);
+		imageMakerView.getToolPanel().setCanvas(this);
 	}
 
 	public boolean add(Layer layer, UUID group) {
