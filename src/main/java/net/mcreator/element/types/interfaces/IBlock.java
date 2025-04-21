@@ -36,4 +36,8 @@ public interface IBlock extends IItem {
 		return false;
 	}
 
+
+	default boolean hasCustomItemProperties() {
+		return false;
+	}
 }

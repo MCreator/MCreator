@@ -381,6 +381,10 @@ import java.util.stream.Collectors;
 		return transparencyType.toLowerCase(Locale.ENGLISH);
 	}
 
+	@Override public boolean hasCustomItemProperties() {
+		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
