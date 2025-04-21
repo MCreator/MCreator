@@ -42,7 +42,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
-	<#if data.getComponentsOfType("Checkbox")?has_content>private boolean updateLock;</#if>
 
 	<#list textFields as component>
 	EditBox ${component.getName()};
@@ -279,8 +278,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
-					if (!this.updateLock)
-						menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value);
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value);
 				})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
