@@ -162,12 +162,15 @@ loadScripts(document, 'script');</script>
 <div class="block">This method should take care of generating additional mod
  element resources for cases such as GUI mod element</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateModElementPicture()" class="member-name-link">generateModElementPicture</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.GeneratableElement">Methods inherited from class&nbsp;net.mcreator.element.<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></h3>
-<code><a href="../GeneratableElement.html#generateModElementPicture()">generateModElementPicture</a>, <a href="../GeneratableElement.html#getAdditionalTemplateData()">getAdditionalTemplateData</a>, <a href="../GeneratableElement.html#getModElement()">getModElement</a>, <a href="../GeneratableElement.html#isUnknown()">isUnknown</a>, <a href="../GeneratableElement.html#performQuickValidation()">performQuickValidation</a>, <a href="../GeneratableElement.html#setModElement(net.mcreator.workspace.elements.ModElement)">setModElement</a>, <a href="../GeneratableElement.html#wasConversionApplied()">wasConversionApplied</a></code></div>
+<code><a href="../GeneratableElement.html#getAdditionalTemplateData()">getAdditionalTemplateData</a>, <a href="../GeneratableElement.html#getModElement()">getModElement</a>, <a href="../GeneratableElement.html#isUnknown()">isUnknown</a>, <a href="../GeneratableElement.html#performQuickValidation()">performQuickValidation</a>, <a href="../GeneratableElement.html#setModElement(net.mcreator.workspace.elements.ModElement)">setModElement</a>, <a href="../GeneratableElement.html#wasConversionApplied()">wasConversionApplied</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -228,6 +231,18 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="generateModElementPicture()">
+<h3>generateModElementPicture</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></span>&nbsp;<span class="element-name">generateModElementPicture</span>()</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../GeneratableElement.html#generateModElementPicture()">generateModElementPicture</a></code>&nbsp;in class&nbsp;<code><a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></dd>
+<dt>Returns:</dt>
+<dd>BufferedImage of mod element preview or null if default mod element icon should be used</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="finalizeModElementGeneration()">
 <h3>finalizeModElementGeneration</h3>
