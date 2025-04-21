@@ -30,7 +30,9 @@ import java.util.UUID;
 
 public class Layer {
 
-	//** Transient references and fields **//
+	/*
+	 * Transient references and fields
+	 */
 	private transient final UUID uuid;
 
 	// Canvas reference (needs to be set right after creation)
@@ -43,9 +45,9 @@ public class Layer {
 	private transient BufferedImage overlay = null;
 	private transient double overlayOpacity = 1;
 
-
-	//** Saved layer properties **//
-
+	/*
+	 * Saved layer properties
+	 */
 	// Layer properties
 	private String name;
 	private int x, y;

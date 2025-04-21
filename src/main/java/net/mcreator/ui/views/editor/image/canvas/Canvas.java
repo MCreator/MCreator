@@ -30,7 +30,9 @@ import java.util.UUID;
 
 public class Canvas extends ArrayListListModel<Layer> {
 
-	//** Transient references and fields **//
+	/*
+	 * Transient references and fields
+	 */
 	// ImageMakerView reference (needs to be set right after creation)
 	private transient ImageMakerView imageMakerView;
 
@@ -49,8 +51,9 @@ public class Canvas extends ArrayListListModel<Layer> {
 	// Pasted layer reference
 	private transient Layer floatingLayer = null;
 
-
-	//** Saved image properties **//
+	/*
+	 * Transient references and fields
+	 */
 	// Canvas size
 	private int width;
 	private int height;

@@ -33,7 +33,9 @@ public class Selection {
 	private final int HANDLE_SIZE = 10;
 	private final Stroke handleStroke = new BasicStroke(HANDLE_SIZE);
 
-	//** Transient references and fields **//
+	/*
+	 * Transient references and fields
+	 */
 	// Canvas reference (needs to be set right after creation)
 	private transient Canvas canvas;
 
@@ -43,6 +45,9 @@ public class Selection {
 	// Hides handles when slection size is actively being changed
 	private transient boolean editStarted = false;
 
+	/*
+	 * Saved layer properties
+	 */
 	// Selection properties
 	private final Point first, second;
 
