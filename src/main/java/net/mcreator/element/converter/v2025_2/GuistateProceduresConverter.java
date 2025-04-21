@@ -55,15 +55,13 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 
 				if (entityValue == null || !("entity".equals(entityValue.getAttribute("name")))) {
 					reportDependenciesChanged();
-					Element entityValueNew = doc.createElement("value");
-					entityValueNew.setAttribute("name", "entity");
 
-					Element entityBlock = doc.createElement("block");
-					entityBlock.setAttribute("type", "entity_from_deps");
-
-					entityValueNew.appendChild(entityBlock);
-
-					element.appendChild(entityValueNew);
+					Element value = doc.createElement("value");
+					value.setAttribute("name", "entity");
+					Element deps_block = doc.createElement("block");
+					deps_block.setAttribute("type", "entity_from_deps");
+					value.appendChild(deps_block);
+					element.appendChild(value);
 				}
 			}
 		}
