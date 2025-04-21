@@ -216,13 +216,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content);
-			}, <#if component.placeholder?has_content> true <#else> false </#if>);
-			${component.getName()}.setMaxLength(32767);
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()}.setMaxLength(8192);
+			${component.getName()}.setResponder((content) -> {
+				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false);
+			});
 			<#if component.placeholder?has_content>
-			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			</#if>
 
 			this.addWidget(this.${component.getName()});
@@ -277,13 +278,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value);
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value, false);
 				})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 				if (${component.getName()}Selected)
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true);
+					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true, false);
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
