@@ -110,9 +110,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				</#if>
 				${JavaModName}Screens.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
 					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
-					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
-					livingEntity
-				);
+					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity);
 			}
 		</#list>
 		</#compress>
@@ -134,7 +132,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					}
 					<#else>
 						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
-
 					</#if>
 				}
 		</#list>
@@ -216,13 +213,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = ${JavaModName}Screens.createListenerTextField(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), (content) -> {
-				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content);
-			}, <#if component.placeholder?has_content> true <#else> false </#if>);
-			${component.getName()}.setMaxLength(32767);
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()}.setMaxLength(8192);
 			<#if component.placeholder?has_content>
-			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			</#if>
 
 			this.addWidget(this.${component.getName()});
