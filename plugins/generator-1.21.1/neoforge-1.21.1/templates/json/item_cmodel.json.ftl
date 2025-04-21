@@ -17,11 +17,11 @@
             }
         },
         "ground": {
-			"parent": "item/generated",
-			"textures": {
-				"layer0": "${guiTexture.format("%s:item/%s")}"
-			}
-		}
+            "parent": "item/generated",
+            "textures": {
+                "layer0": "${guiTexture.format("%s:item/%s")}"
+            }
+        }
     }
     <#else>
     <@modelDefinition/>

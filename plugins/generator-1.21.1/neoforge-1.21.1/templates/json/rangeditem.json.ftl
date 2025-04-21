@@ -16,12 +16,12 @@
                 "layer0": "${guiTexture.format("%s:item/%s")}"
             }
         },
-		"ground": {
-			"parent": "item/generated",
-			"textures": {
-				"layer0": "${guiTexture.format("%s:item/%s")}"
-			}
-		}
+        "ground": {
+            "parent": "item/generated",
+            "textures": {
+                "layer0": "${guiTexture.format("%s:item/%s")}"
+            }
+        }
     }
     <#else>
     <@modelDefinition/>
@@ -60,13 +60,13 @@
         {
             "predicate": {
                 <#list model.stateMap.keySet() as property>
-		            <#assign value = model.stateMap.get(property)>
+                    <#assign value = model.stateMap.get(property)>
                     "${generator.map(property.getPrefixedName(registryname + "_"), "itemproperties")}": ${value?is_boolean?then(value?then("1", "0"), value)}<#sep>,
-		        </#list>
+                </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
-		</#list>
+        </#list>
     ]
     </#if>
 }
