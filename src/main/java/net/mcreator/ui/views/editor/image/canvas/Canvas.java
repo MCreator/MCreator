@@ -62,9 +62,9 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private final Selection selection = new Selection(this);
 
 	public Canvas(ImageMakerView imageMakerView, int width, int height) {
-		initReferences(imageMakerView);
 		this.width = width;
 		this.height = height;
+		initReferences(imageMakerView);
 	}
 
 	private void initReferences(ImageMakerView imageMakerView) {
