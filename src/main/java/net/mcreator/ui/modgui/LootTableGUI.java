@@ -89,24 +89,12 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
 				if (type.getSelectedItem() != null)
 					switch (type.getSelectedItem().toString()) {
-					case "Block":
-						name.getEditor().setItem("blocks/" + currNameNoType);
-						break;
-					case "Chest":
-						name.getEditor().setItem("chests/" + currNameNoType);
-						break;
-					case "Entity":
-					case "Gift":
-					case "Barter":
-					case "Advancement reward":
-						name.getEditor().setItem("entities/" + currNameNoType);
-						break;
-					case "Archaeology":
-						name.getEditor().setItem("archaeology/" + currNameNoType);
-						break;
-					default:
-						name.getEditor().setItem("gameplay/" + currNameNoType);
-						break;
+					case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
+					case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
+					case "Entity", "Gift", "Barter", "Advancement reward" ->
+							name.getEditor().setItem("entities/" + currNameNoType);
+					case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
+					default -> name.getEditor().setItem("gameplay/" + currNameNoType);
 					}
 			});
 
