@@ -60,7 +60,7 @@ public class Layer {
 	private boolean isPasted = false;
 
 	// Only used by serialization
-	private Layer(){
+	private Layer() {
 		this.uuid = UUID.randomUUID();
 	}
 
@@ -208,7 +208,8 @@ public class Layer {
 		} else {
 			Composite composite = g2d.getComposite();
 			if (overlay != null) {
-				AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) overlayOpacity);
+				AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+						(float) overlayOpacity);
 				g2d.setComposite(alphaComposite);
 				g2d.drawImage(overlay, 0, 0, null);
 				g2d.setComposite(composite);
