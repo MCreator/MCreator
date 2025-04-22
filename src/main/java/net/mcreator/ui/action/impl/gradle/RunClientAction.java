@@ -49,9 +49,12 @@ public class RunClientAction extends GradleAction {
 					BedrockUtils.reinstallAddon(actionRegistry.getMCreator(),
 							actionRegistry.getMCreator().getWorkspace());
 				} else {
-					SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
-							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-									.getGradleTaskFor("run_client")));
+					SwingUtilities.invokeLater(() -> {
+						actionRegistry.getMCreator().getGradleConsole()
+								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+										.getGradleTaskFor("run_client"));
+						actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
+					});
 				}
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);

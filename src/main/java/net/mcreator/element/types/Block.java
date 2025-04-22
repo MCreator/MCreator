@@ -20,13 +20,14 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -39,11 +40,12 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
@@ -66,6 +68,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
+	public String blockSetType;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -85,7 +88,7 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
@@ -97,7 +100,6 @@ import java.util.stream.Collectors;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public int lightOpacity;
-	public Material material;
 
 	public int tickRate;
 	public boolean tickRandomly;
@@ -106,11 +108,13 @@ import java.util.stream.Collectors;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
+	public String noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	public String offsetType;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
 
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 
@@ -142,8 +146,14 @@ import java.util.stream.Collectors;
 	public Procedure bonemealSuccessCondition;
 	public Procedure onBonemealSuccess;
 
+	public boolean sensitiveToVibration;
+	public List<GameEventEntry> vibrationalEvents;
+	public NumberProcedure vibrationSensitivityRadius;
+	public Procedure canReceiveVibrationCondition;
+	public Procedure onReceivedVibration;
+
 	public boolean hasInventory;
-	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -151,6 +161,8 @@ import java.util.stream.Collectors;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
 	public List<Integer> inventoryInSlotIDs;
+	public Procedure inventoryAutomationTakeCondition;
+	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
 	public int energyInitial;
@@ -197,6 +209,7 @@ import java.util.stream.Collectors;
 
 		this.customProperties = new ArrayList<>();
 
+		this.blockSetType = "OAK";
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -205,6 +218,7 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
+		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
@@ -217,6 +231,8 @@ import java.util.stream.Collectors;
 		this.energyMaxReceive = 200;
 		this.energyMaxExtract = 200;
 		this.fluidCapacity = 8000;
+
+		this.vibrationalEvents = new ArrayList<>();
 	}
 
 	public int renderType() {
@@ -242,7 +258,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
-		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
+		return guiBoundTo != null && openGUIOnRightClick;
 	}
 
 	public boolean shouldScheduleTick() {
@@ -268,6 +284,8 @@ import java.util.stream.Collectors;
 			modelType = Model.Type.JSON;
 		else if (renderType == 3)
 			modelType = Model.Type.OBJ;
+		else if (renderType == 4)
+			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
@@ -318,6 +336,8 @@ import java.util.stream.Collectors;
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					side, side);
+		} else if (renderType() == 4) {
+			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
@@ -367,6 +387,10 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public Set<String> getVibrationalEvents() {
+		return vibrationalEvents.stream().map(MappableElement::getMappedValue).collect(Collectors.toSet());
 	}
 
 	public TextureHolder textureTop() {

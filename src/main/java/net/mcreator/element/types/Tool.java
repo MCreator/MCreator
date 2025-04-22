@@ -26,6 +26,7 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -40,6 +41,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
@@ -54,7 +56,7 @@ import java.util.*;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
@@ -89,6 +91,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 
@@ -168,6 +171,10 @@ import java.util.*;
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
 		return specialInformation;
+	}
+
+	public List<String> getRepairItemsAsStringList() {
+		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
 
 }

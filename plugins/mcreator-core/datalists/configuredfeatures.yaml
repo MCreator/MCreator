@@ -49,6 +49,7 @@
 - flower_default
 - flower_flower_forest
 - flower_meadow
+- flower_pale_garden
 - flower_plain
 - flower_swamp
 - forest_flowers
@@ -122,6 +123,14 @@
 - ore_redstone
 - ore_soul_sand
 - ore_tuff
+- pale_forest_flowers
+- pale_garden_vegetation
+- pale_moss_patch
+- pale_moss_patch_bonemeal
+- pale_moss_vegetation
+- pale_oak
+- pale_oak_bonemeal
+- pale_oak_creaking
 - patch_berry_bush
 - patch_brown_mushroom
 - patch_cactus
@@ -154,7 +163,6 @@
 - sea_pickle
 - seagrass_mid
 - seagrass_short
-- seagrass_simple
 - seagrass_slightly_less_short
 - seagrass_tall
 - single_piece_of_grass

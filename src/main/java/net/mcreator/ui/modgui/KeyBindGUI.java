@@ -30,7 +30,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -79,7 +78,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		ComponentUtils.deriveFont(keyBindingName, 16);
 
-		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 10));
+		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/key"),
 				L10N.label("elementgui.keybind.key_trigger_event")));
@@ -97,7 +96,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		enderpanel.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(1, 2, 5, 5));
+		JPanel events = new JPanel(new GridLayout(1, 2, 2, 2));
 		events.setOpaque(false);
 		events.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -108,12 +107,12 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		pane5.setOpaque(false);
 
-		JPanel merge = new JPanel(new BorderLayout(20, 20));
+		JPanel merge = new JPanel(new BorderLayout(0, 5));
 		merge.setOpaque(false);
 		merge.add("North", PanelUtils.centerInPanel(enderpanel));
 		merge.add("South", events);
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(merge));
 
 		keyBindingName.setValidator(
 				new TextFieldValidator(keyBindingName, L10N.t("elementgui.keybind.error_key_needs_name")));
@@ -123,7 +122,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));
 		keyBindingCategoryKey.enableRealtimeValidation();
 
-		addPage(pane5);
+		addPage(pane5).validate(keyBindingName).validate(keyBindingCategoryKey);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -135,10 +134,6 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		super.reloadDataLists();
 		onKeyPressed.refreshListKeepSelected();
 		onKeyReleased.refreshListKeepSelected();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(keyBindingName, keyBindingCategoryKey);
 	}
 
 	@Override public void openInEditingMode(KeyBinding keyBinding) {

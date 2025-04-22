@@ -269,6 +269,18 @@ Blockly.Blocks['logic_ternary_op'] = {
     }
 };
 
+Blockly.Blocks['logic_null_comparison'] = {
+    init: function () {
+        this.appendValueInput('value');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["\u2260", "!="], ["=", "=="]]), 'operation')
+            .appendField(javabridge.t("blockly.block.logic_null_comparison"));
+        this.setColour('%{BKY_LOGIC_HUE}');
+        this.setOutput(true, 'Boolean');
+        Blockly.Extensions.apply('null_comparison_exclude_primitive_types', this, false);
+    }
+};
+
 Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')
@@ -639,6 +651,12 @@ registerSimpleMutatorInput(
 registerSimpleMutatorContainer(
     'feature_disk_mutator_container', 'blockly.block.feature_disk_mutator.container', '#888888');
 registerSimpleMutatorInput('feature_disk_mutator_input', 'blockly.block.feature_disk_mutator.input', '#888888');
+
+// Mutator blocks for fixed placement mixin
+registerSimpleMutatorContainer(
+    'fixed_placement_mutator_container', 'blockly.block.placement_fixed_mutator.container', 130);
+registerSimpleMutatorInput(
+    'fixed_placement_mutator_input', 'blockly.block.placement_fixed_mutator.input', 130, true);
 
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];

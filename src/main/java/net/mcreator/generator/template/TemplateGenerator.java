@@ -75,6 +75,7 @@ public class TemplateGenerator {
 
 		dataModel.put("data", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
+		dataModel.put("REGISTRYNAME", element.getModElement().getRegistryNameUpper());
 		dataModel.put("name", element.getModElement().getName());
 
 		if (provider != null)
@@ -94,6 +95,7 @@ public class TemplateGenerator {
 		dataModel.put("itemindex", itemIndex);
 		dataModel.put("parent", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
+		dataModel.put("REGISTRYNAME", element.getModElement().getRegistryNameUpper());
 		dataModel.put("name", element.getModElement().getName());
 
 		if (provider != null)
@@ -172,8 +174,8 @@ public class TemplateGenerator {
 					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
 			} catch (Exception e) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Failed to parse hardcoded variables", e);
+				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

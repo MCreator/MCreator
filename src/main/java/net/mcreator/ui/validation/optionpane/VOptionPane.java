@@ -32,23 +32,23 @@ import java.awt.*;
 public class VOptionPane {
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator) {
+			OptionPaneValidator validator) {
 		return showInputDialog(frame, text, title, icon, validator, UIManager.getString("OptionPane.okButtonText"),
 				UIManager.getString("OptionPane.cancelButtonText"));
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel) {
+			OptionPaneValidator validator, String ok, String cancel) {
 		return showInputDialog(frame, text, title, icon, validator, ok, cancel, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel, String defaultValue) {
+			OptionPaneValidator validator, String ok, String cancel, String defaultValue) {
 		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
-			OptionPaneValidatior validator, String ok, String cancel, String defaultValue,
+			OptionPaneValidator validator, String ok, String cancel, String defaultValue,
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
@@ -92,15 +92,22 @@ public class VOptionPane {
 
 		});
 
+		return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
+	}
+
+	private static @Nullable String showSwingOptionDialog(Window frame, String title, ImageIcon icon, String ok,
+			String cancel, JPanel inp, VTextField textField) {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
-		if (option == 0
-				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			return textField.getText();
-		} else if (option == 0) { // user confirmed, but the validation returned error
-			JOptionPane.showMessageDialog(frame,
-					L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
-					L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
+		if (option == JOptionPane.OK_OPTION) {
+			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+				return textField.getText();
+			} else { // user confirmed, but the validation returned error
+				JOptionPane.showMessageDialog(frame,
+						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
+				return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
+			}
 		}
 
 		return null;

@@ -1,1 +1,0 @@
-È la rarità dell'incantesimo di apparire su un oggetto (all'interno del tavolo da incantamento e per le loot table).

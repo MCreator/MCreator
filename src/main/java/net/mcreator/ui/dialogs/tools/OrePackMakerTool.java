@@ -41,6 +41,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -103,7 +104,7 @@ public class OrePackMakerTool {
 				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
 						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
 						(Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -131,7 +132,9 @@ public class OrePackMakerTool {
 			return null;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator instanceof ModMaker modMaker ?
+				modMaker.getWorkspacePanel().currentFolder :
+				null;
 
 		// first we generate ore texture
 		ImageIcon ore = ImageUtils.drawOver(
@@ -185,7 +188,6 @@ public class OrePackMakerTool {
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = name + " Ore";
-		oreBlock.material = new Material(workspace, "ROCK");
 		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
@@ -201,6 +203,7 @@ public class OrePackMakerTool {
 			oreBlock.vanillaToolTier = "DIAMOND";
 		}
 		oreBlock.requiresCorrectTool = true;
+		oreBlock.noteBlockInstrument = "BASEDRUM";
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
@@ -219,7 +222,6 @@ public class OrePackMakerTool {
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlockBlock.name = "Block of " + name;
 		oreBlockBlock.customModelName = "Single texture";
-		oreBlockBlock.material = new Material(workspace, "IRON");
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
 		oreBlockBlock.resistance = 10.0;

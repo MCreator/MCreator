@@ -85,7 +85,7 @@ public class GeneratorSelector {
 
 			genStats.add(new JEmptyBox(15, 15));
 
-			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 5, 7, 2));
+			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 4, 5, 2));
 
 			addStatusLabel(L10N.t(covpfx + "textures"), stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "sounds"), stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
@@ -118,6 +118,15 @@ public class GeneratorSelector {
 					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
+				addStatusLabel(L10N.t(covpfx + "java_model_animations"),
+						stats.getBaseCoverageInfo().get("model_animations_java"), baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "vanilla_resources"),
+						stats.getBaseCoverageInfo().get("vanilla_resources"), baseCoverageInfo);
 
 			genStats.add(
 					PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo,
@@ -173,7 +182,9 @@ public class GeneratorSelector {
 		JScrollPane pane = new JScrollPane(statsPan);
 		pane.getVerticalScrollBar().setUnitIncrement(10);
 
-		mainPanel.add("Center", pane);
+		if (currentFlavor != GeneratorFlavor.RESOURCEPACK) {
+			mainPanel.add("Center", pane);
+		}
 
 		generator.addActionListener(e -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)

@@ -226,7 +226,56 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		updateUIFields();
 
-		addPage(pane5);
+		addPage(pane5).validate(name).validate(group).lazyValidate(() -> {
+			if ("Crafting".equals(recipeType.getSelectedItem())) {
+				if (!craftingRecipeMaker.outputItem.containsItem()) {
+					return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
+				} else if (!craftingRecipeMaker.hasInputItems()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
+				}
+			} else if ("Smelting".equals(recipeType.getSelectedItem())) {
+				if (!smeltingRecipeMaker.cb1.containsItem() || !smeltingRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
+				}
+			} else if ("Blasting".equals(recipeType.getSelectedItem())) {
+				if (!blastFurnaceRecipeMaker.cb1.containsItem() || !blastFurnaceRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
+				}
+			} else if ("Smoking".equals(recipeType.getSelectedItem())) {
+				if (!smokerRecipeMaker.cb1.containsItem() || !smokerRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
+				}
+			} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
+				if (!stoneCutterRecipeMaker.cb1.containsItem() || !stoneCutterRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
+				}
+			} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
+				if (!campfireCookingRecipeMaker.cb1.containsItem() || !campfireCookingRecipeMaker.cb2.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
+				}
+			} else if ("Smithing".equals(recipeType.getSelectedItem())) {
+				if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
+						|| !smithingRecipeMaker.cb3.containsItem() ||
+						// We request smithing recipe to have template for new recipes
+						(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
+				}
+			} else if ("Brewing".equals(recipeType.getSelectedItem())) {
+				if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
+						|| !brewingRecipeMaker.cb3.containsItem()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
+				}
+			}
+			return new AggregatedValidationResult.PASS();
+		});
 	}
 
 	private void updateUIFields() {
@@ -262,61 +311,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		}
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ("Crafting".equals(recipeType.getSelectedItem())) {
-			if (!craftingRecipeMaker.cb10.containsItem()) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
-			} else if (!(craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem()
-					|| craftingRecipeMaker.cb3.containsItem() || craftingRecipeMaker.cb4.containsItem()
-					|| craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem()
-					|| craftingRecipeMaker.cb7.containsItem() || craftingRecipeMaker.cb8.containsItem()
-					|| craftingRecipeMaker.cb9.containsItem())) {
-				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
-			}
-		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
-			if (!smeltingRecipeMaker.cb1.containsItem() || !smeltingRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smelting_no_ingredient_and_result"));
-			}
-		} else if ("Blasting".equals(recipeType.getSelectedItem())) {
-			if (!blastFurnaceRecipeMaker.cb1.containsItem() || !blastFurnaceRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_blasting_no_ingredient_and_result"));
-			}
-		} else if ("Smoking".equals(recipeType.getSelectedItem())) {
-			if (!smokerRecipeMaker.cb1.containsItem() || !smokerRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smoking_no_ingredient_and_result"));
-			}
-		} else if ("Stone cutting".equals(recipeType.getSelectedItem())) {
-			if (!stoneCutterRecipeMaker.cb1.containsItem() || !stoneCutterRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_stone_cutting_no_ingredient_and_result"));
-			}
-		} else if ("Campfire cooking".equals(recipeType.getSelectedItem())) {
-			if (!campfireCookingRecipeMaker.cb1.containsItem() || !campfireCookingRecipeMaker.cb2.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
-			}
-		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
-			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
-					|| !smithingRecipeMaker.cb3.containsItem() ||
-					// We request smithing recipe to have template for new recipes
-					(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
-			}
-		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
-			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
-					|| !brewingRecipeMaker.cb3.containsItem()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
-			}
-		}
-
-		return new AggregatedValidationResult(name, group);
-	}
-
 	@Override public void openInEditingMode(Recipe recipe) {
 		recipeType.setSelectedItem(recipe.recipeType);
 
@@ -331,16 +325,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
-			craftingRecipeMaker.cb1.setBlock(recipe.recipeSlots[0]);
-			craftingRecipeMaker.cb2.setBlock(recipe.recipeSlots[3]);
-			craftingRecipeMaker.cb3.setBlock(recipe.recipeSlots[6]);
-			craftingRecipeMaker.cb4.setBlock(recipe.recipeSlots[1]);
-			craftingRecipeMaker.cb5.setBlock(recipe.recipeSlots[4]);
-			craftingRecipeMaker.cb6.setBlock(recipe.recipeSlots[7]);
-			craftingRecipeMaker.cb7.setBlock(recipe.recipeSlots[2]);
-			craftingRecipeMaker.cb8.setBlock(recipe.recipeSlots[5]);
-			craftingRecipeMaker.cb9.setBlock(recipe.recipeSlots[8]);
-			craftingRecipeMaker.cb10.setBlock(recipe.recipeReturnStack);
+			for (int i = 0; i < 9; i++) {
+				craftingRecipeMaker.recipeSlots[i].setBlock(recipe.recipeSlots[i]);
+			}
+			craftingRecipeMaker.outputItem.setBlock(recipe.recipeReturnStack);
 			craftingRecipeMaker.sp.setValue(recipe.recipeRetstackSize);
 			craftingRecipeMaker.setShapeless(recipeShapeless.isSelected());
 		}
@@ -394,18 +382,12 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
-			recipeSlots[0] = craftingRecipeMaker.cb1.getBlock();
-			recipeSlots[3] = craftingRecipeMaker.cb2.getBlock();
-			recipeSlots[6] = craftingRecipeMaker.cb3.getBlock();
-			recipeSlots[1] = craftingRecipeMaker.cb4.getBlock();
-			recipeSlots[4] = craftingRecipeMaker.cb5.getBlock();
-			recipeSlots[7] = craftingRecipeMaker.cb6.getBlock();
-			recipeSlots[2] = craftingRecipeMaker.cb7.getBlock();
-			recipeSlots[5] = craftingRecipeMaker.cb8.getBlock();
-			recipeSlots[8] = craftingRecipeMaker.cb9.getBlock();
+			for (int i = 0; i < 9; i++) {
+				recipeSlots[i] = craftingRecipeMaker.recipeSlots[i].getBlock();
+			}
 			recipe.recipeRetstackSize = (int) craftingRecipeMaker.sp.getValue();
 			recipe.recipeShapeless = recipeShapeless.isSelected();
-			recipe.recipeReturnStack = craftingRecipeMaker.cb10.getBlock();
+			recipe.recipeReturnStack = craftingRecipeMaker.outputItem.getBlock();
 			recipe.recipeSlots = recipeSlots;
 		}
 		case "Smelting" -> {

@@ -52,7 +52,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -174,7 +173,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
 	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
 	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 0, 128000, 1));
+	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 1, 128000, 1));
 	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 1024, 0.1));
 	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
 
@@ -778,8 +777,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		group2page.addValidationElement(armorTextureFile);
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(group1page);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5).validate(group2page);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
@@ -873,18 +872,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModel.addActionListener(bootsModelListener);
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(group2page);
-		else if (page == 0)
-			return new AggregatedValidationResult(group1page);
-		return new AggregatedValidationResult.PASS();
-	}
-
 	private void updateArmorTexturePreview() {
-		File[] armorTextures = mcreator.getFolderManager()
-				.getArmorTextureFilesForName(armorTextureFile.getTextureName());
-		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
+		String textureName = armorTextureFile.getTextureName();
+		File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(textureName);
+		if (!textureName.isBlank() && armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(
 					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(),
 							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));

@@ -28,7 +28,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -102,16 +101,12 @@ public class TabGUI extends ModElementGUI<Tab> {
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(icon);
 
-		addPage(pane3);
+		addPage(pane3).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Tab tab) {

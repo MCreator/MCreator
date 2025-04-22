@@ -112,7 +112,7 @@ tasks.register('exportWindows') {
 void signFile(File fileToSign) {
     if (System.getenv('WIN_CERT_KEYSTORE') != null) {
         exec {
-            commandLine 'java', '-jar', file('platform/windows/lib/jsign-6.0.jar'),
+            commandLine 'java', '-jar', file('platform/windows/lib/jsign-7.1.jar'),
                     '--storetype', 'GOOGLECLOUD',
                     '--storepass', System.getenv('WIN_CERT_STOREPASS'),
                     '--keystore', System.getenv('WIN_CERT_KEYSTORE'),

@@ -1,0 +1,1 @@
+Se marcada, masmorras (estruturas com gerador de mobs) podem surgir com sua entidade em um gerador de mobs.

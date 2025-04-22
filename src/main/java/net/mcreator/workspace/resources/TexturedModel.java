@@ -97,7 +97,8 @@ public class TexturedModel extends Model {
 				return mappings.mappings;
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to load texture mappings for model: {}", model.getReadableName(), e);
+			LOG.warn("Failed to load texture mappings for model: {}", model == null ? "null" : model.getReadableName(),
+					e);
 		}
 		return null;
 	}

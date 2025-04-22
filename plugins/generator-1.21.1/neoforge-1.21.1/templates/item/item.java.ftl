@@ -36,10 +36,13 @@
 package ${package}.item;
 
 <#compress>
-public class ${name}Item extends Item {
+public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
+	<#if data.hasBannerPatterns()>
+	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
+	</#if>
 
 	public ${name}Item() {
-		super(new Item.Properties()
+		super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS, </#if>new Item.Properties()
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
@@ -66,8 +69,17 @@ public class ${name}Item extends Item {
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 					.build())
 				</#if>
+				<#if data.isMusicDisc>
+				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
+				</#if>
 		);
 	}
+
+	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
+	public MutableComponent getDisplayName() {
+		return Component.translatable(this.getDescriptionId() + ".patterns");
+	}
+	</#if>
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {

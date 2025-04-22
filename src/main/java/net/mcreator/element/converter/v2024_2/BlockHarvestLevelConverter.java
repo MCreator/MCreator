@@ -24,33 +24,24 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BlockHarvestLevelConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(BlockHarvestLevelConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
-		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("breakHarvestLevel")
-					!= null) {
-				int breakHarvestLevel = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("breakHarvestLevel").getAsInt();
-				if (breakHarvestLevel == 1) {
-					block.vanillaToolTier = "STONE";
-				} else if (breakHarvestLevel == 2) {
-					block.vanillaToolTier = "IRON";
-				} else if (breakHarvestLevel >= 3) {
-					block.vanillaToolTier = "DIAMOND";
-				} else {
-					block.vanillaToolTier = "NONE";
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("breakHarvestLevel") != null) {
+			int breakHarvestLevel = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("breakHarvestLevel").getAsInt();
+			if (breakHarvestLevel == 1) {
+				block.vanillaToolTier = "STONE";
+			} else if (breakHarvestLevel == 2) {
+				block.vanillaToolTier = "IRON";
+			} else if (breakHarvestLevel >= 3) {
+				block.vanillaToolTier = "DIAMOND";
+			} else {
+				block.vanillaToolTier = "NONE";
 			}
-		} catch (Exception e) {
-			LOG.warn("Could convert breakHarvestLevel of: {}", block.getModElement().getName());
 		}
 		return block;
 	}

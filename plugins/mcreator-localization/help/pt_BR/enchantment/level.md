@@ -1,0 +1,1 @@
+O nível máximo que seu encantamento suporta.

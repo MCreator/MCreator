@@ -38,7 +38,7 @@ public class RunServerAction extends GradleAction {
 	public RunServerAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.run_server_and_client"), null);
 		setActionListener(evt -> {
-			if (ServerUtil.isEULAAccepted(actionRegistry.getMCreator().getWorkspace())) {
+			if (!ServerUtil.isEULAAccepted(actionRegistry.getMCreator().getWorkspace())) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
 
@@ -74,6 +74,7 @@ public class RunServerAction extends GradleAction {
 				MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
 
 			AtomicBoolean clientStarted = new AtomicBoolean(false);
+			actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
 			actionRegistry.getMCreator().getGradleConsole()
 					.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server"),
 							progressEvent -> {

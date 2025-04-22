@@ -20,6 +20,7 @@
 package net.mcreator.generator;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.writer.JSONWriter;
@@ -75,7 +76,13 @@ public class TagsUtils {
 		if (tags != null) {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
-				TagElement tag = TagElement.fromString((String) map.get("tag"));
+				TagElement tag = TagElement.fromString(((String) map.get("tag"))
+								//@formatter:off
+								.replace("@NAME", element.getModElement().getName())
+								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
+								.replace("@registryname", element.getModElement().getRegistryName())
+						//@formatter:on
+				);
 
 				boolean shouldSkip = TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, map,
 						element);
@@ -99,7 +106,7 @@ public class TagsUtils {
 
 					handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
 				} else {
-					handleTagEntryEntry(generator, tag, "CUSTOM:" + element.getModElement().getName(),
+					handleTagEntryEntry(generator, tag, NameMapper.MCREATOR_PREFIX + element.getModElement().getName(),
 							deleteMode || shouldSkip);
 				}
 			}

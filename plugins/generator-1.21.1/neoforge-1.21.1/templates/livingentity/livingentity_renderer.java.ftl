@@ -90,18 +90,17 @@ package ${package}.client.renderer;
 
 <#assign model = model + "<" + name + "Entity>">
 
+<#compress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		<#if data.animations?has_content>
-		super(context, new AnimatedModel(${rootPart}), ${data.modelShadowSize}f);
-		<#else>
-		super(context, new ${model}(${rootPart}), ${data.modelShadowSize}f);
-		</#if>
+		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
 				new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
+		<#elseif data.mobModelName == "Villager" || data.mobModelName == "Witch">
+		this.addLayer(new CrossedArmsItemLayer<>(this, context.getItemInHandRenderer()));
 		</#if>
 
 		<#list data.modelLayers as layer>
@@ -196,7 +195,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			}
 
 			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+				<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 				this.root().getAllParts().forEach(ModelPart::resetPose);
+				</#if>
 				<#list data.animations as animation>
 					<#if !animation.walking>
 						this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
@@ -222,11 +223,17 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		}
 
 		@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			<#if humanoid>
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			<#else>
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			</#if>
 		}
 
 	}
 	</#if>
 
 }
+</#compress>

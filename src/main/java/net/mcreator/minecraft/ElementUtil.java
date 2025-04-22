@@ -24,18 +24,20 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.resources.Animation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -65,12 +67,11 @@ public class ElementUtil {
 	 *
 	 * @param workspace            The current workspace
 	 * @param dataList             The datalist from which to load the entries
-	 * @param sorted               Whether the list should be sorted alphabetically
 	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
 	 * @param customEntryProviders The string id of the mod element types that provide custom entries
 	 * @return All entries from the given data list and the given mod element types, matching the optional filter
 	 */
-	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList, boolean sorted,
+	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList,
 			@Nullable String typeFilter, @Nullable String... customEntryProviders) {
 		List<DataListEntry> retval = new ArrayList<>();
 
@@ -85,10 +86,9 @@ public class ElementUtil {
 		if (typeFilter != null) {
 			retvalStream = retvalStream.filter(typeMatches(typeFilter));
 		}
-		if (sorted) {
-			return retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).sorted().toList();
-		}
-		return retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+		retval = retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
+		retval.sort(DataListEntry.getComparator(workspace, retval));
+		return retval;
 	}
 
 	/**
@@ -102,6 +102,7 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocksAndItems(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		elements.sort(MCItem.getComparator(workspace, elements)); // sort custom elements
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
 						.toList());
@@ -119,6 +120,7 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocksAndItemsAndTags(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		elements.sort(MCItem.getComparator(workspace, elements)); // sort custom elements
 		elements.addAll(DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).toList());
 		return elements.stream().filter(typeMatches("block", "item", "tag"))
 				.filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
@@ -133,6 +135,7 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocks(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		elements.sort(MCItem.getComparator(workspace, elements)); // sort custom elements
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
 						.toList());
@@ -149,6 +152,7 @@ public class ElementUtil {
 	public static List<MCItem> loadBlocksAndTags(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		elements.sort(MCItem.getComparator(workspace, elements)); // sort custom elements
 		elements.addAll(DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).toList());
 		return elements.stream().filter(typeMatches("block", "block_without_item", "tag"))
 				.filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
@@ -184,41 +188,54 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		return loadDataListAndElements(workspace, "achievements", false, null, "achievement");
+		return loadDataListAndElements(workspace, "achievements", null, "achievement");
 	}
 
 	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		return loadDataListAndElements(workspace, "tabs", false, null, "tab");
+		return loadDataListAndElements(workspace, "tabs", null, "tab");
 	}
 
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
-		Collections.sort(biomes);
+		biomes.sort(DataListEntry.getComparator(workspace, biomes));
 		return biomes;
 	}
 
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		return loadDataListAndElements(workspace, "enchantments", false, null, "enchantment");
+		return loadDataListAndElements(workspace, "enchantments", null, "enchantment");
 	}
 
-	public static List<DataListEntry> loadMaterials() {
-		return DataListLoader.loadDataList("materials");
+	public static List<DataListEntry> loadAllStructures(Workspace workspace) {
+		return loadDataListAndElements(workspace, "structures", null, "structure");
 	}
 
 	public static List<DataListEntry> loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors");
 	}
 
-	public static List<DataListEntry> loadAnimations() {
-		return DataListLoader.loadDataList("animations");
+	public static List<DataListEntry> loadNoteBlockInstruments() {
+		return DataListLoader.loadDataList("noteblockinstruments");
+	}
+
+	public static List<DataListEntry> loadAnimations(Workspace workspace) {
+		List<DataListEntry> animations = new ArrayList<>();
+		for (Animation animation : Animation.getAnimations(workspace)) {
+			for (String subanimation : animation.getSubanimations()) {
+				animations.add(
+						new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + animation.getName() + "." + subanimation));
+			}
+		}
+		animations.addAll(DataListLoader.loadDataList("animations"));
+		animations.sort(DataListEntry.getComparator(workspace, animations));
+		return animations;
 	}
 
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities"));
-		Collections.sort(retval);
+		retval.sort(DataListEntry.getComparator(workspace, retval));
 		return retval;
 	}
 
@@ -233,22 +250,22 @@ public class ElementUtil {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
-		Collections.sort(retval);
+		retval.sort(DataListEntry.getComparator(workspace, retval));
 		return retval;
 	}
 
 	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
-		Collections.sort(retval);
+		retval.sort(DataListEntry.getComparator(workspace, retval));
 		return retval;
 	}
 
 	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName,
 			Class<? extends PropertyData<?>> type) {
 		if (entityName != null) {
-			LivingEntity entity = (LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
-					.getGeneratableElement();
+			LivingEntity entity = (LivingEntity) workspace.getModElementByName(
+					entityName.replace(NameMapper.MCREATOR_PREFIX, "")).getGeneratableElement();
 			if (entity != null) {
 				return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
 						.map(e -> e.property().getName()).toList();
@@ -258,19 +275,23 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		return loadDataListAndElements(workspace, "particles", false, null, "particle");
+		return loadDataListAndElements(workspace, "particles", null, "particle");
 	}
 
 	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		return loadDataListAndElements(workspace, "effects", false, null, "potioneffect");
+		return loadDataListAndElements(workspace, "effects", null, "potioneffect");
 	}
 
 	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
-		return loadDataListAndElements(workspace, "potions", false, null, "potion");
+		return loadDataListAndElements(workspace, "potions", null, "potion");
 	}
 
 	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
-		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
+		return loadDataListAndElements(workspace, "villagerprofessions", null, "villagerprofession");
+	}
+
+	public static List<DataListEntry> loadAllAttributes(Workspace workspace) {
+		return loadDataListAndElements(workspace, "attributes", null, "attribute");
 	}
 
 	/**
@@ -334,10 +355,11 @@ public class ElementUtil {
 		ArrayList<String> retval = new ArrayList<>();
 
 		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add("CUSTOM:" + soundElement.getName());
+			retval.add(NameMapper.MCREATOR_PREFIX + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().sorted().map(DataListEntry::getName).toList());
+		retval.addAll(DataListLoader.loadDataList("sounds").stream()
+				.sorted(Comparator.comparing(DataListEntry::getReadableName)).map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
 	}
@@ -371,6 +393,10 @@ public class ElementUtil {
 				blocks.add(mu.getName());
 		}
 		return blocks;
+	}
+
+	public static List<DataListEntry> loadAllGameEvents() {
+		return DataListLoader.loadDataList("gameevents");
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

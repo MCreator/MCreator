@@ -34,6 +34,8 @@ import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettingsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,8 +46,8 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -71,6 +73,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	// transient fields
 	private transient boolean changed = false;
 	protected transient WorkspaceFileManager fileManager;
+	private transient WorkspaceUserSettingsManager userSettingsManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
@@ -280,6 +283,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getFolderManager();
 	}
 
+	@Override public WorkspaceUserSettings getWorkspaceUserSettings() {
+		return userSettingsManager.getUserSettings();
+	}
+
 	@Override public Generator getGenerator() {
 		return generator;
 	}
@@ -293,6 +300,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		generator.close();
 		fileManager.close();
+		userSettingsManager.close();
 	}
 
 	@Override public boolean equals(Object o) {
@@ -376,6 +384,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
 	public void markFailingGradleDependencies() {
@@ -405,6 +414,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			try {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+				retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 			} catch (Exception e) {
 				throw new CorruptedWorkspaceFileException(e);
 			}
@@ -506,6 +516,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			GeneratorConfiguration generatorConfiguration) throws MissingGeneratorFeaturesException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
@@ -537,6 +548,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		workspaceFile.getParentFile().mkdirs();
 		retval.setMCreatorVersion(Launcher.version.versionlong);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 		retval.generator = new Generator(retval);
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);

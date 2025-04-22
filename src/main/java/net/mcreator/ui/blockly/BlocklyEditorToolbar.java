@@ -51,8 +51,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -77,9 +77,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI) {
+			ProcedureGUI procedureGUI, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 
 		setBorder(null);
@@ -145,6 +146,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			add(component);
 		}
 
+		for (var component : extraComponents) {
+			add(component);
+		}
+
 		add(Box.createHorizontalGlue());
 
 		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
@@ -164,7 +169,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		});
-		normalizeButton4(export);
+		styleButton(export);
 		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
@@ -202,7 +207,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}, "Blockly-Template-Import").start();
 			}
 		});
-		normalizeButton4(import_);
+		styleButton(import_);
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
@@ -303,12 +308,12 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 	}
 
-	private static void normalizeButton4(AbstractButton button) {
+	public static void styleButton(AbstractButton button) {
 		button.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(0, 0, 0, 0)),
 						BorderFactory.createCompoundBorder(
 								BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"), 1),
-								BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
+								BorderFactory.createMatteBorder(1, 3, 1, 5, new Color(0, 0, 0, 0)))));
 		ComponentUtils.deriveFont(button, 11);
 	}
 

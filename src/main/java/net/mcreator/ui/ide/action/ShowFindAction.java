@@ -29,15 +29,15 @@ public class ShowFindAction extends BasicAction {
 
 	public ShowFindAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.search_in_code"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				codeEditorView.sed.setVisible(true);
 				codeEditorView.rep.setVisible(false);
 				codeEditorView.disableJumpToMode();
 			}
 		});
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
 
 }

@@ -112,7 +112,7 @@ public class Procedure extends GeneratableElement {
 			BlocklyToProcedure blocklyToJava = getBlocklyToProcedure(additionalData);
 
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTrigers();
+					.getExternalTriggers();
 			ExternalTrigger trigger = null;
 			for (ExternalTrigger externalTrigger : externalTriggers) {
 				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
@@ -132,6 +132,7 @@ public class Procedure extends GeneratableElement {
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 			additionalData.put("procedureblocks", blocklyToJava.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJava.getExtraTemplatesCode());
 
 			String triggerCode = "";
 			if (trigger != null) {

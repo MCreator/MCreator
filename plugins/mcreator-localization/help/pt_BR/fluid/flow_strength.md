@@ -1,0 +1,1 @@
+Este parâmetro determina o quanto o fluido empurra as entidades quando está fluindo. Com valores negativos, ele puxará as entidades em vez de empurrá-las para longe.

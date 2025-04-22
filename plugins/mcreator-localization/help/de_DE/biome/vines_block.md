@@ -1,3 +1,3 @@
-Dieser Paremeter steuert den Block, der verwendet wird, um Rebstöcke zu ersetzen.
+Dieser Parameter steuert den Block, der verwendet wird, um Rebstöcke zu ersetzen.
 
-Wähle Luftblock, um keine Rebstöcke zu haben.
+Wählen Sie einen Luft-Block, um Ranken zu verhindern.

@@ -1,0 +1,1 @@
+Ten parametr ustala czy cząsteczki są pokazane w pobliżu gracza.

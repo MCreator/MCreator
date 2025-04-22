@@ -178,7 +178,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		paletteLayerSplitPane.setOneTouchExpandable(true);
 
 		leftControls.add(template);
-		rightControls.add(saveNew);
+
+		if (TextureType.getSupportedTypes(mcreator.getWorkspace(), false).length > 0)
+			rightControls.add(saveNew);
 
 		rightControls.add(save);
 
@@ -292,7 +294,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 				//reload image in java cache
 				new ImageIcon(image.getAbsolutePath()).getImage().flush();
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 
 				refreshTab();
 			} else {
@@ -402,9 +404,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		tab.setTabHiddenListener(tab -> palettePanel.storePalette());
 		tab.setTabShownListener(tab -> palettePanel.reloadPalette());
 
-		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tab);
+		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(this.tab);
 		if (existing == null) {
-			mcreator.mcreatorTabs.addTab(this.tab);
+			mcreator.getTabs().addTab(this.tab);
 			leftSplitPane.setDividerLocation(0.16);
 			rightSplitPane.setDividerLocation(0.79);
 			paletteLayerSplitPane.setDividerLocation(0.5);

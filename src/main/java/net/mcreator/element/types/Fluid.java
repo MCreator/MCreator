@@ -36,6 +36,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
@@ -79,7 +80,7 @@ import java.util.List;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public Sound emptySound;
 	public String rarity;
 	public StringListProcedure specialInformation;
@@ -188,4 +189,9 @@ import java.util.List;
 		}
 		return null;
 	}
+
+	public boolean hasCustomBucketTexture() {
+		return generateBucket && textureBucket != null && !textureBucket.isEmpty();
+	}
+
 }

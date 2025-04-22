@@ -1,0 +1,1 @@
+Selecione esta configuração para ter naufrágios em seu bioma.

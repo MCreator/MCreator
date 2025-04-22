@@ -26,15 +26,13 @@ import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
-import net.mcreator.gradle.GradleUtils;
+import net.mcreator.util.NetworkUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.CancellationToken;
-import org.gradle.tooling.ConfigurableLauncher;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.*;
 
 public class JVMDebugClient {
@@ -51,20 +49,28 @@ public class JVMDebugClient {
 
 	private final List<JVMEventListener> eventListeners = new ArrayList<>();
 
-	public void init(ConfigurableLauncher<?> task, CancellationToken token) {
+	public void init(Map<String, String> environment, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
-		this.vmDebugPort = findAvailablePort();
+		this.vmDebugPort = NetworkUtils.findAvailablePort(5005);
+		if (this.vmDebugPort == -1) {
+			LOG.warn("Failed to find available port for JVM debugging");
+			return;
+		}
 
-		Map<String, String> environment = GradleUtils.getEnvironment(GradleUtils.getJavaHome());
-		environment.put("JAVA_TOOL_OPTIONS",
-				"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
-		task.setEnvironmentVariables(environment);
+		String mcreatorJvmOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
+		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
+			environment.put("MCREATOR_JVM_OPTIONS",
+					environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
+		} else {
+			environment.put("MCREATOR_JVM_OPTIONS", mcreatorJvmOptions);
+		}
 
 		new Thread(() -> {
 			try {
 				virtualMachine = connectToRemoteVM(vmDebugPort);
 				if (virtualMachine != null) {
-					LOG.info("Connected to remote VM: {}host: localhost, port: {}", virtualMachine.name(), vmDebugPort);
+					LOG.info("Connected to remote VM: {} host: localhost, port: {}", virtualMachine.name(),
+							vmDebugPort);
 
 					virtualMachine.eventRequestManager().createClassPrepareRequest().enable();
 
@@ -160,17 +166,6 @@ public class JVMDebugClient {
 			}
 		}
 		return null;
-	}
-
-	private int findAvailablePort() {
-		int port;
-		try (ServerSocket socket = new ServerSocket(0)) {
-			port = socket.getLocalPort();
-		} catch (IOException e) {
-			LOG.warn("Failed to find available port for debugging, using default 5005", e);
-			return 5005;
-		}
-		return port;
 	}
 
 	public boolean isActive() {

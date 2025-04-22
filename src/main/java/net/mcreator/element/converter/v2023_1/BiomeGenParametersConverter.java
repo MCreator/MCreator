@@ -24,47 +24,39 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
 public class BiomeGenParametersConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(BiomeGenParametersConverter.class);
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Biome biome = (Biome) input;
 
-		try {
-			double normalizedWeight =
-					jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("biomeWeight")
-							.getAsDouble() / 50.0;
+		double normalizedWeight =
+				jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("biomeWeight").getAsDouble()
+						/ 50.0;
 
-			double temperatureBase = ((biome.temperature + 1.0) / 3.0) * 2.0 - 1.0;
-			double humidityBase = (biome.rainingPossibility * 2.0) - 1.0;
-			double continentalnessBase =
-					(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("baseHeight")
-							.getAsDouble() + 5.0) / 10.0;
-			double erosionBase =
-					2.0 - jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("heightVariation")
-							.getAsDouble() - 1.0;
-			double weirdnessBase = (random(input.getModElement().getRegistryName()) * 2) - 1;
+		double temperatureBase = ((biome.temperature + 1.0) / 3.0) * 2.0 - 1.0;
+		double humidityBase = (biome.rainingPossibility * 2.0) - 1.0;
+		double continentalnessBase =
+				(jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("baseHeight").getAsDouble()
+						+ 5.0) / 10.0;
+		double erosionBase =
+				2.0 - jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("heightVariation")
+						.getAsDouble() - 1.0;
+		double weirdnessBase = (random(input.getModElement().getRegistryName()) * 2) - 1;
 
-			biome.genTemperature = new Biome.ClimatePoint(Math.max(-2, temperatureBase - normalizedWeight),
-					Math.min(2, temperatureBase + normalizedWeight));
-			biome.genHumidity = new Biome.ClimatePoint(Math.max(-2, humidityBase - normalizedWeight),
-					Math.min(2, humidityBase + normalizedWeight));
-			biome.genContinentalness = new Biome.ClimatePoint(Math.max(-2, continentalnessBase - normalizedWeight),
-					Math.min(2, continentalnessBase + normalizedWeight));
-			biome.genErosion = new Biome.ClimatePoint(Math.max(-2, erosionBase - normalizedWeight),
-					Math.min(2, erosionBase + normalizedWeight));
-			biome.genWeirdness = new Biome.ClimatePoint(Math.max(-2, weirdnessBase - normalizedWeight),
-					Math.min(2, weirdnessBase + normalizedWeight));
-		} catch (Exception e) {
-			LOG.warn("Could not update biome gen parameters of: {}", biome.getModElement().getName(), e);
-		}
+		biome.genTemperature = new Biome.ClimatePoint(Math.max(-2, temperatureBase - normalizedWeight),
+				Math.min(2, temperatureBase + normalizedWeight));
+		biome.genHumidity = new Biome.ClimatePoint(Math.max(-2, humidityBase - normalizedWeight),
+				Math.min(2, humidityBase + normalizedWeight));
+		biome.genContinentalness = new Biome.ClimatePoint(Math.max(-2, continentalnessBase - normalizedWeight),
+				Math.min(2, continentalnessBase + normalizedWeight));
+		biome.genErosion = new Biome.ClimatePoint(Math.max(-2, erosionBase - normalizedWeight),
+				Math.min(2, erosionBase + normalizedWeight));
+		biome.genWeirdness = new Biome.ClimatePoint(Math.max(-2, weirdnessBase - normalizedWeight),
+				Math.min(2, weirdnessBase + normalizedWeight));
 
 		return biome;
 	}

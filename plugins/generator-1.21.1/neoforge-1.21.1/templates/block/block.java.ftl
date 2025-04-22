@@ -34,6 +34,9 @@
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
 
+<#assign filteredCustomProperties = data.customProperties?filter(e ->
+	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
+
 package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -76,14 +79,25 @@ public class ${name}Block extends
 	<#if data.isWaterloggable>
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
-	<#list data.customProperties as prop>
-		<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
-		<#if prop.property().getClass().getSimpleName().equals("LogicType")>
-			public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
-		<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
-			public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
-		<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
-			public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
+	<#list filteredCustomProperties as prop>
+		<#if prop.property().getName().startsWith("CUSTOM:")>
+			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
+			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
+				public static final BooleanProperty ${propName?upper_case} = BooleanProperty.create("${propName}");
+			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
+				public static final IntegerProperty ${propName?upper_case} = IntegerProperty.create("${propName}", ${prop.property().getMin()}, ${prop.property().getMax()});
+			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+				public static final EnumProperty<${StringUtils.snakeToCamel(propName)}Property> ${propName?upper_case} = EnumProperty.create("${propName}", ${StringUtils.snakeToCamel(propName)}Property.class);
+			</#if>
+		<#else>
+			<#assign propName = prop.property().getName()>
+			<#if prop.property().getClass().getSimpleName().equals("LogicType")>
+				public static final BooleanProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			<#elseif prop.property().getClass().getSimpleName().equals("IntegerType")>
+				public static final IntegerProperty ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			<#elseif prop.property().getClass().getSimpleName().equals("StringType")>
+				public static final EnumProperty<${generator.map(propName, "blockstateproperties", 2)}> ${propName?upper_case} = ${generator.map(propName, "blockstateproperties")};
+			</#if>
 		</#if>
 	</#list>
 
@@ -97,7 +111,6 @@ public class ${name}Block extends
 
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
-		${data.material}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		</#if>
@@ -160,6 +173,12 @@ public class ${name}Block extends
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
+		<#if data.ignitedByLava>
+			.ignitedByLava()
+		</#if>
+		<#if data.noteBlockInstrument != "harp">
+			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
@@ -173,35 +192,23 @@ public class ${name}Block extends
 	</#macro>
 
 	public ${name}Block() {
-		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
-		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if data.material.getUnmappedValue() == "WOOD">
-		        super(BlockSetType.OAK, <@blockProperties/>);
-		    <#else>
-		        super(BlockSetType.IRON, <@blockProperties/>);
-		    </#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "Button">
-			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(BlockSetType.OAK, 30, <@blockProperties/>);
+		<#if data.blockBase?has_content>
+			<#if data.blockBase == "Stairs">
+				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
+			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
+				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
+			<#elseif data.blockBase == "Button">
+				super(BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30<#else>20</#if>, <@blockProperties/>);
+			<#elseif data.blockBase == "FenceGate">
+				super(WoodType.OAK, <@blockProperties/>);
 			<#else>
-		        super(BlockSetType.STONE, 20, <@blockProperties/>);
+				super(<@blockProperties/>);
 			</#if>
-		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
-			<#if data.material.getUnmappedValue() == "IRON">
-				super(BlockSetType.IRON, <@blockProperties/>);
-			<#elseif data.material.getUnmappedValue() == "WOOD">
-				super(BlockSetType.OAK, <@blockProperties/>);
-			<#else>
-				super(BlockSetType.STONE, <@blockProperties/>);
-			</#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "FenceGate">
-			super(WoodType.OAK, <@blockProperties/>);
 		<#else>
 			super(<@blockProperties/>);
 		</#if>
 
-	    <#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
+	    <#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
 	    this.registerDefaultState(this.stateDefinition.any()
 	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
 	    	.setValue(FACING, Direction.NORTH)
@@ -220,6 +227,12 @@ public class ${name}Block extends
 	    );
 		</#if>
 	}
+
+	<#if data.renderType() == 4>
+    @Override protected RenderShape getRenderShape(BlockState state) {
+		return RenderShape.INVISIBLE;
+	}
+	</#if>
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
    	@Override public float getExplosionResistance() {
@@ -276,7 +289,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.rotationMode != 0 || data.isWaterloggable || data.customProperties?has_content>
+	<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
 	@Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		<#assign props = []>
@@ -288,7 +301,7 @@ public class ${name}Block extends
 				<#assign props += ["FACE"]>
 			</#if>
 		</#if>
-		<#list data.customProperties as prop>
+		<#list filteredCustomProperties as prop>
 			<#assign props += [prop.property().getName().replace("CUSTOM:", "")?upper_case]>
 		</#list>
 		<#if data.isWaterloggable>
@@ -348,11 +361,15 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro initCustomBlockStateProperties>
-		<#list data.customProperties as prop>
-			<#assign propName = prop.property().getName().replace("CUSTOM:", "")>
-			.setValue(${propName?upper_case},
+		<#list filteredCustomProperties as prop>
+			<#assign propName = prop.property().getName()>
+			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
-				${StringUtils.snakeToCamel(propName)}Property.${prop.value()?upper_case}
+					<#if propName.startsWith("CUSTOM:")>
+					${StringUtils.snakeToCamel(propName.replace("CUSTOM:", ""))}Property.${prop.value()?upper_case}
+					<#else>
+					${propName?upper_case}.getValue("${prop.value()}").get()
+					</#if>
 				<#else>
 				${prop.value()}
 				</#if>
@@ -646,6 +663,18 @@ public class ${name}Block extends
 	    </#if>
 	</#if>
 
+	<#if data.sensitiveToVibration && data.hasInventory>
+	@Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockstate, BlockEntityType<T> blockEntityType) {
+		if (!level.isClientSide && blockEntityType == ${JavaModName}BlockEntities.${REGISTRYNAME}.get()) {
+			return (_level, pos, state, blockEntity) -> {
+				if (blockEntity instanceof ${name}BlockEntity be)
+					VibrationSystem.Ticker.tick(_level, be.getVibrationData(), be.getVibrationUser());
+			};
+		}
+		return null;
+	}
+	</#if>
+
 	<#if data.tintType != "No tint">
 		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
@@ -671,7 +700,7 @@ public class ${name}Block extends
 						Minecraft.getInstance().level.getBiome(pos).value().getWaterFogColor() : 329011;
 					</#if>
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 
 		<#if data.isItemTinted>
@@ -694,13 +723,13 @@ public class ${name}Block extends
 				<#else>
 					return 329011;
 				</#if>
-			}, ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 		</#if>
 	</#if>
 
 	<#list data.customProperties as prop>
-		<#if prop.property().getClass().getSimpleName().equals("StringType")>
+		<#if prop.property().getName().startsWith("CUSTOM:") && prop.property().getClass().getSimpleName().equals("StringType")>
 		<#assign propClassName = StringUtils.snakeToCamel(prop.property().getName().replace("CUSTOM:", ""))>
 		public enum ${propClassName}Property implements StringRepresentable {
 			<#list prop.property.getArrayData() as value>

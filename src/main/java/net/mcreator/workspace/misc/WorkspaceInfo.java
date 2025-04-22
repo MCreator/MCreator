@@ -29,9 +29,11 @@ import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -135,7 +137,7 @@ import java.util.*;
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).toList();
 
-		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
+		Map<String, List<MItemBlock>> tabMap = new LinkedHashMap<>(), customTabsWithoutOrder = new LinkedHashMap<>();
 
 		// Can't use parallelStream here because getCreativeTabItems
 		// call MCItem.Custom::new that calls getBlockIconBasedOnName which calls
@@ -147,36 +149,49 @@ import java.util.*;
 				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
-						if (!tabMap.containsKey(tab))
-							tabMap.put(tab, new ArrayList<>());
 
-						// If tab does not have custom order, add items to the end of the list
-						if (workspace.getCreativeTabsOrder().get(tab) == null)
-							tabMap.get(tab).addAll(tabItems);
-					}
-				}
-			}
-		}
-
-		// Last, we add items to tabs with custom order
-		for (String tab : tabMap.keySet()) {
-			ArrayList<String> tabOrder = workspace.getCreativeTabsOrder().get(tab);
-			if (tabOrder != null) {
-				if (!tabMap.containsKey(tab))
-					tabMap.put(tab, new ArrayList<>());
-
-				for (String element : tabOrder) {
-					ModElement me = workspace.getModElementByName(element);
-					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
-						List<MCItem> tabItems = tabElement.getCreativeTabItems();
-						if (tabItems != null && !tabItems.isEmpty()) {
-							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-									.toList());
+						// If tab does not have custom order, add items to the end of appropriate list
+						if (workspace.getCreativeTabsOrder().get(tab) == null) {
+							(tab.startsWith(NameMapper.MCREATOR_PREFIX) ?
+									customTabsWithoutOrder :
+									tabMap).computeIfAbsent(tab, key -> new ArrayList<>()).addAll(tabItems);
 						}
 					}
 				}
 			}
 		}
+
+		// Next, we add items to tabs with custom order
+		for (Map.Entry<String, ArrayList<String>> entry : workspace.getCreativeTabsOrder().entrySet()) {
+			String tab = entry.getKey();
+			if (tab.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				ModElement tabME = workspace.getModElementByName(tab.replace(NameMapper.MCREATOR_PREFIX, ""));
+				if (tabME == null || tabME.getType() != ModElementType.TAB)
+					continue; // Might be a stale entry we didn't remove previously (#5174)
+			}
+			for (String element : entry.getValue()) {
+				ModElement me = workspace.getModElementByName(element);
+				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+					List<MCItem> tabItems = tabElement.getCreativeTabItems();
+					if (tabItems != null && !tabItems.isEmpty()) {
+						tabMap.computeIfAbsent(tab, key -> new ArrayList<>())
+								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+					}
+				}
+			}
+		}
+
+		// Last, we move custom tabs to the end of the main list
+		// Is not strictly necessary, but this makes sure order of keys in tabMap is consistent with the editor UI
+		for (Map.Entry<String, List<MItemBlock>> entry : tabMap.entrySet().stream().toList()) {
+			if (entry.getKey().startsWith(NameMapper.MCREATOR_PREFIX)) {
+				tabMap.remove(entry.getKey());
+				tabMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+
+		// Add tabs without order to the end of the main list
+		tabMap.putAll(customTabsWithoutOrder);
 
 		return tabMap;
 	}
@@ -189,12 +204,14 @@ import java.util.*;
 		for (T t : input) {
 			if (t instanceof NonMappableElement) {
 				retval.add(t);
-			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+			} else if (t.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
 					LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
-							TraceUtil.tryToFindMCreatorInvoker(), t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
+							TraceUtil.tryToFindMCreatorInvoker(),
+							t.getUnmappedValue().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
+					TestUtil.failIfTestingEnvironment();
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));

@@ -221,6 +221,18 @@ public final class FileIO {
 		}
 	}
 
+	public static boolean isSameFile(File file1, File file2) {
+		try {
+			return Files.isSameFile(file1.toPath(), file2.toPath());
+		} catch (IOException e) {
+			try {
+				return file1.getCanonicalPath().equals(file2.getCanonicalPath());
+			} catch (IOException e2) {
+				return file1.getAbsolutePath().equals(file2.getAbsolutePath());
+			}
+		}
+	}
+
 	public static boolean removeEmptyDirs(File root) {
 		File[] files = root.listFiles();
 		for (File file : files != null ? files : new File[0]) {

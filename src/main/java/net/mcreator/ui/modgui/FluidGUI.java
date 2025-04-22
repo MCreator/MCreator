@@ -44,11 +44,10 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -137,12 +136,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	@Override protected void initGUI() {
 		fogStartDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_start_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_start_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01)), 180,
-				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
+				new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01)), 180, Dependency.fromString(
+				"world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 		fogEndDistance = new NumberProcedureSelector(this.withEntry("fluid/fog_end_distance"), mcreator,
 				L10N.t("elementgui.fluid.fog_end_distance"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(48, -1024, 1024, 0.01)), 180,
-				Dependency.fromString("world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
+				new JSpinner(new SpinnerNumberModel(48, -1024, 1024, 0.01)), 180, Dependency.fromString(
+				"world:world/entity:entity/nearDistance:number/farDistance:number/renderDistance:number"));
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.fluid.when_added"),
@@ -160,7 +159,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.common.event_on_random_update"), ProcedureSelector.Side.CLIENT,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onDestroyedByExplosion = new ProcedureSelector(this.withEntry("block/when_destroyed_explosion"), mcreator,
-				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"),
+				L10N.t("elementgui.block.event_on_block_destroyed_by_explosion"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world"));
 		flowCondition = new ProcedureSelector(this.withEntry("fluid/flow_condition"), mcreator,
 				L10N.t("elementgui.fluid.event_flow_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -192,7 +191,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		mainTextures.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER), 32);
+		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER),
+				32);
 		textureRenderOverlay.setOpaque(false);
 
 		JPanel visualSettings = new JPanel(new GridLayout(3, 2, 5, 2));
@@ -204,15 +204,15 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.texture_render_overlay")));
 		visualSettings.add(PanelUtils.centerInPanel(textureRenderOverlay));
 
-		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/has_fog"),
-				L10N.label("elementgui.fluid.has_fog")));
+		visualSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/has_fog"), L10N.label("elementgui.fluid.has_fog")));
 		visualSettings.add(hasFog);
 
 		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/fog_color"),
 				L10N.label("elementgui.fluid.fog_color")));
 		visualSettings.add(fogColor);
 
-		JPanel fogProcedures = new JPanel(new GridLayout(2, 1, 2, 0));
+		JPanel fogProcedures = new JPanel(new GridLayout(2, 1, 2, 2));
 		fogProcedures.setOpaque(false);
 
 		fogProcedures.add(fogStartDistance);
@@ -444,8 +444,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		textureStill.setValidator(new TileHolderValidator(textureStill));
-		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
+		textureStill.setValidator(new TextureSelectionButtonValidator(textureStill));
+		textureFlowing.setValidator(new TextureSelectionButtonValidator(textureFlowing));
 
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
@@ -459,8 +459,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		page1group.addValidationElement(bucketName);
 
-		addPage(L10N.t("elementgui.common.page_visual"), visualsPage);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_visual"), visualsPage).validate(texturesValidationGroup);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
@@ -493,14 +493,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogEndDistance.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(texturesValidationGroup);
-		else if (page == 1)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(Fluid fluid) {

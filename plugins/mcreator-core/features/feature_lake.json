@@ -26,6 +26,9 @@
     "inputs": [
       "fluid",
       "border"
+    ],
+    "warnings": [
+      "lake_feature_crash"
     ]
   }
 }

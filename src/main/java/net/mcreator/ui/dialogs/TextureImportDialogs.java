@@ -76,7 +76,7 @@ public class TextureImportDialogs {
 
 		p1.addActionListener(event -> {
 			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 1 texture files", "*layer_1.png"));
+					new FileChooser.ExtensionFilter("Armor layer 1 texture files", "*_layer_1.png"));
 			if (f1a != null && f1a.length > 0) {
 				f1.set(f1a[0]);
 				p1.setText(FilenameUtilsPatched.removeExtension(f1.get().getName()));
@@ -85,7 +85,7 @@ public class TextureImportDialogs {
 
 		p2.addActionListener(event -> {
 			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 2 texture files", "*layer_2.png"));
+					new FileChooser.ExtensionFilter("Armor layer 2 texture files", "*_layer_2.png"));
 			if (f2a != null && f2a.length > 0) {
 				f2.set(f2a[0]);
 				p2.setText(FilenameUtilsPatched.removeExtension(f2.get().getName()));
@@ -105,12 +105,16 @@ public class TextureImportDialogs {
 						f1.get().getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")));
 				if (namec.endsWith("_"))
 					namec = namec.substring(0, namec.length() - 1);
+				if (namec.isBlank()) {
+					Toolkit.getDefaultToolkit().beep();
+					return;
+				}
 				File[] armor = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				FileIO.copyFile(f1.get(), armor[0]);
 				FileIO.copyFile(f2.get(), armor[1]);
 
-				mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+				mcreator.reloadWorkspaceTabContents();
+				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
 					modElementGUI.reloadDataLists();
 			}
 	}
@@ -156,8 +160,8 @@ public class TextureImportDialogs {
 			FileIO.copyFile(textureFile, file);
 		});
 
-		mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
+		mcreator.reloadWorkspaceTabContents();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
 			modElementGUI.reloadDataLists();
 
 		return savedFiles;

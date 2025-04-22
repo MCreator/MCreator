@@ -1,0 +1,1 @@
+Jeżeli narzędzie zniszczy blok, ta procedura zostanie uruchomiona.

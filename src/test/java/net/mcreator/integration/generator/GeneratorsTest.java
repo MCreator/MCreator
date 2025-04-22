@@ -25,7 +25,6 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
@@ -68,7 +67,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: {}", rgenseed);
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		Set<String> fileNames;
+		if (System.getenv("MCREATOR_TEST_GENERATORS") != null) {
+			// comma separated to set, use stream oneliner
+			fileNames = Arrays.stream(System.getenv("MCREATOR_TEST_GENERATORS").split(","))
+					.map(generator -> generator + "/generator.yaml").collect(Collectors.toSet());
+		} else {
+			fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		}
 
 		// Sort generators, so they are tested in predictable order
 		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
@@ -103,10 +109,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
-
 						CountDownLatch latch = new CountDownLatch(1);
-						new MCreator(null, workspace.get()).getGradleConsole()
+						MCreator.create(null, workspace.get()).getGradleConsole()
 								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
 										workspace.get().getGenerator().reloadGradleCaches();
@@ -131,8 +135,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
 							() -> TestWorkspaceDataProvider.provideAndGenerateSampleElements(random, workspace.get())));
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
-							() -> GTModElements.runTest(LOG, generator, random, workspace.get())));
+					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation", () -> {
+						GTModElements.runTest(LOG, generator, random, workspace.get());
+						// Fill workspace with sample tags after the elements the tags reference actually exist
+						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
+					}));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {
@@ -194,7 +201,6 @@ import static org.junit.jupiter.api.Assertions.*;
 							() -> verifyGeneratedJSON(workspace.get())));
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));

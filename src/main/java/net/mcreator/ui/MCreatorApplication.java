@@ -28,8 +28,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
-import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
+import net.mcreator.io.net.api.MCreatorNetWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
@@ -60,8 +60,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -70,7 +70,7 @@ public final class MCreatorApplication {
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
-	public static final IWebAPI WEB_API = new D8WebAPI();
+	public static final IWebAPI WEB_API = new MCreatorNetWebAPI();
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
@@ -178,10 +178,10 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(93, "Initiating user session");
 
 			deviceInfo = new DeviceInfo();
+			isInternet = MCreatorApplication.WEB_API.initAPI();
+
 			analytics = new GoogleAnalytics(deviceInfo);
 			analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
-
-			isInternet = MCreatorApplication.WEB_API.initAPI();
 
 			discordClient = new DiscordClient();
 
@@ -281,7 +281,7 @@ public final class MCreatorApplication {
 				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
 
 				ThreadUtil.runOnSwingThreadAndWait(() -> {
-					MCreator mcreator = new MCreator(this, workspace);
+					MCreator mcreator = MCreator.create(this, workspace);
 					if (!this.openMCreators.contains(mcreator)) {
 						this.workspaceSelector.setVisible(false);
 						this.openMCreators.add(mcreator);

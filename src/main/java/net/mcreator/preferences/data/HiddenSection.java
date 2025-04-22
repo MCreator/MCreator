@@ -23,22 +23,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.HiddenEntry;
-import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
 import java.io.File;
 
 public class HiddenSection extends PreferencesSection {
 
-	public final PreferencesEntry<IconSize> workspaceModElementIconSize;
 	public final BooleanEntry fullScreen;
-	public final IntegerEntry projectTreeSplitPos;
-	public final BooleanEntry workspaceSortAscending;
-	public final PreferencesEntry<SortType> workspaceSortOrder;
 	public final PreferencesEntry<File> java_home;
 	public final StringEntry uiTheme;
 	public final BooleanEntry enableJavaPlugins;
@@ -47,27 +41,7 @@ public class HiddenSection extends PreferencesSection {
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		workspaceModElementIconSize = addEntry(new HiddenEntry<>("workspaceModElementIconSize", IconSize.TILES) {
-			@Override public void setValueFromJsonElement(JsonElement object) {
-				this.value = IconSize.valueOf(object.getAsString());
-			}
-
-			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, IconSize.class);
-			}
-		});
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
-		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
-		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", true));
-		workspaceSortOrder = addEntry(new HiddenEntry<>("workspaceSortOrder", SortType.CREATED) {
-			@Override public void setValueFromJsonElement(JsonElement object) {
-				this.value = SortType.valueOf(object.getAsString());
-			}
-
-			@Override public JsonElement getSerializedValue() {
-				return PreferencesManager.gson.toJsonTree(value, SortType.class);
-			}
-		});
 		java_home = addEntry(new HiddenEntry<>("java_home", null) {
 			@Override public void setValueFromJsonElement(JsonElement object) {
 				this.value = new File(object.getAsString());
@@ -92,14 +66,6 @@ public class HiddenSection extends PreferencesSection {
 
 	@Override public String getSectionKey() {
 		return "hidden";
-	}
-
-	public enum SortType {
-		NAME, CREATED, TYPE
-	}
-
-	public enum IconSize {
-		TILES, LARGE, MEDIUM, SMALL, LIST, DETAILS
 	}
 
 }

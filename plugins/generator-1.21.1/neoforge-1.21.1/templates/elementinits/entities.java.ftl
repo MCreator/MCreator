@@ -37,7 +37,7 @@
 package ${package}.init;
 
 <#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
-<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content && e.guiBoundTo != "<NONE>")>
+<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content)>
 
 <#if hasLivingEntities || entitiesWithInventory?size != 0>
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
@@ -58,6 +58,7 @@ public class ${JavaModName}Entities {
 						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
 							<#if entity.immuneToFire>.fireImmune()</#if>
+							<#if entity.mobModelName == "Biped">.ridingOffset(-0.6f)</#if>
 							.sized(${entity.modelWidth}f, ${entity.modelHeight}f)
 						);
 			<#if entity.hasCustomProjectile()>

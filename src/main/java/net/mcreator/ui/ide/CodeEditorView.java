@@ -130,7 +130,7 @@ public class CodeEditorView extends ViewBase {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
 
-	public CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
+	public CodeEditorView(MCreator fa, String code, String fileName, @Nullable File fileWorkingOn, boolean readOnly) {
 		super(fa);
 
 		this.fileWorkingOn = fileWorkingOn;
@@ -143,12 +143,12 @@ public class CodeEditorView extends ViewBase {
 
 		setBackground(Theme.current().getBackgroundColor());
 
-		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
+		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, this.fileWorkingOn, fa.getWorkspaceFolder());
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
 				super.focusGained(focusEvent);
-				fileBreadCrumb.reloadPath(fileWorkingOn);
+				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
 				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 			}
 		});
@@ -265,7 +265,9 @@ public class CodeEditorView extends ViewBase {
 		JPanel topPan = new JPanel(new BorderLayout());
 		topPan.setOpaque(false);
 		topPan.add("Center", bars);
-		topPan.add("North", fileBreadCrumb);
+
+		if (fileWorkingOn != null)
+			topPan.add("North", fileBreadCrumb);
 
 		add("North", topPan);
 		add("Center", spne);
@@ -278,7 +280,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.buildWorkspace.doAction();
+							fa.getActionRegistry().buildWorkspace.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_build"));
@@ -303,7 +305,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.runClient.doAction();
+							fa.getActionRegistry().runClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_launch"));
@@ -316,7 +318,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.debugClient.doAction();
+							fa.getActionRegistry().debugClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_debug"));
@@ -481,6 +483,8 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
 		} else if (fileName.endsWith(".md")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
+		} else if (fileName.endsWith(".vsh") || fileName.endsWith(".fsh")) {
+			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
 			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
@@ -567,12 +571,15 @@ public class CodeEditorView extends ViewBase {
 			int pos = te.getCaretPosition();
 			String ncode = codeCleanup.reformatTheCodeAndOrganiseImports(mcreator.getWorkspace(), te.getText());
 			te.setText(ncode);
-			te.setCaretPosition(pos);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			int pos = te.getCaretPosition();
 			JsonElement json = JsonParser.parseString(te.getText());
-			te.setText(JSONWriter.gson.toJson(json));
-			te.setCaretPosition(pos);
+			String ncode = JSONWriter.gson.toJson(json);
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		}
 	}
 
@@ -666,9 +673,9 @@ public class CodeEditorView extends ViewBase {
 			}
 		});
 
-		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(fileWorkingOn);
+		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);
 		if (existing == null) {
-			mcreator.mcreatorTabs.addTab(fileTab);
+			mcreator.getTabs().addTab(fileTab);
 			return this;
 		}
 		return (ViewBase) existing.getContent();
@@ -688,7 +695,7 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
 				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 

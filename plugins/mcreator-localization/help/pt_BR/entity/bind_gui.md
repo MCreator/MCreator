@@ -1,0 +1,1 @@
+Se você quiser vincular uma GUI à sua entidade (para criar um aldeão ou um inventário personalizado como um cavalo, por exemplo), marque esta caixa para habilitar o inventário e vinculá-lo a uma GUI selecionada.

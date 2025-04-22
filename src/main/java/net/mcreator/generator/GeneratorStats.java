@@ -123,6 +123,16 @@ public class GeneratorStats {
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
+		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
+		baseCoverageInfo.put("model_animations_java",
+				(sourceTasksJSON.contains("\"type\":\"JAVA_viatemplate") && sourceTasksJSON.contains(
+						"\"task\":\"copy_model_animations")) ? CoverageStatus.FULL : CoverageStatus.NONE);
+
+		baseCoverageInfo.put("vanilla_resources",
+				generatorConfiguration.getSpecificRoot("vanilla_resources_jar") != null ?
+						CoverageStatus.FULL :
+						CoverageStatus.NONE);
+
 		CoverageStatus texturesCoverage = CoverageStatus.NONE;
 		int supportedTextureTypes = 0;
 		for (TextureType textureType : TextureType.values()) {
@@ -183,7 +193,7 @@ public class GeneratorStats {
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers().size()) * 100, 100));
+						.getExternalTriggers().size()) * 100, 100));
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {

@@ -1,0 +1,1 @@
+Check this property to have a glowing effect (similar to the flame particle) applied to your particle.

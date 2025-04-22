@@ -1,0 +1,1 @@
+Este parâmetro define o quanto a textura da partícula deve ser dimensionada.

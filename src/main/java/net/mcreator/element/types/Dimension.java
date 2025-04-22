@@ -20,11 +20,12 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -36,8 +37,8 @@ import net.mcreator.workspace.references.TextureReference;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider {
@@ -48,16 +49,36 @@ import java.util.*;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
+	public int seaLevel;
+	public boolean generateOreVeins;
+	public boolean generateAquifers;
+	public int horizontalNoiseSize;
+	public int verticalNoiseSize;
 
+	public String defaultEffects;
+	public boolean useCustomEffects;
+	public boolean hasClouds;
+	public double cloudHeight;
+	public String skyType;
 	public Color airColor;
+	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public boolean isDark;
+	public double ambientLight;
 	public boolean doesWaterVaporize;
+	public boolean hasFixedTime;
+	public int fixedTimeValue;
+	public double coordinateScale;
+	public String infiniburnTag;
 
-	public String sleepResult;
+	public boolean bedWorks;
 	public boolean hasSkyLight;
 	public boolean imitateOverworldBehaviour;
+	public boolean piglinSafe;
+	public boolean hasRaids;
+	public int minMonsterSpawnLightLimit;
+	public int maxMonsterSpawnLightLimit;
+	public int monsterSpawnBlockLightLimit;
 
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
@@ -70,7 +91,7 @@ import java.util.*;
 	public String igniterName;
 	public String igniterRarity;
 	public StringListProcedure specialInformation;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder portalTexture;
 	public boolean enablePortal;
@@ -87,11 +108,21 @@ import java.util.*;
 		super(element);
 
 		// DEFAULT VALUES
+		this.seaLevel = 63;
+		this.generateOreVeins = true;
+		this.generateAquifers = true;
+		this.horizontalNoiseSize = 1;
+		this.verticalNoiseSize = 2;
+		this.coordinateScale = 1;
+		this.infiniburnTag = "minecraft:infiniburn_overworld";
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.creativeTabs = new ArrayList<>();
+		this.defaultEffects = "overworld";
+		this.cloudHeight = 192;
+		this.skyType = "NONE";
+		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
-		this.sleepResult = "ALLOW";
 	}
 
 	public boolean hasIgniter() {
@@ -99,13 +130,17 @@ import java.util.*;
 		return enablePortal && enableIgniter;
 	}
 
+	public boolean hasEffectsOrDimensionTriggers() {
+		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
+	}
+
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : biomesInDimension) {
-			if (biomeEntry.getUnmappedValue().startsWith("CUSTOM:")) {
+			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				ModElement biomeElement = getModElement().getWorkspace()
-						.getModElementByName(biomeEntry.getUnmappedValue().replace("CUSTOM:", ""));
+						.getModElementByName(biomeEntry.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, ""));
 				if (biomeElement != null) {
 					GeneratableElement generatableElement = biomeElement.getGeneratableElement();
 					if (generatableElement instanceof Biome biome) {
@@ -167,7 +202,7 @@ import java.util.*;
 
 	@Override public List<MItemBlock> poiBlocks() {
 		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
-				"CUSTOM:" + this.getModElement().getName() + ".portal"));
+				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
 	}
 
 }

@@ -38,7 +38,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
@@ -55,8 +55,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
@@ -175,7 +175,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			hasDependencyErrors = false;
 			if (blocklyToJava.getExternalTrigger() != null) {
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers();
+						.getExternalTriggers();
 
 				for (ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
@@ -192,7 +192,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					StringBuilder missingdeps = new StringBuilder();
 					boolean warn = false;
 					for (Dependency dependency : dependenciesArrayList) {
-						if (trigger.dependencies_provided != null && !trigger.dependencies_provided.contains(
+						if (trigger.dependencies_provided == null || !trigger.dependencies_provided.contains(
 								dependency)) {
 							warn = true;
 							missingdeps.append(" ").append(dependency.getName());
@@ -378,7 +378,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
-					new OptionPaneValidatior() {
+					new OptionPaneValidator() {
 						@Override public Validator.ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
 							String variableName = ((VTextField) component).getText();
@@ -421,13 +421,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
 					VariableElement selectedVar = localVarsList.getSelectedValue();
-					VariableType type = selectedVar.getType();
-					String blockXml =
-							"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_" + (e.isAltDown() ?
-									"set_" :
-									"get_") + type.getName() + "\"><field name=\"VAR\">local:" + selectedVar.getName()
-									+ "</field></block></xml>";
-					blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedVar != null) {
+						VariableType type = selectedVar.getType();
+						String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
+								+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
+								+ selectedVar.getName() + "</field></block></xml>";
+						blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -436,9 +436,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesList.getSelectedValue();
-					String blockXml = selectedDep.getDependencyBlockXml();
-					if (blockXml != null)
-						blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedDep != null) {
+						String blockXml = selectedDep.getDependencyBlockXml();
+						if (blockXml != null)
+							blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -447,9 +449,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
-					String blockXml = selectedDep.getDependencyBlockXml();
-					if (blockXml != null)
-						blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedDep != null) {
+						String blockXml = selectedDep.getDependencyBlockXml();
+						if (blockXml != null)
+							blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -539,7 +543,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
-			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
+			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()
 					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
@@ -562,15 +566,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, pane5), false);
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (hasDependencyErrors)
-			return new AggregatedValidationResult.FAIL(
-					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
-		else
-			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
+		addPage(PanelUtils.gridElements(1, 1, pane5), false).lazyValidate(() -> {
+			if (hasDependencyErrors)
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
+			else
+				return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
+		});
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {

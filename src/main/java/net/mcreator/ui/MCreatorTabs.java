@@ -47,6 +47,9 @@ import java.util.Locale;
 
 public class MCreatorTabs {
 
+	private static final int TAB_HEIGHT = 39;
+	private static final int TAB_BORDER_HEIGHT = 4;
+
 	private final CardLayout cardLayout;
 	private final JPanel container;
 
@@ -81,22 +84,21 @@ public class MCreatorTabs {
 		});
 
 		moreTabs = new JLabel(UIRES.get("more"));
-		moreTabs.setPreferredSize(new Dimension(40, 39));
+		moreTabs.setPreferredSize(new Dimension(40, TAB_HEIGHT));
 		moreTabs.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()),
-						BorderFactory.createEmptyBorder(0, 10, 0, 10))));
+				BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, Theme.current().getAltBackgroundColor()),
+				BorderFactory.createEmptyBorder(0, 10, 0, 10)));
 		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		moreTabs.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				moreTabsMenu.show(e.getComponent(), 0, 39);
+				moreTabsMenu.show(e.getComponent(), 0, TAB_HEIGHT);
 			}
 		});
 
 		filler = new JPanel();
 		filler.setOpaque(false);
-		filler.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()));
+		filler.setBorder(
+				BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, Theme.current().getAltBackgroundColor()));
 	}
 
 	void reloadTabStrip() {
@@ -150,7 +152,7 @@ public class MCreatorTabs {
 			tabsStripWidth += moreTabs.getPreferredSize().width;
 		}
 
-		filler.setPreferredSize(new Dimension(Math.max(0, maxWidth - tabsStripWidth), 39));
+		filler.setPreferredSize(new Dimension(Math.max(0, maxWidth - tabsStripWidth), TAB_HEIGHT));
 		tabsStrip.add(filler);
 
 		tabsStrip.revalidate();
@@ -306,8 +308,6 @@ public class MCreatorTabs {
 		private final JLabel blo = new JLabel();
 		private final FontRenderContext frc;
 
-		private boolean hasRightBorder = true;
-
 		private String text;
 
 		public Tab(ViewBase content) {
@@ -383,13 +383,16 @@ public class MCreatorTabs {
 		public void updateSize() {
 			if (closeable && icon == null) {
 				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 40), 39));
+						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 45),
+								TAB_HEIGHT));
 			} else if (closeable) {
 				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 70), 39));
+						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 75),
+								TAB_HEIGHT));
 			} else {
 				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 30), 39));
+						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 32),
+								TAB_HEIGHT));
 			}
 		}
 
@@ -422,20 +425,11 @@ public class MCreatorTabs {
 		}
 
 		void updateBorder() {
-			if (selected)
-				setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								Theme.current().getSecondAltBackgroundColor()),
-						BorderFactory.createMatteBorder(0, 0, 5, 0, activeColor)));
-			else
-				setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								Theme.current().getSecondAltBackgroundColor()),
-						BorderFactory.createMatteBorder(0, 0, 5, 0, inactiveColor)));
-		}
-
-		public void setHasRightBorder(boolean hasRightBorder) {
-			this.hasRightBorder = hasRightBorder;
+			if (selected) {
+				setBorder(BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, activeColor));
+			} else {
+				setBorder(BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, inactiveColor));
+			}
 		}
 
 		public void setInactiveColor(Color inactiveColor) {

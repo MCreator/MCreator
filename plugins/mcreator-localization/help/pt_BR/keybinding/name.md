@@ -1,0 +1,1 @@
+Este parâmetro controla o nome da tecla exibida na aba Controles nas configurações do Minecraft.

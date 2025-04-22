@@ -34,7 +34,7 @@ public class GradleSection extends PreferencesSection {
 
 	public final BooleanEntry buildOnSave;
 	public final BooleanEntry passLangToMinecraft;
-	public final IntegerEntry xms;
+	public final BooleanEntry enablePerformanceMonitor;
 	public final IntegerEntry xmx;
 	public final BooleanEntry offline;
 
@@ -43,7 +43,7 @@ public class GradleSection extends PreferencesSection {
 
 		buildOnSave = addEntry(new BooleanEntry("buildOnSave", false));
 		passLangToMinecraft = addEntry(new BooleanEntry("passLangToMinecraft", true));
-		xms = addEntry(new IntegerEntry("Xms", Math.min(1024, MAX_RAM), 128, MAX_RAM));
+		enablePerformanceMonitor = addEntry(new BooleanEntry("enablePerformanceMonitor", true));
 		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
 	}

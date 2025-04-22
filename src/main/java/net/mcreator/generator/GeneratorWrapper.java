@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -86,13 +87,14 @@ import java.util.stream.Collectors;
 	}
 
 	/**
-	 * Removes the "CUSTOM:" prefix and any eventual suffix (if present, it's after the last .)
+	 * Removes the NameMapper.MCREATOR_PREFIX prefix and any eventual suffix (if present, it's after the last .)
 	 *
 	 * @param elementName The name to convert
 	 * @return The plain name of the element
 	 */
 	public static String getElementPlainName(String elementName) {
-		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", "").replace(":Flowing", ""), ".");
+		return StringUtils.substringBeforeLast(
+				elementName.replace(NameMapper.MCREATOR_PREFIX, "").replace(":Flowing", ""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
@@ -103,6 +105,7 @@ import java.util.stream.Collectors;
 		generator.getLogger()
 				.warn("({}) Failed to determine registry name for: {}", TraceUtil.tryToFindMCreatorInvoker(),
 						modElement);
+		TestUtil.failIfTestingEnvironment();
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -114,6 +117,7 @@ import java.util.stream.Collectors;
 
 		generator.getLogger().warn("({}) Failed to determine resource location for mod element: {}",
 				TraceUtil.tryToFindMCreatorInvoker(), modElement);
+		TestUtil.failIfTestingEnvironment();
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 

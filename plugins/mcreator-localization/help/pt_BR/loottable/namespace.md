@@ -1,0 +1,1 @@
+Se você quiser alterar uma tabela de loot vanilla, você tem que escolher "minecraft", mas se você quiser criar uma nova tabela de loot para seus elementos mod, escolha "mod".

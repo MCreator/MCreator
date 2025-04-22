@@ -1,4 +1,0 @@
-* **Vật phẩm:** Dùng cái này để nhóm nhiều vật phẩm lại với nhau cho các công thức, quy trình... Nhãn vật phẩm thay thế hệ thống từ điển quặng cũ
-* **Khối:** chỉ sử dụng loại khối nếu bạn đăng nhắm đến một khối và không phải vật phẩm của nó (_những nhãn này không thể được sử dụng trong các công thức_)
-* **Thực thể:** dùng loại nhãn này để nhóm các thực thể lại với nhau cho một mục đích chung.
-* **Chức năng:** loại nhãn này được dùng để gắn nhãn các chức năng vào các nhóm. Một nhóm như thế được gọi là "tick" từ namespace "minecraft". Các chức năng nằm trong namespace "tick" sẽ được thực thi mỗi tick của trò chơi.

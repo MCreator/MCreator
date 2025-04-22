@@ -1,0 +1,1 @@
+Ten parametr ustala tytuł obrazu.

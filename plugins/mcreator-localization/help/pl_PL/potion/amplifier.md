@@ -1,0 +1,1 @@
+Ten parametr ustala, jak silny jest dany efekt.

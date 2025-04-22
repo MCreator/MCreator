@@ -54,8 +54,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
@@ -82,7 +82,7 @@ import java.util.*;
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
 	public String bossBarColor;
@@ -112,7 +112,7 @@ import java.util.*;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
-	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference @Nullable public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -266,6 +266,7 @@ import java.util.*;
 					blocklyToJava.getGeneratedCode() :
 					"");
 			additionalData.put("aiblocks", blocklyToJava.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJava.getExtraTemplatesCode());
 		};
 	}
 

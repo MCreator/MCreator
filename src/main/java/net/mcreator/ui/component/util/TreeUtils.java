@@ -23,6 +23,7 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class TreeUtils {
 
@@ -129,4 +130,64 @@ public class TreeUtils {
 			}
 		}
 	}
+
+	public static void expandMatchingNodesRecursively(JTree tree, DefaultMutableTreeNode node,
+			Predicate<DefaultMutableTreeNode> predicate) {
+		if (node == null) {
+			return;
+		}
+
+		// If the node matches the predicate, expand it
+		if (predicate.test(node)) {
+			List<Object> nodes = new ArrayList<>();
+			TreeNode treeNode = node;
+			nodes.add(treeNode);
+			treeNode = treeNode.getParent();
+			while (treeNode != null) {
+				nodes.addFirst(treeNode);
+				treeNode = treeNode.getParent();
+			}
+
+			nodes.removeLast();
+			tree.expandPath(nodes.isEmpty() ? null : new TreePath(nodes.toArray()));
+		}
+
+		// Recurse into children
+		int childCount = node.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+			expandMatchingNodesRecursively(tree, child, predicate);
+		}
+	}
+
+	public static <T> void selectNodeByUserObject(JTree tree, Predicate<T> predicate, Class<T> clazz) {
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+		TreePath path = findPathByUserObject(root, predicate, clazz);
+
+		if (path != null) {
+			tree.setSelectionPath(path);
+			tree.scrollPathToVisible(path);
+		}
+	}
+
+	public static <T> TreePath findPathByUserObject(DefaultMutableTreeNode node, Predicate<T> predicate,
+			Class<T> clazz) {
+		// Check children first to avoid selecting a parent prematurely
+		for (int i = 0; i < node.getChildCount(); i++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+			TreePath childPath = findPathByUserObject(child, predicate, clazz);
+			if (childPath != null) {
+				return childPath; // Return the first matching child path
+			}
+		}
+
+		// Only check the current node after all children
+		Object userObject = node.getUserObject();
+		if (clazz.isInstance(userObject) && predicate.test(clazz.cast(userObject))) {
+			return new TreePath(node.getPath());
+		}
+
+		return null; // No match found
+	}
+
 }

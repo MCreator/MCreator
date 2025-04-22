@@ -42,8 +42,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
@@ -69,17 +69,17 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_java_model", UIRES.get("16px.importjavamodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importJavaModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_json_model", UIRES.get("16px.importjsonmodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importJSONModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
-					e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
+					e -> workspacePanel.getMCreator().getActionRegistry().importOBJModel.doAction());
 
 		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
 				e -> editSelectedModelTextureMappings());
@@ -151,13 +151,16 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	private void editSelectedModelAnimations() {
 		Model model = elementList.getSelectedValue();
+		if (model == null) {
+			return;
+		}
 		if (model.getType() == Model.Type.JAVA) {
 			File file = model.getFile();
 			String code = FileIO.readFileToString(file);
 			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMCreator(), code);
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
-				workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
+				workspacePanel.getMCreator().getActionRegistry().buildWorkspace.doAction();
 			}
 		} else {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
@@ -168,20 +171,23 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	private void editSelectedModelTextureMappings() {
 		Model model = elementList.getSelectedValue();
-		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
-				workspacePanel.getMCreator().getWorkspace(), model);
-		if (textureMappingMap != null) {
-			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
-					workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
+		if (model != null) {
+			Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
+					workspacePanel.getMCreator().getWorkspace(), model);
 			if (textureMappingMap != null) {
-				String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-				FileIO.writeStringToFile(data, new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
-						model.getFile().getName() + ".textures"));
+				textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
+						workspacePanel.getMCreator(), null, model.getType() == Model.Type.JSON);
+				if (textureMappingMap != null) {
+					String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
+					FileIO.writeStringToFile(data,
+							new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
+									model.getFile().getName() + ".textures"));
+				}
+			} else {
+				JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+						L10N.t("workspace.3dmodels.mappings_unsupported_message"),
+						L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 			}
-		} else {
-			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.3dmodels.mappings_unsupported_message"),
-					L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

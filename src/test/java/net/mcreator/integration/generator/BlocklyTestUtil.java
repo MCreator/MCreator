@@ -185,7 +185,7 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
-		case "field_input", "field_javaname" -> {
+		case "field_input", "field_javaname", "field_resourcelocation" -> {
 			String value = "test";
 			if (arg.has("text")) {
 				value = arg.get("text").getAsString();
@@ -283,7 +283,7 @@ public class BlocklyTestUtil {
 						StringUtils.removeStart(datalist, "procedure_retval_"));
 				return ElementUtil.getProceduresOfType(workspace, variableType);
 			} else if (!DataListLoader.loadDataList(datalist).isEmpty()) {
-				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
+				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,
 								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
 						.toArray(String[]::new);
 			}

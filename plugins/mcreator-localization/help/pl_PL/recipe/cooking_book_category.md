@@ -1,0 +1,1 @@
+Kategoria książki receptowej ustala, pod jaką zakładką dany przepis będzie się znajdował.

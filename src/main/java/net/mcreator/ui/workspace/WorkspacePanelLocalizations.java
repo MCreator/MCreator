@@ -49,8 +49,8 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
@@ -417,7 +417,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		for (TableRowSorter<TableModel> sorter : sorters)
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
 	}
 
 }

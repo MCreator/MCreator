@@ -1,0 +1,1 @@
+Este parâmetro define o título da pintura.

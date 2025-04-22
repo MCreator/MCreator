@@ -95,11 +95,13 @@ public class RegenerateCodeAction extends GradleAction {
 
 			List<GeneratorTemplate> templates = mcreator.getGenerator().getModBaseGeneratorTemplatesList(false);
 			for (GeneratorTemplate template : templates) {
-				GeneratorFile generatorFile = template.toGeneratorFile(FileIO.readFileToString(template.getFile()));
-				// preserve base mod element files that have user code blocks with content
-				if (!UserCodeProcessor.getUserCodeBlocks(generatorFile.contents(), generatorFile.getUsercodeComment())
-						.isEmpty())
-					toBePreserved.add(template.getFile());
+				if (template.getFile().isFile()) {
+					GeneratorFile generatorFile = template.toGeneratorFile(FileIO.readFileToString(template.getFile()));
+					// preserve base mod element files that have user code blocks with content
+					if (!UserCodeProcessor.getUserCodeBlocks(generatorFile.contents(),
+							generatorFile.getUsercodeComment()).isEmpty())
+						toBePreserved.add(template.getFile());
+				}
 			}
 
 			// delete all non-mod element related files from code base package
@@ -233,7 +235,7 @@ public class RegenerateCodeAction extends GradleAction {
 			mcreator.getGenerator().runResourceSetupTasks();
 			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
 			mcreator.getGenerator().generateBase(false);
-			mcreator.mv.reloadElementsInCurrentTab();
+			mcreator.reloadWorkspaceTabContents();
 
 			// remove custom API libraries so they get re-downloaded
 			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspaceSettings());

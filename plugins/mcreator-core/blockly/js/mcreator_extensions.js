@@ -170,30 +170,6 @@ Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
         }
     });
 
-// Helper function for extensions that validate one or more resource location text fields
-function validateResourceLocationFields(...fields) {
-    return function () {
-        for (let i = 0; i < fields.length; i++) {
-            let field = this.getField(fields[i]);
-            // The validator checks if the new input value is a valid resource location
-            field.setValidator(function (newValue) {
-                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
-                    return newValue;
-                return null;
-            });
-        }
-    }
-}
-
-Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
-
-Blockly.Extensions.register('geode_tag_fields_validator',
-    validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
-
-Blockly.Extensions.register('root_system_tag_fields_validator', validateResourceLocationFields('root_replaceable'));
-
-Blockly.Extensions.register('vegetation_patch_tag_fields_validator', validateResourceLocationFields('replaceable'));
-
 Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
     {
         onchange: function (e) {
@@ -233,3 +209,31 @@ function checkIfWithin(block, predicate) {
     } while (block);
     return null;
 }
+
+// Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
+Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
+    {
+    	onchange: function (changeEvent) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            var isValid = true;
+            // Check if the block attached to the "value" input isn't Number or Boolean
+            const attachedType = this.getInput('value').connection.targetBlock()?.outputConnection.getCheck();
+            if (attachedType && (attachedType.includes('Number') || attachedType.includes('Boolean'))) {
+                isValid = false;
+            }
+            if (!this.isInFlyout) {
+                this.setWarningText(isValid ? null : javabridge.t('blockly.block.logic_null_comparison.invalid_input'));
+                const group = Blockly.Events.getGroup();
+                // Makes it so the block change and the disable event get undone together.
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setEnabled(isValid);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });

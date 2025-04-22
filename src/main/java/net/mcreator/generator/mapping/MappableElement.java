@@ -22,6 +22,7 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -97,10 +98,12 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	 * even if they are not supported in the selected Minecraft version.
 	 */
 	public static boolean validateReference(@Nonnull String value, @Nonnull Workspace workspace) {
-		if (value.startsWith("CUSTOM:")) {
+		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
-			if (!retval)
+			if (!retval) {
 				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
+				TestUtil.failIfTestingEnvironment();
+			}
 			return retval;
 		}
 		return true;

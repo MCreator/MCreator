@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
-		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 
 		VTextField soundName = new VTextField(20);
 
@@ -137,7 +137,7 @@ public class SoundElementDialog {
 		SoundElement soundElement = soundDialog(mcreator, null, null);
 		if (soundElement != null) {
 			mcreator.getWorkspace().addSoundElement(soundElement);
-			mcreator.mv.resourcesPan.workspacePanelSounds.reloadElements();
+			mcreator.reloadWorkspaceTabContents();
 		}
 	}
 
@@ -145,7 +145,7 @@ public class SoundElementDialog {
 		SoundElement soundElement = soundDialog(mcreator, null, musics);
 		if (soundElement != null) {
 			mcreator.getWorkspace().addSoundElement(soundElement);
-			mcreator.mv.resourcesPan.workspacePanelSounds.reloadElements();
+			mcreator.reloadWorkspaceTabContents();
 		}
 	}
 

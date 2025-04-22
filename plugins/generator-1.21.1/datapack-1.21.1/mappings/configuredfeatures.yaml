@@ -1,4 +1,3 @@
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
 acacia: acacia
 amethyst_geode: amethyst_geode
@@ -156,7 +155,6 @@ sculk_vein: sculk_vein
 sea_pickle: sea_pickle
 seagrass_mid: seagrass_mid
 seagrass_short: seagrass_short
-seagrass_simple: seagrass_simple
 seagrass_slightly_less_short: seagrass_slightly_less_short
 seagrass_tall: seagrass_tall
 single_piece_of_grass: single_piece_of_grass

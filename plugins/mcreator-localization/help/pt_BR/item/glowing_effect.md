@@ -1,0 +1,1 @@
+O efeito de brilho faz o item brilhar como uma maçã dourada ou itens encantados, exceto que o brilho é permanente.

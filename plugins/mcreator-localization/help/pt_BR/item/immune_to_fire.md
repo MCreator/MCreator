@@ -1,0 +1,1 @@
+Este parâmetro controla se o item é imune ao fogo, como itens de netherita.

@@ -26,6 +26,7 @@ import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.Animation;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.ModelUtils;
 
@@ -83,6 +84,23 @@ public class GeneratorFileTasks {
 					}
 				}
 			}
+			case "provide_default_pack_icon" -> {
+				File to = new File(
+						GeneratorTokens.replaceTokens(generator.getWorkspace(), (String) ((Map<?, ?>) task).get("to")));
+				int w = Integer.parseInt(GeneratorTokens.replaceTokens(generator.getWorkspace(),
+						(String) ((Map<?, ?>) task).get("width")));
+				int h = Integer.parseInt(GeneratorTokens.replaceTokens(generator.getWorkspace(),
+						(String) ((Map<?, ?>) task).get("height")));
+				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to) && !to.isFile()) {
+					try {
+						BufferedImage resized = ImageUtils.toBufferedImage(
+								ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
+						ImageIO.write(resized, "png", to);
+					} catch (IOException e) {
+						generator.getLogger().warn("Failed to read image file for resizing", e);
+					}
+				}
+			}
 			case "copy_models" -> {
 				File to = new File(
 						GeneratorTokens.replaceTokens(generator.getWorkspace(), (String) ((Map<?, ?>) task).get("to")));
@@ -115,6 +133,16 @@ public class GeneratorFileTasks {
 										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
 										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureMapping(
 												generator.getWorkspace(), f, new File(to, f.getName()), model, prefix));
+							}
+						}
+						break;
+					case "OBJ_referencetextures":
+						for (Model model : modelList) {
+							if (model.getType() == Model.Type.OBJ) {
+								Arrays.stream(model.getFiles())
+										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
+										.forEach(f -> ModelUtils.copyOBJorMTLApplyTextureReferences(f,
+												new File(to, f.getName())));
 							}
 						}
 						break;
@@ -157,6 +185,40 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
+					}
+				}
+			}
+			case "copy_model_animations" -> {
+				File to = new File(
+						GeneratorTokens.replaceTokens(generator.getWorkspace(), (String) ((Map<?, ?>) task).get("to")));
+
+				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(new File(to, "animation.dummy"))) {
+					if (((Map<?, ?>) task).get("cleanupBeforeCopy") != null && Boolean.parseBoolean(
+							((Map<?, ?>) task).get("cleanupBeforeCopy").toString())) {
+						// empty directory to remove stale animation files
+						TrackingFileIO.emptyDirectory(generator, to);
+					}
+
+					List<Animation> animations = Animation.getAnimations(generator.getWorkspace());
+
+					if (((Map<?, ?>) task).get("type").toString().equals("JAVA_viatemplate")) {
+						String template = GeneratorTokens.replaceTokens(generator.getWorkspace(),
+								(String) ((Map<?, ?>) task).get("template"));
+						for (Animation animation : animations) {
+							String animationCode = FileIO.readFileToString(animation.getFile());
+							try {
+								animationCode = generator.getTemplateGeneratorFromName("templates")
+										.generateFromTemplate(template, new HashMap<>(
+												Map.of("animationname", animation.getName(), "animation", animationCode,
+														"animationnameregistryname",
+														RegistryNameFixer.fromCamelCase(animation.getName()))));
+							} catch (TemplateGeneratorException e) {
+								generator.getLogger()
+										.error("Failed to generate code for animation: {}", animation.getFile(), e);
+							}
+							ClassWriter.writeClassToFile(generator.getWorkspace(), animationCode,
+									new File(to, animation.getName() + ".java"), true);
+						}
 					}
 				}
 			}

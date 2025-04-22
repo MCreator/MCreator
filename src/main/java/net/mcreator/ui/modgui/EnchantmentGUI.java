@@ -28,7 +28,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -76,7 +75,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	@Override protected void initGUI() {
 		supportedItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
-		incompatibleEnchantments = new EnchantmentListField(mcreator, false, true);
+		incompatibleEnchantments = new EnchantmentListField(mcreator, true);
 
 		supportedItems.addAdditionalTagSuggestions("enchantable/foot_armor", "enchantable/leg_armor",
 				"enchantable/chest_armor", "enchantable/head_armor", "enchantable/armor", "enchantable/sword",
@@ -165,16 +164,12 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		page1group.addValidationElement(supportedItems);
 		page1group.addValidationElement(incompatibleEnchantments);
 
-		addPage(pane1);
+		addPage(pane1).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Enchantment enchantment) {

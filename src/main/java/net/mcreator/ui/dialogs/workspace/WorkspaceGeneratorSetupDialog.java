@@ -71,7 +71,7 @@ public class WorkspaceGeneratorSetupDialog {
 					L10N.t("dialog.setup_workspace.step.gradle_project"));
 			dial.addProgressUnit(p2);
 
-			m.mcreatorTabs.showTab(m.consoleTab);
+			m.getTabs().showTab(m.consoleTab);
 
 			m.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
@@ -118,7 +118,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				dial.hideDialog();
 
-				m.mcreatorTabs.showTab(m.workspaceTab);
+				m.getTabs().showTab(m.workspaceTab);
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.markStateError();

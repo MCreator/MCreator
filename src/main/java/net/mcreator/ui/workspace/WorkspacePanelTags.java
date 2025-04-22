@@ -54,18 +54,23 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
-	// Cache of list fields (so cell renderer just sets the value instead of making a new object)
-	private final MCItemListField listFieldBlocksItems = new MCItemListField(workspacePanel.getMCreator(),
-			ElementUtil::loadBlocksAndItems, false, true);
-	private final SpawnableEntityListField listFieldEntities = new SpawnableEntityListField(
-			workspacePanel.getMCreator(), true);
-	private final BiomeListField listFieldBiomes = new BiomeListField(workspacePanel.getMCreator(), true);
-	private final ModElementListField listFieldFunctions = new ModElementListField(workspacePanel.getMCreator(),
-			ModElementType.FUNCTION);
-	private final DamageTypeListField listFieldDamageTypes = new DamageTypeListField(workspacePanel.getMCreator(),
-			true);
-	private final EnchantmentListField listFieldEnchantment = new EnchantmentListField(workspacePanel.getMCreator(),
-			true);
+	// Cache of list fields (so cell renderer just sets the value instead of making a new object) - these are for cell renderer
+	private final JItemListField<MItemBlock> listFieldBlocksItems = new MCItemListField(workspacePanel.getMCreator(),
+			ElementUtil::loadBlocksAndItems).allowTags().allowExternalElements();
+	private final JItemListField<EntityEntry> listFieldEntities = new SpawnableEntityListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<BiomeEntry> listFieldBiomes = new BiomeListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<StructureEntry> listFieldStructures = new StructureListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<NonMappableElement> listFieldFunctions = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.FUNCTION);
+	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -78,30 +83,38 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldBlocksItems.disableItemCentering();
 		listFieldEntities.disableItemCentering();
 		listFieldBiomes.disableItemCentering();
+		listFieldStructures.disableItemCentering();
 		listFieldFunctions.disableItemCentering();
 		listFieldDamageTypes.disableItemCentering();
 		listFieldEnchantment.disableItemCentering();
+		listFieldGameEvents.disableItemCentering();
 
 		listFieldBlocksItems.hideButtons();
 		listFieldEntities.hideButtons();
 		listFieldBiomes.hideButtons();
+		listFieldStructures.hideButtons();
 		listFieldFunctions.hideButtons();
 		listFieldDamageTypes.hideButtons();
 		listFieldEnchantment.hideButtons();
+		listFieldGameEvents.hideButtons();
 
 		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
 		listFieldBiomes.setEnabled(false);
+		listFieldStructures.setEnabled(false);
 		listFieldFunctions.setEnabled(false);
 		listFieldDamageTypes.setEnabled(false);
 		listFieldEnchantment.setEnabled(false);
+		listFieldGameEvents.setEnabled(false);
 
 		listFieldBlocksItems.setOpaque(false);
 		listFieldEntities.setOpaque(false);
 		listFieldBiomes.setOpaque(false);
+		listFieldStructures.setOpaque(false);
 		listFieldFunctions.setOpaque(false);
 		listFieldDamageTypes.setOpaque(false);
 		listFieldEnchantment.setOpaque(false);
+		listFieldGameEvents.setOpaque(false);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -155,6 +168,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 									.toList());
 							yield listFieldBiomes;
 						}
+						case STRUCTURES -> {
+							listFieldStructures.setListElements(entries.map(
+											e -> (StructureEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldStructures;
+						}
 						case FUNCTIONS -> {
 							listFieldFunctions.setListElements(entries.map(
 											e -> (NonMappableElement) TagElement.entryToMappableElement(
@@ -175,6 +195,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldEnchantment;
+						}
+						case GAME_EVENTS -> {
+							listFieldGameEvents.setListElements(entries.map(
+											e -> (GameEventEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldGameEvents;
 						}
 					};
 					listField.setBorder(retval.getBorder());
@@ -333,7 +360,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}
@@ -344,22 +371,21 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		private final TagElement tagElement;
 
-		private Timer timer;
+		private final Timer timer;
 
 		public ItemListFieldCellEditor(TagElement tagElement) {
 			this.tagElement = tagElement;
 
 			this.listField = itemListFieldForRow(workspacePanel.getMCreator());
-			if (this.listField != null) {
-				this.listField.disableItemCentering();
-				this.listField.setWarnOnRemoveAll(true);
-				this.listField.setEnabled(false);
-				this.listField.setOpaque(false);
-				this.listField.setBorder(UIManager.getBorder("Table.focusSelectedCellHighlightBorder"));
-				// Slight delay before enabling so initial click on the row doesn't trigger button actions
-				timer = new Timer(250, e -> listField.setEnabled(true));
-				timer.start();
-			}
+			this.listField.disableItemCentering();
+			this.listField.setWarnOnRemoveAll(true);
+			this.listField.setEnabled(false);
+			this.listField.setOpaque(false);
+			this.listField.setBorder(UIManager.getBorder("Table.focusSelectedCellHighlightBorder"));
+
+			// Slight delay before enabling so initial click on the row doesn't trigger button actions
+			timer = new Timer(250, e -> listField.setEnabled(true));
+			timer.start();
 		}
 
 		public void cancelTimer() {
@@ -395,46 +421,68 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		private JItemListField<? extends MappableElement> itemListFieldForRow(MCreator mcreator) {
 			return switch (tagElement.type()) {
 				case ITEMS, BLOCKS -> {
-					MCItemListField retval = new MCItemListField(mcreator, tagElement.type() == TagType.ITEMS ?
-							ElementUtil::loadBlocksAndItems :
-							ElementUtil::loadBlocks, false, true);
+					JItemListField<MItemBlock> retval = new MCItemListField(mcreator,
+							tagElement.type() == TagType.ITEMS ?
+									ElementUtil::loadBlocksAndItems :
+									ElementUtil::loadBlocks).allowTags().allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (MItemBlock) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case ENTITIES -> {
-					SpawnableEntityListField retval = new SpawnableEntityListField(mcreator, true);
+					JItemListField<EntityEntry> retval = new SpawnableEntityListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (EntityEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case BIOMES -> {
-					BiomeListField retval = new BiomeListField(mcreator, true);
+					JItemListField<BiomeEntry> retval = new BiomeListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (BiomeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
+				case STRUCTURES -> {
+					JItemListField<StructureEntry> retval = new StructureListField(mcreator).allowTags()
+							.allowExternalElements();
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (StructureEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
 				case FUNCTIONS -> {
-					ModElementListField retval = new ModElementListField(mcreator, ModElementType.FUNCTION);
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.FUNCTION);
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case DAMAGE_TYPES -> {
-					DamageTypeListField retval = new DamageTypeListField(mcreator, true);
+					JItemListField<DamageTypeEntry> retval = new DamageTypeListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case ENCHANTMENTS -> {
-					EnchantmentListField retval = new EnchantmentListField(mcreator, true);
+					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags()
+							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case GAME_EVENTS -> {
+					JItemListField<GameEventEntry> retval = new GameEventListField(mcreator).allowTags()
+							.allowExternalElements();
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (GameEventEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}

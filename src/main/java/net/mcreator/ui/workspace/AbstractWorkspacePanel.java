@@ -33,14 +33,14 @@ import java.awt.event.MouseListener;
  */
 public abstract class AbstractWorkspacePanel extends JPanel implements IReloadableFilterable {
 
-	protected final WorkspacePanel workspacePanel;
+	protected final AbstractMainWorkspacePanel workspacePanel;
 
 	/**
 	 * Sole constructor.
 	 *
 	 * @param workspacePanel The main workspace section.
 	 */
-	public AbstractWorkspacePanel(WorkspacePanel workspacePanel) {
+	public AbstractWorkspacePanel(AbstractMainWorkspacePanel workspacePanel) {
 		super(new BorderLayout(0, 0));
 		this.workspacePanel = workspacePanel;
 		setOpaque(false);

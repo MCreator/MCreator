@@ -1,0 +1,1 @@
+Essa é a categoria de regras de jogo. É usada para a classificação das regras dependendo do que fazem.

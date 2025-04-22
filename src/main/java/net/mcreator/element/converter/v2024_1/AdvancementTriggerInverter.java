@@ -28,8 +28,6 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -49,16 +47,12 @@ import java.io.StringWriter;
 import java.util.List;
 
 public class AdvancementTriggerInverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("AdvancementTriggerInverter");
 
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Achievement advancement = (Achievement) input;
-		try {
-			advancement.triggerxml = fixXML(advancement.triggerxml);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert advancement {}", input.getModElement().getName(), e);
-		}
+		advancement.triggerxml = fixXML(advancement.triggerxml);
 		return advancement;
 	}
 

@@ -48,10 +48,14 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world, @Nullable ItemStack firedFromWeapon) {
 		super(type, x, y, z, world, PROJECTILE_ITEM, firedFromWeapon);
+		if (firedFromWeapon != null)
+			setKnockback(EnchantmentHelper.getItemEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.KNOCKBACK), firedFromWeapon));
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world, @Nullable ItemStack firedFromWeapon) {
 		super(type, entity, world, PROJECTILE_ITEM, firedFromWeapon);
+		if (firedFromWeapon != null)
+			setKnockback(EnchantmentHelper.getItemEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.KNOCKBACK), firedFromWeapon));
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
@@ -78,6 +82,8 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			if (vec3.lengthSqr() > 0.0) {
 				livingEntity.push(vec3.x, 0.1, vec3.z);
 			}
+		} else { // knockback might be set by firedFromWeapon passed into constructor
+			super.doKnockback(livingEntity, damageSource);
 		}
 	}
 
@@ -85,7 +91,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Nullable @Override protected EntityHitResult findHitEntity(Vec3 projectilePosition, Vec3 deltaPosition) {
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
-		AABB lookupBox = this.getBoundingBox().expandTowards(deltaPosition).inflate(1.0D);
+		AABB lookupBox = this.getBoundingBox();
 		for (Entity entity1 : this.level().getEntities(this, lookupBox, this::canHitEntity)) {
 			if (entity1 == this.getOwner()) continue;
 			AABB aabb = entity1.getBoundingBox();
@@ -98,6 +104,22 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			}
 		}
 		return entity == null ? null : new EntityHitResult(entity);
+	}
+
+	private Direction determineHitDirection(AABB entityBox, AABB blockBox) {
+		double dx = entityBox.getCenter().x - blockBox.getCenter().x;
+		double dy = entityBox.getCenter().y - blockBox.getCenter().y;
+		double dz = entityBox.getCenter().z - blockBox.getCenter().z;
+		double absDx = Math.abs(dx);
+		double absDy = Math.abs(dy);
+		double absDz = Math.abs(dz);
+		if (absDy > absDx && absDy > absDz) {
+			return dy > 0 ? Direction.DOWN : Direction.UP;
+		} else if (absDx > absDz) {
+			return dx > 0 ? Direction.WEST : Direction.EAST;
+		} else {
+			return dz > 0 ? Direction.NORTH : Direction.SOUTH;
+		}
 	}
 	</#if>
 
@@ -148,6 +170,21 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	@Override public void tick() {
 		super.tick();
 
+		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
+		if (!this.isNoPhysics()) {
+			for (VoxelShape collision : this.level().getBlockCollisions(this, this.getBoundingBox())) {
+				for (AABB blockAABB : collision.toAabbs()) {
+					if (this.getBoundingBox().intersects(blockAABB)) {
+						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
+						Vec3 intersectionPoint = new Vec3((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
+						Direction hitDirection = determineHitDirection(this.getBoundingBox(), blockAABB);
+						this.hitTargetOrDeflectSelf(new BlockHitResult(intersectionPoint, hitDirection, blockPos, false));
+					}
+				}
+			}
+		}
+		</#if>
+
 		<#if hasProcedure(data.onFlyingTick)>
 			<@procedureCode data.onFlyingTick, {
 				"x": "this.getX()",
@@ -172,7 +209,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world, null);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${REGISTRYNAME}.get(), entity, world, null);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.showParticles});
@@ -192,7 +229,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	public static ${name}Entity shoot(LivingEntity entity, LivingEntity target) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level(), null);
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${REGISTRYNAME}.get(), entity, entity.level(), null);
 		double dx = target.getX() - entity.getX();
 		double dy = target.getY() + target.getEyeHeight() - 1.1;
 		double dz = target.getZ() - entity.getZ();

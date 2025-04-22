@@ -24,6 +24,7 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
@@ -55,7 +56,7 @@ import java.util.*;
 
 	public String name;
 	public String rarity;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
 	public int useDuration;
@@ -74,7 +75,7 @@ import java.util.*;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable @ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@Nullable @ModElementReference public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -107,6 +108,15 @@ import java.util.*;
 	public boolean isAlwaysEdible;
 	public String animation;
 
+	// Music disc
+	public boolean isMusicDisc;
+	public Sound musicDiscMusic;
+	public String musicDiscDescription;
+	public int musicDiscLengthInTicks;
+	public int musicDiscAnalogOutput;
+
+	@ModElementReference public List<String> providedBannerPatterns;
+
 	private Item() {
 		this(null);
 	}
@@ -124,6 +134,8 @@ import java.util.*;
 		this.inventoryStackSize = 64;
 		this.saturation = 0.3f;
 		this.animation = "eat";
+
+		this.providedBannerPatterns = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -172,8 +184,16 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 	}
 
+	public boolean hasCustomJSONModel() {
+		return decodeModelType(renderType) == Model.Type.JSON;
+	}
+
+	public boolean hasCustomOBJModel() {
+		return decodeModelType(renderType) == Model.Type.OBJ;
+	}
+
 	public boolean hasInventory() {
-		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
+		return guiBoundTo != null && !guiBoundTo.isEmpty();
 	}
 
 	public boolean hasNonDefaultAnimation() {
@@ -182,6 +202,21 @@ import java.util.*;
 
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
+	}
+
+	public boolean hasBannerPatterns() {
+		return !providedBannerPatterns.isEmpty();
+	}
+
+	public String getPatternDescription() {
+		if (!providedBannerPatterns.isEmpty()) {
+			List<String> names = providedBannerPatterns.stream()
+					.map(e -> getModElement().getWorkspace().getModElementByName(e))
+					.map(me -> me != null && me.getGeneratableElement() instanceof BannerPattern bp ? bp.name : "")
+					.toList();
+			return String.join(", ", names);
+		}
+		return "";
 	}
 
 	/**
@@ -207,8 +242,8 @@ import java.util.*;
 
 			model.stateMap = new StateMap();
 			state.stateMap.forEach((prop, value) -> {
-				if (customProperties.containsKey(prop.getName().replace("CUSTOM:", "")) || builtinProperties.contains(
-						prop.getName()))
+				if (customProperties.containsKey(prop.getName().replace(NameMapper.MCREATOR_PREFIX, ""))
+						|| builtinProperties.contains(prop.getName()))
 					model.stateMap.put(prop, value);
 			});
 
@@ -258,21 +293,32 @@ import java.util.*;
 		public boolean hasRangedItemModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
+
+		public boolean hasCustomJSONModel() {
+			return decodeModelType(renderType) == Model.Type.JSON;
+		}
+
+		public boolean hasCustomOBJModel() {
+			return decodeModelType(renderType) == Model.Type.OBJ;
+		}
+
 	}
 
 	public static int encodeModelType(Model.Type modelType) {
 		return switch (modelType) {
+			case BUILTIN -> 0;
 			case JSON -> 1;
 			case OBJ -> 2;
-			default -> 0;
+			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}
 
 	public static Model.Type decodeModelType(int modelType) {
 		return switch (modelType) {
+			case 0 -> Model.Type.BUILTIN;
 			case 1 -> Model.Type.JSON;
 			case 2 -> Model.Type.OBJ;
-			default -> Model.Type.BUILTIN;
+			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}
 

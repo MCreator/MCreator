@@ -28,6 +28,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -43,8 +44,9 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
@@ -62,7 +64,7 @@ import java.util.*;
 	public Procedure onLeggingsTick;
 	public Procedure onBootsTick;
 
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
@@ -138,6 +140,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
@@ -399,6 +402,10 @@ import java.util.*;
 
 	@Override public List<TabEntry> getCreativeTabs() {
 		return creativeTabs;
+	}
+
+	public List<String> getRepairItemsAsStringList() {
+		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
 
 }

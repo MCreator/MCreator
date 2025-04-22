@@ -37,7 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
@@ -126,17 +126,17 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		JComponent procwrap = PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(procedures),
 				Objects.requireNonNullElse(fixedValue, new JEmptyBox(1, 1)), 3, 3);
 
-		Border outerBorder = new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor"));
+		Border outerBorder = new FlatLineBorder(new Insets(0, 0, 0, 0), returnType.getBlocklyColor());
 
 		if (allowInlineEditor) {
-			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 4)));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(1, 2, 1, 4)));
 
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
-				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
+				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI) {
 					StringBuilder procedureName = new StringBuilder(
-							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
+							((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).getModElement()
 									.getName());
 					String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
 					for (String part : parts) {
@@ -150,7 +150,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
-						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
+						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidator() {
 							@Override public ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();
@@ -191,7 +191,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			add("Center", PanelUtils.centerAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit)), 2, 0));
 		} else {
-			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 1)));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(1, 2, 1, 1)));
 
 			add("Center", procwrap);
 		}

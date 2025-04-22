@@ -110,6 +110,11 @@ public class Theme {
 			overrides.put("@disabledForeground", ColorUtils.formatColor(Theme.current().getAltForegroundColor()));
 			overrides.put("@selectionInactiveBackground", "@accentSelectionBackground");
 			overrides.put("@selectionInactiveForeground", "@selectionForeground");
+
+			// Color overrides for com.formdev.flatlaf.FlatIconColors used in SVG icons
+			overrides.put("Objects.BlackText", "@foreground");
+			overrides.put("Objects.Grey", "@buttonArrowColor");
+			overrides.put("Objects.GreenAndroid", "@accentColor");
 		}
 
 		if (!disableMCreatorOverrides) {
@@ -121,8 +126,6 @@ public class Theme {
 
 			overrides.put("Component.focusWidth", "0");
 			overrides.put("Component.innerFocusWidth", "0");
-
-			overrides.put("ScrollBar.width", "7");
 
 			overrides.put("Table.showHorizontalLines", "true");
 			overrides.put("Table.showVerticalLines", "true");

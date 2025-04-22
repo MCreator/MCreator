@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -93,7 +94,7 @@ public class WoodPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
 						(Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -115,7 +116,9 @@ public class WoodPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator instanceof ModMaker modMaker ?
+				modMaker.getWorkspacePanel().currentFolder :
+				null;
 
 		// first we generate wood texture
 		ImageIcon wood = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -155,7 +158,6 @@ public class WoodPackMakerTool {
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		woodBlock.name = name + " Wood";
-		woodBlock.material = new Material(workspace, "WOOD");
 		woodBlock.texture = new TextureHolder(workspace, woodTextureName);
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
@@ -163,6 +165,8 @@ public class WoodPackMakerTool {
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
+		woodBlock.noteBlockInstrument = "BASS";
+		woodBlock.ignitedByLava = true;
 		woodBlock.flammability = (int) Math.round(5 * factor);
 		woodBlock.rotationMode = 5; // log rotation
 		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -172,7 +176,6 @@ public class WoodPackMakerTool {
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		logBlock.name = name + " Log";
-		logBlock.material = new Material(workspace, "WOOD");
 		logBlock.texture = new TextureHolder(workspace, logTextureName);
 		logBlock.textureTop = new TextureHolder(workspace, logTextureName);
 		logBlock.textureBack = new TextureHolder(workspace, woodTextureName);
@@ -185,6 +188,8 @@ public class WoodPackMakerTool {
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
+		logBlock.noteBlockInstrument = "BASS";
+		logBlock.ignitedByLava = true;
 		logBlock.flammability = (int) Math.round(5 * factor);
 		logBlock.rotationMode = 5; // log rotation
 		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -194,7 +199,6 @@ public class WoodPackMakerTool {
 		Block planksBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
 		planksBlock.name = name + " Planks";
-		planksBlock.material = new Material(workspace, "WOOD");
 		planksBlock.texture = new TextureHolder(workspace, planksTextureName);
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
@@ -202,6 +206,8 @@ public class WoodPackMakerTool {
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
+		planksBlock.noteBlockInstrument = "BASS";
+		planksBlock.ignitedByLava = true;
 		planksBlock.flammability = (int) Math.round(5 * factor);
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksBlock);
@@ -211,11 +217,11 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
 		leavesBlock.name = name + " Leaves";
 		leavesBlock.blockBase = "Leaves";
-		leavesBlock.material = new Material(workspace, "LEAVES");
 		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
+		leavesBlock.ignitedByLava = true;
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
@@ -226,13 +232,14 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false).getElementFromGUI();
 		stairsBlock.name = name + " Stairs";
 		stairsBlock.blockBase = "Stairs";
-		stairsBlock.material = new Material(workspace, "WOOD");
 		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		stairsBlock.hardness = 3 * factor;
 		stairsBlock.resistance = 2 * factor;
+		stairsBlock.noteBlockInstrument = "BASS";
+		stairsBlock.ignitedByLava = true;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 		stairsBlock.lightOpacity = 0;
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -243,13 +250,14 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false).getElementFromGUI();
 		slabBlock.name = name + " Slab";
 		slabBlock.blockBase = "Slab";
-		slabBlock.material = new Material(workspace, "WOOD");
 		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
 		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		slabBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
+		slabBlock.noteBlockInstrument = "BASS";
+		slabBlock.ignitedByLava = true;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 		slabBlock.lightOpacity = 0;
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -260,11 +268,12 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceBlock.name = name + " Fence";
 		fenceBlock.blockBase = "Fence";
-		fenceBlock.material = new Material(workspace, "WOOD");
 		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
+		fenceBlock.noteBlockInstrument = "BASS";
+		fenceBlock.ignitedByLava = true;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 		fenceBlock.lightOpacity = 0;
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -275,11 +284,12 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceGateBlock.name = name + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
-		fenceGateBlock.material = new Material(workspace, "WOOD");
 		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
+		fenceGateBlock.noteBlockInstrument = "BASS";
+		fenceGateBlock.ignitedByLava = true;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 		fenceGateBlock.lightOpacity = 0;
 		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -290,11 +300,12 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false).getElementFromGUI();
 		pressurePlateBlock.name = name + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
-		pressurePlateBlock.material = new Material(workspace, "WOOD");
 		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		pressurePlateBlock.hardness = 2 * factor;
 		pressurePlateBlock.resistance = 3 * factor;
+		pressurePlateBlock.noteBlockInstrument = "BASS";
+		pressurePlateBlock.ignitedByLava = true;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -305,7 +316,6 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
 		buttonBlock.name = name + " Button";
 		buttonBlock.blockBase = "Button";
-		buttonBlock.material = new Material(workspace, "WOOD");
 		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		buttonBlock.hardness = 2 * factor;

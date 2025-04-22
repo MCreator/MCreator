@@ -107,6 +107,12 @@ public class SetVariableBlock implements IBlockGenerator {
 					}
 				}
 
+				if (!typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.variables.not_supported", type)));
+					return;
+				}
+
 				Object setterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
 						scope.toUpperCase(Locale.ENGLISH)).get("set");
 				if (setterTemplate == null) {

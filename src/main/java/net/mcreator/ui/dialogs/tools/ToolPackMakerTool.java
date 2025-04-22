@@ -45,6 +45,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -121,7 +122,7 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -141,7 +142,9 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator instanceof ModMaker modMaker ?
+				modMaker.getWorkspacePanel().currentFolder :
+				null;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
