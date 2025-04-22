@@ -48,7 +48,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter" });
+					"Barter", "Archaeology" });
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -100,6 +100,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 					case "Barter":
 					case "Advancement reward":
 						name.getEditor().setItem("entities/" + currNameNoType);
+						break;
+					case "Archaeology":
+						name.getEditor().setItem("archaeology/" + currNameNoType);
 						break;
 					default:
 						name.getEditor().setItem("gameplay/" + currNameNoType);
