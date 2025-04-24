@@ -57,6 +57,7 @@ import net.mcreator.element.converter.v2025_1.EnchantabilityConverter;
 import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
+import net.mcreator.element.converter.v2025_2.LoottableConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -218,6 +219,9 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.ENCHANTMENT, List.of(
 			new EnchantmentDefinitionConverter()
+		));
+		put(ModElementType.LOOTTABLE,List.of(
+			new LoottableConverter()
 		));
 	}};
 	//@formatter:on

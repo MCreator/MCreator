@@ -3,7 +3,7 @@
   <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
 </#function>
 {
-  "type": "minecraft:${data.type?lower_case?replace(" ", "_")}",
+  "type": "${generator.map(data.type,"loottabletypes")}",
   "pools": [
     <#list data.pools as pool>
         {

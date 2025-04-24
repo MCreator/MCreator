@@ -1,0 +1,20 @@
+- BLOCK:
+  readable_name: "Block"
+- ENTITY:
+  readable_name: "Entity"
+- GENERIC:
+  readable_name: "Generic"
+- CHEST:
+  readable_name: "Chest"
+- FISHING:
+  readable_name: "Fishing"
+- EMPTY:
+  readable_name: "Empty"
+- ADVANCEMENT_REWARD:
+  readable_name: "Advancement reward"
+- GIFT:
+  readable_name: "Gift"
+- BARTER:
+  readable_name: "Barter"
+- ARCHAEOLOGY:
+  readable_name: "Archaeology"

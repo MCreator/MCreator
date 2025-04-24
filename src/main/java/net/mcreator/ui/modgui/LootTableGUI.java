@@ -21,12 +21,15 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LootTable;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -46,14 +49,15 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VComboBox<String> name = new VComboBox<>();
 
-	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter", "Archaeology" });
+	private final DataListComboBox type;
 
 	private JLootTablePoolsList lootTablePools;
 
 	public LootTableGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
+
+		this.type = new DataListComboBox(mcreator, DataListLoader.loadDataList("loottabletypes"));
+
 		this.initGUI();
 		super.finalizeGUI();
 	}
@@ -87,15 +91,15 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			type.addActionListener(e -> {
 				String currName = name.getEditor().getItem().toString();
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
-				if (type.getSelectedItem() != null)
-					switch (type.getSelectedItem().toString()) {
-					case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
-					case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
-					case "Entity", "Gift", "Barter", "Advancement reward" ->
-							name.getEditor().setItem("entities/" + currNameNoType);
-					case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
-					default -> name.getEditor().setItem("gameplay/" + currNameNoType);
-					}
+				//Mapping can not use freemaker. So we are waiting for another solution.
+				switch (type.getSelectedItem().getReadableName()) {
+				case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
+				case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
+				case "Entity", "Gift", "Barter", "Advancement reward" ->
+						name.getEditor().setItem("entities/" + currNameNoType);
+				case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
+				default -> name.getEditor().setItem("gameplay/" + currNameNoType);
+				}
 			});
 
 			for (ModElement me : mcreator.getWorkspace().getModElements()) {
@@ -150,9 +154,13 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	}
 
 	@Override public void openInEditingMode(LootTable loottable) {
-		type.setSelectedItem(loottable.type);
+		for (DataListEntry loottableEntry : DataListLoader.loadDataList("loottabletypes")) {
+			if (loottable.type.equalsIgnoreCase(loottableEntry.getName()))
+				type.setSelectedItem(loottableEntry);
+		}
 
 		namespace.setSelectedItem(loottable.namespace);
+
 		name.getEditor().setItem(loottable.name);
 
 		lootTablePools.setEntries(loottable.pools);
@@ -161,7 +169,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	@Override public LootTable getElementFromGUI() {
 		LootTable loottable = new LootTable(modElement);
 
-		loottable.type = (String) type.getSelectedItem();
+		loottable.type = type.getSelectedItem().getName();
 
 		loottable.namespace = (String) namespace.getSelectedItem();
 		loottable.name = name.getEditor().getItem().toString();
