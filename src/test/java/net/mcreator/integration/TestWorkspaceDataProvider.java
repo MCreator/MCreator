@@ -1598,7 +1598,7 @@ public class TestWorkspaceDataProvider {
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			lootTable.type = getRandomItem(random,
-					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
+					DataListLoader.loadDataList("loottabletypes").stream().map(DataListEntry::getName).toList());
 
 			lootTable.pools = new ArrayList<>();
 
@@ -2435,7 +2435,7 @@ public class TestWorkspaceDataProvider {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 
 				LootTable lootTable = new LootTable(me);
-				lootTable.type = "Generic";
+				lootTable.type = "GENERIC";
 				lootTable.name = me.getRegistryName();
 				lootTable.namespace = "mod";
 				lootTable.pools = Collections.emptyList();
