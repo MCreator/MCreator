@@ -33,7 +33,7 @@ public class LoottableConverter implements IConverter {
 			throws Exception {
 		LootTable lootTable = (LootTable) input;
 		for (DataListEntry entry : DataListLoader.loadDataList("loottabletypes")) {
-			//if no match, type will fallback to BLOCK
+			//if no match, type will fallback to Generic
 			if (lootTable.type.equals(entry.getReadableName())) {
 				lootTable.type = entry.getName();
 			}

@@ -1,11 +1,33 @@
-_default: minecraft:block
-BLOCK: minecraft:block
-ENTITY: minecraft:entity
-GENERIC: minecraft:generic
-CHEST: minecraft:chest
-FISHING: minecraft:fishing
-EMPTY: minecraft:empty
-ADVANCEMENT_REWARD: minecraft:advancement_reward
-GIFT: minecraft:gift
-BARTER: minecraft:barter
-ARCHAEOLOGY: minecraft:archaeology
+_default:
+  - minecraft:generic
+  - gameplay/{0}
+BLOCK:
+  - minecraft:block
+  - blocks/{0}
+GENERIC:
+  - minecraft:generic
+  - gameplay/{0}
+CHEST:
+  - minecraft:chest
+  - chests/{0}
+FISHING:
+  - minecraft:fishing
+  - gameplay/{0}
+EMPTY:
+  - minecraft:empty
+  - gameplay/{0}
+ENTITY:
+  - minecraft:entity
+  - entities/{0}
+GIFT:
+  - minecraft:gift
+  - entities/{0}
+BARTER:
+  - minecraft:barter
+  - entities/{0}
+ADVANCEMENT_REWARD:
+  - minecraft:advancement_reward
+  - entities/{0}
+ARCHAEOLOGY:
+  - minecraft:archaeology
+  - archaeology/{0}

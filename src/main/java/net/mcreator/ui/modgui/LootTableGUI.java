@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LootTable;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -41,6 +42,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -91,15 +93,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			type.addActionListener(e -> {
 				String currName = name.getEditor().getItem().toString();
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
-				//Mapping can not use freemaker. So we are waiting for another solution.
-				switch (type.getSelectedItem().getReadableName()) {
-				case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
-				case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
-				case "Entity", "Gift", "Barter", "Advancement reward" ->
-						name.getEditor().setItem("entities/" + currNameNoType);
-				case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
-				default -> name.getEditor().setItem("gameplay/" + currNameNoType);
-				}
+				name.getEditor().setItem(MessageFormat.format(
+						new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(
+								type.getSelectedItem().getName(), 1), currNameNoType));
 			});
 
 			for (ModElement me : mcreator.getWorkspace().getModElements()) {
@@ -114,9 +110,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				String currName = name.getEditor().getItem().toString();
 				if (currName != null) {
 					if (currName.startsWith("blocks/")) {
-						type.setSelectedItem("Block");
+						type.setSelectedItem(getLoottableType("BLOCK"));
 					} else if (currName.startsWith("entities/")) {
-						type.setSelectedItem("Entity");
+						type.setSelectedItem(getLoottableType("ENTITY"));
 					}
 				}
 			});
@@ -154,10 +150,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	}
 
 	@Override public void openInEditingMode(LootTable loottable) {
-		for (DataListEntry loottableEntry : DataListLoader.loadDataList("loottabletypes")) {
-			if (loottable.type.equalsIgnoreCase(loottableEntry.getName()))
-				type.setSelectedItem(loottableEntry);
-		}
+		type.setSelectedItem(getLoottableType(loottable.type));
 
 		namespace.setSelectedItem(loottable.namespace);
 
@@ -181,6 +174,14 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-loot-table");
+	}
+
+	private DataListEntry getLoottableType(String typeName){
+		for (DataListEntry loottableEntry : DataListLoader.loadDataList("loottabletypes")) {
+			if (typeName.equalsIgnoreCase(loottableEntry.getName()))
+				return loottableEntry;
+		}
+		return getLoottableType("BLOCK");
 	}
 
 }
