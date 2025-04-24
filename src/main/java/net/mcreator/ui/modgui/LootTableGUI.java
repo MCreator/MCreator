@@ -92,7 +92,11 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 			type.addActionListener(e -> {
 				String currName = name.getEditor().getItem().toString();
-				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
+				if (currName == null){
+					currName = "";
+				}
+				String[] splits = currName.split("/");
+				String currNameNoType = splits[splits.length - 1];
 				name.getEditor().setItem(MessageFormat.format(
 						new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(
 								type.getSelectedItem().getName(), 1), currNameNoType));
