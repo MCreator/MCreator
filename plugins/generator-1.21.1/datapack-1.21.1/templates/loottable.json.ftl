@@ -1,6 +1,6 @@
 <#include "mcitems.ftl">
 <#function hasToolContext>
-  <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
+  <#return data.type == "BLOCK" || data.type == "FISHING" || data.type == "GENERIC">
 </#function>
 {
   "type": "${generator.map(data.type,"loottabletypes" , 0)}",
