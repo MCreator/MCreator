@@ -92,7 +92,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 			type.addActionListener(e -> {
 				String currName = name.getEditor().getItem().toString();
-				if (currName == null){
+				if (currName == null) {
 					currName = "";
 				}
 				String[] splits = currName.split("/");
@@ -101,7 +101,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				//Do not delete this condition, it will make some bugs....Trust me...
 				if (!(type instanceof DataListEntry.Null || type instanceof DataListEntry.Dummy)) {
 					String name1 = MessageFormat.format(
-							new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(type.getName(), 1), currNameNoType);
+							new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(type.getName(), 1),
+							currNameNoType);
 					name.getEditor().setItem(name1);
 				}
 			});
@@ -184,7 +185,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-loot-table");
 	}
 
-	private DataListEntry getLoottableType(String typeName){
+	private DataListEntry getLoottableType(String typeName) {
 		for (DataListEntry loottableEntry : DataListLoader.loadDataList("loottabletypes")) {
 			if (typeName.equalsIgnoreCase(loottableEntry.getName()))
 				return loottableEntry;
