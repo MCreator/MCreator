@@ -150,7 +150,7 @@ dependencies {
 }
 
 javafx {
-    version = '23.0.2'
+    version = '21.0.7'
     modules = ['javafx.web', 'javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
     // we provide natives during deployment or with SDK
