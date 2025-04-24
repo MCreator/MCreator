@@ -97,9 +97,13 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				}
 				String[] splits = currName.split("/");
 				String currNameNoType = splits[splits.length - 1];
-				name.getEditor().setItem(MessageFormat.format(
-						new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(
-								type.getSelectedItem().getName(), 1), currNameNoType));
+				var type = this.type.getSelectedItem();
+				//Do not delete this condition, it will make some bugs....Trust me...
+				if (!(type instanceof DataListEntry.Null || type instanceof DataListEntry.Dummy)) {
+					String name1 = MessageFormat.format(
+							new NameMapper(mcreator.getWorkspace(), "loottabletypes").getMapping(type.getName(), 1), currNameNoType);
+					name.getEditor().setItem(name1);
+				}
 			});
 
 			for (ModElement me : mcreator.getWorkspace().getModElements()) {
