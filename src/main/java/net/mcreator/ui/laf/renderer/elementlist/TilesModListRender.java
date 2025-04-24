@@ -43,7 +43,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 		setBackground(Theme.current().getForegroundColor());
 
 		label.setFont(label.getFont().deriveFont(24.0f));
-		label_details.setFont(label.getFont().deriveFont(15.0f));
+		label_details.setFont(label.getFont().deriveFont(11.0f));
 		text.setOpaque(false);
 		text.add("Center", label);
 		text.add("South", label_details);
@@ -68,7 +68,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
 
 			if (element instanceof ModElement modElement) {
-				label_details.setText("<html><div width=210 style=\"overflow: hidden;\"><small" + (isSelected ?
+				label_details.setText("<html><div width=210 style=\"overflow: hidden;\"><font" + (isSelected ?
 						(" color=#" + Integer.toHexString((Theme.current().getBackgroundColor()).getRGB())
 								.substring(2)) :
 						"") + ">" + modElement.getType().getDescription());
