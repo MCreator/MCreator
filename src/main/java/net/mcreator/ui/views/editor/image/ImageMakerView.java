@@ -337,15 +337,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		typeDialog.setVisible(true);
 	}
 
-	public void newImage(int width, int height, String name) {
-		canvas = new Canvas(width, height, layerPanel, versionManager);
-		canvasRenderer.setCanvas(canvas);
-		toolPanel.setCanvas(canvas);
-		this.name = name + ".png";
-		toolPanel.initTools();
-		updateInfoBar(0, 0);
-	}
-
 	public void newImage(Layer layer) {
 		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
 		canvasRenderer.setCanvas(canvas);
