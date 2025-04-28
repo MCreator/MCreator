@@ -37,6 +37,7 @@ package ${package}.client.gui;
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
 
+<#compress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 
 	private final Level world;
@@ -74,9 +75,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
-				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}"))
 					${component.getName()}.setValue(stringState);
-				}
 			</#list>
 		}
 		</#if>
@@ -216,9 +216,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			${component.getName()}.setMaxLength(8192);
-			${component.getName()}.setResponder((content) -> {
-				menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false);
-			});
+			${component.getName()}.setResponder(content -> menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false));
 			<#if component.placeholder?has_content>
 			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			</#if>
@@ -274,9 +272,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			<#if hasProcedure(component.isCheckedProcedure)>boolean ${component.getName()}Selected = <@procedureOBJToConditionCode component.isCheckedProcedure/>;</#if>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
-				.onValueChange((checkbox, value) -> {
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value, false);
-				})
+				.onValueChange((checkbox, value) -> menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value, false))
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
 			<#if hasProcedure(component.isCheckedProcedure)>
@@ -301,6 +297,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#if>
 
 }
+</#compress>
 
 <#macro buttonOnClick component>
 e -> {
