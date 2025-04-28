@@ -282,8 +282,8 @@ public class LayerPanel extends JPanel {
 
 	public void repaintAll() {
 		layerList.repaint();
-		if (canvas != null && canvas.getCanvasRenderer() != null)
-			canvas.getCanvasRenderer().repaint();
+		if (canvas != null && canvas.getImageMakerView().getCanvasRenderer() != null)
+			canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	public void repaintList() {
