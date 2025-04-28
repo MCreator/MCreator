@@ -29,19 +29,40 @@ import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public class Layer {
-	private int x, y;
+
+	/*
+	 * Transient references and fields
+	 */
+	private transient final UUID uuid;
+
+	// Canvas reference (needs to be set right after creation)
+	private transient Canvas canvas;
+
+	// Rendering mode for eraser function
+	private transient boolean renderingMode = false;
+
+	// Change preview overlay
+	private transient BufferedImage overlay = null;
+	private transient double overlayOpacity = 1;
+
+	/*
+	 * Saved layer properties
+	 */
+	// Layer properties
 	private String name;
+	private int x, y;
 	private boolean visible = true;
-	private Canvas canvas;
-	private final UUID uuid;
 
+	// Image data
 	private BufferedImage raster;
-	private BufferedImage overlay;
-	private double overlayOpacity = 1;
 
-	private boolean renderingMode = false;
-
+	// If the layer is pasted and not yet solidified/merged down (adds the floating effect)
 	private boolean isPasted = false;
+
+	// Only used by serialization
+	private Layer() {
+		this.uuid = UUID.randomUUID();
+	}
 
 	public Layer(int width, int height, String name) {
 		this(width, height, 0, 0, name);
@@ -187,8 +208,9 @@ public class Layer {
 		} else {
 			Composite composite = g2d.getComposite();
 			if (overlay != null) {
-				AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) overlayOpacity);
-				g2d.setComposite(alcom);
+				AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+						(float) overlayOpacity);
+				g2d.setComposite(alphaComposite);
 				g2d.drawImage(overlay, 0, 0, null);
 				g2d.setComposite(composite);
 			}
@@ -236,7 +258,7 @@ public class Layer {
 
 	public void setRaster(BufferedImage raster) {
 		this.raster = raster;
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	public int getType() {
@@ -319,8 +341,8 @@ public class Layer {
 		raster = new BufferedImage(image.getWidth(), image.getHeight(), getType());
 		Graphics2D g = createGraphics();
 		Composite composite = g.getComposite();
-		AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.CLEAR);
-		g.setComposite(alcom);
+		AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.CLEAR);
+		g.setComposite(alphaComposite);
 		g.fillRect(0, 0, image.getWidth(), getHeight());
 		g.setComposite(composite);
 		g.drawImage(image, 0, 0, null);
@@ -335,8 +357,8 @@ public class Layer {
 	}
 
 	public void deleteSelection() {
-		Layer selected = canvas.getLayerPanel().selected();
+		Layer selected = canvas.getImageMakerView().getLayerPanel().selected();
 		selected.clearSelection();
-		canvas.getVersionManager().addRevision(new Modification(canvas, selected));
+		canvas.getImageMakerView().getVersionManager().addRevision(new Modification(canvas, selected));
 	}
 }
