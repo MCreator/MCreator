@@ -29,9 +29,9 @@ public class KeyStrokes {
 	public static void registerKeyStroke(KeyStroke stroke, JComponent component, Action a, int condition) {
 		InputMap inputMap = component.getInputMap(condition);
 		ActionMap actionMap = component.getActionMap();
-		inputMap.put(stroke, stroke.hashCode());
-		actionMap.put(stroke.hashCode(), a);
-		component.setActionMap(actionMap);
+		String actionKey = stroke.toString();
+		inputMap.put(stroke, actionKey);
+		actionMap.put(actionKey, a);
 	}
 
 }
