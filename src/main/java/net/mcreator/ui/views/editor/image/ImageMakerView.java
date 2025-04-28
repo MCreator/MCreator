@@ -251,12 +251,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	private void loadCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
 		Layer layer = Layer.toLayer(bufferedImage, image.getName());
-		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		canvas = new Canvas(this, layer.getWidth(), layer.getHeight());
 		loadCanvasFromObject(canvas);
 		canvas.add(layer);
 	}
 
-	public void openInReadOnlyMode(FileNode image) {
+	public void openInReadOnlyMode(FileNode<?> image) {
 		try {
 			String[] path = image.splitPath();
 			canEdit = false;
