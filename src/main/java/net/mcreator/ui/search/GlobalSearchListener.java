@@ -24,13 +24,14 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
 public class GlobalSearchListener {
 
-	private static final Map<Window, Supplier<JComponent>> searchWindows = new HashMap<>();
+	// Weak hash map is used to not hold reference to windows after they are disposed
+	private static final Map<Window, Supplier<JComponent>> searchWindows = new WeakHashMap<>();
 
 	public static void install(Window window, Supplier<JComponent> currentTab) {
 		ThreadUtil.runOnSwingThread(() -> {
@@ -54,7 +55,7 @@ public class GlobalSearchListener {
 						if (currentTime - lastShiftTime < DOUBLE_SHIFT_THRESHOLD_MS) {
 							Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager()
 									.getFocusedWindow();
-							if (focusedWindow != null) {
+							if (focusedWindow != null && searchWindows.containsKey(focusedWindow)) {
 								Supplier<JComponent> searchWindowSupplier = searchWindows.get(focusedWindow);
 								if (searchWindowSupplier != null) {
 									JComponent currentTab = searchWindowSupplier.get();
