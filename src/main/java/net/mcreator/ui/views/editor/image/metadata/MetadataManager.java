@@ -27,11 +27,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
+
+/*
+ Metadata file format
+ 0-15: MD5 hash of the final rendered image file (byte[16]) - used to compare if this metadata matches the rendered image
+ 16-19: length of canvas JSON string (int) - canvasJSONStringLength
+ 20-?: canvas JSON string (byte[canvasJSONStringLength])
+ ?-[? + 4]: number of images (int)
+ For each image
+ 0-3: length of PNG bytes (int) - pngBytesLength
+ 4-?: PNG bytes (byte[pngBytesLength])
+*/
 
 public class MetadataManager {
 
@@ -66,17 +79,33 @@ public class MetadataManager {
 				byte[] md5 = new byte[16];
 				dis.read(md5);
 
-				// TODO: read dis, parse metadataFile and create Canvas and load images, store all to retval
-
 				if (!MessageDigest.isEqual(md5, filemd5(file))) {
 					throw new MetadataOutdatedException("File " + file + " has changed, metadata is invalid", retval);
 				}
+
+				int canvasJSONStringLength = dis.readInt();
+				byte[] canvasJSONStringBytes = new byte[canvasJSONStringLength];
+				dis.read(canvasJSONStringBytes);
+				String canvasJSONString = new String(canvasJSONStringBytes, StandardCharsets.UTF_8);
+				// TODO: parse canvasString to Canvas object
+
+				int imageCount = dis.readInt();
+				BufferedImage[] layerImages = new BufferedImage[imageCount];
+				for (int i = 0; i < imageCount; i++) {
+					int pngBytesLength = dis.readInt();
+					byte[] pngBytes = new byte[pngBytesLength];
+					dis.read(pngBytes);
+					try (ByteArrayInputStream bais = new ByteArrayInputStream(pngBytes)) {
+						layerImages[i] = ImageIO.read(bais);
+					}
+				}
+				// TODO: load layerImages to canvas layers
 
 				return retval;
 			} catch (MetadataOutdatedException e) {
 				throw e;
 			} catch (Exception e) {
-				LOG.warn("Failed to load metadata for " + file, e);
+				LOG.warn("Failed to load metadata for {}", file, e);
 			}
 		}
 
@@ -88,9 +117,23 @@ public class MetadataManager {
 		if (metadataFile != null) {
 			try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
 				das.write(filemd5(file));
-				// TODO: save canvas and images to das
+
+				String canvasJSONString = ""; // TODO: serialize canvas to JSON
+				byte[] canvasJSONStringBytes = canvasJSONString.getBytes(StandardCharsets.UTF_8);
+				das.writeInt(canvasJSONStringBytes.length);
+				das.write(canvasJSONStringBytes);
+
+				BufferedImage[] layerImages = new BufferedImage[] {}; // TODO: get layer images from canvas
+				das.writeInt(layerImages.length);
+				for (BufferedImage layerImage : layerImages) {
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					ImageIO.write(layerImage, "png", baos);
+					byte[] pngBytes = baos.toByteArray();
+					das.writeInt(pngBytes.length);
+					das.write(pngBytes);
+				}
 			} catch (Exception e) {
-				LOG.warn("Failed to save metadata for " + file, e);
+				LOG.warn("Failed to save metadata for {}", file, e);
 			}
 		}
 	}
