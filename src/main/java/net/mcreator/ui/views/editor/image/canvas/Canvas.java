@@ -391,6 +391,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 			// Populate canvas and layers with canvas and image maker view references
 			retval.initReferences(deserializedCanvasOwner);
 
+			// Initialize version history
+			UUID group = UUID.randomUUID();
+			for (Layer layer : retval) {
+				Addition addition = new Addition(retval, layer);
+				addition.setUUID(group);
+				retval.imageMakerView.getVersionManager().addRevision(addition);
+			}
+
 			deserializedCanvasOwner.getLayerPanel().select(0);
 
 			return retval;
