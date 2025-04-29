@@ -24,19 +24,21 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.ITextFieldSearchable;
 import net.mcreator.util.ColorUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractMainWorkspacePanel extends JPanel {
+public abstract class AbstractMainWorkspacePanel extends JPanel implements ITextFieldSearchable {
 
 	protected final MCreator mcreator;
 
@@ -195,6 +197,10 @@ public abstract class AbstractMainWorkspacePanel extends JPanel {
 
 	public synchronized void refilterWorkspaceTab() {
 		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+	}
+
+	@Override public JTextComponent getSearchTextField() {
+		return search;
 	}
 
 }

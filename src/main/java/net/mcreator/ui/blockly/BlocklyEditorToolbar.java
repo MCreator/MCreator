@@ -324,4 +324,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		ComponentUtils.deriveFont(button, 11);
 	}
 
+	public JTextField getSearchField() {
+		return search;
+	}
+
 }
