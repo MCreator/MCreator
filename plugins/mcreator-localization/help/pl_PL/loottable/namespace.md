@@ -1,0 +1,1 @@
+Jeśli chcesz zmienić tabelę standardowych łupów, musisz wybrać "Minecraft", ale jeśli chcesz utworzyć nową tabelę łupów dla elementów moda, wybierz "mod".

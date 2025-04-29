@@ -4,6 +4,9 @@ templates:
   - template: block/blockentity.java.ftl
     condition: hasInventory
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
+  - template: block/blockentity_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/block/@NAMERenderer.java"
+    condition: "renderType() #= 4"
 
   # Worldgen
   - template: json/block_feature_biome_modifier.json.ftl
@@ -28,7 +31,7 @@ templates:
 
   # Block item templates
   - template: json/block_item.json.ftl
-    condition: "renderType() #?= 10,11,12,14,110,120,2"
+    condition: "renderType() #?= 10,11,12,14,110,120,2,4"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/block_item_cmodel.json.ftl
@@ -48,7 +51,7 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
-    condition: "renderType() #= 11"
+    condition: "renderType() #?= 11,4"
     writer: json
     variables: "model=cube_all;txname=all"
     name: "@MODASSETSROOT/models/block/@registryname.json"
@@ -432,8 +435,10 @@ tags:
     condition: "${data.blockBase! == 'Stairs'}"
   - tag: BLOCKS:minecraft:slabs
     condition: "${data.blockBase! == 'Slab'}"
+  - tag: BLOCKS:minecraft:wooden_fences
+    condition: "${(data.blockBase! == 'Fence') && (data.blockSetType == 'OAK')}"
   - tag: BLOCKS:minecraft:fences
-    condition: "${data.blockBase! == 'Fence'}"
+    condition: "${(data.blockBase! == 'Fence') && (data.blockSetType != 'OAK')}"
   - tag: BLOCKS:minecraft:walls
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves

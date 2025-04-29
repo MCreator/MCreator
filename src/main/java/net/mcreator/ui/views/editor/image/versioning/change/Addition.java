@@ -35,12 +35,12 @@ public class Addition extends Change implements IVisualChange {
 
 	@Override public void apply() {
 		canvas.add(index, layer);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public void revert() {
 		canvas.removeNR(index);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public int sizeOf() {

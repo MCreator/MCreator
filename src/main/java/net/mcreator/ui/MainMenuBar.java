@@ -126,6 +126,7 @@ public abstract class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.getActionRegistry().imageEditorSave);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorSaveAs);
 		imageEditor.addSeparator();
+		imageEditor.add(mcreator.getActionRegistry().imageEditorSwapColors);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorPencil);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorLine);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorShape);

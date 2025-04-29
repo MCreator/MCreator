@@ -34,65 +34,46 @@
  *	MCreator note: This file will be REGENERATED on each build.
  */
 
-<#assign hasTextField = false>
-
 package ${package}.init;
+
+<#assign hasEntityModels = false>
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
 	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
 		<#list guis as gui>
-		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
-		<#if gui.getComponentsOfType("TextField")?has_content>
-            <#assign hasTextField = true>
-        </#if>
+			<#if gui.getComponentsOfType("EntityModel")?has_content><#assign hasEntityModels = true></#if>
+			event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
 		</#list>
 	}
 
-	public static void onGuistateUpdate(int elementType, String name, Object elementState) {
-	    if (Minecraft.getInstance().screen instanceof ScreenAccessor accessor) {
-	        accessor.onGuistateUpdate(elementType, name, elementState);
-	    }
-	}
-
 	public interface ScreenAccessor {
-	    void onGuistateUpdate(int elementType, String name, Object elementState);
+		void onMenuStateUpdate(int elementType, String name, Object elementState);
 	}
 
-	<#if hasTextField>
-    public static EditBox createListenerTextField(Font font, int x, int y, int width, int height, Component narratable, Consumer<String> listener, boolean suggest) {
-        return new EditBox(font, x, y, width, height, narratable) {
-            @Override public boolean keyPressed(int key, int b, int c) {
-            	boolean flag = super.keyPressed(key, b, c);
-              	listener.accept(this.getValue());
-              	return flag;
-            }
-
-            @Override public boolean charTyped(char c, int type) {
-            	boolean flag = super.charTyped(c, type);
-              	listener.accept(this.getValue());
-              	return flag;
-            }
-
-            @Override public void insertText(String text) {
-                super.insertText(text);
-                if (getValue().isEmpty() && suggest)
-                    setSuggestion(narratable.getString());
-                else
-                	setSuggestion(null);
-            }
-
-            @Override public void moveCursorTo(int pos, boolean flag) {
-                super.moveCursorTo(pos, flag);
-                if (getValue().isEmpty() && suggest)
-                	setSuggestion(narratable.getString());
-                else
-                	setSuggestion(null);
-            }
-
-        };
-    }
-    </#if>
+	<#if hasEntityModels>
+	public static void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
+		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
+		Quaternionf cameraOrientation = new Quaternionf().rotateX(angleYComponent * 20 * ((float) Math.PI / 180F));
+		pose.mul(cameraOrientation);
+		float f2 = entity.yBodyRot;
+		float f3 = entity.getYRot();
+		float f4 = entity.getXRot();
+		float f5 = entity.yHeadRotO;
+		float f6 = entity.yHeadRot;
+		entity.yBodyRot = 180.0F + angleXComponent * 20.0F;
+		entity.setYRot(180.0F + angleXComponent * 40.0F);
+		entity.setXRot(-angleYComponent * 20.0F);
+		entity.yHeadRot = entity.getYRot();
+		entity.yHeadRotO = entity.getYRot();
+		InventoryScreen.renderEntityInInventory(guiGraphics, x, y, scale, new Vector3f(0, 0, 0), pose, cameraOrientation, entity);
+		entity.yBodyRot = f2;
+		entity.setYRot(f3);
+		entity.setXRot(f4);
+		entity.yHeadRotO = f5;
+		entity.yHeadRot = f6;
+	}
+	</#if>
 
 }
 
