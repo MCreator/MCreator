@@ -37,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
+import net.mcreator.ui.search.ITextFieldSearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -51,6 +52,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -58,7 +60,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext {
+public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext,
+		ITextFieldSearchable {
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
@@ -77,6 +80,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private ModElementCodeViewer<GE> modElementCodeViewer = null;
 	private JSplitPane splitPane;
+
+	private final ModElementGUISearch search = new ModElementGUISearch(this);
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
@@ -346,7 +351,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				LOG.warn("Failed to create help context", e);
 			}
 
-			toolBarLeft.add(new ModElementGUISearch(this));
+			toolBarLeft.add(search);
 
 			add("North",
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
@@ -635,6 +640,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public void reloadDataLists() {
+	}
+
+	@Override public JTextComponent getSearchTextField() {
+		return search;
 	}
 
 	/**
