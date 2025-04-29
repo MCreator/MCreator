@@ -48,6 +48,8 @@ public class ${JavaModName}Menus {
 	public interface MenuAccessor {
 		HashMap<String, Object> getMenuState();
 
+		Map<Integer, Slot> getSlots();
+
 		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState, boolean needClientUpdate) {
 			getMenuState().put(elementType + ":" + name, elementState);
 			if (needClientUpdate && world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
