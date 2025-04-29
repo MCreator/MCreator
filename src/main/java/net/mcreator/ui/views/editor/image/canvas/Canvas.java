@@ -57,7 +57,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private transient Layer floatingLayer = null;
 
 	/*
-	 * Serialized fields
+	 * Serialized references and fields
 	 */
 	// Canvas size
 	private int width;
