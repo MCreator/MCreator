@@ -72,17 +72,17 @@ package ${package}.network;
 	public static void handleData(final ${JavaModName}MenustateUpdateMessage message, final IPayloadContext context) {
 	    context.enqueueWork(() -> {
         	Player entity = context.player();
-        	updateGuistate(entity, message.elementType, message.name, message.elementState);
-        	if (context.flow() == PacketFlow.CLIENTBOUND) {
-        	    ${JavaModName}Screens.onGuistateUpdate(message.elementType, message.name, message.elementState);
-        	}
+        	//updateGuistate(entity, message.elementType, message.name, message.elementState);
+        	//if (context.flow() == PacketFlow.CLIENTBOUND) {
+        	//    ${JavaModName}Screens.onGuistateUpdate(message.elementType, message.name, message.elementState);
+        	//}
         }).exceptionally(e -> {
         	context.connection().disconnect(Component.literal(e.getMessage()));
         	return null;
         });
 	}
 
-	public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
+	/*public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
 	    if (entity.containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
         	HashMap<String, Object> guistate = menu.getGuistate();
             if (elementType == 0) {
@@ -91,7 +91,7 @@ package ${package}.network;
                 guistate.put("checkbox:" + name, elementState);
             }
         }
-	}
+	}*/
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
 		${JavaModName}.addNetworkMessage(${JavaModName}MenustateUpdateMessage.TYPE, ${JavaModName}MenustateUpdateMessage.STREAM_CODEC, ${JavaModName}MenustateUpdateMessage::handleData);
