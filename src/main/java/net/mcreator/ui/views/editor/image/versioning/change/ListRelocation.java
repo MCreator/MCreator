@@ -52,5 +52,10 @@ public class ListRelocation extends Change {
 			break;
 		}
 	}
+
+	public enum Direction {
+		UP, DOWN
+	}
+
 }
 
