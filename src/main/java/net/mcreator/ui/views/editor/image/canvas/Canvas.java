@@ -386,17 +386,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		public Canvas deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			SerializableCanvasShadow shadow = gson.fromJson(jsonElement, SerializableCanvasShadow.class);
-			Canvas retval = shadow.getCanvas();
-
-			// Load layers with rasters
-			for (int i = 0; i < shadow.layers.size(); i++) {
-				Layer layer = shadow.layers.get(i);
-				if (rasters != null && rasters.length > i) {
-					layer.setRaster(rasters[i]);
-				} else {
-					layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
-				}
-			}
+			Canvas retval = shadow.getCanvas(rasters);
 
 			// Populate canvas and layers with canvas and image maker view references
 			retval.initReferences(deserializedCanvasOwner);
@@ -428,13 +418,27 @@ public class Canvas extends ArrayListListModel<Layer> {
 				this.selection = canvas.getSelection();
 			}
 
-			private Canvas getCanvas() {
+			private Canvas getCanvas(BufferedImage[] rasters) {
 				Canvas canvas = new Canvas();
 				canvas.width = this.width;
 				canvas.height = this.height;
 				canvas.selection = selection;
 				canvas.selection.setEditing(SelectedBorder.NONE);
+
+				// Load layers with rasters
+				for (int i = 0; i < layers.size(); i++) {
+					Layer layer = layers.get(i);
+					if (rasters != null && rasters.length > i) {
+						layer.setRaster(rasters[i]);
+					} else {
+						// If no raster is provided, create a blank image
+						layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+					}
+				}
+
+				// Add layers to canvas
 				canvas.addAll(layers);
+
 				return canvas;
 			}
 
