@@ -26,7 +26,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.views.editor.image.versioning.change.Direction;
 import net.mcreator.ui.views.editor.image.versioning.change.ListRelocation;
 import net.mcreator.ui.views.editor.image.versioning.change.Rename;
 import net.mcreator.ui.views.editor.image.versioning.change.VisibilityChange;
@@ -109,12 +108,12 @@ public class LayerPanel extends JPanel {
 
 		up.addActionListener(e -> {
 			canvas.moveUp(selectedID());
-			versionManager.addRevision(new ListRelocation(canvas, selected(), Direction.UP));
+			versionManager.addRevision(new ListRelocation(canvas, selected(), ListRelocation.Direction.UP));
 		});
 
 		down.addActionListener(e -> {
 			canvas.moveDown(selectedID());
-			versionManager.addRevision(new ListRelocation(canvas, selected(), Direction.DOWN));
+			versionManager.addRevision(new ListRelocation(canvas, selected(), ListRelocation.Direction.DOWN));
 		});
 
 		editMeta.addActionListener(e -> promptRename());
