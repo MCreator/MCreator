@@ -30,9 +30,9 @@ import java.awt.image.BufferedImage;
  * Class used to transfer selection data between objects
  */
 public class Selection {
-	private static final int HANDLE_SIZE = 10;
 
-	private final Stroke handleStroke = new BasicStroke(HANDLE_SIZE);
+	private static final int HANDLE_SIZE = 10;
+	private static final BasicStroke HANDLE_STROKE = new BasicStroke(HANDLE_SIZE);
 
 	/*
 	 * Transient references and fields
@@ -43,7 +43,7 @@ public class Selection {
 	// Selected border marked border
 	private transient SelectedBorder editing = SelectedBorder.NONE;
 
-	// Hides handles when slection size is actively being changed
+	// Hides handles when selection size is actively being changed
 	private transient boolean editStarted = false;
 
 	/*
@@ -277,7 +277,7 @@ public class Selection {
 				}
 			}
 
-			g2d.setStroke(handleStroke);
+			g2d.setStroke(HANDLE_STROKE);
 
 			if (horizontalHandlesVisible()) {
 				// Add highlight to the selected horizontal handle

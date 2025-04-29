@@ -258,7 +258,10 @@ public class Layer {
 
 	public void setRaster(BufferedImage raster) {
 		this.raster = raster;
-		canvas.getImageMakerView().getCanvasRenderer().repaint();
+		// Canvas may be null if this is called during deserialization
+		if (canvas != null) {
+			canvas.getImageMakerView().getCanvasRenderer().repaint();
+		}
 	}
 
 	public int getType() {

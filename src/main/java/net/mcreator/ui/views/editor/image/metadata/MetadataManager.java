@@ -19,7 +19,12 @@
 
 package net.mcreator.ui.views.editor.image.metadata;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
@@ -78,12 +83,12 @@ public class MetadataManager {
 				"imageEditorMetadata/" + textureType.getID() + "/" + file.getName() + ".imgmeta");
 	}
 
-	public static Canvas loadCanvasForFile(Workspace workspace, File file)
+	public static Canvas loadCanvasForFile(Workspace workspace, File file, ImageMakerView canvasOwner)
 			throws MetadataOutdatedException, NullPointerException {
 		File metadataFile = getMetadataFile(workspace, file);
 		if (metadataFile != null && metadataFile.isFile()) {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
-				Canvas retval = null;
+				Canvas retval;
 
 				// Read file header - unused for now
 				dis.readInt();
@@ -91,27 +96,27 @@ public class MetadataManager {
 				byte[] md5 = new byte[16];
 				dis.read(md5);
 
-				if (!MessageDigest.isEqual(md5, filemd5(file))) {
-					throw new MetadataOutdatedException("File " + file + " has changed, metadata is invalid", retval);
-				}
-
 				int canvasJSONStringLength = dis.readInt();
 				byte[] canvasJSONStringBytes = new byte[canvasJSONStringLength];
 				dis.read(canvasJSONStringBytes);
 				String canvasJSONString = new String(canvasJSONStringBytes, StandardCharsets.UTF_8);
-				// TODO: parse canvasString to Canvas object
+				Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT)
+						.registerTypeAdapter(Canvas.class, new Canvas.GSONAdapter(canvasOwner)).create();
+				retval = gson.fromJson(canvasJSONString, Canvas.class);
 
 				int imageCount = dis.readInt();
-				BufferedImage[] layerImages = new BufferedImage[imageCount];
 				for (int i = 0; i < imageCount; i++) {
 					int pngBytesLength = dis.readInt();
 					byte[] pngBytes = new byte[pngBytesLength];
 					dis.read(pngBytes);
 					try (ByteArrayInputStream bais = new ByteArrayInputStream(pngBytes)) {
-						layerImages[i] = ImageIO.read(bais);
+						retval.get(i).setRaster(ImageIO.read(bais));
 					}
 				}
-				// TODO: load layerImages to canvas layers
+
+				if (!MessageDigest.isEqual(md5, filemd5(file))) {
+					throw new MetadataOutdatedException("File " + file + " has changed, metadata is invalid", retval);
+				}
 
 				return retval;
 			} catch (MetadataOutdatedException e) {
@@ -132,12 +137,14 @@ public class MetadataManager {
 
 				das.write(filemd5(file));
 
-				String canvasJSONString = ""; // TODO: serialize canvas to JSON
+				Gson gson = new GsonBuilder().registerTypeAdapter(Canvas.class,
+						new Canvas.GSONAdapter(canvas.getImageMakerView())).create();
+				String canvasJSONString = gson.toJson(canvas);
 				byte[] canvasJSONStringBytes = canvasJSONString.getBytes(StandardCharsets.UTF_8);
 				das.writeInt(canvasJSONStringBytes.length);
 				das.write(canvasJSONStringBytes);
 
-				BufferedImage[] layerImages = new BufferedImage[] {}; // TODO: get layer images from canvas
+				BufferedImage[] layerImages = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
 				das.writeInt(layerImages.length);
 				for (BufferedImage layerImage : layerImages) {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();

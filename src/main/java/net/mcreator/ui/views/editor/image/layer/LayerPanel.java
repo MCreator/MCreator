@@ -239,8 +239,10 @@ public class LayerPanel extends JPanel {
 			return null;
 
 		int selectedIndex = layerList.getSelectedIndex();
-		if (selectedIndex == -1)
-			return null;
+		if (selectedIndex == -1) { // Force select first layer if none selected
+			layerList.setSelectedIndex(0);
+			return canvas.isEmpty() ? null : canvas.getFirst();
+		}
 		return canvas.get(selectedIndex);
 	}
 

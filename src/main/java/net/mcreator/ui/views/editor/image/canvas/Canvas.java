@@ -18,14 +18,19 @@
 
 package net.mcreator.ui.views.editor.image.canvas;
 
+import com.google.gson.*;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 import net.mcreator.ui.views.editor.image.versioning.change.*;
 import net.mcreator.util.ArrayListListModel;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.UUID;
 
 public class Canvas extends ArrayListListModel<Layer> {
@@ -52,14 +57,18 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private transient Layer floatingLayer = null;
 
 	/*
-	 * Transient references and fields
+	 * Serialized fields
 	 */
 	// Canvas size
 	private int width;
 	private int height;
 
 	// Selection object
-	private final Selection selection = new Selection(this);
+	private Selection selection = new Selection(this);
+
+	// Dummy constructor for deserialization
+	private Canvas() {
+	}
 
 	public Canvas(ImageMakerView imageMakerView, int width, int height) {
 		this.width = width;
@@ -70,7 +79,6 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private void initReferences(ImageMakerView imageMakerView) {
 		this.imageMakerView = imageMakerView;
 		imageMakerView.getLayerPanel().setCanvas(this);
-		imageMakerView.getLayerPanel().updateSelection();
 		for (Layer layer : this) {
 			layer.setCanvas(this);
 			floatingCheck(layer);
@@ -78,6 +86,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		selection.setCanvas(this);
 		imageMakerView.getCanvasRenderer().setCanvas(this);
 		imageMakerView.getToolPanel().setCanvas(this);
+		imageMakerView.getLayerPanel().updateSelection();
 	}
 
 	public boolean add(Layer layer, UUID group) {
@@ -351,7 +360,70 @@ public class Canvas extends ArrayListListModel<Layer> {
 		imageMakerView.getCanvasRenderer().recalculateBounds();
 		imageMakerView.getCanvasRenderer().repaint();
 	}
+
 	public ImageMakerView getImageMakerView() {
 		return imageMakerView;
 	}
+
+	public static class GSONAdapter implements JsonDeserializer<Canvas>, JsonSerializer<Canvas> {
+
+		@Nonnull private final ImageMakerView deserializedCanvasOwner;
+
+		private static final Gson gson = new GsonBuilder().create();
+
+		public GSONAdapter(@Nonnull ImageMakerView deserializedCanvasOwner) {
+			this.deserializedCanvasOwner = deserializedCanvasOwner;
+		}
+
+		@Override
+		public Canvas deserialize(JsonElement jsonElement, Type type,
+				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+			SerializableCanvasShadow shadow = gson.fromJson(jsonElement, SerializableCanvasShadow.class);
+			Canvas retval = shadow.getCanvas();
+			// Initialize layers with dummy rasters until they are properly loaded in MetadataManager
+			for (Layer layer : retval) {
+				layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+			}
+			// Populate canvas and layers with canvas and image maker view references
+			retval.initReferences(deserializedCanvasOwner);
+			deserializedCanvasOwner.getLayerPanel().select(0);
+			return retval;
+		}
+
+		@Override public JsonElement serialize(Canvas src, Type typeOfSrc, JsonSerializationContext context) {
+			SerializableCanvasShadow shadow = new SerializableCanvasShadow(src);
+			return gson.toJsonTree(shadow);
+		}
+
+		/**
+		 * This is needed because GSON handles Canvas as array by default, ignoring other fields
+		 */
+		private static class SerializableCanvasShadow {
+
+			private final int width;
+			private final int height;
+			private final List<Layer> layers;
+			private final Selection selection;
+
+			public SerializableCanvasShadow(Canvas canvas) {
+				this.layers = canvas;
+				this.width = canvas.getWidth();
+				this.height = canvas.getHeight();
+				this.selection = canvas.getSelection();
+			}
+
+			private Canvas getCanvas() {
+				Canvas canvas = new Canvas();
+				canvas.width = this.width;
+				canvas.height = this.height;
+				canvas.selection = selection;
+				canvas.selection.setEditing(SelectedBorder.NONE);
+				canvas.addAll(layers);
+				return canvas;
+			}
+
+		}
+
+	}
+
 }
