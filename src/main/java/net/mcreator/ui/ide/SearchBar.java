@@ -133,4 +133,8 @@ public class SearchBar extends JToolBar {
 		}
 	}
 
+	public JTextField getSearchField() {
+		return jtf1;
+	}
+
 }
