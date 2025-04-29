@@ -367,12 +367,19 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public static class GSONAdapter implements JsonDeserializer<Canvas>, JsonSerializer<Canvas> {
 
+		private static final Gson gson = new GsonBuilder().create();
+
 		@Nonnull private final ImageMakerView deserializedCanvasOwner;
 
-		private static final Gson gson = new GsonBuilder().create();
+		private BufferedImage[] rasters;
 
 		public GSONAdapter(@Nonnull ImageMakerView deserializedCanvasOwner) {
 			this.deserializedCanvasOwner = deserializedCanvasOwner;
+		}
+
+		public GSONAdapter setRasters(BufferedImage[] rasters) {
+			this.rasters = rasters;
+			return this;
 		}
 
 		@Override
@@ -380,13 +387,22 @@ public class Canvas extends ArrayListListModel<Layer> {
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			SerializableCanvasShadow shadow = gson.fromJson(jsonElement, SerializableCanvasShadow.class);
 			Canvas retval = shadow.getCanvas();
-			// Initialize layers with dummy rasters until they are properly loaded in MetadataManager
-			for (Layer layer : retval) {
-				layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
+			// Load layers with rasters
+			for (int i = 0; i < shadow.layers.size(); i++) {
+				Layer layer = shadow.layers.get(i);
+				if (rasters != null && rasters.length > i) {
+					layer.setRaster(rasters[i]);
+				} else {
+					layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+				}
 			}
+
 			// Populate canvas and layers with canvas and image maker view references
 			retval.initReferences(deserializedCanvasOwner);
+
 			deserializedCanvasOwner.getLayerPanel().select(0);
+
 			return retval;
 		}
 

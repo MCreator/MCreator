@@ -96,23 +96,28 @@ public class MetadataManager {
 				byte[] md5 = new byte[16];
 				dis.read(md5);
 
+				// Extract canvas JSON string
 				int canvasJSONStringLength = dis.readInt();
 				byte[] canvasJSONStringBytes = new byte[canvasJSONStringLength];
 				dis.read(canvasJSONStringBytes);
 				String canvasJSONString = new String(canvasJSONStringBytes, StandardCharsets.UTF_8);
-				Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT)
-						.registerTypeAdapter(Canvas.class, new Canvas.GSONAdapter(canvasOwner)).create();
-				retval = gson.fromJson(canvasJSONString, Canvas.class);
 
+				// Extract layer rasters
 				int imageCount = dis.readInt();
+				BufferedImage[] rasters = new BufferedImage[imageCount];
 				for (int i = 0; i < imageCount; i++) {
 					int pngBytesLength = dis.readInt();
 					byte[] pngBytes = new byte[pngBytesLength];
 					dis.read(pngBytes);
 					try (ByteArrayInputStream bais = new ByteArrayInputStream(pngBytes)) {
-						retval.get(i).setRaster(ImageIO.read(bais));
+						rasters[i] = ImageIO.read(bais);
 					}
 				}
+
+				Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT)
+						.registerTypeAdapter(Canvas.class, new Canvas.GSONAdapter(canvasOwner).setRasters(rasters))
+						.create();
+				retval = gson.fromJson(canvasJSONString, Canvas.class);
 
 				if (!MessageDigest.isEqual(md5, filemd5(file))) {
 					throw new MetadataOutdatedException("File " + file + " has changed, metadata is invalid", retval);
