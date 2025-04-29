@@ -196,7 +196,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 						File imageEditorMetadata = MetadataManager.getMetadataFile(
 								workspacePanel.getMCreator().getWorkspace(), file);
-						if (imageEditorMetadata != null)
+						if (imageEditorMetadata != null && imageEditorMetadata.isFile())
 							imageEditorMetadata.delete();
 					}
 				});
@@ -224,7 +224,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			// Copy image editor metadata if it exists
 			if (newFile != null) {
 				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(), file);
-				if (originalMetadata != null) {
+				if (originalMetadata != null && originalMetadata.isFile()) {
 					File newMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
 							newFile);
 					if (newMetadata != null) {
@@ -247,7 +247,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				// Delete image editor metadata as it's not valid anymore
 				File imageEditorMetadata = MetadataManager.getMetadataFile(
 						workspacePanel.getMCreator().getWorkspace(), file);
-				if (imageEditorMetadata != null)
+				if (imageEditorMetadata != null && imageEditorMetadata.isFile())
 					imageEditorMetadata.delete();
 			}
 		}
