@@ -52,7 +52,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private transient Layer floatingLayer = null;
 
 	/*
-	 * Transient references and fields
+	 * Serialized references and fields
 	 */
 	// Canvas size
 	private int width;
@@ -70,7 +70,6 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private void initReferences(ImageMakerView imageMakerView) {
 		this.imageMakerView = imageMakerView;
 		imageMakerView.getLayerPanel().setCanvas(this);
-		imageMakerView.getLayerPanel().updateSelection();
 		for (Layer layer : this) {
 			layer.setCanvas(this);
 			floatingCheck(layer);
@@ -78,6 +77,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		selection.setCanvas(this);
 		imageMakerView.getCanvasRenderer().setCanvas(this);
 		imageMakerView.getToolPanel().setCanvas(this);
+		imageMakerView.getLayerPanel().updateSelection();
 	}
 
 	public boolean add(Layer layer, UUID group) {
@@ -351,7 +351,9 @@ public class Canvas extends ArrayListListModel<Layer> {
 		imageMakerView.getCanvasRenderer().recalculateBounds();
 		imageMakerView.getCanvasRenderer().repaint();
 	}
+
 	public ImageMakerView getImageMakerView() {
 		return imageMakerView;
 	}
+
 }

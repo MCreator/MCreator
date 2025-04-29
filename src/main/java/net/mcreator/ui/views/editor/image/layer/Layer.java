@@ -45,6 +45,9 @@ public class Layer {
 	private transient BufferedImage overlay = null;
 	private transient double overlayOpacity = 1;
 
+	// Image data
+	private transient BufferedImage raster;
+
 	/*
 	 * Saved layer properties
 	 */
@@ -52,9 +55,6 @@ public class Layer {
 	private String name;
 	private int x, y;
 	private boolean visible = true;
-
-	// Image data
-	private BufferedImage raster;
 
 	// If the layer is pasted and not yet solidified/merged down (adds the floating effect)
 	private boolean isPasted = false;
@@ -258,7 +258,9 @@ public class Layer {
 
 	public void setRaster(BufferedImage raster) {
 		this.raster = raster;
-		canvas.getImageMakerView().getCanvasRenderer().repaint();
+		if (canvas != null) {
+			canvas.getImageMakerView().getCanvasRenderer().repaint();
+		}
 	}
 
 	public int getType() {
