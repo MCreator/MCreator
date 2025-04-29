@@ -36,15 +36,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /*
- Metadata file format
- 0-15: MD5 hash of the final rendered image file (byte[16]) - used to compare if this metadata matches the rendered image
- 16-19: length of canvas JSON string (int) - canvasJSONStringLength
- 20-?: canvas JSON string (byte[canvasJSONStringLength])
- ?-[? + 4]: number of images (int)
- For each image
- 0-3: length of PNG bytes (int) - pngBytesLength
- 4-?: PNG bytes (byte[pngBytesLength])
-*/
+ * Metadata File Format
+ *
+ * Byte layout:
+ *
+ *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0000
+ *  4 - 19: MD5 hash of the final rendered image file (byte[16])
+ *          Used to verify if this metadata matches the rendered image.
+ * 20 - 23: Length of the canvas JSON string (int) - canvasJSONStringLength
+ * 24 - (24 + canvasJSONStringLength - 1): Canvas JSON string (byte[canvasJSONStringLength])
+ *
+ * Next 4 bytes:
+ * [canvasEnd] - [canvasEnd + 3]: Number of images (int) - imageCount
+ *
+ * For each image (repeated imageCount times):
+ *   0 -  3: Length of PNG byte data (int) - pngBytesLength
+ *   4 - (4 + pngBytesLength - 1): PNG image data (byte[pngBytesLength])
+ *
+ */
 
 public class MetadataManager {
 
@@ -75,6 +84,9 @@ public class MetadataManager {
 		if (metadataFile != null && metadataFile.isFile()) {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
 				Canvas retval = null;
+
+				// Read file header - unused for now
+				dis.readInt();
 
 				byte[] md5 = new byte[16];
 				dis.read(md5);
@@ -116,6 +128,8 @@ public class MetadataManager {
 		File metadataFile = getMetadataFile(workspace, file);
 		if (metadataFile != null) {
 			try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
+				das.writeInt(0); // File type identifier - unused for now
+
 				das.write(filemd5(file));
 
 				String canvasJSONString = ""; // TODO: serialize canvas to JSON
