@@ -36,6 +36,7 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
@@ -113,6 +114,8 @@ public abstract class MCreator extends MCreatorFrame {
 				closeThisMCreator(false);
 			}
 		});
+
+		GlobalSearchListener.install(this, () -> mcreatorTabs.getCurrentTab().getContent());
 
 		debugPanel = new DebugPanel(this);
 

@@ -81,7 +81,6 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setContinuousLayout(true);
 		spne.setContinuousLayout(true);
 		spne.setDividerLocation(150);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);
 
 		sections.setBackground(Theme.current().getBackgroundColor());

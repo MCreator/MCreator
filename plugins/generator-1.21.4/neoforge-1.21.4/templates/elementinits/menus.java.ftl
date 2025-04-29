@@ -46,34 +46,25 @@ public class ${JavaModName}Menus {
 	</#list>
 
 	public interface MenuAccessor {
-	    HashMap<String, Object> getGuistate();
-	}
+		HashMap<String, Object> getMenuState();
 
-	public static void sendGuistateUpdate(Player entity, int elementType, String name, Object elementState) {
-	    if (entity instanceof ServerPlayer _entity) {
-	        PacketDistributor.sendToPlayer(_entity, new ${JavaModName}GuistateUpdateMessage(elementType, name, elementState));
-	    } else {
-	        PacketDistributor.sendToServer(new ${JavaModName}GuistateUpdateMessage(elementType, name, elementState));
-	    }
-	    ${JavaModName}GuistateUpdateMessage.updateGuistate(entity, elementType, name, elementState);
-	}
+		Map<Integer, Slot> getSlots();
 
-	public static <T> T getGuistateState(Entity entity, int elementType, String name, T defaultValue) {
-        if (entity instanceof Player _entity && _entity.containerMenu instanceof MenuAccessor accessor) {
-            HashMap<String, Object> guistate = accessor.getGuistate();
-            try {
-                if (elementType == 0) {
-                    return (T) guistate.getOrDefault("textfield:" + name, defaultValue);
-                }
-                if (elementType == 1) {
-                    return (T) guistate.getOrDefault("checkbox:" + name, defaultValue);
-                }
-            } catch (ClassCastException e) {
-                return defaultValue;
-            }
-        }
-        return defaultValue;
-    }
+		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState, boolean needClientUpdate) {
+			getMenuState().put(elementType + ":" + name, elementState);
+			if (needClientUpdate && world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+				accessor.onMenuStateUpdate(elementType, name, elementState);
+			}
+		}
+
+		default <T> T getMenuState(int elementType, String name, T defaultValue) {
+			try {
+				return (T) getMenuState().getOrDefault(elementType + ":" + name, defaultValue);
+			} catch (ClassCastException e) {
+				return defaultValue;
+			}
+		}
+	}
 
 }
 

@@ -6,6 +6,10 @@ bounding box of the block.
 * **Cross** - Model used by plants
 * **Crop** - Model used by crop plants
 * **Grass block** - Model used by grass blocks (top and side textures will be tinted)
-* Custom - you can define custom JSON and OBJ models too
+* Custom - you can define custom JSON, JAVA and OBJ models too
 
 When making custom models, JSON is recommended due to vanilla support for this model type.
+
+Selecting JAVA model will force this block to have block entity enabled.
+JAVA models also will also be much more resource heavy, so make sure to not use them in blocks
+that commonly appear, such as world gen blocks.

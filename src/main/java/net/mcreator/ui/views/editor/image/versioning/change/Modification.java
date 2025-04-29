@@ -39,13 +39,13 @@ public class Modification extends Change implements IVisualChange {
 	@Override public void apply() {
 		int index = canvas.indexOf(layer);
 		canvas.get(index).replaceImage(after);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public void revert() {
 		int index = canvas.indexOf(layer);
 		canvas.get(index).replaceImage(before);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public int sizeOf() {

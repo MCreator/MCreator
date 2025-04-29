@@ -210,7 +210,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		blockingModel.setFont(blockingModel.getFont().deriveFont(16.0f));
 		blockingModel.setRenderer(new ModelComboBoxRenderer());
 		blockingModel.setEnabled(false);
 

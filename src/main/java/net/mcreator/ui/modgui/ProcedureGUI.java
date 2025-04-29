@@ -35,6 +35,7 @@ import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -58,11 +59,14 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
+public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure>
+		implements IBlocklyPanelHolder, ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
+
+	private BlocklyEditorToolbar blocklyEditorToolbar;
 
 	private BlocklyPanel blocklyPanel;
 
@@ -421,13 +425,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
 					VariableElement selectedVar = localVarsList.getSelectedValue();
-					VariableType type = selectedVar.getType();
-					String blockXml =
-							"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_" + (e.isAltDown() ?
-									"set_" :
-									"get_") + type.getName() + "\"><field name=\"VAR\">local:" + selectedVar.getName()
-									+ "</field></block></xml>";
-					blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedVar != null) {
+						VariableType type = selectedVar.getType();
+						String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
+								+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
+								+ selectedVar.getName() + "</field></block></xml>";
+						blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -436,9 +440,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesList.getSelectedValue();
-					String blockXml = selectedDep.getDependencyBlockXml();
-					if (blockXml != null)
-						blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedDep != null) {
+						String blockXml = selectedDep.getDependencyBlockXml();
+						if (blockXml != null)
+							blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -447,9 +453,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			@Override public void mouseClicked(MouseEvent e) {
 				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
-					String blockXml = selectedDep.getDependencyBlockXml();
-					if (blockXml != null)
-						blocklyPanel.addBlocksFromXML(blockXml);
+					if (selectedDep != null) {
+						String blockXml = selectedDep.getDependencyBlockXml();
+						if (blockXml != null)
+							blocklyPanel.addBlocksFromXML(blockXml);
+					}
 				}
 			}
 		});
@@ -557,8 +565,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.PROCEDURE,
-				blocklyPanel, this);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.PROCEDURE, blocklyPanel, this);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
@@ -631,6 +638,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/section/procedure-system");
+	}
+
+	@Override public void search(@Nullable String searchTerm) {
+		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			blocklyEditorToolbar.getSearchField().setText(searchTerm);
 	}
 
 }

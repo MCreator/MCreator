@@ -1103,8 +1103,9 @@ public class TestWorkspaceDataProvider {
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
@@ -1436,6 +1437,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
+			block.ignitedByLava = _true;
 			block.flammability = 5;
 			block.fireSpreadSpeed = 12;
 			block.dropAmount = 3;
@@ -1452,8 +1454,7 @@ public class TestWorkspaceDataProvider {
 			block.jumpFactor = 17.732;
 			block.lightOpacity = new int[] { 7, 2, 0,
 					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
-			block.material = new Material(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
+			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 			block.tickRate = _true ? 0 : 24;
 			block.isCustomSoundType = !_true;
 			block.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -1475,6 +1476,8 @@ public class TestWorkspaceDataProvider {
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			block.noteBlockInstrument = getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("noteblockinstruments"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
@@ -1504,6 +1507,16 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(7);
 				block.inventoryInSlotIDs.add(11);
 			}
+			block.sensitiveToVibration = _true;
+			block.vibrationalEvents = new ArrayList<>();
+			if (!emptyLists) {
+				block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+						.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
+			}
+			block.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
+			block.canReceiveVibrationCondition = new Procedure("condition1");
+			block.onReceivedVibration = new Procedure("procedure1");
 			block.hasEnergyStorage = _true;
 			block.energyCapacity = 123;
 			block.energyInitial = 22;

@@ -30,21 +30,40 @@ import java.awt.image.BufferedImage;
  * Class used to transfer selection data between objects
  */
 public class Selection {
-	private final Canvas canvas;
+
+	private static final int HANDLE_SIZE = 10;
+	private static final BasicStroke HANDLE_STROKE = new BasicStroke(HANDLE_SIZE);
+
+	/*
+	 * Transient references and fields
+	 */
+	// Canvas reference (needs to be set right after creation)
+	private transient Canvas canvas;
+
+	// Selected border marked border
+	private transient SelectedBorder editing = SelectedBorder.NONE;
+
+	// Hides handles when selection size is actively being changed
+	private transient boolean editStarted = false;
+
+	/*
+	 * Saved layer properties
+	 */
+	// Selection properties
 	private final Point first, second;
-	private final int handleSize = 10;
-	private final Stroke handleStroke = new BasicStroke(handleSize);
-	private SelectedBorder editing = SelectedBorder.NONE;
-	private boolean editStarted = false;
 
 	public Selection(Canvas canvas) {
 		this(canvas, 0, 0, 0, 0);
 	}
 
 	public Selection(Canvas canvas, int xFirst, int yFirst, int xSecond, int ySecond) {
-		this.canvas = canvas;
+		setCanvas(canvas);
 		this.first = new Point(xFirst, yFirst);
 		this.second = new Point(xSecond, ySecond);
+	}
+
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
 	}
 
 	public SelectedBorder getEditing() {
@@ -63,14 +82,6 @@ public class Selection {
 
 	public void setEditing(SelectedBorder editing) {
 		this.editing = editing;
-	}
-
-	public int getHandleSize() {
-		return handleSize;
-	}
-
-	public Stroke getHandleStroke() {
-		return handleStroke;
 	}
 
 	public int getLeft() {
@@ -227,9 +238,9 @@ public class Selection {
 
 			g2d.setPaint(strokeColor);
 
-			int handleSize = getHandleSize();
+			int handleSize = HANDLE_SIZE;
 
-			double zoom = canvas.getCanvasRenderer().getZoom();
+			double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 			int x_left = (int) Math.round(getLeft() * zoom);
 			int y_top = (int) Math.round(getTop() * zoom);
 			int x_right = (int) Math.round(getRight() * zoom);
@@ -266,7 +277,7 @@ public class Selection {
 				}
 			}
 
-			g2d.setStroke(getHandleStroke());
+			g2d.setStroke(HANDLE_STROKE);
 
 			if (horizontalHandlesVisible()) {
 				// Add highlight to the selected horizontal handle
@@ -308,29 +319,29 @@ public class Selection {
 	}
 
 	public boolean verticalHandlesVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int height = (int) Math.round(getHeight() * zoom);
-		return height > 4 * handleSize;
+		return height > 4 * HANDLE_SIZE;
 	}
 
 	public boolean horizontalHandlesVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int width = (int) Math.round(getWidth() * zoom);
-		return width > 4 * handleSize;
+		return width > 4 * HANDLE_SIZE;
 	}
 
 	public boolean cornersVisible() {
-		double zoom = canvas.getCanvasRenderer().getZoom();
+		double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 		int height = (int) Math.round(getHeight() * zoom);
 		int width = (int) Math.round(getWidth() * zoom);
-		return height > handleSize && width > handleSize;
+		return height > HANDLE_SIZE && width > HANDLE_SIZE;
 	}
 
 	public SelectedBorder checkHandles(int x, int y) {
 		SelectedBorder detected = SelectedBorder.ANY;
 
 		if (editing != SelectedBorder.NONE) {
-			double zoom = canvas.getCanvasRenderer().getZoom();
+			double zoom = canvas.getImageMakerView().getCanvasRenderer().getZoom();
 			int x_left = (int) Math.round(getLeft() * zoom);
 			int y_top = (int) Math.round(getTop() * zoom);
 			int x_right = (int) Math.round(getRight() * zoom);
@@ -338,39 +349,40 @@ public class Selection {
 
 			// Check whether we are hovering over any corners
 			if (cornersVisible()) {
-				if (x >= x_left - handleSize / 2 && x <= x_left + handleSize / 2 && y >= y_top - handleSize / 2
-						&& y <= y_top + handleSize / 2) {
+				if (x >= x_left - HANDLE_SIZE / 2 && x <= x_left + HANDLE_SIZE / 2 && y >= y_top - HANDLE_SIZE / 2
+						&& y <= y_top + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.TOP_LEFT;
-				} else if (x >= x_left - handleSize / 2 && x <= x_left + handleSize / 2
-						&& y >= y_bottom - handleSize / 2 && y <= y_bottom + handleSize / 2) {
+				} else if (x >= x_left - HANDLE_SIZE / 2 && x <= x_left + HANDLE_SIZE / 2
+						&& y >= y_bottom - HANDLE_SIZE / 2 && y <= y_bottom + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.BOTTOM_LEFT;
-				} else if (x >= x_right - handleSize / 2 && x <= x_right + handleSize / 2 && y >= y_top - handleSize / 2
-						&& y <= y_top + handleSize / 2) {
+				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2 && y >= y_top - HANDLE_SIZE
+						/ 2
+						&& y <= y_top + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.TOP_RIGHT;
-				} else if (x >= x_right - handleSize / 2 && x <= x_right + handleSize / 2
-						&& y >= y_bottom - handleSize / 2 && y <= y_bottom + handleSize / 2) {
+				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2
+						&& y >= y_bottom - HANDLE_SIZE / 2 && y <= y_bottom + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.BOTTOM_RIGHT;
 				}
 			}
 
 			// Check whether we are hovering over any vertical handles
 			if (detected == SelectedBorder.ANY && verticalHandlesVisible()) {
-				if (x >= x_left + 1.5 * handleSize && x <= x_right - 1.5 * handleSize && y >= y_top - handleSize / 2
-						&& y <= y_top + handleSize / 2) {
+				if (x >= x_left + 1.5 * HANDLE_SIZE && x <= x_right - 1.5 * HANDLE_SIZE && y >= y_top - HANDLE_SIZE / 2
+						&& y <= y_top + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.TOP;
-				} else if (x >= x_left + 1.5 * handleSize && x <= x_right - 1.5 * handleSize
-						&& y >= y_bottom - handleSize / 2 && y <= y_bottom + handleSize / 2) {
+				} else if (x >= x_left + 1.5 * HANDLE_SIZE && x <= x_right - 1.5 * HANDLE_SIZE
+						&& y >= y_bottom - HANDLE_SIZE / 2 && y <= y_bottom + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.BOTTOM;
 				}
 			}
 
 			// Check whether we are hovering over any horizontal handles
 			if (detected == SelectedBorder.ANY && horizontalHandlesVisible()) {
-				if (x >= x_left - handleSize / 2 && x <= x_left + handleSize / 2 && y >= y_top + 1.5 * handleSize
-						&& y <= y_bottom - 1.5 * handleSize) {
+				if (x >= x_left - HANDLE_SIZE / 2 && x <= x_left + HANDLE_SIZE / 2 && y >= y_top + 1.5 * HANDLE_SIZE
+						&& y <= y_bottom - 1.5 * HANDLE_SIZE) {
 					detected = SelectedBorder.LEFT;
-				} else if (x >= x_right - handleSize / 2 && x <= x_right + handleSize / 2
-						&& y >= y_top + 1.5 * handleSize && y <= y_bottom - 1.5 * handleSize) {
+				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2
+						&& y >= y_top + 1.5 * HANDLE_SIZE && y <= y_bottom - 1.5 * HANDLE_SIZE) {
 					detected = SelectedBorder.RIGHT;
 				}
 			}

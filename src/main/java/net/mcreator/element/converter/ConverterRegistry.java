@@ -54,6 +54,7 @@ import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_4.*;
 import net.mcreator.element.converter.v2025_1.*;
+import net.mcreator.element.converter.v2025_2.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,8 @@ public class ConverterRegistry {
 			new SpecialInformationConverter(),
 			new BlockHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
-			new NoGUISelectedConverter()
+			new NoGUISelectedConverter(),
+			new BlockLegacyMaterialRemover()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),

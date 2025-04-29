@@ -12,7 +12,7 @@ plugins {
 }
 
 repositories {
-    maven { url "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
+    maven { url = "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
     flatDir { dirs 'lib' }
 }
 
@@ -105,9 +105,9 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
-    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.12.1') {
+    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.1') {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
@@ -119,9 +119,9 @@ dependencies {
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.3'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.0'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.17'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.13'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.14'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
@@ -133,24 +133,24 @@ dependencies {
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.17.0' // needed by discord-rpc.jar
 
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.7.1'
-    implementation group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'no-natives'
-    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.5.4') {
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.7.2'
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.6', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.6') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'windows-x86_64', ext: 'dll'
-    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'macos-x86_64', ext: 'dylib'
-    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'macos-arm64', ext: 'dylib'
-    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.5.4', classifier: 'linux-x86_64', ext: 'so'
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.6', classifier: 'windows-x86_64', ext: 'dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.6', classifier: 'macos-x86_64', ext: 'dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.6', classifier: 'macos-arm64', ext: 'dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.6', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
-    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '5.12.1')
+    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '5.12.2')
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 javafx {
-    version = '23.0.2'
+    version = '21.0.7'
     modules = ['javafx.web', 'javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
     // we provide natives during deployment or with SDK
@@ -169,14 +169,14 @@ test {
         events "passed", "skipped", "failed"
         showStandardStreams = true
 
-        showCauses true
-        showStackTraces true
-        showExceptions true
-        exceptionFormat "full"
+        showCauses = true
+        showStackTraces = true
+        showExceptions = true
+        exceptionFormat = "full"
 
         debug {
             events "started", "failed", "passed", "skipped", "standard_error", "standard_out"
-            exceptionFormat "full"
+            exceptionFormat = "full"
         }
         info.events = debug.events
         info.exceptionFormat = debug.exceptionFormat
