@@ -216,9 +216,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			this.image = image;
 			try {
-				loadCanvasFromObject(MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), image));
+				// references will be updated
+				canvas = MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), image, this);
 			} catch (NullPointerException e) {
-				loadCanvasFromBufferedImage(ImageIO.read(image));
+				createCanvasFromBufferedImage(ImageIO.read(image));
 			} catch (MetadataOutdatedException e) {
 				Canvas old = e.getCanvas();
 				if (old != null) {
@@ -228,12 +229,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 							L10N.t("dialog.image_maker.metadata_outdated.title"), JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 					if (option == 1) {
-						loadCanvasFromObject(old);
+						// references were already updated during deserialization
+						// in MetadataManager before MetadataOutdatedException was thrown
+						canvas = old;
 					} else {
-						loadCanvasFromBufferedImage(ImageIO.read(image));
+						createCanvasFromBufferedImage(ImageIO.read(image));
 					}
 				} else {
-					loadCanvasFromBufferedImage(ImageIO.read(image));
+					createCanvasFromBufferedImage(ImageIO.read(image));
 				}
 			}
 			name = image.getName();
@@ -244,15 +247,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		}
 	}
 
-	private void loadCanvasFromObject(Canvas canvas) {
-		canvasRenderer.setCanvas(canvas);
-		toolPanel.setCanvas(canvas);
-	}
-
-	private void loadCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
+	private void createCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
 		Layer layer = Layer.toLayer(bufferedImage, image.getName());
 		canvas = new Canvas(this, layer.getWidth(), layer.getHeight());
-		loadCanvasFromObject(canvas);
 		canvas.add(layer);
 	}
 
@@ -261,7 +258,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			String[] path = image.splitPath();
 			canEdit = false;
 
-			loadCanvasFromBufferedImage(
+			createCanvasFromBufferedImage(
 					Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
 						try {
 							return ImageIO.read(file.getInputStream(entry));
