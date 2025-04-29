@@ -49,6 +49,7 @@ public class StoneCutterRecipeMaker extends AbstractRecipeMaker {
 
 		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
 		sp.setBounds(203, 109, 38, 17);
+		sp.setBounds(196, 108, 53, 22);
 		imagePanel.add(sp);
 
 		drop.setBounds(203, 109, 38, 17);
