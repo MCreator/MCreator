@@ -34,8 +34,6 @@
  *	MCreator note: This file will be REGENERATED on each build.
  */
 
-<#assign hasTextField = false>
-
 package ${package}.init;
 
 <#assign hasEntityModels = false>

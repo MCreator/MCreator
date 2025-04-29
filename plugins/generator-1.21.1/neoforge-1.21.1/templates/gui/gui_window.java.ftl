@@ -68,41 +68,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.entity = container.entity;
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
-		this.initCheckBoxes();
-	}
-
-	public void onGuistateUpdate(int elementType, String name, Object elementState) {
-	    <#if data.getComponentsOfType("TextField")?has_content>
-	    if (elementType == 0 && elementState instanceof String stringState) {
-	        <#list data.getComponentsOfType("TextField") as component>
-	            if (name.equals("${component.getName()}")) {
-	                ${component.getName()}.setValue(stringState);
-	            }
-	        </#list>
-	    }
-	    </#if>
-
-	    <#if data.getComponentsOfType("Checkbox")?has_content>
-	    if (elementType == 1 && elementState instanceof Boolean logicState) {
-	       this.updateLock = true;
-	       <#list data.getComponentsOfType("Checkbox") as component>
-	            if (name.equals("${component.getName()}")) {
-                	if (${component.getName()}.selected() != logicState.booleanValue()) ${component.getName()}.onPress();
-                }
-           </#list>
-           this.updateLock = false;
-	    }
-	    </#if>
-	}
-
-	private void initCheckBoxes() {
-	    <#list data.getComponentsOfType("Checkbox") as component>
-        	<#if hasProcedure(component.isCheckedProcedure)>
-        	    if (<@procedureOBJToConditionCode component.isCheckedProcedure/>) {
-                    ${JavaModName}Menus.sendGuistateUpdate(entity, 1, "${component.getName()}", true);
-                }
-        	</#if>
-        </#list>
 	}
 
 	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {

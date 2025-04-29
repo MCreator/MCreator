@@ -33,13 +33,13 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${JavaModName}GuistateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${JavaModName}MenustateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
 
-	public static final Type<${JavaModName}GuistateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "guistate_update"));
+	public static final Type<${JavaModName}MenustateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "guistate_update"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${JavaModName}GuistateUpdateMessage> STREAM_CODEC = StreamCodec.of(${JavaModName}GuistateUpdateMessage::write, ${JavaModName}GuistateUpdateMessage::read);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${JavaModName}MenustateUpdateMessage> STREAM_CODEC = StreamCodec.of(${JavaModName}MenustateUpdateMessage::write, ${JavaModName}MenustateUpdateMessage::read);
 
-    public static void write(FriendlyByteBuf buffer, ${JavaModName}GuistateUpdateMessage message) {
+    public static void write(FriendlyByteBuf buffer, ${JavaModName}MenustateUpdateMessage message) {
         int elementType = message.elementType;
         Object data = message.elementState;
         buffer.writeInt(elementType);
@@ -52,7 +52,7 @@ package ${package}.network;
         }
     }
 
-    public static ${JavaModName}GuistateUpdateMessage read(FriendlyByteBuf buffer) {
+    public static ${JavaModName}MenustateUpdateMessage read(FriendlyByteBuf buffer) {
         int elementType = buffer.readInt();
         String name = buffer.readUtf();
         Object data = null;
@@ -62,14 +62,14 @@ package ${package}.network;
         if (elementType == 1) {
             data = buffer.readBoolean();
         }
-        return new ${JavaModName}GuistateUpdateMessage(elementType, name, data);
+        return new ${JavaModName}MenustateUpdateMessage(elementType, name, data);
     }
 
-	@Override public Type<${JavaModName}GuistateUpdateMessage> type() {
+	@Override public Type<${JavaModName}MenustateUpdateMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${JavaModName}GuistateUpdateMessage message, final IPayloadContext context) {
+	public static void handleData(final ${JavaModName}MenustateUpdateMessage message, final IPayloadContext context) {
 	    context.enqueueWork(() -> {
         	Player entity = context.player();
         	updateGuistate(entity, message.elementType, message.name, message.elementState);
@@ -94,7 +94,7 @@ package ${package}.network;
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${JavaModName}GuistateUpdateMessage.TYPE, ${JavaModName}GuistateUpdateMessage.STREAM_CODEC, ${JavaModName}GuistateUpdateMessage::handleData);
+		${JavaModName}.addNetworkMessage(${JavaModName}MenustateUpdateMessage.TYPE, ${JavaModName}MenustateUpdateMessage.STREAM_CODEC, ${JavaModName}MenustateUpdateMessage::handleData);
 	}
 
 }
