@@ -42,9 +42,9 @@ import ${package}.${JavaModName};
 <#if hasProcedure(data.onTick)>
 @EventBusSubscriber
 </#if>
-public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor {
 
-	public final static HashMap<String, Object> guistate = new HashMap<>();
+	public final HashMap<String, Object> menuState = new HashMap<>();
 
 	public final Level world;
 	public final Player entity;
@@ -292,8 +292,12 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		</#if>
 	</#if>
 
-	public Map<Integer, Slot> get() {
+	@Override public Map<Integer, Slot> getSlots() {
 		return customSlots;
+	}
+
+	@Override public HashMap<String, Object> getMenuState() {
+		return menuState;
 	}
 
 	<#if hasProcedure(data.onTick)>

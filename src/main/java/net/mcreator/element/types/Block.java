@@ -410,7 +410,7 @@ import java.util.stream.Collectors;
 	}
 
 	public Set<String> getVibrationalEvents() {
-		return vibrationalEvents.stream().map(MappableElement::getMappedValue).collect(Collectors.toSet());
+		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
 	}
 
 	public TextureHolder textureTop() {

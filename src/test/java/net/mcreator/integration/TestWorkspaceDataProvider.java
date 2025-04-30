@@ -1107,8 +1107,9 @@ public class TestWorkspaceDataProvider {
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {

@@ -87,7 +87,7 @@ public class LineTool extends AbstractModificationTool {
 			g.setClip(previousShape);
 		g.dispose();
 
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		return true;
 	}
 }

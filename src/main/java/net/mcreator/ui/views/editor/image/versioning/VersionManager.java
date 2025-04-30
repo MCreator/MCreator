@@ -31,9 +31,11 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 public class VersionManager {
+
 	private static final Logger LOG = LogManager.getLogger("Version Manager");
 
-	private static final int MAX_HEAP_SIZE = 100000000;
+	private static final int MAX_HEAP_SIZE = 100 * 1024 * 1024; // 100 MB
+
 	private final LinkedList<Change> changes = new LinkedList<>();
 	private int index = -1;
 	private final ImageMakerView imageMakerView;

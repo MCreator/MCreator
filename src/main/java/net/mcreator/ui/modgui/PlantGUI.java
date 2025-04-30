@@ -206,7 +206,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
-		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 		renderType.addActionListener(e -> boundingBoxList.modelChanged());
