@@ -73,7 +73,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageHeight = ${data.height};
 	}
 
-	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+	@Override public void updateMenuState(int elementType, String name, Object elementState) {
 		menuStateUpdateActive = true;
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
@@ -84,7 +84,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 		menuStateUpdateActive = false;
-		<#-- onMenuStateUpdate is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 	}
 
 	<#if data.doesPauseGame>
