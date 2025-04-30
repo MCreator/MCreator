@@ -301,6 +301,11 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		return menuState;
 	}
 
+	@Override public ServerPlayer getServerOwner() {
+		if (entity instanceof ServerPlayer owner) return owner;
+		return null;
+	}
+
 	<#if hasProcedure(data.onTick)>
 		@SubscribeEvent public static void onPlayerTick(PlayerTickEvent.Post event) {
 			Player entity = event.getEntity();

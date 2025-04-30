@@ -50,10 +50,19 @@ public class ${JavaModName}Menus {
 
 		Map<Integer, Slot> getSlots();
 
-		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState, boolean needClientUpdate) {
+		ServerPlayer getServerOwner();
+
+		default void sendMenuStateUpdate(int elementType, String name, Object elementState, boolean needClientUpdate) {
 			getMenuState().put(elementType + ":" + name, elementState);
-			if (needClientUpdate && world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
-				accessor.onMenuStateUpdate(elementType, name, elementState);
+			if (getServerOwner() == null) {
+				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+					if (needClientUpdate)
+						accessor.onMenuStateUpdate(elementType, name, elementState);
+					if (!accessor.onUpdating())
+						PacketDistributor.sendToServer(new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
+				}
+			} else {
+				PacketDistributor.sendToPlayer(getServerOwner(), new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
 			}
 		}
 

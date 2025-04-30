@@ -43,6 +43,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
+	private boolean updating;
 
 	<#list textFields as component>
 	EditBox ${component.getName()};
@@ -72,6 +73,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 
 	@Override public void onMenuStateUpdate(int elementType, String name, Object elementState) {
+		this.updating = true;
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
@@ -80,7 +82,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			</#list>
 		}
 		</#if>
+		this.updating = false;
 		<#-- onMenuStateUpdate is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+	}
+
+	@Override public boolean onUpdating() {
+		return this.updating;
 	}
 
 	<#if data.doesPauseGame>
@@ -216,7 +223,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
 			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			${component.getName()}.setMaxLength(8192);
-			${component.getName()}.setResponder(content -> menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false));
+			${component.getName()}.setResponder(content -> menu.sendMenuStateUpdate(0, "${component.getName()}", content, false));
 			<#if component.placeholder?has_content>
 			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			</#if>
@@ -272,12 +279,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			<#if hasProcedure(component.isCheckedProcedure)>boolean ${component.getName()}Selected = <@procedureOBJToConditionCode component.isCheckedProcedure/>;</#if>
 			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
-				.onValueChange((checkbox, value) -> menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value, false))
+				.onValueChange((checkbox, value) -> menu.sendMenuStateUpdate(1, "${component.getName()}", value, false))
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 				if (${component.getName()}Selected)
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true, false);
+					menu.sendMenuStateUpdate(1, "${component.getName()}", true, false);
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});

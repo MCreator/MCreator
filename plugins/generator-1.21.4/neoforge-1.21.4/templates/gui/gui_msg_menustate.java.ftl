@@ -35,66 +35,60 @@ package ${package}.network;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${JavaModName}MenustateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
 
-	public static final Type<${JavaModName}MenustateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "guistate_update"));
+	public static final Type<${JavaModName}MenustateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "menustate_update"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ${JavaModName}MenustateUpdateMessage> STREAM_CODEC = StreamCodec.of(${JavaModName}MenustateUpdateMessage::write, ${JavaModName}MenustateUpdateMessage::read);
 
 	public static void write(FriendlyByteBuf buffer, ${JavaModName}MenustateUpdateMessage message) {
-		int elementType = message.elementType;
+		int eType = message.elementType;
 		Object data = message.elementState;
-		buffer.writeInt(elementType);
+		buffer.writeInt(eType);
 		buffer.writeUtf(message.name);
-		if (elementType == 0) {
+		if (eType == 0) {
 			buffer.writeUtf((String)data);
-		}
-		if (elementType == 1) {
+		} else if (eType == 1) {
 			buffer.writeBoolean((boolean)data);
 		}
 	}
 
 	public static ${JavaModName}MenustateUpdateMessage read(FriendlyByteBuf buffer) {
-		int elementType = buffer.readInt();
+		int eType = buffer.readInt();
 		String name = buffer.readUtf();
 		Object data = null;
-		if (elementType == 0) {
+		if (eType == 0) {
 			data = buffer.readUtf();
 		}
-		if (elementType == 1) {
-		data = buffer.readBoolean();
+		if (eType == 1) {
+			data = buffer.readBoolean();
 		}
-		return new ${JavaModName}MenustateUpdateMessage(elementType, name, data);
+		return new ${JavaModName}MenustateUpdateMessage(eType, name, data);
 	}
 
 	@Override public Type<${JavaModName}MenustateUpdateMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${JavaModName}MenustateUpdateMessage message, final IPayloadContext context) {
+	public static void handleMenustate(final ${JavaModName}MenustateUpdateMessage message, final IPayloadContext context) {
 		context.enqueueWork(() -> {
 			Player entity = context.player();
-			//updateGuistate(entity, message.elementType, message.name, message.elementState);
-			//if (context.flow() == PacketFlow.CLIENTBOUND) {
-			//    ${JavaModName}Screens.onGuistateUpdate(message.elementType, message.name, message.elementState);
-			//}
+			int eType = message.elementType;
+			String name = message.name;
+			Object state = message.elementState;
+
+			if (entity.containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
+				menu.getMenuState().put(eType + ":" + name, state);
+				if (context.flow() == PacketFlow.CLIENTBOUND && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+					accessor.onMenuStateUpdate(eType, name, state);
+				}
+			}
 		}).exceptionally(e -> {
 			context.connection().disconnect(Component.literal(e.getMessage()));
 			return null;
 		});
 	}
 
-	/*public static void updateGuistate(Player entity, int elementType, String name, Object elementState) {
-		if (entity.containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
-			HashMap<String, Object> guistate = menu.getGuistate();
-			if (elementType == 0) {
-				guistate.put("textfield:" + name, elementState);
-			} else if (elementType == 1) {
-				guistate.put("checkbox:" + name, elementState);
-			}
-		}
-	}*/
-
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${JavaModName}MenustateUpdateMessage.TYPE, ${JavaModName}MenustateUpdateMessage.STREAM_CODEC, ${JavaModName}MenustateUpdateMessage::handleData);
+		${JavaModName}.addNetworkMessage(${JavaModName}MenustateUpdateMessage.TYPE, ${JavaModName}MenustateUpdateMessage.STREAM_CODEC, ${JavaModName}MenustateUpdateMessage::handleMenustate);
 	}
 
 }
