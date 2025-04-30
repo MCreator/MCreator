@@ -387,19 +387,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.inventory_automation_place_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("index:number/itemstack:itemstack/direction:direction")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
-		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"), mcreator,
-				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.SERVER,
-				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/blockstate:blockstate"));
-		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"), mcreator,
-				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"),
+				mcreator, L10N.t("elementgui.block.vibration_sensitivity_radius"),
+				AbstractProcedureSelector.Side.SERVER, new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)),
+				130, Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"),
+				mcreator, L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER,
+				true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
 				L10N.t("condition.common.true")).makeInline();
 		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
 				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
 				Dependency.fromString(
-				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
@@ -455,8 +455,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate") ||
-								selectedBlockBase.equals("EndRod")) {
+						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate")
+								|| selectedBlockBase.equals("EndRod")) {
 							hasTransparency.setSelected(true);
 						}
 					}
@@ -633,13 +633,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel northPanel = new JPanel(new GridLayout(1, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
 				L10N.label("elementgui.common.disable_offset")));
 		northPanel.add(disableOffset);
 		disableOffset.setOpaque(false);
+
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
+				L10N.label("elementgui.block.can_walk_through")));
+		northPanel.add(isNotColidable);
 
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
@@ -654,7 +658,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", blockStates);
 
-		JPanel selp = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(11, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -718,10 +722,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.has_gravity")));
 		selp.add(hasGravity);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
-				L10N.label("elementgui.block.can_walk_through")));
-		selp.add(isNotColidable);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
@@ -741,8 +741,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.max_stack_size")));
 		blockItemSettings.add(maxStackSize);
 
-		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"),
-				L10N.label("elementgui.common.rarity")));
+		blockItemSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		blockItemSettings.add(rarity);
 
 		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -929,7 +929,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp, blockItemSettings)),
-				PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));

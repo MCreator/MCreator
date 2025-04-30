@@ -649,7 +649,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
 				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, blockItemSettings)),
-				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp2, soundProperties)))));
 		pane3.setOpaque(false);
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
