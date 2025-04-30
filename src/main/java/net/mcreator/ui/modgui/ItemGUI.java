@@ -135,7 +135,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");

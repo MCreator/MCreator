@@ -505,12 +505,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isLadder>
-	@Override public boolean isLadder(BlockState state, LevelReader world, BlockPos pos, LivingEntity entity) {
-		return true;
-	}
-	</#if>
-
 	<#if data.canRedstoneConnect>
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {

@@ -471,6 +471,8 @@ tags:
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+  - tag: BLOCKS:minecraft:climbable
+    condition: isLadder
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:

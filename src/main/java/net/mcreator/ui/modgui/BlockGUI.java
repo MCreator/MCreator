@@ -109,7 +109,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField name = new VTextField(19);
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
+	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -246,7 +246,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private SingleModElementSelector guiBoundTo;
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 	private final JCheckBox inventoryDropWhenDestroyed = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox inventoryComparatorPower = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector inventoryAutomationTakeCondition;
