@@ -75,8 +75,8 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		outputItem.setMargin(new Insets(0, 0, 0, 0));
 		outputItem.setBounds(210, 58, 28, 28);
 
-		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-		sp.setBounds(210, 109, 42, 17);
+		sp = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+		sp.setBounds(205, 106, 53, 22);
 		imagePanel.add(sp);
 
 		drop.setBounds(212, 109, 38, 17);
