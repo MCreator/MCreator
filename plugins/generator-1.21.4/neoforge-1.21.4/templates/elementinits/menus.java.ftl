@@ -50,10 +50,10 @@ public class ${JavaModName}Menus {
 
 		Map<Integer, Slot> getSlots();
 
-		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState, boolean needClientUpdate) {
+		default void sendMenuStateUpdate(Level world, int elementType, String name, Object elementState) {
 			getMenuState().put(elementType + ":" + name, elementState);
-			if (needClientUpdate && world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
-				accessor.onMenuStateUpdate(elementType, name, elementState);
+			if (world.isClientSide && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+				accessor.updateMenuState(elementType, name, elementState);
 			}
 		}
 
