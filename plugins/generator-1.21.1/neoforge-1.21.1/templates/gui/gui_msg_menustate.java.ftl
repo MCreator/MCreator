@@ -57,8 +57,7 @@ package ${package}.network;
 		Object data = null;
 		if (eType == 0) {
 			data = buffer.readUtf();
-		}
-		if (eType == 1) {
+		} else if (eType == 1) {
 			data = buffer.readBoolean();
 		}
 		return new ${JavaModName}MenustateUpdateMessage(eType, name, data);
@@ -70,15 +69,14 @@ package ${package}.network;
 
 	public static void handleMenustate(final ${JavaModName}MenustateUpdateMessage message, final IPayloadContext context) {
 		context.enqueueWork(() -> {
-			Player entity = context.player();
 			int eType = message.elementType;
 			String name = message.name;
 			Object state = message.elementState;
 
-			if (entity.containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
+			if (context.player().containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
 				menu.getMenuState().put(eType + ":" + name, state);
 				if (context.flow() == PacketFlow.CLIENTBOUND && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
-					accessor.onMenuStateUpdate(eType, name, state);
+					accessor.updateMenuState(eType, name, state);
 				}
 			}
 		}).exceptionally(e -> {
