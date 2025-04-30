@@ -39,7 +39,6 @@ package ${package}.client.gui;
 
 <#compress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
-
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
