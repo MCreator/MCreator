@@ -39,9 +39,12 @@ package ${package}.client.gui;
 
 <#compress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
+
 	private final Level world;
 	private final int x, y, z;
 	private final Player entity;
+
+	private boolean menuStateUpdateActive = false;
 
 	<#list textFields as component>
 	EditBox ${component.getName()};

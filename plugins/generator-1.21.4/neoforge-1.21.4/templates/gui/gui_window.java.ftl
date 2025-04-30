@@ -44,6 +44,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final int x, y, z;
 	private final Player entity;
 
+	private boolean menuStateUpdateActive = false;
+
 	<#list textFields as component>
 	EditBox ${component.getName()};
 	</#list>
@@ -70,8 +72,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.imageWidth = ${data.width};
 		this.imageHeight = ${data.height};
 	}
-
-	private boolean menuStateUpdateActive = false;
 
 	@Override public void updateMenuState(int elementType, String name, Object elementState) {
 		menuStateUpdateActive = true;
