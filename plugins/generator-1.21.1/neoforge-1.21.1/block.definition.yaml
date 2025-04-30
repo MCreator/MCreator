@@ -138,7 +138,9 @@ templates:
     variables: "model=fence_post;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
   - template: json/block.json.ftl
-    condition: "blockBase %= Fence"
+    condition:
+      - hasBlockItem
+      - "blockBase %= Fence"
     writer: json
     variables: "model=fence_inventory;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
@@ -170,7 +172,9 @@ templates:
     variables: "model=template_wall_post;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
   - template: json/block.json.ftl
-    condition: "blockBase %= Wall"
+    condition:
+      - hasBlockItem
+      - "blockBase %= Wall"
     writer: json
     variables: "model=wall_inventory;txname=wall"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
@@ -415,7 +419,9 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_pressed.json"
   - template: json/txblock/button_inventory.json.ftl
-    condition: "blockBase %= Button"
+    condition:
+      - hasBlockItem
+      - "blockBase %= Button"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
