@@ -225,7 +225,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			${component.getName()}.setMaxLength(8192);
 			${component.getName()}.setResponder(content -> {
 				if (!menuStateUpdateActive)
-					menu.sendMenuStateUpdate(world, 0, "${component.getName()}", content, false);
+					menu.sendMenuStateUpdate(entity, 0, "${component.getName()}", content, false);
 			});
 			<#if component.placeholder?has_content>
 			${component.getName()}.setHint(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
@@ -284,13 +284,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
 				.onValueChange((checkbox, value) -> {
 					if (!menuStateUpdateActive)
-						menu.sendMenuStateUpdate(world, 1, "${component.getName()}", value, false);
+						menu.sendMenuStateUpdate(entity, 1, "${component.getName()}", value, false);
 				})
 				<#if hasProcedure(component.isCheckedProcedure)>.selected(${component.getName()}Selected)</#if>
 				.build();
 			<#if hasProcedure(component.isCheckedProcedure)>
 				if (${component.getName()}Selected)
-					menu.sendMenuStateUpdate(world, 1, "${component.getName()}", true, false);
+					menu.sendMenuStateUpdate(entity, 1, "${component.getName()}", true, false);
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
