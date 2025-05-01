@@ -1,7 +1,33 @@
-<#assign models = (data.getModels??)?then(data.getModels(), [])>
-<#if models?has_content>
+<#if data.hasGUITexture?? && data.hasGUITexture()>
 {
   "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": ["gui", "fixed", "ground"],
+        "model": {
+          "type": "minecraft:model",
+          "model": "${modid}:item/${registryname}_gui"
+        }
+      }
+    ],
+    "fallback": {
+      <@defaultItemModel/>
+    }
+  }
+}
+<#else>
+{
+  "model": {
+    <@defaultItemModel/>
+  }
+}
+</#if>
+
+<#macro defaultItemModel>
+  <#assign models = (data.getModels??)?then(data.getModels(), [])>
+  <#if models?has_content>
     "type": "${modid}:legacy_overrides",
     "overrides": [
       <#list models as model>
@@ -34,17 +60,12 @@
       "type": "minecraft:model",
       "model": "${modid}:item/${registryname}"
     }
-  }
-}
-<#else>
-{
-  "model": {
+  <#else>
     "type": "minecraft:model",
-	<#if var_sufix??>
-	"model": "${modid}:item/${registryname}${var_sufix}"
-	<#else>
-	"model": "${modid}:item/${registryname}"
-	</#if>
-  }
-}
-</#if>
+    <#if var_sufix??>
+    "model": "${modid}:item/${registryname}${var_sufix}"
+    <#else>
+    "model": "${modid}:item/${registryname}"
+    </#if>
+  </#if>
+</#macro>
