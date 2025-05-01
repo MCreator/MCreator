@@ -53,11 +53,11 @@ public class ${JavaModName}Menus {
 		default void sendMenuStateUpdate(Player player, int elementType, String name, Object elementState, boolean needClientUpdate) {
 			getMenuState().put(elementType + ":" + name, elementState);
 			if (player instanceof ServerPlayer _player) {
-				PacketDistributor.sendToPlayer(_player, new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
+				PacketDistributor.sendToPlayer(_player, new ${JavaModName}MenuStateUpdateMessage(elementType, name, elementState));
 			} else {
 				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor && needClientUpdate)
 					accessor.updateMenuState(elementType, name, elementState);
-				PacketDistributor.sendToServer(new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
+				PacketDistributor.sendToServer(new ${JavaModName}MenuStateUpdateMessage(elementType, name, elementState));
 			}
 		}
 
