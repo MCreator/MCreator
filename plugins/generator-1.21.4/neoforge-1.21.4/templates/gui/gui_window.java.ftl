@@ -44,7 +44,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final int x, y, z;
 	private final Player entity;
 
-	private boolean menuStateUpdateActive;
+	private boolean menuStateUpdateActive = false;
 
 	<#list textFields as component>
 	EditBox ${component.getName()};

@@ -16,7 +16,7 @@ global_templates:
   - template: elementinits/screens.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
   - template: gui/gui_msg_menustate.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameMenustateUpdateMessage.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameMenuStateUpdateMessage.java"
 
 localizationkeys:
   - fromlist: data.getFixedTextLabels()
