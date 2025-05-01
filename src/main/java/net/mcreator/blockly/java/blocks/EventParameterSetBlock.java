@@ -42,6 +42,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 			if (procedure.getExternalTrigger() != null) {
 				ExternalTrigger trigger = null;
 
+				//Try get the trigger instance for later.
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
@@ -53,7 +54,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 				if (trigger == null) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.event_parameter_set.not_setter")));
+							L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
 					return;
 				}
 
@@ -114,7 +115,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				}
 			} else {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.event_parameter_set.not_setter")));
+						L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
