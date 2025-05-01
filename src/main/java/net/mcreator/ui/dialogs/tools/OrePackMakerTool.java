@@ -188,7 +188,6 @@ public class OrePackMakerTool {
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = name + " Ore";
-		oreBlock.material = new Material(workspace, "ROCK");
 		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
@@ -204,6 +203,7 @@ public class OrePackMakerTool {
 			oreBlock.vanillaToolTier = "DIAMOND";
 		}
 		oreBlock.requiresCorrectTool = true;
+		oreBlock.noteBlockInstrument = "BASEDRUM";
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
@@ -222,7 +222,6 @@ public class OrePackMakerTool {
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlockBlock.name = "Block of " + name;
 		oreBlockBlock.customModelName = "Single texture";
-		oreBlockBlock.material = new Material(workspace, "IRON");
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
 		oreBlockBlock.resistance = 10.0;

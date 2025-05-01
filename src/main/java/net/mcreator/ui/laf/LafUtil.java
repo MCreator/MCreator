@@ -43,9 +43,10 @@ public class LafUtil {
 					.invoke(appContext, key);
 
 			if (defaultStyles != null) {
-				defaultStyles.addRule(
-						"a {color: #" + Integer.toHexString(Theme.current().getInterfaceAccentColor().getRGB())
-								.substring(2) + ";}");
+				//@formatter:off
+				defaultStyles.addRule("a { color: #" + Integer.toHexString(Theme.current().getInterfaceAccentColor().getRGB()).substring(2) + "; }");
+				defaultStyles.addRule("small { font-size: 85%; }");
+				//@formatter:on
 
 				appContext.getClass().getMethod("put", Object.class, Object.class)
 						.invoke(appContext, key, defaultStyles);

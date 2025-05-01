@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
@@ -31,7 +30,6 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -55,10 +53,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -78,8 +73,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BlockGUI extends ModElementGUI<Block> {
-
-	private final DataListComboBox material = new DataListComboBox(mcreator, ElementUtil.loadMaterials());
 
 	private BlockTexturesSelector textures;
 
@@ -116,7 +109,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField name = new VTextField(19);
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
+	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -165,6 +158,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox noteBlockInstrument = new DataListComboBox(mcreator,
+			ElementUtil.loadNoteBlockInstruments());
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -191,6 +186,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+
+	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
+	private GameEventListField vibrationalEvents;
+	private NumberProcedureSelector vibrationSensitivityRadius;
+	private ProcedureSelector canReceiveVibrationCondition;
+	private ProcedureSelector onReceivedVibration;
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
 			new String[] { "<html>No rotation<br><small>Fixed block orientation",
@@ -234,7 +235,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private SingleModElementSelector guiBoundTo;
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 	private final JCheckBox inventoryDropWhenDestroyed = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox inventoryComparatorPower = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector inventoryAutomationTakeCondition;
@@ -249,7 +250,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
+	private final JComboBox<String> blockSetType = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
+			Map.entry("STONE", "elementgui.block.block_set_type.stone"),
+			Map.entry("IRON", "elementgui.block.block_set_type.iron")
+			//@formatter:on
+	);
 
+	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -273,14 +282,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		material.setPrototypeDisplayValue(new DataListEntry.Dummy("No legacy material"));
-
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 
 		generateFeature.setOpaque(false);
+
+		vibrationalEvents = new GameEventListField(mcreator, true);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -367,6 +376,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.inventory_automation_place_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("index:number/itemstack:itemstack/direction:direction")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("block/vibration_sensitivity_radius"), mcreator,
+				L10N.t("elementgui.block.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.SERVER,
+				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("block/receive_vibration_condition"), mcreator,
+				L10N.t("elementgui.block.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+				L10N.t("condition.common.true")).makeInline();
+		onReceivedVibration = new ProcedureSelector(this.withEntry("block/on_received_vibration"), mcreator,
+				L10N.t("elementgui.block.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
+				Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
@@ -382,6 +404,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
+			blockSetType.setEnabled(false);
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
@@ -390,7 +413,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setSelected(false);
 
 				String selectedBlockBase = blockBase.getSelectedItem();
-				if (selectedBlockBase.equals("Pane")) {
+				switch (selectedBlockBase) {
+				case "Pane" -> {
 					connectedSides.setEnabled(false);
 					connectedSides.setSelected(false);
 
@@ -398,7 +422,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
 						lightOpacity.setValue(0);
 					}
-				} else if (selectedBlockBase.equals("Leaves")) {
+				}
+				case "Leaves" -> {
 					hasTransparency.setEnabled(false);
 					transparencyType.setEnabled(false);
 
@@ -408,16 +433,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
 					}
-				} else {
+				}
+				case "PressurePlate", "TrapDoor", "Door", "Button", "Fence" -> {
+					blockSetType.setEnabled(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if ("Wall".equals(selectedBlockBase) || "Fence".equals(selectedBlockBase) || "TrapDoor".equals(
-								selectedBlockBase) || "Door".equals(selectedBlockBase) || "FenceGate".equals(
-								selectedBlockBase) || "EndRod".equals(selectedBlockBase) || "PressurePlate".equals(
-								selectedBlockBase) || "Button".equals(selectedBlockBase)) {
+						hasTransparency.setSelected(true);
+					}
+				}
+				default -> {
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate") ||
+								selectedBlockBase.equals("EndRod")) {
 							hasTransparency.setSelected(true);
 						}
 					}
+				}
 				}
 			}
 
@@ -453,13 +485,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		txblock4.add("Center", PanelUtils.gridElements(3, 2,
+		txblock4.add("Center", PanelUtils.gridElements(4, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
+						L10N.label("elementgui.block.block_set_type")), blockSetType,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
 						L10N.label("elementgui.block.item_texture")), PanelUtils.centerInPanel(itemTexture),
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
 
+		blockSetType.setEnabled(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -500,6 +535,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.deriveFont(transparencyType, 16);
 		ComponentUtils.deriveFont(blockBase, 16);
+		ComponentUtils.deriveFont(blockSetType, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
 		JPanel visualRenderingSettings = new JPanel(new GridLayout(6, 2, 0, 2));
@@ -607,14 +643,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", blockStates);
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(13, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
+		ignitedByLava.setOpaque(false);
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
 		requiresCorrectTool.setOpaque(false);
@@ -681,10 +718,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/material"),
-				L10N.label("elementgui.block.material")));
-		selp.add(material);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
@@ -768,6 +801,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.color_on_map")));
 		advancedProperties.add(colorOnMap);
 
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/note_block_instrument"),
+				L10N.label("elementgui.block.note_block_instrument")));
+		advancedProperties.add(noteBlockInstrument);
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_plants_grow"),
 				L10N.label("elementgui.block.can_plants_grow")));
 		advancedProperties.add(plantsGrowOn);
@@ -783,6 +820,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/enchantments_bonus"),
 				L10N.label("elementgui.block.enchantments_bonus")));
 		advancedProperties.add(enchantPowerBonus);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		advancedProperties.add(ignitedByLava);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.block.flammability")));
@@ -848,7 +889,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
+				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(selp),
+						PanelUtils.centerAndSouthElement(selpWrap, soundProperties))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1020,6 +1062,38 @@ public class BlockGUI extends ModElementGUI<Block> {
 		invpropsbottom.add(inventoryAutomationTakeCondition);
 		invpropsbottom.add(inventoryAutomationPlaceCondition);
 
+		JPanel vibrationPanel = new JPanel(new GridLayout(2, 2, 0, 2));
+		vibrationPanel.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
+				L10N.label("elementgui.block.sensitive_to_vibration")));
+		vibrationPanel.add(sensitiveToVibration);
+
+		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
+				L10N.label("elementgui.block.vibrational_events")));
+		vibrationPanel.add(vibrationalEvents);
+
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
+
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationPanel, vibrationEvents, 2, 2);
+		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.properties_vibration"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
 		JComponent invpropsall = PanelUtils.centerAndSouthElement(props, invpropsbottom, 2, 2);
 
 		invpropsall.setBorder(BorderFactory.createTitledBorder(
@@ -1027,7 +1101,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.settings_inventory"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		invblock.add("Center", invpropsall);
+		invblock.add("Center", PanelUtils.westAndEastElement(invpropsall, PanelUtils.pullElementUp(vibrationMerger)));
 
 		invblock.add("North", HelpUtils.wrapWithHelpButton(this.withEntry("block/has_inventory"), hasInventory));
 
@@ -1134,6 +1208,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
 		page1group.addValidationElement(textures);
+		page1group.addValidationElement(itemTexture);
+
+		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
+			Model model = renderType.getSelectedItem();
+			return model != null && model.getType() == Model.Type.JAVA;
+		}));
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
@@ -1213,6 +1293,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isFluidTank.setEnabled(hasInventory.isSelected());
 		fluidCapacity.setEnabled(hasInventory.isSelected());
 		fluidRestrictions.setEnabled(hasInventory.isSelected());
+		sensitiveToVibration.setEnabled(hasInventory.isSelected());
+		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
+		vibrationalEvents.setEnabled(hasInventory.isSelected());
+		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
+		onReceivedVibration.setEnabled(hasInventory.isSelected());
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1236,6 +1321,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.TOP_BOTTOM_SIDES);
 		} else {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
+		}
+
+		Model model = renderType.getSelectedItem();
+		if (model != null && model.getType() == Model.Type.JAVA) {
+			hasInventory.setSelected(true);
+			hasInventory.setEnabled(false);
+		} else {
+			hasInventory.setEnabled(true);
 		}
 	}
 
@@ -1281,6 +1374,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRedstoneOff.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
+		onReceivedVibration.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1288,6 +1382,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		additionalHarvestCondition.refreshListKeepSelected();
+		vibrationSensitivityRadius.refreshListKeepSelected();
+		canReceiveVibrationCondition.refreshListKeepSelected();
 
 		inventoryAutomationTakeCondition.refreshListKeepSelected();
 		inventoryAutomationPlaceCondition.refreshListKeepSelected();
@@ -1296,7 +1392,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-								.collect(Collectors.toList())));
+								.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
@@ -1376,7 +1472,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.setSelectedProcedure(block.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(block.onBonemealSuccess);
 		lightOpacity.setValue(block.lightOpacity);
-		material.setSelectedItem(block.material.getUnmappedValue());
 		transparencyType.setSelectedItem(block.transparencyType);
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
@@ -1386,6 +1481,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			blockBase.setSelectedItem(block.blockBase);
 		}
+		blockSetType.setSelectedItem(block.blockSetType);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1407,6 +1503,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setSelected(block.isReplaceable);
 		canProvidePower.setSelected(block.canProvidePower);
 		colorOnMap.setSelectedItem(block.colorOnMap);
+		noteBlockInstrument.setSelectedItem(block.noteBlockInstrument);
 		offsetType.setSelectedItem(block.offsetType);
 		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
 		creativePickItem.setBlock(block.creativePickItem);
@@ -1414,6 +1511,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		beaconColorModifier.setColor(block.beaconColorModifier);
 
+		ignitedByLava.setSelected(block.ignitedByLava);
 		flammability.setValue(block.flammability);
 		fireSpreadSpeed.setValue(block.fireSpreadSpeed);
 
@@ -1425,6 +1523,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		disableOffset.setSelected(block.disableOffset);
 		boundingBoxList.setEntries(block.boundingBoxes);
+
+		sensitiveToVibration.setSelected(block.sensitiveToVibration);
+		vibrationSensitivityRadius.setSelectedProcedure(block.vibrationSensitivityRadius);
+		vibrationalEvents.setListElements(block.vibrationalEvents);
+		canReceiveVibrationCondition.setSelectedProcedure(block.canReceiveVibrationCondition);
+		onReceivedVibration.setSelectedProcedure(block.onReceivedVibration);
 
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
@@ -1485,7 +1589,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
 		block.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
 		block.lightOpacity = (int) lightOpacity.getValue();
-		block.material = new Material(mcreator.getWorkspace(), material.getSelectedItem());
 		block.tickRate = (int) tickRate.getValue();
 		block.isCustomSoundType = customSoundType.isSelected();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
@@ -1560,11 +1663,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.noteBlockInstrument = noteBlockInstrument.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 
+		block.ignitedByLava = ignitedByLava.isSelected();
 		block.flammability = (int) flammability.getValue();
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 
@@ -1574,8 +1679,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
 
+		block.sensitiveToVibration = sensitiveToVibration.isSelected();
+		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
+		block.vibrationalEvents = vibrationalEvents.getListElements();
+		block.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();
+		block.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
+
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
+		block.blockSetType = (String) blockSetType.getSelectedItem();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
@@ -1583,6 +1695,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 2;
 		else if (model.getType() == Model.Type.OBJ)
 			block.renderType = 3;
+		else if (model.getType() == Model.Type.JAVA)
+			block.renderType = 4;
 		else if (model.equals(singleTexture))
 			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 11 : 110;
 		else if (model.equals(cross))

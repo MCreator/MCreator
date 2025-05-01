@@ -62,19 +62,21 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();
 	}
 
-	@Override public final void setEntries(List<U> newEntries) {
+	@Override public final void setEntries(@Nullable List<U> newEntries) {
 		entryList.clear();
 		entries.removeAll();
-		newEntries.forEach(e -> {
-			T entry = newEntry(entries, entryList, false);
-			if (entry != null) {
-				entry.reloadDataLists();
-				entryList.add(entry);
-				entry.setEnabled(isEnabled());
-				entry.setEntry(e);
-				registerEntryUI(entry);
-			}
-		});
+		if (newEntries != null) {
+			newEntries.forEach(e -> {
+				T entry = newEntry(entries, entryList, false);
+				if (entry != null) {
+					entry.reloadDataLists();
+					entryList.add(entry);
+					entry.setEnabled(isEnabled());
+					entry.setEntry(e);
+					registerEntryUI(entry);
+				}
+			});
+		}
 	}
 
 	@Override public void reloadDataLists() {

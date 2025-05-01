@@ -1,0 +1,1 @@
+Se esta lista não estiver vazia, este item pode ser usado em um tear para fabricar as figuras para estandarte selecionadas.

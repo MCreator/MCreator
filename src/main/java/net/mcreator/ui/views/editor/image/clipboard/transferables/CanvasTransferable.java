@@ -34,7 +34,7 @@ public class CanvasTransferable implements Transferable {
 	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor };
 
 	public CanvasTransferable(Canvas canvas) {
-		image = canvas.getSelection().cropCanvas(canvas.getCanvasRenderer().render());
+		image = canvas.getSelection().cropCanvas(canvas.getImageMakerView().getCanvasRenderer().render());
 	}
 
 	public BufferedImage getRender() {

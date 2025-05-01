@@ -28,6 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -294,7 +295,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
 
-		JPanel spawnproperties = new JPanel(new GridLayout(12, 2, 25, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(13, 2, 25, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -312,6 +313,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/coverage_estimate"),
 				L10N.label("elementgui.biome.coverage_estimate")));
 		spawnproperties.add(PanelUtils.centerInPanel(coverageEstimate));
+
+		spawnproperties.add(new JEmptyBox());
+		spawnproperties.add(L10N.label("elementgui.biome.gen_params_warning"));
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_temperature"),
 				L10N.label("elementgui.biome.gen_temperature")));

@@ -6,6 +6,11 @@
       "text": "checkBoxName"
     },
     {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
       "type": "field_image",
       "src": "./res/client.png",
       "width": 8,
@@ -20,11 +25,11 @@
     "fields": [
       "checkbox"
     ],
-    "dependencies": [
-      {
-        "name": "guistate",
-        "type": "map"
-      }
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "entity"
     ]
   }
 }

@@ -111,7 +111,6 @@ public class ${name}Block extends
 
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
-		${data.material}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		</#if>
@@ -174,6 +173,12 @@ public class ${name}Block extends
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
+		<#if data.ignitedByLava>
+			.ignitedByLava()
+		</#if>
+		<#if data.noteBlockInstrument != "harp">
+			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
@@ -187,30 +192,18 @@ public class ${name}Block extends
 	</#macro>
 
 	public ${name}Block() {
-		<#if data.blockBase?has_content && data.blockBase == "Stairs">
-			super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
-		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
-		    <#if data.material.getUnmappedValue() == "WOOD">
-		        super(BlockSetType.OAK, <@blockProperties/>);
-		    <#else>
-		        super(BlockSetType.IRON, <@blockProperties/>);
-		    </#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "Button">
-			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(BlockSetType.OAK, 30, <@blockProperties/>);
+		<#if data.blockBase?has_content>
+			<#if data.blockBase == "Stairs">
+				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
+			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
+				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
+			<#elseif data.blockBase == "Button">
+				super(BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30<#else>20</#if>, <@blockProperties/>);
+			<#elseif data.blockBase == "FenceGate">
+				super(WoodType.OAK, <@blockProperties/>);
 			<#else>
-		        super(BlockSetType.STONE, 20, <@blockProperties/>);
+				super(<@blockProperties/>);
 			</#if>
-		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
-			<#if data.material.getUnmappedValue() == "IRON">
-				super(BlockSetType.IRON, <@blockProperties/>);
-			<#elseif data.material.getUnmappedValue() == "WOOD">
-				super(BlockSetType.OAK, <@blockProperties/>);
-			<#else>
-				super(BlockSetType.STONE, <@blockProperties/>);
-			</#if>
-		<#elseif data.blockBase?has_content && data.blockBase == "FenceGate">
-			super(WoodType.OAK, <@blockProperties/>);
 		<#else>
 			super(<@blockProperties/>);
 		</#if>
@@ -234,6 +227,12 @@ public class ${name}Block extends
 	    );
 		</#if>
 	}
+
+	<#if data.renderType() == 4>
+    @Override protected RenderShape getRenderShape(BlockState state) {
+		return RenderShape.INVISIBLE;
+	}
+	</#if>
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
    	@Override public float getExplosionResistance() {
@@ -502,12 +501,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isLadder>
-	@Override public boolean isLadder(BlockState state, LevelReader world, BlockPos pos, LivingEntity entity) {
-		return true;
-	}
-	</#if>
-
 	<#if data.canRedstoneConnect>
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
@@ -662,6 +655,18 @@ public class ${name}Block extends
 				return 0;
 		}
 	    </#if>
+	</#if>
+
+	<#if data.sensitiveToVibration && data.hasInventory>
+	@Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockstate, BlockEntityType<T> blockEntityType) {
+		if (!level.isClientSide && blockEntityType == ${JavaModName}BlockEntities.${REGISTRYNAME}.get()) {
+			return (_level, pos, state, blockEntity) -> {
+				if (blockEntity instanceof ${name}BlockEntity be)
+					VibrationSystem.Ticker.tick(_level, be.getVibrationData(), be.getVibrationUser());
+			};
+		}
+		return null;
+	}
 	</#if>
 
 	<#if data.tintType != "No tint">

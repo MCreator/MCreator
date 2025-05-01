@@ -336,20 +336,39 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
 			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:item");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleitem1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleitem2");
+			}
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
 			workspace.getTagElements().get(tag).add("~minecraft:dirt");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:block");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Exampleblock1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleblock2");
+			}
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:creeper");
 			workspace.getTagElements().get(tag).add("~minecraft:zombie");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:entity");
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
+					== GeneratorStats.CoverageStatus.FULL) {
+				workspace.getTagElements().get(tag).add("CUSTOM:Examplelivingentity1");
+				workspace.getTagElements().get(tag).add("~CUSTOM:Examplelivingentity2");
+			}
 
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:plains");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:biome");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
@@ -359,6 +378,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stronghold");
 			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:structure");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
@@ -367,6 +387,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:damage_type");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
@@ -375,6 +396,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:enchantment");
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
 				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
@@ -383,6 +405,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
 			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:game_event");
 			workspace.getTagElements().get(tag).add("minecraft:block_attach");
 			workspace.getTagElements().get(tag).add("~minecraft:container_open");
 
@@ -1080,8 +1103,9 @@ public class TestWorkspaceDataProvider {
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
@@ -1160,6 +1184,7 @@ public class TestWorkspaceDataProvider {
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			item.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 
@@ -1413,6 +1438,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
+			block.ignitedByLava = _true;
 			block.flammability = 5;
 			block.fireSpreadSpeed = 12;
 			block.dropAmount = 3;
@@ -1429,8 +1455,7 @@ public class TestWorkspaceDataProvider {
 			block.jumpFactor = 17.732;
 			block.lightOpacity = new int[] { 7, 2, 0,
 					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
-			block.material = new Material(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadMaterials()));
+			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 			block.tickRate = _true ? 0 : 24;
 			block.isCustomSoundType = !_true;
 			block.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -1452,6 +1477,8 @@ public class TestWorkspaceDataProvider {
 			block.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			block.noteBlockInstrument = getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("noteblockinstruments"));
 			block.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			block.beaconColorModifier = emptyLists ? null : Color.cyan;
@@ -1481,6 +1508,16 @@ public class TestWorkspaceDataProvider {
 				block.inventoryInSlotIDs.add(7);
 				block.inventoryInSlotIDs.add(11);
 			}
+			block.sensitiveToVibration = _true;
+			block.vibrationalEvents = new ArrayList<>();
+			if (!emptyLists) {
+				block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+						.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
+			}
+			block.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
+			block.canReceiveVibrationCondition = new Procedure("condition1");
+			block.onReceivedVibration = new Procedure("procedure1");
 			block.hasEnergyStorage = _true;
 			block.energyCapacity = 123;
 			block.energyInitial = 22;
@@ -2077,6 +2114,7 @@ public class TestWorkspaceDataProvider {
 		tool.onItemInUseTick = new Procedure("procedure7");
 		tool.onEntitySwing = new Procedure("procedure11");
 		tool.texture = new TextureHolder(modElement.getWorkspace(), "test");
+		tool.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
 		tool.blockingRenderType = 0;

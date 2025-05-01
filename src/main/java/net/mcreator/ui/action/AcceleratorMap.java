@@ -105,23 +105,17 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSaveAs, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorSwapColors, KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
 		//IE Tools
 		actionKeyStrokeMap.put(actionRegistry.imageEditorResizeCanvas, KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorPencil,
-				KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorLine,
-				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorShape,
-				KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorEraser,
-				KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorStamp,
-				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorFloodFill,
-				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker,
-				KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.SHIFT_DOWN_MASK));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorPencil, KeyStroke.getKeyStroke(KeyEvent.VK_D, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorLine, KeyStroke.getKeyStroke(KeyEvent.VK_L, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorShape, KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorEraser, KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorStamp, KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorFloodFill, KeyStroke.getKeyStroke(KeyEvent.VK_F, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker, KeyStroke.getKeyStroke(KeyEvent.VK_P, 0));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorColorize,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorDesaturate, KeyStroke.getKeyStroke(KeyEvent.VK_D,

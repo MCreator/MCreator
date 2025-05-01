@@ -48,7 +48,7 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -70,6 +70,7 @@ import java.util.stream.Collectors;
 public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureSelectionButton texture;
+	private TextureSelectionButton guiTexture;
 
 	private StringListProcedureSelector specialInformation;
 
@@ -135,7 +136,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
@@ -253,6 +254,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
+		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		guiTexture.setOpaque(false);
+
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
 
@@ -260,13 +264,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(renderType, 16);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
-
+		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
-				PanelUtils.join(renderType)));
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"), L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -544,7 +549,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		page1group.addValidationElement(texture);
 
@@ -668,6 +673,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTexture(item.texture);
+		guiTexture.setTexture(item.guiTexture);
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -787,6 +793,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				.map(NonMappableElement::getUnmappedValue).collect(Collectors.toList());
 
 		item.texture = texture.getTextureHolder();
+		item.guiTexture = guiTexture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 

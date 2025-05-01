@@ -127,8 +127,6 @@ public class Theme {
 			overrides.put("Component.focusWidth", "0");
 			overrides.put("Component.innerFocusWidth", "0");
 
-			overrides.put("ScrollBar.width", "7");
-
 			overrides.put("Table.showHorizontalLines", "true");
 			overrides.put("Table.showVerticalLines", "true");
 
