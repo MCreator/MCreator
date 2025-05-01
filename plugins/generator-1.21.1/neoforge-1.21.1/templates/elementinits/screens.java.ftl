@@ -48,7 +48,7 @@ package ${package}.init;
 	}
 
 	public interface ScreenAccessor {
-		void onMenuStateUpdate(int elementType, String name, Object elementState);
+		void updateMenuState(int elementType, String name, Object elementState);
 	}
 
 	<#if hasEntityModels>
