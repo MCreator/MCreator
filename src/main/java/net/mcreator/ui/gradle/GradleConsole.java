@@ -43,6 +43,7 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -76,7 +77,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class GradleConsole extends JPanel {
+public class GradleConsole extends JPanel implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
@@ -924,6 +925,16 @@ public class GradleConsole extends JPanel {
 
 	@Nullable public JVMDebugClient getDebugClient() {
 		return debugClient;
+	}
+
+	@Override public void search(@Nullable String searchTerm) {
+		if (!searchen.isSelected())
+			searchen.doClick();
+
+		searchBar.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			searchBar.getSearchField().setText(searchTerm);
 	}
 
 }

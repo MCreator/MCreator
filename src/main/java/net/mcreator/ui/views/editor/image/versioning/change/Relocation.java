@@ -39,12 +39,12 @@ public class Relocation extends MultiStateChange {
 	@Override public void apply() {
 		layer.setX(after.x);
 		layer.setY(after.y);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public void revert() {
 		layer.setX(before.x);
 		layer.setY(before.y);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 }

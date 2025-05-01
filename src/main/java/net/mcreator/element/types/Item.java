@@ -131,7 +131,7 @@ import java.util.*;
 
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
-		this.inventoryStackSize = 64;
+		this.inventoryStackSize = 99;
 		this.saturation = 0.3f;
 		this.animation = "eat";
 

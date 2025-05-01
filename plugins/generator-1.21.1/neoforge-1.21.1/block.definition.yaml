@@ -6,7 +6,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
   - template: block/blockentity_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/block/@NAMERenderer.java"
-    condition: "renderType() #=  4"
+    condition: "renderType() #= 4"
 
   # Worldgen
   - template: json/block_feature_biome_modifier.json.ftl
@@ -443,6 +443,8 @@ tags:
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+  - tag: BLOCKS:minecraft:climbable
+    condition: isLadder
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:

@@ -1,17 +1,17 @@
 {
-<#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
-  "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
-  "textures": {
-    <@textures data.getItemModelTextureMap(var_item)/>
-    "particle": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
-  }
-<#else>
-  "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
-  "textures": {
-    <@textures data.getTextureMap()/>
-    "particle": "${data.texture.format("%s:item/%s")}"
-  }
-</#if>
+    <#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
+    "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
+    "textures": {
+      <@textures data.getItemModelTextureMap(var_item)/>
+      "particle": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
+    }
+    <#else>
+    "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
+    "textures": {
+      <@textures data.getTextureMap()/>
+      "particle": "${data.texture.format("%s:item/%s")}"
+    }
+    </#if>
     <#if data.getModels?? && data.getModels()?has_content>,
     "overrides": [
         <#list data.getModels() as model>

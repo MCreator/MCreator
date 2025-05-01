@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +17,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.views.editor.image.versioning.change;
+package net.mcreator.ui.search;
 
-public enum Direction {
-	UP, DOWN
+import javax.annotation.Nullable;
+import javax.swing.text.JTextComponent;
+
+public interface ITextFieldSearchable extends ISearchable {
+
+	@Override default void search(@Nullable String searchTerm) {
+		JTextComponent component = getSearchTextField();
+		if (component == null ||! component.isShowing()) {
+			return;
+		}
+
+		component.requestFocusInWindow();
+		if (searchTerm != null) {
+			component.setText(searchTerm);
+		}
+	}
+
+	JTextComponent getSearchTextField();
+
 }
