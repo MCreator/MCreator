@@ -54,13 +54,9 @@
       </#list>
     ],
     "fallback": <@modelRef data />
-  }
-}
-<#else>
-{
-  "model": <@modelRef data var_sufix!"" />
-}
-</#if>
+  <#else>
+	"model": <@modelRef data var_sufix!"" />
+  </#if>
 </#macro>
 
 <#macro modelRef model suffix="" itemIndex=-1>
