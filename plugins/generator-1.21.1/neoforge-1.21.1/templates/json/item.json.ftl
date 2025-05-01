@@ -1,12 +1,4 @@
 {
-<#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
-	<#assign parent = "builtin/entity">
-	<#assign texture = "particle">
-	"gui_light": "front",
-<#else>
-	<#assign parent = "item/generated">
-	<#assign texture = "layer0">
-</#if>
     <#if parent??><#assign guiTexture = parent.guiTexture><#elseif data.guiTexture??><#assign guiTexture = data.guiTexture></#if>
     <#if guiTexture?has_content>
     "loader": "neoforge:separate_transforms",
@@ -35,6 +27,14 @@
     <@modelDefinition/>
     </#if>
     <#macro modelDefinition>
+	<#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
+		<#assign parent = "builtin/entity">
+		<#assign texture = "particle">
+		"gui_light": "front",
+	<#else>
+		<#assign parent = "item/generated">
+		<#assign texture = "layer0">
+	</#if>
     "parent": "${parent}",
     "textures": {
         <#if var_item??>

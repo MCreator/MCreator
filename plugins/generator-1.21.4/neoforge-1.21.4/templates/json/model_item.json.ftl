@@ -61,6 +61,7 @@
   "model": <@modelRef data var_sufix!"" />
 }
 </#if>
+</#macro>
 
 <#macro modelRef model suffix="" itemIndex=-1>
 	<#if model.hasCustomJAVAModel?? && model.hasCustomJAVAModel()>
