@@ -75,6 +75,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 	@Override public void updateMenuState(int elementType, String name, Object elementState) {
 		menuStateUpdateActive = true;
+
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
@@ -84,6 +85,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 		menuStateUpdateActive = false;
+
 		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 	}
 
