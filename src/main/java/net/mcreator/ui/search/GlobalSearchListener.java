@@ -50,7 +50,8 @@ public class GlobalSearchListener {
 				private static final int DOUBLE_SHIFT_THRESHOLD_MS = 400;
 
 				@Override public boolean dispatchKeyEvent(KeyEvent e) {
-					if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_SHIFT) {
+					if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_SHIFT
+							&& e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK) {
 						long currentTime = System.currentTimeMillis();
 						if (currentTime - lastShiftTime < DOUBLE_SHIFT_THRESHOLD_MS) {
 							Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager()
