@@ -55,9 +55,8 @@ public class ${JavaModName}Menus {
 			if (player instanceof ServerPlayer _player) {
 				PacketDistributor.sendToPlayer(_player, new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
 			} else {
-				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor && needClientUpdate) {
+				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor && needClientUpdate)
 					accessor.updateMenuState(elementType, name, elementState);
-				}
 				PacketDistributor.sendToServer(new ${JavaModName}MenustateUpdateMessage(elementType, name, elementState));
 			}
 		}

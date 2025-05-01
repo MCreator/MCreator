@@ -44,7 +44,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private final int x, y, z;
 	private final Player entity;
 
-	private boolean menuStateUpdateActive;
+  private boolean menuStateUpdateActive;
 
 	<#list textFields as component>
 	EditBox ${component.getName()};
@@ -75,6 +75,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 	@Override public void updateMenuState(int elementType, String name, Object elementState) {
 		menuStateUpdateActive = true;
+
 		<#if textFields?has_content>
 		if (elementType == 0 && elementState instanceof String stringState) {
 			<#list textFields as component>
@@ -83,8 +84,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			</#list>
 		}
 		</#if>
-		menuStateUpdateActive = false;
+
 		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+
+		menuStateUpdateActive = false;
 	}
 
 	<#if data.doesPauseGame>
