@@ -46,7 +46,7 @@ public class ${JavaModName}Menus {
 	</#list>
 
 	public interface MenuAccessor {
-		HashMap<String, Object> getMenuState();
+		Map<String, Object> getMenuState();
 
 		Map<Integer, Slot> getSlots();
 
