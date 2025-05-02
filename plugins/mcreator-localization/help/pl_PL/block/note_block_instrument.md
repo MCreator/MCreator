@@ -1,0 +1,1 @@
+Ten parametr kontroluje instrument bloków dźwiękowych postawionych na tym bloku.

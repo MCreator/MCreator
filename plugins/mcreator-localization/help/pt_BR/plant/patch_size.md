@@ -1,0 +1,1 @@
+Este parâmetro determina quantas plantas, no máximo, podem ser geradas em um único canteiro. Valores mais altos significam mais plantas em um único canteiro.

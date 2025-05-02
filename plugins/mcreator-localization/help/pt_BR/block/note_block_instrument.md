@@ -1,0 +1,1 @@
+Este parâmetro controla o instrumento de blocos de notas colocados neste bloco.

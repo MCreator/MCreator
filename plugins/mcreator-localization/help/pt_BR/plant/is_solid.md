@@ -1,0 +1,1 @@
+Se esta opção for selecionada, as entidades não poderão se mover pela planta.

@@ -1,0 +1,1 @@
+Esta condição especifica se o bloco deve receber a vibração detectada ou não.

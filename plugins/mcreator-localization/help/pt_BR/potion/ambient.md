@@ -1,0 +1,1 @@
+Este parâmetro define se o efeito é aplicado como ambiente.
