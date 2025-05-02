@@ -32,6 +32,10 @@ templates:
     writer: json
     condition: hasCustomOBJModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_gui.json.ftl
+    writer: json
+    condition: hasGUITexture()
+    name: "@MODASSETSROOT/models/item/@registryname_gui.json"
   - template: json/model_item.json.ftl
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"

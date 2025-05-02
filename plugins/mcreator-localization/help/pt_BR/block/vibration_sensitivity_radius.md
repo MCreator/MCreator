@@ -1,0 +1,1 @@
+Distância máxima que este bloco pode receber vibrações.
