@@ -66,6 +66,10 @@ package ${package}.network;
 	}
 
 	public static void handleMenuState(final MenuStateUpdateMessage message, final IPayloadContext context) {
+		<#-- Security measure to prevent accepting too big strings -->
+		if (message.name.length() > 256 || message.elementState instanceof String string && string.length() > 8192)
+			return;
+
 		context.enqueueWork(() -> {
 			if (context.player().containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
 				menu.getMenuState().put(message.elementType + ":" + message.name, message.elementState);

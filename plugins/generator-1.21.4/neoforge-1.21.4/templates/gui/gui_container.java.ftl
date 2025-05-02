@@ -45,7 +45,13 @@ import ${package}.${JavaModName};
 
 public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor {
 
-	public final HashMap<String, Object> menuState = new HashMap<>();
+	public final Map<String, Object> menuState = new HashMap<>() {
+		@Override public Object put(String key, Object value) {
+			<#-- Prevent arbitrary data storage beyond the menu state -->
+			if (!this.containsKey(key) && this.size() >= ${data.components?size}) return null;
+			return super.put(key, value);
+		}
+	};
 
 	public final Level world;
 	public final Player entity;
