@@ -1,0 +1,1 @@
+Jeśli ten parametr jest zaznaczony, ten blok otworzy powiązany z nim interfejs, klikając prawym przyciskiem myszy.

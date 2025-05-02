@@ -1,0 +1,1 @@
+A planta cultivável crescerá até atingir essa altura.

@@ -1,0 +1,1 @@
+Quanto maior o número, maior o dano que o projétil causa à entidade atingida.
