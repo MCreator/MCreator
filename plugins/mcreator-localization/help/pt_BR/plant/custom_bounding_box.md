@@ -1,0 +1,1 @@
+Marque esta opção se desejar personalizar a caixa delimitadora desta planta. Se esta opção não estiver habilitada, a caixa delimitadora será baseada no tipo de planta. 

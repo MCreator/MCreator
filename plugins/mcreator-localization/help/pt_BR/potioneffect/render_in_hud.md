@@ -1,0 +1,1 @@
+Marque para tornar o efeito visível no jogo
