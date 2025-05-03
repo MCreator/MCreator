@@ -35,6 +35,11 @@ tags:
     condition: "${data.mobCreatureType == 'ILLAGER'}"
   - tag: ENTITIES:minecraft:aquatic
     condition: "${data.mobCreatureType == 'WATER'}"
+  - tag: GAME_EVENTS:minecraft:@registryname_can_listen
+    condition:
+      - sensitiveToVibration
+      - "${data.vibrationalEvents?has_content}"
+    entryprovider: data.getVibrationalEvents()
 
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg

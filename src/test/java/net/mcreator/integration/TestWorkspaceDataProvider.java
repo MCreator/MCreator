@@ -2060,6 +2060,16 @@ public class TestWorkspaceDataProvider {
 				livingEntity.animations.add(animation);
 			}
 		}
+		livingEntity.sensitiveToVibration = _true;
+		livingEntity.vibrationalEvents = new ArrayList<>();
+		if (!emptyLists) {
+			livingEntity.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+					.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
+			livingEntity.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
+		}
+		livingEntity.vibrationSensitivityRadius = new NumberProcedure(emptyLists ? null : "number1", 11);
+		livingEntity.canReceiveVibrationCondition = new Procedure("condition1");
+		livingEntity.onReceivedVibration = new Procedure("procedure1");
 		return livingEntity;
 	}
 
