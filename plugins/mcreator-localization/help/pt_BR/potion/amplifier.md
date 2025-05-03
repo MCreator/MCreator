@@ -1,0 +1,1 @@
+Este parâmetro define a intensidade desta entrada de efeito.

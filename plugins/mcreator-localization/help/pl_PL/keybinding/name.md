@@ -1,0 +1,1 @@
+Ten parametr kontroluje nazwę klawisza wyświetlanego w zakładce Sterowanie w ustawieniach Minecraft.

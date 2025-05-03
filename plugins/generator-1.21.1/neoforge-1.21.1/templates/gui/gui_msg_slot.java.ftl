@@ -55,17 +55,7 @@ package ${package}.network;
 
 	public static void handleData(final ${name}SlotMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
-			context.enqueueWork(() -> {
-				Player entity = context.player();
-				int slotID = message.slotID;
-				int changeType = message.changeType;
-				int meta = message.meta;
-				int x = message.x;
-				int y = message.y;
-				int z = message.z;
-
-				handleSlotAction(entity, slotID, changeType, meta, x, y, z);
-			}).exceptionally(e -> {
+			context.enqueueWork(() -> handleSlotAction(context.player(), message.slotID, message.changeType, message.meta, message.x, message.y, message.z)).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
 				return null;
 			});

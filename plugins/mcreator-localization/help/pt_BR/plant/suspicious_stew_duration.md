@@ -1,0 +1,1 @@
+Este parâmetro determina a duração do efeito do ensopado suspeito criado com esta planta.

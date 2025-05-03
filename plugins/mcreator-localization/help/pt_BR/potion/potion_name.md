@@ -1,0 +1,1 @@
+Este parâmetro controla o nome do frasco de poção normal.
