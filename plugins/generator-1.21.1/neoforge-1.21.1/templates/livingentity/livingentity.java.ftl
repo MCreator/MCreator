@@ -464,7 +464,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
-	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content>
+	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content || data.sensitiveToVibration>
 	@Override public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		<#list data.entityDataEntries as entry>
@@ -508,7 +508,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		if (compound.contains("listener", Tag.TAG_COMPOUND)) {
 			VibrationSystem.Data.CODEC.parse(this.registryAccess().createSerializationContext(NbtOps.INSTANCE))
 				.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${name}: '{}'", e))
-				.ifPresent(data -> this.vibrationData = data)
+				.ifPresent(data -> this.vibrationData = data);
 		}
 		</#if>
 	}
