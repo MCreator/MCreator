@@ -35,9 +35,11 @@
 
 package ${package}.item;
 
+<#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+
 <#compress>
-<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
-@EventBusSubscriber(modid = "${modid}", bus = EventBusSubscriber.Bus.MOD)
+<#if hasCustomJAVAModels>
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
 	<#if data.hasBannerPatterns()>
@@ -78,16 +80,15 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		);
 	}
 
-	<#if data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+	<#if hasCustomJAVAModels>
 	@SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new IClientItemExtensions() {
-			private ${name}ItemRenderer renderer;
+			private ${name}ItemRenderer rendererInstance;
 
 			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				if (this.renderer == null)
-					this.renderer = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(),Minecraft.getInstance().getEntityModels());
-
-				return this.renderer;
+				if (rendererInstance == null)
+					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return rendererInstance;
 			}
 		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
 	}

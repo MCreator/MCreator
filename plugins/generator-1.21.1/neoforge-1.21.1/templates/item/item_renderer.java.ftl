@@ -34,38 +34,38 @@ package ${package}.client.renderer.item;
 <#compress>
 @OnlyIn(Dist.CLIENT)
 public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
-    private final EntityModelSet entityModelSet;
 
-    public ${name}ItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
-        super(pBlockEntityRenderDispatcher, pEntityModelSet);
-        this.entityModelSet = pEntityModelSet;
-    }
+	private final EntityModelSet entityModelSet;
 
-    @Override public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
-        ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
-        LivingEntity entity = stack.getEntityRepresentation() instanceof LivingEntity le ? le : Minecraft.getInstance().player;
-        ClientLevel level = entity.level() instanceof ClientLevel cl ? cl : null;
-        <#list data.getModels() as model>
+	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
+		super(blockEntityRenderDispatcher, entityModelSet);
+		this.entityModelSet = entityModelSet;
+	}
+
+	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
+		LivingEntity entity = itemstack.getEntityRepresentation() instanceof LivingEntity le ? le : Minecraft.getInstance().player;
+		ClientLevel level = entity.level() instanceof ClientLevel cl ? cl : null;
+		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
-					ItemProperties.getProperty(stack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
-						.call(stack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}f
+					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
+						.call(itemstack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}f
 				<#sep> && </#list>) {
 				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
 				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
-        </#list>
-        if (model == null)
-            return;
+		</#list>
+		if (model == null) return;
 
-        poseStack.pushPose();
-        applyTransformation(displayContext, poseStack);
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, stack.hasFoil());
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        poseStack.popPose();
-    }
+		poseStack.pushPose();
+		applyTransformation(displayContext, poseStack);
+		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+		poseStack.popPose();
+	}
 
     private void applyTransformation(ItemDisplayContext displayContext, PoseStack poseStack) {
     	switch(displayContext) {
@@ -94,6 +94,7 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
     			poseStack.scale(1.0F, -1.0F, -1.0F);
     	}
     }
+
 }
 </#compress>
 <#-- @formatter:on -->

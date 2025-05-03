@@ -33,89 +33,89 @@ package ${package}.client.renderer.item;
 
 <#assign models = []>
 <#if data.hasCustomJAVAModel()>
-    <#assign models += [[-1, data.customModelName.split(":")[0], data.texture]]>
+	<#assign models += [[-1, data.customModelName.split(":")[0], data.texture]]>
 </#if>
 <#list data.getModels() as model>
-    <#if model.hasCustomJAVAModel()>
-        <#assign models += [[model?index, model.customModelName.split(":")[0], model.texture]]>
-    </#if>
+	<#if model.hasCustomJAVAModel()>
+		<#assign models += [[model?index, model.customModelName.split(":")[0], model.texture]]>
+	</#if>
 </#list>
 
 <#compress>
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
-    private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
-        <#list models as model>
-            Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(new ${model[1]}(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
-                ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")))<#sep>,
-        </#list>
-    );
 
-    private final Model model;
-    private final ResourceLocation texture;
+	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
+		event.register(ResourceLocation.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);
+	}
 
-    private ${name}ItemRenderer(Model model, ResourceLocation texture) {
-        this.model = model;
-        this.texture = texture;
-    }
+	private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
+		<#list models as model>
+			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(new ${model[1]}(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
+				ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")))<#sep>,
+		</#list>
+	);
 
-    @Override public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
-        poseStack.pushPose();
-        applyTransformation(displayContext, poseStack);
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
-        poseStack.popPose();
-    }
+	private final Model model;
+	private final ResourceLocation texture;
 
-    @OnlyIn(Dist.CLIENT) public static record Unbaked(int index) implements SpecialModelRenderer.Unbaked {
-        public static final MapCodec<${name}ItemRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index)
-            ).apply(instance, ${name}ItemRenderer.Unbaked::new)
-        );
+	private ${name}ItemRenderer(Model model, ResourceLocation texture) {
+		this.model = model;
+		this.texture = texture;
+	}
 
-        @Override
-        public MapCodec<${name}ItemRenderer.Unbaked> type() {
-            return MAP_CODEC;
-        }
+	@Override public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
+		poseStack.pushPose();
+		applyTransformation(displayContext, poseStack);
+		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
+		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+		poseStack.popPose();
+	}
 
-        @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            return ${name}ItemRenderer.MODELS.get(index).apply(modelSet);
-        }
-    }
+	@OnlyIn(Dist.CLIENT) public record Unbaked(int index) implements SpecialModelRenderer.Unbaked {
+		public static final MapCodec<${name}ItemRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index)
+		).apply(instance, ${name}ItemRenderer.Unbaked::new));
 
-    @SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);
-    }
+		@Override
+		public MapCodec<${name}ItemRenderer.Unbaked> type() {
+			return MAP_CODEC;
+		}
 
-    private void applyTransformation(ItemDisplayContext displayContext, PoseStack poseStack) {
-    	switch(displayContext) {
-    		case FIXED:
-    			poseStack.translate(0.5F, 1.35F, 0.5F);
-    			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-    			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		case GROUND:
-    			poseStack.translate(0.5F, 0.65F, 0.5F);
-    			poseStack.scale(0.25F, -0.25F, -0.25F);
-    			break;
-    		case GUI:
-    			poseStack.translate(0.5F, 1.5F, 1F);
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		case HEAD:
-    			poseStack.translate(0.5F, 2.45F, 0.5F);
-    			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-    			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		default:
-    			poseStack.translate(0.5F, 2.0F, 0.9F);
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    	}
-    }
+		@Override
+		public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
+			return ${name}ItemRenderer.MODELS.get(index).apply(modelSet);
+		}
+	}
+
+	private void applyTransformation(ItemDisplayContext displayContext, PoseStack poseStack) {
+		switch(displayContext) {
+		case FIXED:
+			poseStack.translate(0.5F, 1.35F, 0.5F);
+			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+			poseStack.scale(1.0F, -1.0F, -1.0F);
+			break;
+		case GROUND:
+			poseStack.translate(0.5F, 0.65F, 0.5F);
+			poseStack.scale(0.25F, -0.25F, -0.25F);
+			break;
+		case GUI:
+			poseStack.translate(0.5F, 1.5F, 1F);
+			poseStack.scale(1.0F, -1.0F, -1.0F);
+			break;
+		case HEAD:
+			poseStack.translate(0.5F, 2.45F, 0.5F);
+			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+			poseStack.scale(1.0F, -1.0F, -1.0F);
+			break;
+		default:
+			poseStack.translate(0.5F, 2.0F, 0.9F);
+			poseStack.scale(1.0F, -1.0F, -1.0F);
+		}
+	}
+
 }
 </#compress>
 <#-- @formatter:on -->
