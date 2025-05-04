@@ -439,6 +439,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
+		JPanel vibrationPane = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -764,40 +765,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
 		aitopoveral.setOpaque(false);
 
-		aitopoveral.add("West", PanelUtils.northAndCenterElement(aitop,
-				PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged),
-				rangedItemType, rangedAttackItem, rangedAttackInterval, rangedAttackRadius)));
+		aitopoveral.add("West", aitop);
+
+		aitopoveral.add("Center", PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged), rangedItemType,
+				rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
 		rangedItemType.addActionListener(e -> enableOrDisableFields());
-
-		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
-		vibrationProps.setOpaque(false);
-
-		sensitiveToVibration.setOpaque(false);
-		sensitiveToVibration.addActionListener(e -> enableOrDisableFields());
-
-		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
-				L10N.label("elementgui.living_entity.sensitive_to_vibration")));
-		vibrationProps.add(sensitiveToVibration);
-
-		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/vibrational_events"),
-				L10N.label("elementgui.living_entity.vibrational_events")));
-		vibrationProps.add(vibrationalEvents);
-
-		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
-
-		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
-		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
-
-		vibrationEventsBottom.setOpaque(false);
-		vibrationEventsBottom.add(canReceiveVibrationCondition);
-		vibrationEventsBottom.add(onReceivedVibration);
-
-		vibrationEvents.setOpaque(false);
-		vibrationEvents.add("North", vibrationSensitivityRadius);
-		vibrationEvents.add("Center", vibrationEventsBottom);
-
-		aitopoveral.add("East", PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2));
 
 		ridable.setOpaque(false);
 		canControlStrafe.setOpaque(false);
@@ -948,6 +922,42 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane7.setOpaque(false);
 		pane7.setOpaque(false);
 
+		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
+		vibrationProps.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+		sensitiveToVibration.addActionListener(e -> enableOrDisableFields());
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
+				L10N.label("elementgui.living_entity.sensitive_to_vibration")));
+		vibrationProps.add(sensitiveToVibration);
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/vibrational_events"),
+				L10N.label("elementgui.living_entity.vibrational_events")));
+		vibrationProps.add(vibrationalEvents);
+
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
+
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2);
+		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.living_entity.properties_vibration"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
+		vibrationPane.add("Center", PanelUtils.totalCenterInPanel(vibrationMerger));
+		vibrationPane.setOpaque(false);
+
 		mobName.setValidator(
 				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
@@ -962,6 +972,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
+		addPage(L10N.t("elementgui.living_entity.page_vibration"), vibrationPane);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3).lazyValidate(
 				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
