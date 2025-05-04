@@ -1428,6 +1428,16 @@ public class TestWorkspaceDataProvider {
 				// Remove last entry as it causes combinations to exceed MAX_PROPERTY_COMBINATIONS
 				block.customProperties.removeLast();
 			}
+			block.animations = new ArrayList<>();
+			if (!emptyLists) {
+				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
+					Block.AnimationEntry animation = new Block.AnimationEntry();
+					animation.animation = new Animation(modElement.getWorkspace(), anim);
+					animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
+					animation.speed = 12.3;
+					block.animations.add(animation);
+				}
+			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
