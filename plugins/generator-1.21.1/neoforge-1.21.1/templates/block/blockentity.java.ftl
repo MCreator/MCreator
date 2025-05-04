@@ -47,9 +47,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
 	</#if>
 
-	<#list data.animations as animation>
-	public final AnimationState animationState${animation?index} = new AnimationState();
-	</#list>
+	<#if data.renderType() == 4>
+		<#list data.animations as animation>
+		public final AnimationState animationState${animation?index} = new AnimationState();
+		</#list>
+	</#if>
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
