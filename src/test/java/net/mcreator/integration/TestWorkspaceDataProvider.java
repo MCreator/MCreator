@@ -650,6 +650,7 @@ public class TestWorkspaceDataProvider {
 			fluid.luminance = 6;
 			fluid.tickRate = _true ? 0 : 13;
 			fluid.lightOpacity = 2;
+			fluid.ignitedByLava = !_true;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -1096,6 +1097,7 @@ public class TestWorkspaceDataProvider {
 			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
 			plant.generationType = getRandomItem(random, new String[] { "Grass", "Flower" });
+			plant.ignitedByLava = !_true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;

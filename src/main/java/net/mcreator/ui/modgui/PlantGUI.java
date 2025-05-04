@@ -181,6 +181,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
+	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -637,11 +638,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 
-		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(10, 2, 10, 2));
 		advancedProperties.setOpaque(false);
 
 		forceTicking.setOpaque(false);
 		hasTileEntity.setOpaque(false);
+		ignitedByLava.setOpaque(false);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
 				L10N.label("elementgui.plant.has_tile_entity")));
@@ -654,6 +656,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.plant.color_on_map")));
 		advancedProperties.add(colorOnMap);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		advancedProperties.add(ignitedByLava);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.plant.flammability")));
@@ -947,6 +953,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		offsetType.setSelectedItem(plant.offsetType);
 		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
 		creativePickItem.setBlock(plant.creativePickItem);
+		ignitedByLava.setSelected(plant.ignitedByLava);
 		flammability.setValue(plant.flammability);
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
 		jumpFactor.setValue(plant.jumpFactor);
@@ -1057,6 +1064,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();
+		plant.ignitedByLava = ignitedByLava.isSelected();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.speedFactor = (double) speedFactor.getValue();

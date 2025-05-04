@@ -103,6 +103,7 @@ import java.util.stream.Collectors;
 	public String offsetType;
 	public String aiPathNodeType;
 
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 	public double jumpFactor;
