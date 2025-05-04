@@ -127,9 +127,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return Component.literal("${registryname}");
 	}
 
+	<#if data.inventoryStackSize != 99>
 	@Override public int getMaxStackSize() {
 		return ${data.inventoryStackSize};
 	}
+	</#if>
 
 	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
 		<#if !data.guiBoundTo?has_content>

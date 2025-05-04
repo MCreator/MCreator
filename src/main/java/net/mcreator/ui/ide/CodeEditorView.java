@@ -41,6 +41,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -79,7 +80,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class CodeEditorView extends ViewBase {
+public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
 
@@ -722,6 +723,17 @@ public class CodeEditorView extends ViewBase {
 
 	@Nullable public BreakpointHandler getBreakpointHandler() {
 		return breakpointHandler;
+	}
+
+	@Override public void search(@Nullable String searchTerm) {
+		sed.setVisible(true);
+		rep.setVisible(false);
+		disableJumpToMode();
+
+		sed.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			sed.getSearchField().setText(searchTerm);
 	}
 
 }

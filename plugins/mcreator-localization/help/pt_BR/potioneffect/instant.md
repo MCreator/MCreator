@@ -1,0 +1,1 @@
+Marque este parâmetro se o seu efeito deve ser aplicado uma vez, como a saúde instantânea.

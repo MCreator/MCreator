@@ -24,6 +24,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationGroup;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class ModElementGUIPage {
 	private final AggregatedValidationResult validator = new AggregatedValidationResult();
 
 	private final List<Supplier<AggregatedValidationResult>> lazyValidators = new ArrayList<>();
+
+	@Nullable private Runnable showThisPageAction = null;
 
 	public ModElementGUIPage(String id, JComponent component, boolean scroll) {
 		this.id = id;
@@ -94,6 +97,16 @@ public class ModElementGUIPage {
 		retval.addValidationGroup(validator);
 		lazyValidators.forEach(s -> retval.addValidationGroup(s.get()));
 		return retval;
+	}
+
+	public void setShowThisPageAction(@Nullable Runnable showThisPageAction) {
+		this.showThisPageAction = showThisPageAction;
+	}
+
+	public void showThisPage() {
+		if (showThisPageAction != null) {
+			showThisPageAction.run();
+		}
 	}
 
 }

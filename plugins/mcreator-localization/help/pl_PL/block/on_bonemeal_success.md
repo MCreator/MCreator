@@ -1,1 +1,1 @@
-Ta procedura określa, co się dzieje, gdy mączka kostna jest skutecznie używana na tym bloku.
+Ta procedura określa, co się dzieje, gdy mączka kostna jest skutecznie użyta na tym bloku.

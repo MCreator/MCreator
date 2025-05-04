@@ -1,0 +1,1 @@
+Esses modificadores de atributo são aplicados à entidade enquanto o efeito está ativo.
