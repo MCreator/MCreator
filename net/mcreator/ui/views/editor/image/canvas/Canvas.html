@@ -127,10 +127,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,int,net.mcreator.ui.views.editor.image.layer.LayerPanel,net.mcreator.ui.views.editor.image.versioning.VersionManager)" class="member-name-link">Canvas</a><wbr>(int&nbsp;width,
- int&nbsp;height,
- <a href="../layer/LayerPanel.html" title="class in net.mcreator.ui.views.editor.image.layer">LayerPanel</a>&nbsp;layerPanel,
- <a href="../versioning/VersionManager.html" title="class in net.mcreator.ui.views.editor.image.versioning">VersionManager</a>&nbsp;versionManager)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.views.editor.image.ImageMakerView,int,int)" class="member-name-link">Canvas</a><wbr>(<a href="../ImageMakerView.html" title="class in net.mcreator.ui.views.editor.image">ImageMakerView</a>&nbsp;imageMakerView,
+ int&nbsp;width,
+ int&nbsp;height)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -183,37 +182,31 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks if the layer is floating and updates the floating layer.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CanvasRenderer.html" title="class in net.mcreator.ui.views.editor.image.canvas">CanvasRenderer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCanvasRenderer()" class="member-name-link">getCanvasRenderer</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFloatingLayer()" class="member-name-link">getFloatingLayer</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFloatingLayer()" class="member-name-link">getFloatingLayer</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeight()" class="member-name-link">getHeight</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeight()" class="member-name-link">getHeight</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../ImageMakerView.html" title="class in net.mcreator.ui.views.editor.image">ImageMakerView</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getImageMakerView()" class="member-name-link">getImageMakerView</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/LayerPanel.html" title="class in net.mcreator.ui.views.editor.image.layer">LayerPanel</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLayerPanel()" class="member-name-link">getLayerPanel</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviewEvent()" class="member-name-link">getPreviewEvent</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviewEvent()" class="member-name-link">getPreviewEvent</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviewImage()" class="member-name-link">getPreviewImage</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPreviewImage()" class="member-name-link">getPreviewImage</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Selection.html" title="class in net.mcreator.ui.views.editor.image.canvas">Selection</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSelection()" class="member-name-link">getSelection</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Selection.html" title="class in net.mcreator.ui.views.editor.image.canvas">Selection</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSelection()" class="member-name-link">getSelection</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the selection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../tool/tools/Shape.html" title="enum class in net.mcreator.ui.views.editor.image.tool.tools">Shape</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShape()" class="member-name-link">getShape</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolSize()" class="member-name-link">getToolSize</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../tool/tools/Shape.html" title="enum class in net.mcreator.ui.views.editor.image.tool.tools">Shape</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShape()" class="member-name-link">getShape</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../versioning/VersionManager.html" title="class in net.mcreator.ui.views.editor.image.versioning">VersionManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionManager()" class="member-name-link">getVersionManager</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolSize()" class="member-name-link">getToolSize</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWidth()" class="member-name-link">getWidth</a>()</code></div>
@@ -257,44 +250,43 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeNR(int)" class="member-name-link">removeNR</a><wbr>(int&nbsp;index)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Removes the layer at the specified index without adding a revision (hence NR - No Revision).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#selected()" class="member-name-link">selected</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#set(int,net.mcreator.ui.views.editor.image.layer.Layer)" class="member-name-link">set</a><wbr>(int&nbsp;index,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#set(int,net.mcreator.ui.views.editor.image.layer.Layer)" class="member-name-link">set</a><wbr>(int&nbsp;index,
  <a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;layer)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHeight(int)" class="member-name-link">setHeight</a><wbr>(int&nbsp;height)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(int,int)" class="member-name-link">setSize</a><wbr>(int&nbsp;width,
- int&nbsp;height)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHeight(int)" class="member-name-link">setHeight</a><wbr>(int&nbsp;height)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(int,int,java.util.UUID)" class="member-name-link">setSize</a><wbr>(int&nbsp;width,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(int,int)" class="member-name-link">setSize</a><wbr>(int&nbsp;width,
+ int&nbsp;height)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(int,int,java.util.UUID)" class="member-name-link">setSize</a><wbr>(int&nbsp;width,
  int&nbsp;height,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>&nbsp;group)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWidth(int)" class="member-name-link">setWidth</a><wbr>(int&nbsp;width)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(int)" class="member-name-link">update</a><wbr>(int&nbsp;index)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWidth(int)" class="member-name-link">setWidth</a><wbr>(int&nbsp;width)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(net.mcreator.ui.views.editor.image.layer.Layer)" class="member-name-link">update</a><wbr>(<a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;layer)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(int)" class="member-name-link">update</a><wbr>(int&nbsp;index)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCustomPreview(java.awt.event.MouseEvent,java.awt.Image)" class="member-name-link">updateCustomPreview</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;e,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(net.mcreator.ui.views.editor.image.layer.Layer)" class="member-name-link">update</a><wbr>(<a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;layer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCustomPreview(java.awt.event.MouseEvent,java.awt.Image)" class="member-name-link">updateCustomPreview</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;event,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;image)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCustomPreview(java.awt.event.MouseEvent,net.mcreator.ui.views.editor.image.tool.tools.Shape,int)" class="member-name-link">updateCustomPreview</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;event,
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCustomPreview(java.awt.event.MouseEvent,net.mcreator.ui.views.editor.image.tool.tools.Shape,int)" class="member-name-link">updateCustomPreview</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;event,
  <a href="../tool/tools/Shape.html" title="enum class in net.mcreator.ui.views.editor.image.tool.tools">Shape</a>&nbsp;shape,
  int&nbsp;size)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -328,12 +320,11 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,int,net.mcreator.ui.views.editor.image.layer.LayerPanel,net.mcreator.ui.views.editor.image.versioning.VersionManager)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.views.editor.image.ImageMakerView,int,int)">
 <h3>Canvas</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Canvas</span><wbr><span class="parameters">(int&nbsp;width,
- int&nbsp;height,
- <a href="../layer/LayerPanel.html" title="class in net.mcreator.ui.views.editor.image.layer">LayerPanel</a>&nbsp;layerPanel,
- <a href="../versioning/VersionManager.html" title="class in net.mcreator.ui.views.editor.image.versioning">VersionManager</a>&nbsp;versionManager)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Canvas</span><wbr><span class="parameters">(<a href="../ImageMakerView.html" title="class in net.mcreator.ui.views.editor.image">ImageMakerView</a>&nbsp;imageMakerView,
+ int&nbsp;width,
+ int&nbsp;height)</span></div>
 </section>
 </li>
 </ul>
@@ -485,6 +476,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="removeNR(int)">
 <h3>removeNR</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></span>&nbsp;<span class="element-name">removeNR</span><wbr><span class="parameters">(int&nbsp;index)</span></div>
+<div class="block">Removes the layer at the specified index without adding a revision (hence NR - No Revision).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>index</code> - the index of the layer to remove</dd>
+<dt>Returns:</dt>
+<dd>the removed layer</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -569,12 +567,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCanvasRenderer()">
-<h3>getCanvasRenderer</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CanvasRenderer.html" title="class in net.mcreator.ui.views.editor.image.canvas">CanvasRenderer</a></span>&nbsp;<span class="element-name">getCanvasRenderer</span>()</div>
-</section>
-</li>
-<li>
 <section class="detail" id="updateCustomPreview(java.awt.event.MouseEvent,net.mcreator.ui.views.editor.image.tool.tools.Shape,int)">
 <h3>updateCustomPreview</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCustomPreview</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;event,
@@ -591,7 +583,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="updateCustomPreview(java.awt.event.MouseEvent,java.awt.Image)">
 <h3>updateCustomPreview</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCustomPreview</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;e,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCustomPreview</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;event,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;image)</span></div>
 </section>
 </li>
@@ -638,24 +630,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="selected()">
-<h3>selected</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a></span>&nbsp;<span class="element-name">selected</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getLayerPanel()">
-<h3>getLayerPanel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../layer/LayerPanel.html" title="class in net.mcreator.ui.views.editor.image.layer">LayerPanel</a></span>&nbsp;<span class="element-name">getLayerPanel</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getVersionManager()">
-<h3>getVersionManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../versioning/VersionManager.html" title="class in net.mcreator.ui.views.editor.image.versioning">VersionManager</a></span>&nbsp;<span class="element-name">getVersionManager</span>()</div>
-</section>
-</li>
-<li>
 <section class="detail" id="setSize(int,int,java.util.UUID)">
 <h3>setSize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSize</span><wbr><span class="parameters">(int&nbsp;width,
@@ -668,6 +642,12 @@ loadScripts(document, 'script');</script>
 <h3>setSize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSize</span><wbr><span class="parameters">(int&nbsp;width,
  int&nbsp;height)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getImageMakerView()">
+<h3>getImageMakerView</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../ImageMakerView.html" title="class in net.mcreator.ui.views.editor.image">ImageMakerView</a></span>&nbsp;<span class="element-name">getImageMakerView</span>()</div>
 </section>
 </li>
 </ul>

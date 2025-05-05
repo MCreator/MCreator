@@ -161,12 +161,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFirst()" class="member-name-link">getFirst</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHandleSize()" class="member-name-link">getHandleSize</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Stroke.html" title="class or interface in java.awt" class="external-link">Stroke</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHandleStroke()" class="member-name-link">getHandleStroke</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeight()" class="member-name-link">getHeight</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Shape.html" title="class or interface in java.awt" class="external-link">Shape</a></code></div>
@@ -216,14 +210,17 @@ loadScripts(document, 'script');</script>
  int&nbsp;y)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEditing(net.mcreator.ui.views.editor.image.canvas.SelectedBorder)" class="member-name-link">setEditing</a><wbr>(<a href="SelectedBorder.html" title="enum class in net.mcreator.ui.views.editor.image.canvas">SelectedBorder</a>&nbsp;editing)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCanvas(net.mcreator.ui.views.editor.image.canvas.Canvas)" class="member-name-link">setCanvas</a><wbr>(<a href="Canvas.html" title="class in net.mcreator.ui.views.editor.image.canvas">Canvas</a>&nbsp;canvas)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEditStarted(boolean)" class="member-name-link">setEditStarted</a><wbr>(boolean&nbsp;editStarted)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEditing(net.mcreator.ui.views.editor.image.canvas.SelectedBorder)" class="member-name-link">setEditing</a><wbr>(<a href="SelectedBorder.html" title="enum class in net.mcreator.ui.views.editor.image.canvas">SelectedBorder</a>&nbsp;editing)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verticalHandlesVisible()" class="member-name-link">verticalHandlesVisible</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEditStarted(boolean)" class="member-name-link">setEditStarted</a><wbr>(boolean&nbsp;editStarted)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verticalHandlesVisible()" class="member-name-link">verticalHandlesVisible</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -266,6 +263,12 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="setCanvas(net.mcreator.ui.views.editor.image.canvas.Canvas)">
+<h3>setCanvas</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCanvas</span><wbr><span class="parameters">(<a href="Canvas.html" title="class in net.mcreator.ui.views.editor.image.canvas">Canvas</a>&nbsp;canvas)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="getEditing()">
 <h3>getEditing</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SelectedBorder.html" title="enum class in net.mcreator.ui.views.editor.image.canvas">SelectedBorder</a></span>&nbsp;<span class="element-name">getEditing</span>()</div>
@@ -287,18 +290,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setEditing(net.mcreator.ui.views.editor.image.canvas.SelectedBorder)">
 <h3>setEditing</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEditing</span><wbr><span class="parameters">(<a href="SelectedBorder.html" title="enum class in net.mcreator.ui.views.editor.image.canvas">SelectedBorder</a>&nbsp;editing)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="getHandleSize()">
-<h3>getHandleSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getHandleSize</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getHandleStroke()">
-<h3>getHandleStroke</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Stroke.html" title="class or interface in java.awt" class="external-link">Stroke</a></span>&nbsp;<span class="element-name">getHandleStroke</span>()</div>
 </section>
 </li>
 <li>

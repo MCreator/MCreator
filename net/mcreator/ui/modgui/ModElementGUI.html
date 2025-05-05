@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code>, <code><a href="../search/ISearchable.html" title="interface in net.mcreator.ui.search">ISearchable</a></code>, <code><a href="../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -109,7 +109,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">ModElementGUI&lt;GE extends <a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span>
 <span class="extends-implements">extends <a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">ViewBase</a>
-implements <a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></span></div>
+implements <a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>, <a href="../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -244,44 +244,47 @@ implements <a href="../help/IHelpContext.html" title="interface in net.mcreator.
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElement()" class="member-name-link">getModElement</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewIcon()" class="member-name-link">getViewIcon</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/text/JTextComponent.html" title="class or interface in javax.swing.text" class="external-link">JTextComponent</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSearchTextField()" class="member-name-link">getSearchTextField</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewName()" class="member-name-link">getViewName</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewIcon()" class="member-name-link">getViewIcon</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEditingMode()" class="member-name-link">isEditingMode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onViewClosed()" class="member-name-link">onViewClosed</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewName()" class="member-name-link">getViewName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#openInEditingMode(GE)" class="member-name-link">openInEditingMode</a><wbr>(<a href="ModElementGUI.html" title="type parameter in ModElementGUI">GE</a>&nbsp;generatableElement)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">This method is called to open a mod element in the GUI</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadDataLists()" class="member-name-link">reloadDataLists</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEditingMode()" class="member-name-link">isEditingMode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setModElementCreatedListener(net.mcreator.ui.modgui.ModElementGUI.ModElementCreatedListener)" class="member-name-link">setModElementCreatedListener</a><wbr>(<a href="ModElementGUI.ModElementCreatedListener.html" title="interface in net.mcreator.ui.modgui">ModElementGUI.ModElementCreatedListener</a>&lt;<a href="ModElementGUI.html" title="type parameter in ModElementGUI">GE</a>&gt;&nbsp;modElementCreatedListener)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onViewClosed()" class="member-name-link">onViewClosed</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#openInEditingMode(GE)" class="member-name-link">openInEditingMode</a><wbr>(<a href="ModElementGUI.html" title="type parameter in ModElementGUI">GE</a>&nbsp;generatableElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">This method is called to open a mod element in the GUI</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadDataLists()" class="member-name-link">reloadDataLists</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTargetFolder(net.mcreator.workspace.elements.FolderElement)" class="member-name-link">setTargetFolder</a><wbr>(<a href="../../workspace/elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;targetFolder)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setModElementCreatedListener(net.mcreator.ui.modgui.ModElementGUI.ModElementCreatedListener)" class="member-name-link">setModElementCreatedListener</a><wbr>(<a href="ModElementGUI.ModElementCreatedListener.html" title="interface in net.mcreator.ui.modgui">ModElementGUI.ModElementCreatedListener</a>&lt;<a href="ModElementGUI.html" title="type parameter in ModElementGUI">GE</a>&gt;&nbsp;modElementCreatedListener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">ViewBase</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showView()" class="member-name-link">showView</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTargetFolder(net.mcreator.workspace.elements.FolderElement)" class="member-name-link">setTargetFolder</a><wbr>(<a href="../../workspace/elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;targetFolder)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../validation/AggregatedValidationResult.html" title="class in net.mcreator.ui.validation">AggregatedValidationResult</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateAllPages()" class="member-name-link">validateAllPages</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">ViewBase</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showView()" class="member-name-link">showView</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withEntry(java.lang.String)" class="member-name-link">withEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../validation/AggregatedValidationResult.html" title="class in net.mcreator.ui.validation">AggregatedValidationResult</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateAllPages()" class="member-name-link">validateAllPages</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withEntry(java.lang.String)" class="member-name-link">withEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -306,6 +309,9 @@ implements <a href="../help/IHelpContext.html" title="interface in net.mcreator.
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.help.IHelpContext">Methods inherited from interface&nbsp;net.mcreator.ui.help.<a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></h3>
 <code><a href="../help/IHelpContext.html#entry()">entry</a>, <a href="../help/IHelpContext.html#owner()">owner</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.search.ITextFieldSearchable">Methods inherited from interface&nbsp;net.mcreator.ui.search.<a href="../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></h3>
+<code><a href="../search/ITextFieldSearchable.html#search(java.lang.String)">search</a></code></div>
 </section>
 </li>
 </ul>
@@ -467,6 +473,16 @@ implements <a href="../help/IHelpContext.html" title="interface in net.mcreator.
 <section class="detail" id="reloadDataLists()">
 <h3>reloadDataLists</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadDataLists</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getSearchTextField()">
+<h3>getSearchTextField</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/text/JTextComponent.html" title="class or interface in javax.swing.text" class="external-link">JTextComponent</a></span>&nbsp;<span class="element-name">getSearchTextField</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../search/ITextFieldSearchable.html#getSearchTextField()">getSearchTextField</a></code>&nbsp;in interface&nbsp;<code><a href="../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></code></dd>
+</dl>
 </section>
 </li>
 <li>
