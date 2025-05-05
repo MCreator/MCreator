@@ -359,7 +359,7 @@ public class WorkspaceDialogs {
 			}
 
 			websiteURL.setText(MCreatorApplication.SERVER_DOMAIN);
-			author.setText(System.getProperty("user.name") + ", MCreator");
+			author.setText("MCreator");
 			version.setText("1.0.0");
 
 			generator.setUI(new BasicComboBoxUI() {
