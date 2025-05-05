@@ -45,13 +45,11 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
 		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
-		LivingEntity entity = itemstack.getEntityRepresentation() instanceof LivingEntity le ? le : Minecraft.getInstance().player;
-		ClientLevel level = entity.level() instanceof ClientLevel cl ? cl : null;
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
 					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
-						.call(itemstack, level, entity, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}f
+						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
 				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
 				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
