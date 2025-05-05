@@ -36,10 +36,12 @@ package ${package}.client.renderer.item;
 public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 
 	private final EntityModelSet entityModelSet;
+	private final ItemStack transformSource;
 
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
+		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
@@ -59,39 +61,21 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		if (model == null) return;
 
 		poseStack.pushPose();
-		applyTransformation(displayContext, poseStack);
+		Minecraft.getInstance().getItemRenderer().getModel(this.transformSource, null, null, 0).applyTransform(displayContext, poseStack, isLeftHand(displayContext));
+		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
+		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
 
-    private void applyTransformation(ItemDisplayContext displayContext, PoseStack poseStack) {
-    	switch(displayContext) {
-    		case FIXED:
-    			poseStack.translate(0.5F, 1.35F, 0.5F);
-    			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-    			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		case GROUND:
-    			poseStack.translate(0.5F, 0.65F, 0.5F);
-    			poseStack.scale(0.25F, -0.25F, -0.25F);
-    			break;
-    		case GUI:
-    			poseStack.translate(0.5F, 1.5F, 1F);
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		case HEAD:
-    			poseStack.translate(0.5F, 2.45F, 0.5F);
-    			poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-    			poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    			break;
-    		default:
-    			poseStack.translate(0.5F, 2.0F, 0.9F);
-    			poseStack.scale(1.0F, -1.0F, -1.0F);
-    	}
-    }
+	private static boolean isLeftHand(ItemDisplayContext type) {
+		return type == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || type == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+	}
+
+	private static boolean isInventory(ItemDisplayContext type) {
+		return type == ItemDisplayContext.GUI || type == ItemDisplayContext.FIXED;
+	}
 
 }
 </#compress>
