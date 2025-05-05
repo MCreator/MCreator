@@ -47,6 +47,12 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
 	</#if>
 
+	<#if data.renderType() == 4>
+		<#list data.animations as animation>
+		public final AnimationState animationState${animation?index} = new AnimationState();
+		</#list>
+	</#if>
+
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
@@ -123,9 +129,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return Component.literal("${registryname}");
 	}
 
+	<#if data.inventoryStackSize != 99>
 	@Override public int getMaxStackSize() {
 		return ${data.inventoryStackSize};
 	}
+	</#if>
 
 	@Override public AbstractContainerMenu createMenu(int id, Inventory inventory) {
 		<#if !data.guiBoundTo?has_content>

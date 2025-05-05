@@ -1,0 +1,1 @@
+A categoria do livro de artesanato define em qual aba a receita será exibida no livro de artesanato.

@@ -175,6 +175,10 @@ public class ConsoleSearchBar extends JToolBar {
 		}
 	}
 
+	public JTextField getSearchField() {
+		return jtf1;
+	}
+
 	private final Highlighter.HighlightPainter highlightPainter = new SearchResultHighlightPainter();
 
 	private static class SearchResultHighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {

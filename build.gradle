@@ -12,7 +12,7 @@ plugins {
 }
 
 repositories {
-    maven { url "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
+    maven { url = "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
     flatDir { dirs 'lib' }
 }
 
@@ -107,7 +107,7 @@ dependencies {
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
-    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.0') {
+    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.1') {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
@@ -121,7 +121,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.3'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.17'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.13'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.14'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
@@ -169,14 +169,14 @@ test {
         events "passed", "skipped", "failed"
         showStandardStreams = true
 
-        showCauses true
-        showStackTraces true
-        showExceptions true
-        exceptionFormat "full"
+        showCauses = true
+        showStackTraces = true
+        showExceptions = true
+        exceptionFormat = "full"
 
         debug {
             events "started", "failed", "passed", "skipped", "standard_error", "standard_out"
-            exceptionFormat "full"
+            exceptionFormat = "full"
         }
         info.events = debug.events
         info.exceptionFormat = debug.exceptionFormat

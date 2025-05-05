@@ -1,0 +1,1 @@
+Este parâmetro define quanto tempo dura esta entrada de efeito.

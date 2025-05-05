@@ -47,6 +47,10 @@ package ${package}.init;
 		</#list>
 	}
 
+	public interface ScreenAccessor {
+		void updateMenuState(int elementType, String name, Object elementState);
+	}
+
 	<#if hasEntityModels>
 	public static void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
 		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);

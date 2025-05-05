@@ -207,7 +207,7 @@ import java.util.stream.Collectors;
 		this.followRange = 16;
 
 		this.inventorySize = 9;
-		this.inventoryStackSize = 64;
+		this.inventoryStackSize = 99;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();

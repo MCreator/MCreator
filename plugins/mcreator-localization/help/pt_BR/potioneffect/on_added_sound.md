@@ -1,0 +1,1 @@
+Se um som for selecionado, ele será tocado quando este efeito de poção for adicionado a uma entidade.

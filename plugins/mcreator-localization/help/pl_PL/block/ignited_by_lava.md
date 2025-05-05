@@ -1,0 +1,1 @@
+Jeśli ta opcja jest zaznaczona, ten blok może  się zapalić, gdy jest blisko lawy.
