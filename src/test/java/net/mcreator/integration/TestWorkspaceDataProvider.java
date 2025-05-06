@@ -649,7 +649,7 @@ public class TestWorkspaceDataProvider {
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
 			fluid.tickRate = _true ? 0 : 13;
-			fluid.lightOpacity = 2;
+			fluid.lightOpacity = _true ? 2 : 0;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -1463,7 +1463,7 @@ public class TestWorkspaceDataProvider {
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
-			block.lightOpacity = new int[] { 7, 2, 0,
+			block.lightOpacity = new int[] { 0, 2, 0,
 					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 			block.tickRate = _true ? 0 : 24;
