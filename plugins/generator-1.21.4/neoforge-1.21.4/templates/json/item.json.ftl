@@ -1,18 +1,14 @@
 {
-<#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
-	<#assign parent = "builtin/entity">
-	<#assign texture = "particle">
+    <#assign hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
+    <#if hasJavaModel>
 	"gui_light": "front",
-<#else>
-	<#assign parent = "item/generated">
-	<#assign texture = "layer0">
-</#if>
-    "parent": "${parent}",
+    </#if>
+    "parent": "<#if hasJavaModel>builtin/entity<#else>item/generated</#if>",
     "textures": {
         <#if var_item??>
-            "${texture}": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
+            "layer0": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
         <#else>
-            "${texture}": "${data.texture.format("%s:item/%s")}"
+            "layer0": "${data.texture.format("%s:item/%s")}"
         </#if>
     }
 }

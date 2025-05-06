@@ -27,20 +27,16 @@
     <@modelDefinition/>
     </#if>
     <#macro modelDefinition>
-	<#if data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
-		<#assign parent = "builtin/entity">
-		<#assign texture = "particle">
-		"gui_light": "front",
-	<#else>
-		<#assign parent = "item/generated">
-		<#assign texture = "layer0">
+    <#assign hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
+	<#if hasJavaModel>
+	"gui_light": "front",
 	</#if>
-    "parent": "${parent}",
+    "parent": "<#if hasJavaModel>builtin/entity<#else>item/generated</#if>",
     "textures": {
         <#if var_item??>
-            "${texture}": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
+            "layer0": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"
         <#else>
-            "${texture}": "${data.texture.format("%s:item/%s")}"
+            "layer0": "${data.texture.format("%s:item/%s")}"
         </#if>
     }
     </#macro>
