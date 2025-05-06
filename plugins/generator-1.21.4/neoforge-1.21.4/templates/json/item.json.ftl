@@ -1,7 +1,7 @@
 {
     <#assign hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
     <#if hasJavaModel>
-	"gui_light": "front",
+    "gui_light": "front",
     </#if>
     "parent": "<#if hasJavaModel>builtin/entity<#else>item/generated</#if>",
     "textures": {
