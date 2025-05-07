@@ -127,7 +127,7 @@ public class VersionManager {
 		int startIndex = index;
 
 		// Iterates to the beginning of the change group
-		while (startIndex > 0 && changes.get(startIndex - 1).getGroup() == currentGroupId)
+		while (startIndex > 0 && currentGroupId.equals(changes.get(startIndex - 1).getGroup()))
 			startIndex--;
 
 		// Check if the beginning of the group is at index 0
