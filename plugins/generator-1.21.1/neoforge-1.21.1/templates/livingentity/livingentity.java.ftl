@@ -482,7 +482,6 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		<#if data.guiBoundTo?has_content>
 		compound.put("InventoryCustom", inventory.serializeNBT(this.registryAccess()));
 		</#if>
-
 		<#if data.sensitiveToVibration>
 		VibrationSystem.Data.CODEC.encodeStart(this.registryAccess().createSerializationContext(NbtOps.INSTANCE), this.vibrationData)
 			.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to encode vibration listener for ${name}: '{}'", e))
@@ -506,7 +505,6 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
 			inventory.deserializeNBT(this.registryAccess(), inventoryTag);
 		</#if>
-
 		<#if data.sensitiveToVibration>
 		if (compound.contains("listener", Tag.TAG_COMPOUND)) {
 			VibrationSystem.Data.CODEC.parse(this.registryAccess().createSerializationContext(NbtOps.INSTANCE), compound.getCompound("listener"))
@@ -523,9 +521,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			listenerConsumer.accept(this.dynamicGameEventListener, serverLevel);
 		}
 	}
-	</#if>
 
-	<#if data.sensitiveToVibration>
 	@Override public VibrationSystem.Data getVibrationData() {
 		return this.vibrationData;
 	}
