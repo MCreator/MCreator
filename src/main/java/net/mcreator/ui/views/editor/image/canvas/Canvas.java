@@ -431,7 +431,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 				canvas.width = this.width;
 				canvas.height = this.height;
 				canvas.selection = selection;
-				canvas.selection.setEditing(SelectedBorder.NONE);
+				if (canvas.selection.hasSurface()) {
+					canvas.selection.setEditing(SelectedBorder.ANY);
+				} else {
+					canvas.selection.setEditing(SelectedBorder.NONE);
+				}
 
 				// Load layers with rasters
 				for (int i = 0; i < layers.size(); i++) {
