@@ -99,8 +99,39 @@ public class VersionManager {
 		return false;
 	}
 
+	/**
+	 * Determines if the currently active revision is the initial full revision of the image
+	 * that should not be undone.
+	 * This method handles two different cases:
+	 * 1. Elementary changes (without a group UUID): Returns true if this is the very first change (index = 0)
+	 * 2. Complex changes (with a group UUID): Returns true if the first element of the group change is the first
+	 *    overall change, making the group the initial full version.
+	 *
+	 * @return true if the current revision is the first atomic revision that cannot be undone, false otherwise
+	 */
 	public boolean firstRevision() {
-		return index == 0;
+		// Quick check: if index is 0, this is always the first atomic revision
+		if (index == 0) {
+			return true;
+		}
+
+		Change currentChange  = changes.get(index);
+		UUID currentGroupId = currentChange.getGroup();
+
+		// If this is an elementary change (no group ID), it's not the first atomic revision
+		// since we already checked index != 0
+		if (currentGroupId == null) {
+			return false;
+		}
+
+		int startIndex = index;
+
+		// Iterates to the beginning of the change group
+		while (startIndex > 0 && changes.get(startIndex - 1).getGroup() == currentGroupId)
+			startIndex--;
+
+		// Check if the beginning of the group is at index 0
+		return startIndex == 0;
 	}
 
 	public boolean lastRevision() {
@@ -108,7 +139,7 @@ public class VersionManager {
 	}
 
 	public void undo() {
-		if (index > 0) {
+		if (!firstRevision()) {
 			Change c = changes.get(index);
 			c.revert();
 			index--;
