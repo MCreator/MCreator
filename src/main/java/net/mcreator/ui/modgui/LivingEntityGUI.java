@@ -950,11 +950,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		vibrationEvents.add("Center", vibrationEventsBottom);
 
 		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2);
-		vibrationMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.living_entity.properties_vibration"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-
 		vibrationPane.add("Center", PanelUtils.totalCenterInPanel(vibrationMerger));
 		vibrationPane.setOpaque(false);
 
