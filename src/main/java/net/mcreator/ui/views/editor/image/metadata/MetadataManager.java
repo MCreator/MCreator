@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -75,18 +76,25 @@ public class MetadataManager {
 		return null;
 	}
 
-	@Nullable public static File getMetadataFile(Workspace workspace, File file) {
+	@Nonnull public static File getMetadataFile(Workspace workspace, File file) {
 		TextureType textureType = guessTextureType(workspace, file);
-		if (textureType == null)
-			return null;
-		return new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-				"imageEditorMetadata/" + textureType.getID() + "/" + file.getName() + ".imgmeta");
+		// if texture type exists, we store override relative to its type to maintain
+		// metadata across different workspace folder structures
+		if (textureType != null) {
+			return new File(workspace.getFolderManager().getWorkspaceCacheDir(),
+					"imageEditorMetadata/" + textureType.getID() + "/" + file.getName() + ".imgmeta");
+		} else {
+			String relativePath = file.getAbsolutePath()
+					.substring(workspace.getWorkspaceFolder().getAbsolutePath().length());
+			return new File(workspace.getFolderManager().getWorkspaceCacheDir(),
+					"imageEditorMetadata/" + relativePath + ".imgmeta");
+		}
 	}
 
 	public static Canvas loadCanvasForFile(Workspace workspace, File file, ImageMakerView canvasOwner)
 			throws MetadataOutdatedException, NullPointerException {
 		File metadataFile = getMetadataFile(workspace, file);
-		if (metadataFile != null && metadataFile.isFile()) {
+		if (metadataFile.isFile()) {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
 				Canvas retval;
 
@@ -136,31 +144,29 @@ public class MetadataManager {
 
 	public static void saveCanvas(Workspace workspace, File file, Canvas canvas) {
 		File metadataFile = getMetadataFile(workspace, file);
-		if (metadataFile != null) {
-			try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
-				das.writeInt(0); // File type identifier - unused for now
+		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
+			das.writeInt(0); // File type identifier - unused for now
 
-				das.write(filemd5(file));
+			das.write(filemd5(file));
 
-				Gson gson = new GsonBuilder().registerTypeAdapter(Canvas.class,
-						new Canvas.GSONAdapter(canvas.getImageMakerView())).create();
-				String canvasJSONString = gson.toJson(canvas);
-				byte[] canvasJSONStringBytes = canvasJSONString.getBytes(StandardCharsets.UTF_8);
-				das.writeInt(canvasJSONStringBytes.length);
-				das.write(canvasJSONStringBytes);
+			Gson gson = new GsonBuilder().registerTypeAdapter(Canvas.class,
+					new Canvas.GSONAdapter(canvas.getImageMakerView())).create();
+			String canvasJSONString = gson.toJson(canvas);
+			byte[] canvasJSONStringBytes = canvasJSONString.getBytes(StandardCharsets.UTF_8);
+			das.writeInt(canvasJSONStringBytes.length);
+			das.write(canvasJSONStringBytes);
 
-				BufferedImage[] layerImages = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
-				das.writeInt(layerImages.length);
-				for (BufferedImage layerImage : layerImages) {
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					ImageIO.write(layerImage, "png", baos);
-					byte[] pngBytes = baos.toByteArray();
-					das.writeInt(pngBytes.length);
-					das.write(pngBytes);
-				}
-			} catch (Exception e) {
-				LOG.warn("Failed to save metadata for {}", file, e);
+			BufferedImage[] layerImages = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
+			das.writeInt(layerImages.length);
+			for (BufferedImage layerImage : layerImages) {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ImageIO.write(layerImage, "png", baos);
+				byte[] pngBytes = baos.toByteArray();
+				das.writeInt(pngBytes.length);
+				das.write(pngBytes);
 			}
+		} catch (Exception e) {
+			LOG.warn("Failed to save metadata for {}", file, e);
 		}
 	}
 
