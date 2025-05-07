@@ -22,6 +22,7 @@ package net.mcreator.ui.views.editor.image.metadata;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
@@ -93,6 +94,9 @@ public class MetadataManager {
 
 	public static Canvas loadCanvasForFile(Workspace workspace, File file, ImageMakerView canvasOwner)
 			throws MetadataOutdatedException, NullPointerException {
+		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
+			throw new NullPointerException("Metadata is disabled in preferences");
+
 		File metadataFile = getMetadataFile(workspace, file);
 		if (metadataFile.isFile()) {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
@@ -143,6 +147,9 @@ public class MetadataManager {
 	}
 
 	public static void saveCanvas(Workspace workspace, File file, Canvas canvas) {
+		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
+			return;
+
 		File metadataFile = getMetadataFile(workspace, file);
 		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
 			das.writeInt(0); // File type identifier - unused for now
