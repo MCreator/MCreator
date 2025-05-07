@@ -35,6 +35,7 @@ tags:
     condition: "${data.mobCreatureType == 'ILLAGER'}"
   - tag: ENTITIES:minecraft:aquatic
     condition: "${data.mobCreatureType == 'WATER'}"
+
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:
       - sensitiveToVibration
