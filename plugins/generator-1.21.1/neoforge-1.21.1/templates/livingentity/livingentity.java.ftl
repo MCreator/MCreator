@@ -1031,9 +1031,6 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	private class VibrationUser implements VibrationSystem.User {
 
 		private final ${name}Entity entity = ${name}Entity.this;
-		private final int x = this.entity.getOnPos().getX();
-		private final int y = this.entity.getOnPos().getY();
-		private final int z = this.entity.getOnPos().getZ();
 		private final PositionSource positionSource = new EntityPositionSource(this.entity, this.entity.getEyeHeight());
 
 		@Override public PositionSource getPositionSource() {
@@ -1049,6 +1046,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public int getListenerRadius() {
 			<#if hasProcedure(data.vibrationSensitivityRadius)>
 				Level world = this.entity.level();
+				int x = entity.getOnPos().getX();
+                int y = entity.getOnPos().getY();
+                int z = entity.getOnPos().getZ();
 				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
 			<#else>
 				return ${data.vibrationSensitivityRadius.getFixedValue()};
@@ -1058,14 +1058,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public boolean canReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, GameEvent.Context context) {
 			<#if hasProcedure(data.canReceiveVibrationCondition)>
 				return <@procedureCode data.canReceiveVibrationCondition {
-					"x": "x",
-					"y": "y",
-					"z": "z",
+					"x": "entity.getOnPos().getX()",
+					"y": "entity.getOnPos().getY()",
+					"z": "entity.getOnPos().getZ()",
 					"vibrationX": "vibrationPos.getX()",
 					"vibrationY": "vibrationPos.getY()",
 					"vibrationZ": "vibrationPos.getZ()",
 					"world": "world",
-					"entity": "this.entity",
+					"entity": "entity",
 					"sourceentity": "context.sourceEntity()"
 				}/>
 			<#else>
@@ -1076,9 +1076,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity vibrationSource, Entity projectileShooter, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
-					"x": "x",
-					"y": "y",
-					"z": "z",
+					"x": "entity.getOnPos().getX()",
+					"y": "entity.getOnPos().getY()",
+					"z": "entity.getOnPos().getZ()",
 					"vibrationX": "vibrationPos.getX()",
 					"vibrationY": "vibrationPos.getY()",
 					"vibrationZ": "vibrationPos.getZ()",
@@ -1088,10 +1088,6 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					"immediatesourceentity": "projectileShooter"
 				}/>
 			</#if>
-		}
-
-		@Override public boolean requiresAdjacentChunksToBeTicking() {
-			return true;
 		}
 	}
 	</#if>
