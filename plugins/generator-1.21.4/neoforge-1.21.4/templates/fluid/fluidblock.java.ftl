@@ -66,7 +66,7 @@ public class ${name}Block extends LiquidBlock {
 	</#if>
 
 	<#if data.lightOpacity == 0>
-	@Override public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	@Override public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 	<#elseif data.lightOpacity != 1>

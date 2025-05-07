@@ -1,0 +1,1 @@
+Procedura ta jest wykonywana, zanim ciecz zastąpi blok inny niż powietrze (na przykład wysoką trawę).

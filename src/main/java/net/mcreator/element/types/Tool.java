@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
+	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
 
 	public String name;
 	public StringListProcedure specialInformation;
@@ -101,7 +102,15 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		if (hasGUITexture()) {
+			return ImageUtils.resizeAndCrop(guiTexture.getImage(TextureType.ITEM), 32);
+		} else {
+			return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		}
+	}
+
+	public boolean hasGUITexture() {
+		return guiTexture != null && !guiTexture.isEmpty();
 	}
 
 	@Override public Model getItemModel() {

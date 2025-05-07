@@ -26,9 +26,10 @@ public interface ITextFieldSearchable extends ISearchable {
 
 	@Override default void search(@Nullable String searchTerm) {
 		JTextComponent component = getSearchTextField();
-		if (component == null) {
+		if (component == null ||! component.isShowing()) {
 			return;
 		}
+
 		component.requestFocusInWindow();
 		if (searchTerm != null) {
 			component.setText(searchTerm);

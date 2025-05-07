@@ -1,0 +1,1 @@
+Jeśli ten parametr jest włączony, element wygeneruje funkcję generacyjną na świecie.

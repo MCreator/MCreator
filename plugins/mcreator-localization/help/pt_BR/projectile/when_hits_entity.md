@@ -1,0 +1,1 @@
+Se o projétil atingir uma entidade viva (vaca, trepadeira, jogador, etc.), ele executará o procedimento selecionado.
