@@ -261,6 +261,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				triggerDepsPan.setVisible(false);
 			}
 
+			if (skipDependencyNullCheck.isSelected()) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("elementgui.procedure.null_dependency_crash_warning")));
+			}
+
 			dependenciesArrayList.forEach(dependencies::addElement);
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
@@ -574,6 +579,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 		});
 
+		skipDependencyNullCheck.addActionListener(e -> regenerateProcedure());
+
 		pane5.add("Center", blocklyPanel);
 
 		pane5.add("South", compileNotesPanel);
@@ -584,8 +591,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, PanelUtils.centerAndSouthElement(pane5, procedureSettings)), false)
-				.lazyValidate(() -> {
+		addPage(PanelUtils.gridElements(1, 1, PanelUtils.centerAndSouthElement(pane5, procedureSettings)),
+				false).lazyValidate(() -> {
 			if (hasDependencyErrors)
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
