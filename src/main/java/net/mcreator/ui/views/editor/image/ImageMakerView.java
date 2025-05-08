@@ -223,8 +223,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			} catch (MetadataOutdatedException e) {
 				Canvas old = e.getCanvas();
 				if (old != null) {
-					String[] options = { L10N.t("dialog.image_maker.load_old_version"),
-							L10N.t("dialog.image_maker.load_new_version") };
+					String[] options = { L10N.t("dialog.image_maker.load_new_version"),
+							L10N.t("dialog.image_maker.load_old_version") };
 					int option = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.metadata_outdated"),
 							L10N.t("dialog.image_maker.metadata_outdated.title"), JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
