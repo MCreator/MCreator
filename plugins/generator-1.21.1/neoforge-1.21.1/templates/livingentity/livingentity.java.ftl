@@ -1046,9 +1046,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public int getListenerRadius() {
 			<#if hasProcedure(data.vibrationSensitivityRadius)>
 				Level world = entity.level();
-				int x = entity.getX();
-				int y = entity.getY();
-				int z = entity.getZ();
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
 				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
 			<#else>
 				return ${data.vibrationSensitivityRadius.getFixedValue()};
