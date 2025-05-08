@@ -1049,10 +1049,10 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 		@Override public int getListenerRadius() {
 			<#if hasProcedure(data.vibrationSensitivityRadius)>
-				Level world = this.entity.level();
-				int x = entity.getOnPos().getX();
-				int y = entity.getOnPos().getY();
-				int z = entity.getOnPos().getZ();
+				Level world = entity.level();
+				int x = entity.getX();
+				int y = entity.getY();
+				int z = entity.getZ();
 				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
 			<#else>
 				return ${data.vibrationSensitivityRadius.getFixedValue()};
@@ -1062,9 +1062,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public boolean canReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, GameEvent.Context context) {
 			<#if hasProcedure(data.canReceiveVibrationCondition)>
 				return <@procedureCode data.canReceiveVibrationCondition {
-					"x": "entity.getOnPos().getX()",
-					"y": "entity.getOnPos().getY()",
-					"z": "entity.getOnPos().getZ()",
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
 					"vibrationX": "vibrationPos.getX()",
 					"vibrationY": "vibrationPos.getY()",
 					"vibrationZ": "vibrationPos.getZ()",
@@ -1080,9 +1080,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity vibrationSource, Entity projectileShooter, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
-					"x": "entity.getOnPos().getX()",
-					"y": "entity.getOnPos().getY()",
-					"z": "entity.getOnPos().getZ()",
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
 					"vibrationX": "vibrationPos.getX()",
 					"vibrationY": "vibrationPos.getY()",
 					"vibrationZ": "vibrationPos.getZ()",
