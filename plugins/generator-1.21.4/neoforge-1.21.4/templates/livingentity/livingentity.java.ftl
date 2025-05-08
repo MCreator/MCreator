@@ -1051,8 +1051,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			<#if hasProcedure(data.vibrationSensitivityRadius)>
 				Level world = this.entity.level();
 				int x = entity.getOnPos().getX();
-                int y = entity.getOnPos().getY();
-                int z = entity.getOnPos().getZ();
+				int y = entity.getOnPos().getY();
+				int z = entity.getOnPos().getZ();
 				return (int) <@procedureOBJToNumberCode data.vibrationSensitivityRadius/>;
 			<#else>
 				return ${data.vibrationSensitivityRadius.getFixedValue()};
@@ -1077,7 +1077,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			</#if>
 		}
 
-			@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity vibrationSource, Entity projectileShooter, float distance) {
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity vibrationSource, Entity projectileShooter, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
 					"x": "entity.getOnPos().getX()",
