@@ -29,12 +29,15 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
 
 public class TextureImportDialogs {
 
@@ -44,15 +47,16 @@ public class TextureImportDialogs {
 	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
 	 * @param file     <p>The texture file to import</p>
 	 * @param message  <p>The message to display on the option dialog</p>
+	 * @return <p>The saved file</p>
 	 */
-	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
+	@Nullable public static File importSingleTexture(final MCreator mcreator, File file, String message) {
 		TextureType[] options = TextureType.getSupportedTypes(mcreator.getWorkspace(), false);
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
-
 		if (n >= 0) {
-			saveTextures(mcreator, options[n], new File[] { file });
+			return saveTextures(mcreator, options[n], new File[] { file }).get(0);
 		}
+		return null;
 	}
 
 	public static void importArmor(final MCreator mcreator) {
@@ -134,8 +138,10 @@ public class TextureImportDialogs {
 	 * @param mcreator <p>The instance of {@link MCreator} to use</p>
 	 * @param type     <p>The texture type to use when saving texture files</p>
 	 * @param textures <p>Textures file to import</p>
+	 * @return <p>A list of saved files</p>
 	 */
-	public static void saveTextures(MCreator mcreator, TextureType type, File[] textures) {
+	public static List<File> saveTextures(MCreator mcreator, TextureType type, File[] textures) {
+		List<File> savedFiles = new ArrayList<>();
 		Arrays.stream(textures).forEach(textureFile -> {
 			String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(textureFile.getName()));
 			File file = mcreator.getFolderManager().getTextureFile(namec, type);
@@ -150,12 +156,15 @@ public class TextureImportDialogs {
 					return;
 				}
 			}
+			savedFiles.add(file);
 			FileIO.copyFile(textureFile, file);
 		});
 
 		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
 			modElementGUI.reloadDataLists();
+
+		return savedFiles;
 	}
 
 }
