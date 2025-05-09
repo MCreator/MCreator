@@ -1,0 +1,1 @@
+Este parâmetro controla o nome da seta com ponta.

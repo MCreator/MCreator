@@ -1,0 +1,1 @@
+Opcjonalna właściwość zmieni teksturę wiadra w ekwipunku, zastępując wygenerowaną automatycznie.

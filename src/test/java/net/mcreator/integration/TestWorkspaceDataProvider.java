@@ -649,7 +649,7 @@ public class TestWorkspaceDataProvider {
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
 			fluid.tickRate = _true ? 0 : 13;
-			fluid.lightOpacity = 2;
+			fluid.lightOpacity = _true ? 2 : 0;
 			fluid.flammability = 5;
 			fluid.fireSpreadSpeed = 12;
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -1184,6 +1184,7 @@ public class TestWorkspaceDataProvider {
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			item.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 
@@ -1427,6 +1428,16 @@ public class TestWorkspaceDataProvider {
 				// Remove last entry as it causes combinations to exceed MAX_PROPERTY_COMBINATIONS
 				block.customProperties.removeLast();
 			}
+			block.animations = new ArrayList<>();
+			if (!emptyLists) {
+				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
+					Block.AnimationEntry animation = new Block.AnimationEntry();
+					animation.animation = new Animation(modElement.getWorkspace(), anim);
+					animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
+					animation.speed = 12.3;
+					block.animations.add(animation);
+				}
+			}
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.hasGravity = _true;
@@ -1452,7 +1463,7 @@ public class TestWorkspaceDataProvider {
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
-			block.lightOpacity = new int[] { 7, 2, 0,
+			block.lightOpacity = new int[] { 0, 2, 0,
 					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 			block.tickRate = _true ? 0 : 24;
@@ -1811,6 +1822,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
+			procedure.skipDependencyNullCheck = _true;
 			return procedure;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
@@ -2113,6 +2125,7 @@ public class TestWorkspaceDataProvider {
 		tool.onItemInUseTick = new Procedure("procedure7");
 		tool.onEntitySwing = new Procedure("procedure11");
 		tool.texture = new TextureHolder(modElement.getWorkspace(), "test");
+		tool.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
 		tool.blockingRenderType = 0;

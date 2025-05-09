@@ -1,0 +1,1 @@
+Habilite este parâmetro para que o efeito seja exibido no inventário do jogador quando ativo.

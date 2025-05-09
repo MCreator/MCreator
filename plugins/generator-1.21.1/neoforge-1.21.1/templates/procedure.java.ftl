@@ -34,17 +34,19 @@ package ${package}.procedures;
 import net.neoforged.bus.api.Event;
 
 <#assign nullableDependencies = []/>
-<#list dependencies as dependency>
-	<#if dependency.getRawType() != "number"
-		&& dependency.getRawType() != "world"
-		&& dependency.getRawType() != "itemstack"
-		&& dependency.getRawType() != "blockstate"
-		&& dependency.getRawType() != "actionresulttype"
-		&& dependency.getRawType() != "logic"
-		&& dependency.getRawType() != "cmdcontext">
-		<#assign nullableDependencies += [dependency.getName()]/>
-	</#if>
-</#list>
+<#if !(data.skipDependencyNullCheck)>
+	<#list dependencies as dependency>
+		<#if dependency.getRawType() != "number"
+			&& dependency.getRawType() != "world"
+			&& dependency.getRawType() != "itemstack"
+			&& dependency.getRawType() != "blockstate"
+			&& dependency.getRawType() != "actionresulttype"
+			&& dependency.getRawType() != "logic"
+			&& dependency.getRawType() != "cmdcontext">
+			<#assign nullableDependencies += [dependency.getName()]/>
+		</#if>
+	</#list>
+</#if>
 
 <#compress>
 
