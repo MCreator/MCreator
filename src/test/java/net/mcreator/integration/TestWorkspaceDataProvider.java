@@ -1267,6 +1267,7 @@ public class TestWorkspaceDataProvider {
 			projectile.knockback = 7;
 			projectile.showParticles = _true;
 			projectile.igniteFire = _true;
+			projectile.disableGravity = emptyLists;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = "Default";

@@ -44,6 +44,7 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public boolean showParticles;
 	public Sound actionSound;
 	public boolean igniteFire;
+	public boolean disableGravity;
 	public double power;
 	public double damage;
 	public int knockback;
