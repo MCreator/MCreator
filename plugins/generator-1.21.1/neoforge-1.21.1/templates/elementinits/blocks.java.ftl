@@ -42,14 +42,14 @@ package ${package}.init;
 	<#if block.getModElement().getTypeString() == "block">
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
-			<#if block.isItemTinted>
+			<#if block.isItemTinted && block.hasBlockItem>
 				<#assign hasTintedBlockItems = true>
 			</#if>
 		</#if>
 	<#elseif block.getModElement().getTypeString() == "plant">
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
-			<#if block.isItemTinted>
+			<#if block.isItemTinted && block.hasBlockItem>
 				<#assign hasTintedBlockItems = true>
 			</#if>
 		</#if>
@@ -91,7 +91,7 @@ public class ${JavaModName}Blocks {
 		@SubscribeEvent public static void itemColorLoad(RegisterColorHandlersEvent.Item event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
-					<#if block.tintType != "No tint" && block.isItemTinted>
+					<#if block.tintType != "No tint" && block.isItemTinted && block.hasBlockItem>
 						 ${block.getModElement().getName()}Block.itemColorLoad(event);
 					</#if>
 				</#if>

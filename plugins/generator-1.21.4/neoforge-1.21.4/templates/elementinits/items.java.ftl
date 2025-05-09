@@ -83,11 +83,13 @@ public class ${JavaModName}Items {
 			<#if item.isDoubleBlock()>
 				<#assign hasDoubleBlocks = true>
 				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 			<#else>
 				<#assign hasBlocks = true>
 				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 			</#if>
 		<#else>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
@@ -104,13 +106,21 @@ public class ${JavaModName}Items {
 
 	<#if hasBlocks>
 	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
-		return REGISTRY.registerItem(block.getId().getPath(), properties -> new BlockItem(block.get(), properties), new Item.Properties());
+		return block(block, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block, Item.Properties properties) {
+		return REGISTRY.registerItem(block.getId().getPath(), prop -> new BlockItem(block.get(), prop), properties);
 	}
 	</#if>
 
 	<#if hasDoubleBlocks>
 	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block) {
-		return REGISTRY.registerItem(block.getId().getPath(), properties -> new DoubleHighBlockItem(block.get(), properties), new Item.Properties());
+		return doubleBlock(block, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block, Item.Properties properties) {
+		return REGISTRY.registerItem(block.getId().getPath(), prop -> new DoubleHighBlockItem(block.get(), prop), properties);
 	}
 	</#if>
 
@@ -172,4 +182,16 @@ public class ${JavaModName}Items {
 
 }
 
+<#macro blockItemProperties block>
+new Item.Properties()
+<#if block.maxStackSize != 64>
+	.stacksTo(${block.maxStackSize})
+</#if>
+<#if block.rarity != "COMMON">
+	.rarity(Rarity.${block.rarity})
+</#if>
+<#if block.immuneToFire>
+	.fireResistant()
+</#if>
+</#macro>
 <#-- @formatter:on -->
