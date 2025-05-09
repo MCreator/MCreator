@@ -1,0 +1,1 @@
+Questo parametro controlla il colore della nebbia all'interno del bioma.
