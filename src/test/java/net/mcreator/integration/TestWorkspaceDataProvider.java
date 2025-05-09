@@ -1267,6 +1267,7 @@ public class TestWorkspaceDataProvider {
 			projectile.knockback = 7;
 			projectile.showParticles = _true;
 			projectile.igniteFire = _true;
+			projectile.disableGravity = emptyLists;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = "Default";
@@ -1822,6 +1823,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
+			procedure.skipDependencyNullCheck = _true;
 			return procedure;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
