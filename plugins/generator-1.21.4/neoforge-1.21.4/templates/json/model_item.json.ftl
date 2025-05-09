@@ -49,23 +49,40 @@
           }<#sep>,
           </#list>
         ],
-        "model": {
-          "type": "minecraft:model",
-          "model": "${modid}:item/${registryname}_${model?index}"
-        }
+        "model": <@modelRef model, "_" + model?index, model?index />
       }<#sep>,
       </#list>
     ],
-    "fallback": {
-      "type": "minecraft:model",
-      "model": "${modid}:item/${registryname}"
-    }
+    "fallback": <@modelRef data />
   <#else>
-    "type": "minecraft:model",
-    <#if var_sufix??>
-    "model": "${modid}:item/${registryname}${var_sufix}"
-    <#else>
-    "model": "${modid}:item/${registryname}"
-    </#if>
+    <@modelRef data, var_sufix!"", -1, false/>
+  </#if>
+</#macro>
+
+<#macro modelRef model suffix="" itemIndex=-1 brackets=true>
+  <#if model.hasCustomJAVAModel?? && model.hasCustomJAVAModel()>
+	  <#if brackets>
+	  {
+	  </#if>
+		  "type": "minecraft:special",
+		  "base": "${modid}:item/${registryname}${suffix}",
+		  "model": {
+		  "type": "${modid}:${registryname}"
+		  <#if itemIndex gte 0>,
+		  "index": ${itemIndex}
+		  </#if>
+		}
+	  <#if brackets>
+	  }
+	  </#if>
+  <#else>
+	  <#if brackets>
+	  {
+	  </#if>
+		"type": "minecraft:model",
+		"model": "${modid}:item/${registryname}${suffix}"
+	  <#if brackets>
+	  }
+	  </#if>
   </#if>
 </#macro>
