@@ -39,7 +39,10 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		if (master instanceof BlocklyToProcedure procedure) {
-			if (procedure.getExternalTrigger() != null) {
+			if (procedure.getExternalTrigger() == null) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
+			} else {
 				ExternalTrigger trigger = null;
 
 				//Try get the trigger instance for later.
@@ -52,70 +55,74 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					}
 				}
 
+				//if trigger instance is null
 				if (trigger == null) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
 					return;
 				}
 
-				if (procedure.getParent().getGenerator() != null) {
-					//generator wrapper
-					GeneratorWrapper generatorWrapper = new GeneratorWrapper(procedure.getParent().getGenerator());
+				//generator wrapper
+				GeneratorWrapper generatorWrapper = new GeneratorWrapper(procedure.getParent().getGenerator());
 
-					List<Element> elements = XMLUtil.getDirectChildren(block);
-					String value = null, parameter = null, valueType = null;
-					//values
-					for (Element element : elements) {
-						if (element.getNodeName().equals("field")) {
-							String name = element.getAttribute("name");
-							if ("eventparameter".equals(name)) {
-								parameter = element.getTextContent();
-							} else if ("value".equals(name)) {
-								//compatibility with datalist selector, dropdown and so on for later extension
-								value = element.getTextContent();
-							}
-						} else if (element.getNodeName().equals("value")) {
-							if (element.getAttribute("name").equals("value")) {
-								value = BlocklyToCode.directProcessOutputBlock(master, element);
-								valueType = BlocklyBlockUtil.getInputBlockType(element);
-							}
+				List<Element> elements = XMLUtil.getDirectChildren(block);
+				String value = null, parameter = null, valueType = null;
+				//values
+				for (Element element : elements) {
+					if (element.getNodeName().equals("field")) {
+						String name = element.getAttribute("name");
+						if ("eventparameter".equals(name)) {
+							parameter = element.getTextContent();
+						} else if ("value".equals(name)) {
+							//compatibility with datalist selector, dropdown and so on for later extension
+							value = element.getTextContent();
 						}
-					}
-					if (parameter != null && value != null && !parameter.isEmpty() && !value.isEmpty()) {
-						String needEventClass = generatorWrapper.map(parameter, "eventparameters", 0);
-						String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
-						String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
-						if ("null".equals(needEventClass) || "null".equals(needTrigger) || "null".equals(needMethod)) {
-							return;
-						}
-						if (!trigger.getID().equals(needTrigger)) {
-							//if trigger is wrong
-							master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-									L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
-											L10N.t("trigger." + needTrigger), L10N.t("trigger." + trigger.getID()))));
-							return;
-						}
-						if (master.getTemplateGenerator() != null) {
-							HashMap<String, Object> datamodel = new HashMap<>();
-							datamodel.put("field$parameter", parameter);
-							if (valueType != null) {
-								datamodel.put("input$value", value);
-								datamodel.put("input_id$value", valueType);
-							} else {
-								datamodel.put("field$value", value);
-							}
-							//if template need them, they will need generator.map. We may help them here.
-							datamodel.put("eventClass", needEventClass);
-							datamodel.put("method", needMethod);
-							datamodel.put("triggerName", needTrigger);
-							master.append(master.getTemplateGenerator()
-									.generateFromTemplate("_" + block.getAttribute("type") + ".java.ftl", datamodel));
+					} else if (element.getNodeName().equals("value")) {
+						if (element.getAttribute("name").equals("value")) {
+							value = BlocklyToCode.directProcessOutputBlock(master, element);
+							valueType = BlocklyBlockUtil.getInputBlockType(element);
 						}
 					}
 				}
-			} else {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
+				if (parameter == null || parameter.isEmpty()) {
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.event_parameter_set.no_selected_parameter")));
+					return;
+				}
+				if (value == null || value.isEmpty()) {
+					//skip the block when its value is null. because the procedure block may have some variants, set default value is too complex.
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("blockly.warnings.skip")));
+					return;
+				}
+				String needEventClass = generatorWrapper.map(parameter, "eventparameters", 0);
+				String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
+				String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
+				if (!trigger.getID().equals(needTrigger)) {
+					//if trigger is wrong
+					//if needtrigger is null, we also should notify the end-user
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
+									"null".equals(needTrigger) ? "None" : L10N.t("trigger." + needTrigger),
+									L10N.t("trigger." + trigger.getID()))));
+					return;
+				}
+				if (master.getTemplateGenerator() != null) {
+					HashMap<String, Object> datamodel = new HashMap<>();
+					datamodel.put("fieldParameterName", parameter);
+					if (valueType != null) {
+						datamodel.put("inputValue", value);
+						datamodel.put("valueType", valueType);
+					} else {
+						datamodel.put("fieldValue", value);
+					}
+					//if template need them, they will need generator.map. We may help them here.
+					datamodel.put("eventClass", needEventClass);
+					datamodel.put("method", needMethod);
+					datamodel.put("triggerName", needTrigger);
+					master.append(master.getTemplateGenerator()
+							.generateFromTemplate("_event_parameter_set.java.ftl", datamodel));
+				}
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
