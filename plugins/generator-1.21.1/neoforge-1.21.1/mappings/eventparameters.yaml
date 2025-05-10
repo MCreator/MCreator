@@ -1,7 +1,4 @@
-_default:
-  - null
-  - null
-  - null
+_default: null
 INCOMING_DAMAGE_AMOUNT:
   - LivingIncomingDamageEvent # the event class
   - setAmount # the method name
