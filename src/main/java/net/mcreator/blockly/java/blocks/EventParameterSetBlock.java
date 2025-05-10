@@ -45,7 +45,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 			} else {
 				ExternalTrigger trigger = null;
 
-				//Try get the trigger instance for later.
+				//Try to get the trigger instance for later.
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
@@ -99,7 +99,6 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
 				String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
 				if (!trigger.getID().equals(needTrigger)) {
-					//if trigger is wrong
 					//if needtrigger is null, we also should notify the end-user
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
@@ -110,13 +109,11 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				if (master.getTemplateGenerator() != null) {
 					HashMap<String, Object> datamodel = new HashMap<>();
 					datamodel.put("fieldParameterName", parameter);
+					datamodel.put("inputValue", value);
 					if (valueType != null) {
-						datamodel.put("inputValue", value);
 						datamodel.put("valueType", valueType);
-					} else {
-						datamodel.put("fieldValue", value);
 					}
-					//if template need them, they will need generator.map. We may help them here.
+					//parameters model
 					datamodel.put("eventClass", needEventClass);
 					datamodel.put("method", needMethod);
 					datamodel.put("triggerName", needTrigger);
