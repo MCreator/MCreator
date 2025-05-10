@@ -91,8 +91,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				}
 				if (value == null || value.isEmpty()) {
 					//skip the block when its value is null. because the procedure block may have some variants, set default value is too complex.
-					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.skip")));
+					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.event_parameter_set.no_value")));
 					return;
 				}
 				String needEventClass = generatorWrapper.map(parameter, "eventparameters", 0);
