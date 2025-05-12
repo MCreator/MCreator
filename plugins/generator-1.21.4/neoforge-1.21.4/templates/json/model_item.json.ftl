@@ -67,11 +67,11 @@
 		  "type": "minecraft:special",
 		  "base": "${modid}:item/${registryname}${suffix}",
 		  "model": {
-		  "type": "${modid}:${registryname}"
-		  <#if itemIndex gte 0>,
-		  "index": ${itemIndex}
-		  </#if>
-		}
+		    "type": "${modid}:${registryname}"
+		    <#if itemIndex gte 0>,
+		    "index": ${itemIndex}
+		    </#if>
+		  }
 	  <#if brackets>
 	  }
 	  </#if>
