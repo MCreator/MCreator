@@ -138,7 +138,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#firstRevision()" class="member-name-link">firstRevision</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Determines if the currently active revision is the initial full revision of the image
+ that should not be undone.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastRevision()" class="member-name-link">lastRevision</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -216,6 +219,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="firstRevision()">
 <h3>firstRevision</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">firstRevision</span>()</div>
+<div class="block">Determines if the currently active revision is the initial full revision of the image
+ that should not be undone.
+ This method handles two different cases:
+ 1. Elementary changes (without a group UUID): Returns true if this is the very first change (index = 0)
+ 2. Complex changes (with a group UUID): Returns true if the first element of the group change is the first
+    overall change, making the group the initial full version.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the current revision is the first atomic revision that cannot be undone, false otherwise</dd>
+</dl>
 </section>
 </li>
 <li>
