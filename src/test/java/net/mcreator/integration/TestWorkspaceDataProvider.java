@@ -1067,6 +1067,10 @@ public class TestWorkspaceDataProvider {
 			plant.hasTileEntity = !_true;
 			plant.isSolid = _true;
 			plant.isWaterloggable = emptyLists; // saplings with mega trees can't be waterloggable
+			plant.hasBlockItem = !emptyLists;
+			plant.maxStackSize = 37;
+			plant.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			plant.immuneToFire = _true;
 			plant.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
@@ -1444,6 +1448,10 @@ public class TestWorkspaceDataProvider {
 			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
 			block.requiresCorrectTool = _true;
+			block.hasBlockItem = !emptyLists;
+			block.maxStackSize = 37;
+			block.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			block.immuneToFire = _true;
 			block.creativeTabs = emptyLists ? List.of() : tabs;
 			block.destroyTool = getRandomItem(random,
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });

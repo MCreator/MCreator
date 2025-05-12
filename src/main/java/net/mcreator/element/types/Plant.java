@@ -81,6 +81,11 @@ import java.util.stream.Collectors;
 	public boolean isSolid;
 	public boolean isWaterloggable;
 
+	public boolean hasBlockItem;
+	public int maxStackSize;
+	public String rarity;
+	public boolean immuneToFire;
+
 	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
 	public Sound breakSound;
@@ -143,6 +148,9 @@ import java.util.stream.Collectors;
 	public Plant(ModElement element) {
 		super(element);
 
+		this.hasBlockItem = true;
+		this.maxStackSize = 64;
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 
 		this.canBePlacedOn = new ArrayList<>();
@@ -174,6 +182,10 @@ import java.util.stream.Collectors;
 
 	public boolean generateLootTable() {
 		return !useLootTableForDrops;
+	}
+
+	public boolean hasDrops() {
+		return dropAmount > 0 && (hasBlockItem || !customDrop.isEmpty());
 	}
 
 	public boolean isWaterloggable() {
@@ -224,8 +236,16 @@ import java.util.stream.Collectors;
 		return "cutout";
 	}
 
+	@Override public boolean hasCustomItemProperties() {
+		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
+
+		if (hasBlockItem) {
+			baseTypes.add(BaseType.ITEM);
+		}
 
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
@@ -241,11 +261,11 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return providedMCItems();
+		return hasBlockItem ? providedMCItems() : Collections.emptyList();
 	}
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
