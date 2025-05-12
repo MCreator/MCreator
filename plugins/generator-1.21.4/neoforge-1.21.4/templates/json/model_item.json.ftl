@@ -50,13 +50,13 @@
           </#list>
         ],
         "model": {
-		  <@modelRef model, "_" + model?index, model?index/>
-	    }
+          <@modelRef model, "_" + model?index, model?index/>
+        }
       }<#sep>,
       </#list>
     ],
     "fallback": {
-	  <@modelRef data/>
+      <@modelRef data/>
     }
   <#else>
     <@modelRef data, var_sufix!""/>
