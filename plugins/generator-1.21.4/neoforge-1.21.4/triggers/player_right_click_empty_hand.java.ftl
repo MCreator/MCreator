@@ -10,8 +10,7 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
-		if (event.getHand() != event.getEntity().getUsedItemHand())
-			return;
+		if (event.getHand() != InteractionHand.MAIN_HAND) return;
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}
