@@ -10,6 +10,7 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
+		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
 		if (event.getHand() != InteractionHand.MAIN_HAND) return;
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
