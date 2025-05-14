@@ -76,6 +76,7 @@ public class Launcher {
 		System.setProperty("sun.java2d.opengl",
 				Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
 		System.setProperty("sun.java2d.d3d", "false");
+		System.setProperty("sun.java2d.pmoffscreen", "false");
 
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
