@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.IntegrationTestSetup;
@@ -120,6 +121,12 @@ import static org.junit.jupiter.api.Assertions.*;
 									latch.countDown();
 								});
 						latch.await();
+
+						// Attach dummy file watcher to also test its operation
+						workspace.get().getGenerator().getFileWatcher()
+								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
+						workspace.get().getGenerator().getFileWatcher().addListener((watchKey, kind, file) -> {
+						});
 					}));
 
 					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {
