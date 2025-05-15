@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.generator;
+package net.mcreator.io;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,9 +41,9 @@ import static java.nio.file.StandardWatchEventKinds.*;
  * <p>
  * The class is designed to be used in a generator context, where it can watch for changes in the generator's workspace.
  */
-public class GeneratorFileWatcher implements Closeable {
+public class FileWatcher implements Closeable {
 
-	private static final Logger LOG = LogManager.getLogger(GeneratorFileWatcher.class);
+	private static final Logger LOG = LogManager.getLogger(FileWatcher.class);
 
 	@Nullable private final WatchService watchService;
 
@@ -53,7 +53,7 @@ public class GeneratorFileWatcher implements Closeable {
 
 	private boolean closed = false;
 
-	public GeneratorFileWatcher(Generator generator) {
+	public FileWatcher() {
 		WatchService watchServiceTmp;
 		try {
 			watchServiceTmp = FileSystems.getDefault().newWatchService();
@@ -104,6 +104,8 @@ public class GeneratorFileWatcher implements Closeable {
 
 	/**
 	 * Watches a folder for changes. If the folder is not a directory, it will not be watched.
+	 * <p>
+	 * The watch is not recursive, so only the specified folder will be watched, not its subdirectories!
 	 *
 	 * @param path the path to the folder to watch
 	 * @return the WatchKey for the folder, or null if the folder is not a directory or if the watch service is not available
@@ -111,6 +113,13 @@ public class GeneratorFileWatcher implements Closeable {
 	@Nullable public WatchKey watchFolder(File path) {
 		if (watchService != null) {
 			try {
+				// Check if we are already watching this folder
+				for (Map.Entry<WatchKey, Path> entry : watchKeys.entrySet()) {
+					if (entry.getValue().equals(path.toPath())) {
+						return entry.getKey();
+					}
+				}
+
 				Path dir = path.toPath();
 				if (dir.toFile().isDirectory()) {
 					WatchKey key = dir.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
