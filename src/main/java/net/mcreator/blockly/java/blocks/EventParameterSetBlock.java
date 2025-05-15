@@ -70,7 +70,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				String type = block.getAttribute("type").split("_")[1];
 				//values
 				for (Element element : elements) {
-					if (element.getNodeName().equals("field")) {
+					if ("field".equals(element.getNodeName())) {
 						String name = element.getAttribute("name");
 						if ("eventparameter".equals(name)) {
 							parameter = element.getTextContent();
@@ -78,8 +78,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 							//compatibility with datalist selector, dropdown and so on for later extension
 							value = element.getTextContent();
 						}
-					} else if (element.getNodeName().equals("value")) {
-						if (element.getAttribute("name").equals("value")) {
+					} else if ("value".equals(element.getNodeName())) {
+						if ("value".equals(element.getAttribute("name"))) {
 							value = BlocklyToCode.directProcessOutputBlock(master, element);
 						}
 					}
