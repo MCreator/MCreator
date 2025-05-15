@@ -66,6 +66,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 				List<Element> elements = XMLUtil.getDirectChildren(block);
 				String value = null, parameter = null;
+				//"event_number_parameter_set".split("_") is [event,number,.....] so we get the second.
+				String type = block.getAttribute("type").split("_")[1];
 				//values
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field")) {
@@ -108,12 +110,13 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					HashMap<String, Object> datamodel = new HashMap<>();
 					datamodel.put("fieldParameterName", parameter);
 					datamodel.put("inputValue", value);
+					datamodel.put("type", type);
 					//parameters model
 					datamodel.put("eventClass", needEventClass);
 					datamodel.put("method", needMethod);
 					datamodel.put("triggerName", needTrigger);
 					master.append(master.getTemplateGenerator()
-							.generateFromTemplate("_" + block.getAttribute("type") + ".java.ftl", datamodel));
+							.generateFromTemplate("_event_parameter_set.java.ftl", datamodel));
 				}
 			}
 		} else {
@@ -123,6 +126,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
+		//please follow the template: event_{type}_parameter_set
 		return new String[] { "event_number_parameter_set", "event_logic_parameter_set" };
 	}
 
