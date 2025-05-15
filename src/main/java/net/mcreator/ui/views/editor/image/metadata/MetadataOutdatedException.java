@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.ui.views.editor.image.metadata;
 
-import net.mcreator.element.BaseType;
+import net.mcreator.ui.views.editor.image.canvas.Canvas;
 
-import java.util.Collection;
-import java.util.List;
+public class MetadataOutdatedException extends Exception {
 
-@SuppressWarnings("unused") public interface IBlock extends IItem {
+	private final Canvas canvas;
 
-	@Override default Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.BLOCK, BaseType.ITEM);
+	public MetadataOutdatedException(String message, Canvas canvas) {
+		super(message);
+		this.canvas = canvas;
 	}
 
-	String getRenderType();
-
-	default boolean isDoubleBlock() {
-		return false;
+	public Canvas getCanvas() {
+		return canvas;
 	}
 
-	default boolean hasCustomItemProperties() {
-		return false;
-	}
 }

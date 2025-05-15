@@ -1,8 +1,8 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-		if (event.getHand() != event.getEntity().getUsedItemHand())
-			return;
+		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
+		if (event.getHand() != InteractionHand.MAIN_HAND) return;
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",

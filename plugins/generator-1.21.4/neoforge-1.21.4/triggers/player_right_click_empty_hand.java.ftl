@@ -10,8 +10,8 @@
 				"entity": "event.getEntity()"
 			}/>
 		</#compress></#assign>
-		if (event.getHand() != event.getEntity().getUsedItemHand())
-			return;
+		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
+		if (event.getHand() != InteractionHand.MAIN_HAND) return;
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}

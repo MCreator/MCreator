@@ -269,12 +269,19 @@ public abstract class MCreator extends MCreatorFrame {
 					setJMenuBar(menuBar);
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 					workspaceFullyLoaded();
+					workspaceGeneratorSwitched();
 				});
 			}, "ME preloader").start();
 		}
 	}
 
 	public void workspaceFullyLoaded() {
+	}
+
+	/**
+	 * Called every time generator is switched. Also called when MCreator is loaded for the first time.
+	 */
+	public void workspaceGeneratorSwitched() {
 	}
 
 	public boolean closeThisMCreator(boolean returnToProjectSelector) {
