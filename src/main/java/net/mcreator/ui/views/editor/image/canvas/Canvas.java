@@ -18,14 +18,19 @@
 
 package net.mcreator.ui.views.editor.image.canvas;
 
+import com.google.gson.*;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 import net.mcreator.ui.views.editor.image.versioning.change.*;
 import net.mcreator.util.ArrayListListModel;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.UUID;
 
 public class Canvas extends ArrayListListModel<Layer> {
@@ -59,7 +64,11 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private int height;
 
 	// Selection object
-	private final Selection selection = new Selection(this);
+	private Selection selection = new Selection(this);
+
+	// Dummy constructor for deserialization
+	private Canvas() {
+	}
 
 	public Canvas(ImageMakerView imageMakerView, int width, int height) {
 		this.width = width;
@@ -354,6 +363,99 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public ImageMakerView getImageMakerView() {
 		return imageMakerView;
+	}
+
+	public static class GSONAdapter implements JsonDeserializer<Canvas>, JsonSerializer<Canvas> {
+
+		private static final Gson gson = new GsonBuilder().create();
+
+		@Nonnull private final ImageMakerView deserializedCanvasOwner;
+
+		private BufferedImage[] rasters;
+
+		public GSONAdapter(@Nonnull ImageMakerView deserializedCanvasOwner) {
+			this.deserializedCanvasOwner = deserializedCanvasOwner;
+		}
+
+		public GSONAdapter setRasters(BufferedImage[] rasters) {
+			this.rasters = rasters;
+			return this;
+		}
+
+		@Override
+		public Canvas deserialize(JsonElement jsonElement, Type type,
+				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+			SerializableCanvasShadow shadow = gson.fromJson(jsonElement, SerializableCanvasShadow.class);
+			Canvas retval = shadow.getCanvas(rasters);
+
+			// Populate canvas and layers with canvas and image maker view references
+			retval.initReferences(deserializedCanvasOwner);
+
+			// Initialize version history
+			UUID group = UUID.randomUUID();
+			for (Layer layer : retval) {
+				Addition addition = new Addition(retval, layer);
+				addition.setUUID(group);
+				retval.imageMakerView.getVersionManager().addRevision(addition);
+			}
+
+			deserializedCanvasOwner.getLayerPanel().select(0);
+
+			return retval;
+		}
+
+		@Override public JsonElement serialize(Canvas src, Type typeOfSrc, JsonSerializationContext context) {
+			SerializableCanvasShadow shadow = new SerializableCanvasShadow(src);
+			return gson.toJsonTree(shadow);
+		}
+
+		/**
+		 * This is needed because GSON handles Canvas as array by default, ignoring other fields
+		 */
+		private static class SerializableCanvasShadow {
+
+			private final int width;
+			private final int height;
+			private final List<Layer> layers;
+			private final Selection selection;
+
+			public SerializableCanvasShadow(Canvas canvas) {
+				this.layers = canvas;
+				this.width = canvas.getWidth();
+				this.height = canvas.getHeight();
+				this.selection = canvas.getSelection();
+			}
+
+			private Canvas getCanvas(BufferedImage[] rasters) {
+				Canvas canvas = new Canvas();
+				canvas.width = this.width;
+				canvas.height = this.height;
+				canvas.selection = selection;
+				if (canvas.selection.hasSurface()) {
+					canvas.selection.setEditing(SelectedBorder.ANY);
+				} else {
+					canvas.selection.setEditing(SelectedBorder.NONE);
+				}
+
+				// Load layers with rasters
+				for (int i = 0; i < layers.size(); i++) {
+					Layer layer = layers.get(i);
+					if (rasters != null && rasters.length > i) {
+						layer.setRaster(rasters[i]);
+					} else {
+						// If no raster is provided, create a blank image
+						layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+					}
+				}
+
+				// Add layers to canvas
+				canvas.addAll(layers);
+
+				return canvas;
+			}
+
+		}
+
 	}
 
 }
