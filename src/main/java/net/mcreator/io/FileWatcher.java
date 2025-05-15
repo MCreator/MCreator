@@ -90,7 +90,7 @@ public class FileWatcher implements Closeable {
 					}
 				}
 			}
-		}, "Generator File Watcher Thread").start();
+		}, "File Watcher Thread").start();
 	}
 
 	/**
