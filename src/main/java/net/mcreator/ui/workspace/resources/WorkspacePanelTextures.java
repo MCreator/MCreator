@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.generator.GeneratorFileWatcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
@@ -49,6 +50,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.nio.file.WatchKey;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,12 +83,35 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(TextureType.values()).forEach(section -> {
-			JComponentWithList<File> compList = createListElement(
-					L10N.t("workspace.textures.category." + section.getID()));
-			respan.add(compList.component());
-			mapLists.put(section.getID(), compList);
-		});
+		// TODO: not ok as fileWatcher will change when generator is changed
+		// TODO: either move system completely to or out from Generator system
+		GeneratorFileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getGeneratorFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					JComponentWithList<File> compList = createListElement(
+							L10N.t("workspace.textures.category." + section.getID()));
+					respan.add(compList.component());
+					mapLists.put(section.getID(), compList);
+
+					// Watch texture folder for external program changes to flush image cache in this case
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					WatchKey watchKey = fileWatcher.watchFolder(folder);
+					fileWatcher.addListener((watchKey1, kind, file) -> {
+						if (!watchKey1.equals(watchKey))
+							return;
+
+						if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
+							// flush cache for this image
+							SwingUtilities.invokeLater(() -> {
+								try {
+									new ImageIcon(file.getAbsolutePath()).getImage().flush();
+									reloadElements();
+								} catch (Exception ignored) {
+								}
+							});
+						}
+					});
+				});
 
 		respan.setOpaque(false);
 

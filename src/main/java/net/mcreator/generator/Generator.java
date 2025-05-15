@@ -76,6 +76,8 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private GradleFileTracker gradleFileTracker;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
+	private final GeneratorFileWatcher generatorFileWatcher;
+
 	private final BaseDataModelProvider baseDataModelProvider;
 
 	public Generator(@Nonnull Workspace workspace) {
@@ -89,6 +91,8 @@ public class Generator implements IGenerator, Closeable {
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 
 		this.baseDataModelProvider = new BaseDataModelProvider(this);
+
+		this.generatorFileWatcher = new GeneratorFileWatcher(this);
 	}
 
 	@Override public @Nonnull Workspace getWorkspace() {
@@ -114,6 +118,10 @@ public class Generator implements IGenerator, Closeable {
 
 	public BaseDataModelProvider getBaseDataModelProvider() {
 		return baseDataModelProvider;
+	}
+
+	public GeneratorFileWatcher getGeneratorFileWatcher() {
+		return generatorFileWatcher;
 	}
 
 	public File getGeneratorPackageRoot() {
@@ -649,6 +657,8 @@ public class Generator implements IGenerator, Closeable {
 
 	@Override public void close() {
 		ExternalTexture.invalidateCache(workspace);
+
+		generatorFileWatcher.close();
 
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");
