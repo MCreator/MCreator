@@ -38,8 +38,9 @@ public class ${name}Item extends Item {
 
 	public ${name}Item() {
 		super(new Item.Properties()
-		<#if data.igniterRarity != "COMMON">.rarity(Rarity.${data.igniterRarity})</#if>
-		.durability(64));
+			<#if data.igniterRarity != "COMMON">.rarity(Rarity.${data.igniterRarity})</#if>
+			.durability(64)
+		);
 	}
 
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
