@@ -18,8 +18,8 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.generator.GeneratorFileWatcher;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
 import net.mcreator.ui.component.TransparentToolBar;
@@ -83,34 +83,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		// TODO: not ok as fileWatcher will change when generator is changed
-		// TODO: either move system completely to or out from Generator system
-		GeneratorFileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getGeneratorFileWatcher();
 		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
 				.forEach(section -> {
 					JComponentWithList<File> compList = createListElement(
 							L10N.t("workspace.textures.category." + section.getID()));
 					respan.add(compList.component());
 					mapLists.put(section.getID(), compList);
-
-					// Watch texture folder for external program changes to flush image cache in this case
-					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
-					WatchKey watchKey = fileWatcher.watchFolder(folder);
-					fileWatcher.addListener((watchKey1, kind, file) -> {
-						if (!watchKey1.equals(watchKey))
-							return;
-
-						if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
-							// flush cache for this image
-							SwingUtilities.invokeLater(() -> {
-								try {
-									new ImageIcon(file.getAbsolutePath()).getImage().flush();
-									reloadElements();
-								} catch (Exception ignored) {
-								}
-							});
-						}
-					});
 				});
 
 		respan.setOpaque(false);
@@ -190,6 +168,31 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		add("North", bar);
 	}
 
+	public void attachGeneratorFileWatcher() {
+		// Watch texture folder for external program changes to flush image cache in this case
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					WatchKey watchKey = fileWatcher.watchFolder(folder);
+					fileWatcher.addListener((watchKey1, kind, file) -> {
+						if (!watchKey1.equals(watchKey))
+							return;
+
+						if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
+							// flush cache for this image
+							SwingUtilities.invokeLater(() -> {
+								try {
+									new ImageIcon(file.getAbsolutePath()).getImage().flush();
+									reloadElements();
+								} catch (Exception ignored) {
+								}
+							});
+						}
+					});
+				});
+	}
+
 	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
 		if (!files.isEmpty()) {
@@ -248,7 +251,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 					L10N.t("workspace.textures.select_dupplicate_type"));
 			// Copy image editor metadata if it exists
 			if (newFile != null) {
-				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(), file);
+				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
+						file);
 				if (originalMetadata.isFile()) {
 					File newMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
 							newFile);
@@ -268,8 +272,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				reloadElements();
 
 				// Delete image editor metadata as it's not valid anymore
-				File imageEditorMetadata = MetadataManager.getMetadataFile(
-						workspacePanel.getMCreator().getWorkspace(), file);
+				File imageEditorMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
+						file);
 				if (imageEditorMetadata.isFile())
 					imageEditorMetadata.delete();
 			}
