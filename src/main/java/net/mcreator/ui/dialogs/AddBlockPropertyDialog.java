@@ -92,7 +92,7 @@ public class AddBlockPropertyDialog {
 					dialog.setVisible(false);
 				} else if ("Enum".equals(type.getSelectedItem())) {
 					List<String> textList = stringBounds.getTextList();
-					if (!textList.isEmpty()) {
+					if (textList.size() > 1) {
 						result.set(new PropertyDataWithValue<>(
 								new PropertyData.StringType(propertyName, textList.toArray(String[]::new)), null));
 						dialog.setVisible(false);
