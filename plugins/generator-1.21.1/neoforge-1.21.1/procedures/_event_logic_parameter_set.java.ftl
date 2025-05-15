@@ -1,3 +1,3 @@
 if (event instanceof ${eventClass} _event){
-    _event.${method}(${inputValue});
+    _event.${method}(${input$value});
 }

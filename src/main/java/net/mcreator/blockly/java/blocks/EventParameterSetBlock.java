@@ -19,7 +19,6 @@
 
 package net.mcreator.blockly.java.blocks;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -66,7 +65,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				GeneratorWrapper generatorWrapper = new GeneratorWrapper(procedure.getParent().getGenerator());
 
 				List<Element> elements = XMLUtil.getDirectChildren(block);
-				String value = null, parameter = null, valueType = null;
+				String value = null, parameter = null;
 				//values
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field")) {
@@ -76,12 +75,10 @@ public class EventParameterSetBlock implements IBlockGenerator {
 						} else if ("value".equals(name)) {
 							//compatibility with datalist selector, dropdown and so on for later extension
 							value = element.getTextContent();
-							valueType = element.getAttribute("type");
 						}
 					} else if (element.getNodeName().equals("value")) {
 						if (element.getAttribute("name").equals("value")) {
 							value = BlocklyToCode.directProcessOutputBlock(master, element);
-							valueType = BlocklyBlockUtil.getInputBlockType(element);
 						}
 					}
 				}
@@ -111,15 +108,12 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					HashMap<String, Object> datamodel = new HashMap<>();
 					datamodel.put("fieldParameterName", parameter);
 					datamodel.put("inputValue", value);
-					if (valueType != null) {
-						datamodel.put("valueType", valueType);
-					}
 					//parameters model
 					datamodel.put("eventClass", needEventClass);
 					datamodel.put("method", needMethod);
 					datamodel.put("triggerName", needTrigger);
 					master.append(master.getTemplateGenerator()
-							.generateFromTemplate("_event_parameter_set.java.ftl", datamodel));
+							.generateFromTemplate("_" + block.getAttribute("type") + ".java.ftl", datamodel));
 				}
 			}
 		} else {
