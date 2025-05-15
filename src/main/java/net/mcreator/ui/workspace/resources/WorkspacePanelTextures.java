@@ -83,13 +83,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPanel respan = new JPanel(new GridBagLayout());
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
-				.forEach(section -> {
-					JComponentWithList<File> compList = createListElement(
-							L10N.t("workspace.textures.category." + section.getID()));
-					respan.add(compList.component());
-					mapLists.put(section.getID(), compList);
-				});
+		Arrays.stream(TextureType.values()).forEach(section -> {
+			JComponentWithList<File> compList = createListElement(
+					L10N.t("workspace.textures.category." + section.getID()));
+			respan.add(compList.component());
+			mapLists.put(section.getID(), compList);
+		});
 
 		respan.setOpaque(false);
 
@@ -251,8 +250,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 					L10N.t("workspace.textures.select_dupplicate_type"));
 			// Copy image editor metadata if it exists
 			if (newFile != null) {
-				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
-						file);
+				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(), file);
 				if (originalMetadata.isFile()) {
 					File newMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
 							newFile);
@@ -272,8 +270,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				reloadElements();
 
 				// Delete image editor metadata as it's not valid anymore
-				File imageEditorMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
-						file);
+				File imageEditorMetadata = MetadataManager.getMetadataFile(
+						workspacePanel.getMCreator().getWorkspace(), file);
 				if (imageEditorMetadata.isFile())
 					imageEditorMetadata.delete();
 			}
