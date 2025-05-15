@@ -45,7 +45,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected final JTextField search;
 
 	protected final JTabbedPane subTabs;
-	protected final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
+	protected final Map<Class<? extends AbstractWorkspacePanel>, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
 	@Nullable protected AbstractWorkspacePanel currentTabPanel = null;
 
 	public AbstractMainWorkspacePanel(MCreator mcreator, BorderLayout layout) {
@@ -152,11 +152,12 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	 * Adds a new section to this workspace as well as a vertical tab button on the left that switches
 	 * to the section panel when clicked.
 	 *
-	 * @param id      The unique identifier of the section used for reloading/filtering contained elements.
 	 * @param name    The name of the section shown in the workspace.
 	 * @param section The panel representing contents of the vertical tab being added.
 	 */
-	public void addVerticalTab(String id, String name, AbstractWorkspacePanel section) {
+	public void addVerticalTab(String name, AbstractWorkspacePanel section) {
+		Class<? extends AbstractWorkspacePanel> id = section.getClass();
+
 		if (getVerticalTab(id) != null)
 			return;
 
@@ -167,8 +168,9 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		}
 	}
 
-	public AbstractWorkspacePanel getVerticalTab(String id) {
-		return sectionTabs.get(id);
+	public <T extends AbstractWorkspacePanel> T getVerticalTab(Class<T> id) {
+		//noinspection unchecked
+		return (T) sectionTabs.get(id);
 	}
 
 	public void switchToVerticalTab(AbstractWorkspacePanel panel) {
