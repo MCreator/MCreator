@@ -91,8 +91,6 @@ public class GeneratorFileWatcher implements Closeable {
 				}
 			}
 		}, "Generator File Watcher Thread").start();
-
-		watchFolder(GeneratorUtils.getResourceRoot(generator.getWorkspace(), generator.getGeneratorConfiguration()));
 	}
 
 	/**
