@@ -34,14 +34,14 @@ import java.util.List;
 public class CancelEventBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		if (master instanceof BlocklyToProcedure) {
-			if (((BlocklyToProcedure) master).getExternalTrigger() != null) {
+		if (master instanceof BlocklyToProcedure blocklyToProcedure) {
+			if (blocklyToProcedure.getExternalTrigger() != null) {
 				ExternalTrigger trigger = null;
 
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
-					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
+					if (externalTrigger.getID().equals(blocklyToProcedure.getExternalTrigger())) {
 						trigger = externalTrigger;
 						break;
 					}
