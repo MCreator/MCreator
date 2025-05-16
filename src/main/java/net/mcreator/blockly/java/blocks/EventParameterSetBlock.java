@@ -37,7 +37,6 @@ import java.util.List;
 public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		//ONLY SUPPORT PROCEDURE NOW. Please avoid using this in BlocklyToFeature and others...
 		if (master instanceof BlocklyToProcedure procedure) {
 			ExternalTrigger trigger = null;
 
@@ -123,7 +122,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public String[] getSupportedBlocks() {
 		//please follow the template: event_{type}_parameter_set
-		return new String[] { "event_number_parameter_set", "event_logic_parameter_set" };
+		return new String[] { "event_number_parameter_set" };
 	}
 
 	@Override public BlockType getBlockType() {

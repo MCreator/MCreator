@@ -116,13 +116,6 @@
                 </block>
             </value>
         </block>
-        <block type="event_logic_parameter_set">
-            <value name="value">
-                <block type="logic_boolean">
-                    <field name="BOOL">TRUE</field>
-                </block>
-            </value>
-        </block>
         <block type="call_procedure">
             <mutation inputs="0"/>
         </block>
