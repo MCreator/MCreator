@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.preferences.data;
 
-import net.mcreator.element.BaseType;
+import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.preferences.entries.BooleanEntry;
 
-import java.util.Collection;
-import java.util.List;
+public class ImageEditorSection extends PreferencesSection {
 
-@SuppressWarnings("unused") public interface IBlock extends IItem {
+	public final BooleanEntry storeMetadata;
 
-	@Override default Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.BLOCK, BaseType.ITEM);
+	ImageEditorSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
 	}
 
-	String getRenderType();
-
-	default boolean isDoubleBlock() {
-		return false;
+	@Override public String getSectionKey() {
+		return "imageEditor";
 	}
 
-	default boolean hasCustomItemProperties() {
-		return false;
-	}
 }

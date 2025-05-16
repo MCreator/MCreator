@@ -63,7 +63,7 @@ public class Launcher {
 		LOG.info("Starting MCreator {}", version);
 
 		// print version of Java
-		LOG.info("Java version: {}, VM: {}, vendor: {}", System.getProperty("java.version"),
+		LOG.info("Java version: {}, VM: {}, vendor: {}", Runtime.version(),
 				System.getProperty("java.vm.name"), System.getProperty("java.vendor"));
 		LOG.info("Current JAVA_HOME for running instance: {}", System.getProperty("java.home"));
 
@@ -73,9 +73,11 @@ public class Launcher {
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
 				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar.get()));
-		System.setProperty("sun.java2d.opengl",
-				Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
+
+		// some flags to prevent rendering issues with certain GPU drivers
+		System.setProperty("sun.java2d.opengl", "false");
 		System.setProperty("sun.java2d.d3d", "false");
+		System.setProperty("sun.java2d.pmoffscreen", "false");
 
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
