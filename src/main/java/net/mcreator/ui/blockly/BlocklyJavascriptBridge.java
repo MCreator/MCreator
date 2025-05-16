@@ -199,18 +199,13 @@ public final class BlocklyJavascriptBridge {
 			case "fluid" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"fluids");
-			case "gamerulesboolean" -> openDataListEntrySelector(
-					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), "gamerules");
 			case "gamerulesnumber" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
-			case "eventparametersnumber" -> openDataListEntrySelector(w-> DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-					.filter(e->e.isSupportedInWorkspace(w)).toList(),"eventparameters");
-			case "eventparametersboolean" -> openDataListEntrySelector(w-> DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-					.filter(e->e.isSupportedInWorkspace(w)).toList(),"eventparameters");
+			case "eventparametersnumber" -> openDataListEntrySelector(
+					w -> DataListLoader.loadDataList("eventparameters").stream()
+							.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "structure" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
