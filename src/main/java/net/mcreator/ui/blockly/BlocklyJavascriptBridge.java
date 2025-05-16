@@ -199,6 +199,9 @@ public final class BlocklyJavascriptBridge {
 			case "fluid" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"fluids");
+			case "gamerulesboolean" -> openDataListEntrySelector(
+					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "gamerules");
 			case "gamerulesnumber" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
