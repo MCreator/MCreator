@@ -37,14 +37,14 @@ import java.util.List;
 public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		if (master instanceof BlocklyToProcedure procedure) {
+		if (master instanceof BlocklyToProcedure) {
 			ExternalTrigger trigger = null;
 
 			//Try to get the trigger instance for later.
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 					.getExternalTriggers();
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals((procedure.getExternalTrigger()))) {
+				if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
 					trigger = externalTrigger;
 					break;
 				}
