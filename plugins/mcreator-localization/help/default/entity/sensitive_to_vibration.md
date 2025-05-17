@@ -1,0 +1,1 @@
+If this parameter is checked, this entity will be sensitive to vibrations like *Warden*.
