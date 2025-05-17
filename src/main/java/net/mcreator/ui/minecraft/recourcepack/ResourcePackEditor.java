@@ -68,7 +68,7 @@ import java.util.function.Supplier;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
-	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh");
+	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh", "txt");
 
 	private final MCreator mcreator;
 

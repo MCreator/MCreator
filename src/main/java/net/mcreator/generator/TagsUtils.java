@@ -76,7 +76,8 @@ public class TagsUtils {
 		if (tags != null) {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
-				TagElement tag = TagElement.fromString(((String) map.get("tag"))
+				String tagRawName = (String) map.get("tag");
+				TagElement tag = TagElement.fromString(tagRawName
 								//@formatter:off
 								.replace("@NAME", element.getModElement().getName())
 								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
@@ -88,6 +89,15 @@ public class TagsUtils {
 						element);
 
 				if (map.containsKey("entryprovider")) {
+					// If this tag name contains @registryname, we can "safely" assume it is only used by one
+					// (the one calling this method) mod element. In this case, we can first delete all
+					// managed entries to make sure we remove any stale entries before re-adding them
+					// in this method, as we can assume no other mod element will add entries to this tag.
+					// We only need to do this in case of entryprovider, as it can dynamically change entries
+					// based on the mod element definition that can change with user edits.
+					if (tagRawName.contains("@registryname"))
+						removeAllManagedTagEntries(generator, tag);
+
 					@SuppressWarnings("unchecked") Collection<String> entryprovider = (Collection<String>) TemplateExpressionParser.processFTLExpression(
 							generator, (String) map.get("entryprovider"), element);
 					if (entryprovider != null) {
@@ -108,6 +118,18 @@ public class TagsUtils {
 				} else {
 					handleTagEntryEntry(generator, tag, NameMapper.MCREATOR_PREFIX + element.getModElement().getName(),
 							deleteMode || shouldSkip);
+				}
+			}
+		}
+	}
+
+	private static void removeAllManagedTagEntries(Generator generator, TagElement tag) {
+		List<String> entries = generator.getWorkspace().getTagElements().get(tag);
+		if (entries != null) {
+			// make a copy of the list to avoid concurrent modification
+			for (String entry : new ArrayList<>(entries)) {
+				if (TagElement.isEntryManaged(entry)) {
+					generator.getWorkspace().getTagElements().get(tag).remove(entry);
 				}
 			}
 		}
