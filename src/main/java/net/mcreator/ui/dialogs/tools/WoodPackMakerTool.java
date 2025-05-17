@@ -113,9 +113,9 @@ public class WoodPackMakerTool {
 
 		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Wood", name + "Log", name + "Planks",
 				name + "Leaves", name + "Stairs", name + "Slab", name + "Fence", name + "FenceGate",
-				name + "PressurePlate", name + "Button", name + "WoodRecipe", name + "PlanksLogRecipe",
-				name + "PlanksWoodRecipe", name + "StairsRecipe", name + "SlabRecipe", name + "FenceRecipe",
-				name + "FenceGateRecipe", name + "PressurePlateRecipe", name + "ButtonRecipe", name + "StickRecipe"))
+				name + "PressurePlate", name + "Button", name + "WoodRecipe", name + "PlanksRecipe",
+				name + "StairsRecipe", name + "SlabRecipe", name + "FenceRecipe", name + "FenceGateRecipe",
+				name + "PressurePlateRecipe", name + "ButtonRecipe"))
 			return;
 
 		// select folder the mod pack should be in
@@ -348,44 +348,35 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		woodRecipe.craftingBookCategory = "BUILDING";
 		woodRecipe.group = "bark";
-		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
-		woodRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
-		woodRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
-		woodRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
-		woodRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Wood");
+		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, logEntry);
+		woodRecipe.recipeSlots[1] = new MItemBlock(workspace, logEntry);
+		woodRecipe.recipeSlots[3] = new MItemBlock(workspace, logEntry);
+		woodRecipe.recipeSlots[4] = new MItemBlock(workspace, logEntry);
+		woodRecipe.recipeReturnStack = new MItemBlock(workspace, woodEntry);
 		woodRecipe.recipeRetstackSize = 3;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, woodRecipe);
 
 		Recipe planksLogRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "PlanksLogRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+				new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		planksLogRecipe.craftingBookCategory = "BUILDING";
 		planksLogRecipe.group = "planks";
-		planksLogRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
-		planksLogRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Planks");
+		planksLogRecipe.recipeSlots[4] = new MItemBlock(workspace,
+				"TAG:" + workspace.getWorkspaceSettings().getModID() + ":" + registryName + "_logs");
+		planksLogRecipe.recipeReturnStack = new MItemBlock(workspace, planksEntry);
 		planksLogRecipe.recipeShapeless = true;
 		planksLogRecipe.recipeRetstackSize = 4;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksLogRecipe);
-
-		Recipe planksWoodRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "PlanksWoodRecipe", ModElementType.RECIPE), false).getElementFromGUI();
-		planksWoodRecipe.craftingBookCategory = "BUILDING";
-		planksWoodRecipe.group = "planks";
-		planksWoodRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + woodBlock.getModElement().getName());
-		planksWoodRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Planks");
-		planksWoodRecipe.recipeShapeless = true;
-		planksWoodRecipe.recipeRetstackSize = 4;
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksWoodRecipe);
 
 		Recipe stairsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		stairsRecipe.craftingBookCategory = "BUILDING";
 		stairsRecipe.group = "wooden_stairs";
-		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stairsRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stairsRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stairsRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stairsRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stairsRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, planksEntry);
+		stairsRecipe.recipeSlots[3] = new MItemBlock(workspace, planksEntry);
+		stairsRecipe.recipeSlots[4] = new MItemBlock(workspace, planksEntry);
+		stairsRecipe.recipeSlots[6] = new MItemBlock(workspace, planksEntry);
+		stairsRecipe.recipeSlots[7] = new MItemBlock(workspace, planksEntry);
+		stairsRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		stairsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Stairs");
 		stairsRecipe.recipeRetstackSize = 4;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stairsRecipe);
@@ -394,9 +385,9 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		slabRecipe.craftingBookCategory = "BUILDING";
 		slabRecipe.group = "wooden_slab";
-		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		slabRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		slabRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, planksEntry);
+		slabRecipe.recipeSlots[7] = new MItemBlock(workspace, planksEntry);
+		slabRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		slabRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Slab");
 		slabRecipe.recipeRetstackSize = 6;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, slabRecipe);
@@ -404,12 +395,12 @@ public class WoodPackMakerTool {
 		Recipe fenceRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		fenceRecipe.group = "wooden_fence";
-		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, planksEntry);
 		fenceRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
-		fenceRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		fenceRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		fenceRecipe.recipeSlots[5] = new MItemBlock(workspace, planksEntry);
+		fenceRecipe.recipeSlots[6] = new MItemBlock(workspace, planksEntry);
 		fenceRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
-		fenceRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		fenceRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		fenceRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Fence");
 		fenceRecipe.recipeRetstackSize = 3;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceRecipe);
@@ -419,10 +410,10 @@ public class WoodPackMakerTool {
 		fenceGateRecipe.craftingBookCategory = "REDSTONE";
 		fenceGateRecipe.group = "wooden_fence_gate";
 		fenceGateRecipe.recipeSlots[3] = new MItemBlock(workspace, "Items.STICK");
-		fenceGateRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		fenceGateRecipe.recipeSlots[4] = new MItemBlock(workspace, planksEntry);
 		fenceGateRecipe.recipeSlots[5] = new MItemBlock(workspace, "Items.STICK");
 		fenceGateRecipe.recipeSlots[6] = new MItemBlock(workspace, "Items.STICK");
-		fenceGateRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		fenceGateRecipe.recipeSlots[7] = new MItemBlock(workspace, planksEntry);
 		fenceGateRecipe.recipeSlots[8] = new MItemBlock(workspace, "Items.STICK");
 		fenceGateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "FenceGate");
 		fenceGateRecipe.recipeRetstackSize = 1;
@@ -433,10 +424,8 @@ public class WoodPackMakerTool {
 				.getElementFromGUI();
 		pressurePlateRecipe.craftingBookCategory = "REDSTONE";
 		pressurePlateRecipe.group = "wooden_pressure_plate";
-		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace,
-				"CUSTOM:" + planksBlock.getModElement().getName());
-		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace,
-				"CUSTOM:" + planksBlock.getModElement().getName());
+		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace, planksEntry);
+		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace, planksEntry);
 		pressurePlateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "PressurePlate");
 		pressurePlateRecipe.recipeRetstackSize = 1;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pressurePlateRecipe);
@@ -445,20 +434,11 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		buttonRecipe.craftingBookCategory = "REDSTONE";
 		buttonRecipe.group = "wooden_button";
-		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace, planksEntry);
 		buttonRecipe.recipeShapeless = true;
 		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
 		buttonRecipe.recipeRetstackSize = 1;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonRecipe);
-
-		Recipe stickRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false).getElementFromGUI();
-		stickRecipe.group = "sticks";
-		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stickRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
-		stickRecipe.recipeReturnStack = new MItemBlock(workspace, "Items.STICK");
-		stickRecipe.recipeRetstackSize = 4;
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stickRecipe);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
