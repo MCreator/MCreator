@@ -33,6 +33,7 @@ import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleFileTracker;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
@@ -76,6 +77,8 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable private GradleFileTracker gradleFileTracker;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
+	private final FileWatcher fileWatcher;
+
 	private final BaseDataModelProvider baseDataModelProvider;
 
 	public Generator(@Nonnull Workspace workspace) {
@@ -89,6 +92,8 @@ public class Generator implements IGenerator, Closeable {
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
 
 		this.baseDataModelProvider = new BaseDataModelProvider(this);
+
+		this.fileWatcher = new FileWatcher();
 	}
 
 	@Override public @Nonnull Workspace getWorkspace() {
@@ -114,6 +119,10 @@ public class Generator implements IGenerator, Closeable {
 
 	public BaseDataModelProvider getBaseDataModelProvider() {
 		return baseDataModelProvider;
+	}
+
+	public FileWatcher getFileWatcher() {
+		return fileWatcher;
 	}
 
 	public File getGeneratorPackageRoot() {
@@ -649,6 +658,8 @@ public class Generator implements IGenerator, Closeable {
 
 	@Override public void close() {
 		ExternalTexture.invalidateCache(workspace);
+
+		fileWatcher.close();
 
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");

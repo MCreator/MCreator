@@ -27,6 +27,8 @@ import net.mcreator.ui.MainMenuBar;
 import net.mcreator.ui.MainToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
+import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
@@ -70,4 +72,9 @@ public final class ModMaker extends MCreator {
 		return workspacePanel;
 	}
 
+	@Override public void workspaceGeneratorSwitched() {
+		super.workspaceGeneratorSwitched();
+		workspacePanel.getVerticalTab(WorkspacePanelResources.class).getResourcePanel(WorkspacePanelTextures.class)
+				.attachGeneratorFileWatcher();
+	}
 }
