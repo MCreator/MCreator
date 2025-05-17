@@ -43,12 +43,14 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 
 	public ${name}Item(Item.Properties properties) {
 		super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS, </#if>properties
+				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
-				<#else>
+				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
 				<#if data.immuneToFire>

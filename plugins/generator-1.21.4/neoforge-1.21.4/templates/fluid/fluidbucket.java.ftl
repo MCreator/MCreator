@@ -39,7 +39,9 @@ public class ${name}Item extends BucketItem {
 
 	public ${name}Item(Item.Properties properties) {
 		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
-			properties.craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity}));
+			properties.craftRemainder(Items.BUCKET).stacksTo(1)
+			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+		);
 	}
 
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>

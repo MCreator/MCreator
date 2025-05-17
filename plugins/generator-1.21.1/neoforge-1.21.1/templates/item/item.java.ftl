@@ -47,13 +47,15 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
-				<#else>
+				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
 					.nutrition(${data.nutritionalValue})
