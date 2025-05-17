@@ -27,6 +27,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.RegistryNameFixer;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -108,6 +109,8 @@ public class WoodPackMakerTool {
 
 	private static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
 			double factor) {
+		String registryName = RegistryNameFixer.fromCamelCase(name);
+
 		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Wood", name + "Log", name + "Planks",
 				name + "Leaves", name + "Stairs", name + "Slab", name + "Fence", name + "FenceGate",
 				name + "PressurePlate", name + "Button", name + "WoodRecipe", name + "PlanksLogRecipe",
@@ -324,6 +327,21 @@ public class WoodPackMakerTool {
 		buttonBlock.flammability = (int) Math.round(5 * factor);
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
+
+		// Tags
+		String planksEntry = "CUSTOM:" + name + "Planks";
+		String logEntry = "CUSTOM:" + name + "Log";
+		String woodEntry = "CUSTOM:" + name + "Wood";
+		PackMakerToolUtils.addTagEntries(workspace, TagType.BLOCKS, "mod:" + registryName + "_logs", logEntry,
+				woodEntry);
+		PackMakerToolUtils.addTagEntries(workspace, TagType.BLOCKS, "minecraft:logs_that_burn",
+				"TAG:mod:" + registryName + "_logs");
+		PackMakerToolUtils.addTagEntries(workspace, TagType.BLOCKS, "minecraft:planks", planksEntry);
+		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "mod:" + registryName + "_logs", logEntry,
+				woodEntry);
+		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "minecraft:logs_that_burn",
+				"TAG:mod:" + registryName + "_logs");
+		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "minecraft:planks", planksEntry);
 
 		//Recipes
 		Recipe woodRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
