@@ -58,8 +58,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure>
 		implements IBlocklyPanelHolder, ISearchable {
@@ -242,7 +242,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						for (String required_api : trigger.required_apis) {
 							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
 								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-										L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
+										L10N.t("elementgui.pr	ocedure.global_trigger_not_activated", required_api)));
 							}
 						}
 					}

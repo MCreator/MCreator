@@ -268,6 +268,10 @@ public class BlocklyTestUtil {
 			return DataListLoader.loadDataList("eventparameters").stream()
 					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
 					.map(DataListEntry::getName).toArray(String[]::new);
+		case "eventparametersboolean":
+			return DataListLoader.loadDataList("eventparameters").stream()
+					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+					.map(DataListEntry::getName).toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
 		case "structure":

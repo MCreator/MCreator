@@ -7,3 +7,7 @@ FALL_DISTANCE:
   - LivingFallEvent
   - setDistance
   - entity_falls
+BONEMEAL_USED_RESULT:
+  - BonemealEvent
+  - setSuccessful
+  - bonemeal_used

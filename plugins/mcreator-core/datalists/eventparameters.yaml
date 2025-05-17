@@ -4,3 +4,6 @@
 - FALL_DISTANCE:
   readable_name: "Entity falls - Fall Distance"
   type: number
+- BONEMEAL_USED_RESULT:
+  readable_name: "Bonemeal is used - Result of Use"
+  type: logic

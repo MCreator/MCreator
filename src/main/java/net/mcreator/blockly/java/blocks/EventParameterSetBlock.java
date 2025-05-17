@@ -122,7 +122,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public String[] getSupportedBlocks() {
 		//please follow the template: event_{type}_parameter_set
-		return new String[] { "event_number_parameter_set" };
+		return new String[] { "event_number_parameter_set", "event_logic_parameter_set" };
 	}
 
 	@Override public BlockType getBlockType() {
