@@ -1,0 +1,15 @@
+- INCOMING_DAMAGE_AMOUNT:
+  readable_name: "Entity is attacked - Incoming Damage Amount"
+  type: number
+- FALL_DISTANCE:
+  readable_name: "Entity falls - Fall Distance"
+  type: number
+- DISABLE_SWEEP:
+  readable_name: "Player deals critical hit - Disable Sweep"
+  type: logic
+- CRITICAL_HIT_RESULT:
+  readable_name: "Player deals critical hit - The Result of Critical"
+  type: logic
+- GRIEF_RESULT:
+  readable_name: "Entity about to grief the world - The Result of Grief"
+  type: logic

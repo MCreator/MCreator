@@ -182,5 +182,6 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+		blockGenerators.add(new EventParameterSetBlock());
 	}
 }
