@@ -37,41 +37,37 @@ import java.util.List;
 public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		if (master instanceof BlocklyToProcedure) {
+		if (master instanceof BlocklyToProcedure blocklyToProcedure) {
 			ExternalTrigger trigger = null;
 
-			//Try to get the trigger instance for later.
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 					.getExternalTriggers();
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
+				if (externalTrigger.getID().equals(blocklyToProcedure.getExternalTrigger())) {
 					trigger = externalTrigger;
 					break;
 				}
 			}
 
-			//if trigger instance is null
 			if (trigger == null) {
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_selected_trigger")));
 				return;
 			}
 
-			//generator wrapper
 			GeneratorWrapper generatorWrapper = new GeneratorWrapper(master.getParent().getGenerator());
 
 			List<Element> elements = XMLUtil.getDirectChildren(block);
 			String value = null, parameter = null;
-			//"event_number_parameter_set".split("_") is [event,number,.....] so we get the second.
+			// "event_number_parameter_set".split("_") is [event,number,.....] so we get the second.
 			String type = block.getAttribute("type").split("_")[1];
-			//values
 			for (Element element : elements) {
 				if ("field".equals(element.getNodeName())) {
 					String name = element.getAttribute("name");
 					if ("eventparameter".equals(name)) {
 						parameter = element.getTextContent();
 					} else if ("value".equals(name)) {
-						//compatibility with datalist selector, dropdown and so on for later extension
+						// compatibility with datalist selector, dropdown and so on for later extension
 						value = element.getTextContent();
 					}
 				} else if ("value".equals(element.getNodeName())) {
@@ -86,7 +82,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				return;
 			}
 			if (value == null || value.isEmpty()) {
-				//skip the block when its value is null. because the procedure block may have some variants, set default value is too complex.
+				// skip the block when its value is null. because the procedure block may have some variants, set default value is too complex.
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_value")));
 				return;
@@ -95,7 +91,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 			String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
 			String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
 			if (!trigger.getID().equals(needTrigger)) {
-				//if needtrigger is null, we also should notify the end-user
+				// if needtrigger is null, we also should notify the end-user
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
 								"null".equals(needTrigger) ? "None" : L10N.t("trigger." + needTrigger),
@@ -107,7 +103,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				datamodel.put("fieldParameterName", parameter);
 				datamodel.put("inputValue", value);
 				datamodel.put("type", type);
-				//parameters model
+				// parameters model
 				datamodel.put("eventClass", needEventClass);
 				datamodel.put("method", needMethod);
 				datamodel.put("triggerName", needTrigger);
@@ -121,11 +117,11 @@ public class EventParameterSetBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		//please follow the template: event_{type}_parameter_set
-		return new String[] { "event_number_parameter_set" };
+		return new String[] { "event_number_parameter_set" }; // event_{type}_parameter_set
 	}
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
+
 }
