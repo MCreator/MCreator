@@ -163,6 +163,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 					mcreator.getWorkspace().switchGenerator(change.workspaceSettings.getCurrentGenerator());
 
+					mcreator.workspaceGeneratorSwitched();
+
 					p2.markStateOk();
 					dial.hideDialog();
 
