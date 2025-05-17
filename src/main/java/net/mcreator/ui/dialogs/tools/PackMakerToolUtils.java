@@ -20,8 +20,10 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
+import net.mcreator.workspace.elements.TagElement;
 
 public class PackMakerToolUtils {
 
@@ -43,6 +45,16 @@ public class PackMakerToolUtils {
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
 			workspace.getGenerator().generateElement(generatableElement);
 			workspace.getModElementManager().storeModElement(generatableElement);
+		}
+	}
+
+	public static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
+		TagElement tag = new TagElement(tagType, tagName);
+		if (!workspace.getTagElements().containsKey(tag)) {
+			workspace.addTagElement(tag);
+		}
+		for (String entry : entries) {
+			workspace.getTagElements().get(tag).add(entry);
 		}
 	}
 
