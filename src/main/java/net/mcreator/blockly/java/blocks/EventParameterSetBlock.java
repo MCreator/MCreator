@@ -59,8 +59,6 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 			List<Element> elements = XMLUtil.getDirectChildren(block);
 			String value = null, parameter = null;
-			// "event_number_parameter_set".split("_") is [event,number,.....] so we get the second.
-			String type = block.getAttribute("type").split("_")[1];
 			for (Element element : elements) {
 				if ("field".equals(element.getNodeName())) {
 					String name = element.getAttribute("name");
@@ -76,37 +74,44 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					}
 				}
 			}
+
 			if (parameter == null || parameter.isEmpty()) {
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_selected_parameter")));
 				return;
 			}
+
 			if (value == null || value.isEmpty()) {
-				// skip the block when its value is null. because the procedure block may have some variants, set default value is too complex.
+				// skip the block when its value is null; guessing default value would be too complex
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_value")));
 				return;
 			}
-			String needEventClass = generatorWrapper.map(parameter, "eventparameters", 0);
-			String needMethod = generatorWrapper.map(parameter, "eventparameters", 1);
-			String needTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
-			if (!trigger.getID().equals(needTrigger)) {
-				// if needtrigger is null, we also should notify the end-user
+
+			String eventClass = generatorWrapper.map(parameter, "eventparameters", 0);
+			String eventParameterMethod = generatorWrapper.map(parameter, "eventparameters", 1);
+			String requiredGlobalTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
+
+			if (!trigger.getID().equals(requiredGlobalTrigger)) {
+				// if requiredGlobalTrigger is null, we also should notify the end-user
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.invalid_trigger",
-								"null".equals(needTrigger) ? "None" : L10N.t("trigger." + needTrigger),
+								"null".equals(requiredGlobalTrigger) ?
+										"None" :
+										L10N.t("trigger." + requiredGlobalTrigger),
 								L10N.t("trigger." + trigger.getID()))));
 				return;
 			}
+
 			if (master.getTemplateGenerator() != null) {
 				HashMap<String, Object> datamodel = new HashMap<>();
 				datamodel.put("fieldParameterName", parameter);
 				datamodel.put("inputValue", value);
-				datamodel.put("type", type);
+				datamodel.put("type", block.getAttribute("type").split("_")[1]); // event_{type}_parameter_set
 				// parameters model
-				datamodel.put("eventClass", needEventClass);
-				datamodel.put("method", needMethod);
-				datamodel.put("triggerName", needTrigger);
+				datamodel.put("eventClass", eventClass);
+				datamodel.put("method", eventParameterMethod);
+				datamodel.put("triggerName", requiredGlobalTrigger);
 				master.append(
 						master.getTemplateGenerator().generateFromTemplate("_event_parameter_set.java.ftl", datamodel));
 			}
