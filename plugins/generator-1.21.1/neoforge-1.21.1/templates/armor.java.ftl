@@ -73,7 +73,7 @@ import net.minecraft.client.model.Model;
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet>
 		event.registerItem(new IClientItemExtensions() {
-			@Override public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
 					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
