@@ -378,6 +378,7 @@ public final class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
+		case "eventparametersnumber", "eventparametersboolean" -> datalist = "eventparameters";
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}
