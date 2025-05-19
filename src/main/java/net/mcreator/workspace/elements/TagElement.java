@@ -27,6 +27,8 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
+
 public record TagElement(TagType type, String resourcePath) implements IElement {
 
 	@Override public String getName() {
@@ -57,13 +59,13 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	}
 
 	public boolean equals(Object obj) {
-		if (obj instanceof TagElement other)
-			return other.type.equals(type) && other.resourcePath.equals(resourcePath);
+		if (obj instanceof TagElement(TagType type1, String path))
+			return type1.equals(type) && path.equals(resourcePath);
 		return false;
 	}
 
 	// This method is used to serialize TagElement to JSON string for map keys
-	@Override public String toString() {
+	@Nonnull @Override public String toString() {
 		return type.name() + ":" + resourcePath;
 	}
 

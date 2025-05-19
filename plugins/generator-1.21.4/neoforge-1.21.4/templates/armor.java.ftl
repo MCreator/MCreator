@@ -66,7 +66,7 @@ import net.minecraft.client.model.Model;
 		<#if data.enableHelmet>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				ModelPart head = new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart};
 				head.setInitialPose(PartPose.rotation(0, (float) (Math.PI), 0));
 				head.resetPose();

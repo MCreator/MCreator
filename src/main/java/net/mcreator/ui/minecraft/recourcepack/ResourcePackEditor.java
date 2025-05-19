@@ -45,6 +45,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.workspace.Workspace;
@@ -67,7 +68,7 @@ import java.util.function.Supplier;
 
 public class ResourcePackEditor extends JPanel implements IReloadableFilterable {
 
-	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh");
+	private static final List<String> textExtensions = List.of("json", "mcmeta", "fsh", "vsh", "txt");
 
 	private final MCreator mcreator;
 
@@ -197,6 +198,8 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							File fileOrigin = FileDialogs.getOpenDialog(mcreator,
 									new String[] { selectedEntry.extension() });
 							if (fileOrigin != null) {
+								deleteMetadataIfApplicable(workspace,
+										importTarget); // Delete existing metadata of target file if it exists
 								FileIO.copyFile(fileOrigin, importTarget);
 								reloadElements();
 							}
@@ -216,6 +219,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							if (toDelete.isDirectory()) {
 								FileIO.deleteDir(toDelete);
 							} else {
+								deleteMetadataIfApplicable(workspace, toDelete);
 								toDelete.delete();
 							}
 							reloadElements();
@@ -262,6 +266,14 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
+	}
+
+	private void deleteMetadataIfApplicable(Workspace workspace, File file) {
+		if (file != null && file.isFile() && file.getName().endsWith(".png")) {
+			File imageEditorMetadata = MetadataManager.getMetadataFile(workspace, file);
+			if (imageEditorMetadata.isFile())
+				imageEditorMetadata.delete();
+		}
 	}
 
 	private void editOrOverrideCurrentEntry() {

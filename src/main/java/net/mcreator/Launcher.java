@@ -73,8 +73,9 @@ public class Launcher {
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
 				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar.get()));
-		System.setProperty("sun.java2d.opengl",
-				Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
+
+		// some flags to prevent rendering issues with certain GPU drivers
+		System.setProperty("sun.java2d.opengl", "false");
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("sun.java2d.pmoffscreen", "false");
 

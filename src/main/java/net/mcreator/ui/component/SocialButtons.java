@@ -34,11 +34,13 @@ public class SocialButtons extends JPanel {
 		add(new JEmptyBox(4, 4));
 		add(createButton("rd", "https://www.reddit.com/r/MCreator/"));
 		add(new JEmptyBox(4, 4));
-		add(createButton("gh", "https://github.com/MCreator/MCreator"));
-		add(new JEmptyBox(4, 4));
 		add(createButton("tw", "https://twitter.com/PyloDEV"));
 		add(new JEmptyBox(4, 4));
+		add(createButton("gh", "https://github.com/MCreator/MCreator"));
+		add(new JEmptyBox(4, 4));
 		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
+		add(new JEmptyBox(4, 4));
+		add(createButton("ds", "https://discord.gg/sBRCQPp5ez"));
 		add(new JEmptyBox(4, 4));
 		add(createButton("ig", "https://www.instagram.com/pylocompany/"));
 		setOpaque(false);
