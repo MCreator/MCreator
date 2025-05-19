@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -52,7 +53,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class WoodPackMakerTool {
 
@@ -110,6 +110,7 @@ public class WoodPackMakerTool {
 	private static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
 			double factor) {
 		String registryName = RegistryNameFixer.fromCamelCase(name);
+		String readableName = StringUtils.machineToReadableName(name);
 
 		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Wood", name + "Log", name + "Planks",
 				name + "Leaves", name + "Stairs", name + "Slab", name + "Fence", name + "FenceGate",
@@ -128,39 +129,39 @@ public class WoodPackMakerTool {
 						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
 								Arrays.asList("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5")) + ".png")),
 				color, true);
-		String woodTextureName = (name + "_log_side").toLowerCase(Locale.ENGLISH);
+		String woodTextureName = registryName + "_log_side";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(woodTextureName), TextureType.BLOCK));
+				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
 
 		//then we generate the missing log texture
 		ImageIcon log = ImageUtils.colorize(
 				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/log_top.png")),
 				color, true);
-		String logTextureName = (name + "_log_top").toLowerCase(Locale.ENGLISH);
+		String logTextureName = registryName + "_log_top";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(logTextureName), TextureType.BLOCK));
+				mcreator.getFolderManager().getTextureFile(logTextureName, TextureType.BLOCK));
 
 		//then we generate the planks texture
 		ImageIcon planks = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
 				"templates/textures/texturemaker/" + ListUtils.getRandomItem(Arrays.asList("planks_0", "planks_1"))
 						+ ".png")), color, true);
-		String planksTextureName = (name + "_planks").toLowerCase(Locale.ENGLISH);
+		String planksTextureName = registryName + "_planks";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()), mcreator.getFolderManager()
-				.getTextureFile(RegistryNameFixer.fix(planksTextureName), TextureType.BLOCK));
+				.getTextureFile(planksTextureName, TextureType.BLOCK));
 
 		//then we generate the leaves texture
 		ImageIcon leaves = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
 				"templates/textures/texturemaker/" + ListUtils.getRandomItem(
 						Arrays.asList("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
 								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
-		String leavesTextureName = (name + "_leaves").toLowerCase(Locale.ENGLISH);
+		String leavesTextureName = registryName + "_leaves";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()), mcreator.getFolderManager()
-				.getTextureFile(RegistryNameFixer.fix(leavesTextureName), TextureType.BLOCK));
+				.getTextureFile(leavesTextureName, TextureType.BLOCK));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
-		logBlock.name = name + " Log";
+		logBlock.name = readableName + " Log";
 		logBlock.texture = new TextureHolder(workspace, logTextureName);
 		logBlock.textureTop = new TextureHolder(workspace, logTextureName);
 		logBlock.textureBack = new TextureHolder(workspace, woodTextureName);
@@ -183,7 +184,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
-		woodBlock.name = name + " Wood";
+		woodBlock.name = readableName + " Wood";
 		woodBlock.texture = new TextureHolder(workspace, woodTextureName);
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
@@ -201,7 +202,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block planksBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
-		planksBlock.name = name + " Planks";
+		planksBlock.name = readableName + " Planks";
 		planksBlock.texture = new TextureHolder(workspace, planksTextureName);
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
@@ -218,7 +219,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block leavesBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
-		leavesBlock.name = name + " Leaves";
+		leavesBlock.name = readableName + " Leaves";
 		leavesBlock.blockBase = "Leaves";
 		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
@@ -233,7 +234,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block stairsBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false).getElementFromGUI();
-		stairsBlock.name = name + " Stairs";
+		stairsBlock.name = readableName + " Stairs";
 		stairsBlock.blockBase = "Stairs";
 		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
@@ -251,7 +252,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block slabBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false).getElementFromGUI();
-		slabBlock.name = name + " Slab";
+		slabBlock.name = readableName + " Slab";
 		slabBlock.blockBase = "Slab";
 		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
 		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
@@ -269,7 +270,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false).getElementFromGUI();
-		fenceBlock.name = name + " Fence";
+		fenceBlock.name = readableName + " Fence";
 		fenceBlock.blockBase = "Fence";
 		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -285,7 +286,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceGateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false).getElementFromGUI();
-		fenceGateBlock.name = name + " Fence Gate";
+		fenceGateBlock.name = readableName + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
 		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -301,7 +302,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block pressurePlateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false).getElementFromGUI();
-		pressurePlateBlock.name = name + " Pressure Plate";
+		pressurePlateBlock.name = readableName + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -317,7 +318,7 @@ public class WoodPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block buttonBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
-		buttonBlock.name = name + " Button";
+		buttonBlock.name = readableName + " Button";
 		buttonBlock.blockBase = "Button";
 		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
