@@ -499,17 +499,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		txblock4.add("Center", PanelUtils.gridElements(4, 2, 2, 2,
+		txblock4.add("Center", PanelUtils.gridElements(2, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
 				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
-						L10N.label("elementgui.block.block_set_type")), blockSetType,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
-						L10N.label("elementgui.block.item_texture")), PanelUtils.centerInPanel(itemTexture),
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
-						L10N.label("elementgui.block.particle_texture")), PanelUtils.centerInPanel(particleTexture)));
+						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
 		blockSetType.setEnabled(false);
 		plantsGrowOn.setOpaque(false);
@@ -527,8 +523,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		renderType.setPreferredSize(new Dimension(300, 42));
 
-		JComponent sbbp22 = PanelUtils.northAndCenterElement(modelSettings, PanelUtils.totalCenterInPanel(textures), 15,
-				15);
+		JPanel optionalTextures = new JPanel(new GridLayout(2, 2, 0, 2));
+		optionalTextures.setOpaque(false);
+		optionalTextures.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/item_texture"),
+				L10N.label("elementgui.block.item_texture")));
+		optionalTextures.add(PanelUtils.centerInPanel(itemTexture));
+		optionalTextures.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+				L10N.label("elementgui.block.particle_texture")));
+		optionalTextures.add(PanelUtils.centerInPanel(particleTexture));
+
+		JComponent sbbp22 = PanelUtils.column(10, modelSettings, PanelUtils.totalCenterInPanel(textures),
+				optionalTextures);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -555,7 +560,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(blockSetType, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
-		JPanel visualRenderingSettings = new JPanel(new GridLayout(6, 2, 0, 2));
+		JPanel visualRenderingSettings = new JPanel(new GridLayout(7, 2, 0, 2));
 		visualRenderingSettings.setOpaque(false);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
@@ -581,8 +586,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_item_tinted")));
 		visualRenderingSettings.add(isItemTinted);
 
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
+				L10N.label("elementgui.common.offset_type")));
+		visualRenderingSettings.add(offsetType);
+
 		ComponentUtils.deriveFont(renderType, 16);
 		ComponentUtils.deriveFont(rotationMode, 16);
+		ComponentUtils.deriveFont(offsetType, 16);
 
 		JPanel rent = new JPanel(new GridLayout(3, 2, 0, 2));
 		rent.setOpaque(false);
@@ -664,11 +674,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", blockStates);
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -704,17 +714,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
-				L10N.label("elementgui.block.slipperiness")));
-		selp.add(slipperiness);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
-				L10N.label("elementgui.block.jump_factor")));
-		selp.add(jumpFactor);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
-				L10N.label("elementgui.block.speed_factor")));
-		selp.add(speedFactor);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.block.is_unbreakable")));
+		selp.add(unbreakable);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
@@ -787,10 +789,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.vanilla_tool_tier")));
 		selp3.add(vanillaToolTier);
 
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
-				L10N.label("elementgui.block.is_unbreakable")));
-		selp3.add(unbreakable);
-
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
 		bg.add(customSoundType);
@@ -845,6 +843,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.note_block_instrument")));
 		advancedProperties.add(noteBlockInstrument);
 
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
+				L10N.label("elementgui.block.slipperiness")));
+		advancedProperties.add(slipperiness);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
+				L10N.label("elementgui.block.jump_factor")));
+		advancedProperties.add(jumpFactor);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
+				L10N.label("elementgui.block.speed_factor")));
+		advancedProperties.add(speedFactor);
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_plants_grow"),
 				L10N.label("elementgui.block.can_plants_grow")));
 		advancedProperties.add(plantsGrowOn);
@@ -861,18 +871,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.enchantments_bonus")));
 		advancedProperties.add(enchantPowerBonus);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
-				L10N.label("elementgui.block.ignited_by_lava")));
-		advancedProperties.add(ignitedByLava);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
-				L10N.label("elementgui.block.flammability")));
-		advancedProperties.add(flammability);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				L10N.label("elementgui.common.fire_spread_speed")));
-		advancedProperties.add(fireSpreadSpeed);
-
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/push_reaction"),
 				L10N.label("elementgui.block.push_reaction")));
 		advancedProperties.add(reactionToPushing);
@@ -880,10 +878,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
-				L10N.label("elementgui.common.offset_type")));
-		advancedProperties.add(offsetType);
 
 		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
@@ -934,8 +928,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp, blockItemSettings)),
-				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
+				PanelUtils.pullElementUp(PanelUtils.column(selp, blockItemSettings)),
+				PanelUtils.pullElementUp(PanelUtils.column(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
@@ -1228,6 +1222,26 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealable.addActionListener(e -> refreshBonemealProperties());
 		refreshBonemealProperties();
 
+		JPanel flammabilityProperties = new JPanel(new GridLayout(3, 2, 0, 2));
+		flammabilityProperties.setOpaque(false);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		flammabilityProperties.add(ignitedByLava);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+				L10N.label("elementgui.block.flammability")));
+		flammabilityProperties.add(flammability);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
+				L10N.label("elementgui.common.fire_spread_speed")));
+		flammabilityProperties.add(fireSpreadSpeed);
+
+		flammabilityProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.properties_flammability"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
@@ -1243,7 +1257,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(advancedWithCondition,
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(redstoneMerger, bonemealMerger)))));
+				PanelUtils.pullElementUp(
+						PanelUtils.column(redstoneMerger, bonemealMerger, flammabilityProperties)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);

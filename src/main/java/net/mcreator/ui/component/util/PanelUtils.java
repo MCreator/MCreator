@@ -45,6 +45,29 @@ public class PanelUtils {
 		return skup;
 	}
 
+	public static JPanel column(Component... components) {
+		JPanel column = new JPanel();
+		column.setOpaque(false);
+		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+		for (Component c : components) {
+			column.add(c);
+		}
+		return column;
+	}
+
+	public static JPanel column(int spacing, Component... components) {
+		JPanel column = new JPanel();
+		column.setOpaque(false);
+		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+		for (int i = 0; i < components.length; i++) {
+			column.add(components[i]);
+			if (i < components.length - 1) {
+				column.add(Box.createVerticalStrut(spacing));
+			}
+		}
+		return column;
+	}
+
 	public static JPanel centerInPanel(Component component) {
 		return join(component);
 	}
