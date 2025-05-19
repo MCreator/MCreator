@@ -313,6 +313,8 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
+		pressurePlateBlock.isNotColidable = true;
+		pressurePlateBlock.reactionToPushing = "DESTROY";
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pressurePlateBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -327,6 +329,8 @@ public class WoodPackMakerTool {
 		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
+		buttonBlock.isNotColidable = true;
+		buttonBlock.reactionToPushing = "DESTROY";
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
 
 		// Tags
