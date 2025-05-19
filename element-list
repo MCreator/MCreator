@@ -140,6 +140,7 @@ net.mcreator.ui.views.editor.image.color
 net.mcreator.ui.views.editor.image.color.palette
 net.mcreator.ui.views.editor.image.color.palettes
 net.mcreator.ui.views.editor.image.layer
+net.mcreator.ui.views.editor.image.metadata
 net.mcreator.ui.views.editor.image.tool
 net.mcreator.ui.views.editor.image.tool.action
 net.mcreator.ui.views.editor.image.tool.component

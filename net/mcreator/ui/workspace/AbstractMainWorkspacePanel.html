@@ -155,7 +155,7 @@ implements <a href="../search/ITextFieldSearchable.html" title="interface in net
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a></code></div>
 <div class="col-second even-row-color"><code><a href="#search" class="member-name-link">search</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;,<wbr><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#sectionTabs" class="member-name-link">sectionTabs</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JTabbedPane.html" title="class or interface in javax.swing" class="external-link">JTabbedPane</a></code></div>
@@ -199,8 +199,7 @@ implements <a href="../search/ITextFieldSearchable.html" title="interface in net
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addVerticalTab(java.lang.String,java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)" class="member-name-link">addVerticalTab</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addVerticalTab(java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)" class="member-name-link">addVerticalTab</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&nbsp;section)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a new section to this workspace as well as a vertical tab button on the left that switches
@@ -221,8 +220,8 @@ implements <a href="../search/ITextFieldSearchable.html" title="interface in net
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/text/JTextComponent.html" title="class or interface in javax.swing.text" class="external-link">JTextComponent</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSearchTextField()" class="member-name-link">getSearchTextField</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVerticalTab(java.lang.String)" class="member-name-link">getVerticalTab</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T extends <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;<br>T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVerticalTab(java.lang.Class)" class="member-name-link">getVerticalTab</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;id)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refilterWorkspaceTab()" class="member-name-link">refilterWorkspaceTab</a>()</code></div>
@@ -292,7 +291,7 @@ implements <a href="../search/ITextFieldSearchable.html" title="interface in net
 <li>
 <section class="detail" id="sectionTabs">
 <h3>sectionTabs</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;</span>&nbsp;<span class="element-name">sectionTabs</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;,<wbr><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;</span>&nbsp;<span class="element-name">sectionTabs</span></div>
 </section>
 </li>
 <li>
@@ -350,25 +349,23 @@ implements <a href="../search/ITextFieldSearchable.html" title="interface in net
 </section>
 </li>
 <li>
-<section class="detail" id="addVerticalTab(java.lang.String,java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)">
+<section class="detail" id="addVerticalTab(java.lang.String,net.mcreator.ui.workspace.AbstractWorkspacePanel)">
 <h3>addVerticalTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addVerticalTab</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addVerticalTab</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&nbsp;section)</span></div>
 <div class="block">Adds a new section to this workspace as well as a vertical tab button on the left that switches
  to the section panel when clicked.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>id</code> - The unique identifier of the section used for reloading/filtering contained elements.</dd>
 <dd><code>name</code> - The name of the section shown in the workspace.</dd>
 <dd><code>section</code> - The panel representing contents of the vertical tab being added.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getVerticalTab(java.lang.String)">
+<section class="detail" id="getVerticalTab(java.lang.Class)">
 <h3>getVerticalTab</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a></span>&nbsp;<span class="element-name">getVerticalTab</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="AbstractWorkspacePanel.html" title="class in net.mcreator.ui.workspace">AbstractWorkspacePanel</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">getVerticalTab</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;id)</span></div>
 </section>
 </li>
 <li>

@@ -127,14 +127,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method will open a file dialog to let the user select textures to import.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#importSingleTexture(net.mcreator.ui.MCreator,java.io.File,java.lang.String)" class="member-name-link">importSingleTexture</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method opens a dialog to select the texture type to use for the provided texture file.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#saveTextures(net.mcreator.ui.MCreator,net.mcreator.ui.workspace.resources.TextureType,java.io.File%5B%5D)" class="member-name-link">saveTextures</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>[]&nbsp;textures)</code></div>
@@ -175,7 +175,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="importSingleTexture(net.mcreator.ui.MCreator,java.io.File,java.lang.String)">
 <h3>importSingleTexture</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">importSingleTexture</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">importSingleTexture</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
 <div class="block"><p>This method opens a dialog to select the texture type to use for the provided texture file.</p></div>
@@ -184,6 +185,8 @@ loadScripts(document, 'script');</script>
 <dd><code>mcreator</code> - <p>The instance of <a href="../MCreator.html" title="class in net.mcreator.ui"><code>MCreator</code></a> to use</p></dd>
 <dd><code>file</code> - <p>The texture file to import</p></dd>
 <dd><code>message</code> - <p>The message to display on the option dialog</p></dd>
+<dt>Returns:</dt>
+<dd><p>The saved file</p></dd>
 </dl>
 </section>
 </li>
@@ -209,7 +212,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="saveTextures(net.mcreator.ui.MCreator,net.mcreator.ui.workspace.resources.TextureType,java.io.File[])">
 <h3>saveTextures</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">saveTextures</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;</span>&nbsp;<span class="element-name">saveTextures</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>[]&nbsp;textures)</span></div>
 <div class="block"><p>This is a general method to import a group of textures. It executes everything needed to save textures in the appropriate folder
@@ -219,6 +222,8 @@ loadScripts(document, 'script');</script>
 <dd><code>mcreator</code> - <p>The instance of <a href="../MCreator.html" title="class in net.mcreator.ui"><code>MCreator</code></a> to use</p></dd>
 <dd><code>type</code> - <p>The texture type to use when saving texture files</p></dd>
 <dd><code>textures</code> - <p>Textures file to import</p></dd>
+<dt>Returns:</dt>
+<dd><p>A list of saved files</p></dd>
 </dl>
 </section>
 </li>
