@@ -86,8 +86,6 @@ public class LootTablePreview extends JLayeredPane {
 			slots.addAll(s);
 		}
 
-		Collections.shuffle(slots);
-
 		// Display items in slots
 		for (int i = 0; i < entries.size(); i++) {
 			LootTable.Pool.Entry entry = entries.get(i);
@@ -104,12 +102,15 @@ public class LootTablePreview extends JLayeredPane {
 						unmappedName.replace(NameMapper.MCREATOR_PREFIX, ""), ".");
 				ModElement modElement = mcreator.getWorkspace().getModElementByName(plainName);
 
-				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst().get();
+				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst().orElse(null);
 				id = mcreator.getWorkspaceSettings().getModID() + ":" + modElement.getRegistryName();
 			} else {
 				item = new MCItem(entry.item.getDataListEntry().get());
 				id = "minecraft:" + entry.item.getMappedValue(1);
 			}
+
+			if (item == null)
+				continue;
 
 			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, count));
 			slot.setToolTipText("<html>" + item.getReadableName() + "<br><small><font color='gray'>" + id);
@@ -125,7 +126,6 @@ public class LootTablePreview extends JLayeredPane {
 	}
 
 	private List<Integer> getRandomSlots(int count, List<Integer> currentSlots) {
-		Random rand = new Random();
 		Set<Integer> slots = new HashSet<>();
 
 		while (slots.size() < count) {
