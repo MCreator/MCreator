@@ -31,11 +31,16 @@ import java.util.Objects;
 
 public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, LootTable.Pool> {
 
-	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
+	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui, LootTablePreview preview) {
 		super(mcreator, gui);
 		setOpaque(false);
 
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
+
+		JButton generatePreview = L10N.button("elementgui.loot_table.generate_preview");
+		generatePreview.addActionListener(e -> preview.generateLootTable(this));
+
+		topbar.add(generatePreview);
 
 		add.setText(L10N.t("elementgui.loot_table.add_pool"));
 		add.addActionListener(e -> {
