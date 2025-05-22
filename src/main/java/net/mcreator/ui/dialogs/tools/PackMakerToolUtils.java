@@ -60,7 +60,7 @@ public class PackMakerToolUtils {
 		// Add entries if they're not already contained in the tag (in normal or managed form)
 		ArrayList<String> tagEntries = workspace.getTagElements().get(tag);
 		for (String entry : entries) {
-			if (!tagEntries.contains(entry) && !tagEntries.contains("~" + entry)) {
+			if (!tagEntries.contains(entry) && !tagEntries.contains(TagElement.makeEntryManaged(entry))) {
 				tagEntries.add(entry);
 			}
 		}
