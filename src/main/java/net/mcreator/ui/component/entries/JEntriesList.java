@@ -24,18 +24,18 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.UIRES;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public abstract class JEntriesList extends JPanel {
 
 	protected final MCreator mcreator;
 	protected final IHelpContext gui;
 
-	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
+	private final List<EntryRegisterListener> entryListeners = new ArrayList<>();
 
 	protected final TechnicalButton add = new TechnicalButton(UIRES.get("16px.add"));
 
@@ -45,12 +45,12 @@ public abstract class JEntriesList extends JPanel {
 		this.gui = gui;
 	}
 
-	public final void addEntryRegisterListener(Consumer<JComponent> entryListener) {
+	public final void addEntryRegisterListener(EntryRegisterListener entryListener) {
 		entryListeners.add(entryListener);
 	}
 
-	protected void registerEntryUI(JComponent entry) {
-		entryListeners.forEach(l -> l.accept(entry));
+	public void registerEntryUI(@Nullable JComponent entry) {
+		entryListeners.forEach(l -> l.entryAddedOrChangedOrRemoved(entry));
 	}
 
 	public MCreator getMCreator() {
@@ -64,6 +64,10 @@ public abstract class JEntriesList extends JPanel {
 
 	public void reloadDataLists() {
 
+	}
+
+	public interface EntryRegisterListener {
+		void entryAddedOrChangedOrRemoved(@Nullable JComponent entry);
 	}
 
 }

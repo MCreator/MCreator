@@ -44,6 +44,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 		label.setFont(label.getFont().deriveFont(24.0f));
 		label_details.setFont(label.getFont().deriveFont(10.0f));
+		label_details.setPreferredSize(new Dimension(210, 28));
+		label_details.setVerticalAlignment(SwingConstants.TOP);
 		text.setOpaque(false);
 		text.add("Center", label);
 		text.add("South", label_details);

@@ -90,6 +90,7 @@ import java.util.List;
 	public int lightOpacity;
 	public boolean emissiveRendering;
 	public int tickRate;
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 	public String colorOnMap;

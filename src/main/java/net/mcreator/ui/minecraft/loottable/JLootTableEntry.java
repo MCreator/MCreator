@@ -48,7 +48,7 @@ public class JLootTableEntry extends JPanel {
 	private final JComboBox<String> silkTouchMode = new JComboBox<>(
 			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" });
 
-	public JLootTableEntry(MCreator mcreator, JPanel parent, List<JLootTableEntry> entryList) {
+	public JLootTableEntry(MCreator mcreator, JLootTablePool listParent, JPanel parent, List<JLootTableEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		setBackground((Theme.current().getAltBackgroundColor()).darker());
@@ -99,6 +99,9 @@ public class JLootTableEntry extends JPanel {
 			parent.remove(container);
 			parent.revalidate();
 			parent.repaint();
+
+			// A "hack" to notify parent list of entry removal since we have nested entry lists
+			listParent.registerEntryUI(null);
 		});
 
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
