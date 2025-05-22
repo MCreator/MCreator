@@ -138,8 +138,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel),
-				PanelUtils.join(FlowLayout.CENTER, preview)), lootTablePools));
+		pane3.add(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
+						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
 
 		addPage(pane3, false).validate(name);
 
