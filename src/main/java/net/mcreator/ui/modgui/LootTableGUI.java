@@ -134,9 +134,11 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
-		LootTablePreview preview = new LootTablePreview(mcreator);
+		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
-		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
+		LootTablePreview preview = new LootTablePreview(mcreator);
+		ModElementChangedListener listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		listener.registerUI(lootTablePools);
 
 		pane3.add(PanelUtils.northAndCenterElement(
 				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),

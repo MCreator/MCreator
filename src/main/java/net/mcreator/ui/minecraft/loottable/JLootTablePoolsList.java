@@ -24,7 +24,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.modgui.ModElementChangedListener;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.Objects;
 
 public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, LootTable.Pool> {
 
-	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui, LootTablePreview preview) {
+	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
 		setOpaque(false);
 
@@ -44,9 +43,6 @@ public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, Loot
 			registerEntryUI(pool);
 			pool.addInitialEntry();
 		});
-
-		ModElementChangedListener listener = () -> preview.generateLootTable(this.getEntries());
-		listener.registerUI(this);
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
