@@ -39,7 +39,7 @@ public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, Loot
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
 		JButton generatePreview = L10N.technicalbutton("elementgui.loot_table.regenerate_preview");
-		generatePreview.addActionListener(e -> preview.generateLootTable(this));
+		generatePreview.addActionListener(e -> preview.generateLootTable(this.getEntries()));
 		topbar.add(generatePreview);
 
 		add.setText(L10N.t("elementgui.loot_table.add_pool"));
@@ -49,7 +49,7 @@ public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, Loot
 			pool.addInitialEntry();
 		});
 
-		ModElementChangedListener listener = () -> preview.generateLootTable(JLootTablePoolsList.this);
+		ModElementChangedListener listener = () -> preview.generateLootTable(this.getEntries());
 		listener.registerUI(this);
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

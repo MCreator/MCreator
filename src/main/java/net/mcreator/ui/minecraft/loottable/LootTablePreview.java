@@ -37,7 +37,6 @@ public class LootTablePreview extends JLayeredPane {
 
 	private static final int CONTAINER_WIDTH = 400;
 	private static final int CONTAINER_HEIGHT = 150;
-	private static final Random rand = new Random();
 
 	private final MCreator mcreator;
 	private final JPanel slotsPanel = new JPanel(new GridLayout(3, 9));
@@ -45,8 +44,8 @@ public class LootTablePreview extends JLayeredPane {
 	public LootTablePreview(MCreator mcreator) {
 		this.mcreator = mcreator;
 
-		ImageIcon previewContainerImage =
-				new ImageIcon(UIRES.get("container").getImage().getScaledInstance(CONTAINER_WIDTH, CONTAINER_HEIGHT, Image.SCALE_SMOOTH));
+		ImageIcon previewContainerImage = new ImageIcon(UIRES.get("container").getImage()
+				.getScaledInstance(CONTAINER_WIDTH, CONTAINER_HEIGHT, Image.SCALE_SMOOTH));
 
 		JLabel previewContainer = new JLabel(previewContainerImage);
 		previewContainer.setBounds(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT);
@@ -56,7 +55,9 @@ public class LootTablePreview extends JLayeredPane {
 		slotsPanel.setOpaque(false);
 
 		for (int i = 0; i < 27; i++) {
-			slotsPanel.add(new JLabel() {{ setHorizontalAlignment(SwingConstants.CENTER); }});
+			slotsPanel.add(new JLabel() {{
+				setHorizontalAlignment(SwingConstants.CENTER);
+			}});
 		}
 
 		setPreferredSize(new Dimension(CONTAINER_WIDTH, CONTAINER_HEIGHT));
@@ -66,13 +67,15 @@ public class LootTablePreview extends JLayeredPane {
 		add(slotsPanel, JLayeredPane.PALETTE_LAYER);
 	}
 
-	public void generateLootTable(JLootTablePoolsList lootTablePools) {
+	public void generateLootTable(List<LootTable.Pool> lootEntries) {
+		Random rand = new Random(1L);
+
 		clearLootTable();
 		List<LootTable.Pool.Entry> entries = new ArrayList<>();
 		List<Integer> slots = new ArrayList<>();
 
 		// Loop through all pools to determine items to generate
-		for (LootTable.Pool pool: lootTablePools.getEntries()) {
+		for (LootTable.Pool pool : lootEntries) {
 			int rolls = rand.nextInt(pool.minrolls, pool.maxrolls + 1);
 			if (pool.hasbonusrolls) {
 				rolls += rand.nextInt(pool.minbonusrolls, pool.maxbonusrolls + 1);
@@ -80,7 +83,7 @@ public class LootTablePreview extends JLayeredPane {
 
 			List<LootTable.Pool.Entry> selectedEntries = weightedChoice(pool.entries, rolls);
 
-			List<Integer> s = getRandomSlots(rolls, slots);
+			List<Integer> s = getRandomSlots(rand, rolls, slots);
 
 			entries.addAll(selectedEntries);
 			slots.addAll(s);
@@ -98,11 +101,12 @@ public class LootTablePreview extends JLayeredPane {
 			String id;
 
 			if (unmappedName.startsWith(NameMapper.MCREATOR_PREFIX)) {
-				String plainName = StringUtils.substringBeforeLast(
-						unmappedName.replace(NameMapper.MCREATOR_PREFIX, ""), ".");
+				String plainName = StringUtils.substringBeforeLast(unmappedName.replace(NameMapper.MCREATOR_PREFIX, ""),
+						".");
 				ModElement modElement = mcreator.getWorkspace().getModElementByName(plainName);
 
-				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst().orElse(null);
+				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst()
+						.orElse(null);
 				id = mcreator.getWorkspaceSettings().getModID() + ":" + modElement.getRegistryName();
 			} else {
 				item = new MCItem(entry.item.getDataListEntry().get());
@@ -125,7 +129,7 @@ public class LootTablePreview extends JLayeredPane {
 		}
 	}
 
-	private List<Integer> getRandomSlots(int count, List<Integer> currentSlots) {
+	private List<Integer> getRandomSlots(Random rand, int count, List<Integer> currentSlots) {
 		Set<Integer> slots = new HashSet<>();
 
 		while (slots.size() < count) {
