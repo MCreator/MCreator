@@ -38,10 +38,6 @@ public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, Loot
 
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
-		JButton generatePreview = L10N.technicalbutton("elementgui.loot_table.regenerate_preview");
-		generatePreview.addActionListener(e -> preview.generateLootTable(this.getEntries()));
-		topbar.add(generatePreview);
-
 		add.setText(L10N.t("elementgui.loot_table.add_pool"));
 		add.addActionListener(e -> {
 			JLootTablePool pool = new JLootTablePool(mcreator, gui, entries, entryList);
