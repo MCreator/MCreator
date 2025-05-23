@@ -1,0 +1,1 @@
+Ilość, która będzie modyfikować atrybut. Ta wartość jest mnożona przez poziom efektu mikstury.
