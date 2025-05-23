@@ -113,7 +113,7 @@ public class LootTablePreview extends JLayeredPane {
 				id = "minecraft:" + entry.item.getMappedValue(1);
 			}
 
-			if (item == null)
+			if (item == null || id.equals("minecraft:air"))
 				continue;
 
 			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, count));
