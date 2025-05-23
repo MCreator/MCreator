@@ -34,6 +34,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -269,6 +270,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Map.entry("IRON", "elementgui.block.block_set_type.iron")
 			//@formatter:on
 	);
+	private JComponent blockSetTypePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -420,13 +422,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
-			blockSetType.setEnabled(false);
+			blockSetTypePanel.setVisible(false);
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
 				hasGravity.setSelected(false);
+				isNotColidable.setSelected(false);
+				reactionToPushing.setSelectedItem("NORMAL");
 
 				String selectedBlockBase = blockBase.getSelectedItem();
 				switch (selectedBlockBase) {
@@ -450,11 +454,28 @@ public class BlockGUI extends ModElementGUI<Block> {
 						lightOpacity.setValue(1);
 					}
 				}
-				case "PressurePlate", "TrapDoor", "Door", "Button", "Fence" -> {
-					blockSetType.setEnabled(true);
+				case "TrapDoor", "Fence" -> {
+					blockSetTypePanel.setVisible(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
+					}
+				}
+				case "Door" -> {
+					blockSetTypePanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+						reactionToPushing.setSelectedItem("DESTROY");
+					}
+				}
+				case "PressurePlate", "Button" -> {
+					blockSetTypePanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+						isNotColidable.setSelected(true);
+						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
 				default -> {
@@ -495,19 +516,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 
-		JPanel txblock4 = new JPanel(new BorderLayout());
+		JPanel txblock4 = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		txblock4.add("Center", PanelUtils.gridElements(2, 2, 2, 2,
+		txblock4.add(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase, HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
+				blockBase));
+
+		txblock4.add(blockSetTypePanel = PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
-		blockSetType.setEnabled(false);
+		blockSetTypePanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
