@@ -165,7 +165,6 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		lootTablePools.setEntries(loottable.pools);
 
 		listener.registerUI(lootTablePools);
-		listener.modElementChanged();
 	}
 
 	@Override public LootTable getElementFromGUI() {
