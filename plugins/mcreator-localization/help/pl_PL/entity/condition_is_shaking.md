@@ -1,0 +1,1 @@
+Podczas gdy zwrócona wartość jest TRUE, obiekt będzie potrząsany. Osadniki Zombie używają tej funkcji podczas ich leczenia.

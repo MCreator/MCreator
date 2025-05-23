@@ -1,0 +1,1 @@
+Procedura ta zostanie wykonana po zastosowaniu efektu mikstury do bytu. 
