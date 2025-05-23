@@ -1,0 +1,21 @@
+_default: null
+INCOMING_DAMAGE_AMOUNT:
+  - LivingIncomingDamageEvent # the event class
+  - setAmount # the method name
+  - entity_attacked # global trigger name
+FALL_DISTANCE:
+  - LivingFallEvent
+  - setDistance
+  - entity_falls
+DISABLE_SWEEP:
+  - CriticalHitEvent
+  - setDisableSweep
+  - player_critical_hit
+CRITICAL_HIT_RESULT:
+  - CriticalHitEvent
+  - setCriticalHit
+  - player_critical_hit
+GRIEF_RESULT:
+  - EntityMobGriefingEvent
+  - setCanGrief
+  - entity_grief
