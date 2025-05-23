@@ -201,7 +201,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
+		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_finish_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
