@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
+import net.mcreator.ui.minecraft.loottable.LootTablePreview;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -51,6 +52,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 					"Barter", "Archaeology" });
 
 	private JLootTablePoolsList lootTablePools;
+	private ModElementChangedListener listener;
 
 	public LootTableGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -135,7 +137,12 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
+		LootTablePreview preview = new LootTablePreview(mcreator);
+		listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+
+		pane3.add(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
+						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
 
 		addPage(pane3, false).validate(name);
 
@@ -156,6 +163,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.getEditor().setItem(loottable.name);
 
 		lootTablePools.setEntries(loottable.pools);
+
+		listener.registerUI(lootTablePools);
 	}
 
 	@Override public LootTable getElementFromGUI() {
