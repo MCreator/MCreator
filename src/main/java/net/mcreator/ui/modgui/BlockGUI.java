@@ -952,8 +952,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				getFont(), Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.column(selp, blockItemSettings)),
-				PanelUtils.pullElementUp(PanelUtils.column(selpWrap, soundProperties)))));
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp, blockItemSettings)),
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
