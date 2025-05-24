@@ -209,6 +209,10 @@ import java.util.*;
 		return isFood ? !animation.equals("eat") : !animation.equals("none");
 	}
 
+	public boolean hasCustomFoodConsumable() {
+		return isFood && !(useDuration == 32 && (animation.equals("eat") || animation.equals("drink")));
+	}
+
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
