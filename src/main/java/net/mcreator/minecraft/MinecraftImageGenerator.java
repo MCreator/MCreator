@@ -203,8 +203,12 @@ public class MinecraftImageGenerator {
 	}
 
 	public static ImageIcon generateItemWithCount(MCItem item, int count) {
-		BufferedImage itemImage = ImageUtils.toBufferedImage(item.icon.getImage());
-		Graphics2D g = (Graphics2D) itemImage.getGraphics();
+		Image baseImage = item.icon.getImage();
+
+		BufferedImage itemImage = new BufferedImage(baseImage.getWidth(null), baseImage.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = itemImage.createGraphics();
+		g.drawImage(baseImage, 0, 0, null);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setFont(g.getFont().deriveFont(16f).deriveFont(Font.BOLD));
@@ -214,6 +218,8 @@ public class MinecraftImageGenerator {
 		int width = (int) (g.getFont().getStringBounds(text, frc).getWidth());
 
 		g.drawString(text, itemImage.getWidth() - width, itemImage.getHeight() - 2);
+
+		g.dispose();
 
 		return new ImageIcon(itemImage);
 	}
