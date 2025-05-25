@@ -36,6 +36,7 @@ package ${package}.client.gui;
 <#assign checkboxes = data.getComponentsOfType("Checkbox")>
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
+<#assign sliders = data.getComponentsOfType("Slider")>
 
 <#compress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
@@ -60,6 +61,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 	<#list imageButtons as component>
 	ImageButton ${component.getName()};
+	</#list>
+
+	<#list sliders as component>
+	ExtendedSlider ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -193,6 +198,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		return super.keyPressed(key, b, c);
 	}
 
+	<#if sliders?has_content> <#-- AbstractContainerScreen overrides it for slots only, causing a bug with Sliders, so we override it. -->
+	@Override
+	public boolean mouseDragged(double p_97752_, double p_97753_, int p_97754_, double p_97755_, double p_97756_) {
+		return (this.getFocused() != null && this.isDragging() && p_97754_ == 0) ? this.getFocused().mouseDragged(p_97752_, p_97753_, p_97754_, p_97755_, p_97756_) :
+				super.mouseDragged(p_97752_, p_97753_, p_97754_, p_97755_, p_97756_);
+	}
+	</#if>
+
 	<#if textFields?has_content>
 	@Override public void resize(Minecraft minecraft, int width, int height) {
 		<#list textFields as component>
@@ -294,6 +307,25 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			</#if>
 
 			this.addRenderableWidget(${component.getName()});
+		</#list>
+
+		<#list sliders as component>
+			${component.getName()} = new ExtendedSlider(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, Component.translatable(
+				"gui.${modid}.${registryname}.${component.getName()}_prefix"), Component.translatable("gui.${modid}.${registryname}.${component.getName()}_suffix"),
+				${component.min}, ${component.max}, ${component.value}, ${component.step}, 0, true) {
+					<#if hasProcedure(component.whenSliderMoves)>
+						@Override
+						protected void applyValue() {
+							PacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
+							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
+						}
+					</#if>
+				};
+
+			this.addRenderableWidget(${component.getName()});
+
+			<#assign btid +=1>
 		</#list>
 	}
 
