@@ -52,7 +52,6 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 					"Barter", "Archaeology" });
 
 	private JLootTablePoolsList lootTablePools;
-	private ModElementChangedListener listener;
 
 	public LootTableGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -138,7 +137,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
 		LootTablePreview preview = new LootTablePreview(mcreator);
-		listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		ModElementChangedListener listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		listener.registerUI(lootTablePools);
 
 		pane3.add(PanelUtils.northAndCenterElement(
 				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
@@ -163,8 +163,6 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.getEditor().setItem(loottable.name);
 
 		lootTablePools.setEntries(loottable.pools);
-
-		listener.registerUI(lootTablePools);
 	}
 
 	@Override public LootTable getElementFromGUI() {

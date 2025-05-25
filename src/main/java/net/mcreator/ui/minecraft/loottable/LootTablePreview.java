@@ -94,6 +94,9 @@ public class LootTablePreview extends JLayeredPane {
 			LootTable.Pool.Entry entry = entries.get(i);
 			JLabel slot = (JLabel) slotsPanel.getComponent(slots.get(i));
 
+			if (entry.minCount > entry.maxCount)
+				continue;
+
 			int count = rand.nextInt(entry.minCount, entry.maxCount + 1);
 
 			String unmappedName = entry.item.getUnmappedValue();
@@ -113,7 +116,7 @@ public class LootTablePreview extends JLayeredPane {
 				id = "minecraft:" + entry.item.getMappedValue(1);
 			}
 
-			if (item == null || id.equals("minecraft:air"))
+			if (item == null || id.equals("minecraft:air") || count == 0)
 				continue;
 
 			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, count));
