@@ -474,8 +474,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		renderType.addActionListener(e -> updateTextureOptions());
 
-		unbreakable.addActionListener(e -> refreshBlockProperties());
-
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
@@ -792,6 +790,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
 				L10N.label("elementgui.block.is_unbreakable")));
 		selp3.add(unbreakable);
+
+		unbreakable.addActionListener(e -> refreshBlockProperties());
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
@@ -1400,16 +1400,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
-	private void refreshBlockProperties() {
-		if(unbreakable.isSelected()) {
-			hardness.setEnabled(false);
-			resistance.setEnabled(false);
-		} else {
-			hardness.setEnabled(true);
-			resistance.setEnabled(true);
-		}
-	}
-
 	private void updateSoundType() {
 		breakSound.setEnabled(customSoundType.isSelected());
 		fallSound.setEnabled(customSoundType.isSelected());
@@ -1432,6 +1422,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rarity.setEnabled(hasBlockItem.isSelected());
 		immuneToFire.setEnabled(hasBlockItem.isSelected());
 		creativeTabs.setEnabled(hasBlockItem.isSelected());
+	}
+
+	private void refreshBlockProperties() {
+		if(unbreakable.isSelected()) {
+			hardness.setEnabled(false);
+			resistance.setEnabled(false);
+		} else {
+			hardness.setEnabled(true);
+			resistance.setEnabled(true);
+		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -1617,7 +1617,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 		refreshBonemealProperties();
-		refreshBlockProperties();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
@@ -1633,6 +1632,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		updateSoundType();
 		updateBlockItemSettings();
+		refreshBlockProperties();
 	}
 
 	@Override public Block getElementFromGUI() {
