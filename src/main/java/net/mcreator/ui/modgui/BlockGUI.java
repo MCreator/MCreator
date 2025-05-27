@@ -474,6 +474,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		renderType.addActionListener(e -> updateTextureOptions());
 
+		unbreakable.addActionListener(e -> refreshBlockProperties());
+
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
@@ -1398,6 +1400,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
+	private void refreshBlockProperties() {
+		if(unbreakable.isSelected()) {
+			hardness.setEnabled(false);
+			resistance.setEnabled(false);
+		} else {
+			hardness.setEnabled(true);
+			resistance.setEnabled(true);
+		}
+	}
+
 	private void updateSoundType() {
 		breakSound.setEnabled(customSoundType.isSelected());
 		fallSound.setEnabled(customSoundType.isSelected());
@@ -1605,6 +1617,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
 		refreshBonemealProperties();
+		refreshBlockProperties();
 
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
