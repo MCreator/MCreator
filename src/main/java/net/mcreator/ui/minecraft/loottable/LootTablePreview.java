@@ -20,19 +20,21 @@
 package net.mcreator.ui.minecraft.loottable;
 
 import net.mcreator.element.types.LootTable;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class LootTablePreview extends JLayeredPane {
 
@@ -45,8 +47,8 @@ public class LootTablePreview extends JLayeredPane {
 	public LootTablePreview(MCreator mcreator) {
 		this.mcreator = mcreator;
 
+		// Draw container and slots
 		BufferedImage container = MinecraftImageGenerator.generateBackground(CONTAINER_WIDTH, CONTAINER_HEIGHT);
-
 		Image slot = ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 41, 40);
 
 		Graphics2D g = (Graphics2D) container.getGraphics();
@@ -80,8 +82,7 @@ public class LootTablePreview extends JLayeredPane {
 		Random rand = new Random(1L);
 
 		clearLootTable();
-		List<LootTable.Pool.Entry> entries = new ArrayList<>();
-		List<Integer> slots = new ArrayList<>();
+		List<LootTable.Pool.Entry> allEntries = new ArrayList<>();
 
 		// Loop through all pools to determine items to generate
 		for (LootTable.Pool pool : lootEntries) {
@@ -90,31 +91,43 @@ public class LootTablePreview extends JLayeredPane {
 				rolls += rand.nextInt(pool.minbonusrolls, pool.maxbonusrolls + 1);
 			}
 
-			List<LootTable.Pool.Entry> selectedEntries = weightedChoice(pool.entries, rolls);
-
-			List<Integer> s = getRandomSlots(rand, rolls, slots);
-
-			entries.addAll(selectedEntries);
-			slots.addAll(s);
+			List<LootTable.Pool.Entry> selectedEntries = weightedChoice(rand, pool.entries, rolls);
+			allEntries.addAll(selectedEntries);
 		}
 
-		// Display items in slots
-		for (int i = 0; i < entries.size(); i++) {
-			LootTable.Pool.Entry entry = entries.get(i);
-			JLabel slot = (JLabel) slotsPanel.getComponent(slots.get(i));
-
+		// Process counts and split stacks
+		List<LootTable.Pool.Entry> processedEntries = new ArrayList<>();
+		for (LootTable.Pool.Entry entry : allEntries) {
 			if (entry.minCount > entry.maxCount)
 				continue;
 
 			int count = rand.nextInt(entry.minCount, entry.maxCount + 1);
+
+			if (count == 0)
+				continue;
+
+			for (int stack : splitItems(rand, count)) {
+				LootTable.Pool.Entry stackEntry = new LootTable.Pool.Entry();
+				stackEntry.item = entry.item;
+				stackEntry.minCount = stackEntry.maxCount = stack;
+
+				processedEntries.add(stackEntry);
+			}
+		}
+
+		List<Integer> slots = getRandomSlots(rand, processedEntries.size());
+
+		// Display items
+		for (int i = 0; i < Math.min(27, processedEntries.size()); i++) {
+			LootTable.Pool.Entry entry = processedEntries.get(i);
+			JLabel slot = (JLabel) slotsPanel.getComponent(slots.get(i));
 
 			String unmappedName = entry.item.getUnmappedValue();
 			MCItem item;
 			String id;
 
 			if (unmappedName.startsWith(NameMapper.MCREATOR_PREFIX)) {
-				String plainName = StringUtils.substringBeforeLast(unmappedName.replace(NameMapper.MCREATOR_PREFIX, ""),
-						".");
+				String plainName = GeneratorWrapper.getElementPlainName(unmappedName);
 				ModElement modElement = mcreator.getWorkspace().getModElementByName(plainName);
 
 				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst()
@@ -125,10 +138,10 @@ public class LootTablePreview extends JLayeredPane {
 				id = "minecraft:" + entry.item.getMappedValue(1);
 			}
 
-			if (item == null || id.equals("minecraft:air") || count == 0)
+			if (item == null || id.equals("minecraft:air"))
 				continue;
 
-			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, count));
+			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, entry.minCount));
 			slot.setToolTipText("<html>" + item.getReadableName() + "<br><small><font color='gray'>" + id);
 		}
 	}
@@ -141,36 +154,40 @@ public class LootTablePreview extends JLayeredPane {
 		}
 	}
 
-	private List<Integer> getRandomSlots(Random rand, int count, List<Integer> currentSlots) {
-		Set<Integer> slots = new HashSet<>();
-
-		while (slots.size() < count) {
-			int s = rand.nextInt(0, 27);
-			if (!currentSlots.contains(s))
-				slots.add(s);
-		}
-
-		return new ArrayList<>(slots);
+	private List<Integer> getRandomSlots(Random rand, int count) {
+		List<Integer> slots = IntStream.range(0, 27).boxed().collect(Collectors.toList());
+		Collections.shuffle(slots, rand);
+		return slots.subList(0, Math.min(27, count));
 	}
 
-	private List<LootTable.Pool.Entry> weightedChoice(List<LootTable.Pool.Entry> entries, int count) {
+	private List<Integer> splitItems(Random rand, int totalCount) {
+		List<Integer> stacks = new ArrayList<>();
+
+		while (totalCount > 0) {
+			int maxPossible = Math.min(64, totalCount);
+			int stack = 1 +  rand.nextInt(maxPossible);
+			stacks.add(stack);
+			totalCount -= stack;
+		}
+
+		return stacks;
+	}
+
+	private List<LootTable.Pool.Entry> weightedChoice(Random rand, List<LootTable.Pool.Entry> entries, int count) {
 		List<LootTable.Pool.Entry> result = new ArrayList<>();
 		int totalWeight = entries.stream().mapToInt(e -> e.weight).sum();
 
 		for (int i = 0; i < count; i++) {
 			int idx = 0;
-			double random = Math.random() * totalWeight;
+			double random = rand.nextDouble() * totalWeight;
 
-			for (; idx < entries.size(); idx++) {
-				random -= entries.get(idx).weight;
-				if (random <= 0)
+			for (LootTable.Pool.Entry entry : entries) {
+				idx += entry.weight;
+				if (random < idx) {
+					result.add(entry);
 					break;
+				}
 			}
-
-			if (idx >= entries.size())
-				idx = entries.size() - 1;
-
-			result.add(entries.get(idx));
 		}
 
 		return result;
