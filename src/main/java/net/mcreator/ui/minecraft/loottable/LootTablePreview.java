@@ -24,12 +24,13 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
@@ -44,10 +45,18 @@ public class LootTablePreview extends JLayeredPane {
 	public LootTablePreview(MCreator mcreator) {
 		this.mcreator = mcreator;
 
-		ImageIcon previewContainerImage = new ImageIcon(UIRES.get("container").getImage()
-				.getScaledInstance(CONTAINER_WIDTH, CONTAINER_HEIGHT, Image.SCALE_SMOOTH));
+		BufferedImage container = MinecraftImageGenerator.generateBackground(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
-		JLabel previewContainer = new JLabel(previewContainerImage);
+		Image slot = ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 41, 40);
+
+		Graphics2D g = (Graphics2D) container.getGraphics();
+		for (int i = 0; i < 9; i++)
+			for (int j = 0; j < 3; j++)
+				g.drawImage(slot, i * 41 + 14, j * 40 + 14, null);
+
+		g.dispose();
+
+		JLabel previewContainer = new JLabel(new ImageIcon(container));
 		previewContainer.setBounds(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
 		slotsPanel.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
