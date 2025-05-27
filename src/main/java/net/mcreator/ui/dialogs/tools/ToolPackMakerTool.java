@@ -260,6 +260,7 @@ public class ToolPackMakerTool {
 		pickaxeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
+		pickaxeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pickaxeRecipe);
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -271,6 +272,7 @@ public class ToolPackMakerTool {
 		axeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
+		axeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -280,6 +282,7 @@ public class ToolPackMakerTool {
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
+		swordRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -289,6 +292,7 @@ public class ToolPackMakerTool {
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
+		shovelRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, shovelRecipe);
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -299,6 +303,7 @@ public class ToolPackMakerTool {
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
+		hoeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, hoeRecipe);
 	}
 
