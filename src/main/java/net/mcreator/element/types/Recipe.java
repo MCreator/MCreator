@@ -27,9 +27,7 @@ import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
@@ -37,6 +35,7 @@ import java.util.Map;
 
 	public int recipeRetstackSize;
 	public String group;
+	@ModElementReference public List<MItemBlock> unlockingItems;
 
 	// Cooking recipes common fields
 	public String cookingBookCategory;
@@ -94,6 +93,8 @@ import java.util.Map;
 
 		this.cookingBookCategory = "MISC";
 		this.craftingBookCategory = "MISC";
+
+		this.unlockingItems = new ArrayList<>();
 	}
 
 	@Override public void setModElement(ModElement element) {
@@ -180,6 +181,10 @@ import java.util.Map;
 			}
 		}
 		return keys;
+	}
+
+	public boolean hasAdvancement() {
+		return !unlockingItems.isEmpty() && !"Brewing".equals(recipeType);
 	}
 
 }
