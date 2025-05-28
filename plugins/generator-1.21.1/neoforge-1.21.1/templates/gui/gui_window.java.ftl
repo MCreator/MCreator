@@ -36,6 +36,7 @@ package ${package}.client.gui;
 <#assign checkboxes = data.getComponentsOfType("Checkbox")>
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
+<#assign tooltips = data.getComponentsOfType("Tooltip")>
 <#assign sliders = data.getComponentsOfType("Slider")>
 
 <#compress>
@@ -128,10 +129,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 		</#compress>
 
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
-
-
-		<#list data.getComponentsOfType("Tooltip") as component>
+		<#if tooltips?has_content>
+		boolean customTooltipShown = false;
+		</#if>
+		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
 			<#if hasProcedure(component.displayCondition)>
@@ -146,8 +147,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#else>
 						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
 					</#if>
+					customTooltipShown = true;
 				}
 		</#list>
+
+		<#if tooltips?has_content>
+		if (!customTooltipShown)
+		</#if>
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {

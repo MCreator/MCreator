@@ -61,7 +61,26 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					.nutrition(${data.nutritionalValue})
 					.saturationModifier(${data.saturation}f)
 					<#if data.isAlwaysEdible>.alwaysEdible()</#if>
-					.build())
+					.build()
+					<#if data.hasCustomFoodConsumable()>,
+						<#if data.animation == "eat">
+						Consumables.defaultFood()
+						<#elseif data.animation == "drink">
+						Consumables.defaultDrink()
+						<#else>
+						Consumables.defaultFood().animation(ItemUseAnimation.${data.animation?upper_case})
+						</#if>
+						<#if data.useDuration != 32>
+						.consumeSeconds(${[data.useDuration, 0]?max / 20}F)
+						</#if>
+						.build()
+					<#elseif data.animation == "drink">,
+						Consumables.DEFAULT_DRINK
+					</#if>
+				)
+				</#if>
+				<#if data.hasEatResultItem()>
+				.usingConvertsTo(${mappedMCItemToItem(data.eatResultItem)})
 				</#if>
 				<#if data.enableMeleeDamage>
 				.attributes(ItemAttributeModifiers.builder()
@@ -83,7 +102,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		);
 	}
 
-	<#if data.hasNonDefaultAnimation()>
+	<#if !data.isFood && data.animation != "none"> <#-- If item is food, this is handled by the consumable component -->
 	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
 		return ItemUseAnimation.${data.animation?upper_case};
 	}
@@ -110,7 +129,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		</#if>
 	</#if>
 
-	<#if (!data.isFood && data.useDuration != 0) || (data.isFood && data.useDuration != 32)>
+	<#if !data.isFood && data.useDuration != 0> <#-- If item is food, this is handled by the consumable component -->
 	@Override public int getUseDuration(ItemStack itemstack, LivingEntity livingEntity) {
 		return ${data.useDuration};
 	}
@@ -194,34 +213,18 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
-	<#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
+	<#if hasProcedure(data.onFinishUsingItem)>
 		@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
-			ItemStack retval =
-				<#if data.hasEatResultItem()>
-					${mappedMCItemToItemStackCode(data.eatResultItem, 1)};
-				</#if>
-			super.finishUsingItem(itemstack, world, entity);
-
-			<#if hasProcedure(data.onFinishUsingItem)>
-				double x = entity.getX();
-				double y = entity.getY();
-				double z = entity.getZ();
-				<@procedureOBJToCode data.onFinishUsingItem/>
-			</#if>
-
-			<#if data.hasEatResultItem()>
-				if (itemstack.isEmpty()) {
-					return retval;
-				} else {
-					if (entity instanceof Player player && !player.getAbilities().instabuild) {
-						if (!player.getInventory().add(retval))
-							player.drop(retval, false);
-					}
-					return itemstack;
-				}
-			<#else>
-				return retval;
-			</#if>
+			ItemStack retval = super.finishUsingItem(itemstack, world, entity);
+			<@procedureCode data.onFinishUsingItem, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "itemstack"
+			}/>
+			return retval;
 		}
 	</#if>
 
