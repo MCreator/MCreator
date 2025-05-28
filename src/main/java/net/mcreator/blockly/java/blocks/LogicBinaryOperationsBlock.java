@@ -47,17 +47,17 @@ public class LogicBinaryOperationsBlock implements IBlockGenerator {
 				else if (element.getAttribute("name").equals("B"))
 					b = element;
 		}
-		if (a != null && b != null) {
+		String operator = JavaKeywordsMap.BINARY_LOGIC_OPERATORS.get(operationType);
+
+		if (a != null && b != null && operator != null) {
 			String codeA = BlocklyToCode.directProcessOutputBlock(master, a);
 			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
-			if (JavaKeywordsMap.BINARY_LOGIC_OPERATORS.get(operationType) != null) {
-				String operator = JavaKeywordsMap.BINARY_LOGIC_OPERATORS.get(operationType);
-				master.append("(");
-				master.append(withoutParentheses(codeA, blocktype, operator));
-				master.append(operator);
-				master.append(withoutParentheses(codeB, blocktype, operator));
-				master.append(")");
-			}
+
+			master.append("(");
+			master.append(withoutParentheses(codeA, blocktype, operator));
+			master.append(operator);
+			master.append(withoutParentheses(codeB, blocktype, operator));
+			master.append(")");
 		} else {
 			master.append("(true)");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,

@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import java.util.List;
 
 public class NumberBinaryOperationsBlock implements IBlockGenerator {
+
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
