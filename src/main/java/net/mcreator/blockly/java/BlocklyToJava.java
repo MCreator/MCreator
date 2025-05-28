@@ -127,7 +127,8 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new ProcedureRetvalBlock());
 
 		// add standard output blocks
-		blockGenerators.add(new BinaryOperationsBlock());
+		blockGenerators.add(new LogicBinaryOperationsBlock());
+		blockGenerators.add(new NumberBinaryOperationsBlock());
 		blockGenerators.add(new TextBinaryOperationsBlock());
 		blockGenerators.add(new LogicNegateBlock());
 		blockGenerators.add(new NullComparisonBlock());

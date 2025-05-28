@@ -41,7 +41,7 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 			else if (element.getNodeName().equals("value") && element.getAttribute("name").equals("NUM"))
 				num = element;
 		}
-		if (operationType != null && JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null && num != null) {
+		if (operationType != null && JavaKeywordsMap.MATH_METHODS.get(operationType) != null && num != null) {
 			String numCode = master.directProcessOutputBlockWithoutParentheses(num);
 			master.append(switch (operationType) { // We add the proper marker for these operations
 				case "ABS" -> {
@@ -56,7 +56,7 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 				case "SIGNUM" -> numCode.startsWith("/*@int*/") || numCode.startsWith("/*@float*/") ? "/*@float*/" : "";
 				default -> "";
 			});
-			master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
+			master.append("Math.").append(JavaKeywordsMap.MATH_METHODS.get(operationType)).append("(");
 			master.append(numCode).append(")");
 		} else {
 			master.append("/*@int*/0");

@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public final class JavaKeywordsMap {
 
-	public static final HashMap<String, String> BINARY_OPERATORS = new HashMap<>() {{
+	public static final HashMap<String, String> BINARY_LOGIC_OPERATORS = new HashMap<>() {{
 		// logic binary operations
 		put("EQ", "==");
 		put("NEQ", "!=");
@@ -35,7 +35,9 @@ public final class JavaKeywordsMap {
 		put("LTE", "<=");
 		put("GT", ">");
 		put("GTE", ">=");
+	}};
 
+	public static final HashMap<String, String> BINARY_MATH_OPERATORS = new HashMap<>() {{
 		// math calc binary operations
 		put("ADD", "+");
 		put("MINUS", "-");
@@ -47,7 +49,7 @@ public final class JavaKeywordsMap {
 		put("BXOR", "^");
 	}};
 
-	public static final HashMap<String, String> MATH_OPERATORS = new HashMap<>() {{
+	public static final HashMap<String, String> MATH_METHODS = new HashMap<>() {{
 		// single input math operations
 		put("ROOT", "sqrt");
 		put("CUBEROOT", "cbrt");

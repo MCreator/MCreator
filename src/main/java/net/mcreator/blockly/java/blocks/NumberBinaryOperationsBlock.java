@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +31,8 @@ import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class BinaryOperationsBlock implements IBlockGenerator {
-
+public class NumberBinaryOperationsBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String blocktype = block.getAttribute("type");
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 
 		String operationType = null;
@@ -50,46 +49,39 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 		if (a != null && b != null) {
 			String codeA = BlocklyToCode.directProcessOutputBlock(master, a);
 			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
-			if (JavaKeywordsMap.BINARY_OPERATORS.get(operationType) != null) {
-				String operator = JavaKeywordsMap.BINARY_OPERATORS.get(operationType);
+			if (JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType) != null) {
+				String operator = JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType);
 				master.append("(");
-				master.append(withoutParentheses(codeA, blocktype, operator));
+				master.append(withoutParentheses(codeA, operator));
 				master.append(operator);
-				master.append(withoutParentheses(codeB, blocktype, operator));
+				master.append(withoutParentheses(codeB, operator));
 				master.append(")");
-			} else if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null) {
-				master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
+			} else if (JavaKeywordsMap.MATH_METHODS.get(operationType) != null) {
+				master.append("Math.").append(JavaKeywordsMap.MATH_METHODS.get(operationType)).append("(");
 				master.append(ProcedureCodeOptimizer.removeParentheses(codeA));
 				master.append(",");
 				master.append(ProcedureCodeOptimizer.removeParentheses(codeB));
 				master.append(")");
 			}
 		} else {
-			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "/*@int*/0");
+			master.append("/*@int*/0");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.binary_operations")));
 		}
+
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "logic_binary_ops", "math_binary_ops", "math_dual_ops" };
+		return new String[] { "math_dual_ops" };
 	}
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
 	}
 
-	private static String withoutParentheses(String code, String blockType, String operator) {
-		String lowerPriority; // Operations that require () because of lower priority or non-associativity
-		switch (blockType) {
-		case "logic_binary_ops" -> lowerPriority = switch (operator) {
-			case "!=", "==" -> "=^&|?"; // = is needed to avoid bad operand types
-			case "^" -> "&|?";
-			case "&&" -> "|?";
-			case "||" -> "?";
-			default -> "!=^&|?";
-		};
-		case "math_dual_ops" -> lowerPriority = switch (operator) {
+	private static String withoutParentheses(String code, String operator) {
+		// Operations that require () because of lower priority or non-associativity
+		String lowerPriority = switch (operator) {
 			case "*" -> "+-/%&^|?";
 			case "-" -> "+-&^|?";
 			case "+" -> "&^|?";
@@ -98,11 +90,6 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 			case "|" -> "?";
 			default -> "+-*/%&^|?";
 		};
-		case "math_binary_ops" -> lowerPriority = "&^|?";
-		case null, default -> {
-			return code;
-		}
-		}
 		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
 	}
 }
