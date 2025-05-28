@@ -90,6 +90,11 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 			case "|" -> "?";
 			default -> "+-*/%&^|?";
 		};
+
+		// Bitwise operators only accept integer operands
+		if (operator.equals("&") || operator.equals("^") || operator.equals("|")) {
+			return ProcedureCodeOptimizer.toInt(ProcedureCodeOptimizer.removeParentheses(code, lowerPriority));
+		}
 		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
 	}
 }
