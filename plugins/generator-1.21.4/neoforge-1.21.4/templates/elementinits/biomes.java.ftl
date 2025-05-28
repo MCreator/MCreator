@@ -114,6 +114,8 @@ import com.google.common.base.Suppliers;
 				// Inject surface rules
 				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
 					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGeneratorSettings).set${modid}DimensionTypeReference(dimensionType);
+
 					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
 					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
@@ -199,6 +201,8 @@ import com.google.common.base.Suppliers;
 				// Inject surface rules
 				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
 					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGeneratorSettings).set${modid}DimensionTypeReference(dimensionType);
+
 					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
 					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
@@ -231,6 +235,10 @@ import com.google.common.base.Suppliers;
 			}
 			</#if>
 		}
+	}
+
+	public static SurfaceRules.RuleSource adaptSurfaceRule(SurfaceRules.RuleSource surfaceRule, DimensionType dimensionType) {
+		return surfaceRule;
 	}
 
 	<#if spawn_overworld?has_content>
@@ -289,6 +297,10 @@ import com.google.common.base.Suppliers;
 				surfaceRules.add(index, rule);
 			}
 		}
+	}
+
+	public interface ${JavaModName}NoiseGeneratorSettings {
+		void set${modid}DimensionTypeReference(DimensionType dimensionType);
 	}
 
 }
