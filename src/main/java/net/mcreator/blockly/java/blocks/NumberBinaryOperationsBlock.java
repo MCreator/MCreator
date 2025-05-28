@@ -19,6 +19,7 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -52,7 +53,26 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
 			Type returnType = Type.getWidestType(Type.getType(codeA), Type.getType(codeB));
 
-			if (JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType) != null) {
+			if (operationType.equals("DIVIDE_DOUBLE")) {
+				// If neither type is a double, cast one of the inputs to double
+				if (returnType != Type.DOUBLE) {
+					// If one of the input blocks is a number block, try to append the "d" suffix
+					if ("math_number".equals(BlocklyBlockUtil.getInputBlockType(a)))
+						codeA = codeA.endsWith(")") ? codeA.substring(0, codeA.length() - 1) + "d)" : codeA + "d";
+					else if ("math_number".equals(BlocklyBlockUtil.getInputBlockType(b))) {
+						codeB = codeB.endsWith(")") ? codeB.substring(0, codeB.length() - 1) + "d)" : codeB + "d";
+					} else {
+						// Fallback to casting the first input to double
+						codeA = ProcedureCodeOptimizer.toDouble(codeA);
+					}
+				}
+
+				master.append("(");
+				master.append(withoutParentheses(codeA, "/ "));
+				master.append("/ ");
+				master.append(withoutParentheses(codeB, "/ "));
+				master.append(")");
+			} else if (JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType) != null) {
 				String operator = JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType);
 				// Bitwise operators always return an int
 				if (operator.equals("&") || operator.equals("^") || operator.equals("|"))

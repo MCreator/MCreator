@@ -159,6 +159,16 @@ public class ProcedureCodeOptimizer {
 	}
 
 	/**
+	 * This method performs parentheses optimization and adds a (double) cast to the given code.
+	 *
+	 * @param code The code representing the number to cast
+	 * @return The code without parentheses and with a cast to (double) behind
+	 */
+	@SuppressWarnings("unused") public static String toDouble(String code) {
+		return "(double)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
+	}
+
+	/**
 	 * This method removes blockstate/itemstack/int markers from the given code
 	 *
 	 * @param code The code to optimize
