@@ -359,7 +359,7 @@ public class WoodPackMakerTool {
 		woodRecipe.recipeSlots[4] = new MItemBlock(workspace, logEntry);
 		woodRecipe.recipeReturnStack = new MItemBlock(workspace, woodEntry);
 		woodRecipe.recipeRetstackSize = 3;
-		woodRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName()));
+		woodRecipe.unlockingItems.add(new MItemBlock(workspace, logEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, woodRecipe);
 
 		Recipe planksLogRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -371,7 +371,8 @@ public class WoodPackMakerTool {
 		planksLogRecipe.recipeReturnStack = new MItemBlock(workspace, planksEntry);
 		planksLogRecipe.recipeShapeless = true;
 		planksLogRecipe.recipeRetstackSize = 4;
-		planksLogRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName()));
+		planksLogRecipe.unlockingItems.add(new MItemBlock(workspace,
+				"TAG:" + workspace.getWorkspaceSettings().getModID() + ":" + registryName + "_logs"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksLogRecipe);
 
 		Recipe stairsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -386,7 +387,7 @@ public class WoodPackMakerTool {
 		stairsRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		stairsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Stairs");
 		stairsRecipe.recipeRetstackSize = 4;
-		stairsRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		stairsRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stairsRecipe);
 
 		Recipe slabRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -398,7 +399,7 @@ public class WoodPackMakerTool {
 		slabRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		slabRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Slab");
 		slabRecipe.recipeRetstackSize = 6;
-		slabRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		slabRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, slabRecipe);
 
 		Recipe fenceRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -412,7 +413,7 @@ public class WoodPackMakerTool {
 		fenceRecipe.recipeSlots[8] = new MItemBlock(workspace, planksEntry);
 		fenceRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Fence");
 		fenceRecipe.recipeRetstackSize = 3;
-		fenceRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		fenceRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceRecipe);
 
 		Recipe fenceGateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -427,8 +428,7 @@ public class WoodPackMakerTool {
 		fenceGateRecipe.recipeSlots[8] = new MItemBlock(workspace, "Items.STICK");
 		fenceGateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "FenceGate");
 		fenceGateRecipe.recipeRetstackSize = 1;
-		fenceGateRecipe.unlockingItems.add(
-				new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		fenceGateRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceGateRecipe);
 
 		Recipe pressurePlateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -440,8 +440,7 @@ public class WoodPackMakerTool {
 		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace, planksEntry);
 		pressurePlateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "PressurePlate");
 		pressurePlateRecipe.recipeRetstackSize = 1;
-		pressurePlateRecipe.unlockingItems.add(
-				new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		pressurePlateRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pressurePlateRecipe);
 
 		Recipe buttonRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -452,7 +451,7 @@ public class WoodPackMakerTool {
 		buttonRecipe.recipeShapeless = true;
 		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
 		buttonRecipe.recipeRetstackSize = 1;
-		buttonRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName()));
+		buttonRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonRecipe);
 	}
 
