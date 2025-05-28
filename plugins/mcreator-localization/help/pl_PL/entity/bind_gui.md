@@ -1,0 +1,1 @@
+Jeśli chcesz powiązać GUI z twoim bytem(aby podobny do osadnika lub utworzyć niestandardowy ekwipunek podobny do konia, na przykład), zaznacz to pole, aby włączyć ekwipunek i powiązać go z wybranym GUI.

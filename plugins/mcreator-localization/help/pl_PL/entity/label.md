@@ -1,0 +1,1 @@
+To pozwala to mobowi ustawić nazwę, która będzie wyświetlana nad ich głową, podobną do tego, jak wyświetlane są nazwy lub nazwy gracza. .

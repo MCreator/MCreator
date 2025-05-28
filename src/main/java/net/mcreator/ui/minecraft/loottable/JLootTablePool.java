@@ -100,7 +100,7 @@ public class JLootTablePool extends JEntriesList {
 		entries.setOpaque(false);
 
 		add.addActionListener(e -> {
-			JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
+			JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList);
 			registerEntryUI(entry);
 		});
 
@@ -120,7 +120,7 @@ public class JLootTablePool extends JEntriesList {
 	}
 
 	public void addInitialEntry() {
-		JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList); // initial add
+		JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList); // initial add
 		registerEntryUI(entry);
 	}
 
@@ -145,7 +145,7 @@ public class JLootTablePool extends JEntriesList {
 
 		if (pool.entries != null) {
 			pool.entries.forEach(e -> {
-				JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
+				JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList);
 				registerEntryUI(entry);
 				entry.setEntry(e);
 			});

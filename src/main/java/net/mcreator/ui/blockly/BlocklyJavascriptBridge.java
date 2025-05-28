@@ -205,6 +205,12 @@ public final class BlocklyJavascriptBridge {
 			case "gamerulesnumber" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
+			case "eventparametersnumber" -> openDataListEntrySelector(w-> DataListLoader.loadDataList("eventparameters").stream()
+					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+					.filter(e->e.isSupportedInWorkspace(w)).toList(),"eventparameters");
+			case "eventparametersboolean" -> openDataListEntrySelector(w-> DataListLoader.loadDataList("eventparameters").stream()
+					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+					.filter(e->e.isSupportedInWorkspace(w)).toList(),"eventparameters");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "structure" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
@@ -372,6 +378,7 @@ public final class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
+		case "eventparametersnumber", "eventparametersboolean" -> datalist = "eventparameters";
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}
