@@ -46,11 +46,19 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 				else if (element.getAttribute("name").equals("B"))
 					b = element;
 		}
-		if (a != null && b != null) {
+
+		if (a != null && b != null && operationType != null) {
 			String codeA = BlocklyToCode.directProcessOutputBlock(master, a);
 			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
+			Type returnType = Type.getWidestType(Type.getType(codeA), Type.getType(codeB));
+
 			if (JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType) != null) {
 				String operator = JavaKeywordsMap.BINARY_MATH_OPERATORS.get(operationType);
+				// Bitwise operators always return an int
+				if (operator.equals("&") || operator.equals("^") || operator.equals("|"))
+					returnType = Type.INT;
+
+				master.append(returnType.getMarker());
 				master.append("(");
 				master.append(withoutParentheses(codeA, operator));
 				master.append(operator);
@@ -96,5 +104,36 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 			return ProcedureCodeOptimizer.toInt(ProcedureCodeOptimizer.removeParentheses(code, lowerPriority));
 		}
 		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
+	}
+
+	private enum Type {
+		INT("/*@int*/"),
+		FLOAT("/*@float*/"),
+		DOUBLE("");
+
+		private final String marker;
+
+		Type(String marker) {
+			this.marker = marker;
+		}
+
+		String getMarker() {
+			return this.marker;
+		}
+
+		static Type getType(String code) {
+			if (code.startsWith("/*@int*/"))
+				return Type.INT;
+			return code.startsWith("/*@float*/") ? Type.FLOAT : Type.DOUBLE;
+		}
+
+		static Type getWidestType(Type a, Type b) {
+			if (a == Type.DOUBLE || b == Type.DOUBLE)
+				return Type.DOUBLE;
+			else if (a == Type.FLOAT || b == Type.FLOAT)
+				return Type.FLOAT;
+			else
+				return Type.INT;
+		}
 	}
 }
