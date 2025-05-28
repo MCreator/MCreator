@@ -34,6 +34,12 @@ package ${package}.mixin;
 
 import org.spongepowered.asm.mixin.Unique;
 
+/*
+TODO:
+- verify that original noisegeneratorsettings are still referenced in level.dat
+- test this out with terrablender and at least two MCreator mods that each adds one biome to overworld
+ */
+
 @Mixin(NoiseGeneratorSettings.class) public class NoiseGeneratorSettingsMixin implements ${JavaModName}Biomes.${JavaModName}NoiseGeneratorSettings {
 
 	@Shadow private SurfaceRules.RuleSource surfaceRule;
