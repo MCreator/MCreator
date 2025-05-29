@@ -141,8 +141,19 @@ public class ProcedureCodeOptimizer {
 	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
 	 */
 	@SuppressWarnings("unused") public static String toInt(String code) {
+		return toInt(code, null);
+	}
+
+	/**
+	 * This method performs parentheses optimization and adds an (int) cast to the given code if needed.
+	 *
+	 * @param code The code representing the number to cast
+	 * @param blacklist	Characters that prevent removing the parenthesis if the code is already an int
+	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
+	 */
+	@SuppressWarnings("unused") public static String toInt(String code, String blacklist) {
 		if (code.startsWith("/*@int*/"))
-			return removeParentheses(code);
+			return removeParentheses(code, blacklist);
 		return "(int)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
 	}
 
