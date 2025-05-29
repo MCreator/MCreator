@@ -122,7 +122,7 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 
 		// Bitwise operators only accept integer operands
 		if (operator.equals("&") || operator.equals("^") || operator.equals("|")) {
-			return ProcedureCodeOptimizer.toInt(ProcedureCodeOptimizer.removeParentheses(code, lowerPriority));
+			return ProcedureCodeOptimizer.toInt(code, lowerPriority);
 		}
 		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
 	}
