@@ -24,15 +24,18 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -127,26 +130,29 @@ public class GTProcedureBlocks {
 				String rettype = procedureBlock.getOutputType();
 				switch (rettype) {
 				case "Number":
+					String numberOperator = ListUtils.getRandomItem(
+							ListUtils.merge(JavaKeywordsMap.BINARY_MATH_OPERATORS.keySet(), List.of("DIVIDE_DOUBLE")));
 					procedure.procedurexml = wrapWithBaseTestXML("""
 							<block type="return_number"><value name="return">
 								<block type="math_dual_ops">
-									<field name="OP">ADD</field>
+									<field name="OP">%s</field>
 									<value name="A">%s</value>
 									<value name="B">%s</value>
 								</block>
 							</value></block>
-							""".formatted(testXML, testXML));
+							""".formatted(numberOperator, testXML, testXML));
 					break;
 				case "Boolean":
+					String logicOperator = ListUtils.getRandomItem(List.of("EQ", "NEQ", "AND", "OR", "XOR"));
 					procedure.procedurexml = wrapWithBaseTestXML("""
 							<block type="return_logic"><value name="return">
 								<block type="logic_binary_ops">
-									<field name="OP">OR</field>
+									<field name="OP">%s</field>
 									<value name="A">%s</value>
 									<value name="B">%s</value>
 								</block>
 							</value></block>
-							""".formatted(testXML, testXML));
+							""".formatted(logicOperator, testXML, testXML));
 					break;
 				case "MCItem":
 					procedure.procedurexml = wrapWithBaseTestXML("""
