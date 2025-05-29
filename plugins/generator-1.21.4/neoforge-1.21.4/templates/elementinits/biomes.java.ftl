@@ -46,6 +46,9 @@ import com.google.common.base.Suppliers;
 
 @EventBusSubscriber public class ${JavaModName}Biomes {
 
+	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>private static DimensionType OVERWORLD;</#if>
+	<#if spawn_nether?has_content>private static DimensionType NETHER;</#if>
+
 	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 		MinecraftServer server = event.getServer();
 		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().lookupOrThrow(Registries.DIMENSION_TYPE);
@@ -57,6 +60,7 @@ import com.google.common.base.Suppliers;
 
 			<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
 			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD).getDelegate().value()) {
+				OVERWORLD = dimensionType;
 				ChunkGenerator chunkGenerator = levelStem.generator();
 
 				// Inject biomes to biome source
@@ -110,11 +114,16 @@ import com.google.common.base.Suppliers;
 							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
 									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 				}
+
+				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
+				}
 			}
 			</#if>
 
 			<#if spawn_nether?has_content>
 			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER).getDelegate().value()) {
+				NETHER = dimensionType;
 				ChunkGenerator chunkGenerator = levelStem.generator();
 
 				// Inject biomes to biome source
@@ -153,6 +162,10 @@ import com.google.common.base.Suppliers;
 							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
 									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 				}
+
+				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
+				}
 			}
 			</#if>
 		}
@@ -160,7 +173,7 @@ import com.google.common.base.Suppliers;
 
 	public static SurfaceRules.RuleSource adaptSurfaceRule(SurfaceRules.RuleSource currentRuleSource, DimensionType dimensionType) {
 		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-		if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+		if (dimensionType == OVERWORLD && currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
 			List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 			<#list spawn_overworld_caves as biome>
@@ -186,7 +199,7 @@ import com.google.common.base.Suppliers;
 		</#if>
 
 		<#if spawn_nether?has_content>
-		if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+		if (dimensionType == NETHER && currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
 			List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 			<#list spawn_nether as biome>

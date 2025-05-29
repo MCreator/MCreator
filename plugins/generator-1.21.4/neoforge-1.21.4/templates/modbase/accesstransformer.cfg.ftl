@@ -3,6 +3,7 @@ public net.minecraft.world.level.biome.MultiNoiseBiomeSource parameters()Lnet/mi
 public-f net.minecraft.world.level.chunk.ChunkGenerator biomeSource
 public-f net.minecraft.world.level.chunk.ChunkGenerator featuresPerStep
 public-f net.minecraft.world.level.chunk.ChunkGenerator generationSettingsGetter
+public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
 </#if>
