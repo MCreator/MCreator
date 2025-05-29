@@ -791,7 +791,7 @@ Blockly.defineBlocksWithJsonArray([
                     ["-", "MINUS"],
                     ["*", "MULTIPLY"],
                     ["/", "DIVIDE_DOUBLE"],
-                    ["/ (integer)", "DIVIDE"],
+                    ["/ (programmer)", "DIVIDE"],
                     ["^", "POWER"],
                     ["MOD", "MOD"],
                     ["Bitwise AND", "BAND"],
