@@ -154,7 +154,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			poseStack.scale(0.9375f, 0.9375f, 0.9375f);
 		</#if>
 		<#if data.breedable>
-			poseStack.scale(entity.getAgeScale(), enity.getAgeScale(), entity.getAgeScale());
+			poseStack.scale(entity.getAgeScale(), entity.getAgeScale(), entity.getAgeScale());
+
 		</#if>
 	}
 	</#if>
