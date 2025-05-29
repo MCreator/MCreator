@@ -46,7 +46,9 @@ TODO:
 
 	@Unique private DimensionType ${modid}DimensionTypeReference;
 
-	@Inject(method = "surfaceRule", at = @At("HEAD"), cancellable = true)
+	<#-- use order of 100, to ensure our mixin runs before potential Terrablender's mixins,
+	     so we get a chance to inject ours before it is wrapped to their namespaced mixin -->
+	@Inject(method = "surfaceRule", at = @At("HEAD"), cancellable = true, order = 100)
 	private void surfaceRule(CallbackInfoReturnable<SurfaceRules.RuleSource> cir) {
 		if (this.${modid}DimensionTypeReference != null) {
 			cir.setReturnValue(${JavaModName}Biomes.adaptSurfaceRule(this.surfaceRule, this.${modid}DimensionTypeReference));
