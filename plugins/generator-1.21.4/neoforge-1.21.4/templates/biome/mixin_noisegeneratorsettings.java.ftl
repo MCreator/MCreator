@@ -43,7 +43,7 @@ TODO:
 
 	@Shadow private SurfaceRules.RuleSource surfaceRule;
 
-	@Unique private DimensionType ${modid}DimensionTypeReference;
+	@Unique private Holder<DimensionType> ${modid}DimensionTypeReference;
 
 	<#-- use order of 100, to ensure our mixin runs before potential Terrablender's mixins,
 	     so we get a chance to inject ours before it is wrapped to their namespaced mixin -->
@@ -54,7 +54,7 @@ TODO:
 		}
 	}
 
-	@Override public void set${modid}DimensionTypeReference(DimensionType dimensionType) {
+	@Override public void set${modid}DimensionTypeReference(Holder<DimensionType> dimensionType) {
 		this.${modid}DimensionTypeReference = dimensionType;
 	}
 
