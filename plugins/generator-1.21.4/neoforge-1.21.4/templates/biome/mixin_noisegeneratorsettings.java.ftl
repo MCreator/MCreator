@@ -34,11 +34,6 @@ package ${package}.mixin;
 
 import org.spongepowered.asm.mixin.Unique;
 
-/*
-TODO:
-- test this out with terrablender and at least two MCreator mods that each adds one biome to overworld (CURRENTLY NOT WORKING - TWO MCREATOR MODS, ONLY ONE MODS SURFACE RULES ARE USED)
- */
-
 @Mixin(NoiseGeneratorSettings.class) public class NoiseGeneratorSettingsMixin implements ${JavaModName}Biomes.${JavaModName}NoiseGeneratorSettings {
 
 	@Unique private Holder<DimensionType> ${modid}_dimensionTypeReference;
