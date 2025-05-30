@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Vég városokat szeretnél a biomodban.

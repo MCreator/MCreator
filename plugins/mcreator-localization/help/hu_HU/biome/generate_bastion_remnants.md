@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha bástya maradványokat szeretnél a biomodban.

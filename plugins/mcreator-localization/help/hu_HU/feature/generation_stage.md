@@ -1,0 +1,1 @@
+Ez az opció határozza meg, hogy a világ generálásának melyik szakaszában kell hozzáadni a jellemzőt.

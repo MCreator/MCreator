@@ -1,0 +1,1 @@
+Jeśli ten parametr jest sprawdzony, każda roślina może być umieszczona i rosnąć na bloku.

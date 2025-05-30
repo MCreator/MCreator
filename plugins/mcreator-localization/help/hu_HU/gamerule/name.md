@@ -1,0 +1,1 @@
+Ez a játékszabály neve, amely játékon belül jelenik meg a parancsokban a játékszabályok módosításához/engedélyezéséhez.

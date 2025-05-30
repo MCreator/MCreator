@@ -1,0 +1,1 @@
+Le nom du progrès. S'il n'a pas de parent (progrès racine), celui-ci va être le nom du chemin.

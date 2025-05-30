@@ -1,0 +1,1 @@
+Ez a játékszabály megjelenített neve. A játékszabály beállítási képernyőn használják.
