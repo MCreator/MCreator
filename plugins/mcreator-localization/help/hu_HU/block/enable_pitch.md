@@ -1,0 +1,1 @@
+Ha a blokkod vízszintesen forog, jelöld be ezt a négyzetet, hogy bármilyen irányban nézhessen a padló, falak vagy mennyezet felé. Ezt az opciót használja például a kar, a köszörűkő stb.

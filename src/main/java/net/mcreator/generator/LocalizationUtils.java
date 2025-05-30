@@ -50,9 +50,9 @@ public class LocalizationUtils {
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
 
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
 			StringBuilder langFileContent = new StringBuilder();
-			ConcurrentHashMap<String, String> entries = entry.getValue();
+			LinkedHashMap<String, String> entries = entry.getValue();
 			for (Map.Entry<String, String> lang_entry : entries.entrySet()) {
 				langFileContent.append(lang_entry.getKey()).append("=").append(lang_entry.getValue()).append("\n");
 			}
@@ -72,8 +72,8 @@ public class LocalizationUtils {
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
 
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
-			ConcurrentHashMap<String, String> entries = entry.getValue();
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
+			LinkedHashMap<String, String> entries = entry.getValue();
 			String fileName = GeneratorTokens.replaceTokens(workspace, rawName.replace("@langname", entry.getKey()));
 			FileIO.writeStringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(entries),
 					new File(generator.getLangFilesRoot(), fileName));

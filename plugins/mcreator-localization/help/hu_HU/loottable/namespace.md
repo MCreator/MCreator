@@ -1,0 +1,1 @@
+Ha meg akarsz változtatni egy vanilla loot table-t, a "minecraft"-et kell választanod, de ha új loot table-t szeretnél létrehozni a mod elemeidhez, válaszd a "mod" opciót.

@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a minimum és maximum értékeket, amelyekre az attribútum értéke beállítható.

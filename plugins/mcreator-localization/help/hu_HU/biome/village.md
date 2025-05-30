@@ -1,0 +1,1 @@
+Ez a beállítás lehetővé teszi, hogy Minecraft Falvakat generálj a biomodon belül.

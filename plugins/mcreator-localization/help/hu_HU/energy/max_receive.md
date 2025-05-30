@@ -1,0 +1,1 @@
+Ez az érték a maximális energiamennyiség, amit az energia elem (blokk, tárgy, ...) fogadhat egy másik energia elemtől.

@@ -1,2 +1,3 @@
 <#include "mcitems.ftl">
-(${input$entity} instanceof Player _playerHasItem? _playerHasItem.getInventory().contains(${mappedMCItemToItemStackCode(input$item, 1)}):false)
+<@addTemplate file="utils/entity/entity_has_item_inventory.java.ftl"/>
+(hasEntityInInventory(${input$entity}, ${mappedMCItemToItemStackCode(input$item, 1)}))
