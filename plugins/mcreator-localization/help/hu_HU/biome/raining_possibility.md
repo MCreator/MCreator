@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza az eső lehetőségét a biomon belül.

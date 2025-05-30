@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha elásott kincseket szeretnél a biomodban.

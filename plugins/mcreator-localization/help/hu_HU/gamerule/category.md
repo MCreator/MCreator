@@ -1,0 +1,1 @@
+Ez a játékszabály kategória. A játékszabályok osztályozására használják attól függően, hogy mit csinálnak.

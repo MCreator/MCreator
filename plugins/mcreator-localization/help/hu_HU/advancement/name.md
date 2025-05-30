@@ -1,0 +1,1 @@
+Az előrehaladás neve. Ha nincs szülője (gyökér előrehaladás), akkor ez lesz az útvonal neve.

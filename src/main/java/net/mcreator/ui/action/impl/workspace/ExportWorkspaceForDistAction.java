@@ -50,16 +50,16 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 			String exportExtension = FilenameUtilsPatched.getExtension(exportFile);
 
 			if (new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile).isFile()) {
-				Object[] options2 = { L10N.t("dialog.workspace.export.option.just_export"),
-						L10N.t("dialog.workspace.export.option.donate_and_export"),
+				Object[] options2 = { L10N.t("dialog.workspace.export.option.donate_and_export"),
+						L10N.t("dialog.workspace.export.option.just_export"),
 						UIManager.getString("OptionPane.cancelButtonText") };
 				int n = JOptionPane.showOptionDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.export.message"), L10N.t("dialog.workspace.export.title"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.get("export_donate"),
-						options2, options2[1]);
+						options2, options2[0]);
 				if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
 					return;
-				} else if (n == 1) {
+				} else if (n == 0) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
 				}
 

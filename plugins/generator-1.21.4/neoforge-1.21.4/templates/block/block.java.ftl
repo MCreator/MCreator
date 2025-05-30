@@ -122,7 +122,7 @@ public class ${name}Block extends
 				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.hitSound}")),
 				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.fallSound}"))
 			))
-		<#else>
+		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
 		<#if data.unbreakable>

@@ -171,4 +171,11 @@ public class GradleUtils {
 		environment.remove("GRADLE_USER_HOME");
 	}
 
+	public static void clearGradleConfigurationCache(Workspace workspace) {
+		File gradleCache = new File(workspace.getWorkspaceFolder(), ".gradle/configuration-cache");
+		if (gradleCache.isDirectory()) {
+			FileIO.deleteDir(gradleCache);
+		}
+	}
+
 }

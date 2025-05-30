@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.TagElement;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TagsUtils {
 
@@ -38,12 +39,15 @@ public class TagsUtils {
 			File tagFile = getTagFileFor(workspace, tag.getKey());
 			if (tagFile != null) {
 				try {
+					// In case duplicates somehow exist, here is the last chance to remove them
+					Set<String> uniqueEntries = tag.getValue().stream().map(TagElement::getEntryName)
+							.collect(Collectors.toSet()); // use toSet, we loose order, but should not matter
+
 					Map<String, Object> datamodel = new HashMap<>();
 					datamodel.put("tag", tag.getKey());
 					datamodel.put("type", tag.getKey().type().name().toLowerCase(Locale.ENGLISH));
-					datamodel.put("elements", tag.getValue().stream()
-							.map(e -> tag.getKey().type().getMappableElementProvider()
-									.apply(workspace, TagElement.getEntryName(e))).toList());
+					datamodel.put("elements", uniqueEntries.stream()
+							.map(e -> tag.getKey().type().getMappableElementProvider().apply(workspace, e)).toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
 					JSONWriter.writeJSONToFile(workspace, json, tagFile);

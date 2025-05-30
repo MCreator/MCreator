@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Nether erődöket szeretnél a biomodban.

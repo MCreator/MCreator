@@ -106,7 +106,7 @@ public class JJigsawPool extends JEntriesList {
 
 		add.setText(L10N.t("elementgui.structuregen.jigsaw_add_pool_entry"));
 		add.addActionListener(e -> {
-			JJigsawPart part = new JJigsawPart(mcreator, entries, entryList);
+			JJigsawPart part = new JJigsawPart(mcreator, this, entries, entryList);
 			registerEntryUI(part);
 		});
 
@@ -147,7 +147,7 @@ public class JJigsawPool extends JEntriesList {
 	}
 
 	public void addInitialEntry() {
-		JJigsawPart part = new JJigsawPart(mcreator, entries, entryList); // initial add
+		JJigsawPart part = new JJigsawPart(mcreator, this, entries, entryList); // initial add
 		registerEntryUI(part);
 	}
 
@@ -164,7 +164,7 @@ public class JJigsawPool extends JEntriesList {
 		fallbackPool.getEditor().setItem(pool.fallbackPool);
 		if (pool.poolParts != null) {
 			pool.poolParts.forEach(e -> {
-				JJigsawPart entry = new JJigsawPart(mcreator, entries, entryList);
+				JJigsawPart entry = new JJigsawPart(mcreator, this, entries, entryList);
 				registerEntryUI(entry);
 				entry.setEntry(e);
 			});
