@@ -46,7 +46,7 @@ TODO:
 	<#-- use order of 100000, to ensure our mixin runs after other mixins such as Terrablender,
 	     so the getReturnValue already returns processed rule source. Terrablender uses
 	     original field value, so our processing of return value would be ignored otherwise -->
-	@Inject(method = "surfaceRule", at = @At("HEAD"), cancellable = true, order = 100000)
+	@Inject(method = "surfaceRule", at = @At("RETURN"), cancellable = true, order = 100000)
 	private void surfaceRule(CallbackInfoReturnable<SurfaceRules.RuleSource> cir) {
 		if (this.${modid}_dimensionTypeReference != null) {
 			cir.setReturnValue(${JavaModName}Biomes.adaptSurfaceRule(cir.getReturnValue(), this.${modid}_dimensionTypeReference));
