@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a blokkot, amelyet a fád törzsének készítéséhez használsz, ha egyéni fák vannak kiválasztva.

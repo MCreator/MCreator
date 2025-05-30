@@ -1,0 +1,1 @@
+Jeżeli zaznaczone, dana animacja nie będzie widziana jako "animacja akcji", ale raczej domyślny łącznik animacji chodzenia dla kontroli chodu bytu.

@@ -1,0 +1,1 @@
+Ez a beállítás lehetővé teszi, hogy romba dőlt portálokat generálj a biomodon belül.

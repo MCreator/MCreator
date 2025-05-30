@@ -1,0 +1,1 @@
+Ahhoz, hogy a blokkodat meghatározott folyadékokra korlátozd, válaszd ki azokat ebben az opcióban.

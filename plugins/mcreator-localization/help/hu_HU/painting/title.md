@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg a festmény címét.
