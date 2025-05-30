@@ -575,6 +575,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.is_unbreakable")));
 		selp2.add(unbreakable);
 
+		unbreakable.addActionListener(e -> refreshBlockProperties());
+
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.plant.plant_is_replaceable")));
 		selp2.add(isReplaceable);
@@ -911,6 +913,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		creativeTabs.setEnabled(hasBlockItem.isSelected());
 	}
 
+	private void refreshBlockProperties() {
+		if(unbreakable.isSelected()) {
+			hardness.setEnabled(false);
+			resistance.setEnabled(false);
+		} else {
+			hardness.setEnabled(true);
+			resistance.setEnabled(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1053,6 +1065,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		updatePlantType();
 		updateSoundType();
 		updateBlockItemSettings();
+		refreshBlockProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {

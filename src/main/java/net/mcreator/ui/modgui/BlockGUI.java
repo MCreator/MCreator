@@ -791,6 +791,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_unbreakable")));
 		selp3.add(unbreakable);
 
+		unbreakable.addActionListener(e -> refreshBlockProperties());
+
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
 		bg.add(customSoundType);
@@ -1422,6 +1424,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		creativeTabs.setEnabled(hasBlockItem.isSelected());
 	}
 
+	private void refreshBlockProperties() {
+		if(unbreakable.isSelected()) {
+			hardness.setEnabled(false);
+			resistance.setEnabled(false);
+		} else {
+			hardness.setEnabled(true);
+			resistance.setEnabled(true);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1620,6 +1632,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		updateSoundType();
 		updateBlockItemSettings();
+		refreshBlockProperties();
 	}
 
 	@Override public Block getElementFromGUI() {
