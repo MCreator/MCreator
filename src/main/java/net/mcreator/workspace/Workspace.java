@@ -48,7 +48,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -56,13 +55,13 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
+	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
+	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
+	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
+	private LinkedHashMap<TagElement, ArrayList<String>> tag_elements = new LinkedHashMap<>();
 	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
-	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
-		put("en_us", new ConcurrentHashMap<>());
+	private LinkedHashMap<String, LinkedHashMap<String, String>> language_map = new LinkedHashMap<>() {{
+		put("en_us", new LinkedHashMap<>());
 	}};
 
 	protected FolderElement foldersRoot = FolderElement.ROOT;
@@ -127,7 +126,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return tag_elements;
 	}
 
-	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
+	public Map<String, LinkedHashMap<String, String>> getLanguageMap() {
 		return language_map;
 	}
 
@@ -159,12 +158,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void addLanguage(String language, ConcurrentHashMap<String, String> data) {
+	public void addLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.putIfAbsent(language, data);
 		markDirty();
 	}
 
-	public void updateLanguage(String language, ConcurrentHashMap<String, String> data) {
+	public void updateLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.put(language, data);
 		markDirty();
 	}
@@ -174,13 +173,13 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		language_map.get("en_us").put(key, value);
 
 		// add localization to others if existing if there is not existing definition present
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : language_map.entrySet())
 			entry.getValue().putIfAbsent(key, value);
 		markDirty();
 	}
 
 	public void removeLocalizationEntryByKey(String key) {
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : language_map.entrySet())
 			entry.getValue().remove(key);
 
 		markDirty();
