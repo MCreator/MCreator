@@ -56,6 +56,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
@@ -181,6 +182,12 @@ import java.util.List;
 	public boolean spawnInDungeons;
 	public int[] raidSpawnsCount;
 
+	public boolean sensitiveToVibration;
+	public List<GameEventEntry> vibrationalEvents;
+	public NumberProcedure vibrationSensitivityRadius;
+	public Procedure canReceiveVibrationCondition;
+	public Procedure onReceivedVibration;
+
 	private LivingEntity() {
 		this(null);
 	}
@@ -208,6 +215,8 @@ import java.util.List;
 		this.raidSpawnsCount = new int[] { 4, 3, 3, 4, 4, 4, 2 };
 
 		this.animations = new ArrayList<>();
+
+		this.vibrationalEvents = new ArrayList<>();
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -286,6 +295,10 @@ import java.util.List;
 		}
 
 		return null;
+	}
+
+	public Set<String> getVibrationalEvents() {
+		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
 	}
 
 	public static class ModelLayerEntry implements IWorkspaceDependent {

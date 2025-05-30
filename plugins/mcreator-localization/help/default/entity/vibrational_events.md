@@ -1,0 +1,1 @@
+Game events whose vibrations this entity can receive.
