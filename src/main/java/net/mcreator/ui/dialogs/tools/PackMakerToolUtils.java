@@ -20,8 +20,12 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
+import net.mcreator.workspace.elements.TagElement;
+
+import java.util.ArrayList;
 
 public class PackMakerToolUtils {
 
@@ -43,6 +47,22 @@ public class PackMakerToolUtils {
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
 			workspace.getGenerator().generateElement(generatableElement);
 			workspace.getModElementManager().storeModElement(generatableElement);
+		}
+	}
+
+	public static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
+		// Create tag if it doesn't exist yet
+		TagElement tag = new TagElement(tagType, tagName);
+		if (!workspace.getTagElements().containsKey(tag)) {
+			workspace.addTagElement(tag);
+		}
+
+		// Add entries if they're not already contained in the tag (in normal or managed form)
+		ArrayList<String> tagEntries = workspace.getTagElements().get(tag);
+		for (String entry : entries) {
+			if (!tagEntries.contains(entry) && !tagEntries.contains(TagElement.makeEntryManaged(entry))) {
+				tagEntries.add(entry);
+			}
 		}
 	}
 
