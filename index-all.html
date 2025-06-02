@@ -356,7 +356,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Biome.html#additionsSound" class="member-name-link">additionsSound</a> - Variable in class net.mcreator.element.types.<a href="net/mcreator/element/types/Biome.html" title="class in net.mcreator.element.types">Biome</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/workspace/Workspace.html#addLanguage(java.lang.String,java.util.concurrent.ConcurrentHashMap)" class="member-name-link">addLanguage(String, ConcurrentHashMap&lt;String, String&gt;)</a> - Method in class net.mcreator.workspace.<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></dt>
+<dt><a href="net/mcreator/workspace/Workspace.html#addLanguage(java.lang.String,java.util.LinkedHashMap)" class="member-name-link">addLanguage(String, LinkedHashMap&lt;String, String&gt;)</a> - Method in class net.mcreator.workspace.<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/component/JScrollablePopupMenu.ScrollPopupMenuLayout.html#addLayoutComponent(java.lang.String,java.awt.Component)" class="member-name-link">addLayoutComponent(String, Component)</a> - Method in class net.mcreator.ui.component.<a href="net/mcreator/ui/component/JScrollablePopupMenu.ScrollPopupMenuLayout.html" title="class in net.mcreator.ui.component">JScrollablePopupMenu.ScrollPopupMenuLayout</a></dt>
 <dd>&nbsp;</dd>
@@ -443,6 +443,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/ui/dialogs/AddTagDialog.html#%3Cinit%3E()" class="member-name-link">AddTagDialog()</a> - Constructor for class net.mcreator.ui.dialogs.<a href="net/mcreator/ui/dialogs/AddTagDialog.html" title="class in net.mcreator.ui.dialogs">AddTagDialog</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/Workspace.html#addTagElement(net.mcreator.workspace.elements.TagElement)" class="member-name-link">addTagElement(TagElement)</a> - Method in class net.mcreator.workspace.<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/dialogs/tools/PackMakerToolUtils.html#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)" class="member-name-link">addTagEntries(Workspace, TagType, String, String...)</a> - Static method in class net.mcreator.ui.dialogs.tools.<a href="net/mcreator/ui/dialogs/tools/PackMakerToolUtils.html" title="class in net.mcreator.ui.dialogs.tools">PackMakerToolUtils</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/blockly/BlocklyPanel.html#addTaskToRunAfterLoaded(java.lang.Runnable)" class="member-name-link">addTaskToRunAfterLoaded(Runnable)</a> - Method in class net.mcreator.ui.blockly.<a href="net/mcreator/ui/blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a></dt>
 <dd>&nbsp;</dd>
@@ -870,11 +872,9 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/component/ConsolePane.html#beginTransaction()" class="member-name-link">beginTransaction()</a> - Method in class net.mcreator.ui.component.<a href="net/mcreator/ui/component/ConsolePane.html" title="class in net.mcreator.ui.component">ConsolePane</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#BINARY_OPERATORS" class="member-name-link">BINARY_OPERATORS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
+<dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#BINARY_LOGIC_OPERATORS" class="member-name-link">BINARY_LOGIC_OPERATORS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html" class="type-name-link" title="class in net.mcreator.blockly.java.blocks">BinaryOperationsBlock</a> - Class in <a href="net/mcreator/blockly/java/blocks/package-summary.html">net.mcreator.blockly.java.blocks</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html#%3Cinit%3E()" class="member-name-link">BinaryOperationsBlock()</a> - Constructor for class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">BinaryOperationsBlock</a></dt>
+<dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#BINARY_MATH_OPERATORS" class="member-name-link">BINARY_MATH_OPERATORS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/io/BinaryStringIO.html" class="type-name-link" title="class in net.mcreator.io">BinaryStringIO</a> - Class in <a href="net/mcreator/io/package-summary.html">net.mcreator.io</a></dt>
 <dd>&nbsp;</dd>
@@ -1618,6 +1618,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/blockly/BlocklyToCode.html#clearCodeGeneratorBuffer()" class="member-name-link">clearCodeGeneratorBuffer()</a> - Method in class net.mcreator.blockly.<a href="net/mcreator/blockly/BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/component/ConsolePane.html#clearConsole()" class="member-name-link">clearConsole()</a> - Method in class net.mcreator.ui.component.<a href="net/mcreator/ui/component/ConsolePane.html" title="class in net.mcreator.ui.component">ConsolePane</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/gradle/GradleUtils.html#clearGradleConfigurationCache(net.mcreator.workspace.Workspace)" class="member-name-link">clearGradleConfigurationCache(Workspace)</a> - Static method in class net.mcreator.gradle.<a href="net/mcreator/gradle/GradleUtils.html" title="class in net.mcreator.gradle">GradleUtils</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/component/ListGroup.html#clearSelection()" class="member-name-link">clearSelection()</a> - Method in class net.mcreator.ui.component.<a href="net/mcreator/ui/component/ListGroup.html" title="class in net.mcreator.ui.component">ListGroup</a></dt>
 <dd>&nbsp;</dd>
@@ -4154,8 +4156,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/IBlockGenerator.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in interface net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">BinaryOperationsBlock</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/BooleanBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BooleanBlock.html" title="class in net.mcreator.blockly.java.blocks">BooleanBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html" title="class in net.mcreator.blockly.java.blocks">CancelEventBlock</a></dt>
@@ -4190,6 +4190,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html" title="class in net.mcreator.blockly.java.blocks">JavaCodeProceduralBlock</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicBinaryOperationsBlock</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicNegateBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LoopBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LoopBlock.html" title="class in net.mcreator.blockly.java.blocks">LoopBlock</a></dt>
@@ -4199,6 +4201,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/blockly/java/blocks/NullBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullBlock.html" title="class in net.mcreator.blockly.java.blocks">NullBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html" title="class in net.mcreator.blockly.java.blocks">NullComparisonBlock</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBinaryOperationsBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NumberBlock.html#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock(BlocklyToCode, Element)</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBlock</a></dt>
 <dd>&nbsp;</dd>
@@ -4847,8 +4851,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/IBlockGenerator.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in interface net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">BinaryOperationsBlock</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/BooleanBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BooleanBlock.html" title="class in net.mcreator.blockly.java.blocks">BooleanBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html" title="class in net.mcreator.blockly.java.blocks">CancelEventBlock</a></dt>
@@ -4883,6 +4885,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html" title="class in net.mcreator.blockly.java.blocks">JavaCodeProceduralBlock</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicBinaryOperationsBlock</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicNegateBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LoopBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LoopBlock.html" title="class in net.mcreator.blockly.java.blocks">LoopBlock</a></dt>
@@ -4892,6 +4896,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/blockly/java/blocks/NullBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullBlock.html" title="class in net.mcreator.blockly.java.blocks">NullBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html" title="class in net.mcreator.blockly.java.blocks">NullComparisonBlock</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBinaryOperationsBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NumberBlock.html#getBlockType()" class="member-name-link">getBlockType()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBlock</a></dt>
 <dd>&nbsp;</dd>
@@ -6851,8 +6857,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/IBlockGenerator.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in interface net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">BinaryOperationsBlock</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/BooleanBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/BooleanBlock.html" title="class in net.mcreator.blockly.java.blocks">BooleanBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/CancelEventBlock.html" title="class in net.mcreator.blockly.java.blocks">CancelEventBlock</a></dt>
@@ -6887,6 +6891,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/JavaCodeProceduralBlock.html" title="class in net.mcreator.blockly.java.blocks">JavaCodeProceduralBlock</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicBinaryOperationsBlock</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicNegateBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LoopBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LoopBlock.html" title="class in net.mcreator.blockly.java.blocks">LoopBlock</a></dt>
@@ -6896,6 +6902,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/blockly/java/blocks/NullBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullBlock.html" title="class in net.mcreator.blockly.java.blocks">NullBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html" title="class in net.mcreator.blockly.java.blocks">NullComparisonBlock</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBinaryOperationsBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/NumberBlock.html#getSupportedBlocks()" class="member-name-link">getSupportedBlocks()</a> - Method in class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBlock</a></dt>
 <dd>&nbsp;</dd>
@@ -8053,6 +8061,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/data/ExternalTrigger.html#has_result" class="member-name-link">has_result</a> - Variable in class net.mcreator.blockly.data.<a href="net/mcreator/blockly/data/ExternalTrigger.html" title="class in net.mcreator.blockly.data">ExternalTrigger</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/element/types/Recipe.html#hasAdvancement()" class="member-name-link">hasAdvancement()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Recipe.html" title="class in net.mcreator.element.types">Recipe</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/LivingEntity.html#hasAI" class="member-name-link">hasAI</a> - Variable in class net.mcreator.element.types.<a href="net/mcreator/element/types/LivingEntity.html" title="class in net.mcreator.element.types">LivingEntity</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/MCreatorFrame.html#hasBackgroundImage()" class="member-name-link">hasBackgroundImage()</a> - Method in class net.mcreator.ui.<a href="net/mcreator/ui/MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a></dt>
@@ -8083,11 +8093,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Block.html#hasCustomDrop()" class="member-name-link">hasCustomDrop()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Block.html" title="class in net.mcreator.element.types">Block</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/element/types/Item.html#hasCustomFoodConsumable()" class="member-name-link">hasCustomFoodConsumable()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Item.html" title="class in net.mcreator.element.types">Item</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Block.html#hasCustomItemProperties()" class="member-name-link">hasCustomItemProperties()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Block.html" title="class in net.mcreator.element.types">Block</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/interfaces/IBlock.html#hasCustomItemProperties()" class="member-name-link">hasCustomItemProperties()</a> - Method in interface net.mcreator.element.types.interfaces.<a href="net/mcreator/element/types/interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Plant.html#hasCustomItemProperties()" class="member-name-link">hasCustomItemProperties()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Plant.html" title="class in net.mcreator.element.types">Plant</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/element/types/Item.html#hasCustomJAVAModel()" class="member-name-link">hasCustomJAVAModel()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Item.html" title="class in net.mcreator.element.types">Item</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/element/types/Item.StateEntry.html#hasCustomJAVAModel()" class="member-name-link">hasCustomJAVAModel()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Item.StateEntry.html" title="class in net.mcreator.element.types">Item.StateEntry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Item.html#hasCustomJSONModel()" class="member-name-link">hasCustomJSONModel()</a> - Method in class net.mcreator.element.types.<a href="net/mcreator/element/types/Item.html" title="class in net.mcreator.element.types">Item</a></dt>
 <dd>&nbsp;</dd>
@@ -10453,6 +10469,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/elements/VariableTypeLoader.BuiltInTypes.html#LOGIC" class="member-name-link">LOGIC</a> - Static variable in class net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableTypeLoader.BuiltInTypes.html" title="class in net.mcreator.workspace.elements">VariableTypeLoader.BuiltInTypes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html" class="type-name-link" title="class in net.mcreator.blockly.java.blocks">LogicBinaryOperationsBlock</a> - Class in <a href="net/mcreator/blockly/java/blocks/package-summary.html">net.mcreator.blockly.java.blocks</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html#%3Cinit%3E()" class="member-name-link">LogicBinaryOperationsBlock()</a> - Constructor for class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicBinaryOperationsBlock</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html" class="type-name-link" title="class in net.mcreator.blockly.java.blocks">LogicNegateBlock</a> - Class in <a href="net/mcreator/blockly/java/blocks/package-summary.html">net.mcreator.blockly.java.blocks</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html#%3Cinit%3E()" class="member-name-link">LogicNegateBlock()</a> - Constructor for class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/LogicNegateBlock.html" title="class in net.mcreator.blockly.java.blocks">LogicNegateBlock</a></dt>
@@ -10622,7 +10642,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#MATH_CONSTANTS" class="member-name-link">MATH_CONSTANTS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#MATH_OPERATORS" class="member-name-link">MATH_OPERATORS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
+<dt><a href="net/mcreator/blockly/java/JavaKeywordsMap.html#MATH_METHODS" class="member-name-link">MATH_METHODS</a> - Static variable in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/JavaKeywordsMap.html" title="class in net.mcreator.blockly.java">JavaKeywordsMap</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/util/math/Matrix3D.html" class="type-name-link" title="class in net.mcreator.util.math">Matrix3D</a> - Class in <a href="net/mcreator/util/math/package-summary.html">net.mcreator.util.math</a></dt>
 <dd>&nbsp;</dd>
@@ -11926,6 +11946,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html#%3Cinit%3E()" class="member-name-link">NullComparisonBlock()</a> - Constructor for class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NullComparisonBlock.html" title="class in net.mcreator.blockly.java.blocks">NullComparisonBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/elements/VariableTypeLoader.BuiltInTypes.html#NUMBER" class="member-name-link">NUMBER</a> - Static variable in class net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableTypeLoader.BuiltInTypes.html" title="class in net.mcreator.workspace.elements">VariableTypeLoader.BuiltInTypes</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html" class="type-name-link" title="class in net.mcreator.blockly.java.blocks">NumberBinaryOperationsBlock</a> - Class in <a href="net/mcreator/blockly/java/blocks/package-summary.html">net.mcreator.blockly.java.blocks</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html#%3Cinit%3E()" class="member-name-link">NumberBinaryOperationsBlock()</a> - Constructor for class net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/NumberBinaryOperationsBlock.html" title="class in net.mcreator.blockly.java.blocks">NumberBinaryOperationsBlock</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/datapack/blocks/NumberBlock.html" class="type-name-link" title="class in net.mcreator.blockly.datapack.blocks">NumberBlock</a> - Class in <a href="net/mcreator/blockly/datapack/blocks/package-summary.html">net.mcreator.blockly.datapack.blocks</a></dt>
 <dd>&nbsp;</dd>
@@ -16484,6 +16508,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Converts a given Image into a BufferedImage</div>
 </dd>
+<dt><a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html#toDouble(java.lang.String)" class="member-name-link">toDouble(String)</a> - Static method in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html" title="class in net.mcreator.blockly.java">ProcedureCodeOptimizer</a></dt>
+<dd>
+<div class="block">This method performs parentheses optimization and adds a (double) cast to the given code.</div>
+</dd>
 <dt><a href="net/mcreator/element/parts/TextureHolder.html#toFile(net.mcreator.ui.workspace.resources.TextureType)" class="member-name-link">toFile(TextureType)</a> - Method in class net.mcreator.element.parts.<a href="net/mcreator/element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html#toFloat(java.lang.String)" class="member-name-link">toFloat(String)</a> - Static method in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html" title="class in net.mcreator.blockly.java">ProcedureCodeOptimizer</a></dt>
@@ -16499,6 +16527,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/ui/component/CollapsiblePanel.html#toggleVisibility(boolean)" class="member-name-link">toggleVisibility(boolean)</a> - Method in class net.mcreator.ui.component.<a href="net/mcreator/ui/component/CollapsiblePanel.html" title="class in net.mcreator.ui.component">CollapsiblePanel</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html#toInt(java.lang.String)" class="member-name-link">toInt(String)</a> - Static method in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html" title="class in net.mcreator.blockly.java">ProcedureCodeOptimizer</a></dt>
+<dd>
+<div class="block">This method performs parentheses optimization and adds an (int) cast to the given code if needed.</div>
+</dd>
+<dt><a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html#toInt(java.lang.String,java.lang.String)" class="member-name-link">toInt(String, String)</a> - Static method in class net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/ProcedureCodeOptimizer.html" title="class in net.mcreator.blockly.java">ProcedureCodeOptimizer</a></dt>
 <dd>
 <div class="block">This method performs parentheses optimization and adds an (int) cast to the given code if needed.</div>
 </dd>
@@ -17041,6 +17073,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/generator/mapping/NameMapper.html#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a> - Static variable in class net.mcreator.generator.mapping.<a href="net/mcreator/generator/mapping/NameMapper.html" title="class in net.mcreator.generator.mapping">NameMapper</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/element/types/Recipe.html#unlockingItems" class="member-name-link">unlockingItems</a> - Variable in class net.mcreator.element.types.<a href="net/mcreator/element/types/Recipe.html" title="class in net.mcreator.element.types">Recipe</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/action/UnregisteredAction.html" class="type-name-link" title="class in net.mcreator.ui.action">UnregisteredAction</a> - Class in <a href="net/mcreator/ui/action/package-summary.html">net.mcreator.ui.action</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/action/UnregisteredAction.html#%3Cinit%3E(java.lang.String,java.awt.event.ActionListener)" class="member-name-link">UnregisteredAction(String, ActionListener)</a> - Constructor for class net.mcreator.ui.action.<a href="net/mcreator/ui/action/UnregisteredAction.html" title="class in net.mcreator.ui.action">UnregisteredAction</a></dt>
@@ -17089,7 +17123,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/io/net/api/update/UpdateInfo.html#%3Cinit%3E()" class="member-name-link">UpdateInfo()</a> - Constructor for class net.mcreator.io.net.api.update.<a href="net/mcreator/io/net/api/update/UpdateInfo.html" title="class in net.mcreator.io.net.api.update">UpdateInfo</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/workspace/Workspace.html#updateLanguage(java.lang.String,java.util.concurrent.ConcurrentHashMap)" class="member-name-link">updateLanguage(String, ConcurrentHashMap&lt;String, String&gt;)</a> - Method in class net.mcreator.workspace.<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></dt>
+<dt><a href="net/mcreator/workspace/Workspace.html#updateLanguage(java.lang.String,java.util.LinkedHashMap)" class="member-name-link">updateLanguage(String, LinkedHashMap&lt;String, String&gt;)</a> - Method in class net.mcreator.workspace.<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/gradle/GradleUtils.html#updateMCreatorBuildFile(net.mcreator.workspace.Workspace)" class="member-name-link">updateMCreatorBuildFile(Workspace)</a> - Static method in class net.mcreator.gradle.<a href="net/mcreator/gradle/GradleUtils.html" title="class in net.mcreator.gradle">GradleUtils</a></dt>
 <dd>&nbsp;</dd>
