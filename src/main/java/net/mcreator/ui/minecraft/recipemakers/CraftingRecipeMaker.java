@@ -29,6 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class CraftingRecipeMaker extends AbstractRecipeMaker {
 
@@ -127,5 +128,9 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		sp.setVisible(exportedYet);
 		drop.setText(sp.getValue().toString());
 		drop.setVisible(!exportedYet);
+	}
+
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(recipeSlots);
 	}
 }

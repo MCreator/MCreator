@@ -25,6 +25,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import java.awt.*;
+import java.util.List;
 
 public class BlastFurnaceRecipeMaker extends AbstractRecipeMaker {
 
@@ -63,5 +64,9 @@ public class BlastFurnaceRecipeMaker extends AbstractRecipeMaker {
 	@Override protected void setupImageExport(boolean exportedYet) {
 		cb1.setValidationShownFlag(exportedYet);
 		cb2.setValidationShownFlag(exportedYet);
+	}
+
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(cb1);
 	}
 }
