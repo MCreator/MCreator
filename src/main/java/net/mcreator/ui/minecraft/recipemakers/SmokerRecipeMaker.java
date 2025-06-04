@@ -35,7 +35,7 @@ public class SmokerRecipeMaker extends AbstractRecipeMaker {
 	public SmokerRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		super(UIRES.get("recipe.smoker").getImage());
 
-		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb1 = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
 		cb2 = new MCItemHolder(mcreator, items);
 
 		cb1.setBounds(97, 30, 28, 28);
