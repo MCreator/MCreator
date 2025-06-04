@@ -492,10 +492,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		ingredient.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				if (ingredient.containsItem() && (e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) != 0) {
-					MItemBlock item = ingredient.getBlock();
-					if (!unlockingItems.getListElements().contains(item)) {
-						unlockingItems.addListElement(item);
-					}
+					unlockingItems.addListElement(ingredient.getBlock());
 				}
 			}
 		});
