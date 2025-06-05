@@ -37,7 +37,7 @@ package ${package}.block.entity;
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
 		<#if data.sensitiveToVibration>, GameEventListener.Provider<VibrationSystem.Listener>, VibrationSystem</#if> {
 
-	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
+	private NonNullList<ItemStack> stacks = NonNullList.withSize(${data.inventorySize}, ItemStack.EMPTY);
 
 	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
 
