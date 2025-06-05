@@ -1,0 +1,1 @@
+Procedura ta zostanie wykonana, gdy byt traci efekt mikstury.

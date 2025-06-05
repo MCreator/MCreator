@@ -78,7 +78,8 @@ public interface ModElementChangedListener
 				component.addKeyListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
 				entriesList.addEntryRegisterListener(c -> {
-					registerUI(c);
+					if (c != null)
+						registerUI(c);
 					modElementChanged();
 				});
 			}

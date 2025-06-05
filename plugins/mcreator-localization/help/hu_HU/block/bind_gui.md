@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a blokkod felhasználói felületét (GUI). Erre szükség van például egy láda vagy barkácsoló blokk készítéséhez.

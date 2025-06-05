@@ -201,12 +201,20 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.OBJ;
 	}
 
+	public boolean hasCustomJAVAModel() {
+		return decodeModelType(renderType) == Model.Type.JAVA;
+	}
+
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty();
 	}
 
 	public boolean hasNonDefaultAnimation() {
 		return isFood ? !animation.equals("eat") : !animation.equals("none");
+	}
+
+	public boolean hasCustomFoodConsumable() {
+		return isFood && !(useDuration == 32 && (animation.equals("eat") || animation.equals("drink")));
 	}
 
 	public boolean hasEatResultItem() {
@@ -311,6 +319,9 @@ import java.util.*;
 			return decodeModelType(renderType) == Model.Type.OBJ;
 		}
 
+		public boolean hasCustomJAVAModel() {
+			return decodeModelType(renderType) == Model.Type.JAVA;
+		}
 	}
 
 	public static int encodeModelType(Model.Type modelType) {
@@ -318,6 +329,7 @@ import java.util.*;
 			case BUILTIN -> 0;
 			case JSON -> 1;
 			case OBJ -> 2;
+			case JAVA -> 3;
 			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}
@@ -327,6 +339,7 @@ import java.util.*;
 			case 0 -> Model.Type.BUILTIN;
 			case 1 -> Model.Type.JSON;
 			case 2 -> Model.Type.OBJ;
+			case 3 -> Model.Type.JAVA;
 			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}

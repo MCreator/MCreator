@@ -1,0 +1,1 @@
+Ez határozza meg, hogy milyen tárgy lesz kiválasztva, amikor "felveszed" (egér középső gombjával kattintasz) a blokkot. Ha üres, a kreatív felvett tárgy maga a blokk lesz.

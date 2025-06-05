@@ -50,7 +50,7 @@ public class SetEventResultBlock implements IBlockGenerator {
 				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 						.getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
-					if (externalTrigger.getID().equals(((BlocklyToProcedure) master).getExternalTrigger())) {
+					if (externalTrigger.getID().equals(blocklyToProcedure.getExternalTrigger())) {
 						trigger = externalTrigger;
 						break;
 					}

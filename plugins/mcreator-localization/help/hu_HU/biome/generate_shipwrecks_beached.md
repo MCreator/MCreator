@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha partra vetett hajóroncsokat szeretnél a biomodban.

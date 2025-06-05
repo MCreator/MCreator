@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a maximális energiaértéket, amit az energia elemed (blokk, tárgy, ...) tárolni tud.

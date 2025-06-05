@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Fosztogató Előőrsöket szeretnél a biomodban.
