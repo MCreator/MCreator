@@ -1,6 +1,6 @@
 _default: null
 # number parameter
-INCOMING_DAMAGE_AMOUNT:
+INCOMING_DAMAGE_AMOUNT: #float
   - LivingIncomingDamageEvent # the event class
   - setAmount # the method name
   - entity_attacked # global trigger name
@@ -8,9 +8,10 @@ FALL_DISTANCE:
   - LivingFallEvent
   - setDistance
   - entity_falls
+# TODO:mcreator's number type is double. This may cause some problems.
 FALL_DAMAGE_MULTIPLIER:
   - LivingFallEvent
-  - setDamageMultiplier #float TODO:mcreator's number type is double. This may cause some problems.
+  - setDamageMultiplier #float
   - entity_falls
 CRITICAL_DAMAGE_MULTIPLIER:
   - CriticalHitEvent
