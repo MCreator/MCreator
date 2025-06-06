@@ -1,4 +1,5 @@
 _default: null
+# number parameter
 INCOMING_DAMAGE_AMOUNT:
   - LivingIncomingDamageEvent # the event class
   - setAmount # the method name
@@ -7,6 +8,23 @@ FALL_DISTANCE:
   - LivingFallEvent
   - setDistance
   - entity_falls
+FALL_DAMAGE_MULTIPLIER:
+  - LivingFallEvent
+  - setDamageMultiplier #float TODO:mcreator's number type is double. This may cause some problems.
+  - entity_falls
+CRITICAL_DAMAGE_MULTIPLIER:
+  - CriticalHitEvent
+  - setDamageMultiplier #float
+  - player_critical_hit
+INVULNERABILITY_TICKS:
+  - LivingIncomingDamageEvent
+  - setInvulnerabilityTicks
+  - entity_attacked
+DROPPED_EXPERIENCE:
+  - LivingExperienceDropEvent
+  - setDroppedExperience
+  - entity_dropxp
+# logic parameters
 DISABLE_SWEEP:
   - CriticalHitEvent
   - setDisableSweep
@@ -19,3 +37,7 @@ GRIEF_RESULT:
   - EntityMobGriefingEvent
   - setCanGrief
   - entity_grief
+SHIELD_BLOCKED:
+  - LivingShieldBlockEvent
+  - setBlocked
+  - entity_blocks
