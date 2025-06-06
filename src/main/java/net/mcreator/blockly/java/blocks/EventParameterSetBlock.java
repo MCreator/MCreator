@@ -59,6 +59,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 			List<Element> elements = XMLUtil.getDirectChildren(block);
 			String value = null, parameter = null;
+			boolean hasValue = false;
 			for (Element element : elements) {
 				if ("field".equals(element.getNodeName())) {
 					String name = element.getAttribute("name");
@@ -71,6 +72,9 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				} else if ("value".equals(element.getNodeName())) {
 					if ("value".equals(element.getAttribute("name"))) {
 						value = BlocklyToCode.directProcessOutputBlock(master, element);
+						if (element.getFirstChild() != null) {
+							hasValue = true;
+						}
 					}
 				}
 			}
@@ -81,7 +85,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				return;
 			}
 
-			if (value == null || value.isEmpty()) {
+			if (!hasValue) {
 				// skip the block when its value is null; guessing default value would be too complex
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_value")));
@@ -107,7 +111,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				HashMap<String, Object> datamodel = new HashMap<>();
 				datamodel.put("fieldParameterName", parameter);
 				datamodel.put("inputValue", value);
-				datamodel.put("type", block.getAttribute("type").split("_")[1]); // event_{type}_parameter_set
+				datamodel.put("type", block.getAttribute("type").split("_")[1]);// event_{type}_parameter_set
 				// parameters model
 				datamodel.put("eventClass", eventClass);
 				datamodel.put("method", eventParameterMethod);
