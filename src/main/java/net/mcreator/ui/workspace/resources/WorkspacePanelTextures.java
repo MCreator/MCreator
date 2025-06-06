@@ -165,16 +165,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				e -> exportSelectedImages()));
 
 		add("North", bar);
-	}
 
-	public void attachGeneratorFileWatcher() {
-		// Watch texture folder for external program changes to flush image cache in this case
+		// Register event handler for texture changes
 		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
-		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
-				.forEach(section -> {
-					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
-					fileWatcher.watchFolder(folder);
-				});
 		fileWatcher.addListener((watchKey1, kind, file) -> {
 			if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
 				// flush cache for this image
@@ -187,6 +180,18 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				});
 			}
 		});
+	}
+
+	public void attachGeneratorFileWatcher() {
+		// Watch texture folder for external program changes to flush image cache in this case
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					if (folder != null) {
+						fileWatcher.watchFolder(folder);
+					}
+				});
 	}
 
 	private void deleteCurrentlySelected() {
