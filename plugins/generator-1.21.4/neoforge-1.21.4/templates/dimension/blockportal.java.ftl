@@ -122,7 +122,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	<#if hasProcedure(data.portalUseCondition)>
-	protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+	@Override protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
 		if (<@procedureCode data.portalUseCondition, {
 			"x": "pos.getX()",
 			"y": "pos.getY()",
