@@ -27,7 +27,10 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -114,30 +117,22 @@ public class FileWatcher implements Closeable {
 	 * The watch is not recursive, so only the specified folder will be watched, not its subdirectories!
 	 *
 	 * @param path the path to the folder to watch
-	 * @return the WatchKey for the folder, or null if the folder is not a directory
-	 * or if the watch service is not available or already watching this folder
 	 */
-	@Nullable public WatchKey watchFolder(File path) {
+	public void watchFolder(File path) {
 		Path dir = path.toPath();
 		if (watchService != null) {
-			try {
-				// Check if we are already watching this folder
-				for (Map.Entry<WatchKey, Path> entry : watchKeys.entrySet()) {
-					if (entry.getValue().equals(dir)) {
-						return entry.getKey();
-					}
-				}
+			if (watchKeys.containsValue(dir))
+				return;
 
+			try {
 				if (dir.toFile().isDirectory()) {
 					WatchKey key = dir.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
 					watchKeys.put(key, dir);
-					return key;
 				}
 			} catch (IOException e) {
 				LOG.warn("Failed to register watcher for {}", path.getAbsolutePath(), e);
 			}
 		}
-		return null;
 	}
 
 	@Override public void close() {
