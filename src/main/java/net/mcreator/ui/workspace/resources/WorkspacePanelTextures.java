@@ -50,7 +50,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.nio.file.WatchKey;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -174,23 +173,20 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
 				.forEach(section -> {
 					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
-					WatchKey watchKey = fileWatcher.watchFolder(folder);
-					fileWatcher.addListener((watchKey1, kind, file) -> {
-						if (!watchKey1.equals(watchKey))
-							return;
-
-						if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
-							// flush cache for this image
-							SwingUtilities.invokeLater(() -> {
-								try {
-									new ImageIcon(file.getAbsolutePath()).getImage().flush();
-									reloadElements();
-								} catch (Exception ignored) {
-								}
-							});
-						}
-					});
+					fileWatcher.watchFolder(folder);
 				});
+		fileWatcher.addListener((watchKey1, kind, file) -> {
+			if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
+				// flush cache for this image
+				SwingUtilities.invokeLater(() -> {
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+						reloadElements();
+					} catch (Exception ignored) {
+					}
+				});
+			}
+		});
 	}
 
 	private void deleteCurrentlySelected() {
