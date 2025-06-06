@@ -1,0 +1,1 @@
+Ten warunek określa, czy blok powinien otrzymywać wykryte wibracje, czy nie.

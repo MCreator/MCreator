@@ -1,4 +1,5 @@
 _mcreator_map_template: "@modid:@registryname"
+_default: oak
 acacia: acacia
 amethyst_geode: amethyst_geode
 azalea_tree: azalea_tree

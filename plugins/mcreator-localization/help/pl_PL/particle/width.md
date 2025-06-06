@@ -1,0 +1,1 @@
+Ten parametr kontroluje jak duże są cząsteczki (w jednostkach bloku).

@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg a receptkönyvön belüli csoportot, amelyben ez a recept megjelenik.

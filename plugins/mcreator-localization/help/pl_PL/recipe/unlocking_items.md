@@ -1,0 +1,1 @@
+Po zebraniu jakiegokolwiek przedmiotu z listy, przepis zostanie odblokowany w książce receptur.

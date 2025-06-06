@@ -1,0 +1,1 @@
+As ferramentas do tipo escudo do modelo são usadas durante o bloqueio.

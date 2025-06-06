@@ -1,0 +1,1 @@
+Amikor bármelyik tárgy ebből a listából össze van gyűjtve, a recept feloldódik a receptkönyvben.

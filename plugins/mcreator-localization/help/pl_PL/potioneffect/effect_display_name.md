@@ -1,0 +1,1 @@
+Ten parametr kontroluje nazwę efektu (nazwa wyświetlana w ekwipunku gracza).
