@@ -18,11 +18,11 @@ CRITICAL_DAMAGE_MULTIPLIER:
   - player_critical_hit
 INVULNERABILITY_TICKS:
   - LivingIncomingDamageEvent
-  - setInvulnerabilityTicks
+  - setInvulnerabilityTicks #int
   - entity_attacked
 DROPPED_EXPERIENCE:
   - LivingExperienceDropEvent
-  - setDroppedExperience
+  - setDroppedExperience #int
   - entity_dropxp
 # logic parameters
 DISABLE_SWEEP:
