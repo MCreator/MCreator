@@ -1,0 +1,1 @@
+To jest dźwięk odtwarzany, kiedy byt przejdzie na tym bloku.

@@ -1,0 +1,1 @@
+Define o aumento de preço quando o jogador negocia o mesmo item várias vezes.

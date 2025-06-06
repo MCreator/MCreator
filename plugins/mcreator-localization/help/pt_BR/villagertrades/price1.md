@@ -1,0 +1,1 @@
+O primeiro item exigido pelo comércio.

@@ -1,0 +1,1 @@
+Procedura ta określa, co dzieje się po otrzymaniu wibracji.
