@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft.recourcepack;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
@@ -266,6 +267,21 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
+
+		// Register event handler for texture changes
+		FileWatcher fileWatcher = mcreator.getGenerator().getFileWatcher();
+		fileWatcher.addListener((watchKey1, kind, file) -> {
+			if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
+				// flush cache for this image
+				SwingUtilities.invokeLater(() -> {
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+						reloadElements();
+					} catch (Exception ignored) {
+					}
+				});
+			}
+		});
 	}
 
 	private void deleteMetadataIfApplicable(Workspace workspace, File file) {
@@ -441,7 +457,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
 		ResourcePackStructure.getResourcePackStructure(workspace, resourcePack.namespace(), resourcePack.packFile())
-				.forEach(entry -> fileTree.addElement(entry.path(), entry));
+				.forEach(entry -> {
+					fileTree.addElement(entry.path(), entry);
+
+					// If entry has png file override, register its folder for file watching
+					if (entry.override().isFile() && entry.extension().equals("png")) {
+						File folder = entry.override().getParentFile();
+						workspace.getGenerator().getFileWatcher().watchFolder(folder);
+					}
+				});
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 
 		model.setRoot(root);
