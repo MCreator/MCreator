@@ -27,10 +27,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -78,6 +75,15 @@ public class FileWatcher implements Closeable {
 							Path p = ((WatchEvent<Path>) e).context();
 							File file = directory.resolve(p).toFile();
 							listeners.forEach(listener -> listener.onFileChanged(key, e.kind(), file));
+
+							// Check if the directory still exists, if not, remove the watch key
+							if (!directory.toFile().isDirectory()) {
+								watchKeys.remove(key);
+								try {
+									key.cancel(); // cancel the key if the directory is no longer valid
+								} catch (Exception ignored) {
+								}
+							}
 						}
 					});
 
@@ -108,19 +114,20 @@ public class FileWatcher implements Closeable {
 	 * The watch is not recursive, so only the specified folder will be watched, not its subdirectories!
 	 *
 	 * @param path the path to the folder to watch
-	 * @return the WatchKey for the folder, or null if the folder is not a directory or if the watch service is not available
+	 * @return the WatchKey for the folder, or null if the folder is not a directory
+	 * or if the watch service is not available or already watching this folder
 	 */
 	@Nullable public WatchKey watchFolder(File path) {
+		Path dir = path.toPath();
 		if (watchService != null) {
 			try {
 				// Check if we are already watching this folder
 				for (Map.Entry<WatchKey, Path> entry : watchKeys.entrySet()) {
-					if (entry.getValue().equals(path.toPath())) {
+					if (entry.getValue().equals(dir)) {
 						return entry.getKey();
 					}
 				}
 
-				Path dir = path.toPath();
 				if (dir.toFile().isDirectory()) {
 					WatchKey key = dir.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
 					watchKeys.put(key, dir);
