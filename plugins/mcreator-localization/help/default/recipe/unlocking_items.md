@@ -1,0 +1,1 @@
+When any item from this list is collected, the recipe will be unlocked in the recipe book.

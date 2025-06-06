@@ -1,0 +1,1 @@
+Ez az érték határozza meg a tick-ekben mért időt, mielőtt a hang lejátszódik (ismétlődik).

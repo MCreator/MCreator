@@ -1,0 +1,1 @@
+Ha ez a paraméter be van jelölve, bármilyen növény elhelyezhető és növekedhet a blokkon.

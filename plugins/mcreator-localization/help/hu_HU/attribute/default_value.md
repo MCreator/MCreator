@@ -1,0 +1,1 @@
+Ez az attribútum alapértelmezett alap értéke. Az attribútum ezt az értéket fogja megtartani, amíg valami a játékban (eljárás, parancs vagy módosító) meg nem változtatja. Az attribútum értéke az a szám, amit a módosítók és a min/max korlátozások alkalmazása után számolnak ki az alap értékre.

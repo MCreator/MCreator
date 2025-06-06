@@ -27,7 +27,11 @@
     <@modelDefinition/>
     </#if>
     <#macro modelDefinition>
-    "parent": "item/generated",
+    <#assign hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
+    <#if hasJavaModel>
+    "gui_light": "front",
+    </#if>
+    "parent": "<#if hasJavaModel>builtin/entity<#else>item/generated</#if>",
     "textures": {
         <#if var_item??>
             "layer0": "${data.getItemTextureFor(var_item).format("%s:item/%s")}"

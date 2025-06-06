@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class BinaryOperationsBlock implements IBlockGenerator {
+public class LogicBinaryOperationsBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		String blocktype = block.getAttribute("type");
@@ -47,32 +47,26 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 				else if (element.getAttribute("name").equals("B"))
 					b = element;
 		}
-		if (a != null && b != null) {
+		String operator = JavaKeywordsMap.BINARY_LOGIC_OPERATORS.get(operationType);
+
+		if (a != null && b != null && operator != null) {
 			String codeA = BlocklyToCode.directProcessOutputBlock(master, a);
 			String codeB = BlocklyToCode.directProcessOutputBlock(master, b);
-			if (JavaKeywordsMap.BINARY_OPERATORS.get(operationType) != null) {
-				String operator = JavaKeywordsMap.BINARY_OPERATORS.get(operationType);
-				master.append("(");
-				master.append(withoutParentheses(codeA, blocktype, operator));
-				master.append(operator);
-				master.append(withoutParentheses(codeB, blocktype, operator));
-				master.append(")");
-			} else if (JavaKeywordsMap.MATH_OPERATORS.get(operationType) != null) {
-				master.append("Math.").append(JavaKeywordsMap.MATH_OPERATORS.get(operationType)).append("(");
-				master.append(ProcedureCodeOptimizer.removeParentheses(codeA));
-				master.append(",");
-				master.append(ProcedureCodeOptimizer.removeParentheses(codeB));
-				master.append(")");
-			}
+
+			master.append("(");
+			master.append(withoutParentheses(codeA, blocktype, operator));
+			master.append(operator);
+			master.append(withoutParentheses(codeB, blocktype, operator));
+			master.append(")");
 		} else {
-			master.append(blocktype.equals("logic_binary_ops") ? "(true)" : "/*@int*/0");
+			master.append("(true)");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.binary_operations")));
 		}
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "logic_binary_ops", "math_binary_ops", "math_dual_ops" };
+		return new String[] { "logic_binary_ops", "math_binary_ops" };
 	}
 
 	@Override public BlockType getBlockType() {
@@ -88,15 +82,6 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 			case "&&" -> "|?";
 			case "||" -> "?";
 			default -> "!=^&|?";
-		};
-		case "math_dual_ops" -> lowerPriority = switch (operator) {
-			case "*" -> "+-/%&^|?";
-			case "-" -> "+-&^|?";
-			case "+" -> "&^|?";
-			case "&" -> "^|?";
-			case "^" -> "|?";
-			case "|" -> "?";
-			default -> "+-*/%&^|?";
 		};
 		case "math_binary_ops" -> lowerPriority = "&^|?";
 		case null, default -> {

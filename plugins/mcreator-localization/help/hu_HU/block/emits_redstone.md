@@ -1,0 +1,1 @@
+Ha bejelölöd ezt a paramétert, ez a blokk képes lesz vöröskő energiát kibocsátani.

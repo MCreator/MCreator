@@ -50,22 +50,31 @@
           </#list>
         ],
         "model": {
-          "type": "minecraft:model",
-          "model": "${modid}:item/${registryname}_${model?index}"
+          <@modelRef model, "_" + model?index, model?index/>
         }
       }<#sep>,
       </#list>
     ],
     "fallback": {
-      "type": "minecraft:model",
-      "model": "${modid}:item/${registryname}"
+      <@modelRef data/>
+    }
+  <#else>
+    <@modelRef data, var_sufix!""/>
+  </#if>
+</#macro>
+
+<#macro modelRef model suffix="" itemIndex=-1>
+  <#if model.hasCustomJAVAModel?? && model.hasCustomJAVAModel()>
+    "type": "minecraft:special",
+    "base": "${modid}:item/${registryname}${suffix}",
+    "model": {
+      "type": "${modid}:${registryname}"
+      <#if (itemIndex >= 0)>,
+      "index": ${itemIndex}
+      </#if>
     }
   <#else>
     "type": "minecraft:model",
-    <#if var_sufix??>
-    "model": "${modid}:item/${registryname}${var_sufix}"
-    <#else>
-    "model": "${modid}:item/${registryname}"
-    </#if>
+    "model": "${modid}:item/${registryname}${suffix}"
   </#if>
 </#macro>

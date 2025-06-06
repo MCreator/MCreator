@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha bányajáratokat szeretnél a biomodban.

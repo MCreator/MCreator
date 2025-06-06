@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Nether fosszíliákat szeretnél a biomodban.

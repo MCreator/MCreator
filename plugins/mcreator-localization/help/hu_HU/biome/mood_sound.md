@@ -1,0 +1,1 @@
+A környezeti hang az a hang, amit a barlangokhoz használnak (pl. Környezeti Barlangok)
