@@ -2,6 +2,6 @@
 
 * **Normal** - 一般物品
 * Tool - 工具使用的模型
-* Custom - 您也可以定义自定义 JSON 和 OBJ 模型
+* 自定义 - 你也可以自定义JSON、JAVA和OBJ模型
 
 在创建自定义模型时，建议使用 JSON，因为原版Minecraft 对这种模型类型支持最好。

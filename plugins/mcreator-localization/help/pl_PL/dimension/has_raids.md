@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, gracz może wyzwalać najazdy wewnątrz tego wymiaru.

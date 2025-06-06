@@ -1,0 +1,1 @@
+Ten parametr kontroluje jak szybko ogień rozprzestrzenia się na inne bloki.

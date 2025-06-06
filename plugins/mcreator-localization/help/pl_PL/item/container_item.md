@@ -1,0 +1,1 @@
+Ten parametr sprawdza, czy przedmiot pozostaje w siatce stołu rzemieślniczego po jego wyprodukowaniu. Oznacza to, że przedmiot będzie częścią receptury, ale nie zostanie przez niego zużyty.

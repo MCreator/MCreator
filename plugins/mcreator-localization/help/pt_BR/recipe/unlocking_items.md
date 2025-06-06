@@ -1,0 +1,1 @@
+Quando qualquer item desta lista for coletado, a receita será desbloqueada no livro de receitas.
