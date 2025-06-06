@@ -28,5 +28,5 @@
   readable_name: "Entity about to grief the world - Grief result"
   type: logic
 - SHIELD_BLOCKED:
-  readable_name: "Entity blocks with shield - Shield blocked status"
+  readable_name: "Entity blocks with shield - Shield block result"
   type: logic
