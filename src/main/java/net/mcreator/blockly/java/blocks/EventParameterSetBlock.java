@@ -112,7 +112,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				HashMap<String, Object> datamodel = new HashMap<>();
 				datamodel.put("fieldParameterName", parameter);
 				datamodel.put("inputValue", value);
-				datamodel.put("type", block.getAttribute("type").split("_")[1]);// event_{type}_parameter_set
+				datamodel.put("type", block.getAttribute("type").split("_")[1]); // event_{type}_parameter_set
 				// parameters model
 				datamodel.put("eventClass", eventClass);
 				datamodel.put("method", eventParameterMethod);
