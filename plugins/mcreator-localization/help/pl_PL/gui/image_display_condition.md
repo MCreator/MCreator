@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, ten obraz może być wyświetlany tylko w przypadku, gdy warunek jest uznany.

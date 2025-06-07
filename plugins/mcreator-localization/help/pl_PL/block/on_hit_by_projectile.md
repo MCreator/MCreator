@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy pocisk uderza w blok.

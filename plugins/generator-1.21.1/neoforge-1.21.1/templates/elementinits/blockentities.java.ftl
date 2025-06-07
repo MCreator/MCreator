@@ -62,7 +62,7 @@ public class ${JavaModName}BlockEntities {
 	<#compress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list blockentitiesWithInventory as blockentity>
-			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getItemHandler());
+			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), SidedInvWrapper::new);
 			<#if blockentity.hasEnergyStorage>
 			event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getEnergyStorage());
 			</#if>

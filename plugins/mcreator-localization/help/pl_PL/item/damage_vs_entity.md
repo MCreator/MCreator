@@ -1,0 +1,1 @@
+Możesz aktywować obrażenia wręcz za pomocą tego parametru i ustawić wartość obrażeń.

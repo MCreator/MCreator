@@ -1,0 +1,1 @@
+Jeśli ten parametr jest włączony, warstwa wodonośna (duże jeziora wody/lawy) będą generować w tym wymiarze.

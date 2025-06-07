@@ -1,0 +1,1 @@
+Quantidade de experiência que o Aldeão recebe.

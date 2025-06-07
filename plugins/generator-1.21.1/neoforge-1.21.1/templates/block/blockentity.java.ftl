@@ -39,8 +39,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	private NonNullList<ItemStack> stacks = NonNullList.withSize(${data.inventorySize}, ItemStack.EMPTY);
 
-	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
-
 	<#if data.sensitiveToVibration>
 	private final VibrationSystem.Listener vibrationListener = new VibrationSystem.Listener(this);
 	private final VibrationSystem.User vibrationUser = new VibrationUser(this.getBlockPos());
@@ -195,10 +193,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		</#if>
 	}
 	<#-- END: WorldlyContainer -->
-
-	public SidedInvWrapper getItemHandler() {
-		return handler;
-	}
 
 	<#if data.hasEnergyStorage>
 	private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {

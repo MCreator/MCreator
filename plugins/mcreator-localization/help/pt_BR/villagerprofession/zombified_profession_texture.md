@@ -1,0 +1,1 @@
+A textura do aldeão zumbi com esta profissão.
