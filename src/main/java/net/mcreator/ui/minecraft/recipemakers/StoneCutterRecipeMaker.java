@@ -27,6 +27,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class StoneCutterRecipeMaker extends AbstractRecipeMaker {
 
@@ -38,7 +39,7 @@ public class StoneCutterRecipeMaker extends AbstractRecipeMaker {
 	public StoneCutterRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		super(UIRES.get("recipe.stonecutter").getImage());
 
-		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb1 = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
 		cb2 = new MCItemHolder(mcreator, items);
 
 		cb1.setBounds(97, 61, 28, 28);
@@ -80,5 +81,9 @@ public class StoneCutterRecipeMaker extends AbstractRecipeMaker {
 		sp.setVisible(exportedYet);
 		drop.setText(sp.getValue().toString());
 		drop.setVisible(!exportedYet);
+	}
+
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(cb1);
 	}
 }

@@ -29,6 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class CraftingRecipeMaker extends AbstractRecipeMaker {
 
@@ -46,8 +47,7 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		super(UIRES.get("recipe.crafting").getImage());
 
 		MouseAdapter cloneAdapter = new MouseAdapter() {
-			private static final int buttonsDownMask =
-					MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK;
+			private static final int buttonsDownMask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK;
 
 			@Override public void mouseEntered(MouseEvent e) {
 				if (e.getSource() instanceof MCItemHolder mcItemHolder) {
@@ -65,7 +65,7 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		};
 
 		for (int i = 0; i < 9; i++) {
-			recipeSlots[i] = new MCItemHolder(mcreator, itemsWithTags, true);
+			recipeSlots[i] = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
 			recipeSlots[i].addMouseListener(cloneAdapter);
 			recipeSlots[i].setMargin(new Insets(0, 0, 0, 0));
 			recipeSlots[i].setBounds(51 + 31 * (i % 3), 29 + 31 * (i / 3), 28, 28);
@@ -127,5 +127,9 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		sp.setVisible(exportedYet);
 		drop.setText(sp.getValue().toString());
 		drop.setVisible(!exportedYet);
+	}
+
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(recipeSlots);
 	}
 }
