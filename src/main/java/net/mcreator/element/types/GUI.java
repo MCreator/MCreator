@@ -20,10 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.ImageButton;
-import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.io.FileIO;
@@ -37,6 +35,7 @@ import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
@@ -94,6 +93,16 @@ import java.util.List;
 					return true;
 			} else if (component instanceof ImageButton imageButton) {
 				if (imageButton.onClick != null && imageButton.onClick.getName() != null)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasSliderEvents() {
+		for (GUIComponent component : components) {
+			if (component instanceof Slider slider) {
+				if (slider.whenSliderMoves != null && slider.whenSliderMoves.getName() != null)
 					return true;
 			}
 		}

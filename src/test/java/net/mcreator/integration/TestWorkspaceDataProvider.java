@@ -762,6 +762,11 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition3")));
 				components.add(new ImageButton("imagebutton4", 48, 0, "picture2", "", new Procedure("procedure2"),
 						new Procedure("condition4")));
+				components.add(new Slider(80, 80, 30, 10, "slider1" , 0, 10, 5, 1, "Be ", " Af", new Procedure("procedure10")));
+				components.add(new Slider(80, 90, 30, 10, "slider2" , -10, 45, 1, 1, "Be ", "", new Procedure("procedure9")));
+				components.add(new Slider(80, 100, 30, 10, "slider3" , -1542, 1257, -145, 1, "", " Af", new Procedure("procedure8")));
+				components.add(new Slider(80, 110, 30, 10, "slider4" , 1.0, 10.0, 4.8, 0.1, "", "", new Procedure("procedure11")));
+				components.add(new Slider(80, 120, 30, 10, "slider5" , 1.0, 10.0, 4.8, 0.1, "Be", "Af", null));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
