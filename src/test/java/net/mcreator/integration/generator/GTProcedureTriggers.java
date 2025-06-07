@@ -22,10 +22,14 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.generator.GeneratorWrapper;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -65,12 +69,51 @@ public class GTProcedureTriggers {
 				procedure.skipDependencyRegeneration();
 			}
 
-			String additionalXML = "";
+			int additionalBlocks = 0;
+			final StringBuilder additionalXML = new StringBuilder();
 			if (externalTrigger.has_result) {
-				additionalXML = "<next><block type=\"set_event_result\"><field name=\"result\">DENY</field></block></next>";
+				additionalXML.append(
+						"<next><block type=\"set_event_result\"><field name=\"result\">DENY</field>");
+				additionalBlocks++;
 			} else if (externalTrigger.cancelable) {
-				additionalXML = "<next><block type=\"cancel_event\"></block></next>";
+				additionalXML.append("<next><block type=\"cancel_event\">");
+				additionalBlocks++;
 			}
+
+			List<DataListEntry> eventparameters = DataListLoader.loadDataList("eventparameters");
+			GeneratorWrapper generatorWrapper = new GeneratorWrapper(workspace.getGenerator());
+			for (DataListEntry entry : eventparameters) {
+				String parameter = entry.getName();
+				String requiredGlobalTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
+				if (requiredGlobalTrigger.equals(externalTrigger.getID())) {
+					String type = entry.getType();
+					if (type.equals("number")) {
+						additionalXML.append("""
+								<next><block type="event_number_parameter_set">
+									<field name="eventparameter">%s</field>
+									<value name="value">
+										<block type="math_number">
+											<field name="NUM">1.234</field>
+										</block>
+									</value>
+								""".formatted(parameter));
+						additionalBlocks++;
+					} else if (type.equals("logic")) {
+						additionalXML.append("""
+								<next><block type="event_logic_parameter_set">
+									<field name="eventparameter">%s</field>
+									<value name="value">
+										<block type="logic_boolean">
+											<field name="BOOL">TRUE</field>
+										</block>
+									</value>
+								""".formatted(parameter));
+						additionalBlocks++;
+					}
+				}
+			}
+
+			additionalXML.append("</block></next>".repeat(additionalBlocks));
 
 			procedure.procedurexml = """
 					<xml xmlns="https://developers.google.com/blockly/xml">
@@ -79,7 +122,7 @@ public class GTProcedureTriggers {
 							%s
 						</block>
 					</xml>
-					""".formatted(externalTrigger.getID(), additionalXML);
+					""".formatted(externalTrigger.getID(), additionalXML.toString());
 
 			try {
 				workspace.addModElement(modElement);
