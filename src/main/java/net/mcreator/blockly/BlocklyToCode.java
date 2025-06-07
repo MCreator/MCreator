@@ -194,7 +194,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				for (IBlockGenerator generator : blockGenerators) {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
-						generator.generateBlock(this, block);
+						try {
+							generator.generateBlock(this, block);
+						} catch (TemplateGeneratorException e) {
+							throw e;
+						} catch (Exception e) {
+							// Any other exception that can occur during block generation
+							throw new TemplateGeneratorException(
+									"Uncaught exception while generating block of type: " + type, e);
+						}
 
 						usedBlocks.add(type);
 
@@ -228,7 +236,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			for (IBlockGenerator generator : blockGenerators) {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
 						generator.getSupportedBlocks()).contains(type)) {
-					generator.generateBlock(this, block);
+					try {
+						generator.generateBlock(this, block);
+					} catch (TemplateGeneratorException e) {
+						throw e;
+					} catch (Exception e) {
+						// Any other exception that can occur during block generation
+						throw new TemplateGeneratorException(
+								"Uncaught exception while generating block of type: " + type, e);
+					}
 
 					usedBlocks.add(type);
 

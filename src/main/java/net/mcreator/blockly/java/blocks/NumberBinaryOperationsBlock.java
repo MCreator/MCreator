@@ -97,7 +97,6 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.binary_operations")));
 		}
-
 	}
 
 	@Override public String[] getSupportedBlocks() {
@@ -128,9 +127,7 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 	}
 
 	private enum Type {
-		INT("/*@int*/"),
-		FLOAT("/*@float*/"),
-		DOUBLE("");
+		INT("/*@int*/"), FLOAT("/*@float*/"), DOUBLE("");
 
 		private final String marker;
 
