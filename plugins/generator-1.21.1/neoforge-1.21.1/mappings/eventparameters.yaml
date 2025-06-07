@@ -1,12 +1,12 @@
 _default: null
 # number parameter
-INCOMING_DAMAGE_AMOUNT: #float
+INCOMING_DAMAGE_AMOUNT:
   - LivingIncomingDamageEvent # the event class
-  - setAmount # the method name
+  - setAmount # the method name #float
   - entity_attacked # global trigger name
 FALL_DISTANCE:
   - LivingFallEvent
-  - setDistance
+  - setDistance #float
   - entity_falls
 FALL_DAMAGE_MULTIPLIER:
   - LivingFallEvent
