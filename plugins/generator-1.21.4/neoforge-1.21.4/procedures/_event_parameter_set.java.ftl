@@ -1,4 +1,4 @@
-<#assign floatParameters = ["INCOMING_DAMAGE_AMOUNT"]>
+<#assign floatParameters = ["INCOMING_DAMAGE_AMOUNT", "FALL_DISTANCE"]>
 if (event instanceof ${eventClass} _event){
 	<#if floatParameters?seq_contains(fieldParameterName)>
 		_event.${method}(${opt.toFloat(inputValue)});
