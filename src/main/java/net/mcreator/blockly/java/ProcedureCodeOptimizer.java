@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class ProcedureCodeOptimizer {
 	enum ParseState {
-		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
+		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, AFTER_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
 	}
 
 	/**
@@ -85,13 +85,14 @@ public class ProcedureCodeOptimizer {
 			for (int i = 1; i < toCheck.length() - 1; i++) {
 				char c = toCheck.charAt(i);
 				switch (state) {
-				case OUTSIDE:
-					if (c == '/' && prevChar == '/') {
+				case OUTSIDE, AFTER_COMMENT_BLOCK:
+					// Comments cannot start right after a comment block was closed
+					if (state != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
 						state = ParseState.INSIDE_INLINE_COMMENT;
 						if (blacklist != null && parentheses == 1)
 							topLevelChars.deleteCharAt(
 									topLevelChars.length() - 1); // The previous character was part of the comment
-					} else if (c == '*' && prevChar == '/') {
+					} else if (state != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
 						state = ParseState.INSIDE_COMMENT_BLOCK;
 						if (blacklist != null && parentheses == 1)
 							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
@@ -104,6 +105,9 @@ public class ProcedureCodeOptimizer {
 						return false;
 					else if (blacklist != null && parentheses == 1) {
 						topLevelChars.append(c);
+					}
+					if (state == ParseState.AFTER_COMMENT_BLOCK) {
+						state = ParseState.OUTSIDE;
 					}
 					break;
 				case INSIDE_INLINE_COMMENT:
@@ -126,7 +130,7 @@ public class ProcedureCodeOptimizer {
 					break;
 				case INSIDE_COMMENT_BLOCK:
 					if (c == '/' && prevChar == '*')
-						state = ParseState.OUTSIDE;
+						state = ParseState.AFTER_COMMENT_BLOCK;
 					break;
 				}
 				prevChar = c;
