@@ -89,21 +89,19 @@ public class ProcedureCodeOptimizer {
 					// Comments cannot start right after a comment block was closed
 					if (state != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
 						state = ParseState.INSIDE_INLINE_COMMENT;
-						if (blacklist != null && parentheses == 1)
-							topLevelChars.deleteCharAt(
-									topLevelChars.length() - 1); // The previous character was part of the comment
+						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
+							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
 					} else if (state != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
 						state = ParseState.INSIDE_COMMENT_BLOCK;
-						if (blacklist != null && parentheses == 1)
+						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
 							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
-					} else if (c == '"')
+					} else if (c == '"') {
 						state = ParseState.INSIDE_STRING;
-					else if (c == '(')
+					} else if (c == '(') {
 						parentheses++;
-					else if (c == ')'
-							&& --parentheses == 0) // The first ( isn't paired with the last ), we can't remove them
-						return false;
-					else if (blacklist != null && parentheses == 1) {
+					} else if (c == ')' && --parentheses == 0) {
+						return false; // The first "(" isn't paired with the last ")", we can't remove them
+					} else if (blacklist != null && parentheses == 1) {
 						topLevelChars.append(c);
 					}
 					if (state == ParseState.AFTER_COMMENT_BLOCK) {
@@ -111,8 +109,9 @@ public class ProcedureCodeOptimizer {
 					}
 					break;
 				case INSIDE_INLINE_COMMENT:
-					if (c == '\n' || c == '\r')
+					if (c == '\n' || c == '\r') {
 						state = ParseState.OUTSIDE;
+					}
 					break;
 				case INSIDE_STRING_ESCAPE_SEQUENCE:
 					if (c == '\\') {
@@ -129,8 +128,9 @@ public class ProcedureCodeOptimizer {
 					}
 					break;
 				case INSIDE_COMMENT_BLOCK:
-					if (c == '/' && prevChar == '*')
+					if (c == '/' && prevChar == '*') {
 						state = ParseState.AFTER_COMMENT_BLOCK;
+					}
 					break;
 				}
 				prevChar = c;
@@ -153,8 +153,8 @@ public class ProcedureCodeOptimizer {
 	/**
 	 * This method performs parentheses optimization and adds an (int) cast to the given code if needed.
 	 *
-	 * @param code The code representing the number to cast
-	 * @param blacklist	Characters that prevent removing the parenthesis if the code is already an int
+	 * @param code      The code representing the number to cast
+	 * @param blacklist Characters that prevent removing the parenthesis if the code is already an int
 	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
 	 */
 	@SuppressWarnings("unused") public static String toInt(String code, @Nullable String blacklist) {
