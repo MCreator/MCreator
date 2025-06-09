@@ -32,13 +32,13 @@
 package ${package}.item.inventory;
 
 <#compress>
-@EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ComponentItemHandler {
+@EventBusSubscriber public class ${name}InventoryCapability extends ComponentItemHandler {
 
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
+	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
 		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
-			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
-				Minecraft.getInstance().player.closeContainer();
-			}
+			Player player = event.getPlayer();
+			if (player.containerMenu instanceof ${data.guiBoundTo}Menu)
+				player.closeContainer();
 		}
 	}
 
