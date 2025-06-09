@@ -24,7 +24,7 @@ import java.util.Set;
 class JavaMemberExtractor {
 
 	enum ParseState {
-		IDLE, INSIDE_INLINE_COMMENT, INSIDE_BLOCK_COMMENT, INSIDE_MEMBERNAME, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQENCE
+		IDLE, INSIDE_INLINE_COMMENT, INSIDE_BLOCK_COMMENT, AFTER_COMMENT_BLOCK, INSIDE_MEMBER_NAME, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE
 	}
 
 	static Set<String> getMemberList(String code) {
@@ -40,28 +40,30 @@ class JavaMemberExtractor {
 		for (int i = 0; i < code.length(); i++) {
 			char c = code.charAt(i);
 			switch (currentState) {
-			case IDLE:
-			case INSIDE_MEMBERNAME:
-				if (c == '/' && prevChar == '/')
+			case IDLE, INSIDE_MEMBER_NAME, AFTER_COMMENT_BLOCK:
+				// Comments cannot start right after a comment block was closed
+				if (currentState != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
 					currentState = ParseState.INSIDE_INLINE_COMMENT;
-				else if (c == '*' && prevChar == '/')
+				} else if (currentState != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
 					currentState = ParseState.INSIDE_BLOCK_COMMENT;
-				else if (c == '"')
+				} else if (c == '"') {
 					currentState = ParseState.INSIDE_STRING;
-				else if (currentState == ParseState.IDLE && Character.isJavaIdentifierStart(c)
+				} else if (currentState == ParseState.IDLE && Character.isJavaIdentifierStart(c)
 						&& !Character.isJavaIdentifierPart(prevChar) && prevChar != '.') {
-					currentState = ParseState.INSIDE_MEMBERNAME;
+					currentState = ParseState.INSIDE_MEMBER_NAME;
 					memberName.append(c);
-				} else if (currentState == ParseState.INSIDE_MEMBERNAME && Character.isJavaIdentifierPart(c))
+				} else if (currentState == ParseState.INSIDE_MEMBER_NAME && Character.isJavaIdentifierPart(c)) {
 					memberName.append(c);
-				else
+				} else {
 					currentState = ParseState.IDLE;
+				}
 				break;
 			case INSIDE_INLINE_COMMENT:
-				if (c == '\n' || c == '\r')
+				if (c == '\n' || c == '\r') {
 					currentState = ParseState.IDLE;
+				}
 				break;
-			case INSIDE_STRING_ESCAPE_SEQENCE:
+			case INSIDE_STRING_ESCAPE_SEQUENCE:
 				if (c == '\\') { // more escape characters, could be \\\
 					backShlashesCounter++;
 					break;
@@ -70,7 +72,7 @@ class JavaMemberExtractor {
 				}
 			case INSIDE_STRING:
 				if (c == '\\') {
-					currentState = ParseState.INSIDE_STRING_ESCAPE_SEQENCE;
+					currentState = ParseState.INSIDE_STRING_ESCAPE_SEQUENCE;
 					backShlashesCounter = 0; // this back slash is not counted in
 				} else if (c == '"' && (prevChar != '\\' || backShlashesCounter % 2 != 0)) {
 					// " is end of string, except if there is \ before (escaped double quote)
@@ -79,15 +81,17 @@ class JavaMemberExtractor {
 				}
 				break;
 			case INSIDE_BLOCK_COMMENT:
-				if (c == '/' && prevChar == '*')
-					currentState = ParseState.IDLE;
+				if (c == '/' && prevChar == '*') {
+					currentState = ParseState.AFTER_COMMENT_BLOCK;
+				}
 				break;
 			}
 
-			if (prevState == ParseState.INSIDE_MEMBERNAME && currentState != ParseState.INSIDE_MEMBERNAME) {
+			if (prevState == ParseState.INSIDE_MEMBER_NAME && currentState != ParseState.INSIDE_MEMBER_NAME) {
 				String member = memberName.toString();
-				if (!JavaConventions.JAVA_RESERVED_WORDS.contains(member))
+				if (!JavaConventions.JAVA_RESERVED_WORDS.contains(member)) {
 					memberList.add(member);
+				}
 				memberName.setLength(0);
 			}
 

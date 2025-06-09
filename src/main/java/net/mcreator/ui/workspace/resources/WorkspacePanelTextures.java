@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
 import net.mcreator.ui.component.TransparentToolBar;
@@ -164,6 +165,33 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				e -> exportSelectedImages()));
 
 		add("North", bar);
+
+		// Register event handler for texture changes
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		fileWatcher.addListener((watchKey1, kind, file) -> {
+			if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
+				// flush cache for this image
+				SwingUtilities.invokeLater(() -> {
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+						reloadElements();
+					} catch (Exception ignored) {
+					}
+				});
+			}
+		});
+	}
+
+	public void attachGeneratorFileWatcher() {
+		// Watch texture folder for external program changes to flush image cache in this case
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					if (folder != null) {
+						fileWatcher.watchFolder(folder);
+					}
+				});
 	}
 
 	private void deleteCurrentlySelected() {

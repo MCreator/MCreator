@@ -59,6 +59,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 			List<Element> elements = XMLUtil.getDirectChildren(block);
 			String value = null, parameter = null;
+			boolean hasValue = false;
 			for (Element element : elements) {
 				if ("field".equals(element.getNodeName())) {
 					String name = element.getAttribute("name");
@@ -67,10 +68,14 @@ public class EventParameterSetBlock implements IBlockGenerator {
 					} else if ("value".equals(name)) {
 						// compatibility with datalist selector, dropdown and so on for later extension
 						value = element.getTextContent();
+						hasValue = true;
 					}
 				} else if ("value".equals(element.getNodeName())) {
 					if ("value".equals(element.getAttribute("name"))) {
 						value = BlocklyToCode.directProcessOutputBlock(master, element);
+						if (element.getFirstChild() != null) {
+							hasValue = true;
+						}
 					}
 				}
 			}
@@ -81,7 +86,7 @@ public class EventParameterSetBlock implements IBlockGenerator {
 				return;
 			}
 
-			if (value == null || value.isEmpty()) {
+			if (!hasValue) {
 				// skip the block when its value is null; guessing default value would be too complex
 				master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.event_parameter_set.no_value")));
