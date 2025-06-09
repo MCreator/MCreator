@@ -44,14 +44,14 @@ import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -104,11 +104,11 @@ public class WorkspaceFileBrowser extends JPanel {
 		jtf1.setOpaque(true);
 		ComponentUtils.deriveFont(jtf1, 12);
 
-		jtf1.addKeyListener(new KeyAdapter() {
+		jtf1.getDocument().addDocumentListener(new DocumentListener() {
+
 			boolean searchInAction = false;
 
-			@Override public void keyReleased(KeyEvent keyEvent) {
-				super.keyReleased(keyEvent);
+			private void updateSearch() {
 				if (jtf1.getText().trim().length() >= 3) {
 					if (!searchInAction) {
 						new Thread(() -> {
@@ -121,6 +121,18 @@ public class WorkspaceFileBrowser extends JPanel {
 				} else {
 					mods.setFilter("");
 				}
+			}
+
+			@Override public void insertUpdate(DocumentEvent e) {
+				updateSearch();
+			}
+
+			@Override public void removeUpdate(DocumentEvent e) {
+				updateSearch();
+			}
+
+			@Override public void changedUpdate(DocumentEvent e) {
+				updateSearch();
 			}
 		});
 
