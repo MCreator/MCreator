@@ -221,6 +221,7 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
 		leavesBlock.name = readableName + " Leaves";
 		leavesBlock.blockBase = "Leaves";
+		leavesBlock.hasTransparency = true;
 		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
