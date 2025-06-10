@@ -1180,6 +1180,29 @@ import java.util.stream.Collectors;
 					});
 					reloadWorkspaceTab();
 
+					if (!references.isEmpty()) {
+						ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.delete_modelement_title"));
+						Thread t = new Thread(() -> {
+							ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+									L10N.t("workspace.elements.delete_modelement_regeneration"));
+							dial.addProgressUnit(p1);
+							int i = 0;
+							for (ModElement mod : references) {
+								GeneratableElement generatableElement = mod.getGeneratableElement();
+								if (generatableElement != null) {
+									// generate mod element
+									mcreator.getGenerator().generateElement(generatableElement);
+								}
+								i++;
+								p1.setPercent((int) (i / (float) references.size() * 100));
+							}
+							p1.markStateOk();
+							dial.hideDialog();
+						}, "RegenerateReferences");
+						t.start();
+						dial.setVisible(true);
+					}
+
 					if (buildNeeded.get())
 						mcreator.getActionRegistry().buildWorkspace.doAction();
 				}
