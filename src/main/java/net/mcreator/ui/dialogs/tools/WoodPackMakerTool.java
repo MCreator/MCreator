@@ -229,6 +229,7 @@ public class WoodPackMakerTool {
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
+		leavesBlock.reactionToPushing = "DESTROY";
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)

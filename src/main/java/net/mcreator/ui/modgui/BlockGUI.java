@@ -452,6 +452,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
+						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
 				case "TrapDoor", "Fence" -> {
