@@ -221,6 +221,7 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
 		leavesBlock.name = readableName + " Leaves";
 		leavesBlock.blockBase = "Leaves";
+		leavesBlock.hasTransparency = true;
 		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
@@ -229,6 +230,7 @@ public class WoodPackMakerTool {
 		leavesBlock.flammability = (int) Math.round(30 * factor);
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
+		leavesBlock.reactionToPushing = "DESTROY";
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)

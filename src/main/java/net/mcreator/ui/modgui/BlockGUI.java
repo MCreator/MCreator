@@ -431,6 +431,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				hasGravity.setSelected(false);
 				isNotColidable.setSelected(false);
 				reactionToPushing.setSelectedItem("NORMAL");
+				ignitedByLava.setSelected(false);
 
 				String selectedBlockBase = blockBase.getSelectedItem();
 				switch (selectedBlockBase) {
@@ -444,14 +445,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "Leaves" -> {
-					hasTransparency.setEnabled(false);
 					transparencyType.setEnabled(false);
-
-					hasTransparency.setSelected(false);
 					transparencyType.setSelectedItem("SOLID");
 
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
+						reactionToPushing.setSelectedItem("DESTROY");
+						hasTransparency.setSelected(true);
+						ignitedByLava.setSelected(true);
 					}
 				}
 				case "TrapDoor", "Fence" -> {
