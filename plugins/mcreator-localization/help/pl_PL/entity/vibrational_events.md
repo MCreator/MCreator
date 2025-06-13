@@ -1,0 +1,1 @@
+Wydarzenia z gry, których wibracje ten byt może otrzymać.

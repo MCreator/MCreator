@@ -1,0 +1,1 @@
+Maksymalna odległość, z jaką ten byt może odbierać wibracje.

@@ -1,0 +1,1 @@
+Ten parametr wybiera typ cząstek, który jest emitowany przez portal, gdy portal jest aktywny.

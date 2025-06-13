@@ -1,0 +1,1 @@
+Konstrukcja zapalnika portalowego używana do stworzenia portalu z ramki portalowej.

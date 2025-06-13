@@ -1,0 +1,1 @@
+Jeśli określony jest warunek, gracz musi go przekazać, aby przenieść do tego wymiaru.

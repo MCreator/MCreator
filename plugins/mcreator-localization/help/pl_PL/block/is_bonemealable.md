@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, blok może być nawożony mączką kostną.

@@ -1,0 +1,1 @@
+To jest kategoria zasad gry. Jest ona używana do klasyfikacji zasad gry w zależności od tego, co robią.

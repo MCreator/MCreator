@@ -1,0 +1,1 @@
+Nasycenie jest pierwszą statystyką, która zmniejsza się, gdy gracz wykonuje energochłonne działania, i musi być całkowicie zubożony, zanim licznik zacznie spadać.

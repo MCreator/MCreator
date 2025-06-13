@@ -1,0 +1,1 @@
+Blok ramy portalu jest blokiem używanym do tworzenia ramy portalu dla wymiaru, jeśli portal jest włączony.

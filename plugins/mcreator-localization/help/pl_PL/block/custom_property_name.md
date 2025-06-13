@@ -1,0 +1,1 @@
+Ten parametr określa nazwę tej niestandardowej właściwości bloku.

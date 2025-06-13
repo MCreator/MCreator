@@ -1,0 +1,1 @@
+Ten parametr kontroluje, ile światła emituje blok. Jest to wartość pomiędzy 0 a 15. Jeśli jest ustawiony na 0, blok nie emituje światła. Jeśli ustawiony jest na 15, blok emituje taką ilość światła jak świecenie.

@@ -1,0 +1,1 @@
+Esta condição especifica se a entidade deve receber a vibração detectada ou não.

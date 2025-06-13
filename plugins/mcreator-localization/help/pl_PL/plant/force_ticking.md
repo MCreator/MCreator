@@ -1,0 +1,1 @@
+Niektóre typy roślin tikują naturalnie, ale niektóre nie. Sprawdź ten parametr, aby wymusić zaznaczanie we wszystkich przypadkach.

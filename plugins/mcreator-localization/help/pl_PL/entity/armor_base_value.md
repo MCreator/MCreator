@@ -1,0 +1,1 @@
+Ilość wbudowanych punktów zbroi posiadanych przez moba. Zombie mają domyślnie 2 punkty zbroi.

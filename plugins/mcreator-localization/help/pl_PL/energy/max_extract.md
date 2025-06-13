@@ -1,0 +1,1 @@
+Ta wartość jest maksymalną wartością energii, jaką element energii (blok, przedmiot, ...) może otrzymać z innego elementu energii.

@@ -1,0 +1,1 @@
+Procedura ta jest wykonywana przy wytwarzaniu lub przetapianiu tego przedmiotu.

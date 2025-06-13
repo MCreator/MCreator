@@ -1,0 +1,1 @@
+Ustawia prędkość ruchu moba. Większość normalnych mobów porusza się z prędkością około 0. 5, podczas gdy szybsze pająki i wilki poruszają się o 0,3.

@@ -1,0 +1,1 @@
+Zaznacz tę opcję, jeśli chcesz dostosować pole graniczne tego zakładu. Jeśli ta opcja nie jest włączona, pole graniczne będzie oparte na typie roślin. 

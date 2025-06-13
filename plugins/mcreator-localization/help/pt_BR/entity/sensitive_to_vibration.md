@@ -1,0 +1,1 @@
+Se este parâmetro estiver marcado, esta entidade será sensível a vibrações como _Warden_.
