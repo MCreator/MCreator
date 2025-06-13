@@ -1,0 +1,1 @@
+Sprawdź ten parametr, jeśli twój efekt powinien być stosowany jednokrotnie jak Natychmiastowe zdrowie.

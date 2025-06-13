@@ -1,0 +1,1 @@
+Jeśli ta opcja jest zaznaczona, element nie zostanie upuszczony przez dozowniki z domyślną akcją, ale będzie wywoływał "${l10n.t("elementgui. zamiast tego procedury tem_extension.dispense_success_condition")}" i "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}" .

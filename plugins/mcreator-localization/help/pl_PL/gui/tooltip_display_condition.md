@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, ta podpowiedź może być wyświetlona tylko w przypadku, gdy warunek jest pozytywny.

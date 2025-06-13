@@ -1,0 +1,1 @@
+To określa, jaki przedmiot jest pokazany, gdy wybierzesz blok (środkowy przycisk myszą). Jeśli pusty, kreatywny wybór przedmiotu jest blokiem.

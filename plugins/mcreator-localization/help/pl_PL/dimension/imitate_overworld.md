@@ -1,0 +1,1 @@
+Ten parametr kontroluje niektóre aspekty wymiaru w odniesieniu do pogody, funkcji kompasu i tworzenia

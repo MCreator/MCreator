@@ -1,0 +1,1 @@
+Ten parametr określa, ile roślin może wygenerować w jednym obszarze. Wyższe wartości oznaczają więcej roślin w jednym obszarze. .

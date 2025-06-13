@@ -1,0 +1,1 @@
+Jest to domyślna wartość właściwości stanu bloku, gdy blok jest generowany/umieszczony na świecie.

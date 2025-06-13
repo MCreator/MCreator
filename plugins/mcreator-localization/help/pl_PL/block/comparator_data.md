@@ -1,0 +1,1 @@
+Zaznacz ten parametr, jeśli chcesz, aby blok działał z komparatorami.

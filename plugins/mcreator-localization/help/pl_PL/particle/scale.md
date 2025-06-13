@@ -1,0 +1,1 @@
+Ten parametr określa, ile powinna być skalowana struktura cząstek.

@@ -1,0 +1,1 @@
+Tekstura świecąca jest używana, by ustalić warstwę świecącą moba. Tym jaśniejsze obszary tekstury, tym bardziej te elementy będą się świecić.

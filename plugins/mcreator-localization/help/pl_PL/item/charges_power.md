@@ -1,0 +1,1 @@
+Jeśli zaznaczone, moc pocisku elementu dystansowego będzie się różnić w zależności od czasu naładowania elementu dystansowego.

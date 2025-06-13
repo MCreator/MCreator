@@ -1,0 +1,1 @@
+Ten parametr definiuje typy miejsc, które pasują do tego typu zaklęcia.

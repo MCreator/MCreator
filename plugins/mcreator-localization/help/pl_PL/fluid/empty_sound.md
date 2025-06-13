@@ -1,0 +1,1 @@
+Ten parametr kontroluje dźwięk, który będzie odtwarzany, gdy wiadro jest opróżniane. Jeśli nie zaznaczono dźwięku, zostanie odtworzony domyślny dźwięk wiadra .

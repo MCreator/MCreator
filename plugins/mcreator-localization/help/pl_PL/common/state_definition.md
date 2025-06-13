@@ -1,0 +1,1 @@
+Określ wartości, które mają być zaakceptowane przez właściwości twojego elementu dla tego stanu. Jeśli odznaczysz pole po lewej stronie właściwości, nie wpłynie to w żaden sposób na ten stan.

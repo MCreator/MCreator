@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy blok obok tego jest aktualizowany (zmienia się blok, umieści nowy blok lub blok jest usunięty).

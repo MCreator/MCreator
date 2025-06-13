@@ -1,0 +1,1 @@
+Nazwa w grze to nazwa elementu modyfikacji pokazana w menu gry, podpowiedzi przedmiotu i inne miejsca, w których możliwe jest wyświetlanie wizualnej nazwy.

@@ -1,0 +1,1 @@
+Ten parametr kontroluje maksymalną wartość energii, którą element energii (blok, przedmiot, ...) może przechowywać.

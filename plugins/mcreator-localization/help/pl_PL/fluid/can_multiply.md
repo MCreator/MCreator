@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, źródła płynów mogą tworzyć więcej źródeł podobnych do wody. Umożliwia to posiadanie nieskończonego źródła .

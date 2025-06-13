@@ -1,0 +1,1 @@
+Im wyższa liczba tym więcej obrażeń dostaje byt od uderzenia pocisku.

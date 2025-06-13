@@ -1,0 +1,1 @@
+Te modyfikatory atrybutów są stosowane do obiektu, gdy efekt jest aktywny.
