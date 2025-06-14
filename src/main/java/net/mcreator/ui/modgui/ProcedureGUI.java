@@ -296,10 +296,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(isSelected ? value.getType().getBlocklyColor() : Theme.current().getBackgroundColor());
-			setForeground(isSelected ? Theme.current().getForegroundColor() : value.getType().getBlocklyColor());
+			Color col = value.getType().getBlocklyColor();
+			setBackground(isSelected ? col : Theme.current().getBackgroundColor());
+			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
+			setToolTipText(value.getTooltipText());
 			return this;
 		}
 	}

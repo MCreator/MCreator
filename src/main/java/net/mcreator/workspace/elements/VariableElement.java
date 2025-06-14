@@ -18,6 +18,8 @@
 
 package net.mcreator.workspace.elements;
 
+import net.mcreator.ui.init.L10N;
+
 public class VariableElement implements IElement {
 
 	private final String name;
@@ -72,5 +74,9 @@ public class VariableElement implements IElement {
 
 	public void setScope(VariableType.Scope scope) {
 		this.scope = scope;
+	}
+
+	public String getTooltipText() {
+		return L10N.t("common.variable_tooltip", name, type);
 	}
 }
