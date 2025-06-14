@@ -162,20 +162,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return metadata.get(key);
 	}
 
-	public List<File> getAssociatedFiles() {
-		if (this.getMetadata("files") instanceof List<?> fileList)
-			// filter by files in workspace (e.g. so one can not create .mcreator file that would delete files on computer when opened)
-			fileList.stream().map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator)))
-					.filter(workspace.getFolderManager()::isFileInWorkspace).toList();
-		return List.of();
-	}
-
-	public void setAssociatedFiles(List<File> files) {
-		this.putMetadata("files",
-				files.stream().map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/"))
-						.toList());
-	}
-
 	@Override public String toString() {
 		return getName();
 	}

@@ -274,13 +274,18 @@ public class Generator implements IGenerator, Closeable {
 
 		if (performFSTasks) {
 			// remove outdated files from mod element files list (used to know what files belong to the ME for removal on regeneration)
-			element.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+			if (element.getModElement().getMetadata("files") instanceof List<?> fileList)
+				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
+				fileList.stream().map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator)))
+						.filter(workspace.getFolderManager()::isFileInWorkspace)
+						.forEach(file -> TrackingFileIO.deleteFile(this, file));
 
 			// generate files as old files were deleted
 			generateFiles(generatorFiles, formatAndOrganiseImports);
 
 			// store paths of generated files
-			element.getModElement().setAssociatedFiles(generatorFiles.stream().map(GeneratorFile::getFile).toList());
+			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
+					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
 			// add/update lang keys to the workspace
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
@@ -591,7 +596,14 @@ public class Generator implements IGenerator, Closeable {
 					== GeneratorStats.CoverageStatus.NONE)
 				return false;
 
-			return FileIO.isFileOnFileList(element.getAssociatedFiles(), file);
+			Object oldFiles = element.getMetadata("files");
+			if (oldFiles instanceof List<?> fileList) {
+				return FileIO.isFileOnFileList(fileList.stream()
+								.map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator))).toList(),
+						file);
+			} else {
+				return false;
+			}
 		}).findAny().orElse(null);
 	}
 

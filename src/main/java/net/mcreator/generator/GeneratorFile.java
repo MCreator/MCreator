@@ -46,7 +46,7 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 		return source.hashCode();
 	}
 
-	@Nonnull @Override public String toString() {
+	@Override public String toString() {
 		return source.getFile().toString();
 	}
 
