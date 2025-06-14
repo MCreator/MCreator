@@ -64,6 +64,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		put("en_us", new LinkedHashMap<>());
 	}};
 
+	@Nullable private LinkedHashMap<String, Object> metadata = null;
+
 	protected FolderElement foldersRoot = FolderElement.ROOT;
 
 	private WorkspaceSettings workspaceSettings;
@@ -263,6 +265,18 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
+	}
+
+	public void putMetadata(String key, @Nullable Object data) {
+		if (metadata == null)
+			metadata = new LinkedHashMap<>();
+		metadata.put(key, data);
+	}
+
+	@Nullable public Object getMetadata(String key) {
+		if (metadata == null)
+			return null;
+		return metadata.get(key);
 	}
 
 	public void setMCreatorVersion(long mcreatorVersion) {
@@ -578,6 +592,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
+		this.metadata = other.metadata;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
