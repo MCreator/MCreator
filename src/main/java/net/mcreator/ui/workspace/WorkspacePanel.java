@@ -1181,7 +1181,8 @@ import java.util.stream.Collectors;
 					reloadWorkspaceTab();
 
 					if (!references.isEmpty()) {
-						ProgressDialog dial = new ProgressDialog(mcreator, L10N.t("workspace.elements.delete_modelement_title"));
+						ProgressDialog dial = new ProgressDialog(mcreator,
+								L10N.t("workspace.elements.delete_modelement_title"));
 						Thread t = new Thread(() -> {
 							ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 									L10N.t("workspace.elements.delete_modelement_regeneration"));

@@ -29,7 +29,6 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalizationUtils {
 

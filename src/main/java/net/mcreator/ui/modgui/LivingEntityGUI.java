@@ -375,14 +375,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 210,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("entity/vibration_sensitivity_radius"), mcreator,
-				L10N.t("elementgui.living_entity.vibration_sensitivity_radius"), AbstractProcedureSelector.Side.SERVER,
-				new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)), 130, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity"));
-		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("entity/receive_vibration_condition"), mcreator,
-				L10N.t("elementgui.living_entity.receive_vibration_condition"), AbstractProcedureSelector.Side.SERVER, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("entity/vibration_sensitivity_radius"),
+				mcreator, L10N.t("elementgui.living_entity.vibration_sensitivity_radius"),
+				AbstractProcedureSelector.Side.SERVER, new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)),
+				130, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("entity/receive_vibration_condition"),
+				mcreator, L10N.t("elementgui.living_entity.receive_vibration_condition"),
+				AbstractProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
 				L10N.t("condition.common.true")).makeInline();
 		onReceivedVibration = new ProcedureSelector(this.withEntry("entity/on_received_vibration"), mcreator,
 				L10N.t("elementgui.living_entity.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,

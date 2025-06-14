@@ -19,7 +19,10 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -146,8 +149,8 @@ public class WoodPackMakerTool {
 				"templates/textures/texturemaker/" + ListUtils.getRandomItem(Arrays.asList("planks_0", "planks_1"))
 						+ ".png")), color, true);
 		String planksTextureName = registryName + "_planks";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()), mcreator.getFolderManager()
-				.getTextureFile(planksTextureName, TextureType.BLOCK));
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
+				mcreator.getFolderManager().getTextureFile(planksTextureName, TextureType.BLOCK));
 
 		//then we generate the leaves texture
 		ImageIcon leaves = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
@@ -155,8 +158,8 @@ public class WoodPackMakerTool {
 						Arrays.asList("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
 								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
 		String leavesTextureName = registryName + "_leaves";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()), mcreator.getFolderManager()
-				.getTextureFile(leavesTextureName, TextureType.BLOCK));
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
+				mcreator.getFolderManager().getTextureFile(leavesTextureName, TextureType.BLOCK));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,

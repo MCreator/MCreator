@@ -1284,8 +1284,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		pane7.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(advancedWithCondition,
-				PanelUtils.pullElementUp(
-						PanelUtils.column(redstoneMerger, bonemealMerger, flammabilityProperties)))));
+				PanelUtils.pullElementUp(PanelUtils.column(redstoneMerger, bonemealMerger, flammabilityProperties)))));
 
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
@@ -1465,7 +1464,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshUnbreakableProperties() {
-		if(unbreakable.isSelected()) {
+		if (unbreakable.isSelected()) {
 			hardness.setEnabled(false);
 			resistance.setEnabled(false);
 		} else {

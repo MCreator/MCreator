@@ -26,7 +26,7 @@ public interface ITextFieldSearchable extends ISearchable {
 
 	@Override default void search(@Nullable String searchTerm) {
 		JTextComponent component = getSearchTextField();
-		if (component == null ||! component.isShowing()) {
+		if (component == null || !component.isShowing()) {
 			return;
 		}
 

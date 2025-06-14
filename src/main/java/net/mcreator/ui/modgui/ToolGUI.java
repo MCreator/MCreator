@@ -187,10 +187,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);
 
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		rent.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		rent.add(renderType);
 
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"), L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"),
+				L10N.label("elementgui.common.item_gui_texture")));
 		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));

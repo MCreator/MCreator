@@ -111,9 +111,10 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels), Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-				.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-				.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
+		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 	}
 
 	JStateLabel getStateLabel() {

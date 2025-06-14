@@ -29,7 +29,8 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.swing.*;
 import java.util.List;
 
-public class JBlockEntityAnimationList extends JSimpleEntriesList<JBlockEntityAnimationListEntry, Block.AnimationEntry> {
+public class JBlockEntityAnimationList
+		extends JSimpleEntriesList<JBlockEntityAnimationListEntry, Block.AnimationEntry> {
 
 	public JBlockEntityAnimationList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);

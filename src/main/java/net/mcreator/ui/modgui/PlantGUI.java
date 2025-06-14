@@ -914,7 +914,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void refreshUnbreakableProperties() {
-		if(unbreakable.isSelected()) {
+		if (unbreakable.isSelected()) {
 			hardness.setEnabled(false);
 			resistance.setEnabled(false);
 		} else {

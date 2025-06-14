@@ -31,33 +31,33 @@ public class BlockLegacyMaterialRemover implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
 			throws Exception {
 		Block block = (Block) input;
-		String material = jsonElementInput.getAsJsonObject().getAsJsonObject("definition")
-				.getAsJsonObject("material").get("value").getAsString();
+		String material = jsonElementInput.getAsJsonObject().getAsJsonObject("definition").getAsJsonObject("material")
+				.get("value").getAsString();
 
 		// Handle ignited by lava and note block instrument fields
 		switch (material) {
-			case "CARPET", "TALL_PLANTS", "BAMBOO_SAPLING", "BAMBOO", "CLOTH", "TNT", "LEAVES" ->
-					block.ignitedByLava = true;
-			case "OCEAN_PLANT", "ROCK" -> block.noteBlockInstrument = "basedrum";
-			case "SAND" -> block.noteBlockInstrument = "snare";
-			case "WOOD" -> {
-				block.noteBlockInstrument = "bass";
+		case "CARPET", "TALL_PLANTS", "BAMBOO_SAPLING", "BAMBOO", "CLOTH", "TNT", "LEAVES" ->
 				block.ignitedByLava = true;
-			}
-			case "GLASS" -> block.noteBlockInstrument = "hat";
+		case "OCEAN_PLANT", "ROCK" -> block.noteBlockInstrument = "basedrum";
+		case "SAND" -> block.noteBlockInstrument = "snare";
+		case "WOOD" -> {
+			block.noteBlockInstrument = "bass";
+			block.ignitedByLava = true;
+		}
+		case "GLASS" -> block.noteBlockInstrument = "hat";
 		}
 
 		// Handle block set type for specific block bases
 		String blockBase = block.blockBase;
 		if (blockBase != null) {
 			switch (blockBase) {
-				case "PressurePlate" -> block.blockSetType = material.equals("WOOD") ? "OAK" : "IRON";
-				case "Button", "Fence" -> block.blockSetType = material.equals("WOOD") ? "OAK" : "STONE";
-				case "Door", "TrapDoor" -> block.blockSetType = switch(material) {
-						case "WOOD" -> "OAK";
-						case "IRON" -> "IRON";
-						default -> "STONE";
-					};
+			case "PressurePlate" -> block.blockSetType = material.equals("WOOD") ? "OAK" : "IRON";
+			case "Button", "Fence" -> block.blockSetType = material.equals("WOOD") ? "OAK" : "STONE";
+			case "Door", "TrapDoor" -> block.blockSetType = switch (material) {
+				case "WOOD" -> "OAK";
+				case "IRON" -> "IRON";
+				default -> "STONE";
+			};
 			}
 		}
 

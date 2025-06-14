@@ -72,8 +72,7 @@ public class GTProcedureTriggers {
 			int additionalBlocks = 0;
 			final StringBuilder additionalXML = new StringBuilder();
 			if (externalTrigger.has_result) {
-				additionalXML.append(
-						"<next><block type=\"set_event_result\"><field name=\"result\">DENY</field>");
+				additionalXML.append("<next><block type=\"set_event_result\"><field name=\"result\">DENY</field>");
 				additionalBlocks++;
 			} else if (externalTrigger.cancelable) {
 				additionalXML.append("<next><block type=\"cancel_event\">");

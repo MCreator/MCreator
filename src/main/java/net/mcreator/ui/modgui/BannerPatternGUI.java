@@ -178,12 +178,12 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		var resizedImage = ImageUtils.resize(texture, 64 * PREVIEW_SCALE);
 		var firstCrop = ImageUtils.crop(ImageUtils.toBufferedImage(resizedImage),
 				new Rectangle(cropX * PREVIEW_SCALE, cropY * PREVIEW_SCALE));
-		var onlyBottom = ImageUtils.crop(ImageUtils.deepCopy(firstCrop), new Rectangle((patternX + 1) * PREVIEW_SCALE,
-				0, patternX * PREVIEW_SCALE, PREVIEW_SCALE));
-		var withoutBottom = ImageUtils.eraseRect(firstCrop, (patternX + 1) * PREVIEW_SCALE, 0,
-				patternX * PREVIEW_SCALE, PREVIEW_SCALE);
-		return ImageUtils.drawOver(new ImageIcon(withoutBottom), new ImageIcon(onlyBottom),
-				PREVIEW_SCALE, (1 + patternY) * PREVIEW_SCALE, patternX * PREVIEW_SCALE, PREVIEW_SCALE);
+		var onlyBottom = ImageUtils.crop(ImageUtils.deepCopy(firstCrop),
+				new Rectangle((patternX + 1) * PREVIEW_SCALE, 0, patternX * PREVIEW_SCALE, PREVIEW_SCALE));
+		var withoutBottom = ImageUtils.eraseRect(firstCrop, (patternX + 1) * PREVIEW_SCALE, 0, patternX * PREVIEW_SCALE,
+				PREVIEW_SCALE);
+		return ImageUtils.drawOver(new ImageIcon(withoutBottom), new ImageIcon(onlyBottom), PREVIEW_SCALE,
+				(1 + patternY) * PREVIEW_SCALE, patternX * PREVIEW_SCALE, PREVIEW_SCALE);
 	}
 
 	@Override protected void openInEditingMode(BannerPattern bannerPattern) {
