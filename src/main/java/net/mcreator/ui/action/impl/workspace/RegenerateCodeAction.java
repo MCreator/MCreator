@@ -116,8 +116,6 @@ public class RegenerateCodeAction extends GradleAction {
 			for (Map.Entry<TagElement, ArrayList<String>> tag : mcreator.getWorkspace().getTagElements().entrySet()) {
 				tag.getValue().removeIf(TagElement::isEntryManaged);
 			}
-			// Delete tags that have no entries
-			mcreator.getWorkspace().getTagElements().entrySet().removeIf(entry -> entry.getValue().isEmpty());
 
 			p0.markStateOk();
 
