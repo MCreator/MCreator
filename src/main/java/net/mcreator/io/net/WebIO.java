@@ -41,6 +41,7 @@ public class WebIO {
 			try {
 				HttpURLConnection urlConn = (HttpURLConnection) new URI(s).toURL().openConnection();
 				urlConn.setConnectTimeout(4000);
+				urlConn.setReadTimeout(4000);
 				urlConn.setInstanceFollowRedirects(true);
 				urlConn.connect();
 				if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -51,7 +52,7 @@ public class WebIO {
 					}
 					in.close();
 				}
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				LOG.error(e.getMessage(), e);
 			}
 		}
