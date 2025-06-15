@@ -78,6 +78,7 @@ package ${package}.network;
 				</#if>
 				<#if hasProcedure(component.onTakenFromSlot)>
 					if (slot == ${component.id} && changeType == 1) {
+						int amount = meta;
 						<@procedureOBJToCode component.onTakenFromSlot/>
 					}
 				</#if>
