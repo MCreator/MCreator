@@ -9,6 +9,9 @@ templates:
   - template: gui/gui_msg_slot.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESlotMessage.java"
     condition: hasSlotEvents()
+  - template: gui/gui_msg_slider.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESliderMessage.java"
+    condition: hasSliderEvents()
 
 global_templates:
   - template: elementinits/menus.java.ftl
@@ -34,3 +37,9 @@ localizationkeys:
   - fromlist: data.getComponentsOfType('Checkbox')
     key: gui.@modid.@registryname.@[getName()]
     mapto: text
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_prefix
+    mapto: prefix
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_suffix
+    mapto: suffix
