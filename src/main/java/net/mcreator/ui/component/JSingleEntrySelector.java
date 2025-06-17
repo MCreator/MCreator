@@ -164,7 +164,8 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
 		}
 		readableText.setForeground(Theme.current().getForegroundColor());
-		readableText.setToolTipText(isSupported ? readableText.getText() : L10N.t("single_entry_selector.unsupported_entry"));
+		readableText.setToolTipText(
+				isSupported ? readableText.getText() : L10N.t("single_entry_selector.unsupported_entry"));
 	}
 
 	protected abstract T openEntrySelector();
