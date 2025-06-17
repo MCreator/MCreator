@@ -189,6 +189,8 @@ import net.minecraft.client.model.Model;
 
 		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
 
+		<@hasGlow data.helmetGlowCondition/>
+
 		<@piglinNeutral data.helmetPiglinNeutral/>
 
 		<@onArmorTick data.onHelmetTick/>
@@ -203,6 +205,8 @@ import net.minecraft.client.model.Model;
 		}
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+
+		<@hasGlow data.bodyGlowCondition/>
 
 		<@piglinNeutral data.bodyPiglinNeutral/>
 
@@ -219,6 +223,8 @@ import net.minecraft.client.model.Model;
 
 		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
 
+		<@hasGlow data.leggingsGlowCondition/>
+
 		<@piglinNeutral data.leggingsPiglinNeutral/>
 
 		<@onArmorTick data.onLeggingsTick/>
@@ -233,6 +239,8 @@ import net.minecraft.client.model.Model;
 		}
 
 		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
+
+		<@hasGlow data.bootsGlowCondition/>
 
 		<@piglinNeutral data.bootsPiglinNeutral/>
 
