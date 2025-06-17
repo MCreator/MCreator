@@ -367,7 +367,8 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE));
-		retval.addAll(DataListLoader.loadDataList("configuredfeatures"));
+		retval.addAll(DataListLoader.loadDataList("configuredfeatures").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
 		return retval;
 	}
 
