@@ -120,26 +120,27 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		remove.setEnabled(enabled);
 	}
 
-	@Override public String getToolTipText() {
-		return readableText.getText();
-	}
-
 	public boolean isEmpty() {
 		return currentEntry == null;
 	}
 
 	public void updateReadableText() {
+		boolean isSupported = true;
 		readableText.setIcon(null);
 		if (currentEntry == null) {
 			readableText.setText(defaultText);
 			readableText.setForeground(Theme.current().getAltForegroundColor());
+			readableText.setToolTipText(readableText.getText());
 			return;
 		} else if (currentEntry instanceof MappableElement mappableElement) {
 			Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 			if (dataListEntryOpt.isPresent()) {
 				DataListEntry dataListEntry = dataListEntryOpt.get();
 				readableText.setText(dataListEntry.getReadableName());
-				if (dataListEntry.getTexture() != null) {
+				if (!dataListEntry.isSupportedInWorkspace(mcreator.getWorkspace())) {
+					readableText.setIcon(UIRES.get("18px.warning"));
+					isSupported = false;
+				} else if (dataListEntry.getTexture() != null) {
 					readableText.setIcon(
 							IconUtils.resize(BlockItemIcons.getIconForItem(dataListEntry.getTexture()), 18));
 				}
@@ -163,6 +164,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
 		}
 		readableText.setForeground(Theme.current().getForegroundColor());
+		readableText.setToolTipText(isSupported ? readableText.getText() : L10N.t("single_entry_selector.unsupported_entry"));
 	}
 
 	protected abstract T openEntrySelector();
