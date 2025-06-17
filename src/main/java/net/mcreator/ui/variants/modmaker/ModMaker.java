@@ -74,7 +74,14 @@ public final class ModMaker extends MCreator {
 
 	@Override public void workspaceGeneratorSwitched() {
 		super.workspaceGeneratorSwitched();
-		workspacePanel.getVerticalTab(WorkspacePanelResources.class).getResourcePanel(WorkspacePanelTextures.class)
-				.attachGeneratorFileWatcher();
+		WorkspacePanelResources workspacePanelResources = workspacePanel.getVerticalTab(WorkspacePanelResources.class);
+		if (workspacePanelResources != null) {
+			WorkspacePanelTextures workspacePanelTextures = workspacePanelResources.getResourcePanel(
+					WorkspacePanelTextures.class);
+			if (workspacePanelTextures != null) {
+				workspacePanelTextures.attachGeneratorFileWatcher();
+			}
+		}
 	}
+
 }
