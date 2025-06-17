@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
@@ -67,6 +68,9 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+
+		edit.setToolTipText(L10N.t("single_entry_selector.edit"));
+		remove.setToolTipText(L10N.t("single_entry_selector.remove"));
 
 		edit.addActionListener(event -> {
 			T newEntry = openEntrySelector();
