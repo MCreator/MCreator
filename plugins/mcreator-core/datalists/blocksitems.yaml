@@ -7204,11 +7204,6 @@
   type: block_without_item
   texture: CANDLE_CAKE#16
 
-- Items.BED:
-  readable_name: "Bed"
-  type: item
-  texture: BED
-
 - Items.COOKIE:
   readable_name: "Cookie"
   type: item

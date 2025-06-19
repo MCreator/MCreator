@@ -3989,9 +3989,6 @@ Items.SUGAR:
 Items.CAKE:
   - Items.CAKE
   - "cake"
-Items.BED:
-  - Items.WHITE_BED
-  - "white_bed"
 Items.COOKIE:
   - Items.COOKIE
   - "cookie"
