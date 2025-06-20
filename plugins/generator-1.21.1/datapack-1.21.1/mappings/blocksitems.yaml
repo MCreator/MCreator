@@ -361,9 +361,6 @@ Blocks.DETECTOR_RAIL:
 Blocks.ACTIVATOR_RAIL:
   - Blocks.ACTIVATOR_RAIL
   - "activator_rail"
-Blocks.BED:
-  - Blocks.WHITE_BED
-  - "white_bed"
 Blocks.WEB:
   - Blocks.COBWEB
   - "cobweb"

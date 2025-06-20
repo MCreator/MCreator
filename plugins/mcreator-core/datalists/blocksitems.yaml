@@ -1746,16 +1746,16 @@
   type: block_without_item
   texture: PISTON_EXTENSION
 
-- Blocks.YELLOW_FLOWER:
-  readable_name: "Dandelion"
-  type: block
-  texture: YELLOW_FLOWER
-
 - Blocks.RED_FLOWER:
   readable_name: "Any Flower"
   type: block
   texture: RED_FLOWER
   subtypes: true
+
+- Blocks.YELLOW_FLOWER:
+  readable_name: "Dandelion"
+  type: block
+  texture: YELLOW_FLOWER
 
 - Blocks.RED_FLOWER#0:
   readable_name: "Poppy"
@@ -2220,7 +2220,7 @@
   texture: CRAFTING_TABLE
 
 - Blocks.WHEAT:
-  readable_name: "Wheat"
+  readable_name: "Wheat Crop"
   type: block
   texture: WHEAT
 
@@ -4029,7 +4029,7 @@
   texture: PITCHER_CROP
 
 - Blocks.HAY_BLOCK:
-  readable_name: "Hay Block"
+  readable_name: "Hay Bale"
   type: block
   texture: HAY_BLOCK
 
@@ -5636,15 +5636,10 @@
   texture: DYE
   subtypes: true
 
-- Items.DYE#0:
-  readable_name: "Ink Sac"
+- Items.DYE#16:
+  readable_name: "Black Dye"
   type: item
-  texture: DYE#0
-
-- Items.GLOW_INK_SAC:
-  readable_name: "Glow Ink Sac"
-  type: item
-  texture: GLOW_INK_SAC
+  texture: DYE#16
 
 - Items.DYE#1:
   readable_name: "Red Dye"
@@ -5656,15 +5651,15 @@
   type: item
   texture: DYE#2
 
-- Items.DYE#3:
-  readable_name: "Cocoa Beans"
+- Items.DYE#17:
+  readable_name: "Brown Dye"
   type: item
-  texture: DYE#3
+  texture: DYE#17
 
-- Items.DYE#4:
-  readable_name: "Lapis Lazuli"
+- Items.DYE#18:
+  readable_name: "Blue Dye"
   type: item
-  texture: DYE#4
+  texture: DYE#18
 
 - Items.DYE#5:
   readable_name: "Purple Dye"
@@ -5715,26 +5710,6 @@
   readable_name: "Orange Dye"
   type: item
   texture: DYE#14
-
-- Items.DYE#15:
-  readable_name: "Bone Meal"
-  type: item
-  texture: DYE#15
-
-- Items.DYE#16:
-  readable_name: "Black Dye"
-  type: item
-  texture: DYE#16
-
-- Items.DYE#17:
-  readable_name: "Brown Dye"
-  type: item
-  texture: DYE#17
-
-- Items.DYE#18:
-  readable_name: "Blue Dye"
-  type: item
-  texture: DYE#18
 
 - Items.DYE#19:
   readable_name: "White Dye"
@@ -5795,6 +5770,11 @@
   readable_name: "Gold Nugget"
   type: item
   texture: GOLD_NUGGET
+
+- Items.DYE#4:
+  readable_name: "Lapis Lazuli"
+  type: item
+  texture: DYE#4
 
 - Items.DIAMOND:
   readable_name: "Diamond"
@@ -7118,6 +7098,11 @@
   type: item
   texture: BONE
 
+- Items.DYE#15:
+  readable_name: "Bone Meal"
+  type: item
+  texture: DYE#15
+
 - Items.SUGAR:
   readable_name: "Sugar"
   type: item
@@ -7219,15 +7204,15 @@
   type: block_without_item
   texture: CANDLE_CAKE#16
 
-- Items.BED:
-  readable_name: "Bed"
-  type: item
-  texture: BED
-
 - Items.COOKIE:
   readable_name: "Cookie"
   type: item
   texture: COOKIE
+
+- Items.DYE#3:
+  readable_name: "Cocoa Beans"
+  type: item
+  texture: DYE#3
 
 - Items.MELON:
   readable_name: "Melon"
@@ -7249,8 +7234,18 @@
   type: item
   texture: GLOW_BERRIES
 
+- Items.DYE#0:
+  readable_name: "Ink Sac"
+  type: item
+  texture: DYE#0
+
+- Items.GLOW_INK_SAC:
+  readable_name: "Glow Ink Sac"
+  type: item
+  texture: GLOW_INK_SAC
+
 - Items.FISH#0:
-  readable_name: "Raw Fish"
+  readable_name: "Raw Cod"
   type: item
   texture: FISH#0
 
@@ -7270,7 +7265,7 @@
   texture: FISH#3
 
 - Items.COOKED_FISH#0:
-  readable_name: "Cooked Fish"
+  readable_name: "Cooked Cod"
   type: item
   texture: COOKED_FISH#0
 
@@ -7280,7 +7275,7 @@
   texture: COOKED_FISH#1
 
 - Items.PORKCHOP:
-  readable_name: "Porkchop"
+  readable_name: "Raw Porkchop"
   type: item
   texture: PORKCHOP
 
@@ -7290,17 +7285,17 @@
   texture: COOKED_PORKCHOP
 
 - Items.BEEF:
-  readable_name: "Beef"
+  readable_name: "Raw Beef"
   type: item
   texture: BEEF
 
 - Items.COOKED_BEEF:
-  readable_name: "Cooked Beef"
+  readable_name: "Steak"
   type: item
   texture: COOKED_BEEF
 
 - Items.CHICKEN:
-  readable_name: "Chicken"
+  readable_name: "Raw Chicken"
   type: item
   texture: CHICKEN
 
@@ -7310,7 +7305,7 @@
   texture: COOKED_CHICKEN
 
 - Items.RABBIT:
-  readable_name: "Rabbit"
+  readable_name: "Raw Rabbit"
   type: item
   texture: RABBIT
 
@@ -7335,7 +7330,7 @@
   texture: RABBIT_STEW
 
 - Items.MUTTON:
-  readable_name: "Mutton"
+  readable_name: "Raw Mutton"
   type: item
   texture: MUTTON
 
