@@ -28,10 +28,8 @@ import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class BlocklyBlockCodeGenerator {
@@ -445,13 +443,23 @@ public class BlocklyBlockCodeGenerator {
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
+			AtomicReference<String> head = new AtomicReference<>("");
+			AtomicReference<String> tail = new AtomicReference<>("");
+			dataModel.put("definePart", new PartLinker(head, tail));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
 			}
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
+			if (!Objects.equals(master.getHead(), head.get())) {
+				master.append(master.getTail());
+				master.setTail(tail.get());
+				master.append(head.get());
+				master.setHead(head.get());
+			}
 			master.append(code);
+			//reach the end
 		}
 
 		customBlockIndex++;

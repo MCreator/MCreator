@@ -59,6 +59,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Set<String> usedBlocks = new HashSet<>();
 	private final Set<String> usedTemplates = new LinkedHashSet<>(), generatedTemplates = new HashSet<>();
+	private String head = "";
+	private String tail = "";
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -340,4 +342,19 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return Collections.unmodifiableSet(usedBlocks);
 	}
 
+	public String getHead() {
+		return head;
+	}
+
+	public String getTail() {
+		return tail;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
+	public void setTail(String tail) {
+		this.tail = tail;
+	}
 }
