@@ -44,7 +44,6 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 
 		label.setFont(label.getFont().deriveFont(24.0f));
 		label_details.setFont(label.getFont().deriveFont(10.0f));
-		label_details.setPreferredSize(new Dimension(210, 28));
 		label_details.setVerticalAlignment(SwingConstants.TOP);
 		text.setOpaque(false);
 		text.add("Center", label);
@@ -75,9 +74,11 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 								.substring(2)) :
 						"") + ">" + modElement.getType().getDescription());
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
+				label_details.setPreferredSize(new Dimension(210, 28));
 			} else {
 				label_details.setText("");
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 6, 0));
+				label_details.setPreferredSize(new Dimension(210, -1));
 			}
 
 			if (element instanceof FolderElement) {
