@@ -123,7 +123,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		cancelButton.addActionListener(event -> {
 			list.clearSelection();
-			setVisible(false);
+			dispose();
 		});
 
 		JComponent top;

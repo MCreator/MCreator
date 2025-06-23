@@ -98,10 +98,10 @@ public class ListEditorDialog {
 				retVal.set(new ArrayList<>());
 				for (ListEntry entry : entryList)
 					retVal.get().add(entry.valueField.getText());
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 
 		dialog.getContentPane().add(PanelUtils.centerAndSouthElement(listPanel, PanelUtils.join(ok, cancel)));
 		dialog.setSize(470, 350);

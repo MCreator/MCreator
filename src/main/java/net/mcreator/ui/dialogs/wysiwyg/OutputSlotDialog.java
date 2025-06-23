@@ -137,10 +137,10 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 			slotID.setText("" + ++freeslotid);
 		}
 
-		cancel.addActionListener(event -> setVisible(false));
+		cancel.addActionListener(event -> dispose());
 		ok.addActionListener(event -> {
 			if (slotID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 				if (slot == null) {
 					editor.guiType.setSelectedIndex(1);

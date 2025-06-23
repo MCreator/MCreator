@@ -106,9 +106,9 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			anchor.setSelectedItem(label.anchorPoint);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			StringProcedure textProcedure = labelText.getSelectedProcedure();
 
 			if (label == null) {

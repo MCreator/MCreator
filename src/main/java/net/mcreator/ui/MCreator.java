@@ -316,7 +316,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 			workspace.close();
 
-			setVisible(false); // close the window
+			dispose(); // close the window
 
 			application.getOpenMCreators().remove(this);
 

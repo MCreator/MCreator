@@ -152,10 +152,10 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 			slotID.setText("" + ++freeslotid);
 		}
 
-		cancel.addActionListener(event -> setVisible(false));
+		cancel.addActionListener(event -> dispose());
 		ok.addActionListener(event -> {
 			if (slotID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 
 				if (slot == null) {

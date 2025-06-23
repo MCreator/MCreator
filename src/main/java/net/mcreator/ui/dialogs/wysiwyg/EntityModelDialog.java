@@ -112,10 +112,10 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			anchor.setSelectedItem(model.anchorPoint);
 		}
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 		ok.addActionListener(e -> {
 			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
 							displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),

@@ -53,7 +53,7 @@ public class MCreatorDialog extends JDialog {
 			@Override public void actionPerformed(ActionEvent event) {
 				if (closable) {
 					dispatchEvent(new WindowEvent(MCreatorDialog.this, WindowEvent.WINDOW_CLOSING));
-					setVisible(false);
+					dispose();
 					dispatchEvent(new WindowEvent(MCreatorDialog.this, WindowEvent.WINDOW_CLOSED));
 				} else {
 					Toolkit.getDefaultToolkit().beep();

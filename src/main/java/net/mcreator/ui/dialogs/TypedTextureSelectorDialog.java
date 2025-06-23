@@ -96,7 +96,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		JPanel buttons = new JPanel();
 
 		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancelButton.addActionListener(event -> setVisible(false));
+		cancelButton.addActionListener(event -> dispose());
 
 		buttons.add(select);
 		buttons.add(cancelButton);
@@ -134,7 +134,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		createTx2.addActionListener(event -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
-			setVisible(false);
+			dispose();
 		});
 		pno.add(createTx2);
 

@@ -83,7 +83,7 @@ public class WorkspaceDialogs {
 		workspaceDialog.add("South", buttons);
 		ok.addActionListener(e -> {
 			if (wdp.validationGroup.validateIsErrorFree())
-				workspaceDialog.setVisible(false);
+				workspaceDialog.dispose();
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
@@ -94,7 +94,7 @@ public class WorkspaceDialogs {
 		buttons.add(cancel);
 		cancel.addActionListener(e -> {
 			canceled.set(true);
-			workspaceDialog.setVisible(false);
+			workspaceDialog.dispose();
 		});
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);

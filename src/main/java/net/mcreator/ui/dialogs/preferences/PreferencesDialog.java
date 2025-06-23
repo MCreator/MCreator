@@ -98,7 +98,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				PreferencesManager.getPreferencesRegistry()
 						.forEach((identifier, entries) -> PreferencesManager.resetFromList(entries));
 
-				setVisible(false);
+				dispose();
 				new PreferencesDialog(parent, sections.getSelectedValue());
 			}
 		});
@@ -128,7 +128,7 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		ok.addActionListener(event -> {
 			savePreferences();
-			setVisible(false);
+			dispose();
 		});
 
 		apply.addActionListener(event -> {
@@ -136,7 +136,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			apply.setEnabled(false);
 		});
 
-		cancel.addActionListener(event -> setVisible(false));
+		cancel.addActionListener(event -> dispose());
 
 		pack();
 		setSize(Math.max(940, getBounds().width), 540);
