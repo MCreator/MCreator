@@ -118,7 +118,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 						workspaceSettings.getModID() + ".mcreator");
 				Workspace workspace = Workspace.createWorkspace(workspaceFile, workspaceSettings);
 				workspace.close();
-				setVisible(false);
+				dispose();
 			} else {
 				showErrorsMessage(w, current.getValidationResult());
 			}
@@ -126,7 +126,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		cancel.addActionListener(actionEvent -> {
 			workspaceFile = null;
-			setVisible(false);
+			dispose();
 		});
 
 		help.addActionListener(actionEvent -> DesktopUtils.browseSafe(

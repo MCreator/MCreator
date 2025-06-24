@@ -86,10 +86,10 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				String checkBoxName = nameField.getText();
 				if (!checkBoxName.isEmpty()) {
 					if (checkbox == null) {

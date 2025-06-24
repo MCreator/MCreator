@@ -328,7 +328,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		JButton ok = L10N.button("dialog.image_maker.save");
 		ok.addActionListener(e -> {
-			typeDialog.setVisible(false);
+			typeDialog.dispose();
 			TextureType textureType = (TextureType) types.getSelectedItem();
 
 			if (name.getText() != null && !name.getText().isEmpty() && textureType != null) {

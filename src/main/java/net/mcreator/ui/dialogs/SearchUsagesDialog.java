@@ -130,7 +130,7 @@ public class SearchUsagesDialog {
 			if (!refList.isSelectionEmpty())
 				edit(mcreator, refList.getSelectedValue(), dialog);
 		});
-		close.addActionListener(e -> dialog.setVisible(false));
+		close.addActionListener(e -> dialog.dispose());
 
 		if (deletionRequested) { // if deletion is pending, focus the close button
 			dialog.getRootPane().setDefaultButton(close);
@@ -151,7 +151,7 @@ public class SearchUsagesDialog {
 			JButton delete = L10N.button("dialog.search_usages.deletion.confirm");
 			delete.addActionListener(e -> {
 				retVal.set(true);
-				dialog.setVisible(false);
+				dialog.dispose();
 			});
 			dialog.add("South", PanelUtils.join(edit, delete, close));
 		} else {
@@ -172,7 +172,7 @@ public class SearchUsagesDialog {
 			ModElementGUI<?> gui = modElement.getType().getModElementGUI(mcreator, modElement, true);
 			if (gui != null) {
 				gui.showView();
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		}
 	}

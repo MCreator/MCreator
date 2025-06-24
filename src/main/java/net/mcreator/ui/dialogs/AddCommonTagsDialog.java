@@ -68,7 +68,7 @@ public class AddCommonTagsDialog {
 
 		JButton ok = L10N.button("dialog.tools.inject_tags.confirm");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
@@ -160,7 +160,7 @@ public class AddCommonTagsDialog {
 			callables.forEach(c -> c.accept(false));
 			mcreator.reloadWorkspaceTabContents();
 			dialog.setCursor(Cursor.getDefaultCursor());
-			dialog.setVisible(false);
+			dialog.dispose();
 		});
 
 		dialog.getRootPane().setDefaultButton(ok);

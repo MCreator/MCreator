@@ -136,25 +136,25 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		bt.addActionListener(event -> is.setVisible(true));
 		is.naprej.addActionListener(arg01 -> {
-			is.setVisible(false);
+			is.dispose();
 			cbs.setSelectedItem(is.list.getSelectedValue());
 		});
 
 		bt2.addActionListener(event -> is2.setVisible(true));
 		is2.naprej.addActionListener(arg01 -> {
-			is2.setVisible(false);
+			is2.dispose();
 			cbs2.setSelectedItem(is2.list.getSelectedValue());
 		});
 
 		bt3.addActionListener(event -> is3.setVisible(true));
 		is3.naprej.addActionListener(arg01 -> {
-			is3.setVisible(false);
+			is3.dispose();
 			cbs3.setSelectedItem(is3.list.getSelectedValue());
 		});
 
 		bt4.addActionListener(event -> is4.setVisible(true));
 		is4.naprej.addActionListener(arg01 -> {
-			is4.setVisible(false);
+			is4.dispose();
 			cbs4.setSelectedItem(is4.list.getSelectedValue());
 		});
 
@@ -230,13 +230,13 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		getRootPane().setDefaultButton(ok);
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		merge.addActionListener(e -> {
 			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
 					refreshIcon().getImage());
 			canvas.add(first);
-			setVisible(false);
+			dispose();
 		});
 
 		ok.addActionListener(e -> {
@@ -275,7 +275,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 			} catch (IOException ex) {
 				LOG.error(ex.getMessage(), e);
 			}
-			setVisible(false);
+			dispose();
 		});
 
 		controls.add(cancel, BorderLayout.WEST);

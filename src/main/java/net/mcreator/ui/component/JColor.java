@@ -79,8 +79,8 @@ public class JColor extends JPanel {
 				Color color = colorChooser.getColor();
 				if (color != null)
 					setColor(color);
-				dialog.setVisible(false);
-			}, e2 -> dialog.setVisible(false));
+				dialog.dispose();
+			}, e2 -> dialog.dispose());
 			dialog.setVisible(true);
 		});
 		remove.addActionListener(e -> setColor(null));
