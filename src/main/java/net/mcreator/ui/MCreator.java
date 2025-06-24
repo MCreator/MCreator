@@ -201,6 +201,14 @@ public abstract class MCreator extends MCreatorFrame {
 
 		add("North", toolBar);
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				// Finalize MCreator initialization when the window is fully opened
+				initializeMCreator();
+			}
+		});
+
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
 
@@ -218,61 +226,58 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 	}
 
-	@Override public void setVisible(boolean makeVisible) {
-		super.setVisible(makeVisible);
-		if (makeVisible) {
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+	public void initializeMCreator() {
+		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-			if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
-				workspace.setMCreatorVersion(
-						Launcher.version.versionlong); // if we open dev version, store new version number in it
-			}
-
-			// backup if new version and backups are enabled
-			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
-					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
-				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
-						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
-			}
-
-			// if we need to set up the workspace, we do so
-			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
-				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage.get()
-								&& !Launcher.version.isDevelopment());
-			}
-
-			if (workspace.getMCreatorVersion()
-					< Launcher.version.versionlong) { // if this is the case, update the workspace files
-				RegenerateCodeAction.regenerateCode(this, true, true);
-				workspace.setMCreatorVersion(Launcher.version.versionlong);
-				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
-				RegenerateCodeAction.regenerateCode(this, true, true);
-			}
-
-			// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
-			setGlassPane(getPreloaderPane());
-			getGlassPane().setVisible(true);
-
-			// Preload workspace file browser
-			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
-
-			// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
-			new Thread(() -> {
-				workspace.getModElements().forEach(ModElement::getMCItems);
-
-				SwingUtilities.invokeLater(() -> {
-					getGlassPane().setVisible(false);
-					setGlassPane(new JEmptyBox());
-					setJMenuBar(menuBar);
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					workspaceFullyLoaded();
-					workspaceGeneratorSwitched();
-				});
-			}, "ME preloader").start();
+		if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
+			workspace.setMCreatorVersion(
+					Launcher.version.versionlong); // if we open dev version, store new version number in it
 		}
+
+		// backup if new version and backups are enabled
+		if (workspace.getMCreatorVersion() < Launcher.version.versionlong
+				&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
+			ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
+					new File(workspace.getFolderManager().getWorkspaceCacheDir(),
+							"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
+		}
+
+		// if we need to set up the workspace, we do so
+		if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
+			WorkspaceGeneratorSetupDialog.runSetup(this,
+					PreferencesManager.PREFERENCES.notifications.openWhatsNextPage.get()
+							&& !Launcher.version.isDevelopment());
+		}
+
+		if (workspace.getMCreatorVersion()
+				< Launcher.version.versionlong) { // if this is the case, update the workspace files
+			RegenerateCodeAction.regenerateCode(this, true, true);
+			workspace.setMCreatorVersion(Launcher.version.versionlong);
+			workspace.getFileManager().saveWorkspaceDirectlyAndWait();
+		} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
+			RegenerateCodeAction.regenerateCode(this, true, true);
+		}
+
+		// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
+		setGlassPane(getPreloaderPane());
+		getGlassPane().setVisible(true);
+
+		// Preload workspace file browser
+		new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
+
+		// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
+		new Thread(() -> {
+			workspace.getModElements().forEach(ModElement::getMCItems);
+
+			SwingUtilities.invokeLater(() -> {
+				getGlassPane().setVisible(false);
+				setGlassPane(new JEmptyBox());
+				setJMenuBar(menuBar);
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				workspaceFullyLoaded();
+				workspaceGeneratorSwitched();
+			});
+		}, "ME preloader").start();
 	}
 
 	public void workspaceFullyLoaded() {
@@ -316,7 +321,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 			workspace.close();
 
-			setVisible(false); // close the window
+			dispose(); // close the window
 
 			application.getOpenMCreators().remove(this);
 

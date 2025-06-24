@@ -37,6 +37,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -96,7 +98,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		JPanel buttons = new JPanel();
 
 		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancelButton.addActionListener(event -> setVisible(false));
+		cancelButton.addActionListener(event -> dispose());
 
 		buttons.add(select);
 		buttons.add(cancelButton);
@@ -134,7 +136,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		createTx2.addActionListener(event -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
-			setVisible(false);
+			dispose();
 		});
 		pno.add(createTx2);
 
@@ -149,6 +151,13 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pn.add("North", PanelUtils.westAndEastElement(pno, PanelUtils.totalCenterInPanel(pno2)));
 		pn.add("South", buttons);
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				reloadList();
+			}
+		});
+
 		add(pn);
 	}
 
@@ -159,14 +168,6 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 	public TextureType getTextureType() {
 		return type;
-	}
-
-	@Override public void setVisible(boolean visible) {
-		if (visible) {
-			reloadList();
-		}
-
-		super.setVisible(visible);
 	}
 
 	private void reloadList() {
