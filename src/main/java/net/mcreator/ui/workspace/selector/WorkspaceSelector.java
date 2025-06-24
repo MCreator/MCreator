@@ -301,6 +301,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				reloadRecents();
+				newWorkspace.requestFocusInWindow();
+			}
+		});
+
 		setSize(795, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -483,16 +491,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 
 		recentPanel.revalidate();
-	}
-
-	@Override public void setVisible(boolean b) {
-		if (b)
-			reloadRecents();
-
-		super.setVisible(b);
-
-		if (b)
-			newWorkspace.requestFocusInWindow();
 	}
 
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {

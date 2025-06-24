@@ -376,7 +376,7 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
-		// we close all windows and exit fx platform
+		// we dispose all windows and exit fx platform
 		try {
 			LOG.debug("Stopping AWT and FX threads");
 			Arrays.stream(Window.getWindows()).forEach(Window::dispose);

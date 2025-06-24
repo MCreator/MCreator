@@ -37,6 +37,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -149,6 +151,13 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pn.add("North", PanelUtils.westAndEastElement(pno, PanelUtils.totalCenterInPanel(pno2)));
 		pn.add("South", buttons);
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				reloadList();
+			}
+		});
+
 		add(pn);
 	}
 
@@ -159,14 +168,6 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 	public TextureType getTextureType() {
 		return type;
-	}
-
-	@Override public void setVisible(boolean visible) {
-		if (visible) {
-			reloadList();
-		}
-
-		super.setVisible(visible);
 	}
 
 	private void reloadList() {
