@@ -44,6 +44,8 @@ public class LootTablePreview extends JLayeredPane {
 	private final MCreator mcreator;
 	private final JPanel slotsPanel = new JPanel(new GridLayout(3, 9));
 
+	private long seed = 1L;
+
 	public LootTablePreview(MCreator mcreator) {
 		this.mcreator = mcreator;
 
@@ -79,7 +81,7 @@ public class LootTablePreview extends JLayeredPane {
 	}
 
 	public void generateLootTable(List<LootTable.Pool> lootEntries) {
-		Random rand = new Random(1L);
+		Random rand = new Random(seed);
 
 		clearLootTable();
 		List<LootTable.Pool.Entry> allEntries = new ArrayList<>();
@@ -144,6 +146,10 @@ public class LootTablePreview extends JLayeredPane {
 			slot.setIcon(MinecraftImageGenerator.generateItemWithCount(item, entry.minCount));
 			slot.setToolTipText("<html>" + item.getReadableName() + "<br><small><font color='gray'>" + id);
 		}
+	}
+
+	public void regenerateSeed() {
+		seed = new Random().nextLong();
 	}
 
 	private void clearLootTable() {
