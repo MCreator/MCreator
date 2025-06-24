@@ -208,7 +208,7 @@ public final class MCreatorApplication {
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
 				// Make sure splash screen is closed on the swing thread before we continue
-				splashScreen.setVisible(false);
+				splashScreen.dispose();
 			});
 
 			SwingUtilities.invokeLater(() -> {
