@@ -45,8 +45,6 @@ public class JColor extends JPanel {
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
 
-	private JDialog dialog = null;
-
 	private final boolean allowNullColor;
 	private final boolean allowTransparency;
 
@@ -75,12 +73,11 @@ public class JColor extends JPanel {
 
 		edit.addActionListener(e -> {
 			colorChooser.setColor(getColor());
-			dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e2 -> {
+			JDialog dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e2 -> {
 				Color color = colorChooser.getColor();
 				if (color != null)
 					setColor(color);
-				dialog.dispose();
-			}, e2 -> dialog.dispose());
+			}, null);
 			dialog.setVisible(true);
 		});
 		remove.addActionListener(e -> setColor(null));
