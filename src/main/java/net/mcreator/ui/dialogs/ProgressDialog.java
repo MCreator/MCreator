@@ -100,7 +100,7 @@ public class ProgressDialog extends MCreatorDialog {
 	}
 
 	public void hideDialog() {
-		ThreadUtil.runOnSwingThread(this::dispose);
+		ThreadUtil.runOnSwingThread(() -> setVisible(false));
 	}
 
 	@Override public void setTitle(String title) {
