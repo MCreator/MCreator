@@ -88,6 +88,9 @@ public class LootTablePreview extends JLayeredPane {
 
 		// Loop through all pools to determine items to generate
 		for (LootTable.Pool pool : lootEntries) {
+			if (pool.minrolls > pool.maxrolls || pool.minbonusrolls > pool.maxbonusrolls)
+				continue;
+
 			int rolls = rand.nextInt(pool.minrolls, pool.maxrolls + 1);
 			if (pool.hasbonusrolls) {
 				rolls += rand.nextInt(pool.minbonusrolls, pool.maxbonusrolls + 1);
