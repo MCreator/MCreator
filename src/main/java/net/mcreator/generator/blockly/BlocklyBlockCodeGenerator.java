@@ -29,7 +29,6 @@ import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class BlocklyBlockCodeGenerator {
@@ -443,22 +442,21 @@ public class BlocklyBlockCodeGenerator {
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
-			AtomicReference<String> head = new AtomicReference<>("");
-			AtomicReference<String> tail = new AtomicReference<>("");
-			dataModel.put("definePart", new PartLinker(head, tail));
+			var partLinker = new PartLinker();
+			dataModel.put("definePart", partLinker);
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
 			}
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
-			if (!Objects.equals(master.getHead(), head.get())) {
+			if (!Objects.equals(master.getHead(), partLinker.getNewHead())) {
 				//append the last tail
 				//a possible implementation is replace the // the start of head code // the end of head code
 				master.append(master.getTail());
-				master.setTail(tail.get());
-				master.append(head.get());
-				master.setHead(head.get());
+				master.setTail(partLinker.getNewTail());
+				master.append(partLinker.getNewHead());
+				master.setHead(partLinker.getNewHead());
 			}
 			master.append(code);
 		}

@@ -25,23 +25,34 @@ import freemarker.template.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
-public record PartLinker(AtomicReference<String> head, AtomicReference<String> tail) implements TemplateDirectiveModel {
+public class PartLinker implements TemplateDirectiveModel {
+
+	private String newHead;
+	private String newTail;
+
 	@Override public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 		if (params.get("type") instanceof TemplateScalarModel templateScalarModel) {
 			if ("head".equals(templateScalarModel.getAsString())) {
 				var writer = new StringWriter();
 				body.render(writer);
-				head.set(writer.toString());
+				newHead = writer.toString();
 			}
 			if ("tail".equals(templateScalarModel.getAsString())) {
 				var writer = new StringWriter();
-				body.render(writer);
-				tail.set(writer.toString());
+				body.toString();
+				newTail = writer.toString();
 			}
-			//may be more.
+			//may be more
 		}
+	}
+
+	public String getNewHead() {
+		return newHead;
+	}
+
+	public String getNewTail() {
+		return newTail;
 	}
 }
