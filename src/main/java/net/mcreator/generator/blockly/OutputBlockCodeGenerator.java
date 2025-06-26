@@ -36,4 +36,8 @@ public record OutputBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCod
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
 	}
+
+	@Override public boolean isSupportedHead() {
+		return true;
+	}
 }

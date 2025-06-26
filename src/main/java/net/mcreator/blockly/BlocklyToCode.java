@@ -197,6 +197,12 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
+							//if the generator do not support the part feature, we will reset the tail and head
+							if (!generator.isSupportedHead()) {
+								this.append(this.getTail());
+								this.setHead("");
+								this.setTail("");
+							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
 							throw e;

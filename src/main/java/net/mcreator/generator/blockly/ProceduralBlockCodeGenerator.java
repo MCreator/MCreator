@@ -37,4 +37,8 @@ public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBloc
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
+
+	@Override public boolean isSupportedHead() {
+		return true;
+	}
 }

@@ -453,13 +453,14 @@ public class BlocklyBlockCodeGenerator {
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
 			if (!Objects.equals(master.getHead(), head.get())) {
+				//append the last tail
+				//a possible implementation is replace the // the start of head code // the end of head code
 				master.append(master.getTail());
 				master.setTail(tail.get());
 				master.append(head.get());
 				master.setHead(head.get());
 			}
 			master.append(code);
-			//reach the end
 		}
 
 		customBlockIndex++;

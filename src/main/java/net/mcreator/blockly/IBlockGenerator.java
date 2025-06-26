@@ -29,6 +29,10 @@ public interface IBlockGenerator {
 
 	BlockType getBlockType();
 
+	default boolean isSupportedHead() {
+		return false;
+	}
+
 	enum BlockType {
 		PROCEDURAL, OUTPUT
 	}
