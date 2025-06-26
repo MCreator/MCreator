@@ -20,6 +20,7 @@ package net.mcreator.ui.component;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 
@@ -73,11 +74,12 @@ public class JColor extends JPanel {
 
 		edit.addActionListener(e -> {
 			colorChooser.setColor(getColor());
-			JDialog dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e2 -> {
-				Color color = colorChooser.getColor();
-				if (color != null)
-					setColor(color);
-			}, null);
+			JDialog dialog = JColorChooser.createDialog(window, L10N.t("elementgui.common.select_color"), true,
+					colorChooser, e2 -> {
+						Color color = colorChooser.getColor();
+						if (color != null)
+							setColor(color);
+					}, null);
 			dialog.setVisible(true);
 		});
 		remove.addActionListener(e -> setColor(null));
@@ -120,7 +122,7 @@ public class JColor extends JPanel {
 
 		if (currentColor == null) {
 			colorText.setOpaque(false);
-			colorText.setText("DEFAULT");
+			colorText.setText(L10N.t("elementgui.common.default_color"));
 			colorText.setForeground(Theme.current().getForegroundColor());
 		} else {
 			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));
