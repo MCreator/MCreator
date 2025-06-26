@@ -198,7 +198,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
 							//if the generator do not support the part feature, we will reset the tail and head
-							if (!generator.isSupportedHead()) {
+							if (!generator.isSupportedSection()) {
 								this.append(this.getTail());
 								this.setHead("");
 								this.setTail("");

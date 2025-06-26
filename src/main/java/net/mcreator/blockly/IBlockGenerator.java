@@ -29,7 +29,12 @@ public interface IBlockGenerator {
 
 	BlockType getBlockType();
 
-	default boolean isSupportedHead() {
+	/**
+	 * a method to know whether the generator change or define section.
+	 *
+	 * @return whether it will define the section
+	 */
+	default boolean isSupportedSection() {
 		return false;
 	}
 
