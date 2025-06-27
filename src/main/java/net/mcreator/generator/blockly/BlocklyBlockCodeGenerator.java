@@ -443,6 +443,7 @@ public class BlocklyBlockCodeGenerator {
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
+			//It could use the Map. But it is in future.
 			AtomicReference<String> head = new AtomicReference<>("");
 			AtomicReference<String> tail = new AtomicReference<>("");
 			dataModel.put("definePart", new PartLinker(head, tail));
