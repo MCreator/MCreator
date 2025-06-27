@@ -1,0 +1,1 @@
+Zaškrtněte toto políčko pro schování pokroku v kategorii než bude dokončen.
