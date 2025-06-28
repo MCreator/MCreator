@@ -241,7 +241,7 @@ void makeDMG(File directory, File outputDMGFile, String volumeName) {
                     '--volicon', 'platform/mac/volume.icns',
                     '--background', 'platform/mac/diskimage.png',
                     '--window-pos', '200', '120',
-                    '--window-size', '480', '325',
+                    '--window-size', '480', '340',
                     '--icon-size', '100',
                     '--icon', 'MCreator.app', '145', '121',
                     '--hide-extension', 'MCreator.app',
