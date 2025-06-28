@@ -31,11 +31,17 @@ import java.util.Objects;
 
 public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, LootTable.Pool> {
 
-	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
+	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui, LootTablePreview lootPreview) {
 		super(mcreator, gui);
 		setOpaque(false);
 
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
+
+		JButton regenerateSeed = L10N.button("modelement.loot_table.regenerate_preview_seed");
+		// generateLootTable() will be called by ModElementChangedListener in LootTableGUI
+		regenerateSeed.addActionListener(e -> lootPreview.regenerateSeed());
+
+		topbar.add(regenerateSeed);
 
 		add.setText(L10N.t("elementgui.loot_table.add_pool"));
 		add.addActionListener(e -> {
