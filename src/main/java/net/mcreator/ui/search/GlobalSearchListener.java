@@ -46,14 +46,15 @@ public class GlobalSearchListener {
 		if (!keyEventDispatcherInstalled) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 
-				private static long lastShiftTime = 0;
+				private static long lastShiftReleaseTime = 0;
 				private static final int DOUBLE_SHIFT_THRESHOLD_MS = 400;
 
 				@Override public boolean dispatchKeyEvent(KeyEvent e) {
-					if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_SHIFT
-							&& e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK) {
+					// if multiple releases of Shift are detected in a short time, trigger the search
+					if (e.getKeyCode() == KeyEvent.VK_SHIFT && e.getID() == KeyEvent.KEY_RELEASED) {
 						long currentTime = System.currentTimeMillis();
-						if (currentTime - lastShiftTime < DOUBLE_SHIFT_THRESHOLD_MS) {
+						if (currentTime - lastShiftReleaseTime < DOUBLE_SHIFT_THRESHOLD_MS) {
+							// This is the second Shift "click" — trigger your action
 							Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager()
 									.getFocusedWindow();
 							if (focusedWindow != null && searchWindows.containsKey(focusedWindow)) {
@@ -67,7 +68,7 @@ public class GlobalSearchListener {
 								}
 							}
 						}
-						lastShiftTime = currentTime;
+						lastShiftReleaseTime = currentTime;
 					}
 					return false;
 				}
