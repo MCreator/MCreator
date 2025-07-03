@@ -373,5 +373,4 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	public void setTail(String tail) {
 		this.tail = tail;
 	}
-
 }
