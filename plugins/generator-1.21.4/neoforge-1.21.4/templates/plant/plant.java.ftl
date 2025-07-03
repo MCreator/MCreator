@@ -421,7 +421,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 <#macro toOptionalTree tree="">
 	<#if tree?has_content>
-	Optional.of(getFeatureKey("${generator.map(tree, "configuredfeatures")}"))
+	Optional.of(getFeatureKey("${tree}"))
 	<#else>
 	Optional.empty()
 	</#if>
