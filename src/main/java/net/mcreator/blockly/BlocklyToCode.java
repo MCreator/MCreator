@@ -227,6 +227,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
+		//reach the end of code place
+		append(getTail());
+		setTail("");
+		setHead("");
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
@@ -282,21 +286,11 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
-		//save the origin statement
-		String oldHead = master.getHead();
-		String oldTail = master.getTail();
-		System.out.println(oldTail);
-		master.setTail("");
-		master.setHead("");
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
 		List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
 		master.processBlockProcedure(base_blocks);
-		//reach the end of code
-		master.append(master.getTail());
-		master.setTail(oldTail);
-		master.setHead(oldHead);
 		String generatedCode = master.getGeneratedCode(); // get the generated code
 		master.clearCodeGeneratorBuffer(); // we clear the master again to remove the code we just generated
 		master.append(originalMasterCode); // set the master code to the original code
