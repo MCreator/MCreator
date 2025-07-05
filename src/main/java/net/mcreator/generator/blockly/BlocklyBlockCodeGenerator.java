@@ -443,7 +443,7 @@ public class BlocklyBlockCodeGenerator {
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
-			//It could use the Map. But it is in future.
+			//It could use the Map. But it is in the future.
 			AtomicReference<String> head = new AtomicReference<>("");
 			AtomicReference<String> tail = new AtomicReference<>("");
 			dataModel.put("definePart", new PartLinker(head, tail));
@@ -454,10 +454,13 @@ public class BlocklyBlockCodeGenerator {
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
 			if (!Objects.equals(master.getHead(), head.get())) {
-				master.append(master.getTail());
-				master.setTail(tail.get());
-				master.setHead(head.get());
-				master.append(master.getHead());
+				//must be procedural. or it will pollute the head.
+				if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
+					master.append(master.getTail());
+					master.setTail(tail.get());
+					master.setHead(head.get());
+					master.append(master.getHead());
+				}
 			}
 			master.append(code);
 		}
