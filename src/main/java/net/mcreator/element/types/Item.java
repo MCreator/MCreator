@@ -55,11 +55,15 @@ import java.util.*;
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
+	//Special floating-point integers
+	public infinity = Double.POSITIVE_INFINITY;
+
 	public String name;
 	public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
+	public double isUnbreakable
 	public int useDuration;
 	public double toolType;
 	public int damageCount;
@@ -228,6 +232,10 @@ import java.util.*;
 
 	public boolean hasBannerPatterns() {
 		return !providedBannerPatterns.isEmpty();
+	}
+
+	public boolean isEverlasting() {
+		return isUnbreakable && useDuration == infinity;
 	}
 
 	public String getPatternDescription() {
