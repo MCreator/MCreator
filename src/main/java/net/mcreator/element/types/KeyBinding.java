@@ -26,10 +26,12 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class KeyBinding extends GeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" })
+public class KeyBinding extends GeneratableElement {
 
 	@Nonnull public String triggerKey;
-	public String keyBindingName;
+	@Nonnull public String modifierKey;
+	@Nonnull public String keyBindingName;
 	public String keyBindingCategoryKey;
 
 	public Procedure onKeyPressed;
@@ -41,12 +43,15 @@ import java.awt.image.BufferedImage;
 
 	public KeyBinding(ModElement element) {
 		super(element);
-
-		keyBindingCategoryKey = "misc";
+		this.keyBindingCategoryKey = "misc";
 	}
 
-	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(triggerKey);
+	@Override
+	public BufferedImage generateModElementPicture() {
+		if (modifierKey == null || modifierKey.isEmpty()) {
+			return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(triggerKey);
+		} else {
+			return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(modifierKey + " + " + triggerKey);
+		}
 	}
-
 }
