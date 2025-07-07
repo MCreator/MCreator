@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
+import net.mcreator.ui.component.ScrollablePanel;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
@@ -79,7 +80,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 		};
 
-		JPanel respan = new JPanel(new GridBagLayout());
+		JPanel respan = new ScrollablePanel();
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
 		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
@@ -98,7 +99,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(20);
+		sp.getVerticalScrollBar().setUnitIncrement(65);
 		sp.setBorder(null);
 
 		add("Center", sp);
