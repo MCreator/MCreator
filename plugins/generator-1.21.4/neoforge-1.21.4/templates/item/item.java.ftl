@@ -36,7 +36,11 @@
 package ${package}.item;
 
 <#compress>
+<#if data.hasCustomEatResultItem()>
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+</#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
+
 	<#if data.hasBannerPatterns()>
 	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
 	</#if>
@@ -79,7 +83,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					</#if>
 				)
 				</#if>
-				<#if data.hasEatResultItem()>
+				<#if data.hasEatResultItem() && !data.hasCustomEatResultItem()>
 				.usingConvertsTo(${mappedMCItemToItem(data.eatResultItem)})
 				</#if>
 				<#if data.enableMeleeDamage>
@@ -101,6 +105,13 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				</#if>
 		);
 	}
+
+	<#if data.hasCustomEatResultItem()>
+	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(),
+				builder -> builder.set(DataComponents.USE_REMAINDER, new UseRemainder(${mappedMCItemToItemStackCode(data.eatResultItem, 1)})));
+	}
+	</#if>
 
 	<#if !data.isFood && data.animation != "none"> <#-- If item is food, this is handled by the consumable component -->
 	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
