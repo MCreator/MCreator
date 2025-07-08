@@ -86,6 +86,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends AbstractMainWorkspacePanel {
 
 	private final FilterModel dml = new FilterModel();
+	public final JPopupMenu contextMenu;
 
 	public FolderElement currentFolder;
 
@@ -170,7 +171,7 @@ import java.util.stream.Collectors;
 				switchFolder(fe);
 		});
 
-		JPopupMenu contextMenu = new JPopupMenu();
+		contextMenu = new JPopupMenu();
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
