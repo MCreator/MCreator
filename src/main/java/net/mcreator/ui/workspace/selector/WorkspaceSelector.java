@@ -79,12 +79,10 @@ import java.util.concurrent.CompletableFuture;
 public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
-
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 	private final CardLayout recentPanes = new CardLayout();
 	private final JPanel recentPanel = new JPanel(recentPanes);
 	private final WorkspaceOpenListener workspaceOpenListener;
-	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
-
 	@Nullable private final MCreatorApplication application;
 
 	private final JButton newWorkspace;
@@ -95,6 +93,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 	private final JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
+	private JPopupMenu recentListMenu;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -241,7 +241,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
-		recentsList.setComponentPopupMenu(getRightClickMenu());
+		recentsList.setComponentPopupMenu(buildRightClickMenu());
 
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -325,8 +325,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 	}
 
-	private JPopupMenu getRightClickMenu() {
-		JPopupMenu recentListMenu = new JPopupMenu();
+	public JPopupMenu getRecentListMenu() {
+		return recentListMenu;
+	}
+
+	private JPopupMenu buildRightClickMenu() {
+		recentListMenu = new JPopupMenu();
 
 		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
 		openSelectedWorkspace.addActionListener(a -> {
@@ -451,8 +455,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentWorkspaces.getList().remove(recentWorkspace);
 		saveRecentWorkspaces();
 	}
-
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().setStrictness(Strictness.LENIENT).create();
 
 	private void saveRecentWorkspaces() {
 		String serialized = gson.toJson(recentWorkspaces);
