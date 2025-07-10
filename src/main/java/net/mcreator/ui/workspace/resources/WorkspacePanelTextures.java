@@ -168,18 +168,19 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		// Register event handler for texture changes
 		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
-		fileWatcher.addListener((watchKey1, kind, file) -> {
-			if (file.getName().endsWith(".png") || file.getName().endsWith(".PNG")) {
-				// flush cache for this image
-				SwingUtilities.invokeLater(() -> {
+		fileWatcher.addListener(changedFiles -> SwingUtilities.invokeLater(() -> {
+			for (FileWatcher.FileChange change : changedFiles) {
+				File file = change.file();
+				if (file.getName().endsWith(".png") && file.isFile()) {
+					// flush cache for this image
 					try {
 						new ImageIcon(file.getAbsolutePath()).getImage().flush();
-						reloadElements();
 					} catch (Exception ignored) {
 					}
-				});
+				}
 			}
-		});
+			reloadElements();
+		}));
 	}
 
 	public void attachGeneratorFileWatcher() {

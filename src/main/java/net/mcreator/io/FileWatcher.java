@@ -47,6 +47,7 @@ public class FileWatcher implements Closeable {
 
 	@Nullable private final WatchService watchService;
 
+	// List of watch keys and their corresponding directories
 	private final Map<WatchKey, Path> watchKeys = new HashMap<>();
 
 	private final List<Listener> listeners = new ArrayList<>();
@@ -71,13 +72,12 @@ public class FileWatcher implements Closeable {
 				try {
 					WatchKey key = this.watchService.take(); // wait for key to be signaled
 
+					List<FileChange> fileChanges = new ArrayList<>();
 					key.pollEvents().stream().filter(e -> (e.kind() != OVERFLOW)).forEach(e -> {
 						Path directory = watchKeys.get(key);
-						if (directory != null) {
-							//noinspection unchecked
-							Path p = ((WatchEvent<Path>) e).context();
+						if (directory != null && e.context() instanceof Path p) {
 							File file = directory.resolve(p).toFile();
-							listeners.forEach(listener -> listener.onFileChanged(key, e.kind(), file));
+							fileChanges.add(new FileChange(key, e.kind(), file));
 
 							// Check if the directory still exists, if not, remove the watch key
 							if (!directory.toFile().isDirectory()) {
@@ -89,6 +89,10 @@ public class FileWatcher implements Closeable {
 							}
 						}
 					});
+
+					if (!fileChanges.isEmpty()) {
+						listeners.forEach(listener -> listener.filesChanged(fileChanges));
+					}
 
 					// reset the key -- this step is critical if you want to receive further watch events.
 					if (!key.reset())
@@ -147,7 +151,9 @@ public class FileWatcher implements Closeable {
 	}
 
 	public interface Listener {
-		void onFileChanged(WatchKey watchKey, WatchEvent.Kind<?> kind, File file);
+		void filesChanged(List<FileChange> changedFiles);
 	}
+
+	public record FileChange(WatchKey watchKey, WatchEvent.Kind<?> kind, File file) {}
 
 }
