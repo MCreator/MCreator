@@ -45,7 +45,7 @@ package ${package}.init;
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
 <#if itemsWithInventory?size != 0>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
 
@@ -139,7 +139,7 @@ public class ${JavaModName}Items {
 	</#if>
 
 	<#if hasItemsWithCustomProperties || hasItemsWithLeftHandedProperty>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
+	@EventBusSubscriber(value = Dist.CLIENT) public static class ItemsClientSideHandler {
 
 		<#if hasItemsWithCustomProperties>
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelProperties(RegisterRangeSelectItemModelPropertyEvent event) {

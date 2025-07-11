@@ -27,7 +27,7 @@ import java.util.List;
 	public PackLoaderMod(IEventBus modEventBus) {
 	}
 
-	@EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+	@EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 	public static class ClientModEvents {
 		@SubscribeEvent public static void onClientSetup(FMLClientSetupEvent event) {
 			List<String> resourcePacks = new ArrayList<>();

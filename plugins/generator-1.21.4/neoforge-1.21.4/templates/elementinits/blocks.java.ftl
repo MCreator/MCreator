@@ -71,7 +71,7 @@ public class ${JavaModName}Blocks {
 	}
 
 	<#if hasTintedBlocks>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class BlocksClientSideHandler {
+	@EventBusSubscriber(value = Dist.CLIENT) public static class BlocksClientSideHandler {
 		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
