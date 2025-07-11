@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 21.4.143
+buildfileversion: 21.4.145
 
 import:
   - datapack-1.21.4
