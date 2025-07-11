@@ -27,10 +27,8 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -47,9 +45,12 @@ public class FileWatcher implements Closeable {
 
 	@Nullable private final WatchService watchService;
 
+	// List of watch keys and their corresponding directories
 	private final Map<WatchKey, Path> watchKeys = new HashMap<>();
 
 	private final List<Listener> listeners = new ArrayList<>();
+
+	private final Set<FileChange> nonReportedChanges = new HashSet<>();
 
 	private boolean closed = false;
 
@@ -69,30 +70,32 @@ public class FileWatcher implements Closeable {
 		new Thread(() -> {
 			while (!closed) {
 				try {
-					WatchKey key = this.watchService.take(); // wait for key to be signaled
+					WatchKey key = this.watchService.poll(2, TimeUnit.SECONDS); // wait for the key to be signaled
+					if (key != null) {
+						key.pollEvents().stream().filter(e -> (e.kind() != OVERFLOW)).forEach(e -> {
+							Path directory = watchKeys.get(key);
+							if (directory != null && e.context() instanceof Path p) {
+								File file = directory.resolve(p).toFile();
+								nonReportedChanges.add(new FileChange(key, e.kind(), file));
 
-					key.pollEvents().stream().filter(e -> (e.kind() != OVERFLOW)).forEach(e -> {
-						Path directory = watchKeys.get(key);
-						if (directory != null) {
-							//noinspection unchecked
-							Path p = ((WatchEvent<Path>) e).context();
-							File file = directory.resolve(p).toFile();
-							listeners.forEach(listener -> listener.onFileChanged(key, e.kind(), file));
-
-							// Check if the directory still exists, if not, remove the watch key
-							if (!directory.toFile().isDirectory()) {
-								watchKeys.remove(key);
-								try {
-									key.cancel(); // cancel the key if the directory is no longer valid
-								} catch (Exception ignored) {
+								// Check if the directory still exists, if not, remove the watch key
+								if (!directory.toFile().isDirectory()) {
+									watchKeys.remove(key);
+									try {
+										key.cancel(); // cancel the key if the directory is no longer valid
+									} catch (Exception ignored) {
+									}
 								}
 							}
-						}
-					});
+						});
 
-					// reset the key -- this step is critical if you want to receive further watch events.
-					if (!key.reset())
-						break;
+						// reset the key -- this step is critical if you want to receive further watch events.
+						if (!key.reset())
+							break;
+					} else if (!nonReportedChanges.isEmpty()) { // no change for a given timeout, process changes if any
+						listeners.forEach(listener -> listener.filesChanged(new ArrayList<>(nonReportedChanges)));
+						nonReportedChanges.clear();
+					}
 				} catch (Exception e) {
 					if (!closed) {
 						LOG.warn("Failed to watch file", e);
@@ -147,7 +150,24 @@ public class FileWatcher implements Closeable {
 	}
 
 	public interface Listener {
-		void onFileChanged(WatchKey watchKey, WatchEvent.Kind<?> kind, File file);
+		void filesChanged(List<FileChange> changedFiles);
+	}
+
+	public record FileChange(WatchKey watchKey, WatchEvent.Kind<?> kind, File file) {
+
+		@Override public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			FileChange that = (FileChange) o;
+			return Objects.equals(file, that.file);
+		}
+
+		@Override public int hashCode() {
+			return Objects.hash(file);
+		}
+
 	}
 
 }
