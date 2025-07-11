@@ -68,8 +68,8 @@ public abstract class MCreatorFrame extends JFrame
 		setLayout(new BorderLayout(0, 0));
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		if (screenSize.getWidth() > 2140 && screenSize.getHeight() > 1250)
-			setSize(2142, 1250);
+		if (screenSize.getWidth() > 2144 && screenSize.getHeight() > 1250)
+			setSize(2144, 1250);
 		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
 			setSize(1574, 967);
 		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
