@@ -282,6 +282,10 @@ EntityGhast:
   - Ghast
   - EntityType.GHAST
   - ghast
+EntityHappyGhast:
+  - HappyGhast
+  - EntityType.HAPPY_GHAST
+  - happy_ghast
 EntityGiantZombie:
   - Giant
   - EntityType.GIANT
@@ -427,9 +431,13 @@ EntityPolarBear:
   - EntityType.POLAR_BEAR
   - polar_bear
 EntityPotion:
-  - ThrownPotion
-  - EntityType.POTION
-  - potion
+  - ThrownSplashPotion
+  - EntityType.SPLASH_POTION
+  - splash_potion
+EntityPotionLingering:
+  - ThrownLingeringPotion
+  - EntityType.LINGERING_POTION
+  - lingering_potion
 EntityPufferfish:
   - Pufferfish
   - EntityType.PUFFERFISH
