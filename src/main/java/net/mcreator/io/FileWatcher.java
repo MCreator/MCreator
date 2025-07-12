@@ -70,7 +70,7 @@ public class FileWatcher implements Closeable {
 		new Thread(() -> {
 			while (!closed) {
 				try {
-					WatchKey key = this.watchService.poll(2, TimeUnit.SECONDS); // wait for the key to be signaled
+					WatchKey key = this.watchService.poll(3, TimeUnit.SECONDS); // wait for the key to be signaled
 					if (key != null) {
 						key.pollEvents().stream().filter(e -> (e.kind() != OVERFLOW)).forEach(e -> {
 							Path directory = watchKeys.get(key);
@@ -93,6 +93,7 @@ public class FileWatcher implements Closeable {
 						if (!key.reset())
 							break;
 					} else if (!nonReportedChanges.isEmpty()) { // no change for a given timeout, process changes if any
+						LOG.debug("Detected {} file changes, notifying listeners", nonReportedChanges.size());
 						listeners.forEach(listener -> listener.filesChanged(new ArrayList<>(nonReportedChanges)));
 						nonReportedChanges.clear();
 					}
