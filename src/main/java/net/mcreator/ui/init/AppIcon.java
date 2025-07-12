@@ -28,10 +28,29 @@ import java.util.List;
 public class AppIcon {
 
 	public static ImageIcon getAppIcon(int width, int height) {
-		if (Launcher.version.isSnapshot()) {
+
+		boolean isSnapshot = Launcher.version.isSnapshot();
+		boolean isMacOS26 = isMacOS26OrNewer();
+
+		if (isSnapshot && isMacOS26) {
+			return UIRES.SVG.getBuiltIn("icon_liquid_glass_eap", width, height);
+		} else if (isSnapshot) {
 			return UIRES.SVG.getBuiltIn("icon_eap", width, height);
+		} else if (isMacOS26) {
+			return UIRES.SVG.getBuiltIn("icon_liquid_glass", width, height);
 		} else {
 			return UIRES.SVG.getBuiltIn("icon", width, height);
+		}
+	}
+
+	private static boolean isMacOS26OrNewer() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		String osVersion = System.getProperty("os.version");
+
+		try {
+			return osName.contains("mac") && Integer.parseInt(osVersion.split("\\.")[0]) >= 26;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 
