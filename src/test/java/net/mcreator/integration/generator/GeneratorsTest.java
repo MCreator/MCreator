@@ -125,7 +125,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Attach dummy file watcher to also test its operation
 						workspace.get().getGenerator().getFileWatcher()
 								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
-						workspace.get().getGenerator().getFileWatcher().addListener((watchKey, kind, file) -> {
+						workspace.get().getGenerator().getFileWatcher().addListener(changedFiles -> {
 						});
 					}));
 

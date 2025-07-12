@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy milyen hangok szólaljanak meg, amikor ilyen típusú kárt szenvedünk
