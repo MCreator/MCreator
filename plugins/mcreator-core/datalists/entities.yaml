@@ -174,13 +174,14 @@
 - EntityFireworkRocket:
   readable_name: "Firework rocket"
   type: spawnable
-- EntityFlying:
-  readable_name: "Flying entity"
 - EntityFox:
   readable_name: "Fox"
   type: spawnable
 - EntityGhast:
   readable_name: "Ghast"
+  type: spawnable
+- EntityHappyGhast:
+  readable_name: "Happy ghast"
   type: spawnable
 - EntityGiantZombie:
   readable_name: "Giant"
@@ -299,7 +300,10 @@
   readable_name: "Polar bear"
   type: spawnable
 - EntityPotion:
-  readable_name: "Potion"
+  readable_name: "Splash Potion"
+  type: spawnable
+- EntityPotionLingering:
+  readable_name: "Lingering Potion"
   type: spawnable
 - EntityRabbit:
   readable_name: "Rabbit"
