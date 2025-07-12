@@ -167,6 +167,26 @@ public class MinecraftImageGenerator {
 		return bi;
 	}
 
+	public static BufferedImage generateSliderBackground(int width, int height) {
+		if (height < 5)
+			height = 5;
+		if (width < 5)
+			width = 5;
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) bi.getGraphics();
+
+		g.setColor(new Color(0x2c2c2c)); //filler color
+		g.fillRect(0, 0, width, height);
+
+		g.setColor(Color.black); //top border color
+		g.drawLine(0, 0, width - 1, 0); //top border
+		g.drawLine(0, 1, 0, height - 1); //left border
+		g.drawLine(width - 1, 0, width - 1, height - 1); //right border
+		g.drawLine(0, height - 1, width - 2, height - 1); //bottom border
+
+		return bi;
+	}
+
 	public static BufferedImage generateInventorySlots() {
 		int width = 176, height = 166;
 		int startx = 7;
