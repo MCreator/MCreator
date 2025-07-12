@@ -301,3 +301,6 @@ RAID_OMEN:
 TRIAL_OMEN:
   - ParticleTypes.TRIAL_OMEN
   - "trial_omen"
+FIREFLY:
+  - ParticleTypes.FIREFLY
+  - "firefly"
