@@ -40,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
@@ -184,11 +185,15 @@ public abstract class GeneratableElement {
 					List<IConverter> applicableConverters = converters.stream()
 							.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo()).sorted()
 							.toList();
-					int currentFormatVersion = importedFormatVersion;
+					// If there are converters applicable to this mod element type, log the conversion
+					if (!applicableConverters.isEmpty()) {
+						LOG.debug("Converting {} ({}) from FV{} using: {}", lastModElement.getName(), modElementType,
+								importedFormatVersion, applicableConverters.stream()
+										.map(converter -> converter.getClass().getSimpleName() + " to FV"
+												+ converter.getVersionConvertingTo())
+										.collect(Collectors.joining(", ")));
+					}
 					for (IConverter converter : applicableConverters) {
-						LOG.debug("Converting {} ({}) from FV{} to FV{} using {}", lastModElement.getName(),
-								modElementType, currentFormatVersion, converter.getVersionConvertingTo(),
-								converter.getClass().getSimpleName());
 						try {
 							generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
 						} catch (Exception e) {
@@ -204,7 +209,6 @@ public abstract class GeneratableElement {
 							return null;
 						} else {
 							generatableElement.conversionApplied = true;
-							currentFormatVersion = converter.getVersionConvertingTo();
 						}
 					}
 				}

@@ -152,7 +152,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
-	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
+	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -323,6 +323,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 <#macro buttonOnClick component>
 e -> {
 	<#if hasProcedure(component.onClick)>
+		int x = ${name}Screen.this.x; <#-- #5582 - x and y provided by buttons are in-GUI, not in-world coordinates -->
+		int y = ${name}Screen.this.y;
 		if (<@procedureOBJToConditionCode component.displayCondition/>) {
 			PacketDistributor.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);

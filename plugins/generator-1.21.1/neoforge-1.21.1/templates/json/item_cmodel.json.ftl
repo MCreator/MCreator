@@ -2,6 +2,7 @@
     <#if parent?? && parent.hasGUITexture?? && parent.hasGUITexture()><#assign guiTexture = parent.guiTexture><#elseif data.guiTexture??><#assign guiTexture = data.guiTexture></#if>
     <#if guiTexture?has_content>
     "loader": "neoforge:separate_transforms",
+    "gui_light": "front",
     "base": { <@modelDefinition/> },
     "perspectives": {
         "gui": {
