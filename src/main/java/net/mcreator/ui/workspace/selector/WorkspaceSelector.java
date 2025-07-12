@@ -95,6 +95,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 	private final JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+	private final JPopupMenu recentListPopupMenu;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -241,7 +242,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
-		recentsList.setComponentPopupMenu(getRightClickMenu());
+		recentsList.setComponentPopupMenu(recentListPopupMenu = buildRightClickMenu());
 
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -325,7 +326,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 	}
 
-	private JPopupMenu getRightClickMenu() {
+	public JPopupMenu getRecentListPopupMenu() {
+		return recentListPopupMenu;
+	}
+
+	private JPopupMenu buildRightClickMenu() {
 		JPopupMenu recentListMenu = new JPopupMenu();
 
 		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
