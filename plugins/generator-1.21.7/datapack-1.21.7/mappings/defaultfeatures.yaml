@@ -90,8 +90,8 @@ MonsterRooms:
   underground_structures/monster_room,
   underground_structures/monster_room_deep
 ReedsAndPumpkins:
-  vegetal_decoration/patch_sugar_cane,
-  vegetal_decoration/patch_pumpkin
+  vegetal_decoration/patch_pumpkin,
+  vegetal_decoration/patch_sugar_cane
 TaigaRocks:
   local_modifications/forest_rock
 TallSeagrassLush:
