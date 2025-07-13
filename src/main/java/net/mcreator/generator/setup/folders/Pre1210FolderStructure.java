@@ -19,6 +19,7 @@
 
 package net.mcreator.generator.setup.folders;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 
@@ -30,8 +31,8 @@ import java.io.File;
  */
 class Pre1210FolderStructure extends AbstractFolderStructure {
 
-	protected Pre1210FolderStructure(Workspace workspace) {
-		super(workspace);
+	protected Pre1210FolderStructure(GeneratorFlavor flavor, Workspace workspace) {
+		super(flavor, workspace);
 	}
 
 	@Nullable @Override public File getStructuresDir() {
@@ -56,11 +57,21 @@ class Pre1210FolderStructure extends AbstractFolderStructure {
 	}
 
 	@Nullable @Override public File getSourceRoot() {
-		return new File(workspace.getWorkspaceFolder(), "src/main/java");
+		// For datapack and resourcepack, the source root has no java subfolder
+		if (flavor == GeneratorFlavor.DATAPACK || flavor == GeneratorFlavor.RESOURCEPACK) {
+			return new File(workspace.getWorkspaceFolder(), "src/main");
+		} else {
+			return new File(workspace.getWorkspaceFolder(), "src/main/java");
+		}
 	}
 
 	@Nullable @Override public File getResourceRoot() {
-		return new File(workspace.getWorkspaceFolder(), "src/main/resources");
+		// For datapack and resourcepack, source and resource roots are shared
+		if (flavor == GeneratorFlavor.DATAPACK || flavor == GeneratorFlavor.RESOURCEPACK) {
+			return new File(workspace.getWorkspaceFolder(), "src/main");
+		} else {
+			return new File(workspace.getWorkspaceFolder(), "src/main/resources");
+		}
 	}
 
 }
