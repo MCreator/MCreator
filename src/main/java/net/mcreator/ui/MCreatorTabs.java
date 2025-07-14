@@ -181,7 +181,7 @@ public class MCreatorTabs {
 		});
 
 		MCREvent.event(new TabEvent.Added(tab));
-		container.add(tab.content, tab.identifier.toString());
+		container.add(tab.content, tab.identifier.toString().toLowerCase(Locale.ROOT));
 		showTab(tab);
 
 		reloadTabStrip();
@@ -215,8 +215,9 @@ public class MCreatorTabs {
 				this.previous.tabHiddenListener.tabHidden(this.previous);
 		}
 		for (Tab tab : tabs) {
-			if (tab.identifier.equals(identifier)) {
-				cardLayout.show(container, identifier.toString());
+			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
+					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
+				cardLayout.show(container, identifier.toString().toLowerCase(Locale.ROOT));
 				tab.setBackground(Theme.current().getAltBackgroundColor());
 				tab.selected = true;
 				this.current = tab;
