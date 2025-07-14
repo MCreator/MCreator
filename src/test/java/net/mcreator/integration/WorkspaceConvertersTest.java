@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 	public @TestFactory Stream<DynamicTest> testWorkspaceConversions() {
 		Set<String> testWorkspaces = new Reflections(
 				new ConfigurationBuilder().forPackages("workspaces").setScanners(Scanners.Resources)
-						.setExpandSuperTypes(false)).getResources(Pattern.compile("test-.*\\.zip"));
+						.setExpandSuperTypes(false)).getResources(Pattern.compile("test-.*\\.zip$"));
 
 		return testWorkspaces.stream().map(testWorkspace -> {
 			final String testWorkspaceName = FilenameUtils.getBaseName(testWorkspace);
