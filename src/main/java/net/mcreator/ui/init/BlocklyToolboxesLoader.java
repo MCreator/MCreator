@@ -45,7 +45,7 @@ public class BlocklyToolboxesLoader {
 		LOG.debug("Loading Blockly toolboxes from plugins");
 
 		Set<String> xmlFiles = PluginLoader.INSTANCE.getResources("blockly.toolboxes",
-				Pattern.compile("^[^$].*\\.xml"));
+				Pattern.compile("^[^$].*\\.xml$"));
 		for (String fileName : xmlFiles)
 			TOOLBOXES.put(fileName, FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
 	}

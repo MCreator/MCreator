@@ -40,7 +40,7 @@ public class DataListLoader {
 	private static final Map<String, LinkedHashMap<String, DataListEntry>> cache = new HashMap<>();
 
 	public static void preloadCache() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml$"));
 		for (String res : fileNames) {
 			String datalistname = res.split("datalists/")[1].replace(".yaml", "");
 			loadDataList(datalistname);

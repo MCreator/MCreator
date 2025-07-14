@@ -41,7 +41,7 @@ public class ModAPIManager {
 	private static final Map<String, ModAPI> modApiList = new HashMap<>();
 
 	public static void initAPIs() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml$"));
 
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
 

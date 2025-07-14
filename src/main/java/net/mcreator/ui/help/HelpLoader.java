@@ -48,11 +48,11 @@ public class HelpLoader {
 	private static HtmlRenderer renderer;
 
 	public static void preloadCache() {
-		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
+		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md$")).forEach(
 				e -> DEFAULT_CACHE.put(FilenameUtilsPatched.removeExtension(e.replaceFirst("help/default/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e)));
 
-		PluginLoader.INSTANCE.getResources("help." + L10N.getLocaleString(), Pattern.compile("^[^$].*\\.md")).forEach(
+		PluginLoader.INSTANCE.getResources("help." + L10N.getLocaleString(), Pattern.compile("^[^$].*\\.md$")).forEach(
 				e -> LOCALIZED_CACHE.put(FilenameUtilsPatched.removeExtension(
 								e.replaceFirst("help/" + L10N.getLocaleString() + "/", "")),
 						FileIO.readResourceToString(PluginLoader.INSTANCE, e)));

@@ -44,7 +44,7 @@ public class MappingLoader {
 		Set<String> fileNames = new LinkedHashSet<>();
 		for (String templateLoaderPath : generatorConfiguration.getGeneratorPaths("mappings")) {
 			fileNames.addAll(PluginLoader.INSTANCE.getResources(templateLoaderPath.replace('/', '.'),
-					Pattern.compile(".*\\.yaml")));
+					Pattern.compile(".*\\.yaml$")));
 		}
 
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());

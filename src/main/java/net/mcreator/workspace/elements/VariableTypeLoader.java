@@ -52,7 +52,7 @@ public class VariableTypeLoader {
 
 		StringBuilder variableBlocklyJSBuilder = new StringBuilder();
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json$"));
 		for (String file : fileNames) {
 			String variableJSON = FileIO.readResourceToString(PluginLoader.INSTANCE, file);
 			VariableType variableType = gson.fromJson(variableJSON, VariableType.class);
