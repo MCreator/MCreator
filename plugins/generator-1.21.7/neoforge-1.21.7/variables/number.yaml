@@ -10,7 +10,7 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public double ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    read: ${var.getName()} = nbt.getDoubleOr("${var.getName()}", 0);
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
@@ -18,7 +18,7 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public double ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
+    read: ${var.getName()} = nbt.getDoubleOr("${var.getName()}", 0);
     write: nbt.putDouble("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
@@ -26,8 +26,8 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public double ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
-    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getDoubleOr("${var.getName()}", 0);
+    write: output.putDouble("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {
@@ -37,8 +37,8 @@ scopes:
       }
   player_persistent:
     init: public double ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getDouble("${var.getName()}");
-    write: nbt.putDouble("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getDoubleOr("${var.getName()}", 0);
+    write: output.putDouble("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {

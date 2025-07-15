@@ -10,7 +10,7 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: ${var.getName()} = nbt.getString("${var.getName()}");
+    read: ${var.getName()} = nbt.getStringOr("${var.getName()}", "");
     write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
@@ -18,7 +18,7 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: ${var.getName()} = nbt.getString("${var.getName()}");
+    read: ${var.getName()} = nbt.getStringOr("${var.getName()}", "");
     write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
@@ -26,8 +26,8 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getStringOr("${var.getName()}", "");
+    write: output.putString("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {
@@ -37,8 +37,8 @@ scopes:
       }
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
-    read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getStringOr("${var.getName()}", "");
+    write: output.putString("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {

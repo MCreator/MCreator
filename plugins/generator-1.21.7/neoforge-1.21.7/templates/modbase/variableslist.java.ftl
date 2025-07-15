@@ -95,19 +95,22 @@ import net.minecraft.nbt.Tag;
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	public static class WorldVariables extends SavedData {
 
-		public static final String DATA_NAME = "${modid}_worldvars";
+		public static final SavedDataType<WorldVariables> TYPE = new SavedDataType<>("${modid}_worldvars", ctx -> new WorldVariables(),
+			ctx -> CompoundTag.CODEC.xmap(
+				tag -> {
+					WorldVariables instance = new WorldVariables();
+					instance.read(tag, ctx.levelOrThrow().registryAccess());
+					return instance;
+				},
+				instance -> instance.save(new CompoundTag(), ctx.levelOrThrow().registryAccess())
+			)
+		);
 
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_WORLD">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['init']?interpret/>
 			</#if>
 		</#list>
-
-		public static WorldVariables load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-			WorldVariables data = new WorldVariables();
-			data.read(tag, lookupProvider);
-			return data;
-		}
 
 		public void read(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
 			<#list variables as var>
@@ -117,7 +120,7 @@ import net.minecraft.nbt.Tag;
 			</#list>
 		}
 
-		@Override public CompoundTag save(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
+		public CompoundTag save(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
@@ -137,7 +140,7 @@ import net.minecraft.nbt.Tag;
 
 		public static WorldVariables get(LevelAccessor world) {
 			if (world instanceof ServerLevel level) {
-				return level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(WorldVariables::new, WorldVariables::load), DATA_NAME);
+				return level.getDataStorage().computeIfAbsent(WorldVariables.TYPE);
 			} else {
 				return clientSide;
 			}
@@ -147,19 +150,22 @@ import net.minecraft.nbt.Tag;
 
 	public static class MapVariables extends SavedData {
 
-		public static final String DATA_NAME = "${modid}_mapvars";
+		public static final SavedDataType<MapVariables> TYPE = new SavedDataType<>("${modid}_mapvars", ctx -> new MapVariables(),
+			ctx -> CompoundTag.CODEC.xmap(
+				tag -> {
+					MapVariables instance = new MapVariables();
+					instance.read(tag, ctx.levelOrThrow().registryAccess());
+					return instance;
+				},
+				instance -> instance.save(new CompoundTag(), ctx.levelOrThrow().registryAccess())
+			)
+		);
 
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_MAP">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['init']?interpret/>
 			</#if>
 		</#list>
-
-		public static MapVariables load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-			MapVariables data = new MapVariables();
-			data.read(tag, lookupProvider);
-			return data;
-		}
 
 		public void read(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
 			<#list variables as var>
@@ -169,7 +175,7 @@ import net.minecraft.nbt.Tag;
 			</#list>
 		}
 
-		@Override public CompoundTag save(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
+		public CompoundTag save(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
@@ -188,9 +194,8 @@ import net.minecraft.nbt.Tag;
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(LevelAccessor world) {
-			if (world instanceof ServerLevelAccessor serverLevelAcc) {
-				return serverLevelAcc.getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage()
-						.computeIfAbsent(new SavedData.Factory<>(MapVariables::new, MapVariables::load), DATA_NAME);
+			if (world instanceof ServerLevelAccessor serverLevelAccessor) {
+				return serverLevelAccessor.getLevel().getServer().getLevel(Level.OVERWORLD).getDataStorage().computeIfAbsent(MapVariables.TYPE);
 			} else {
 				return clientSide;
 			}
@@ -205,8 +210,10 @@ import net.minecraft.nbt.Tag;
 		public static final StreamCodec<RegistryFriendlyByteBuf, SavedDataSyncMessage> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, SavedDataSyncMessage message) -> {
 				buffer.writeInt(message.dataType);
-				if (message.data != null)
-					buffer.writeNbt(message.data.save(new CompoundTag(), buffer.registryAccess()));
+				if (message.data instanceof MapVariables mapVariables)
+					buffer.writeNbt(mapVariables.save(new CompoundTag(), buffer.registryAccess()));
+				else if (message.data instanceof WorldVariables worldVariables)
+					buffer.writeNbt(worldVariables.save(new CompoundTag(), buffer.registryAccess()));
 			},
 			(RegistryFriendlyByteBuf buffer) -> {
 				int dataType = buffer.readInt();
@@ -231,9 +238,9 @@ import net.minecraft.nbt.Tag;
 			if (context.flow() == PacketFlow.CLIENTBOUND && message.data != null) {
 				context.enqueueWork(() -> {
 					if (message.dataType == 0)
-						MapVariables.clientSide.read(message.data.save(new CompoundTag(), context.player().registryAccess()), context.player().registryAccess());
+						MapVariables.clientSide.read(((MapVariables) message.data).save(new CompoundTag(), context.player().registryAccess()), context.player().registryAccess());
 					else
-						WorldVariables.clientSide.read(message.data.save(new CompoundTag(), context.player().registryAccess()), context.player().registryAccess());
+						WorldVariables.clientSide.read(((WorldVariables) message.data).save(new CompoundTag(), context.player().registryAccess()), context.player().registryAccess());
 				}).exceptionally(e -> {
 					context.connection().disconnect(Component.literal(e.getMessage()));
 					return null;
@@ -255,8 +262,7 @@ import net.minecraft.nbt.Tag;
 			</#if>
 		</#list>
 
-		@Override public CompoundTag serializeNBT(HolderLookup.Provider lookupProvider) {
-			CompoundTag nbt = new CompoundTag();
+		@Override public void serialize(ValueOutput output) {
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['write']?interpret/>
@@ -264,10 +270,9 @@ import net.minecraft.nbt.Tag;
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_PERSISTENT")['write']?interpret/>
 				</#if>
 			</#list>
-			return nbt;
 		}
 
-		@Override public void deserializeNBT(HolderLookup.Provider lookupProvider, CompoundTag nbt) {
+		@Override public void deserialize(ValueInput input) {
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
@@ -289,11 +294,14 @@ import net.minecraft.nbt.Tag;
 		public static final Type<PlayerVariablesSyncMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "player_variables_sync"));
 
 		public static final StreamCodec<RegistryFriendlyByteBuf, PlayerVariablesSyncMessage> STREAM_CODEC = StreamCodec.of(
-				(RegistryFriendlyByteBuf buffer, PlayerVariablesSyncMessage message) ->
-						buffer.writeNbt(message.data().serializeNBT(buffer.registryAccess())),
+				(RegistryFriendlyByteBuf buffer, PlayerVariablesSyncMessage message) -> {
+					TagValueOutput output = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+					message.data.serialize(output);
+					buffer.writeNbt(output.buildResult());
+				},
 				(RegistryFriendlyByteBuf buffer) -> {
 					PlayerVariablesSyncMessage message = new PlayerVariablesSyncMessage(new PlayerVariables());
-					message.data.deserializeNBT(buffer.registryAccess(), buffer.readNbt());
+					message.data.deserialize(TagValueInput.create(ProblemReporter.DISCARDING, buffer.registryAccess(), buffer.readNbt()));
 					return message;
 				}
 		);
@@ -304,10 +312,12 @@ import net.minecraft.nbt.Tag;
 
 		public static void handleData(final PlayerVariablesSyncMessage message, final IPayloadContext context) {
 			if (context.flow() == PacketFlow.CLIENTBOUND && message.data != null) {
-				context.enqueueWork(() ->
+				context.enqueueWork(() -> {
 					<#-- If we use setData here, we may get unwanted references to old data instance -->
-					context.player().getData(PLAYER_VARIABLES).deserializeNBT(context.player().registryAccess(), message.data.serializeNBT(context.player().registryAccess()))
-				).exceptionally(e -> {
+					TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, context.player().registryAccess());
+					message.data.serialize(output);
+					context.player().getData(PLAYER_VARIABLES).deserialize(TagValueInput.create(ProblemReporter.DISCARDING, context.player().registryAccess(), output.buildResult()));
+				}).exceptionally(e -> {
 					context.connection().disconnect(Component.literal(e.getMessage()));
 					return null;
 				});

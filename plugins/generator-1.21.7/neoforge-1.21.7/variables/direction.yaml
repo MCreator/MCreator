@@ -10,7 +10,7 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
+    read: ${var.getName()} = Direction.from3DDataValue(nbt.getIntOr("${var.getName()}", 0));
     write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
@@ -18,7 +18,7 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
+    read: ${var.getName()} = Direction.from3DDataValue(nbt.getIntOr("${var.getName()}", 0));
     write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
@@ -26,8 +26,8 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
+    read: ${var.getName()} = Direction.from3DDataValue(input.getIntOr("${var.getName()}", 0));
+    write: output.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {
@@ -37,8 +37,8 @@ scopes:
       }
   player_persistent:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
-    read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
+    read: ${var.getName()} = Direction.from3DDataValue(input.getIntOr("${var.getName()}", 0));
+    write: output.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {

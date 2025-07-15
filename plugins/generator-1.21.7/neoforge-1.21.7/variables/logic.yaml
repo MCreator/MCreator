@@ -10,7 +10,7 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public boolean ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
+    read: ${var.getName()} = nbt.getBooleanOr("${var.getName()}", false);
     write: nbt.putBoolean("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
@@ -18,7 +18,7 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public boolean ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
+    read: ${var.getName()} = nbt.getBooleanOr("${var.getName()}", false);
     write: nbt.putBoolean("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
@@ -26,8 +26,8 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public boolean ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
-    write: nbt.putBoolean("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getBooleanOr("${var.getName()}", false);
+    write: output.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {
@@ -37,8 +37,8 @@ scopes:
       }
   player_persistent:
     init: public boolean ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
-    write: nbt.putBoolean("${var.getName()}", ${var.getName()});
+    read: ${var.getName()} = input.getBooleanOr("${var.getName()}", false);
+    write: output.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       {
