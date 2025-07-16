@@ -52,6 +52,7 @@ EntityEnderEye: eye_of_ender_signal
 EntityFallingBlock: falling_block
 EntityFireworkRocket: fireworks_rocket
 EntityGhast: ghast
+EntityHappyGhast: happy_ghast
 EntityGuardian: guardian
 EntityGolem: iron_golem
 EntityHorse: horse
@@ -103,6 +104,7 @@ EntityEgg: egg
 EntityEnderPearl: ender_pearl
 EntityExpBottle: xp_bottle
 EntityPotion: splash_potion
+EntityPotionLingering: lingering_potion
 EntityTrident: thrown_trident
 EntityVex: vex
 EntityVillager: villager
