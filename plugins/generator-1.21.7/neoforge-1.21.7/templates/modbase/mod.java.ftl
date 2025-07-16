@@ -59,7 +59,8 @@ import org.apache.logging.log4j.Logger;
 
 	@SuppressWarnings({"rawtypes", "unchecked"}) private void registerNetworking(final RegisterPayloadHandlersEvent event) {
 		final PayloadRegistrar registrar = event.registrar(MODID);
-		MESSAGES.forEach((id, networkMessage) -> registrar.playBidirectional(id, ((NetworkMessage) networkMessage).reader(), ((NetworkMessage) networkMessage).handler()));
+		MESSAGES.forEach((id, networkMessage) -> registrar.playBidirectional(id, ((NetworkMessage) networkMessage).reader(),
+				((NetworkMessage) networkMessage).handler(), ((NetworkMessage) networkMessage).handler()));
 		networkingRegistered = true;
 	}
 
