@@ -108,6 +108,16 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
+	<#if !data.isFood && data.animation == "eat">
+	@Override public SoundEvent getEatingSound() {
+		return SoundEvents.EMPTY;
+	}
+	<#elseif !data.isFood && data.animation == "drink">
+	@Override public SoundEvent getDrinkingSound() {
+		return SoundEvents.EMPTY;
+	}
+	</#if>
+
 	<#if data.stayInGridWhenCrafting>
 		@Override public boolean hasCraftingRemainingItem(ItemStack stack) {
 			return true;
