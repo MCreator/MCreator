@@ -13,7 +13,7 @@
     {
       "type": "field_checkbox",
       "name": "ignoredefaults",
-      "checked": true
+      "checked": false
     }
   ],
   "inputsInline": true,
