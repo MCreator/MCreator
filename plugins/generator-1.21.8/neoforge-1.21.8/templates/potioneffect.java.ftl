@@ -35,7 +35,7 @@ package ${package}.potion;
 
 <#compress>
 <#if data.hasCustomRenderer() || data.isCuredbyHoney>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
@@ -164,7 +164,6 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		}
 	}
 	</#if>
-
 }
 </#compress>
 <#-- @formatter:on -->
