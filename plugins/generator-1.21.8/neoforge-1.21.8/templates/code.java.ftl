@@ -55,8 +55,7 @@ package ${package};
 		new ${name}();
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 	}
 
     @EventBusSubscriber private static class ${name}ForgeBusEvents {
