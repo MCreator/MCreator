@@ -1374,29 +1374,32 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshFieldsTileEntity() {
-		inventorySize.setEnabled(hasInventory.isSelected());
-		inventoryAutomationTakeCondition.setEnabled(hasInventory.isSelected());
-		inventoryAutomationPlaceCondition.setEnabled(hasInventory.isSelected());
-		inventoryStackSize.setEnabled(hasInventory.isSelected());
-		inventoryDropWhenDestroyed.setEnabled(hasInventory.isSelected());
-		inventoryComparatorPower.setEnabled(hasInventory.isSelected());
-		outSlotIDs.setEnabled(hasInventory.isSelected());
-		inSlotIDs.setEnabled(hasInventory.isSelected());
-		hasEnergyStorage.setEnabled(hasInventory.isSelected());
-		energyInitial.setEnabled(hasInventory.isSelected());
-		energyCapacity.setEnabled(hasInventory.isSelected());
-		energyMaxReceive.setEnabled(hasInventory.isSelected());
-		energyMaxExtract.setEnabled(hasInventory.isSelected());
-		isFluidTank.setEnabled(hasInventory.isSelected());
-		fluidCapacity.setEnabled(hasInventory.isSelected());
-		fluidRestrictions.setEnabled(hasInventory.isSelected());
-		sensitiveToVibration.setEnabled(hasInventory.isSelected());
-		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
-		vibrationalEvents.setEnabled(hasInventory.isSelected());
-		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
-		onReceivedVibration.setEnabled(hasInventory.isSelected());
+		boolean hasInventorySelected = hasInventory.isSelected();
 
-		refreshVibrationProperties();
+		inventorySize.setEnabled(hasInventorySelected);
+		inventoryAutomationTakeCondition.setEnabled(hasInventorySelected);
+		inventoryAutomationPlaceCondition.setEnabled(hasInventorySelected);
+		inventoryStackSize.setEnabled(hasInventorySelected);
+		inventoryDropWhenDestroyed.setEnabled(hasInventorySelected);
+		inventoryComparatorPower.setEnabled(hasInventorySelected);
+		outSlotIDs.setEnabled(hasInventorySelected);
+		inSlotIDs.setEnabled(hasInventorySelected);
+		hasEnergyStorage.setEnabled(hasInventorySelected);
+		energyInitial.setEnabled(hasInventorySelected);
+		energyCapacity.setEnabled(hasInventorySelected);
+		energyMaxReceive.setEnabled(hasInventorySelected);
+		energyMaxExtract.setEnabled(hasInventorySelected);
+		isFluidTank.setEnabled(hasInventorySelected);
+		fluidCapacity.setEnabled(hasInventorySelected);
+		fluidRestrictions.setEnabled(hasInventorySelected);
+		sensitiveToVibration.setEnabled(hasInventorySelected);
+		vibrationSensitivityRadius.setEnabled(hasInventorySelected);
+		vibrationalEvents.setEnabled(hasInventorySelected);
+		canReceiveVibrationCondition.setEnabled(hasInventorySelected);
+		onReceivedVibration.setEnabled(hasInventorySelected);
+
+		if (hasInventorySelected)
+			refreshVibrationProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
