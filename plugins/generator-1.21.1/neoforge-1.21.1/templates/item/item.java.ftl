@@ -92,7 +92,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				return rendererInstance;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 	</#if>
 
