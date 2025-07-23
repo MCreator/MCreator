@@ -1137,6 +1137,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
 
+		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
+
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
 				L10N.label("elementgui.block.vibrational_events")));
 		vibrationPanel.add(vibrationalEvents);
@@ -1393,6 +1395,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		vibrationalEvents.setEnabled(hasInventory.isSelected());
 		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
 		onReceivedVibration.setEnabled(hasInventory.isSelected());
+
+		refreshVibrationProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1470,6 +1474,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			hardness.setEnabled(true);
 			resistance.setEnabled(true);
+		}
+	}
+
+	private void refreshVibrationProperties() {
+		if (sensitiveToVibration.isSelected()) {
+			vibrationSensitivityRadius.setEnabled(true);
+			vibrationalEvents.setEnabled(true);
+			canReceiveVibrationCondition.setEnabled(true);
+			onReceivedVibration.setEnabled(true);
+		} else {
+			vibrationSensitivityRadius.setEnabled(false);
+			vibrationalEvents.setEnabled(false);
+			canReceiveVibrationCondition.setEnabled(false);
+			onReceivedVibration.setEnabled(false);
 		}
 	}
 
