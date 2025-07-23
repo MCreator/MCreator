@@ -678,6 +678,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.block.ignited_by_lava")));
 		advancedProperties.add(ignitedByLava);
 
+		ignitedByLava.addActionListener(e -> refreshFlammableProperties());
+		refreshFlammableProperties();
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.plant.flammability")));
 		advancedProperties.add(flammability);
@@ -923,6 +926,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 	}
 
+	private void refreshFlammableProperties() {
+		if(ignitedByLava.isSelected()) {
+			flammability.setEnabled(true);
+			fireSpreadSpeed.setEnabled(true);
+		} else {
+			flammability.setEnabled(false);
+			fireSpreadSpeed.setEnabled(false);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1066,6 +1079,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshFlammableProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {

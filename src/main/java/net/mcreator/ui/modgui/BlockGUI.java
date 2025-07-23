@@ -1256,6 +1256,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.ignited_by_lava")));
 		flammabilityProperties.add(ignitedByLava);
 
+		ignitedByLava.addActionListener(e -> refreshFlammableProperties());
+		refreshFlammableProperties();
+
 		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.block.flammability")));
 		flammabilityProperties.add(flammability);
@@ -1473,6 +1476,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 	}
 
+	private void refreshFlammableProperties() {
+		if(ignitedByLava.isSelected()) {
+			flammability.setEnabled(true);
+			fireSpreadSpeed.setEnabled(true);
+		} else {
+			flammability.setEnabled(false);
+			fireSpreadSpeed.setEnabled(false);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -1672,6 +1685,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshFlammableProperties();
 	}
 
 	@Override public Block getElementFromGUI() {

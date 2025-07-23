@@ -384,6 +384,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.block.ignited_by_lava")));
 		blockProperties.add(ignitedByLava);
 
+		ignitedByLava.addActionListener(e -> refreshFlammableProperties());
+		refreshFlammableProperties();
+
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.block.flammability")));
 		blockProperties.add(flammability);
@@ -483,6 +486,16 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogEndDistance.setEnabled(hasFog.isSelected());
 	}
 
+	private void refreshFlammableProperties() {
+		if(ignitedByLava.isSelected()) {
+			flammability.setEnabled(true);
+			fireSpreadSpeed.setEnabled(true);
+		} else {
+			flammability.setEnabled(false);
+			fireSpreadSpeed.setEnabled(false);
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onBlockAdded.refreshListKeepSelected();
@@ -557,6 +570,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		specialInformation.setEnabled(generateBucket.isSelected());
 
 		refreshFogSettings();
+		refreshFlammableProperties();
 	}
 
 	@Override public Fluid getElementFromGUI() {
