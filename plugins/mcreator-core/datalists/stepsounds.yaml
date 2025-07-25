@@ -138,6 +138,8 @@
   texture: MOSS_CARPET
 - PINK_PETALS:
   texture: PINK_PETALS
+- LEAF_LITTER:
+  texture: LEAF_LITTER
 - MOSS_BLOCK:
   texture: MOSS_BLOCK
 - POINTED_DRIPSTONE:
@@ -166,6 +168,8 @@
   texture: SMALL_DRIPLEAF
 - SPORE_BLOSSOM:
   texture: SPORE_BLOSSOM
+- CACTUS_FLOWER:
+  texture: CACTUS_FLOWER
 - TUFF:
   texture: TUFF
 - TUFF_BRICKS:
@@ -232,3 +236,7 @@
   texture: RESIN_BLOCK
 - RESIN_BRICKS:
   texture: RESIN_BRICKS
+- IRON:
+  texture: IRON_BLOCK
+- DRIED_GHAST:
+  texture: DRIED_GHAST
