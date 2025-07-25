@@ -12,5 +12,5 @@ global_templates:
     writer: json
 
 localizationkeys:
-  - key: entity.minecraft.villager.@modid.@registryname
+  - key: entity.villager.@modid.@registryname
     mapto: displayName

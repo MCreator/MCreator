@@ -1,0 +1,46 @@
+_default:
+  - VillagerProfession.ARMORER
+  - armorer
+_mcreator_map_template:
+  - "@JavaModNameVillagerProfessions.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+ARMORER:
+  - VillagerProfession.ARMORER
+  - armorer
+BUTCHER:
+  - VillagerProfession.BUTCHER
+  - butcher
+CARTOGRAPHER:
+  - VillagerProfession.CARTOGRAPHER
+  - cartographer
+CLERIC:
+  - VillagerProfession.CLERIC
+  - cleric
+FARMER:
+  - VillagerProfession.FARMER
+  - farmer
+FISHERMAN:
+  - VillagerProfession.FISHERMAN
+  - fisherman
+FLETCHER:
+  - VillagerProfession.FLETCHER
+  - fletcher
+LEATHERWORKER:
+  - VillagerProfession.LEATHERWORKER
+  - leatherworker
+LIBRARIAN:
+  - VillagerProfession.LIBRARIAN
+  - librarian
+MASON:
+  - VillagerProfession.MASON
+  - mason
+SHEPHERD:
+  - VillagerProfession.SHEPHERD
+  - shepherd
+TOOLSMITH:
+  - VillagerProfession.TOOLSMITH
+  - toolsmith
+WEAPONSMITH:
+  - VillagerProfession.WEAPONSMITH
+  - weaponsmith
+WANDERING_TRADER: WanderingTrader
