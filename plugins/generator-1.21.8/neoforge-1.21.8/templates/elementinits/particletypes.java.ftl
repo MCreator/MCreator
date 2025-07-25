@@ -36,13 +36,13 @@
 
 package ${package}.init;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Particles {
+public class ${JavaModName}ParticleTypes {
 
-	@SubscribeEvent public static void registerParticles(RegisterParticleProvidersEvent event) {
-		<#list particles as particle>
-		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::provider);
-		</#list>
-	}
+	public static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(Registries.PARTICLE_TYPE, ${JavaModName}.MODID);
 
+	<#list particles as particle>
+	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ${particle.getModElement().getRegistryNameUpper()} =
+			REGISTRY.register("${particle.getModElement().getRegistryName()}", () -> new SimpleParticleType(${particle.alwaysShow}));
+	</#list>
 }
 <#-- @formatter:on -->
