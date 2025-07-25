@@ -1,8 +1,3 @@
-- ACTIVE:
-  readable_name: ACTIVE
-  type: Logic
-  other:
-    registry_name: active
 - ATTACHED:
   readable_name: ATTACHED
   type: Logic
@@ -253,6 +248,11 @@
   type: Logic
   other:
     registry_name: west
+- MAP:
+  readable_name: MAP
+  type: Logic
+  other:
+    registry_name: map
 
 - AGE_1:
   readable_name: AGE_1
@@ -359,6 +359,13 @@
     registry_name: flower_amount
     min: 1
     max: 4
+- SEGMENT_AMOUNT:
+  readable_name: SEGMENT_AMOUNT
+  type: Integer
+  other:
+    registry_name: segment_amount
+    min: 1
+    max: 4
 - HATCH:
   readable_name: HATCH
   type: Integer
@@ -443,6 +450,13 @@
     registry_name: charges
     min: 0
     max: 4
+- DRIED_GHAST_HYDRATION_LEVELS:
+  readable_name: DRIED_GHAST_HYDRATION_LEVELS
+  type: Integer
+  other:
+    registry_name: hydration
+    min: 0
+    max: 3
 - ROTATION_16:
   readable_name: ROTATION_16
   type: Integer
@@ -743,6 +757,15 @@
       - active
       - unlocking
       - ejecting
+- CREAKING_HEART_STATE:
+  readable_name: CREAKING_HEART_STATE
+  type: Enum
+  other:
+    registry_name: creaking_heart_state
+    values:
+      - uprooted
+      - dormant
+      - awake
 - NORTH_WALL:
   readable_name: NORTH_WALL
   type: Enum
@@ -815,3 +838,13 @@
       - up
       - side
       - none
+- TEST_BLOCK_MODE:
+  readable_name: TEST_BLOCK_MODE
+  type: Enum
+  other:
+    registry_name: mode
+    values:
+      - start
+      - log
+      - fail
+      - accept
