@@ -38,6 +38,8 @@
   readable_name: "Entity reach"
 - BURNING_TIME:
   readable_name: "Burning time"
+- CAMERA_DISTANCE:
+  readable_name: "Camera distance"
 - EXPLOSION_KNOCKBACK_RESISTANCE:
   readable_name: "Explosion knockback resistance"
 - FALL_DAMAGE_MULTIPLIER:
@@ -62,6 +64,10 @@
   readable_name: "Sweeping damage ratio"
 - WATER_MOVEMENT_EFFICIENCY:
   readable_name: "Water movement efficiency"
+- WAYPOINT_TRANSMIT_RANGE:
+  readable_name: "Waypoint transmit range"
+- WAYPOINT_RECEIVE_RANGE:
+  readable_name: "Waypoint receive range"
 - TEMPT_RANGE:
   readable_name: "Tempt range"
 - BLOCK_BREAK_SPEED:
