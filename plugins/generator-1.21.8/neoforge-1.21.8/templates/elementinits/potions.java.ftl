@@ -49,7 +49,5 @@ public class ${JavaModName}Potions {
 			)
 		);
 	</#list>
-
 }
-
 <#-- @formatter:on -->
