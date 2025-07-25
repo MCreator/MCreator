@@ -1,6 +1,6 @@
-name: Resource Pack for Java Edition @minecraft
+name: Data Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 21.7.14-beta
+buildfileversion: 21.8.13
 
 # gradle task definitions
 gradle:
@@ -11,17 +11,16 @@ gradle:
 source_root: "@WORKSPACEROOT/src/main/"
 res_root: "@SRCROOT"
 mod_assets_root: "@RESROOT/assets/@modid"
+mod_data_root: "@RESROOT/data/@modid"
 
-# vanilla resources
-vanilla_resources_jar: ".*-client-extra-.*.jar"
+# specific resource folders
+structures_dir: "@MODDATAROOT/structure"
 
 base_templates:
   - template: pack.mcmeta.ftl
     writer: json
     name: "@SRCROOT/pack.mcmeta"
 
-resources_setup_tasks:
-  - task: provide_default_pack_icon
-    width: 128
-    height: 128
-    to: "@RESROOT/pack.png"
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
