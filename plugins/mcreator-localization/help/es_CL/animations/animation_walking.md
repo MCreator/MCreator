@@ -1,0 +1,1 @@
+Cuando está marcada, esta animación no es una animación de «acción», sino una animación de caminar por defecto ligada al controlador de caminar de la entidad.

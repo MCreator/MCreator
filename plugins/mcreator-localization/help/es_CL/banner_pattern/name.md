@@ -1,0 +1,1 @@
+Este es el nombre del patrón, que aparece en los telares y en la descripción de estandartes y escudos.
