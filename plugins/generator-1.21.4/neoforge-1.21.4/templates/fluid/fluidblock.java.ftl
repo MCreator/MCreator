@@ -54,16 +54,18 @@ public class ${name}Block extends LiquidBlock {
 		);
 	}
 
-	<#if data.flammability != 0>
-	@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.flammability};
-	}
-	</#if>
+	<#if data.ignitedByLava>
+		<#if data.flammability != 0>
+		@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+			return ${data.flammability};
+		}
+		</#if>
 
-	<#if data.fireSpreadSpeed != 0>
-	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.fireSpreadSpeed};
-	}
+		<#if data.fireSpreadSpeed != 0>
+		@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+			return ${data.fireSpreadSpeed};
+		}
+		</#if>
 	</#if>
 
 	<#if data.lightOpacity == 0>
