@@ -1716,6 +1716,21 @@
   type: block
   texture: DEADBUSH
 
+- Blocks.BUSH:
+  readable_name: "Bush"
+  type: block
+  texture: BUSH
+
+- Blocks.SHORT_DRY_GRASS:
+  readable_name: "Short Dry Grass"
+  type: block
+  texture: SHORT_DRY_GRASS
+
+- Blocks.TALL_DRY_GRASS:
+  readable_name: "Tall Dry Grass"
+  type: block
+  texture: TALL_DRY_GRASS
+
 - Blocks.TALLGRASS#1:
   readable_name: "Short Grass"
   type: block
@@ -1836,6 +1851,16 @@
   readable_name: "Pink Petals"
   type: block
   texture: PINK_PETALS
+
+- Blocks.WILDFLOWERS:
+  readable_name: "Wildflowers"
+  type: block
+  texture: WILDFLOWERS
+
+- Blocks.LEAF_LITTER:
+  readable_name: "Leaf Litter"
+  type: block
+  texture: LEAF_LITTER
 
 - Blocks.DOUBLE_PLANT:
   readable_name: "Any Large Flower"
@@ -3091,6 +3116,11 @@
   type: block
   texture: CACTUS
 
+- Blocks.CACTUS_FLOWER:
+  readable_name: "Cactus Flower"
+  type: block
+  texture: CACTUS_FLOWER
+
 - Blocks.CLAY:
   readable_name: "Clay"
   type: block
@@ -3987,6 +4017,11 @@
   readable_name: "Potted Closed Eyeblossom"
   type: block_without_item
   texture: POTTED_CLOSED_EYEBLOSSOM
+
+- Blocks.FIREFLY_BUSH:
+  readable_name: "Firefly Bush"
+  type: block
+  texture: FIREFLY_BUSH
 
 - Blocks.DECORATED_POT:
   readable_name: "Decorated Pot"
@@ -5135,6 +5170,16 @@
   type: block
   texture: JIGSAW
 
+- Blocks.TEST_BLOCK:
+    readable_name: "Test Block"
+    type: block
+    texture: TEST_BLOCK
+
+- Blocks.TEST_INSTANCE_BLOCK:
+    readable_name: "Test Instance Block"
+    type: block
+    texture: TEST_INSTANCE_BLOCK
+
 - Blocks.KELP:
   readable_name: "Kelp"
   type: block
@@ -5169,6 +5214,11 @@
   readable_name: "Sniffer Egg"
   type: block
   texture: SNIFFER_EGG
+
+- Blocks.DRIED_GHAST:
+  readable_name: "Dried Ghast"
+  type: block
+  texture: DRIED_GHAST
 
 - Blocks.BAMBOO_SAPLING:
   readable_name: "Bamboo Sapling"
@@ -7043,6 +7093,86 @@
   type: item
   texture: SADDLE
 
+- Items.WHITE_HARNESS:
+  readable_name: "White Harness"
+  type: item
+  texture: WHITE_HARNESS
+
+- Items.ORANGE_HARNESS:
+  readable_name: "Orange Harness"
+  type: item
+  texture: ORANGE_HARNESS
+
+- Items.MAGENTA_HARNESS:
+  readable_name: "Magenta Harness"
+  type: item
+  texture: MAGENTA_HARNESS
+
+- Items.LIGHT_BLUE_HARNESS:
+  readable_name: "Light Blue Harness"
+  type: item
+  texture: LIGHT_BLUE_HARNESS
+
+- Items.YELLOW_HARNESS:
+  readable_name: "Yellow Harness"
+  type: item
+  texture: YELLOW_HARNESS
+
+- Items.LIME_HARNESS:
+  readable_name: "Lime Harness"
+  type: item
+  texture: LIME_HARNESS
+
+- Items.PINK_HARNESS:
+  readable_name: "Pink Harness"
+  type: item
+  texture: PINK_HARNESS
+
+- Items.GRAY_HARNESS:
+  readable_name: "Gray Harness"
+  type: item
+  texture: GRAY_HARNESS
+
+- Items.LIGHT_GRAY_HARNESS:
+  readable_name: "Light Gray Harness"
+  type: item
+  texture: LIGHT_GRAY_HARNESS
+
+- Items.CYAN_HARNESS:
+  readable_name: "Cyan Harness"
+  type: item
+  texture: CYAN_HARNESS
+
+- Items.PURPLE_HARNESS:
+  readable_name: "Purple Harness"
+  type: item
+  texture: PURPLE_HARNESS
+
+- Items.BLUE_HARNESS:
+  readable_name: "Blue Harness"
+  type: item
+  texture: BLUE_HARNESS
+
+- Items.BROWN_HARNESS:
+  readable_name: "Brown Harness"
+  type: item
+  texture: BROWN_HARNESS
+
+- Items.GREEN_HARNESS:
+  readable_name: "Green Harness"
+  type: item
+  texture: GREEN_HARNESS
+
+- Items.RED_HARNESS:
+  readable_name: "Red Harness"
+  type: item
+  texture: RED_HARNESS
+
+- Items.BLACK_HARNESS:
+  readable_name: "Black Harness"
+  type: item
+  texture: BLACK_HARNESS
+
 - Items.BRICK:
   readable_name: "Brick"
   type: item
@@ -7087,6 +7217,16 @@
   readable_name: "Egg"
   type: item
   texture: EGG
+
+- Items.BLUE_EGG:
+  readable_name: "Blue Egg"
+  type: item
+  texture: BLUE_EGG
+
+- Items.BROWN_EGG:
+  readable_name: "Brown Egg"
+  type: item
+  texture: BROWN_EGG
 
 - Items.GLOWSTONE_DUST:
   readable_name: "Glowstone Dust"
@@ -7503,6 +7643,11 @@
   readable_name: "Ghast Spawn Egg"
   type: item
   texture: SPAWN_EGG#56
+
+- Items.HAPPY_GHAST_SPAWN_EGG:
+  readable_name: "Happy Ghast Spawn Egg"
+  type: item
+  texture: HAPPY_GHAST_SPAWN_EGG
 
 - Items.SPAWN_EGG#57:
   readable_name: "Zombified Piglin Spawn Egg"
@@ -7966,11 +8111,23 @@
   texture: RECORD_PRECIPICE
   description: "Precipice"
 
+- Items.MUSIC_DISC_TEARS:
+  readable_name: "Music Disc"
+  type: item
+  texture: MUSIC_DISC_TEARS
+  description: "Tears"
+
 - Items.RECORD_FAR:
   readable_name: "Music Disc"
   type: item
   texture: RECORD_FAR
   description: "C418 - far"
+
+- Items.MUSIC_DISC_LAVA_CHICKEN:
+  readable_name: "Music Disc"
+  type: item
+  texture: MUSIC_DISC_LAVA_CHICKEN
+  description: "Lava Chicken"
 
 - Items.RECORD_MALL:
   readable_name: "Music Disc"
