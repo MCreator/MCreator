@@ -55,7 +55,7 @@ package ${package};
 		new ${name}();
 	}
 
-	@SubscribeEvent(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 	}
 
     @EventBusSubscriber private static class ${name}ForgeBusEvents {
