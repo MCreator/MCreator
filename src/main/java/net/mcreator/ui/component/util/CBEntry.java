@@ -43,7 +43,10 @@ public class CBEntry {
 	}
 
 	@Override public String toString() {
-		return L10N.t(translationPrefix + key);
+		if (translationPrefix != null)
+			return L10N.t(translationPrefix + key);
+		else
+			return key;
 	}
 
 	@Override public boolean equals(Object obj) {
