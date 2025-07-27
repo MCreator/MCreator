@@ -38,6 +38,7 @@ import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.component.util.CBEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -74,7 +75,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final JComboBox<String> achievementType = new JComboBox<>(new String[] { "task", "goal", "challenge" });
+
+	private final JComboBox<CBEntry> frameType = new JComboBox<>(CBEntry.createArray("elementgui.advancement.type.", "task", "goal", "challenge"));
 
 	private TextureComboBox background;
 
@@ -150,7 +152,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
 				L10N.label("elementgui.advancement.type")));
-		propertiesPanel.add(achievementType);
+		propertiesPanel.add(frameType);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
 				L10N.label("elementgui.advancement.parent")));
@@ -282,7 +284,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievementName.setText(achievement.achievementName);
 		achievementDescription.setText(achievement.achievementDescription);
 		achievementIcon.setBlock(achievement.achievementIcon);
-		achievementType.setSelectedItem(achievement.achievementType);
+		frameType.setSelectedItem(achievement.frameType);
 		parentAchievement.setSelectedItem(achievement.parent);
 		disableDisplay.setSelected(achievement.disableDisplay);
 		showPopup.setSelected(achievement.showPopup);
@@ -302,7 +304,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.achievementName = achievementName.getText();
 		achievement.achievementDescription = achievementDescription.getText();
 		achievement.achievementIcon = achievementIcon.getBlock();
-		achievement.achievementType = (String) achievementType.getSelectedItem();
+		achievement.frameType = (CBEntry) frameType.getSelectedItem();
 		achievement.parent = new AchievementEntry(mcreator.getWorkspace(), parentAchievement.getSelectedItem());
 		achievement.showPopup = showPopup.isSelected();
 		achievement.disableDisplay = disableDisplay.isSelected();

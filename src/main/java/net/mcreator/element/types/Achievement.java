@@ -29,6 +29,7 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.component.util.CBEntry;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -59,7 +60,7 @@ import java.util.List;
 	@ModElementReference @Nullable public String rewardFunction;
 	public int rewardXP;
 
-	public String achievementType;
+	public CBEntry frameType;
 	public AchievementEntry parent;
 
 	@BlocklyXML("jsontriggers") public String triggerxml;

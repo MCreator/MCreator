@@ -42,6 +42,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.generator.GTProcedureBlocks;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.*;
+import net.mcreator.ui.component.util.CBEntry;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -451,7 +452,7 @@ public class TestWorkspaceDataProvider {
 			achievement.achievementDescription = "Description of it";
 			achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
+			achievement.frameType = CBEntry.createArray("elementgui.advancement.type.", "task", "goal", "challenge")[valueIndex];
 			achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 			achievement.announceToChat = _true;

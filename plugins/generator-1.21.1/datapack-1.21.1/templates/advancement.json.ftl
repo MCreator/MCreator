@@ -24,7 +24,7 @@
             "translate": "advancements.${registryname}.descr"
           },
           </#if>
-          "frame": "${data.achievementType}",
+          "frame": "${data.frameType.getKey()}",
           "show_toast": ${data.showPopup},
           "announce_to_chat": ${data.announceToChat},
           "hidden": ${data.hideIfNotCompleted}
