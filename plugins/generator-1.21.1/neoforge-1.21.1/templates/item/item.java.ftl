@@ -58,6 +58,9 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.stayInGridWhenCrafting && (!data.recipeRemainder?? || data.recipeRemainder.isEmpty()) && data.damageCount != 0>
+				.setNoRepair()
+				</#if>
 				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
 				</#if>
@@ -126,20 +129,10 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				}
 				return retval;
 			}
-
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.damageCount != 0>
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
-			</#if>
 		</#if>
 	</#if>
 
