@@ -1481,17 +1481,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshVibrationProperties() {
-		if (sensitiveToVibration.isSelected()) {
-			vibrationSensitivityRadius.setEnabled(true);
-			vibrationalEvents.setEnabled(true);
-			canReceiveVibrationCondition.setEnabled(true);
-			onReceivedVibration.setEnabled(true);
-		} else {
-			vibrationSensitivityRadius.setEnabled(false);
-			vibrationalEvents.setEnabled(false);
-			canReceiveVibrationCondition.setEnabled(false);
-			onReceivedVibration.setEnabled(false);
-		}
+		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
+
+		vibrationSensitivityRadius.setEnabled(isSensitiveToVibration);
+		vibrationalEvents.setEnabled(isSensitiveToVibration);
+		canReceiveVibrationCondition.setEnabled(isSensitiveToVibration);
+		onReceivedVibration.setEnabled(isSensitiveToVibration);
 	}
 
 	@Override public void reloadDataLists() {
