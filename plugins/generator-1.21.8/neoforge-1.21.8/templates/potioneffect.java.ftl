@@ -164,6 +164,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		}
 	}
 	</#if>
+
 }
 </#compress>
 <#-- @formatter:on -->
