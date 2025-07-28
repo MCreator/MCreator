@@ -34,7 +34,7 @@
 
 package ${package}.world.features.treedecorators;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}FruitDecorator extends CocoaDecorator {
+@EventBusSubscriber public class ${name}FruitDecorator extends CocoaDecorator {
 
     public static MapCodec<${name}FruitDecorator> CODEC = MapCodec.unit(${name}FruitDecorator::new);
 
