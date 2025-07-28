@@ -90,7 +90,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		event.registerItem(new IClientItemExtensions() {
 			private ${name}ItemRenderer rendererInstance;
 
-			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+			@Override @OnlyIn(Dist.CLIENT) public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				if (rendererInstance == null)
 					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				return rendererInstance;
@@ -100,7 +100,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	</#if>
 
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
-	public MutableComponent getDisplayName() {
+	@Override @OnlyIn(Dist.CLIENT) public MutableComponent getDisplayName() {
 		return Component.translatable(this.getDescriptionId() + ".patterns");
 	}
 	</#if>
