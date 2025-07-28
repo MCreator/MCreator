@@ -46,22 +46,30 @@
 
 package ${package};
 
-@EventBusSubscriber public class ${name} {
+@EventBusSubscriber
+public class ${name} {
 
 	public ${name}() {
+
 	}
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent
+	public static void init(FMLCommonSetupEvent event) {
 		new ${name}();
 	}
 
-	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent
+	public static void clientLoad(FMLClientSetupEvent event) {
 	}
 
-    @EventBusSubscriber private static class ${name}ForgeBusEvents {
+    @EventBusSubscriber
+    private static class ${name}ForgeBusEvents {
 
-		@SubscribeEvent public static void serverLoad(ServerStartingEvent event) {
+		@SubscribeEvent
+		public static void serverLoad(ServerStartingEvent event) {
 		}
+
 	}
+
 }
 <#-- @formatter:on -->
