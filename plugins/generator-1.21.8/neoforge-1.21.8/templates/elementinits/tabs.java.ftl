@@ -82,6 +82,7 @@ public class ${JavaModName}Tabs {
 		</#list>
 	}
 	</#if>
+
 }
 </#compress>
 <#-- @formatter:on -->
