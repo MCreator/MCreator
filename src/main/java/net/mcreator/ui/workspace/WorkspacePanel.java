@@ -719,7 +719,7 @@ import java.util.stream.Collectors;
 		addVerticalTab(L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab(L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
-		switchToVerticalTab("mods");
+		switchToVerticalTab(WorkspacePanel.WorkspacePanelMods.class);
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -1387,7 +1387,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private class WorkspacePanelMods extends AbstractWorkspacePanel {
+	public class WorkspacePanelMods extends AbstractWorkspacePanel {
 
 		private WorkspacePanelMods(JComponent contents) {
 			super(WorkspacePanel.this);
