@@ -68,5 +68,6 @@ public class ${JavaModName}Attributes {
 			</#if>
 		</#list>
 	}
+
 }
 <#-- @formatter:on -->
