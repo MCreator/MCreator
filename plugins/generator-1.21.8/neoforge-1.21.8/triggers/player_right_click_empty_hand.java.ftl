@@ -12,11 +12,11 @@
 		</#compress></#assign>
 		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
 		if (event.getHand() != InteractionHand.MAIN_HAND) return;
-		PacketDistributor.sendToServer(new ${name}Message());
+		ClientPacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}
 
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber
 	public record ${name}Message() implements CustomPacketPayload {
 		public static final Type<${name}Message> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "procedure_${registryname}"));
 
