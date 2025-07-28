@@ -2048,7 +2048,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
-					getRandomItem(random, new String[] { "value1", "value2", "\"value3\"" })));
+					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
 			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
