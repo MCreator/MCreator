@@ -19,22 +19,18 @@
 
 package net.mcreator.generator.setup.folders;
 
-import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
-import java.util.Locale;
 
 public abstract class AbstractFolderStructure {
 
 	protected final Workspace workspace;
-	protected final GeneratorFlavor flavor;
 
-	protected AbstractFolderStructure(GeneratorFlavor flavor, Workspace workspace) {
-		this.flavor = flavor;
+	protected AbstractFolderStructure(Workspace workspace) {
 		this.workspace = workspace;
 	}
 
@@ -51,22 +47,22 @@ public abstract class AbstractFolderStructure {
 	public static AbstractFolderStructure getFolderStructure(Workspace workspace) {
 		// if the current generator of the workspace is defined, we just use the current folder structure of that generator
 		if (workspace.getGenerator() != null)
-			return new CurrentFolderStructure(workspace.getGeneratorConfiguration().getGeneratorFlavor(), workspace);
+			return new CurrentFolderStructure(workspace);
 
 		String[] currentGeneratorData = workspace.getWorkspaceSettings().getCurrentGenerator().split("-");
-		GeneratorFlavor flavor = GeneratorFlavor.valueOf(currentGeneratorData[0].toUpperCase(Locale.ENGLISH));
+		//String flavor = currentGeneratorData[0];
 		String minecraftVersion = currentGeneratorData[1];
 
 		ModuleDescriptor.Version currentVersion = ModuleDescriptor.Version.parse(minecraftVersion);
 
 		if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.19.3")) < 0) {
-			return new Pre1193FolderStructure(flavor, workspace);
+			return new Pre1193FolderStructure(workspace);
 		} else if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.21")) < 0) {
-			return new Pre1210FolderStructure(flavor, workspace);
+			return new Pre1210FolderStructure(workspace);
 		}
 
 		// if we fail to detect suitable folder structure, we just use the current folder structure
-		return new CurrentFolderStructure(flavor, workspace);
+		return new CurrentFolderStructure(workspace);
 	}
 
 }
