@@ -118,7 +118,11 @@ public class WorkspaceGeneratorSetupDialog {
 
 				dial.hideDialog();
 
-				m.getTabs().showTab(m.workspaceTab);
+				SwingUtilities.invokeLater(() -> {
+					m.getTabs().showTab(m.workspaceTab);
+					if (m.hasProjectBrowser())
+						m.getProjectBrowser().reloadTree();
+				});
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.markStateError();
