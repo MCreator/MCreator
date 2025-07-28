@@ -90,6 +90,8 @@ package ${package}.init;
 			this.block = block;
 			this.poiType = poiType;
 		}
+
 	}
+
 }
 <#-- @formatter:on -->
