@@ -60,13 +60,15 @@ public class ${name} {
 
 	@SubscribeEvent
 	public static void clientLoad(FMLClientSetupEvent event) {
+
 	}
 
     @EventBusSubscriber
-    private static class ${name}ForgeBusEvents {
+	private static class ${name}ForgeBusEvents {
 
 		@SubscribeEvent
 		public static void serverLoad(ServerStartingEvent event) {
+
 		}
 
 	}
