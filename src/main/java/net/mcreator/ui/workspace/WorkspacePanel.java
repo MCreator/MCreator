@@ -87,6 +87,8 @@ import java.util.stream.Collectors;
 
 	private final FilterModel dml = new FilterModel();
 
+	private final JPopupMenu contextMenu;
+
 	public FolderElement currentFolder;
 
 	public final JSelectableList<IElement> list;
@@ -170,7 +172,7 @@ import java.util.stream.Collectors;
 				switchFolder(fe);
 		});
 
-		JPopupMenu contextMenu = new JPopupMenu();
+		contextMenu = new JPopupMenu();
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -1458,6 +1460,10 @@ import java.util.stream.Collectors;
 		@Override public void refilterElements() {
 			dml.refilter();
 		}
+	}
+
+	public JPopupMenu getContextMenu() {
+		return contextMenu;
 	}
 
 }
