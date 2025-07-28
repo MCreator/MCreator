@@ -20,7 +20,7 @@ package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
-import net.mcreator.gradle.GradleErrorCodes;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.dialogs.ProgressDialog;
@@ -75,7 +75,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 			m.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
-				if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
+				if (taskResult == GradleResultCode.STATUS_OK) {
 					p2.markStateOk();
 
 					finalizeTheSetup(m, dial);
