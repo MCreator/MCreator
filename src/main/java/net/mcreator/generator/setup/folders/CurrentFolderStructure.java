@@ -38,8 +38,8 @@ class CurrentFolderStructure extends AbstractFolderStructure {
 
 	@Nullable private GeneratorConfiguration generatorConfiguration;
 
-	protected CurrentFolderStructure(Workspace workspace) {
-		super(workspace);
+	protected CurrentFolderStructure(GeneratorFlavor flavor, Workspace workspace) {
+		super(flavor, workspace);
 
 		if (workspace.getGenerator()
 				== null) // unknown generator, we need to guess based on the latest supported (Neo)Forge generator
