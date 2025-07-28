@@ -80,9 +80,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 				} else if (testWorkspaceName.contains("-dp-")) {
 					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
 							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.DATAPACK);
-				} else if (testWorkspaceName.contains("-rp-")) {
-					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.RESOURCEPACK);
 				} else {
 					generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
 							Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
