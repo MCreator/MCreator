@@ -20,7 +20,7 @@
 package net.mcreator.ui.variants.modmaker;
 
 import net.mcreator.gradle.GradleStateListener;
-import net.mcreator.gradle.GradleTaskResult;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.MainMenuBar;
@@ -49,7 +49,7 @@ public final class ModMaker extends MCreator {
 				workspacePanel.disableRemoving();
 			}
 
-			@Override public void taskFinished(GradleTaskResult result) {
+			@Override public void taskFinished(GradleResultCode result) {
 				workspacePanel.enableRemoving();
 			}
 		});
