@@ -34,7 +34,7 @@
 package ${package}.fluid.types;
 
 <#compress>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}FluidType extends FluidType {
+@EventBusSubscriber public class ${name}FluidType extends FluidType {
 	public ${name}FluidType() {
 		super(FluidType.Properties.create()
 			<#if data.type == "WATER">
