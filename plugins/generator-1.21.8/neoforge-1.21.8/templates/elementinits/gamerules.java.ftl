@@ -47,7 +47,8 @@ public class ${JavaModName}GameRules {
 		</#if>
 	</#list>
 
-	@SubscribeEvent public static void registerGameRules(FMLCommonSetupEvent event) {
+	@SubscribeEvent
+	public static void registerGameRules(FMLCommonSetupEvent event) {
 	<#compress>
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
