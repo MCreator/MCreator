@@ -5,6 +5,8 @@ updates:
   schedule:
     interval: weekly
   open-pull-requests-limit: 10
+  reviewers:
+  - KlemenDEV
   assignees:
   - KlemenDEV
   labels:
