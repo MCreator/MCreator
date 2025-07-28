@@ -46,7 +46,7 @@
 
 package ${package};
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class ${name} {
 
 	public ${name}() {
@@ -58,7 +58,6 @@ public class ${name} {
 		new ${name}();
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void clientLoad(FMLClientSetupEvent event) {
 
