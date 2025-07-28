@@ -41,18 +41,13 @@ public class FilteredTreeModel extends DefaultTreeModel {
 			node.setFilter(filter);
 	}
 
-	public boolean setFilter(String filter) {
-		String current = ((FilterTreeNode) root).getFilter();
-		boolean changed = !filter.equals(current);
-
+	public void setFilter(String filter) {
 		this.filter = filter;
-		if (root != null && changed) {
+		if (root != null) {
 			((FilterTreeNode) root).setFilter(filter);
 			Object[] path = { root };
 			fireTreeStructureChanged(this, path, null, null);
 		}
-
-		return changed;
 	}
 
 	public void refilter() {
