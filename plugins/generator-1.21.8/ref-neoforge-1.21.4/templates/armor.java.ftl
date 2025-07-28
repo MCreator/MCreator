@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public abstract class ${name}Item extends ArmorItem {
+@EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
 
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},
@@ -66,7 +66,7 @@ import net.minecraft.client.model.Model;
 		<#if data.enableHelmet>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"head", new ModelPart(Collections.emptyList(), Map.of(
 						"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
@@ -94,7 +94,7 @@ import net.minecraft.client.model.Model;
 		<#if data.enableBody>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.bodyModelName != "Default" && data.getBodyModel()??>
-			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"body", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.bodyModelPart},
 					"left_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartL},
@@ -121,7 +121,7 @@ import net.minecraft.client.model.Model;
 		<#if data.enableLeggings>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
-			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"left_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartL},
 					"right_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartR},
@@ -148,7 +148,7 @@ import net.minecraft.client.model.Model;
 		<#if data.enableBoots>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.bootsModelName != "Default" && data.getBootsModel()??>
-			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				return new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
 					"left_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartL},
 					"right_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartR},

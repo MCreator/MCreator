@@ -93,7 +93,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		</#if>
 	}
 
-	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+	@Override public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		for (int i = 0; i < 4; i++) {
 			double px = pos.getX() + random.nextFloat();
 			double py = pos.getY() + random.nextFloat();
