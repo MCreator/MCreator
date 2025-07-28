@@ -18,10 +18,39 @@
 
 package net.mcreator.gradle;
 
-public interface GradleStateListener {
+public enum GradleResultCode {
 
-	void taskStarted(String taskName);
+	//@formatter:off
+	STATUS_OK(0),
+	STATUS_UNKNOWN(1),
+	STATUS_UNKNOWN_ERROR(-1),
 
-	void taskFinished(GradleResultCode result);
+	JAVA_JVM_CRASH_ERROR(-11),
+	JAVA_XMX_INVALID_VALUE(-12),
+	JAVA_XMS_INVALID_VALUE(-13),
+	JAVA_JVM_HEAP_SPACE(-14),
+	JAVA_RUN_CRASHED(-15),
+
+	GRADLE_NO_INTERNET(-21),
+	GRADLE_INTERNET_INTERRUPTED(-22),
+	GRADLE_BUILD_FAILED(-23),
+	GRADLE_REOBF_FAILED(-24),
+	GRADLE_CACHEDATA_ERROR(-25),
+	GRADLE_CACHEDATA_OUTDATED(-26);
+	//@formatter:on
+
+	private final int code;
+
+	GradleResultCode(int code) {
+		this.code = code;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	@Override public String toString() {
+		return name();
+	}
 
 }
