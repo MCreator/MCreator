@@ -44,5 +44,6 @@ public class ${JavaModName}ParticleTypes {
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ${particle.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${particle.getModElement().getRegistryName()}", () -> new SimpleParticleType(${particle.alwaysShow}));
 	</#list>
+
 }
 <#-- @formatter:on -->

@@ -133,6 +133,7 @@ public class ${name}Particle extends TextureSheetParticle {
 			this.remove();
 		</#if>
 	}
+
 }
 </#compress>
 <#-- @formatter:on -->

@@ -43,5 +43,6 @@ package ${package}.init;
 		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::provider);
 		</#list>
 	}
+
 }
 <#-- @formatter:on -->
