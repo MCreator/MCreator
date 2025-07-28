@@ -37,7 +37,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -49,7 +48,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -95,7 +93,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		this.mcreator = mcreator;
 
-		tree.setCellRenderer(new ProjectBrowserCellRenderer());
+		tree.setCellRenderer(new ProjectBrowserCellRenderer(mcreator));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getBackgroundColor()).brighter()));
@@ -427,60 +425,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 
 		node.add(extDeps);
-	}
-
-	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
-
-		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
-				boolean leaf, int row, boolean hasFocus) {
-			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-
-			FilterTreeNode node = (FilterTreeNode) value;
-			if (node.getUserObject() instanceof String tsi) {
-				a.setText(tsi);
-				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
-					a.setIcon(UIRES.get("16px.package"));
-				else if (tsi.equals("Source (Gradle)"))
-					a.setIcon(UIRES.get("16px.mod"));
-				else if (tsi.equals("Textures"))
-					a.setIcon(UIRES.get("16px.textures"));
-				else if (tsi.equals("Resources (Gradle)"))
-					a.setIcon(UIRES.get("16px.resources"));
-				else if (tsi.equals("Models"))
-					a.setIcon(UIRES.get("16px.models"));
-				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
-						"MC client run folder"))
-					a.setIcon(UIRES.get("16px.minecraft"));
-				else if (tsi.equals("MC server run folder"))
-					a.setIcon(UIRES.get("16px.runserver"));
-				else if (tsi.equals("Sounds"))
-					a.setIcon(UIRES.get("16px.music"));
-				else if (tsi.equals("External libraries"))
-					a.setIcon(UIRES.get("16px.directory"));
-				else if (tsi.equals("Structures"))
-					a.setIcon(UIRES.get("16px.structures"));
-			} else if (node.getUserObject() instanceof FileNode<?> fileNode) {
-				a.setText(fileNode.data);
-				if (fileNode.data.endsWith(".java"))
-					a.setIcon(UIRES.get("16px.classro"));
-				else if (fileNode.data.startsWith("Gradle: "))
-					a.setIcon(UIRES.get("16px.ext"));
-				else if (fileNode.data.startsWith("Java "))
-					a.setIcon(UIRES.get("16px.directory"));
-				else
-					a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
-			} else if (node.getUserObject() instanceof File fil) {
-				a.setText(fil.getName());
-				a.setIcon(FileIcons.getIconForFile(fil));
-			}
-
-			if (node.getFilter() != null && !node.getFilter().isEmpty()) {
-				a.setText("<html>" + getText().replace(node.getFilter(), "<b>" + node.getFilter() + "</b>"));
-			}
-
-			return a;
-		}
 	}
 
 }
