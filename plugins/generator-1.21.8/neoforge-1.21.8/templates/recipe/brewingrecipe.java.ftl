@@ -68,5 +68,5 @@ package ${package}.recipe.brewing;
 		}
 		return ItemStack.EMPTY;
 	}
+
 }
-<#-- @formatter:on -->
