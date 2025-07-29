@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class ${JavaModName}GameRules {
 
 	<#list gamerules as gamerule>

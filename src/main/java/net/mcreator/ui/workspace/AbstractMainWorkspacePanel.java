@@ -185,7 +185,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		}
 	}
 
-	public void switchToVerticalTab(String id) {
+	public <T extends AbstractWorkspacePanel> void switchToVerticalTab(Class<T> id) {
 		switchToVerticalTab(sectionTabs.get(id));
 	}
 

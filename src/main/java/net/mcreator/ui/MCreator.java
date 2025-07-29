@@ -226,7 +226,7 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 	}
 
-	public void initializeMCreator() {
+	private void initializeMCreator() {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {

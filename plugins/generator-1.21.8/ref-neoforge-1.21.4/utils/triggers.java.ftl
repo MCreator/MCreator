@@ -42,7 +42,7 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
-		@Override @OnlyIn(Dist.CLIENT) public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
+		@Override public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, context, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : Minecraft.getInstance().player;
@@ -213,7 +213,7 @@
 
 <#macro hasGlow procedure="">
 <#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
-@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
+@Override public boolean isFoil(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
 		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
 		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
@@ -353,7 +353,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override @OnlyIn(Dist.CLIENT) public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
+@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 		"x": "pos.getX()",

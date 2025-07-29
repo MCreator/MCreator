@@ -356,7 +356,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	</#if>
 
 	<#if data.tintType != "No tint">
-		@OnlyIn(Dist.CLIENT) public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
+		public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			event.getBlockColors().register((bs, world, pos, index) -> {
 				<#if data.tintType == "Default foliage">
 					return FoliageColor.FOLIAGE_DEFAULT;

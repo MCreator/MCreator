@@ -284,7 +284,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		<#if data.hasSlotEvents()>
 			private void slotChanged(int slotid, int ctype, int meta) {
 				if(this.world != null && this.world.isClientSide()) {
-					PacketDistributor.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
+					ClientPacketDistributor.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
 					${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 				}
 			}

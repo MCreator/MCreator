@@ -74,14 +74,14 @@ package ${package}.client.screens;
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
-                event.getGuiGraphics().blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${data.baseTexture}"), 0, 0, 0, 0, w, h, w, h);
+                event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.parse("${modid}:textures/screens/${data.baseTexture}"), 0, 0, 0, 0, w, h, w, h);
             </#if>
 
             <#list data.getComponentsOfType("Image") as component>
                 <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
-                    event.getGuiGraphics().blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.image}"), <@calculatePosition component/>, 0, 0,
+                    event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.parse("${modid}:textures/screens/${component.image}"), <@calculatePosition component/>, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>
@@ -89,7 +89,7 @@ package ${package}.client.screens;
 
         	<#list data.getComponentsOfType("Sprite") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-					event.getGuiGraphics().blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"), <@calculatePosition component/>,
+					event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"), <@calculatePosition component/>,
 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 							<@getSpriteByIndex component "width"/>, 0
 						<#else>

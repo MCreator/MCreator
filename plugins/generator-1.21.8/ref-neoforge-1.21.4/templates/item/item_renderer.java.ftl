@@ -54,7 +54,7 @@ package ${package}.client.renderer.item;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
 
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
+	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
 		event.register(ResourceLocation.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);
 	}
 
@@ -93,7 +93,7 @@ public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
 		return type == ItemDisplayContext.GUI || type == ItemDisplayContext.FIXED;
 	}
 
-	@OnlyIn(Dist.CLIENT) public record Unbaked(int index) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(int index) implements SpecialModelRenderer.Unbaked {
 		public static final MapCodec<${name}ItemRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index)
 		).apply(instance, ${name}ItemRenderer.Unbaked::new));
