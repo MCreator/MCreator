@@ -1,5 +1,5 @@
 <#include "procedures.java.ftl">
-@EventBusSubscriber(value = {Dist.CLIENT}) public class ${name}Procedure {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Procedure {
 	@SubscribeEvent public static void onRightClick(PlayerInteractEvent.RightClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
