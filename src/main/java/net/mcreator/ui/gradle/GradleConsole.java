@@ -589,7 +589,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
 
 					succeed();
-					taskComplete(GradleErrorCodes.STATUS_OK);
+					taskComplete(GradleResultCode.STATUS_OK);
 				});
 			}
 
@@ -639,7 +639,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
 										options[0]);
 								if (reply == 0 || reply == 1) {
-									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
+									taskComplete(GradleResultCode.GRADLE_CACHEDATA_ERROR);
 
 									ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
 											workspaceReportedFailingGradleDependencies);
@@ -662,7 +662,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 						append(" ");
 						append("TASK CANCELED", COLOR_LOGLEVEL_WARN);
 						succeed();
-						taskComplete(GradleErrorCodes.STATUS_OK);
+						taskComplete(GradleResultCode.STATUS_OK);
 						return;
 					} else if (failure.getCause().getClass().getSimpleName().equals("DaemonDisappearedException")
 							// workaround for MDK bug with gradle daemon
@@ -670,7 +670,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 						append(" ");
 						append("RUN COMPLETE", COLOR_TASK_COMPLETE);
 						succeed();
-						taskComplete(GradleErrorCodes.STATUS_OK);
+						taskComplete(GradleResultCode.STATUS_OK);
 						return;
 					} else {
 						String exception = ExceptionUtils.getFullStackTrace(failure);
@@ -687,14 +687,14 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 					fail();
 
-					int resultcode = 0;
+					GradleResultCode resultcode = GradleResultCode.STATUS_OK;
 
 					if (!errorhandled.get())
 						resultcode = GradleErrorDecoder.processErrorAndShowMessage(taskOut.toString(),
 								taskErr.toString(), ref);
 
-					if (resultcode == GradleErrorCodes.STATUS_OK)
-						resultcode = GradleErrorCodes.GRADLE_BUILD_FAILED;
+					if (resultcode == GradleResultCode.STATUS_OK)
+						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
 					taskComplete(resultcode);
 				});
@@ -720,7 +720,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 				}
 			}
 
-			private void taskComplete(int mcreatorGradleStatus) {
+			private void taskComplete(GradleResultCode mcreatorGradleStatus) {
 				appendPlainText("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
 						Color.gray);
 				append(" ");
@@ -737,10 +737,10 @@ public class GradleConsole extends JPanel implements ISearchable {
 				}
 
 				if (taskSpecificListener != null)
-					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));
+					taskSpecificListener.onTaskFinished(mcreatorGradleStatus);
 
 				stateListeners.forEach(
-						listener -> listener.taskFinished(new GradleTaskResult("", mcreatorGradleStatus)));
+						listener -> listener.taskFinished(mcreatorGradleStatus));
 
 				// reload mods view to display errors
 				ref.reloadWorkspaceTabContents();

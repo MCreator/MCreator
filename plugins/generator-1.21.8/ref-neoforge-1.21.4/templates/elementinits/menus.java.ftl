@@ -57,7 +57,7 @@ public class ${JavaModName}Menus {
 			} else if (player.level().isClientSide) {
 				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor && needClientUpdate)
 					accessor.updateMenuState(elementType, name, elementState);
-				PacketDistributor.sendToServer(new MenuStateUpdateMessage(elementType, name, elementState));
+				ClientPacketDistributor.sendToServer(new MenuStateUpdateMessage(elementType, name, elementState));
 			}
 		}
 

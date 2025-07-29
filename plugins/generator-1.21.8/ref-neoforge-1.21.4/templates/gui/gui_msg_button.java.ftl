@@ -33,7 +33,7 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
+@EventBusSubscriber public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
 
 	public static final Type<${name}ButtonMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_buttons"));
 

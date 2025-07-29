@@ -504,14 +504,23 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		}
 	}
 
+	private List<DefaultMutableTreeNode> preSearchState = null;
+
 	@Override public void refilterElements() {
 		if (filterProvider != null) {
 			String filter = filterProvider.get();
 			if (filter.length() >= 3) {
+				if (preSearchState == null)
+					preSearchState = TreeUtils.getExpansionState(tree);
+
 				model.setFilter(filter);
 				SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 			} else {
 				model.setFilter("");
+				if (preSearchState != null) {
+					TreeUtils.setExpansionState(tree, preSearchState);
+					preSearchState = null;
+				}
 			}
 		}
 	}

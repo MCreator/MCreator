@@ -43,7 +43,7 @@
 package ${package}.init;
 
 <#if vanillaTabs?has_content>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 <#compress>
 public class ${JavaModName}Tabs {

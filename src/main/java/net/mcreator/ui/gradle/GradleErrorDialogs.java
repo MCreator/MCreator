@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.gradle;
 
-import net.mcreator.gradle.GradleErrorCodes;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -36,27 +36,27 @@ public class GradleErrorDialogs {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Error Dialogs");
 
-	public static int showErrorDialog(int errorCode, MCreator whereToShow) {
+	public static GradleResultCode showErrorDialog(GradleResultCode errorCode, MCreator whereToShow) {
 		SwingUtilities.invokeLater(() -> {
-			if (errorCode == GradleErrorCodes.JAVA_JVM_CRASH_ERROR)
+			if (errorCode == GradleResultCode.JAVA_JVM_CRASH_ERROR)
 				showJVMCrashErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.JAVA_XMX_INVALID_VALUE)
+			else if (errorCode == GradleResultCode.JAVA_XMX_INVALID_VALUE)
 				showXMXInvalidErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.JAVA_XMS_INVALID_VALUE)
+			else if (errorCode == GradleResultCode.JAVA_XMS_INVALID_VALUE)
 				showXMSInvalidErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.JAVA_JVM_HEAP_SPACE)
+			else if (errorCode == GradleResultCode.JAVA_JVM_HEAP_SPACE)
 				showJVMHeapSpaceErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.GRADLE_NO_INTERNET)
+			else if (errorCode == GradleResultCode.GRADLE_NO_INTERNET)
 				showNoInternetErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.GRADLE_INTERNET_INTERRUPTED)
+			else if (errorCode == GradleResultCode.GRADLE_INTERNET_INTERRUPTED)
 				showInternetInterruptedErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.GRADLE_BUILD_FAILED)
+			else if (errorCode == GradleResultCode.GRADLE_BUILD_FAILED)
 				showGradleBuildFailedErrorDialog(whereToShow);
-			else if (errorCode == GradleErrorCodes.GRADLE_REOBF_FAILED)
+			else if (errorCode == GradleResultCode.GRADLE_REOBF_FAILED)
 				showGradleReobfFailedErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_ERROR)
+			else if (errorCode == GradleResultCode.GRADLE_CACHEDATA_ERROR)
 				showGradleCacheDataErrorDialog(whereToShow, errorCode);
-			else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED)
+			else if (errorCode == GradleResultCode.GRADLE_CACHEDATA_OUTDATED)
 				showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 			else
 				LOG.warn("Error with code {} was reported, but no response is registered.", errorCode);
@@ -65,13 +65,13 @@ public class GradleErrorDialogs {
 		return errorCode;
 	}
 
-	private static String applyAppendx(String msg, int errorCode) {
-		String appendx = "<small><br><br><font color=gray>" + L10N.t("gradle.errors.error") + GradleErrorCodes.toString(
-				errorCode) + " [" + errorCode + "]";
+	private static String applyAppendx(String msg, GradleResultCode errorCode) {
+		String appendx = "<small><br><br><font color=gray>" + L10N.t("gradle.errors.error") + errorCode + " ["
+				+ errorCode.getCode() + "]";
 		return msg + appendx;
 	}
 
-	private static void showGradleCacheDataErrorDialog(MCreator whereToShow, int errorCode) {
+	private static void showGradleCacheDataErrorDialog(MCreator whereToShow, GradleResultCode errorCode) {
 		if (PreferencesManager.PREFERENCES.gradle.offline.get()) {
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 		} else {
@@ -87,7 +87,7 @@ public class GradleErrorDialogs {
 		}
 	}
 
-	private static void showGradleCacheOutdatedDialogOfflineMode(Window whereToShow, int errorCode) {
+	private static void showGradleCacheOutdatedDialogOfflineMode(Window whereToShow, GradleResultCode errorCode) {
 		String msg = L10N.t("gradle.errors.cache_outdated");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
@@ -99,20 +99,20 @@ public class GradleErrorDialogs {
 		}
 	}
 
-	private static void showGradleReobfFailedErrorDialog(Window whereToShow, int errorCode) {
+	private static void showGradleReobfFailedErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.reobf_failed"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
-	private static void showInternetInterruptedErrorDialog(Window whereToShow, int errorCode) {
+	private static void showInternetInterruptedErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.internet_interrupted"), JOptionPane.ERROR_MESSAGE, null,
 				errorCode);
 	}
 
-	private static void showNoInternetErrorDialog(Window whereToShow, int errorCode) {
+	private static void showNoInternetErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.no_internet"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
-	private static void showJVMHeapSpaceErrorDialog(Window whereToShow, int errorCode) {
+	private static void showJVMHeapSpaceErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		String msg = L10N.t("gradle.errors.jvm_heap_space");
 
 		String[] options = { L10N.t("gradle.errors.open_options"), L10N.t("gradle.errors.do_nothing") };
@@ -124,15 +124,15 @@ public class GradleErrorDialogs {
 		}
 	}
 
-	private static void showXMSInvalidErrorDialog(Window whereToShow, int errorCode) {
+	private static void showXMSInvalidErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.xms_invalid"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
-	private static void showXMXInvalidErrorDialog(Window whereToShow, int errorCode) {
+	private static void showXMXInvalidErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.xmx_invalid"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
-	private static void showJVMCrashErrorDialog(Window whereToShow, int errorCode) {
+	private static void showJVMCrashErrorDialog(Window whereToShow, GradleResultCode errorCode) {
 		showErrorDialog(whereToShow, L10N.t("gradle.errors.jvm_crashed"), JOptionPane.ERROR_MESSAGE, null, errorCode);
 	}
 
@@ -146,7 +146,7 @@ public class GradleErrorDialogs {
 		}
 	}
 
-	private static void showErrorDialog(Window window, String msg, int type, Icon icon, int errorCode) {
+	private static void showErrorDialog(Window window, String msg, int type, Icon icon, GradleResultCode errorCode) {
 		JOptionPane.showMessageDialog(window, applyAppendx(msg, errorCode), L10N.t("gradle.errors.title"), type, icon);
 	}
 
