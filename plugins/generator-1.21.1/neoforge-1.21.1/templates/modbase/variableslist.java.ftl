@@ -5,7 +5,7 @@ import ${package}.${JavaModName};
 
 import net.minecraft.nbt.Tag;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
+@EventBusSubscriber public class ${JavaModName}Variables {
 
 	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
 

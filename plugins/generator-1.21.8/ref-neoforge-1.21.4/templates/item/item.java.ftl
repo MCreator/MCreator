@@ -37,7 +37,7 @@ package ${package}.item;
 
 <#compress>
 <#if data.hasCustomEatResultItem()>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
 

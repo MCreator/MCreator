@@ -55,7 +55,7 @@ package ${package}.client.renderer.item;
         model.update(renderState, itemStack, modelResolver, displayContext, level, entity, seed);
     }
 
-    @OnlyIn(Dist.CLIENT) public record FloatEntry(RangeSelectItemModelProperty property, float value) implements PredicateEntry {
+    public record FloatEntry(RangeSelectItemModelProperty property, float value) implements PredicateEntry {
         public static final Codec<LegacyOverrideSelectItemModel.FloatEntry> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 RangeSelectItemModelProperties.MAP_CODEC.fieldOf("property").forGetter(LegacyOverrideSelectItemModel.FloatEntry::property),
@@ -68,7 +68,7 @@ package ${package}.client.renderer.item;
         }
     }
 
-    @OnlyIn(Dist.CLIENT) public record BoolEntry(ConditionalItemModelProperty property, boolean value) implements PredicateEntry {
+    public record BoolEntry(ConditionalItemModelProperty property, boolean value) implements PredicateEntry {
         public static final Codec<LegacyOverrideSelectItemModel.BoolEntry> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 ConditionalItemModelProperties.MAP_CODEC.fieldOf("property").forGetter(LegacyOverrideSelectItemModel.BoolEntry::property),
@@ -81,7 +81,7 @@ package ${package}.client.renderer.item;
         }
     }
 
-    @OnlyIn(Dist.CLIENT) public interface PredicateEntry {
+    public interface PredicateEntry {
         Codec<LegacyOverrideSelectItemModel.PredicateEntry> CODEC = Codec.either(
             LegacyOverrideSelectItemModel.FloatEntry.CODEC,
             LegacyOverrideSelectItemModel.BoolEntry.CODEC
@@ -96,7 +96,7 @@ package ${package}.client.renderer.item;
         boolean test(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext);
     }
 
-    @OnlyIn(Dist.CLIENT) public record ModelOverride(List<PredicateEntry> predicate, ItemModel.Unbaked model) {
+    public record ModelOverride(List<PredicateEntry> predicate, ItemModel.Unbaked model) {
         public static final Codec<LegacyOverrideSelectItemModel.ModelOverride> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                 LegacyOverrideSelectItemModel.PredicateEntry.CODEC.listOf().fieldOf("predicate").forGetter(LegacyOverrideSelectItemModel.ModelOverride::predicate),
@@ -112,7 +112,7 @@ package ${package}.client.renderer.item;
         }
     }
 
-    @OnlyIn(Dist.CLIENT) public record Unbaked(List<LegacyOverrideSelectItemModel.ModelOverride> overrides, ItemModel.Unbaked fallback) implements ItemModel.Unbaked {
+    public record Unbaked(List<LegacyOverrideSelectItemModel.ModelOverride> overrides, ItemModel.Unbaked fallback) implements ItemModel.Unbaked {
         public static final MapCodec<LegacyOverrideSelectItemModel.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                 LegacyOverrideSelectItemModel.ModelOverride.CODEC.listOf().fieldOf("overrides").forGetter(LegacyOverrideSelectItemModel.Unbaked::overrides),
@@ -137,7 +137,7 @@ package ${package}.client.renderer.item;
         }
     }
 
-    @SubscribeEvent @OnlyIn(Dist.CLIENT) public static void registerItemModelTypes(RegisterItemModelsEvent event) {
+    @SubscribeEvent public static void registerItemModelTypes(RegisterItemModelsEvent event) {
         event.register(ResourceLocation.parse("${modid}:legacy_overrides"), LegacyOverrideSelectItemModel.Unbaked.MAP_CODEC);
     }
 

@@ -87,6 +87,8 @@ import java.util.stream.Collectors;
 
 	private final FilterModel dml = new FilterModel();
 
+	private final JPopupMenu contextMenu;
+
 	public FolderElement currentFolder;
 
 	public final JSelectableList<IElement> list;
@@ -170,7 +172,7 @@ import java.util.stream.Collectors;
 				switchFolder(fe);
 		});
 
-		JPopupMenu contextMenu = new JPopupMenu();
+		contextMenu = new JPopupMenu();
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -717,7 +719,7 @@ import java.util.stream.Collectors;
 		addVerticalTab(L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab(L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
-		switchToVerticalTab("mods");
+		switchToVerticalTab(WorkspacePanel.WorkspacePanelMods.class);
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -1385,7 +1387,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private class WorkspacePanelMods extends AbstractWorkspacePanel {
+	public class WorkspacePanelMods extends AbstractWorkspacePanel {
 
 		private WorkspacePanelMods(JComponent contents) {
 			super(WorkspacePanel.this);
@@ -1458,6 +1460,10 @@ import java.util.stream.Collectors;
 		@Override public void refilterElements() {
 			dml.refilter();
 		}
+	}
+
+	public JPopupMenu getContextMenu() {
+		return contextMenu;
 	}
 
 }
