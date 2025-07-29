@@ -39,7 +39,7 @@ public class BlockItemIcons {
 
 	public static void init() {
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		Map<String, ImageIcon> tmp = PluginLoader.INSTANCE.getResources("datalists.icons", Pattern.compile(".*\\.png"))
+		Map<String, ImageIcon> tmp = PluginLoader.INSTANCE.getResources("datalists.icons", Pattern.compile(".*\\.png$"))
 				.parallelStream().collect(Collectors.toMap(
 						resource -> FilenameUtilsPatched.removeExtension(FilenameUtilsPatched.getName(resource)),
 						resource -> new ImageIcon(
