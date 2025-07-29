@@ -158,12 +158,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-			guiGraphics.blit(RenderType::guiTextured, texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+			guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
+				guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -172,7 +172,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(RenderType::guiTextured, ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
+				guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
@@ -273,11 +273,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				</#if>
 				<@buttonOnClick component/>
 			) {
-				@Override public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
+				@Override public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 					<#if hasProcedure(component.displayCondition)>
+					int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
+					int y = ${name}Screen.this.y;
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
-					guiGraphics.blit(RenderType::guiTextured, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+					guiGraphics.blit(RenderPipelines.GUI_TEXTURED, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
 
@@ -326,7 +328,7 @@ e -> {
 		int x = ${name}Screen.this.x; <#-- #5582 - x and y provided by buttons are in-GUI, not in-world coordinates -->
 		int y = ${name}Screen.this.y;
 		if (<@procedureOBJToConditionCode component.displayCondition/>) {
-			PacketDistributor.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+			ClientPacketDistributor.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>

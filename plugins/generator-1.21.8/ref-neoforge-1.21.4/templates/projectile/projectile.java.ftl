@@ -67,7 +67,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			setKnockback(EnchantmentHelper.getItemEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.KNOCKBACK), firedFromWeapon));
 	}
 
-	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
+	@Override public ItemStack getItem() {
 		return PROJECTILE_ITEM;
 	}
 

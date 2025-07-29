@@ -54,7 +54,7 @@ package ${package}.entity;
 		livingEntity.setArrowCount(livingEntity.getArrowCount() - 1);
 	}
 
-	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
+	@Override public ItemStack getItem() {
 		return PROJECTILE_ITEM;
 	}
 

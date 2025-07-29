@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT}) public class ${JavaModName}Models {
+@EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}Models {
 
 	@SubscribeEvent public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		<#list javamodels as model>
