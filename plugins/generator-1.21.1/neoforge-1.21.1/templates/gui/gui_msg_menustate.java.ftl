@@ -33,7 +33,7 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record MenuStateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
+@EventBusSubscriber public record MenuStateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
 
 	public static final Type<MenuStateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "guistate_update"));
 
