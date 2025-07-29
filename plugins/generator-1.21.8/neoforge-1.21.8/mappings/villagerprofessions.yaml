@@ -1,5 +1,5 @@
 _default: VillagerProfession.ARMORER
-_mcreator_map_template: "@JavaModNameVillagerProfessions.@REGISTRYNAME.get()"
+_mcreator_map_template: "ResourceKey.create(Registries.VILLAGER_PROFESSION, ResourceLocation.parse(\"@modid:@registryname\"))"
 ARMORER: VillagerProfession.ARMORER
 BUTCHER: VillagerProfession.BUTCHER
 CARTOGRAPHER: VillagerProfession.CARTOGRAPHER
