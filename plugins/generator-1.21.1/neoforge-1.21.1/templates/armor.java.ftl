@@ -38,7 +38,7 @@ package ${package}.item;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public abstract class ${name}Item extends ArmorItem {
+@EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
 
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
 

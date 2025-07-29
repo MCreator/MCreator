@@ -39,7 +39,7 @@ package ${package}.item;
 
 <#compress>
 <#if hasCustomJAVAModels>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
 	<#if data.hasBannerPatterns()>
