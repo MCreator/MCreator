@@ -38,7 +38,7 @@
 
 package ${package}.init;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
+@EventBusSubscriber public class ${JavaModName}VillagerProfessions {
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
 
@@ -58,7 +58,7 @@ package ${package}.init;
 
 		return PROFESSIONS.register(name, () -> {
 			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.value() == POI_TYPES.get(name).poiType.value());
-			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
+			return new VillagerProfession(Component.translatable("entity.villager." + ${JavaModName}.MODID + "." + name), poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
 		});
 	}
 
