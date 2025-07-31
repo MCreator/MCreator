@@ -37,16 +37,16 @@ mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-#sounds_dir: "@MODASSETSROOT/sounds"
-#structures_dir: "@MODDATAROOT/structure"
-#block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
-#entity_textures_dir: "@MODASSETSROOT/textures/entities"
-#effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
+sounds_dir: "@MODASSETSROOT/sounds"
+structures_dir: "@MODDATAROOT/structure"
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
 vanilla_resources_jar: ".*-client-extra-.*.jar"
@@ -60,16 +60,16 @@ base_templates:
     usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/neoforge.mods.toml"
-#  - template: pack.mcmeta.ftl # loaded from datapack generator
-#    writer: json
-#    name: "@RESROOT/pack.mcmeta"
-#  - template: modbase/sounds.json.ftl
-#    writer: json
-#    name: "@MODASSETSROOT/sounds.json"
-#    condition: hasSounds()
-#  - template: modbase/sounds.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
-#    condition: hasSounds()
+  - template: pack.mcmeta.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
@@ -83,9 +83,9 @@ base_templates:
 #    condition_any:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
 #      - "${w.hasElementsOfType('feature')}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
 #  - template: modbase/enumextensions.json.ftl
 #    writer: json
 #    name: "@RESROOT/META-INF/enumextensions.json"
@@ -97,26 +97,26 @@ base_templates:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
 #    name: "@RESROOT/@modid.mixins.json"
 
-#java_models:
-#  key: mojmap-1.21.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-1.21.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
-#  - task: copy_model_animations
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javaanimation.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+  - task: copy_model_animations
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javaanimation.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model/animations"
 
-#tags:
-#  template: tags.json.ftl # loaded from datapack generator
-#  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+tags:
+  template: tags.json.ftl # loaded from datapack generator
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json
@@ -127,9 +127,9 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-#  - task: copy_models
-#    type: OBJ_referencetextures
-#    to: "@MODASSETSROOT/models/item"
-#  - task: copy_models
-#    type: JSON_noinlinetextures
-#    to: "@MODASSETSROOT/models/custom"
+  - task: copy_models
+    type: OBJ_referencetextures
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

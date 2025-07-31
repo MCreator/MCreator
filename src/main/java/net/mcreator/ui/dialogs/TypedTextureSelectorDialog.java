@@ -152,8 +152,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pn.add("South", buttons);
 
 		addWindowListener(new WindowAdapter() {
-			@Override public void windowOpened(WindowEvent e) {
-				super.windowOpened(e);
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
 				reloadList();
 			}
 		});

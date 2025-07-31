@@ -104,33 +104,16 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		jtf1.getDocument().addDocumentListener(new DocumentListener() {
 
-			boolean searchInAction = false;
-
-			private void updateSearch() {
-				if (jtf1.getText().trim().length() >= 3) {
-					if (!searchInAction) {
-						new Thread(() -> {
-							searchInAction = true;
-							mods.setFilter(jtf1.getText().trim());
-							SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
-							searchInAction = false;
-						}, "ReferenceSearch").start();
-					}
-				} else {
-					mods.setFilter("");
-				}
-			}
-
 			@Override public void insertUpdate(DocumentEvent e) {
-				updateSearch();
+				updateSearch(true);
 			}
 
 			@Override public void removeUpdate(DocumentEvent e) {
-				updateSearch();
+				updateSearch(true);
 			}
 
 			@Override public void changedUpdate(DocumentEvent e) {
-				updateSearch();
+				updateSearch(true);
 			}
 		});
 
@@ -206,109 +189,129 @@ public class WorkspaceFileBrowser extends JPanel {
 	 * Reloads all the project files.
 	 */
 	public synchronized void reloadTree() {
-		if (jtf1.getText().isEmpty()) {
-			List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
+		// Only reload the tree if we are visible in the UI
+		if (!isShowing())
+			return;
 
-			FilterTreeNode root = new FilterTreeNode("");
-			FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
+		List<DefaultMutableTreeNode> state = TreeUtils.getExpansionState(tree);
 
-			sourceCode = new FilterTreeNode("Source (Gradle)");
-			JFileTree.addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
-			node.add(sourceCode);
+		FilterTreeNode root = new FilterTreeNode("");
+		FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
 
-			currRes = new FilterTreeNode("Resources (Gradle)");
-			JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
-			node.add(currRes);
+		sourceCode = new FilterTreeNode("Source (Gradle)");
+		JFileTree.addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
+		node.add(sourceCode);
 
-			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
-					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode sounds = new FilterTreeNode("Sounds");
-				JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
-				node.add(sounds);
-			}
+		currRes = new FilterTreeNode("Resources (Gradle)");
+		JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
+		node.add(currRes);
 
-			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
-					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode structures = new FilterTreeNode("Structures");
-				JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
-				node.add(structures);
-			}
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds") != GeneratorStats.CoverageStatus.NONE) {
+			FilterTreeNode sounds = new FilterTreeNode("Sounds");
+			JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
+			node.add(sounds);
+		}
 
-			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json")
-					!= GeneratorStats.CoverageStatus.NONE
-					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-					!= GeneratorStats.CoverageStatus.NONE
-					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode models = new FilterTreeNode("Models");
-				JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
-				node.add(models);
-			}
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
+				!= GeneratorStats.CoverageStatus.NONE) {
+			FilterTreeNode structures = new FilterTreeNode("Structures");
+			JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
+			node.add(structures);
+		}
 
-			if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
-				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
-				JFileTree.addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
-				node.add(debugFolder);
-			}
+		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json") != GeneratorStats.CoverageStatus.NONE
+				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+				!= GeneratorStats.CoverageStatus.NONE
+				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+				!= GeneratorStats.CoverageStatus.NONE) {
+			FilterTreeNode models = new FilterTreeNode("Models");
+			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
+			node.add(models);
+		}
 
-			File[] rootFiles = mcreator.getWorkspaceFolder().listFiles();
-			for (File file : rootFiles != null ? rootFiles : new File[0]) {
-				if (file.isFile() && !file.isHidden() && !file.getName().startsWith("."))
-					if (!file.getName().startsWith("gradlew") && !file.getName().endsWith(".mcreator"))
-						node.add(new FilterTreeNode(file));
-			}
+		if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
+			FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
+			JFileTree.addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
+			node.add(debugFolder);
+		}
 
-			root.add(node);
+		File[] rootFiles = mcreator.getWorkspaceFolder().listFiles();
+		for (File file : rootFiles != null ? rootFiles : new File[0]) {
+			if (file.isFile() && !file.isHidden() && !file.getName().startsWith("."))
+				if (!file.getName().startsWith("gradlew") && !file.getName().endsWith(".mcreator"))
+					node.add(new FilterTreeNode(file));
+		}
 
-			File clientRunDir = mcreator.getFolderManager().getClientRunDir();
-			File serverRunDir = mcreator.getFolderManager().getServerRunDir();
-			if (clientRunDir.equals(serverRunDir)) {
-				if (clientRunDir.isDirectory()) {
-					FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
-					JFileTree.addNodes(minecraft, clientRunDir, true);
-					root.add(minecraft);
-				}
-			} else {
-				if (clientRunDir.isDirectory()) {
-					FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
-					JFileTree.addNodes(minecraft, clientRunDir, true);
-					root.add(minecraft);
-				}
-				if (serverRunDir.isDirectory()) {
-					FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
-					JFileTree.addNodes(minecraft, serverRunDir, true);
-					root.add(minecraft);
-				}
-			}
+		root.add(node);
 
-			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-					== GeneratorFlavor.BaseLanguage.JAVA)
-				loadExtSources(root);
-
-			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
-					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
-				JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
+		File clientRunDir = mcreator.getFolderManager().getClientRunDir();
+		File serverRunDir = mcreator.getFolderManager().getServerRunDir();
+		if (clientRunDir.equals(serverRunDir)) {
+			if (clientRunDir.isDirectory()) {
+				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+				JFileTree.addNodes(minecraft, clientRunDir, true);
 				root.add(minecraft);
 			}
+		} else {
+			if (clientRunDir.isDirectory()) {
+				FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
+				JFileTree.addNodes(minecraft, clientRunDir, true);
+				root.add(minecraft);
+			}
+			if (serverRunDir.isDirectory()) {
+				FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
+				JFileTree.addNodes(minecraft, serverRunDir, true);
+				root.add(minecraft);
+			}
+		}
 
-			mods.setRoot(root);
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA)
+			loadExtSources(root);
 
-			if (initial) {
-				SerializableTreeExpansionState expansionState = mcreator.getWorkspaceUserSettings().projectBrowserState;
-				if (expansionState != null)
-					expansionState.applyToTree(tree);
-				else
-					tree.expandPath(new TreePath(new Object[] { root, node }));
-				initial = false;
-			} else {
-				TreeUtils.setExpansionState(tree, state);
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
+				&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
+			FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
+			JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
+			root.add(minecraft);
+		}
+
+		mods.setRoot(root);
+
+		if (initial) {
+			SerializableTreeExpansionState expansionState = mcreator.getWorkspaceUserSettings().projectBrowserState;
+			if (expansionState != null)
+				expansionState.applyToTree(tree);
+			else
+				tree.expandPath(new TreePath(new Object[] { root, node }));
+			initial = false;
+		} else {
+			TreeUtils.setExpansionState(tree, state);
+		}
+
+		updateSearch(false);
+	}
+
+	private List<DefaultMutableTreeNode> preSearchState = null;
+
+	private synchronized void updateSearch(boolean clearFilter) {
+		if (jtf1.getText().trim().length() >= 3) {
+			if (preSearchState == null)
+				preSearchState = TreeUtils.getExpansionState(tree);
+
+			mods.setFilter(jtf1.getText().trim());
+			TreeUtils.expandAllNodes(tree, 0, tree.getRowCount());
+		} else if (clearFilter) {
+			mods.setFilter("");
+			if (preSearchState != null) {
+				TreeUtils.setExpansionState(tree, preSearchState);
+				preSearchState = null;
 			}
 		}
 	}
 
 	/**
-	 * If a file is selected, opens this file in built-in code editor if its type is supported, otherwise calls the
+	 * If a file is selected, opens this file in the built-in code editor if its type is supported, otherwise calls the
 	 * program assigned to that file type.
 	 *
 	 * @param forceExpansion If selected node represents a directory and is expanded, value of <i>{@code true}</i>

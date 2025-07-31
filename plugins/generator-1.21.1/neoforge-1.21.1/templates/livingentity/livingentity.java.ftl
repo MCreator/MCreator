@@ -179,7 +179,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	@Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		<#list data.entityDataEntries as entry>
-			builder.define(DATA_${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
+			builder.define(DATA_${entry.property().getName()}, ${entry.value()?is_string?then("\"" + JavaConventions.escapeStringForJava(entry.value()) + "\"", entry.value())});
 		</#list>
 	}
 	</#if>

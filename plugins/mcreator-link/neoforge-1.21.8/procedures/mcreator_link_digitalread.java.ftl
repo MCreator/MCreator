@@ -1,0 +1,1 @@
+(CurrentDevice.digitalRead((int)${input$pin})!=0)
