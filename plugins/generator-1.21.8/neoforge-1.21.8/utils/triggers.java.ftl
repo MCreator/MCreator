@@ -4,9 +4,9 @@
 <#macro onArmorTick procedure="">
 <#if hasProcedure(procedure)>
 <#-- ideally we would use inventoryTick for slot [36, 39], however slot number does not seem to work in NF 1.20.4 -->
-@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-	super.inventoryTick(itemstack, world, entity, slot, selected);
-	if (entity instanceof Player player && Iterables.contains(player.getArmorSlots(), itemstack)) {
+@Override public void inventoryTick(ItemStack itemstack, ServerLevel world, Entity entity, @Nullable EquipmentSlot equipmentSlot) {
+	super.inventoryTick(itemstack, world, entity, equipmentSlot);
+	if (entity instanceof Player player && (equipmentSlot != null && equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)) {
 		<@procedureCode procedure, {
 			"x": "entity.getX()",
 			"y": "entity.getY()",
@@ -42,10 +42,10 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
-		@Override public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, context, list, flag);
+		@Override public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> componentConsumer, TooltipFlag flag) {
+			super.appendHoverText(itemstack, context, tooltipDisplay, componentConsumer, flag);
 		<#if hasProcedure(procedure)>
-			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : Minecraft.getInstance().player;
+			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : ${JavaModName}.clientPlayer();
 			String hoverText = <@procedureCode procedure, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
@@ -56,16 +56,16 @@
 			}, false/>;
 			if (hoverText != null) {
 				for (String line : hoverText.split("\n")) {
-					list.add(Component.literal(line));
+					componentConsumer.accept(Component.literal(line));
 				}
 			}
 		<#elseif translationKeyHeader?has_content>
 			<#list procedure.getFixedValue() as entry>
-				list.add(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
+			componentConsumer.accept(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
 			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
-				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
+			componentConsumer.accept(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
 			</#list>
 		</#if>
 		}

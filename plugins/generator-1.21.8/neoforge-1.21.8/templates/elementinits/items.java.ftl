@@ -139,7 +139,7 @@ public class ${JavaModName}Items {
 	</#if>
 
 	<#if hasItemsWithCustomProperties || hasItemsWithLeftHandedProperty>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
+	@EventBusSubscriber(Dist.CLIENT) public static class ItemsClientSideHandler {
 
 		<#if hasItemsWithCustomProperties>
 		@SubscribeEvent public static void registerItemModelProperties(RegisterRangeSelectItemModelPropertyEvent event) {

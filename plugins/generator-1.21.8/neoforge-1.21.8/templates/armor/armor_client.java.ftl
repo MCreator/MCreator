@@ -29,38 +29,15 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
-<#include "triggers.java.ftl">
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 
-package ${package}.item;
+package ${package}.client.renderer.item;
 
-import java.util.Map;
-import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
-@EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
-
-	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
-		${data.maxDamage},
-		Map.of(
-			ArmorType.BOOTS, ${data.damageValueBoots},
-			ArmorType.LEGGINGS, ${data.damageValueLeggings},
-			ArmorType.CHESTPLATE, ${data.damageValueBody},
-			ArmorType.HELMET, ${data.damageValueHelmet},
-			ArmorType.BODY, ${data.damageValueBody}
-		),
-		${data.enchantability},
-		<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
-		DeferredHolder.create(Registries.SOUND_EVENT, ResourceLocation.parse("${data.equipSound}")),
-		<#else>
-		BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.EMPTY),
-		</#if>
-		${data.toughness}f,
-		${data.knockbackResistance}f,
-		TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")), <#-- data.repairItems are put into a tag -->
-		ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
-	);
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Armor {
 
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {
 		<#if data.enableHelmet>
@@ -172,78 +149,6 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get());
 		</#if>
 	}
-
-	private ${name}Item(ArmorType type, Item.Properties properties) {
-		super(ARMOR_MATERIAL, type, properties);
-	}
-
-	<#if data.enableHelmet>
-	public static class Helmet extends ${name}Item {
-
-		public Helmet(Item.Properties properties) {
-			super(ArmorType.HELMET, properties<#if data.helmetImmuneToFire>.fireResistant()</#if>);
-		}
-
-		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
-
-		<@hasGlow data.helmetGlowCondition/>
-
-		<@piglinNeutral data.helmetPiglinNeutral/>
-
-		<@onArmorTick data.onHelmetTick/>
-	}
-	</#if>
-
-	<#if data.enableBody>
-	public static class Chestplate extends ${name}Item {
-
-		public Chestplate(Item.Properties properties) {
-			super(ArmorType.CHESTPLATE, properties<#if data.bodyImmuneToFire>.fireResistant()</#if>);
-		}
-
-		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
-
-		<@hasGlow data.bodyGlowCondition/>
-
-		<@piglinNeutral data.bodyPiglinNeutral/>
-
-		<@onArmorTick data.onBodyTick/>
-	}
-	</#if>
-
-	<#if data.enableLeggings>
-	public static class Leggings extends ${name}Item {
-
-		public Leggings(Item.Properties properties) {
-			super(ArmorType.LEGGINGS, properties<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
-		}
-
-		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
-
-		<@hasGlow data.leggingsGlowCondition/>
-
-		<@piglinNeutral data.leggingsPiglinNeutral/>
-
-		<@onArmorTick data.onLeggingsTick/>
-	}
-	</#if>
-
-	<#if data.enableBoots>
-	public static class Boots extends ${name}Item {
-
-		public Boots(Item.Properties properties) {
-			super(ArmorType.BOOTS, properties<#if data.bootsImmuneToFire>.fireResistant()</#if>);
-		}
-
-		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
-
-		<@hasGlow data.bootsGlowCondition/>
-
-		<@piglinNeutral data.bootsPiglinNeutral/>
-
-		<@onArmorTick data.onBootsTick/>
-	}
-	</#if>
 
 }
 <#-- @formatter:on -->
