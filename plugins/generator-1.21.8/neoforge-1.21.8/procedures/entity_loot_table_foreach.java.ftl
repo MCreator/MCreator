@@ -1,6 +1,6 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (${input$entity} instanceof LivingEntity _entLootTbl && !_entLootTbl.level().isClientSide() && _entLootTbl.getServer() != null) {
+if (${input$entity} instanceof LivingEntity _entLootTbl && _entLootTbl.getServer() != null) {
 	DamageSource _dsLootTbl = _entLootTbl.getLastDamageSource();
 	if (_dsLootTbl == null) _dsLootTbl = _entLootTbl.damageSources().generic();
 	for (ItemStack itemstackiterator : _entLootTbl.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ${toResourceLocation(input$location)}))
@@ -13,7 +13,7 @@ if (${input$entity} instanceof LivingEntity _entLootTbl && !_entLootTbl.level().
 					.withParameter(LootContextParams.ORIGIN, _entLootTbl.position())
 					.withParameter(LootContextParams.BLOCK_STATE, _entLootTbl.level().getBlockState(_entLootTbl.blockPosition()))
 					.withOptionalParameter(LootContextParams.BLOCK_ENTITY, _entLootTbl.level().getBlockEntity(_entLootTbl.blockPosition()))
-					.withParameter(LootContextParams.TOOL, _entLootTbl instanceof Player _player ? _player.getInventory().getSelected() : _entLootTbl.getUseItem())
+					.withParameter(LootContextParams.TOOL, _entLootTbl instanceof Player _player ? _player.getInventory().getSelectedItem() : _entLootTbl.getUseItem())
 					.withParameter(LootContextParams.EXPLOSION_RADIUS, 0f)
 					.withLuck(_entLootTbl instanceof Player _player ? _player.getLuck() : 0)
 					.create(LootContextParamSets.EMPTY))) {
