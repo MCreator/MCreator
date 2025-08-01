@@ -62,7 +62,6 @@ Death: DeathScreen
 Demo: DemoIntroScreen
 DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
-DisconnectedRealms: DisconnectedRealmsScreen
 DownloadTerrain: ReceivingLevelScreen
 EditGamerules: EditGameRulesScreen
 EditWorld: EditWorldScreen
@@ -93,7 +92,7 @@ ReportPlayer: ReportPlayerScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 ServerList: DirectJoinServerScreen
 ServerReconfig: ServerReconfigScreen
-ServerLinks: ServerLinksScreen
+ServerLinks: ServerLinksDialogScreen
 Settings: OptionsSubScreen
 ShareToLan: ShareToLanScreen
 SkinReport: SkinReportScreen
@@ -109,4 +108,13 @@ Win: WinScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen
-AbstractRecipeBookScreen: AbstractRecipeBookScreen
+AbstractRecipeBook: AbstractRecipeBookScreen
+ButtonListDialog: ButtonListDialogScreen
+DialogListDialog: DialogListDialogScreen
+Dialog: DialogScreen
+MultiButtonDialog: MultiButtonDialogScreen
+SimpleDialog: SimpleDialogScreen
+WaitingForResponse: WaitingForResponseScreen
+BookSign: BookSignScreen
+TestBlockEdit: TestBlockEditScreen
+TestInstanceBlockEdit: TestInstanceBlockEditScreen
