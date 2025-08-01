@@ -1,0 +1,1 @@
+Ez az eljárás minden egyes tickben végrehajtásra kerül minden olyan entitás esetében, amelyre ez a bájital hatással van.

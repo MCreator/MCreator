@@ -1,0 +1,1 @@
+Minél magasabb a szám az entitás sebzése annál meszibbre tolja vissza a lövedék.

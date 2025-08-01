@@ -1,0 +1,1 @@
+Ha egy GUI-t szeretnél az entitásodhoz kötni (például egy falubeli vagy egyedi lószerű leltár létrehozásához), jelöld be ezt a négyzetet a leltár engedélyezéséhez és a kiválasztott GUI-hoz való kötéséhez.

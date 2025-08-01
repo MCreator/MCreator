@@ -1,0 +1,1 @@
+Ez az eljárás akkor hajtódik végre, amikor egy élő lényt (tehenet, kúszónövényt, játékost stb.) ezzel a tárgyakkal eltalálnak.

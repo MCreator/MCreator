@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor egy játékos elkezdi a blokk megsemmisítését.

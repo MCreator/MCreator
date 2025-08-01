@@ -1,0 +1,1 @@
+Ez a trigger akkor indítja el az eljárást, amikor ez az entitás megöl egy másik entitást.

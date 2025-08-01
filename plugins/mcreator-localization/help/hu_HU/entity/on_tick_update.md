@@ -1,0 +1,1 @@
+Minden egyes ciklusban elindítja az eljárást, amíg az entitás a világban létezik.

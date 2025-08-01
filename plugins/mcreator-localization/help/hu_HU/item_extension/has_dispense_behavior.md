@@ -1,0 +1,1 @@
+Ha ez az opció be van jelölve, az elem nem kerül kiadva az alapértelmezett művelettel rendelkező adagolókból, hanem a "${l10n.t("elementgui.item_extension.dispense_success_condition")}" és "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}" eljárásokat hívja meg helyette.
