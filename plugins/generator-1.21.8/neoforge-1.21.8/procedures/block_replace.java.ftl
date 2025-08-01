@@ -34,7 +34,7 @@ world.setBlock(${toBlockPos(input$x,input$y,input$z)}, ${mappedBlockToBlockState
 		_be = world.getBlockEntity(_bp);
 		if(_be != null) {
 			try {
-				_be.loadWithComponents(_bnbt, world.registryAccess());
+				_be.loadWithComponents(TagValueInput.create(ProblemReporter.DISCARDING, world.registryAccess(), _bnbt));
 			} catch(Exception ignored) {}
 		}
 	}

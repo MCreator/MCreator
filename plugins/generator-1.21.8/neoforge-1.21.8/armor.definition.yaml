@@ -1,9 +1,13 @@
 templates:
-  - template: armor.java.ftl
+  - template: armor/armor.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-  - template: json/armor_equipment.json.ftl
+  - template: armor/armor_client.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEArmor.java"
+
+  - template: armor/armor_equipment.json.ftl
     writer: json
     name: "@MODASSETSROOT/equipment/@registryname.json"
+
   - template: json/model_item.json.ftl
     writer: json
     variables: "sufix=_helmet"
