@@ -59,6 +59,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Set<String> usedBlocks = new HashSet<>();
 	private final Set<String> usedTemplates = new LinkedHashSet<>(), generatedTemplates = new HashSet<>();
+	private String head = "";
+	private String tail = "";
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -195,6 +197,12 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
+							//if the generator do not support the part feature, we will reset the tail and head
+							if (!generator.isSupportedSection()) {
+								this.append(this.getTail());
+								this.setHead("");
+								this.setTail("");
+							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
 							throw e;
@@ -219,6 +227,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
+		//reach the end of code place
+		append(getTail());
+		setTail("");
+		setHead("");
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
@@ -340,4 +352,19 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return Collections.unmodifiableSet(usedBlocks);
 	}
 
+	public String getHead() {
+		return head;
+	}
+
+	public String getTail() {
+		return tail;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
+	public void setTail(String tail) {
+		this.tail = tail;
+	}
 }
