@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a splash potion palack nevét.

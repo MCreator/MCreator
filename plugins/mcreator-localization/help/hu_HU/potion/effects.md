@@ -1,0 +1,1 @@
+Az alábbi listában szereplő bájitalok hatása azokra az entitásokra lesz érvényes, amelyekre a bájitalod hatással van.

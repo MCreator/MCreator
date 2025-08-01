@@ -1,0 +1,1 @@
+A varázslat által támogatott maximális szint.

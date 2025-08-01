@@ -1,0 +1,1 @@
+Ha ez a paraméter be van jelölve, akkor ez az entitás érzékeny lesz a rezgésekre, mint a _Warden_.

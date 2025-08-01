@@ -1,0 +1,1 @@
+A termeszthető növény addig fog növekedni, amíg el nem éri ezt a magasságot.

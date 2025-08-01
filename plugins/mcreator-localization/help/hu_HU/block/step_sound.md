@@ -1,0 +1,1 @@
+Ez a hang hallható, amikor egy entitás ezen a blokkon sétál.

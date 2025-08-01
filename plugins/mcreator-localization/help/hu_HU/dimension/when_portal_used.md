@@ -1,0 +1,3 @@
+Az eljárás akkor kerül végrehajtásra, amikor a játékos a portált egy blokkon aktiválja.
+
+Az eljárásnak SUCCESS/CONSUME típusú műveleti eredményt kell visszaadnia, ha a trigger kölcsönhatásba lépett a blokkkal, FAIL-t, ha a kölcsönhatás sikertelen volt, és PASS-t, ha nem történt kölcsönhatás. Ha a trigger sikeresen létrehozott egy portált, vagy ha az eljárás nem ad vissza értéket, akkor a műveleti eredmény típusa SUCCESS lesz.

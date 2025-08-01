@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza azt a részecskét, amelyet a folyadék generál, amikor egy blokkról lecsepeg.

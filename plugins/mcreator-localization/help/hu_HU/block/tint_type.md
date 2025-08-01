@@ -1,0 +1,1 @@
+Ez az opció a biom színei alapján színezést alkalmaz a blokkra, hasonlóan a fűhöz, a levelekhez és a vízhez. A legjobb eredmény érdekében a színezett felületeken szürkeárnyalatos textúrát kell használni.

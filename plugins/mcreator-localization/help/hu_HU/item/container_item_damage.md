@@ -1,0 +1,1 @@
+Ha engedélyezte a "${l10n.t("elementgui.item.container_item")}" opciót, akkor ezt az opciót is engedélyezheti, hogy az elemet megsérüljön, ahelyett, hogy egyszerűen a kézműves rácsban maradna.

@@ -1,0 +1,1 @@
+Ez a lövedék modell textúrája, ha egyéni modellt használunk.

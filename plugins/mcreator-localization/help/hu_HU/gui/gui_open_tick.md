@@ -1,0 +1,1 @@
+Minden ciklusban elindít egy eljárást, amíg ez a grafikus felület nyitva van.

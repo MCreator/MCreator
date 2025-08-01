@@ -1,0 +1,1 @@
+Jelölje be ezt a négyzetet, ha a kiválasztott elemet kemence tüzelőanyagként szeretné használni (pl. szén, deszka stb.).

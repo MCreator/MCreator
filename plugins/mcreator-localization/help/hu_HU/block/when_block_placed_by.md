@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor valami elhelyezi a blokkot (entitás/blokk) e blokk mellé.

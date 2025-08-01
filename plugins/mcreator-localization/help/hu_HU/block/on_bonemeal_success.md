@@ -1,0 +1,1 @@
+Ez az eljárás határozza meg, mi történik, ha a csontliszt sikeresen alkalmazható ezen a blokkon.

@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a folyadékforrások több forrást hozhatnak létre, hasonlóan a vízhez. Ez lehetővé teszi a végtelen forrás.

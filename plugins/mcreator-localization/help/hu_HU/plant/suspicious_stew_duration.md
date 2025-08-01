@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg a növényből készített gyanús főzelék hatásának időtartamát.

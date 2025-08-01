@@ -1,0 +1,1 @@
+Ha textúra van kiválasztva, az a játékos víz alá merülése közben átlátszó rétegként jelenik meg.

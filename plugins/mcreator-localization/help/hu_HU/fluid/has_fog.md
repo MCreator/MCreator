@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a folyadék ködöt jelenít meg, amíg a játékos víz alatt van.
