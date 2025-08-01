@@ -1,0 +1,1 @@
+Jelölje be ezt a paramétert, ha az effektusnak egyszer kell alkalmazódnia, mint például az Azonnali Gyúgyolásra.

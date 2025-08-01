@@ -1,0 +1,1 @@
+Ez a trigger az entitás halála esetén indítja el az eljárást.

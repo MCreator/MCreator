@@ -1,0 +1,1 @@
+Ha be van jelölve, a távolsági tárgy folyamatosan lő, amikor a játékos jobb gombbal rákattint.

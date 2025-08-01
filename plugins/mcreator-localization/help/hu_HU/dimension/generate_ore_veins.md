@@ -1,0 +1,1 @@
+Ha ez a paraméter engedélyezve van, réz- és vasérc-ércek keletkeznek ebben a dimenzióban.

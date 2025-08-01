@@ -1,0 +1,1 @@
+Ellenőrizze, hogy a hatás látható-e a játékban

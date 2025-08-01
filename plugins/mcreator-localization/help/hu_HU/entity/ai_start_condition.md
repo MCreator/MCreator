@@ -1,0 +1,1 @@
+Ha meg van adva, az entitás csak akkor kezdi meg a feladat végrehajtását, ha teljesíti ezt a feltételt.

@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy a blokk hogyan reagál a robbanásokra. A magasabb érték a blokkot robbanásokkal szemben ellenállóbbá teszi.

@@ -1,0 +1,1 @@
+Ha a feltétel igaznak bizonyul, a játékosok nem vehetik ki a tárgyakat ebből a rekeszből. Azonban továbbra is korlátozás nélkül helyezhetnek el tárgyakat.

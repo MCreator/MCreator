@@ -1,0 +1,1 @@
+Ha feltétel van megadva, akkor a kiválasztott elem csak akkor használható üzemanyagként, ha a feltétel teljesül.
