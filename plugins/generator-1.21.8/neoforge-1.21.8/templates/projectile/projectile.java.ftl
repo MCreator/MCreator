@@ -35,7 +35,6 @@
 package ${package}.entity;
 
 <#compress>
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
