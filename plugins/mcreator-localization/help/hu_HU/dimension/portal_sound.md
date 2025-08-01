@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a portál által aktív állapotban véletlenszerűen lejátszott hangot.

@@ -1,0 +1,1 @@
+A portálkeretből portált létrehozó portálgyújtó textúrája.

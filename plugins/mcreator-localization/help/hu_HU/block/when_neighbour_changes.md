@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor a mellette lévő blokk frissül (a blokk állapota megváltozik, új blokk kerül elhelyezésre vagy egy blokk eltávolításra kerül).

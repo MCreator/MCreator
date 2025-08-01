@@ -1,0 +1,1 @@
+Ha be van jelölve, a távolsági tárgy lövedékereje attól függően változik, hogy mennyi ideig volt feltöltve a távolsági tárgy.

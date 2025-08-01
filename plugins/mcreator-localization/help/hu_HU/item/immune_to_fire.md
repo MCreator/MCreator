@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy az adott tárgy tűzálló-e, mint például a Netherit tárgyak.

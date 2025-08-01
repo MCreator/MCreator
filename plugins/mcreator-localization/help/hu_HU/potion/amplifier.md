@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy ez a hatás milyen erős.

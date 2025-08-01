@@ -1,0 +1,1 @@
+Amíg a visszatérési érték igaz, az entitás remegni fog. A zombi falusiak gyógyulásuk során használják ezt a funkciót.

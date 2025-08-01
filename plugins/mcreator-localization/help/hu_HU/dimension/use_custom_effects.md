@@ -1,0 +1,1 @@
+Ha ez az opció be van állítva, akkor a dimenzió alapértelmezett helyett felhasználó által definiált hatásokkal rendelkezik.

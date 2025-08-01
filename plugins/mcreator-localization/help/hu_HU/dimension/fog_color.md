@@ -1,0 +1,1 @@
+A köd színe a dimenzióban. 

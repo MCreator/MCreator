@@ -1,0 +1,1 @@
+Ha feltétel van megadva, ez a tooltip csak akkor jeleníthető meg, ha a feltétel teljesül.
