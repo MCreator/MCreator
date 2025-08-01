@@ -1,6 +1,9 @@
 <@addTemplate file="utils/projectiles/projectile.java.ftl"/>
 private static Projectile createPotionProjectile(Level level, ItemStack contents, Entity shooter, Vec3 acceleration) {
-	ThrownPotion entityToSpawn = new ThrownPotion(EntityType.POTION, level);
+	AbstractThrownPotion entityToSpawn =
+			contents.getItem() == Items.LINGERING_POTION ?
+					new ThrownLingeringPotion(EntityType.LINGERING_POTION, level) :
+					new ThrownSplashPotion(EntityType.SPLASH_POTION, level);
 	entityToSpawn.setItem(contents);
 	return initProjectileProperties(entityToSpawn, shooter, acceleration);
 }
