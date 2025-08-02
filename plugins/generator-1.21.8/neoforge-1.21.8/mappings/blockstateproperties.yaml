@@ -1,7 +1,4 @@
 _default: ""
-ACTIVE:
-  - BlockStateProperties.ACTIVE
-  - active
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached
@@ -148,6 +145,9 @@ HORIZONTAL_FACING:
 FLOWER_AMOUNT:
   - BlockStateProperties.FLOWER_AMOUNT
   - flower_amount
+SEGMENT_AMOUNT:
+  - BlockStateProperties.SEGMENT_AMOUNT
+  - segment_amount
 ORIENTATION:
   - BlockStateProperties.ORIENTATION
   - orientation
@@ -289,6 +289,9 @@ STABILITY_DISTANCE:
 RESPAWN_ANCHOR_CHARGES:
   - BlockStateProperties.RESPAWN_ANCHOR_CHARGES
   - charges
+DRIED_GHAST_HYDRATION_LEVELS:
+  - BlockStateProperties.DRIED_GHAST_HYDRATION_LEVELS
+  - hydration
 ROTATION_16:
   - BlockStateProperties.ROTATION_16
   - rotation
@@ -383,6 +386,17 @@ VAULT_STATE:
   - BlockStateProperties.VAULT_STATE
   - vault_state
   - VaultState
+CREAKING_HEART_STATE:
+  - BlockStateProperties.CREAKING_HEART_STATE
+  - creaking_heart_state
+  - CreakingHeartState
 OMINOUS:
   - BlockStateProperties.OMINOUS
   - ominous
+TEST_BLOCK_MODE:
+  - BlockStateProperties.TEST_BLOCK_MODE
+  - mode
+  - TestBlockMode
+MAP:
+  - BlockStateProperties.MAP
+  - map
