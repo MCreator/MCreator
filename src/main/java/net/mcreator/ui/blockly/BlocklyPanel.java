@@ -265,7 +265,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 		return retval;
 	}
 
-	public Object executeJavaScriptSynchronously(String javaScript) {
+	@Nullable public Object executeJavaScriptSynchronously(String javaScript) {
 		try {
 			FutureTask<Object> query = new FutureTask<>(() -> {
 				if (webEngine != null)
@@ -275,9 +275,9 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 			ThreadUtil.runOnFxThread(query);
 			return query.get();
 		} catch (InterruptedException | ExecutionException e) {
-			TestUtil.failIfTestingEnvironment();
+			LOG.error("Synchronous JS execution failed", e);
 			LOG.error(javaScript);
-			LOG.error(e.getMessage(), e);
+			TestUtil.failIfTestingEnvironment();
 		}
 		return null;
 	}
