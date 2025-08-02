@@ -1043,7 +1043,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 		<#if data.vibrationalEvents?has_content>
 		@Override public TagKey<GameEvent> getListenableEvents() {
-			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.withDefaultNamespace("${data.getModElement().getRegistryName()}_can_listen"));
+			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.withDefaultNamespace("${registryname}_can_listen"));
 		}
 		</#if>
 
