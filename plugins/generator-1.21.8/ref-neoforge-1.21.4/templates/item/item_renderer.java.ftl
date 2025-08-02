@@ -51,7 +51,7 @@ package ${package}.client.renderer.item;
 
 <#compress>
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(Dist.CLIENT)
 public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
 
 	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
