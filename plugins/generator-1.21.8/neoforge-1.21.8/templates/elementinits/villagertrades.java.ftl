@@ -70,7 +70,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		<#list villagertrades as trade>
 			<#list trade.tradeEntries as tradeEntry>
 				<#if tradeEntry.villagerProfession != "WanderingTrader">
-					if (event.getType() == ${tradeEntry.villagerProfession}) {
+					if (event.getType().isFor(${tradeEntry.villagerProfession})) {
 					<#list tradeEntry.entries as entry>
 						event.getTrades().get(${entry.level}).add(
 							new BasicItemListing(
