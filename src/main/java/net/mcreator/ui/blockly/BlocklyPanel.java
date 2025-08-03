@@ -202,8 +202,37 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 		changeListeners.add(listener);
 	}
 
+	private static boolean isValidBlocklyXML(@Nullable String xml) {
+		if (xml == null || xml.isBlank())
+			return false;
+		return xml.trim().startsWith("<xml xmlns=\"https://developers.google.com/blockly/xml\">");
+	}
+
+	@Nullable private String lastValidXML = null;
+
 	public String getXML() {
-		return loaded ? (String) executeJavaScriptSynchronously("workspaceToXML();") : "";
+		if (loaded) {
+			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
+
+			// XML can become invalid if e.g., WebKit runs out of memory and executeJavaScriptSynchronously times out
+			boolean valid = isValidBlocklyXML(newXml);
+
+			if (valid) {
+				lastValidXML = newXml;
+				return newXml;
+			} else if (lastValidXML != null) { // If the XML is not valid, return the last valid XML
+				if (webEngine != null) { // Log the error only if the BlocklyPanel was not closed yet
+					LOG.warn("Invalid Blockly XML detected, returning last valid XML");
+					TestUtil.failIfTestingEnvironment();
+				}
+				return lastValidXML;
+			} else {
+				LOG.error("Invalid Blockly XML detected and no last valid XML available");
+				TestUtil.failIfTestingEnvironment();
+			}
+		}
+
+		return "";
 	}
 
 	public void setXML(String xml) {
