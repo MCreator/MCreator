@@ -76,6 +76,8 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 
+	private javafx.beans.value.ChangeListener<? super Worker.State> listener = null;
+
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
 		this.type = type;
@@ -96,7 +98,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 							.forEach(bar -> bar.setVisible(false)));
 			webEngine = browser.getEngine();
 			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
-			webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
+			webEngine.getLoadWorker().stateProperty().addListener(listener = (ov, oldState, newState) -> {
 				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
 					// load CSS from file to select proper style for OS
 					Element styleNode = webEngine.getDocument().createElement("style");
@@ -212,7 +214,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 				""".formatted(escapeXML(xml)));
 
 		ThreadUtil.runOnSwingThread(
-				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(xml))));
 	}
 
 	public void addBlocksFromXML(String xml) {
@@ -309,9 +311,21 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 		if (webEngine != null) {
 			// Ensure that the web engine is not closed during the initialization
 			addTaskToRunAfterLoaded(() -> ThreadUtil.runOnFxThread(() -> {
-				// Free resources of the web engine (kill JS, load empty page and finally free the reference)
+				// Remove any potential stale references in listeners and event handlers
+				runAfterLoaded.clear();
+				changeListeners.clear();
+
+				// Remove the listener to prevent memory leaks
+				if (listener != null) {
+					webEngine.getLoadWorker().stateProperty().removeListener(listener);
+					listener = null;
+				}
+
+				// Free resources of the web engine (kill JS, load empty page)
 				webEngine.setJavaScriptEnabled(false);
-				webEngine.load("");
+				webEngine.load("about:blank");
+
+				// Clear the web engine reference
 				webEngine = null;
 			}));
 		}
