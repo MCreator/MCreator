@@ -19,4 +19,4 @@ field_inclusions: [mainFillerBlock, fluidBlock, biomesInDimension, seaLevel, gen
                    horizontalNoiseSize, verticalNoiseSize, imitateOverworldBehaviour, canRespawnHere,
                    defaultEffects, ambientLight, doesWaterVaporize, bedWorks, hasSkyLight, hasFixedTime, fixedTimeValue,
                    coordinateScale, infiniburnTag, worldGenType, piglinSafe, hasRaids, monsterSpawnLightLimit,
-                   monsterSpawnBlockLightLimit]
+                   monsterSpawnBlockLightLimit, hasClouds, cloudHeight]

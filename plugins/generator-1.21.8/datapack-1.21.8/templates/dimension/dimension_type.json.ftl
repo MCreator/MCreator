@@ -22,6 +22,9 @@
   "height": 256,
   "logical_height": 256,
   </#if>
+  <#if data.hasClouds>
+  "cloud_height": ${[[(((data.cloudHeight + 8) / 16)?floor * 16), 2031]?min, -2032]?max},
+  </#if>
   <#if data.minMonsterSpawnLightLimit == data.maxMonsterSpawnLightLimit>
   "monster_spawn_light_level": ${data.minMonsterSpawnLightLimit},
   <#else>
