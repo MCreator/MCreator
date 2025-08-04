@@ -275,8 +275,8 @@
 
 <#macro onEntityCollides procedure="">
 <#if hasProcedure(procedure)>
-@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-	super.entityInside(blockstate, world, pos, entity);
+@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+	super.entityInside(blockstate, world, pos, entity, insideBlockEffectApplier);
 	<@procedureCode procedure, {
 		"x": "pos.getX()",
 		"y": "pos.getY()",
