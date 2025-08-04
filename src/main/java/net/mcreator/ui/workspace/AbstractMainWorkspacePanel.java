@@ -168,8 +168,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		}
 	}
 
-	public <T extends AbstractWorkspacePanel> T getVerticalTab(Class<T> id) {
-		//noinspection unchecked
+	@SuppressWarnings("unchecked") public <T extends AbstractWorkspacePanel> T getVerticalTab(Class<T> id) {
 		return (T) sectionTabs.get(id);
 	}
 

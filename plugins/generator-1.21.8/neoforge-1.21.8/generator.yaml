@@ -76,13 +76,13 @@ base_templates:
   - template: elementinits/tabs.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
-#  - template: modbase/accesstransformer.cfg.ftl
-#    usercodeComment: "#"
-#    writer: file
-#    name: "@RESROOT/META-INF/accesstransformer.cfg"
-#    condition_any:
-#      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
-#      - "${w.hasElementsOfType('feature')}"
+  - template: modbase/accesstransformer.cfg.ftl
+    usercodeComment: "#"
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
+      - "${w.hasElementsOfType('feature')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
@@ -91,11 +91,11 @@ base_templates:
 #    name: "@RESROOT/META-INF/enumextensions.json"
 #    condition_any:
 #      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
-#  - template: modbase/mixin.json.ftl
-#    writer: json
-#    condition_any:
-#      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-#    name: "@RESROOT/@modid.mixins.json"
+  - template: modbase/mixin.json.ftl
+    writer: json
+    condition_any:
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@RESROOT/@modid.mixins.json"
 
 java_models:
   key: mojmap-1.21.x

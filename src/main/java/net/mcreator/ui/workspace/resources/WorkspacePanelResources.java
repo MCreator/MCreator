@@ -107,8 +107,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 	 * @param key The key of the resource panel.
 	 * @return The resource panel.
 	 */
-	public <T extends JPanel> T getResourcePanel(Class<T> key) {
-		//noinspection unchecked
+	@SuppressWarnings("unchecked") public <T extends JPanel> T getResourcePanel(Class<T> key) {
 		return (T) resourcePanels.get(key);
 	}
 

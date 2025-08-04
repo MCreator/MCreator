@@ -46,9 +46,9 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.gradle.internal.impldep.org.apache.commons.lang.exception.ExceptionUtils;
 import org.gradle.tooling.*;
 
 import javax.annotation.Nullable;
@@ -673,7 +673,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 						taskComplete(GradleResultCode.STATUS_OK);
 						return;
 					} else {
-						String exception = ExceptionUtils.getFullStackTrace(failure);
+						String exception = ExceptionUtils.getStackTrace(failure);
 						taskErr.append(exception);
 
 						Arrays.stream(exception.split("\n")).forEach(line -> {
@@ -739,8 +739,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(mcreatorGradleStatus);
 
-				stateListeners.forEach(
-						listener -> listener.taskFinished(mcreatorGradleStatus));
+				stateListeners.forEach(listener -> listener.taskFinished(mcreatorGradleStatus));
 
 				// reload mods view to display errors
 				ref.reloadWorkspaceTabContents();

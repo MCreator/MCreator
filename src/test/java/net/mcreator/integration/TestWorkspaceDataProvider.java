@@ -840,7 +840,7 @@ public class TestWorkspaceDataProvider {
 			dimension.defaultEffects = new String[] { "overworld", "overworld", "the_nether", "the_end" }[valueIndex];
 			dimension.useCustomEffects = emptyLists;
 			dimension.hasClouds = _true;
-			dimension.cloudHeight = 162.9;
+			dimension.cloudHeight = 16 * 5;
 			dimension.sunHeightAffectsFog = !_true;
 			dimension.skyType = new String[] { "NONE", "NORMAL", "END", "NORMAL" }[valueIndex];
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
