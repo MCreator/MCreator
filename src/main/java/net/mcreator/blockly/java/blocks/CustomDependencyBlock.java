@@ -26,7 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
 public class CustomDependencyBlock implements IBlockGenerator {
@@ -42,7 +42,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()) {
 			String depname = element.getTextContent();
 
-			String type = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_");
+			String type = Strings.CS.removeStart(block.getAttribute("type"), "custom_dependency_");
 			master.addDependency(new Dependency(depname, type));
 
 			if (type.equalsIgnoreCase("itemstack"))
