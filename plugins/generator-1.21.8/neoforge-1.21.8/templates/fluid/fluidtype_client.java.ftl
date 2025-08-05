@@ -31,39 +31,10 @@
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
 
-package ${package}.fluid.types;
+package ${package}.client.fluid;
 
 <#compress>
-@EventBusSubscriber public class ${name}FluidType extends FluidType {
-	public ${name}FluidType() {
-		super(FluidType.Properties.create()
-			<#if data.type == "WATER">
-			.fallDistanceModifier(0F)
-			.canExtinguish(true)
-			.supportsBoating(true)
-			.canHydrate(true)
-			<#else>
-			.canSwim(false)
-			.canDrown(false)
-			.pathType(PathType.LAVA)
-			.adjacentPathType(null)
-			</#if>
-			.motionScale(${0.007 * data.flowStrength}D)
-			<#if data.luminosity != 0>.lightLevel(${(data.luminosity lt 15)?then(data.luminosity, 15)})</#if>
-			<#if data.density != 1000>.density(${data.density})</#if>
-			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
-			<#if data.temperature != 300>.temperature(${data.temperature})</#if>
-			<#if data.canMultiply>.canConvertToSource(true)</#if>
-			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
-			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
-			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.emptySound}")))
-			<#else>
-			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-			</#if>
-			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
-		);
-	}
+@EventBusSubscriber(Dist.CLIENT) public class ${name}FluidExtension {
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
 		event.registerFluidType(new IClientFluidTypeExtensions() {
@@ -82,7 +53,7 @@ package ${package}.fluid.types;
 				}
 
 				<#if data.textureRenderOverlay?has_content>
-				@Override public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+				@Override public ResourceLocation getRenderOverlayTexture(Minecraft minecraft) {
 					return RENDER_OVERLAY_TEXTURE;
 				}
 				</#if>
@@ -94,26 +65,27 @@ package ${package}.fluid.types;
 					}
 					</#if>
 
-					@Override public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, FogParameters fogParameters) {
-						float nearDistance = fogParameters.start();
-						float farDistance = fogParameters.end();
+					@Override public void modifyFogRender(Camera camera, @Nullable FogEnvironment environment, float renderDistance, float partialTick, FogData fogData) {
+						float nearDistance = fogData.environmentalStart;
+						float farDistance = fogData.environmentalEnd;
 						Entity entity = camera.getEntity();
 						Level world = entity.level();
-						return new FogParameters(
+
+						fogData.environmentalStart =
 							<#if hasProcedure(data.fogStartDistance)>
-								(float) <@procedureOBJToNumberCode data.fogStartDistance/>
+							(float) <@procedureOBJToNumberCode data.fogStartDistance/>
 							<#else>
-								${data.fogStartDistance.getFixedValue()}f
-							</#if>,
+							${data.fogStartDistance.getFixedValue()}f
+							</#if>;
+
+						fogData.environmentalEnd =
 							<#if hasProcedure(data.fogEndDistance)>
-								(float) <@procedureOBJToNumberCode data.fogEndDistance/>
+							(float) <@procedureOBJToNumberCode data.fogEndDistance/>
 							<#elseif data.fogEndDistance.getFixedValue() gt 16>
-								Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
+							Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
 							<#else>
-								${data.fogEndDistance.getFixedValue()}f
-							</#if>,
-							FogShape.SPHERE, fogParameters.red(), fogParameters.green(), fogParameters.blue(), fogParameters.alpha()
-						);
+							${data.fogEndDistance.getFixedValue()}f
+							</#if>;
 					}
 				</#if>
 
@@ -163,4 +135,5 @@ package ${package}.fluid.types;
 				</#if>
 		}, ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get());
 	}
+
 }</#compress>
