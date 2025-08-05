@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
 public class ${name}Block extends LiquidBlock {
+
 	public ${name}Block(BlockBehaviour.Properties properties) {
 		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			properties
@@ -101,4 +102,5 @@ public class ${name}Block extends LiquidBlock {
 	<@onAnimateTick data.onRandomUpdateEvent/>
 
 	<@onDestroyedByExplosion data.onDestroyedByExplosion/>
+
 }</#compress>
