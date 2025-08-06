@@ -6,7 +6,7 @@ plugins {
     id "java"
     id "idea"
     id "de.undercouch.download" version "5.6.0"
-    id 'edu.sc.seis.launch4j' version '3.0.7' // TODO: needs to be updated as it currently fails with Gradle 9.0
+    id 'edu.sc.seis.launch4j' version '4.0.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.2'
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
