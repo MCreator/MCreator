@@ -91,13 +91,13 @@
 
 <#macro onCrafted procedure="">
 <#if hasProcedure(procedure)>
-@Override public void onCraftedBy(ItemStack itemstack, Level world, Player entity) {
-	super.onCraftedBy(itemstack, world, entity);
+@Override public void onCraftedBy(ItemStack itemstack, Player entity) {
+	super.onCraftedBy(itemstack, entity);
 	<@procedureCode data.onCrafted, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",
 		"z": "entity.getZ()",
-		"world": "world",
+		"world": "entity.level()",
 		"entity": "entity",
 		"itemstack": "itemstack"
 	}/>
@@ -107,11 +107,11 @@
 
 <#macro onEntityHitWith procedure="" hurtStack=false hurtStackAmount=2>
 <#if hasProcedure(procedure) || hurtStack>
-@Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
+@Override public void hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
 		itemstack.hurtAndBreak(${hurtStackAmount}, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
 	<#else>
-		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
+		super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
 	<#if hasProcedure(procedure)>
 		<@procedureCode procedure, {
@@ -124,7 +124,6 @@
 			"itemstack": "itemstack"
 		}/>
 	</#if>
-	return <#if hurtStack>true<#else>retval</#if>;
 }
 </#if>
 </#macro>
@@ -148,10 +147,10 @@
 
 <#macro onItemTick inUseProcedure="" inInvProcedure="">
 <#if hasProcedure(inUseProcedure) || hasProcedure(inInvProcedure)>
-@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
-	super.inventoryTick(itemstack, world, entity, slot, selected);
+@Override public void inventoryTick(ItemStack itemstack, ServerLevel world, Entity entity, @Nullable EquipmentSlot equipmentSlot) {
+	super.inventoryTick(itemstack, world, entity, equipmentSlot);
 	<#if hasProcedure(inUseProcedure)>
-	if (selected)
+	if (equipmentSlot == EquipmentSlot.MAINHAND)
 		<@procedureCode inUseProcedure, {
 			"x": "entity.getX()",
 			"y": "entity.getY()",
@@ -159,7 +158,7 @@
 			"world": "world",
 			"entity": "entity",
 			"itemstack": "itemstack",
-			"slot": "slot"
+			"slot": "equipmentSlot != null ? equipmentSlot.getId() : -1"
 		}/>
 	</#if>
 	<#if hasProcedure(inInvProcedure)>
@@ -170,7 +169,7 @@
 			"world": "world",
 			"entity": "entity",
 			"itemstack": "itemstack",
-			"slot": "slot"
+			"slot": "equipmentSlot != null ? equipmentSlot.getId() : -1"
 		}/>
 	</#if>
 }
