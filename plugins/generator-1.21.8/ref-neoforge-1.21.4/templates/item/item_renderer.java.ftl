@@ -50,7 +50,6 @@ package ${package}.client.renderer.item;
 </#list>
 
 <#compress>
-@OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(Dist.CLIENT)
 public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
 
