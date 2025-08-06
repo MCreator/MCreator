@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,21 +29,41 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../triggers.java.ftl">
+<#include "../procedures.java.ftl">
 
-package ${package}.item;
+package ${package}.fluid.types;
 
-import net.minecraft.network.chat.Component;
+<#compress>
+public class ${name}FluidType extends FluidType {
 
-public class ${name}Item extends BucketItem {
-
-	public ${name}Item(Item.Properties properties) {
-		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
-			properties.craftRemainder(Items.BUCKET).stacksTo(1)
+	public ${name}FluidType() {
+		super(FluidType.Properties.create()
+			<#if data.type == "WATER">
+			.fallDistanceModifier(0F)
+			.canExtinguish(true)
+			.supportsBoating(true)
+			.canHydrate(true)
+			<#else>
+			.canSwim(false)
+			.canDrown(false)
+			.pathType(PathType.LAVA)
+			.adjacentPathType(null)
+			</#if>
+			.motionScale(${0.007 * data.flowStrength}D)
+			<#if data.luminosity != 0>.lightLevel(${(data.luminosity lt 15)?then(data.luminosity, 15)})</#if>
+			<#if data.density != 1000>.density(${data.density})</#if>
+			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
+			<#if data.temperature != 300>.temperature(${data.temperature})</#if>
+			<#if data.canMultiply>.canConvertToSource(true)</#if>
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
+			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.emptySound}")))
+			<#else>
+			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+			</#if>
+			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
 		);
 	}
 
-	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>
-}
-<#-- @formatter:on -->
+}</#compress>

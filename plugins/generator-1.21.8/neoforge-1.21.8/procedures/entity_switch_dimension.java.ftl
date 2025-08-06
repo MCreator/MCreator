@@ -1,10 +1,10 @@
 <#if field$dimension??><#--Here for legacy reasons as field$dimension does not exist in older workspaces-->
-if (${input$entity} instanceof ServerPlayer _player && !_player.level().isClientSide()) {
+if (${input$entity} instanceof ServerPlayer _player && _player.level() instanceof ServerLevel _serverLevel) {
 	ResourceKey<Level> destinationType = ${generator.map(field$dimension, "dimensions")};
 
 	if (_player.level().dimension() == destinationType) return;
 
-	ServerLevel nextLevel = _player.server.getLevel(destinationType);
+	ServerLevel nextLevel = _serverLevel.getServer().getLevel(destinationType);
 	if (nextLevel != null) {
 		_player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.WIN_GAME, 0));
 		_player.teleportTo(nextLevel, _player.getX(), _player.getY(), _player.getZ(), Set.of(), _player.getYRot(), _player.getXRot(), true);

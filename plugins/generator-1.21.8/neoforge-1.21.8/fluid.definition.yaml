@@ -8,7 +8,8 @@ templates:
   - template: fluid/fluidbucket.java.ftl
     condition: generateBucket
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-
+  - template: fluid/fluidtype_client.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/fluid/@NAMEFluidExtension.java"
   - template: json/bucket.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
