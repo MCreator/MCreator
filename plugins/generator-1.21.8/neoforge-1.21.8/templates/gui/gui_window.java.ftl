@@ -117,9 +117,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				${JavaModName}Screens.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
+				InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics,
+					this.leftPos + ${x + (10 - 1000)}, this.topPos + ${y + (20 - 1000)},
+					this.leftPos + ${x + (10 + 1000)}, this.topPos + ${y + (20 + 1000)},
+					${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
 					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
-					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity);
+					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity
+				);
 			}
 		</#list>
 		</#compress>
@@ -137,10 +141,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#if hasProcedure(component.text)>
 					String hoverText = <@procedureOBJToStringCode component.text/>;
 					if (hoverText != null) {
-						guiGraphics.renderComponentTooltip(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
+						guiGraphics.setComponentTooltipForNextFrame(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
 					}
 					<#else>
-						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+						guiGraphics.setTooltipForNextFrame(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
 					</#if>
 					customTooltipShown = true;
 				}
@@ -153,10 +157,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 
 	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1, 1, 1, 1);
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-
 		<#if data.renderBgLayer>
 			guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
@@ -183,8 +183,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
 			<#if hasProcedure(component.displayCondition)>}</#if>
 		</#list>
-
-		RenderSystem.disableBlend();
 	}
 
 	@Override public boolean keyPressed(int key, int b, int c) {
