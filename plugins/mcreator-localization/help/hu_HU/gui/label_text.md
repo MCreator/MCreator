@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg a címke által a GUI megnyitásakor megjelenített szöveget. Bonyolultabb szövegek esetén használhat string visszatérési típusú eljárást.

@@ -286,7 +286,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private synchronized void regenerateAITasks() {
+	private synchronized void regenerateAITasks(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 
@@ -306,7 +306,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
 	}
 
@@ -760,7 +760,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> {
 			if (editorReady)
-				regenerateAITasks();
+				regenerateAITasks(false);
 		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
@@ -793,7 +793,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
+					changeEvent -> new Thread(() -> regenerateAITasks(changeEvent.getSource() instanceof BlocklyPanel),
+							"AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}

@@ -1,0 +1,1 @@
+Ha be van jelölve, az entitás természetes módon jelenik meg a világban a mobok megjelenési folyamatán keresztül.

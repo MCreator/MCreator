@@ -1,0 +1,1 @@
+Ez a paraméter letiltja a méretben lévő vizet. Ha vizet helyeznek el egy ilyen méretben, az azonnal eltűnik, így víz elhelyezése nem lehetséges.

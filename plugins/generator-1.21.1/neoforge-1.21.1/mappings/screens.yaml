@@ -62,7 +62,6 @@ Death: DeathScreen
 Demo: DemoIntroScreen
 DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
-DisconnectedRealms: DisconnectedRealmsScreen
 DownloadTerrain: ReceivingLevelScreen
 EditGamerules: EditGameRulesScreen
 EditWorld: EditWorldScreen

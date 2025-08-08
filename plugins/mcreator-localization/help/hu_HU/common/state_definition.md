@@ -1,0 +1,1 @@
+Adja meg az elem tulajdonságai által ebben az állapotban elfogadott értékeket. Ha egy tulajdonság bal oldalán található jelölőnégyzetet törli, az semmilyen módon nem befolyásolja ezt az állapotot.

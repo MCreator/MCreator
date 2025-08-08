@@ -1,0 +1,1 @@
+A ragyogó textúra a mob ragyogó rétegének meghatározásához használatos. A fényesebb textúra területek a mob ezen részeinek erősebb ragyogását eredményezik.

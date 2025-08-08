@@ -1,0 +1,1 @@
+Ez az opció szabályozza az entitásváltozó típusát. A támogatott típusok: logikai, szám- és karakterláncváltozók.

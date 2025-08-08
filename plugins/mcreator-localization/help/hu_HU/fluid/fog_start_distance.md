@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg azt a távolságot a kamerától, amelyben a köd kezdődik ér.

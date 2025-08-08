@@ -1,0 +1,3 @@
+{
+  "state": ${input$block}
+}

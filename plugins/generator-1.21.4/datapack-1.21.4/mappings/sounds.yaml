@@ -775,8 +775,6 @@ block.large_amethyst_bud.place: block.large_amethyst_bud.place
 block.lava.ambient: block.lava.ambient
 block.lava.extinguish: block.lava.extinguish
 block.lava.pop: block.lava.pop
-entity.leashknot.break: entity.leash_knot.break
-entity.leashknot.place: entity.leash_knot.place
 block.lever.click: block.lever.click
 entity.lightning.impact: entity.lightning_bolt.impact
 entity.lightning.thunder: entity.lightning_bolt.thunder
@@ -1136,7 +1134,6 @@ block.powder_snow.fall: block.powder_snow.fall
 block.powder_snow.hit: block.powder_snow.hit
 block.powder_snow.place: block.powder_snow.place
 block.powder_snow.step: block.powder_snow.step
-entity.puffer_fish.ambient: entity.puffer_fish.ambient
 entity.puffer_fish.blow_out: entity.puffer_fish.blow_out
 entity.puffer_fish.blow_up: entity.puffer_fish.blow_up
 entity.puffer_fish.death: entity.puffer_fish.death
@@ -1550,15 +1547,8 @@ item.wolf_armor.break: item.wolf_armor.break
 item.wolf_armor.crack: item.wolf_armor.crack
 item.wolf_armor.damage: item.wolf_armor.damage
 item.wolf_armor.repair: item.wolf_armor.repair
-entity.wolf.ambient: entity.wolf.ambient
-entity.wolf.death: entity.wolf.death
-entity.wolf.growl: entity.wolf.growl
-entity.wolf.howl: entity.wolf.howl
-entity.wolf.hurt: entity.wolf.hurt
-entity.wolf.pant: entity.wolf.pant
 entity.wolf.shake: entity.wolf.shake
 entity.wolf.step: entity.wolf.step
-entity.wolf.whine: entity.wolf.whine
 block.wooden_door.close: block.wooden_door.close
 block.wooden_door.open: block.wooden_door.open
 block.wooden_trapdoor.close: block.wooden_trapdoor.close
