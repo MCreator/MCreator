@@ -1,0 +1,1 @@
+Ha ezt az opciót választja, akkor a bájital hatása megszűnik, miután elfogyasztott egy üveg mézet.

@@ -1,0 +1,1 @@
+Ez az eljárás minden tickben végrehajtásra kerül, amikor az elem a játékos leltárjában található.

@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy ez az effekt bejegyzés mennyi ideig tart.

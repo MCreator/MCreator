@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy milyen hangot hallunk, amikor a vödör kiürül. Ha nincs hang kiválasztva, akkor az alapértelmezett vödörhang hallható.

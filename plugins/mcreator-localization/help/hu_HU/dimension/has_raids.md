@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a játékosok rablóhadjáratokat indíthatnak ebben a dimenzióban.

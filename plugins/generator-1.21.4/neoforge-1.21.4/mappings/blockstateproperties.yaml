@@ -1,7 +1,4 @@
 _default: ""
-ACTIVE:
-  - BlockStateProperties.ACTIVE
-  - active
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached

@@ -1,0 +1,1 @@
+Állítsa be a folyadék fényértékét. Ha az értéket 0-ra állítja, a fény kikapcsol.

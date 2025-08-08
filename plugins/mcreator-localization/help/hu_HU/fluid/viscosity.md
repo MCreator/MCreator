@@ -1,0 +1,1 @@
+A viszkozitás azt jelenti, hogy mennyire nehéz a folyadékban mozogni.

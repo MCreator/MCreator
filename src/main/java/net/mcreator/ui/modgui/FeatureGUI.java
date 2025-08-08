@@ -128,7 +128,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
+					changeEvent -> new Thread(() -> regenerateFeature(changeEvent.getSource() instanceof BlocklyPanel),
+							"FeatureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Feature.XML_BASE);
 			}
@@ -166,7 +167,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				.lazyValidate(() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
 	}
 
-	private synchronized void regenerateFeature() {
+	private synchronized void regenerateFeature(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
@@ -194,7 +195,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
 	}
 
@@ -207,7 +208,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generationStep.setEnabled(!skipPlacement.isSelected());
 		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
 		if (updateCompileNotes)
-			regenerateFeature();
+			regenerateFeature(false);
 	}
 
 	@Override protected void openInEditingMode(Feature feature) {

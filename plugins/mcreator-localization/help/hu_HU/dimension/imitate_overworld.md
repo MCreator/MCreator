@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a dimenzió bizonyos aspektusait az időjárás, az iránytű funkció és a lények megjelenése tekintetében.

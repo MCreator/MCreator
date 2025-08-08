@@ -41,8 +41,8 @@ public class ExternalBlockLoader {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly loader");
 
-	private static final Pattern blockFormat = Pattern.compile("^[^$].*\\.json");
-	private static final Pattern categoryFormat = Pattern.compile("^\\$.*\\.json");
+	private static final Pattern blockFormat = Pattern.compile("^[^$].*\\.json$");
+	private static final Pattern categoryFormat = Pattern.compile("^\\$.*\\.json$");
 
 	private static final Pattern translationsMatcher = Pattern.compile("\\$\\{t:([\\w.]+)}");
 

@@ -18,6 +18,7 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -86,6 +87,7 @@ public class GeneratorTokens {
 								listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
 								listItem.getClass().getField(ref.trim()).get(listItem);
 					} catch (Exception e) {
+						TestUtil.failIfTestingEnvironment();
 						LOG.warn("Failed to load token value {}", match, e);
 					}
 				}
@@ -95,6 +97,7 @@ public class GeneratorTokens {
 							element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
 							element.getClass().getField(match.trim()).get(element);
 				} catch (Exception e) {
+					TestUtil.failIfTestingEnvironment();
 					LOG.warn("Failed to load token value {}", match, e);
 				}
 			}

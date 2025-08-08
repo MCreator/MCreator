@@ -1,0 +1,1 @@
+Ha feltétel van megadva, akkor ez az entitásmodell csak akkor jeleníthető meg, ha a feltétel teljesül.

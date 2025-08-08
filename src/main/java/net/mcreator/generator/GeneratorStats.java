@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 public class GeneratorStats {
 
-	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl");
+	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl$");
 
 	private final Map<ModElementType<?>, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
 			Comparator.comparing(ModElementType::getRegistryName));

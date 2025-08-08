@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a piglinok nem válnak zombivá ebben a dimenzióban.

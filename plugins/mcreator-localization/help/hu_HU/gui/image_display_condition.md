@@ -1,0 +1,1 @@
+Ha feltétel van megadva, akkor ez a kép csak akkor jeleníthető meg, ha a feltétel teljesül.

@@ -1,0 +1,1 @@
+Ha be van jelölve, a dungeonok (mob spawnerrel rendelkező struktúrák) megjelenhetnek a mob spawnerben lévő entitásoddal együtt.
