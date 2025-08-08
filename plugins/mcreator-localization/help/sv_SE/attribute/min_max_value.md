@@ -1,0 +1,1 @@
+Denna parameter styr det minimala och maximala värdet attributet kan ha.

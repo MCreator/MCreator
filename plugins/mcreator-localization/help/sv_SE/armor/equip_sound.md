@@ -1,0 +1,1 @@
+Ljudet som spelas när spelaren tar på sig någon del av rustningen.
