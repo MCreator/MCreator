@@ -41,7 +41,7 @@ package ${package}.item;
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
-public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "")}Item {
+public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool|Pickaxe|Sword", "", "r")}Item {
 
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
@@ -62,30 +62,46 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	public ${name}Item (Item.Properties properties) {
 		super(
-			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe">
+			<#if data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe">
 			TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f,
 			</#if>
 			<#if data.toolType == "MultiTool">
-			TOOL_MATERIAL.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			TOOL_MATERIAL.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f, 0)
 			<#else>
 			properties
 			</#if>
-				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
-				.durability(${data.usageCount})
-				</#if>
-				<#if data.toolType == "MultiTool">
+				<#if data.toolType == "Pickaxe">
+				.pickaxe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+				<#elseif data.toolType == "Sword">
+				.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+				<#elseif data.toolType == "MultiTool">
 				.attributes(ItemAttributeModifiers.builder()
 						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.build())
+				<#elseif data.toolType == "Shield">
+				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+				.component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
+				.equippableUnswappable(EquipmentSlot.OFFHAND)
+            	.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(
+					0.25f,
+					1,
+					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0, 1)),
+					new BlocksAttacks.ItemDamageFunction(3, 1, 1),
+					Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+					Optional.of(SoundEvents.SHIELD_BLOCK),
+					Optional.of(SoundEvents.SHIELD_BREAK)
+				))
+				<#elseif data.toolType == "Shears">
+				.component(DataComponents.TOOL, ShearsItem.createToolProperties())
+				</#if>
+				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
+				.durability(${data.usageCount})
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
-				</#if>
-				<#if data.toolType == "Shield">
-				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
 				</#if>
 				<#if data.enchantability != 0 && data.toolType=="Shears">
 				.enchantable(${data.enchantability})
@@ -139,8 +155,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
 					ItemAbilities.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
 					ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
-					ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
-					ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+					toolAction == ItemAbilities.SWORD_SWEEP;
 		}
 
 		@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {

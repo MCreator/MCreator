@@ -33,9 +33,7 @@
 
 package ${package}.client.screens;
 
-<#assign hasEntityModels = false>
-
-@EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Overlay {
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
@@ -61,16 +59,6 @@ package ${package}.client.screens;
             y = entity.getY();
             z = entity.getZ();
         }
-
-        <#if data.hasTextures()>
-            RenderSystem.disableDepthTest();
-            RenderSystem.depthMask(false);
-            RenderSystem.enableBlend();
-            RenderSystem.setShader(CoreShaders.POSITION_TEX);
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-                GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-        </#if>
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
@@ -110,52 +98,22 @@ package ${package}.client.screens;
             </#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>
-				<#assign hasEntityModels = true>
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-					renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=10 y_offset=20/>,
-                        ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
+					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(),
+						<@calculatePosition component=component x_offset=(10 - 1000) y_offset=(20 - 1000)/>,
+						<@calculatePosition component=component x_offset=(10 + 1000) y_offset=(20 + 1000)/>,
+                        ${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
+						${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
         }
-
-        <#if data.hasTextures()>
-            RenderSystem.depthMask(true);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            RenderSystem.disableBlend();
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-        </#if>
     <#if generator.map(data.overlayTarget, "screens") != "Ingame">
         }
     </#if>
 	}
-
-	<#if hasEntityModels>
-	private static void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
-		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
-		Quaternionf cameraOrientation = new Quaternionf().rotateX(angleYComponent * 20 * ((float) Math.PI / 180F));
-		pose.mul(cameraOrientation);
-		float f2 = entity.yBodyRot;
-		float f3 = entity.getYRot();
-		float f4 = entity.getXRot();
-		float f5 = entity.yHeadRotO;
-		float f6 = entity.yHeadRot;
-		entity.yBodyRot = 180.0F + angleXComponent * 20.0F;
-		entity.setYRot(180.0F + angleXComponent * 40.0F);
-		entity.setXRot(-angleYComponent * 20.0F);
-		entity.yHeadRot = entity.getYRot();
-		entity.yHeadRotO = entity.getYRot();
-		InventoryScreen.renderEntityInInventory(guiGraphics, x, y, scale, new Vector3f(0, 0, 0), pose, cameraOrientation, entity);
-		entity.yBodyRot = f2;
-		entity.setYRot(f3);
-		entity.setXRot(f4);
-		entity.yHeadRotO = f5;
-		entity.yHeadRot = f6;
-	}
-	</#if>
 
 }
 
