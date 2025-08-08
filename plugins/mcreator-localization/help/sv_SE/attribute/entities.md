@@ -1,0 +1,1 @@
+Entiteter som valts här kommer att ha detta attribut inställt på standardvärdet när de uppstår.
