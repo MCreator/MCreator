@@ -67,7 +67,7 @@ public class ${JavaModName}Blocks {
 	// End of user code block custom blocks
 
 	private static <B extends Block> DeferredBlock<B> register(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
-		return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.of());
+		return REGISTRY.registerBlock(name, supplier);
 	}
 
 	<#if hasTintedBlocks>
