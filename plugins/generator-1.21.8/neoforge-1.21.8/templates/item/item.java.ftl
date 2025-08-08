@@ -39,14 +39,14 @@ package ${package}.item;
 <#if data.hasCustomEatResultItem()>
 @EventBusSubscriber
 </#if>
-public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
+public class ${name}Item extends Item {
 
 	<#if data.hasBannerPatterns()>
 	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
 	</#if>
 
 	public ${name}Item(Item.Properties properties) {
-		super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS, </#if>properties
+		super(properties
 				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
 				</#if>
@@ -59,6 +59,9 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
+				</#if>
+				<#if data.hasBannerPatterns()>
+				.component(DataComponents.PROVIDES_BANNER_PATTERNS, PROVIDED_PATTERNS)
 				</#if>
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
