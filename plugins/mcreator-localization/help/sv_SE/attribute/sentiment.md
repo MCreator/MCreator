@@ -1,0 +1,1 @@
+Denna parameter styr om attributet ska anses som positivt, negativt eller neutralt. Detta påverkar även färgen på attributets modifierare.

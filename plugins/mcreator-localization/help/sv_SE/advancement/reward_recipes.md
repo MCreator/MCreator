@@ -1,0 +1,1 @@
+Recept som låses upp när spelaren slutför framsteget.

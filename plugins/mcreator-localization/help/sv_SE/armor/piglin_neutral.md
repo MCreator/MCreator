@@ -1,0 +1,1 @@
+Denna kondition styr om denna rustningsdel gör piglins i närheten neutrala, som guldrustning.
