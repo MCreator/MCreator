@@ -20,6 +20,7 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.procedure.StringListProcedure;
+import net.mcreator.workspace.misc.WorkspaceInfo;
 
 import java.util.List;
 
@@ -30,6 +31,16 @@ public interface ISpecialInfoHolder {
 	default List<String> getFixedSpecialInformation() {
 		StringListProcedure procedure = getSpecialInfoProcedure();
 		return procedure != null && procedure.getName() == null ? List.copyOf(procedure.getFixedValue()) : List.of();
+	}
+
+	default boolean hasSpecialInformation(WorkspaceInfo w) {
+		return getSpecialInfoProcedure() != null && (
+				// hasProcedure logic
+				(getSpecialInfoProcedure().getName() != null && !"null".equals(getSpecialInfoProcedure().getName())
+						&& w.hasModElement(getSpecialInfoProcedure().getName()))
+						// or fixed value is not empty
+						|| (getSpecialInfoProcedure().getFixedValue() != null
+						&& !getSpecialInfoProcedure().getFixedValue().isEmpty()));
 	}
 
 }

@@ -178,8 +178,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
-	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
-
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return ${data.fireSpreadSpeed};
@@ -383,6 +381,19 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 			}, ${JavaModName}Blocks.${REGISTRYNAME}.get());
 		}
 	</#if>
+
+	<#if data.hasSpecialInformation(w)>
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHigh</#if>BlockItem {
+
+		public Item(Item.Properties properties) {
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), properties);
+		}
+
+		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
+
+	}
+	</#if>
+
 }
 </#compress>
 <#-- @formatter:on -->
