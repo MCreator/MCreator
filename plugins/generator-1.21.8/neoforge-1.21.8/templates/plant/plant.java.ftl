@@ -382,8 +382,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		}
 	</#if>
 
-	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
-	public static class Item extends BlockItem {
+	<#if data.hasSpecialInformation(w)>
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHigh</#if>BlockItem {
 
 		public Item(Item.Properties properties) {
 			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), properties);
