@@ -1,16 +1,10 @@
 {
-  "model": {
-      "type": "minecraft:model",
-      "model": "minecraft:item/template_spawn_egg",
-      "tints": [
-          {
-              "type": "minecraft:constant",
-              "value": ${data.spawnEggBaseColor.getRGB()}
-          },
-          {
-              "type": "minecraft:constant",
-              "value": ${data.spawnEggDotColor.getRGB()}
-          }
-      ]
+  "parent": "item/generated",
+  "textures": {
+    <#if data.spawnEggTexture?has_content>
+	"layer0": "${data.spawnEggTexture.format("%s:item/%s")}"
+    <#else>
+	"layer0": "${modid}:item/${registryname}_spawn_egg_generated"
+    </#if>
   }
 }
