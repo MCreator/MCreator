@@ -1,0 +1,1 @@
+Detta är hur många erfarenhetspoäng spelaren kommer att få efter att den slutför framsteget.

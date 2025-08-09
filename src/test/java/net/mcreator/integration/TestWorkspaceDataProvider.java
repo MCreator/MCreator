@@ -1018,7 +1018,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.plantType = getRandomString(random, List.of("normal", "growapable", "double", "sapling"));
+			plant.plantType = List.of("normal", "growapable", "double", "sapling").get(valueIndex);
 			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1239,7 +1239,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			item.shootConstantly = emptyLists;
 			item.rangedItemChargesPower = !item.shootConstantly;
-			item.projectileDisableAmmoCheck = _true;
+			item.projectileDisableAmmoCheck = random.nextBoolean();
 			item.onRangedItemUsed = new Procedure("procedure4");
 			item.rangedUseCondition = new Procedure("condition1");
 			item.isMusicDisc = !_true;

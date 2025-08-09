@@ -1,0 +1,1 @@
+Detta är en förhandsvisning av det vita mönstret tillämpat på en svart banderoll, med framsidan till vänster.
