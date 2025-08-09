@@ -58,6 +58,9 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.stayInGridWhenCrafting && (!data.recipeRemainder?? || data.recipeRemainder.isEmpty()) && data.damageCount != 0>
+				.setNoRepair()
+				</#if>
 				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
 				</#if>
@@ -87,17 +90,17 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		event.registerItem(new IClientItemExtensions() {
 			private ${name}ItemRenderer rendererInstance;
 
-			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+			@Override @OnlyIn(Dist.CLIENT) public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				if (rendererInstance == null)
 					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				return rendererInstance;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 	</#if>
 
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
-	public MutableComponent getDisplayName() {
+	@Override @OnlyIn(Dist.CLIENT) public MutableComponent getDisplayName() {
 		return Component.translatable(this.getDescriptionId() + ".patterns");
 	}
 	</#if>
@@ -136,20 +139,10 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				}
 				return retval;
 			}
-
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.damageCount != 0>
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
-			</#if>
 		</#if>
 	</#if>
 

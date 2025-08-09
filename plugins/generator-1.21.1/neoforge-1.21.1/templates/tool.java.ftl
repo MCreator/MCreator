@@ -109,6 +109,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+				.setNoRepair()
+				</#if>
 		);
 	}
 
@@ -200,6 +203,9 @@ public class ${name}Item extends Item {
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoRepair()
+			</#if>
 			.attributes(ItemAttributeModifiers.builder()
 				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
@@ -235,6 +241,9 @@ public class ${name}Item extends FishingRodItem {
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
+			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoRepair()
 			</#if>
 		);
 	}
@@ -290,20 +299,10 @@ public class ${name}Item extends FishingRodItem {
 				}
 				return retval;
 			}
-
-			@Override public boolean isRepairable(ItemStack itemstack) {
-				return false;
-			}
 		<#else>
 			@Override public ItemStack getCraftingRemainingItem(ItemStack itemstack) {
 				return new ItemStack(this);
 			}
-
-			<#if data.usageCount != 0>
-				@Override public boolean isRepairable(ItemStack itemstack) {
-					return false;
-				}
-			</#if>
 		</#if>
 	</#if>
 
