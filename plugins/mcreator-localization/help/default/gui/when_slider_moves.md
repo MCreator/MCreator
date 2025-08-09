@@ -1,0 +1,1 @@
+Triggers a procedure when the slider is selected and the cursor moves.
