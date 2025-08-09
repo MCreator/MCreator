@@ -80,16 +80,27 @@ public class ${JavaModName}Items {
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
 				register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
 		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
-			<#if item.isDoubleBlock()>
-				<#assign hasDoubleBlocks = true>
+			<#if item.hasSpecialInformation(w)>
 				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
-					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+					register("${item.getModElement().getRegistryName()}",
+						<#if item.hasCustomItemProperties()>
+							properties -> new ${item.getModElement().getName()}Block.Item(<@blockItemProperties item false/>)
+						<#else>
+							${item.getModElement().getName()}Block.Item::new
+						</#if>
+					);
 			<#else>
-				<#assign hasBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
-					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#if item.isDoubleBlock()>
+					<#assign hasDoubleBlocks = true>
+					public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+						doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+						<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#else>
+					<#assign hasBlocks = true>
+					public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+						block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+						<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				</#if>
 			</#if>
 		<#else>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
@@ -182,8 +193,8 @@ public class ${JavaModName}Items {
 
 }
 
-<#macro blockItemProperties block>
-new Item.Properties()
+<#macro blockItemProperties block newProperties=true>
+<#if newProperties>new Item.Properties()<#else>properties</#if>
 <#if block.maxStackSize != 64>
 	.stacksTo(${block.maxStackSize})
 </#if>

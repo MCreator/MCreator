@@ -50,8 +50,7 @@ package ${package}.client.renderer.item;
 </#list>
 
 <#compress>
-@EventBusSubscriber(Dist.CLIENT)
-public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
 
 	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
 		event.register(ResourceLocation.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);

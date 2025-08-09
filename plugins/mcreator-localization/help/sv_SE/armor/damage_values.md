@@ -1,0 +1,1 @@
+Dessa värden anger hur mycket skada mot entiteten som en del av rustningen reducerar.
