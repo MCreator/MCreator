@@ -301,7 +301,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
     </#if>
 
 	<#if hasProcedure(data.whenMobFalls) || data.flyingMob>
-	@Override public boolean causeFallDamage(float l, float d, DamageSource source) {
+	@Override public boolean causeFallDamage(double l, float d, DamageSource source) {
 		<#if hasProcedure(data.whenMobFalls)>
 			<@procedureCode data.whenMobFalls, {
 				"x": "this.getX()",
@@ -354,7 +354,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud
+			if (damagesource.getDirectEntity() instanceof AbstractThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud
 					|| damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
 				return false;
 		</#if>
@@ -468,49 +468,41 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.entityDataEntries?has_content || data.guiBoundTo?has_content || data.sensitiveToVibration>
-	@Override public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
+	@Override public void addAdditionalSaveData(ValueOutput valueOutput) {
+		super.addAdditionalSaveData(valueOutput);
 		<#list data.entityDataEntries as entry>
 			<#if entry.value().getClass().getSimpleName() == "Integer">
-			compound.putInt("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			valueOutput.putInt("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
-			compound.putBoolean("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			valueOutput.putBoolean("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			<#elseif entry.value().getClass().getSimpleName() == "String">
-			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			valueOutput.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			</#if>
 		</#list>
 		<#if data.guiBoundTo?has_content>
-		compound.put("InventoryCustom", inventory.serializeNBT(this.registryAccess()));
+		inventory.serialize(valueOutput.child("InventoryCustom"));
 		</#if>
 		<#if data.sensitiveToVibration>
-		VibrationSystem.Data.CODEC.encodeStart(this.registryAccess().createSerializationContext(NbtOps.INSTANCE), this.vibrationData)
-			.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to encode vibration listener for ${name}: '{}'", e))
-			.ifPresent(listener -> compound.put("listener", listener));
+		valueOutput.store("listener", VibrationSystem.Data.CODEC, this.vibrationData);
 		</#if>
 	}
 
-	@Override public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
+	@Override public void readAdditionalSaveData(ValueInput valueInput) {
+		super.readAdditionalSaveData(valueInput);
 		<#list data.entityDataEntries as entry>
-			if (compound.contains("Data${entry.property().getName()}"))
-				<#if entry.value().getClass().getSimpleName() == "Integer">
-				this.entityData.set(DATA_${entry.property().getName()}, compound.getInt("Data${entry.property().getName()}"));
-				<#elseif entry.value().getClass().getSimpleName() == "Boolean">
-				this.entityData.set(DATA_${entry.property().getName()}, compound.getBoolean("Data${entry.property().getName()}"));
-				<#elseif entry.value().getClass().getSimpleName() == "String">
-				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
-				</#if>
+			<#if entry.value().getClass().getSimpleName() == "Integer">
+			this.entityData.set(DATA_${entry.property().getName()}, valueInput.getIntOr("Data${entry.property().getName()}", 0));
+			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+			this.entityData.set(DATA_${entry.property().getName()}, valueInput.getBooleanOr("Data${entry.property().getName()}", false));
+			<#elseif entry.value().getClass().getSimpleName() == "String">
+			this.entityData.set(DATA_${entry.property().getName()}, valueInput.getStringOr("Data${entry.property().getName()}", ""));
+			</#if>
 		</#list>
 		<#if data.guiBoundTo?has_content>
-		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
-			inventory.deserializeNBT(this.registryAccess(), inventoryTag);
+		valueInput.child("InventoryCustom").ifPresent(input -> inventory.deserialize(input));
 		</#if>
 		<#if data.sensitiveToVibration>
-		if (compound.contains("listener", Tag.TAG_COMPOUND)) {
-			VibrationSystem.Data.CODEC.parse(this.registryAccess().createSerializationContext(NbtOps.INSTANCE), compound.getCompound("listener"))
-				.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${name}: '{}'", e))
-				.ifPresent(data -> this.vibrationData = data);
-		}
+		this.vibrationData = valueInput.read("listener", VibrationSystem.Data.CODEC).orElseGet(VibrationSystem.Data::new);
 		</#if>
 	}
 	</#if>
@@ -792,7 +784,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean canBeCollidedWith(Entity sourceentity) {
 		<#if hasProcedure(data.solidBoundingBox)>
 		Entity entity = this;
 		Level world = entity.level();
