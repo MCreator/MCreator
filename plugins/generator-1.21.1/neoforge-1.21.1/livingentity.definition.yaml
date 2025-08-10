@@ -49,5 +49,3 @@ localizationkeys:
     condition: hasSpawnEgg
   - key: entity.@modid.@registryname
     mapto: mobName
-
-field_exclusions: [spawnEggTexture]
