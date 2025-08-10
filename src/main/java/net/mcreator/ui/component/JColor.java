@@ -103,6 +103,11 @@ public class JColor extends JPanel {
 		}
 	}
 
+	public JColor withColorTextColumns(int width) {
+		colorText.setColumns(width);
+		return this;
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		colorText.setEnabled(enabled);

@@ -9,6 +9,9 @@ templates:
   - template: json/spawn_egg.json.ftl
     writer: json
     condition: hasSpawnEgg
+    name: "@MODASSETSROOT/models/item/@registryname_spawn_egg.json"
+  - template: json/model_spawn_egg.json.ftl
+    writer: json
     name: "@MODASSETSROOT/items/@registryname_spawn_egg.json"
 
   - template: livingentity/entity_spawn_biome_modifier.json.ftl

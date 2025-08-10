@@ -1911,8 +1911,10 @@ public class TestWorkspaceDataProvider {
 		livingEntity.visualScale = new NumberProcedure(emptyLists ? null : "number1", 8.123);
 		livingEntity.boundingBoxScale = new NumberProcedure(emptyLists ? null : "number2", 4.223);
 		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+		livingEntity.hasSpawnEgg = !_true;
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
+		livingEntity.spawnEggTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 		livingEntity.isBoss = _true;
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
@@ -1966,7 +1968,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.immuneToAnvil = !_true;
 		livingEntity.immuneToDragonBreath = !_true;
 		livingEntity.immuneToWither = _true;
-		livingEntity.hasSpawnEgg = !_true;
 		livingEntity.xpAmount = 8;
 		livingEntity.ridable = _true;
 		livingEntity.canControlStrafe = !_true;
