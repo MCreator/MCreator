@@ -177,7 +177,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 		<#if data.mobModelName == "Villager" || data.mobModelName == "Witch">
 		if (state instanceof HoldingEntityRenderState holdingState) {
-			this.itemModelResolver.updateForLiving(holdingState.heldItem, entity.getMainHandItem(), ItemDisplayContext.GROUND, false, entity);
+			this.itemModelResolver.updateForLiving(holdingState.heldItem, entity.getMainHandItem(), ItemDisplayContext.GROUND, entity);
 		}
 		</#if>
 	}
@@ -233,10 +233,18 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 	<#if data.animations?has_content>
 	private static final class AnimatedModel extends ${model} {
+
 		private ${name}Entity entity = null;
+
+		<#list data.animations as animation>
+		private final KeyframeAnimation keyframeAnimation${animation?index};
+		</#list>
 
 		public AnimatedModel(ModelPart root) {
 			super(root);
+			<#list data.animations as animation>
+			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			</#list>
 		}
 
 		public void setEntity(${name}Entity entity) {
@@ -273,7 +281,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 	<#list data.animations as animation>
 		<#if !animation.walking>
-			this.animate(entity.animationState${animation?index}, ${animation.animation}, state.ageInTicks, ${animation.speed}f);
+			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
 			<#if hasProcedure(animation.condition)>
 			if (<@procedureCode animation.condition, {
@@ -284,7 +292,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				"world": "entity.level()"
 			}, false/>)
 			</#if>
-			this.animateWalk(${animation.animation}, state.walkAnimationPos, state.walkAnimationSpeed, ${animation.speed}f, ${animation.amplitude}f);
+			this.keyframeAnimation${animation?index}.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, ${animation.speed}f, ${animation.amplitude}f);
 		</#if>
 	</#list>
 </#macro>

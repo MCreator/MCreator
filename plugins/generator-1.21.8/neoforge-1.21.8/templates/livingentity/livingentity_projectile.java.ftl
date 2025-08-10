@@ -33,7 +33,7 @@
 
 package ${package}.entity;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class) public class ${name}EntityProjectile extends AbstractArrow implements ItemSupplier {
+public class ${name}EntityProjectile extends AbstractArrow implements ItemSupplier {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.rangedAttackItem)};
 
