@@ -42,7 +42,7 @@ public class GeneratorVariableTypes {
 
 	GeneratorVariableTypes(GeneratorConfiguration generatorConfiguration) {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
-				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
+				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml$"));
 
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
 

@@ -1,0 +1,1 @@
+Ha ez a paraméter engedélyezve van, az elem világgeneráló funkciót generál a világban.

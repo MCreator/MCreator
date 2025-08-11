@@ -1,0 +1,1 @@
+Az eljárás minden tickben végrehajtásra kerül, amikor a játékos a tárgyat a kezében tartja.

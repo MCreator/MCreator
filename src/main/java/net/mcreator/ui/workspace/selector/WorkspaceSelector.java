@@ -303,8 +303,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
 		addWindowListener(new WindowAdapter() {
-			@Override public void windowOpened(WindowEvent e) {
-				super.windowOpened(e);
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
 				reloadRecents();
 				newWorkspace.requestFocusInWindow();
 			}

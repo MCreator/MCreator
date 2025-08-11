@@ -1,0 +1,1 @@
+Ez a paraméter meghatározza a kiválasztott textúrában található sprite-ok számát.

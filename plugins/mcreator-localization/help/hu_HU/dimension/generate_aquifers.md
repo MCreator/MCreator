@@ -1,0 +1,1 @@
+Ha ez a paraméter engedélyezve van, akkor víztartó rétegek (nagy víztározók/láva-tavak) keletkeznek ebben a dimenzióban.

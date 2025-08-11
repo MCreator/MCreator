@@ -1,0 +1,1 @@
+Detta är namnet på mönstret som visas i vävstolar och i beskrivningen på banderoller och sköldar.

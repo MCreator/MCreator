@@ -1,0 +1,1 @@
+Minél nagyobb a szám, annál nagyobb kárt okoz a lövedék a találat által eltalált célpontnak.

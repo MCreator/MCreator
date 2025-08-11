@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor ez a grafikus felhasználói felület bezárul.

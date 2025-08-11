@@ -77,6 +77,7 @@
 - adventure/fall_from_world_height
 - adventure/play_jukebox_in_meadows
 - adventure/trade_at_world_height
+- adventure/heart_transplanter
 - adventure/kill_mob_near_sculk_catalyst
 - adventure/craft_decorated_pot_using_only_sherds
 - adventure/read_power_of_chiseled_bookshelf
@@ -121,3 +122,4 @@
 - husbandry/remove_wolf_armor
 - husbandry/repair_wolf_armor
 - husbandry/whole_pack
+- husbandry/place_dried_ghast_in_water

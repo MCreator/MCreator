@@ -1,0 +1,1 @@
+Jelölje be ezt a paramétert, ha azt szeretné, hogy a részecskék a levegőben bocsátódjanak ki.

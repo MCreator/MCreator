@@ -1,0 +1,1 @@
+Ha ezt az opciót választja, az entitások nem tudnak mozogni a gyárban.

@@ -1,0 +1,1 @@
+Amíg a lövedék repül, a kiválasztott eljárás minden ciklusban végrehajtásra kerül.

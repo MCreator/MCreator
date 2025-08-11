@@ -55,7 +55,7 @@ public class TextureSelectionButton extends VButton {
 		setMargin(new Insets(0, 0, 0, 0));
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
-			td.dispose();
+			td.setVisible(false); // we can't call dispose method here, as we need to keep it for next time
 			Texture texture = td.list.getSelectedValue();
 			if (texture != null) {
 				setTexture(texture);
