@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", BlockStateArgument.block(event.getBuildContext()))${statement$args})

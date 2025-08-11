@@ -1,0 +1,1 @@
+A varázslat neve, ahogyan a játékban használják.

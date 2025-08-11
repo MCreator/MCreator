@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy egy adott területen legfeljebb hány növény keletkezhet. A magasabb értékek több növényt jelentenek egy adott területen.

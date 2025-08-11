@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy ez az élelmiszer kutyák és más húsevő állatok számára való-e.

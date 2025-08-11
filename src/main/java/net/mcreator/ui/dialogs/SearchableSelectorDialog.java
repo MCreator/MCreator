@@ -66,8 +66,8 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		});
 
 		addWindowListener(new WindowAdapter() {
-			@Override public void windowOpened(WindowEvent e) {
-				super.windowOpened(e);
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
 				reloadElements();
 			}
 		});

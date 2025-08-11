@@ -1,0 +1,1 @@
+Ha nincs bejelölve, akkor az entitás megsérülésekor a piros átfedés megjelenik ezen a rétegen.

@@ -1,7 +1,5 @@
-Seleccione la música que desea que el disco reproduzca dentro del tocadiscos.
+Selecciona la música que quieres que el disco reproduzca en el tocadiscos.
 
-Para soportar todas las funciones de tocadiscos tales como que el sonido se mueva más a la distancia,
-asegúrese de que su sonido está en formato MONO.
+Para poder soportar todas las funciones del tocadiscos, como podes escuchar más bajo entre más lejos estés, asegúrate que tu sonido está en el formato MONO.
 
-Si quieres redistribuir el mod, ¡asegúrate de tener los permisos para redistribuir la música
-que usas!
+Si tienes intención de redistribuir el mod, fijate que tengas permisos para distribuir la música vayas a utilizar!

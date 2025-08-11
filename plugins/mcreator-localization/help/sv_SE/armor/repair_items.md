@@ -1,0 +1,1 @@
+Reparera föremål-parametern styr vilka föremål som kan användas för att reparera rustningen i ett städ.

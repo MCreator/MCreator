@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a folyadék részecskéket generál, ha szilárd blokk felett van, és alatta levegő van.

@@ -99,7 +99,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
+					changeEvent -> new Thread(() -> regenerateArgs(changeEvent.getSource() instanceof BlocklyPanel),
+							"CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
@@ -132,7 +133,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		}
 	}
 
-	private synchronized void regenerateArgs() {
+	private synchronized void regenerateArgs(boolean jsEventTriggeredChange) {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
@@ -147,7 +148,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
 	}
 

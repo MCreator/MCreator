@@ -1,0 +1,1 @@
+Rustningens överdragstextur är texturerna som visas på spelaren när denne bär rustning.

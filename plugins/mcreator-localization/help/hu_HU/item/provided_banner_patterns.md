@@ -1,0 +1,1 @@
+Ha ez a lista nem üres, akkor ez az elem felhasználható egy szövőszéken a kiválasztott zászlóminta elkészítéséhez.

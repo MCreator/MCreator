@@ -1,0 +1,1 @@
+Om aktiverad finns detta attribut hos alla entiteter som kan ha detta attribut, inställt på standardvärdet när de uppstår.

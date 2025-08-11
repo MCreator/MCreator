@@ -30,8 +30,8 @@ tasks.register('tarLinux64', Tar.class) {
 
     into ('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")) {
         from('build/export/linux64/') { exclude "mcreator.sh", "jdk/bin*" }
-        from('build/export/linux64/mcreator.sh') { fileMode = 0775 }
-        from('build/export/linux64/jdk/bin/') { fileMode = 0775 } into 'jdk/bin/'
+        from('build/export/linux64/mcreator.sh') { filePermissions { unix 0775 } }
+        from('build/export/linux64/jdk/bin/') {filePermissions { unix 0775 } } into 'jdk/bin/'
     }
 
     destinationDirectory = file('build/export/')

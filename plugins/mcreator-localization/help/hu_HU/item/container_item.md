@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy az elkészített tárgy a kézműves rácson maradjon-e. Ez azt jelenti, hogy a tárgy része lesz a receptnek, de nem kerül felhasználásra.

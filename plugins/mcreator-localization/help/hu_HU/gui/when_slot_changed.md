@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor egy elem kerül ebbe a helyre, vagy onnan kivételre kerül.

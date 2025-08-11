@@ -27,7 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
+		String type = Strings.CS.removeStart(block.getAttribute("type"), "return_");
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {

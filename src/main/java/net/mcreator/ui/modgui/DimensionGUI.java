@@ -113,7 +113,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	);
 	private final JCheckBox useCustomEffects = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasClouds = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -4096, 4096, 0.1));
+	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -2032, 2031, 16));
 	private final JComboBox<String> skyType = new JComboBox<>(new String[] { "NONE", "NORMAL", "END" });
 	private final JCheckBox sunHeightAffectsFog = L10N.checkbox("elementgui.common.enable");
 
@@ -708,7 +708,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.defaultEffects = defaultEffects.getSelectedItem();
 		dimension.useCustomEffects = useCustomEffects.isSelected();
 		dimension.hasClouds = hasClouds.isSelected();
-		dimension.cloudHeight = (double) cloudHeight.getValue();
+		dimension.cloudHeight = (int) cloudHeight.getValue();
 		dimension.skyType = (String) skyType.getSelectedItem();
 		dimension.sunHeightAffectsFog = sunHeightAffectsFog.isSelected();
 		dimension.canRespawnHere = canRespawnHere.isSelected();

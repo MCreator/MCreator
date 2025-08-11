@@ -41,6 +41,7 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -240,7 +241,7 @@ public final class BlocklyJavascriptBridge {
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
-							StringUtils.removeStart(type, "procedure_retval_"));
+							Strings.CS.removeStart(type, "procedure_retval_"));
 					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
 				}
 
@@ -348,7 +349,7 @@ public final class BlocklyJavascriptBridge {
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
-							StringUtils.removeStart(type, "procedure_retval_"));
+							Strings.CS.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());

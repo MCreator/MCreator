@@ -1,0 +1,1 @@
+Ez az eljárás minden alkalommal végrehajtásra kerül, amikor egy ilyen hatással rendelkező mob megsérül.

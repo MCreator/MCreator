@@ -22,10 +22,6 @@
           "default": "geometry.creeper",
           "charged": "geometry.creeper.charged"
         },
-        "spawn_egg": {
-          "texture": "spawn_egg",
-          "texture_index": 6
-        },
         "scripts": {
           "pre_animation": [
             "variable.wobble = Math.sin(query.swell_amount * 5730) * query.swell_amount * 0.01 + 1.0;",

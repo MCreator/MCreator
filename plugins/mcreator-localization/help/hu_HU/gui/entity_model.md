@@ -1,0 +1,1 @@
+A kiválasztott eljárás visszatérési értékét használja a megjelenítendő modell meghatározásához. A visszatérési értéknek entitásnak kell lennie.

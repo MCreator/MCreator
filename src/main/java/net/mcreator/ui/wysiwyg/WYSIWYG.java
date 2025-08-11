@@ -384,6 +384,13 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (componentDragMode) {
 			ox = ex + (showGrid ? 0 : dragOffsetX);
 			oy = ey + (showGrid ? 0 : dragOffsetY);
+		} else if (componentMoveMode) {
+			if (selected instanceof SizedComponent component && !positioningModeSettingWidth) {
+				positioningModeSettingWidth = true;
+				if (component.canChangeHeight())
+					positioningModeSettingHeight = true;
+			}
+			mouseMoved(e); // if in move mode, we consider dragging as moving the mouse
 		} else {
 			GUIComponent component = getGUIComponentAt(ex, ey);
 			if (component != null) {

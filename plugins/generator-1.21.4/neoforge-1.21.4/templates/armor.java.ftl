@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public abstract class ${name}Item extends ArmorItem {
+@EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
 
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},

@@ -1,0 +1,1 @@
+Ezek azok a fák, amelyek normál körülmények között csemetéből nőhetnek ki.

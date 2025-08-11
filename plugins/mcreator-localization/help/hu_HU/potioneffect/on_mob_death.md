@@ -1,0 +1,1 @@
+Ez az eljárás akkor hajtódik végre, amikor egy ilyen hatással rendelkező mob meghal.
