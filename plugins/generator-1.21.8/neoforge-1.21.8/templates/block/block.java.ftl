@@ -104,8 +104,12 @@ public class ${name}Block extends
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(${name}Block::new);
 
-	public MapCodec<${name}Block> codec() {
+	@Override public MapCodec<${name}Block> codec() {
 		return CODEC;
+	}
+
+    @Override public int getDustColor(BlockState blockstate, BlockGetter world, BlockPos pos) {
+		return blockstate.getMapColor(world, pos).col;
 	}
 	</#if>
 
@@ -245,8 +249,6 @@ public class ${name}Block extends
 		return ${data.resistance}f;
    	}
 	</#if>
-
-	<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
 
 	<#if data.displayFluidOverlay>
 	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {
@@ -706,6 +708,18 @@ public class ${name}Block extends
 		}
 		</#if>
 	</#list>
+
+	<#if data.hasSpecialInformation(w)>
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHigh</#if>BlockItem {
+
+		public Item(Item.Properties properties) {
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), properties);
+		}
+
+		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
+
+	}
+	</#if>
 
 }
 </#compress>

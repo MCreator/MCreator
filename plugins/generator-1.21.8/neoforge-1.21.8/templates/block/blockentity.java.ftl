@@ -55,52 +55,43 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
 
-	@Override public void loadAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(compound, lookupProvider);
+	@Override public void loadAdditional(ValueInput valueInput) {
+		super.loadAdditional(valueInput);
 
-		if (!this.tryLoadLootTable(compound))
+		if (!this.tryLoadLootTable(valueInput))
 			this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 
-		ContainerHelper.loadAllItems(compound, this.stacks, lookupProvider);
+		ContainerHelper.loadAllItems(valueInput, this.stacks);
 
 		<#if data.hasEnergyStorage>
-		if(compound.get("energyStorage") instanceof IntTag intTag)
-			energyStorage.deserializeNBT(lookupProvider, intTag);
+		valueInput.child("energyStorage").ifPresent(input -> energyStorage.deserialize(input));
 		</#if>
 
 		<#if data.isFluidTank>
-		if(compound.get("fluidTank") instanceof CompoundTag compoundTag)
-			fluidTank.readFromNBT(lookupProvider, compoundTag);
+		valueInput.child("fluidTank").ifPresent(input -> fluidTank.deserialize(input));
 		</#if>
 
 		<#if data.sensitiveToVibration>
-		if (compound.contains("listener", 10)) {
-			VibrationSystem.Data.CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), compound.getCompound("listener"))
-					.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to parse vibration listener for ${data.name}: '{}'", e))
-					.ifPresent(data -> this.vibrationData = data);
-		}
+		this.vibrationData = valueInput.read("listener", VibrationSystem.Data.CODEC).orElseGet(VibrationSystem.Data::new);
 		</#if>
 	}
 
-	@Override public void saveAdditional(CompoundTag compound, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(compound, lookupProvider);
+	@Override public void saveAdditional(ValueOutput valueOutput) {
+		super.saveAdditional(valueOutput);
 
-		if (!this.trySaveLootTable(compound)) {
-			ContainerHelper.saveAllItems(compound, this.stacks, lookupProvider);
-		}
+		if (!this.trySaveLootTable(valueOutput))
+			ContainerHelper.saveAllItems(valueOutput, this.stacks);
 
 		<#if data.hasEnergyStorage>
-		compound.put("energyStorage", energyStorage.serializeNBT(lookupProvider));
+		energyStorage.serialize(valueOutput.child("energyStorage"));
 		</#if>
 
 		<#if data.isFluidTank>
-		compound.put("fluidTank", fluidTank.writeToNBT(lookupProvider, new CompoundTag()));
+		fluidTank.serialize(valueOutput.child("fluidTank"));
 		</#if>
 
 		<#if data.sensitiveToVibration>
-		VibrationSystem.Data.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), this.vibrationData)
-				.resultOrPartial(e -> ${JavaModName}.LOGGER.error("Failed to encode vibration listener for ${data.name}: '{}'", e))
-				.ifPresent(listener -> compound.put("listener", listener));
+		valueOutput.store("listener", VibrationSystem.Data.CODEC, this.vibrationData);
 		</#if>
 	}
 
