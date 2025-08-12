@@ -1,0 +1,1 @@
+Klicka i denna ruta för att gömma framsteget i framstegsmenyn fram tills att det är avklarat.
