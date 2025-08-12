@@ -50,7 +50,7 @@ package ${package}.client.renderer.item;
 </#list>
 
 <#compress>
-@EventBusSubscriber(Dist.CLIENT) public class ${name}ItemRenderer implements NoDataSpecialModelRenderer {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}ItemRenderer implements SpecialModelRenderer<ItemStack> {
 
 	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
 		event.register(ResourceLocation.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);
@@ -65,17 +65,14 @@ package ${package}.client.renderer.item;
 
 	private final Model model;
 	private final ResourceLocation texture;
-	private final ModelResourceLocation transformSource;
 
 	private ${name}ItemRenderer(Model model, ResourceLocation texture) {
 		this.model = model;
 		this.texture = texture;
-		this.transformSource = new ModelResourceLocation(ResourceLocation.parse("${modid}:item/${registryname}"), "normal");
 	}
 
-	@Override public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
+	@Override public void render(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
 		poseStack.pushPose();
-		Minecraft.getInstance().getModelManager().getModel(this.transformSource).applyTransform(displayContext, poseStack, isLeftHand(displayContext));
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
@@ -83,8 +80,13 @@ package ${package}.client.renderer.item;
 		poseStack.popPose();
 	}
 
-	private static boolean isLeftHand(ItemDisplayContext type) {
-		return type == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || type == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+	@Override public ItemStack extractArgument(ItemStack itemstack) {
+		return itemstack;
+	}
+
+	@Override public void getExtents(Set<Vector3f> extentsSet) {
+		PoseStack posestack = new PoseStack();
+		this.model.root().getExtentsForGui(posestack, extentsSet);
 	}
 
 	private static boolean isInventory(ItemDisplayContext type) {
