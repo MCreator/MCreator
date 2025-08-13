@@ -19,6 +19,7 @@
 package net.mcreator.generator;
 
 import net.mcreator.generator.template.TemplateExpressionParser;
+import net.mcreator.ui.MCreator;
 
 import java.io.File;
 import java.util.HashMap;
@@ -99,6 +100,10 @@ public class GeneratorTemplate {
 	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
 		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, templateDefinition,
 				conditionData);
+	}
+
+	public String getPathInWorkspace(MCreator mcreator) {
+		return mcreator.getFolderManager().getPathInWorkspace(this.getFile());
 	}
 
 	/**

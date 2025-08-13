@@ -1119,7 +1119,9 @@ import java.util.stream.Collectors;
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
 			new ModElementCodeDropdown(mcreator,
-					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
+					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).sorted((o1, o2) ->
+							o1.getPathInWorkspace(mcreator).compareToIgnoreCase(o2.getPathInWorkspace(mcreator)))
+							.toList(), modElementGlobalFiles,
 					modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.getFirst().getFile());
