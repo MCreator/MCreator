@@ -1510,13 +1510,13 @@ public class TestWorkspaceDataProvider {
 			block.tickRandomly = _true;
 			block.hasInventory = _true;
 			block.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
-			block.openGUIOnRightClick = !_true;
+			block.openGUIOnRightClick = random.nextBoolean();
 			block.inventorySize = 10;
 			block.inventoryAutomationTakeCondition = random.nextBoolean() ? null : new Procedure("condition1");
 			block.inventoryAutomationPlaceCondition = random.nextBoolean() ? null : new Procedure("condition2");
 			block.inventoryStackSize = 42;
-			block.inventoryDropWhenDestroyed = !_true;
-			block.inventoryComparatorPower = !_true;
+			block.inventoryDropWhenDestroyed = random.nextBoolean();
+			block.inventoryComparatorPower = random.nextBoolean();
 			block.inventoryOutSlotIDs = new ArrayList<>();
 			if (!emptyLists) {
 				block.inventoryOutSlotIDs.add(1);
