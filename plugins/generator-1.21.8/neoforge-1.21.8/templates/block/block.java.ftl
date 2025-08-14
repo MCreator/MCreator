@@ -46,7 +46,7 @@ public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")}Block
 	<#else>
 		Block
 	</#if>
@@ -58,7 +58,7 @@ public class ${name}Block extends
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
 	</#if>
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
 	</#if>
 	<#if interfaces?size gt 0>
@@ -205,6 +205,8 @@ public class ${name}Block extends
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
+			<#elseif data.blockBase == "Leaves">
+				super(0.01f, <@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -597,7 +599,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 
@@ -619,16 +621,8 @@ public class ${name}Block extends
 		}
 
 	    <#if data.inventoryDropWhenDestroyed>
-		@Override public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-			if (state.getBlock() != newState.getBlock()) {
-				BlockEntity blockEntity = world.getBlockEntity(pos);
-				if (blockEntity instanceof ${name}BlockEntity be) {
-					Containers.dropContents(world, pos, be);
-					world.updateNeighbourForOutputSignal(pos, this);
-				}
-
-				super.onRemove(state, world, pos, newState, isMoving);
-			}
+		@Override protected void affectNeighborsAfterRemoval(BlockState blockstate, ServerLevel world, BlockPos blockpos, boolean flag) {
+			Containers.updateNeighboursAfterDestroy(blockstate, world, blockpos);
 		}
 	    </#if>
 

@@ -64,7 +64,7 @@ package ${package}.client.renderer.block;
 		</#list>
 	}
 
-	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
+	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight, Vec3 cameraPos) {
 		<#compress>
 		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
@@ -115,14 +115,21 @@ package ${package}.client.renderer.block;
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
 
+		<#list data.animations as animation>
+		private final KeyframeAnimation keyframeAnimation${animation?index};
+		</#list>
+
 		public CustomHierarchicalModel(ModelPart root) {
 			super(root);
+			<#list data.animations as animation>
+			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			</#list>
 		}
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, LivingEntityRenderState state) {
 			this.root().getAllParts().forEach(ModelPart::resetPose);
 			<#list data.animations as animation>
-			this.animate(blockEntity.animationState${animation?index}, ${animation.animation}, state.ageInTicks, ${animation.speed}f);
+			this.keyframeAnimation${animation?index}.apply(blockEntity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 			</#list>
 			super.setupAnim(state);
 		}

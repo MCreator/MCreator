@@ -55,6 +55,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
 
+	<#if !data.inventoryDropWhenDestroyed>
+	@Override public void preRemoveSideEffects(BlockPos blockpos, BlockState blockstate) {
+	}
+	</#if>
+
 	@Override public void loadAdditional(ValueInput valueInput) {
 		super.loadAdditional(valueInput);
 
