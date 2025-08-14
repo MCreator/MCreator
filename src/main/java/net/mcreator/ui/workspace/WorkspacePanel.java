@@ -1118,9 +1118,10 @@ import java.util.stream.Collectors;
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
-			new ModElementCodeDropdown(mcreator,
-					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
-					modElementListFiles).show(component, x, y);
+			new ModElementCodeDropdown(mcreator, modElementFiles.stream().filter(e -> !(e instanceof ListTemplate))
+					.sorted((o1, o2) -> o1.getPathInWorkspace(mcreator.getWorkspace())
+							.compareToIgnoreCase(o2.getPathInWorkspace(mcreator.getWorkspace()))).toList(),
+					modElementGlobalFiles, modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.getFirst().getFile());
 		else if (modElementGlobalFiles.size() == 1)

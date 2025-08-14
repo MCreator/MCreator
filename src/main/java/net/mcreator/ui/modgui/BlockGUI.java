@@ -1422,6 +1422,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (model != null && model.getType() == Model.Type.JAVA) {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
+			refreshFieldsTileEntity();
 		} else {
 			hasInventory.setEnabled(true);
 		}
