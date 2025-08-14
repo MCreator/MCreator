@@ -32,16 +32,21 @@ import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.io.FileIO;
+import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -54,6 +59,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,6 +90,7 @@ import java.util.stream.Collectors;
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
+	@TextureReference(TextureType.ITEM) public TextureHolder spawnEggTexture;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
@@ -336,6 +344,25 @@ import java.util.stream.Collectors;
 		public boolean walking;
 		public double amplitude;
 
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		// if spawn egg is enabled and texture is not specified and the Minecraft version is 1.21.5 Java Edition or higher,
+		// where one can't use built-in spawn egg generation, a texture needs to be generated manually as fallback
+		if (hasSpawnEgg && (spawnEggTexture == null || spawnEggTexture.isEmpty()) && ModuleDescriptor.Version.parse(
+						getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+				.compareTo(ModuleDescriptor.Version.parse("1.21.5")) >= 0 && (
+				getModElement().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
+						== GeneratorFlavor.GamePlatform.JAVAEDITION)) {
+			File spawnEggTextureFile = getModElement().getFolderManager()
+					.getTextureFile(getModElement().getRegistryName() + "_spawn_egg_generated", TextureType.ITEM);
+			ImageIcon spawnEgg = ImageUtils.drawOver(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
+							new ResourcePointer("templates/textures/texturemaker/egg_base.png")), spawnEggBaseColor, true),
+					ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
+									new ResourcePointer("templates/textures/texturemaker/egg_accent.png")), spawnEggDotColor,
+							true));
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(spawnEgg.getImage()), spawnEggTextureFile);
+		}
 	}
 
 }

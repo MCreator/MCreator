@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, wird der Fernkampfgegenstand fortwährend schießen, wenn der Spieler mit der rechten Maustaste darauf klickt.

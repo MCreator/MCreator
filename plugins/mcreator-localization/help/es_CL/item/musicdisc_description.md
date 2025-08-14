@@ -1,1 +1,1 @@
-Escribe la descripción de tu disco, generalmente es el compositor - el nombre de la música.
+Escriba una descripción para tu disco. Usualmente es "Compositor - Nombre de la música"

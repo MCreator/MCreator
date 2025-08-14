@@ -1,0 +1,1 @@
+Du kan välja en funktion att genomföra när spelaren slutför framsteget med denna parameter.

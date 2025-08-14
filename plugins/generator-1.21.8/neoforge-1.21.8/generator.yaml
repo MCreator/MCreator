@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 21.8.17
+buildfileversion: 21.8.31
 
 import:
   - datapack-1.21.8
@@ -86,11 +86,11 @@ base_templates:
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
-#  - template: modbase/enumextensions.json.ftl
-#    writer: json
-#    name: "@RESROOT/META-INF/enumextensions.json"
-#    condition_any:
-#      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+  - template: modbase/enumextensions.json.ftl
+    writer: json
+    name: "@RESROOT/META-INF/enumextensions.json"
+    condition_any:
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
   - template: modbase/mixin.json.ftl
     writer: json
     condition_any:

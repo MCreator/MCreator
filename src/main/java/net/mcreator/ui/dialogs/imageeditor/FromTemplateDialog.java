@@ -55,7 +55,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 	private static final String[] templateList = new String[] { "Random", "Sword", "Pickaxe", "Axe", "Shovel", "Hoe",
 			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore", "Block", "Gem",
-			"Dye" };
+			"Dye", "Spawn egg" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
 			Theme.current().getInterfaceAccentColor(), Color.magenta, Color.cyan, new Color(244, 67, 54),
@@ -541,6 +541,25 @@ public class FromTemplateDialog extends MCreatorDialog {
 			type2.setSelected(Math.random() < 0.4);
 			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
 			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			break;
+		case "Spawn egg":
+			cbs.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_base"))
+							.collect(Collectors.toList())));
+			cbs2.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_base"))
+							.collect(Collectors.toList())));
+			cbs3.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_accent"))
+							.collect(Collectors.toList())));
+			cbs4.setSelectedItem(noimage);
+			col1.setColor(ListUtils.getRandomItem(presetColors));
+			type1.setSelected(true);
+			col2.setColor(ListUtils.getRandomItem(presetColors));
+			type2.setSelected(true);
+			ang1.setValue(0);
+			ang2.setValue(0);
+			ang3.setValue(0);
 			break;
 		default:
 			randomizeSetup();

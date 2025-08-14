@@ -1,0 +1,1 @@
+Denna parameter styr färgen på dimman inne i biomen.
