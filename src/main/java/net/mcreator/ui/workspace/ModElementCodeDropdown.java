@@ -102,7 +102,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 	private JMenuItem modElementFileMenuItem(GeneratorTemplate template) {
 		JMenuItem item = new JMenuItem(
 				"<html>" + template.getFile().getName() + "<br><small color=#666666>" +
-						template.getPathInWorkspace(mcreator));
+						template.getPathInWorkspace(mcreator.getWorkspace()));
 		item.setIcon(FileIcons.getIconForFile(template.getFile()));
 		item.setBackground((Theme.current().getAltBackgroundColor()).darker());
 		item.setForeground(Theme.current().getForegroundColor());

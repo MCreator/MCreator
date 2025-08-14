@@ -19,7 +19,7 @@
 package net.mcreator.generator;
 
 import net.mcreator.generator.template.TemplateExpressionParser;
-import net.mcreator.ui.MCreator;
+import net.mcreator.workspace.Workspace;
 
 import java.io.File;
 import java.util.HashMap;
@@ -102,8 +102,8 @@ public class GeneratorTemplate {
 				conditionData);
 	}
 
-	public String getPathInWorkspace(MCreator mcreator) {
-		return mcreator.getFolderManager().getPathInWorkspace(this.getFile());
+	public String getPathInWorkspace(Workspace workspace) {
+		return workspace.getFolderManager().getPathInWorkspace(this.getFile());
 	}
 
 	/**
