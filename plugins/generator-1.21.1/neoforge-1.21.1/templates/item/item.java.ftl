@@ -92,12 +92,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				return rendererInstance;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 	</#if>
 
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
-	public MutableComponent getDisplayName() {
+	@Override public MutableComponent getDisplayName() {
 		return Component.translatable(this.getDescriptionId() + ".patterns");
 	}
 	</#if>
