@@ -429,9 +429,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
 				hasGravity.setSelected(false);
-				isNotColidable.setSelected(false);
-				reactionToPushing.setSelectedItem("NORMAL");
-				ignitedByLava.setSelected(false);
+				if (!isEditingMode()) {
+					isNotColidable.setSelected(false);
+					reactionToPushing.setSelectedItem("NORMAL");
+					ignitedByLava.setSelected(false);
+				}
 
 				String selectedBlockBase = blockBase.getSelectedItem();
 				switch (selectedBlockBase) {
