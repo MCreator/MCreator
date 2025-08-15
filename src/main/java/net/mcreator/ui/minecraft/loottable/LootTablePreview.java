@@ -135,7 +135,7 @@ public class LootTablePreview extends JLayeredPane {
 				String plainName = GeneratorWrapper.getElementPlainName(unmappedName);
 				ModElement modElement = mcreator.getWorkspace().getModElementByName(plainName);
 
-				item = modElement.getMCItems().stream().filter(e -> e.getType().equals("item")).findFirst()
+				item = modElement.getMCItems().stream().filter(e -> !e.getType().equals("block_without_item")).findFirst()
 						.orElse(null);
 				id = mcreator.getWorkspaceSettings().getModID() + ":" + modElement.getRegistryName();
 			} else {
