@@ -1,0 +1,1 @@
+This is the game rule category. It's used for the classification of the game rules  depending on what they do.

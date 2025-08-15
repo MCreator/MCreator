@@ -1,0 +1,1 @@
+${input$entity}.hurt(${input$damagesource}, ${opt.toFloat(input$amount)});

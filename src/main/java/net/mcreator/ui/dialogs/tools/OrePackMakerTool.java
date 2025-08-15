@@ -95,7 +95,7 @@ public class OrePackMakerTool {
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.ore_pack_create");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
@@ -106,7 +106,7 @@ public class OrePackMakerTool {
 						(Double) power.getValue());
 				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
 

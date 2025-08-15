@@ -1,0 +1,1 @@
+Ez a paraméter a hangot irányítja amikor a lövedék ki lett lőve.

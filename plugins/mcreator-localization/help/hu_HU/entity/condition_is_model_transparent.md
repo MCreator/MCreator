@@ -1,0 +1,1 @@
+Amíg a visszatérési érték igaz, az entitás átlátszó lesz. Amíg a játékos néző módban van, teljesíti ezt a feltételt.

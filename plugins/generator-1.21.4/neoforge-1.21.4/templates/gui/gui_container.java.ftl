@@ -312,11 +312,11 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	<#if hasProcedure(data.onTick)>
 		@SubscribeEvent public static void onPlayerTick(PlayerTickEvent.Post event) {
 			Player entity = event.getEntity();
-			if(entity.containerMenu instanceof ${name}Menu) {
-				Level world = entity.level();
-				double x = entity.getX();
-				double y = entity.getY();
-				double z = entity.getZ();
+			if(entity.containerMenu instanceof ${name}Menu menu) {
+				Level world = menu.world;
+				double x = menu.x;
+				double y = menu.y;
+				double z = menu.z;
 				<@procedureOBJToCode data.onTick/>
 			}
 		}

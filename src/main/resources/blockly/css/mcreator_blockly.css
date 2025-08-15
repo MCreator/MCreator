@@ -1,5 +1,6 @@
 * {
     font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 ::-webkit-scrollbar {

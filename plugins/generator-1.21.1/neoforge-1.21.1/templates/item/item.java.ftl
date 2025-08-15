@@ -39,7 +39,7 @@ package ${package}.item;
 
 <#compress>
 <#if hasCustomJAVAModels>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
 	<#if data.hasBannerPatterns()>
@@ -92,12 +92,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 				return rendererInstance;
 			}
-		}, ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get());
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
 	}
 	</#if>
 
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
-	public MutableComponent getDisplayName() {
+	@Override public MutableComponent getDisplayName() {
 		return Component.translatable(this.getDescriptionId() + ".patterns");
 	}
 	</#if>
@@ -105,6 +105,16 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
+	}
+	</#if>
+
+	<#if !data.isFood && data.animation == "eat">
+	@Override public SoundEvent getEatingSound() {
+		return SoundEvents.EMPTY;
+	}
+	<#elseif !data.isFood && data.animation == "drink">
+	@Override public SoundEvent getDrinkingSound() {
+		return SoundEvents.EMPTY;
 	}
 	</#if>
 

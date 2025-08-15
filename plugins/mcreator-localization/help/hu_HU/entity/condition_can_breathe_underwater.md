@@ -1,0 +1,1 @@
+Ha ez a feltétel teljesül, az entitás képes lesz a víz alatt végtelenül lélegezni, mint a halak vagy a tintahalak.

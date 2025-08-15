@@ -150,6 +150,12 @@ public class MetadataManager {
 		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
 			return;
 
+		BufferedImage[] layerImages = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
+		if (layerImages.length <= 1) {
+			// If there is only one layer or less, we do not save metadata as it is not "worth it"
+			return;
+		}
+
 		File metadataFile = getMetadataFile(workspace, file);
 		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
 			das.writeInt(0); // File type identifier - unused for now
@@ -163,7 +169,6 @@ public class MetadataManager {
 			das.writeInt(canvasJSONStringBytes.length);
 			das.write(canvasJSONStringBytes);
 
-			BufferedImage[] layerImages = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
 			das.writeInt(layerImages.length);
 			for (BufferedImage layerImage : layerImages) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a blokkra helyezett hangjegyblokkok hangszerét.

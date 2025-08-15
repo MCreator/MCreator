@@ -1,0 +1,1 @@
+The model shield type tools use while blocking.

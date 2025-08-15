@@ -1,0 +1,1 @@
+Můžete vybrat funkci, která bude při spuštěna při dokončení pokroku s tímto parametrem.

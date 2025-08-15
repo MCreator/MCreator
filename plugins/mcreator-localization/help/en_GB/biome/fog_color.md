@@ -1,0 +1,1 @@
+This parameter controls the colour of the fog inside the biome.

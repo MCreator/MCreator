@@ -1,0 +1,1 @@
+Ha feltétel van megadva, a játékosnak teljesítenie kell azt, hogy portált építhessen ebbe a dimenzióba. Az itemstack függőség az a tárgy, amelyet a portál aktiválásához használnak.

@@ -33,7 +33,7 @@
 
 package ${package}.world.teleporter;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}Teleporter {
+@EventBusSubscriber public class ${name}Teleporter {
 
 	public static Holder<PoiType> poi = null;
 

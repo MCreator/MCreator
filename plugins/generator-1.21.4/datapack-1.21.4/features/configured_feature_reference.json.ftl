@@ -1,1 +1,1 @@
-"${generator.map(field$feature, "configuredfeatures", 2)}"
+"${generator.map(field$feature, "configuredfeatures")}"

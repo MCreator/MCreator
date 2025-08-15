@@ -78,10 +78,10 @@ public class ResizeDialog extends MCreatorDialog {
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
-			setVisible(false);
+			dispose();
 		});
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);

@@ -21,6 +21,7 @@ package net.mcreator.io;
 
 import net.mcreator.util.DefaultExceptionHandler;
 import net.mcreator.util.LoggingOutputStream;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
@@ -39,7 +40,14 @@ public class LoggingSystem {
 			System.setProperty("log_disable_ansi", "false");
 		}
 
-		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
+		//noinspection resource
+		System.setErr(new PrintStream(
+				new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR).withCustomLogAction(log -> {
+					// Fail tests if anything but JavaFX configuration error is logged to STDERR
+					if (TestUtil.isTestingEnvironment() && !log.contains("Unsupported JavaFX configuration")) {
+						TestUtil.failIfTestingEnvironment();
+					}
+				}), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 	}

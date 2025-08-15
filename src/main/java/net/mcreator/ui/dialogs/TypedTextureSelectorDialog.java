@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
@@ -37,6 +38,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -69,7 +72,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 		setModal(true);
 		setTitle(L10N.t("dialog.textures_selector.title", type));
-		setSize(842, 480);
+		setSize(844, 480);
 		setLocationRelativeTo(mcreator);
 
 		JPanel pn = new JPanel(new BorderLayout());
@@ -90,13 +93,15 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 		JLabel aa = L10N.label("dialog.textures_selector.no_texture");
 
+		center.add(PanelUtils.totalCenterInPanel(
+				new JLabel(new SquareLoaderIcon(8, 1, Theme.current().getAltForegroundColor()))), "load");
 		center.add(PanelUtils.centerInPanel(aa), "help");
 		center.add(new JScrollPane(list), "list");
 
 		JPanel buttons = new JPanel();
 
 		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancelButton.addActionListener(event -> setVisible(false));
+		cancelButton.addActionListener(event -> dispose());
 
 		buttons.add(select);
 		buttons.add(cancelButton);
@@ -134,7 +139,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		createTx2.addActionListener(event -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
-			setVisible(false);
+			dispose();
 		});
 		pno.add(createTx2);
 
@@ -149,6 +154,13 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pn.add("North", PanelUtils.westAndEastElement(pno, PanelUtils.totalCenterInPanel(pno2)));
 		pn.add("South", buttons);
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
+				reloadList();
+			}
+		});
+
 		add(pn);
 	}
 
@@ -161,33 +173,31 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		return type;
 	}
 
-	@Override public void setVisible(boolean visible) {
-		if (visible) {
-			reloadList();
-		}
-
-		super.setVisible(visible);
-	}
-
 	private void reloadList() {
-		model.removeAllElements();
+		layout.show(center, "load");
 
-		// Load custom textures
-		CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+		new Thread(() -> {
+			model.removeAllElements();
 
-		if (loadExternalTextures) {
-			ExternalTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
-		}
+			// Load custom textures
+			CustomTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
 
-		list.setSelectedIndex(0);
+			if (loadExternalTextures) {
+				ExternalTexture.getTexturesOfType(mcreator.getWorkspace(), type).forEach(model::addElement);
+			}
 
-		if (model.getSize() == 0) {
-			layout.show(center, "help");
-		} else {
-			layout.show(center, "list");
-		}
+			SwingUtilities.invokeLater(() -> {
+				list.setSelectedIndex(0);
 
-		list.requestFocus();
+				if (model.getSize() == 0) {
+					layout.show(center, "help");
+				} else {
+					layout.show(center, "list");
+				}
+
+				list.requestFocus();
+			});
+		}, "TypedTextureSelectorDialog-Reloader").start();
 	}
 
 	public JButton getConfirmButton() {

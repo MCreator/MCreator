@@ -52,8 +52,8 @@ public class MCreatorDialog extends JDialog {
 		Action dispatchClosing = new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent event) {
 				if (closable) {
+					// This will trigger the windowClosing event, which will call dispose()
 					dispatchEvent(new WindowEvent(MCreatorDialog.this, WindowEvent.WINDOW_CLOSING));
-					setVisible(false);
 					dispatchEvent(new WindowEvent(MCreatorDialog.this, WindowEvent.WINDOW_CLOSED));
 				} else {
 					Toolkit.getDefaultToolkit().beep();

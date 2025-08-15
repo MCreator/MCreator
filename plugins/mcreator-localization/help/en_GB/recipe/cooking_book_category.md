@@ -1,0 +1,1 @@
+Cooking book category defines under which tab the recipe will be shown in the cooking book.

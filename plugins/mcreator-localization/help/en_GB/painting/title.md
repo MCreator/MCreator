@@ -1,0 +1,1 @@
+This parameter defines the title of the painting.

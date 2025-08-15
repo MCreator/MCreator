@@ -1,0 +1,1 @@
+Amíg a visszatérési érték igaz, ez a modellréteg látható.

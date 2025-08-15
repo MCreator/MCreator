@@ -1,0 +1,1 @@
+A játék eseményei, amelyek rezgéseit ez a blokk képes fogadni.

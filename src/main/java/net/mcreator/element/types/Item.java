@@ -221,6 +221,11 @@ import java.util.*;
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 
+	public boolean hasCustomEatResultItem() {
+		return isFood && eatResultItem != null && !eatResultItem.isEmpty() && eatResultItem.getUnmappedValue()
+				.startsWith("CUSTOM:");
+	}
+
 	public boolean hasBannerPatterns() {
 		return !providedBannerPatterns.isEmpty();
 	}

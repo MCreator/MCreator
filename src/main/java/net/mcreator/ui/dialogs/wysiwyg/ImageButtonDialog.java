@@ -112,11 +112,11 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (hoveredTextureSelector.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				if (textureSelector.hasTexture()) {
 					if (button == null) {
 						String name = textToMachineName(editor.getComponentList(), "imagebutton_",

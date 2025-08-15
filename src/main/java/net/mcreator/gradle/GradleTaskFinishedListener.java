@@ -20,6 +20,6 @@ package net.mcreator.gradle;
 
 public interface GradleTaskFinishedListener {
 
-	void onTaskFinished(GradleTaskResult result);
+	void onTaskFinished(GradleResultCode result);
 
 }

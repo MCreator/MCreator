@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, felhők jelennek meg ebben a dimenzióban.

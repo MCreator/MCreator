@@ -1,0 +1,1 @@
+Ha a feltétel meg van adva, a játékosnak teljesítenie kell azt, hogy eljusson ebbe a dimenzióba.

@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a hegyes nyíl nevét.

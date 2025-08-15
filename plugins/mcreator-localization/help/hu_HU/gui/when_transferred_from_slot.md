@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor az ebben a helyben lévő elemek átkerülnek onnan.

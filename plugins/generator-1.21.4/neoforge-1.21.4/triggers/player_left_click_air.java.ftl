@@ -1,5 +1,5 @@
 <#include "procedures.java.ftl">
-@EventBusSubscriber(value = {Dist.CLIENT}) public class ${name}Procedure {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Procedure {
 	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
@@ -14,7 +14,7 @@
 		execute(${dependenciesCode});
 	}
 
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber
 	public record ${name}Message() implements CustomPacketPayload {
 		public static final Type<${name}Message> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "procedure_${registryname}"));
 

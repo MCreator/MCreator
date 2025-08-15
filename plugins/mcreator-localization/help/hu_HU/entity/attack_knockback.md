@@ -1,0 +1,1 @@
+A támadás visszalökés határozza meg az entitás minden egyes támadásának visszalökési értékét. A legtöbb alap entitás nem használja. Néhány azonban igen, például a ravager, amelynek visszalökési értéke 1,5.

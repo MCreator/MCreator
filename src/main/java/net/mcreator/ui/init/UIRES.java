@@ -37,8 +37,8 @@ public class UIRES {
 	private static final Map<String, ImageIcon> THEME_CACHE = new ConcurrentHashMap<>();
 	private static final Map<String, ImageIcon> FALLBACK_CACHE = new ConcurrentHashMap<>();
 
-	private static final Pattern rasterPattern = Pattern.compile(".*\\.png");
-	private static final Pattern vectorPattern = Pattern.compile(".*\\.svg");
+	private static final Pattern rasterPattern = Pattern.compile(".*\\.png$");
+	private static final Pattern vectorPattern = Pattern.compile(".*\\.svg$");
 
 	public static void preloadImages() {
 		// first, preload textures of the current theme

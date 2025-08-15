@@ -1,0 +1,1 @@
+Ehhez a címkéhez hozzáadott blokkok örökre megégnek ebben a dimenzióban (hasonlóan a Netherrackhez).

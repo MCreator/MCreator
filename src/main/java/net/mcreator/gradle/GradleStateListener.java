@@ -22,6 +22,6 @@ public interface GradleStateListener {
 
 	void taskStarted(String taskName);
 
-	void taskFinished(GradleTaskResult result);
+	void taskFinished(GradleResultCode result);
 
 }

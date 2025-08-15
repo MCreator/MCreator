@@ -1,0 +1,1 @@
+Ha a portálblokk jelen van a világban, az eljárás minden tickben végrehajtásra kerül.
