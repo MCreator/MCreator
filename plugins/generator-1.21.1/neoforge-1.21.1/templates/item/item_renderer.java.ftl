@@ -38,14 +38,18 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 	private final EntityModelSet entityModelSet;
 	private final ItemStack transformSource;
 
+	private final long start;
+
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
 		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
+
+		this.start = System.currentTimeMillis();
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+		EntityModel<?> model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
 		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
@@ -65,6 +69,7 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		model.setupAnim(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}

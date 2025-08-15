@@ -63,12 +63,17 @@ package ${package}.client.renderer.item;
 		</#list>
 	);
 
-	private final Model model;
+	private final EntityModel<LivingEntityRenderState> model;
 	private final ResourceLocation texture;
 
-	private ${name}ItemRenderer(Model model, ResourceLocation texture) {
+	private final LivingEntityRenderState renderState;
+	private final long start;
+
+	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, ResourceLocation texture) {
 		this.model = model;
 		this.texture = texture;
+		this.renderState = new LivingEntityRenderState();
+		this.start = System.currentTimeMillis();
 	}
 
 	@Override public void render(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
@@ -76,6 +81,8 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
+		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
+		model.setupAnim(renderState);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
