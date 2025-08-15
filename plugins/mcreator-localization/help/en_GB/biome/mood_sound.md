@@ -1,0 +1,1 @@
+The ambient sound is the sound used for caves (e.g. Ambient Caves)

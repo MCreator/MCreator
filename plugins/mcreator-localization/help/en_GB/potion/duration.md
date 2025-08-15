@@ -1,0 +1,1 @@
+This parameter defines how long this effect entry lasts.

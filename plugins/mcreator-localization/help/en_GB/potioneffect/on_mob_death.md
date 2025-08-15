@@ -1,0 +1,1 @@
+This procedure is executed when a mob with this effect dies.
