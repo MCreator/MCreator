@@ -1,3 +1,0 @@
-MCreatorLink.LINK_BLOCK:
-  - MCreatorLinkBlocks.LINK_BLOCK.get()
-  - "mcreator_link:link"
