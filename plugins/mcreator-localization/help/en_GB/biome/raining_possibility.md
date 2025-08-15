@@ -1,0 +1,1 @@
+This parameter controls the possibility of raining inside the biome.

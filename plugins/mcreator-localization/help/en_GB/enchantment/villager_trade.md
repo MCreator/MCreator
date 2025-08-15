@@ -1,0 +1,1 @@
+Check this option if you want your enchantment to be sold as a villager trade.

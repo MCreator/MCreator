@@ -1,0 +1,1 @@
+Input slots will not be used as output/source for hopper item transmission.
