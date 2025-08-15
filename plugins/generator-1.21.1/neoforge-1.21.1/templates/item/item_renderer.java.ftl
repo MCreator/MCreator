@@ -38,6 +38,7 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 	private final EntityModelSet entityModelSet;
 	private final ItemStack transformSource;
 
+	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
 	private final long start;
 
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
@@ -46,10 +47,19 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
 
 		this.start = System.currentTimeMillis();
+
+		<#if data.hasCustomJAVAModel()>
+		this.models.put(0, new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION)));
+		</#if>
+		<#list data.getModels() as model>
+			<#if model.hasCustomJAVAModel()>
+			this.models.put(${model?index + 1}, new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			</#if>
+		</#list>
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		EntityModel<?> model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+		EntityModel<?> model = this.models.get(0);
 		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
@@ -57,7 +67,7 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
-				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
+				model = models.get(${model?index + 1});
 				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
