@@ -227,7 +227,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
-		//reach the end of code place
+		//reach the end of code area
 		append(getTail());
 		setTail("");
 		setHead("");
