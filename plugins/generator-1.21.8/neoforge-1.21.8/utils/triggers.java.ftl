@@ -257,23 +257,6 @@
 </#if>
 </#macro>
 
-<#macro everyTickWhileUsing procedure="">
-<#if hasProcedure(procedure)>
-@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int time) {
-	super.onUseTick(world, entity, itemstack, time);
-	<@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"world": "world",
-		"entity": "entity",
-		"itemstack": "itemstack",
-		"time": "time"
-	}/>
-}
-</#if>
-</#macro>
-
 <#macro onItemEntityDestroyed procedure="">
 <#if hasProcedure(procedure)>
 @Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
