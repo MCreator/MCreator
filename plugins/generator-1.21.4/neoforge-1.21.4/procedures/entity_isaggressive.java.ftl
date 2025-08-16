@@ -1,1 +1,0 @@
-(${input$entity} instanceof Mob _mobEnt${cbi} && _mobEnt${cbi}.isAggressive())

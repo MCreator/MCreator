@@ -1,1 +1,0 @@
-${input$entity}.push(${input$x}, ${input$y}, ${input$z});

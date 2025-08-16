@@ -1,6 +1,0 @@
-defaultvalue: InteractionResult.PASS
-scopes:
-  local:
-    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
-    get: ${name}
-    set: ${name} = ${opt.removeParentheses(value)};

@@ -1,1 +1,0 @@
-(DoubleArgumentType.getDouble(arguments, "${field$param}"))

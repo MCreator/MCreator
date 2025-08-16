@@ -1,2 +1,0 @@
-(${input$entity}.level() instanceof ServerLevel _levelExplosionCheck${cbi} &&
-	${input$entity}.ignoreExplosion(new ServerExplosion(_levelExplosionCheck${cbi}, null, null, null, new Vec3(0, 0, 0), 1, false, Explosion.BlockInteraction.DESTROY)))
