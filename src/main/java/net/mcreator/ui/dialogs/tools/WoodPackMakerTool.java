@@ -177,7 +177,7 @@ public class WoodPackMakerTool {
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
-		logBlock.noteBlockInstrument = "BASS";
+		logBlock.noteBlockInstrument = "bass";
 		logBlock.ignitedByLava = true;
 		logBlock.flammability = (int) Math.round(5 * factor);
 		logBlock.rotationMode = 5; // log rotation
@@ -195,7 +195,7 @@ public class WoodPackMakerTool {
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
-		woodBlock.noteBlockInstrument = "BASS";
+		woodBlock.noteBlockInstrument = "bass";
 		woodBlock.ignitedByLava = true;
 		woodBlock.flammability = (int) Math.round(5 * factor);
 		woodBlock.rotationMode = 5; // log rotation
@@ -213,7 +213,7 @@ public class WoodPackMakerTool {
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
-		planksBlock.noteBlockInstrument = "BASS";
+		planksBlock.noteBlockInstrument = "bass";
 		planksBlock.ignitedByLava = true;
 		planksBlock.flammability = (int) Math.round(5 * factor);
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
@@ -245,9 +245,10 @@ public class WoodPackMakerTool {
 		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		stairsBlock.hardness = 3 * factor;
-		stairsBlock.resistance = 2 * factor;
-		stairsBlock.noteBlockInstrument = "BASS";
+		stairsBlock.hardness = 2 * factor;
+		stairsBlock.resistance = 3 * factor;
+		stairsBlock.destroyTool = "axe";
+		stairsBlock.noteBlockInstrument = "bass";
 		stairsBlock.ignitedByLava = true;
 		stairsBlock.flammability = (int) Math.round(5 * factor);
 		stairsBlock.lightOpacity = 0;
@@ -265,7 +266,8 @@ public class WoodPackMakerTool {
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
-		slabBlock.noteBlockInstrument = "BASS";
+		slabBlock.destroyTool = "axe";
+		slabBlock.noteBlockInstrument = "bass";
 		slabBlock.ignitedByLava = true;
 		slabBlock.flammability = (int) Math.round(5 * factor);
 		slabBlock.lightOpacity = 0;
@@ -281,7 +283,8 @@ public class WoodPackMakerTool {
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
-		fenceBlock.noteBlockInstrument = "BASS";
+		fenceBlock.destroyTool = "axe";
+		fenceBlock.noteBlockInstrument = "bass";
 		fenceBlock.ignitedByLava = true;
 		fenceBlock.flammability = (int) Math.round(5 * factor);
 		fenceBlock.lightOpacity = 0;
@@ -297,7 +300,8 @@ public class WoodPackMakerTool {
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
-		fenceGateBlock.noteBlockInstrument = "BASS";
+		fenceGateBlock.destroyTool = "axe";
+		fenceGateBlock.noteBlockInstrument = "bass";
 		fenceGateBlock.ignitedByLava = true;
 		fenceGateBlock.flammability = (int) Math.round(5 * factor);
 		fenceGateBlock.lightOpacity = 0;
@@ -311,9 +315,10 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		pressurePlateBlock.hardness = 2 * factor;
-		pressurePlateBlock.resistance = 3 * factor;
-		pressurePlateBlock.noteBlockInstrument = "BASS";
+		pressurePlateBlock.hardness = 0.5 * factor;
+		pressurePlateBlock.resistance = 0.5 * factor;
+		pressurePlateBlock.destroyTool = "axe";
+		pressurePlateBlock.noteBlockInstrument = "bass";
 		pressurePlateBlock.ignitedByLava = true;
 		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
@@ -329,8 +334,9 @@ public class WoodPackMakerTool {
 		buttonBlock.blockBase = "Button";
 		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		buttonBlock.hardness = 2 * factor;
-		buttonBlock.resistance = 3 * factor;
+		buttonBlock.hardness = 0.5 * factor;
+		buttonBlock.resistance = 0.5 * factor;
+		buttonBlock.destroyTool = "axe";
 		buttonBlock.lightOpacity = 0;
 		buttonBlock.flammability = (int) Math.round(5 * factor);
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
