@@ -9,6 +9,11 @@
       "type": "input_value",
       "name": "b",
       "check": "MCItem"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "ignoredefaults",
+      "checked": false
     }
   ],
   "inputsInline": true,
@@ -24,6 +29,9 @@
     "inputs": [
       "a",
       "b"
+    ],
+    "fields": [
+      "ignoredefaults"
     ]
   }
 }
