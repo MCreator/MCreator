@@ -177,9 +177,10 @@ public class WoodPackMakerTool {
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
-		logBlock.noteBlockInstrument = "BASS";
+		logBlock.noteBlockInstrument = "bass";
 		logBlock.ignitedByLava = true;
-		logBlock.flammability = (int) Math.round(5 * factor);
+		logBlock.flammability = 5;
+		logBlock.fireSpreadSpeed = 5;
 		logBlock.rotationMode = 5; // log rotation
 		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, logBlock);
@@ -195,9 +196,10 @@ public class WoodPackMakerTool {
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
-		woodBlock.noteBlockInstrument = "BASS";
+		woodBlock.noteBlockInstrument = "bass";
 		woodBlock.ignitedByLava = true;
-		woodBlock.flammability = (int) Math.round(5 * factor);
+		woodBlock.flammability = 5;
+		woodBlock.fireSpreadSpeed = 5;
 		woodBlock.rotationMode = 5; // log rotation
 		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, woodBlock);
@@ -213,9 +215,10 @@ public class WoodPackMakerTool {
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
-		planksBlock.noteBlockInstrument = "BASS";
+		planksBlock.noteBlockInstrument = "bass";
 		planksBlock.ignitedByLava = true;
-		planksBlock.flammability = (int) Math.round(5 * factor);
+		planksBlock.flammability = 20;
+		planksBlock.fireSpreadSpeed = 5;
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, planksBlock);
 
@@ -230,7 +233,8 @@ public class WoodPackMakerTool {
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
 		leavesBlock.ignitedByLava = true;
-		leavesBlock.flammability = (int) Math.round(30 * factor);
+		leavesBlock.flammability = 60;
+		leavesBlock.fireSpreadSpeed = 30;
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
 		leavesBlock.reactionToPushing = "DESTROY";
@@ -245,11 +249,13 @@ public class WoodPackMakerTool {
 		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		stairsBlock.hardness = 3 * factor;
-		stairsBlock.resistance = 2 * factor;
-		stairsBlock.noteBlockInstrument = "BASS";
+		stairsBlock.hardness = 2 * factor;
+		stairsBlock.resistance = 3 * factor;
+		stairsBlock.destroyTool = "axe";
+		stairsBlock.noteBlockInstrument = "bass";
 		stairsBlock.ignitedByLava = true;
-		stairsBlock.flammability = (int) Math.round(5 * factor);
+		stairsBlock.flammability = 20;
+		stairsBlock.fireSpreadSpeed = 5;
 		stairsBlock.lightOpacity = 0;
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stairsBlock);
@@ -265,9 +271,11 @@ public class WoodPackMakerTool {
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
-		slabBlock.noteBlockInstrument = "BASS";
+		slabBlock.destroyTool = "axe";
+		slabBlock.noteBlockInstrument = "bass";
 		slabBlock.ignitedByLava = true;
-		slabBlock.flammability = (int) Math.round(5 * factor);
+		slabBlock.flammability = 20;
+		slabBlock.fireSpreadSpeed = 5;
 		slabBlock.lightOpacity = 0;
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, slabBlock);
@@ -281,9 +289,11 @@ public class WoodPackMakerTool {
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
-		fenceBlock.noteBlockInstrument = "BASS";
+		fenceBlock.destroyTool = "axe";
+		fenceBlock.noteBlockInstrument = "bass";
 		fenceBlock.ignitedByLava = true;
-		fenceBlock.flammability = (int) Math.round(5 * factor);
+		fenceBlock.flammability = 20;
+		fenceBlock.fireSpreadSpeed = 5;
 		fenceBlock.lightOpacity = 0;
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceBlock);
@@ -297,9 +307,11 @@ public class WoodPackMakerTool {
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
-		fenceGateBlock.noteBlockInstrument = "BASS";
+		fenceGateBlock.destroyTool = "axe";
+		fenceGateBlock.noteBlockInstrument = "bass";
 		fenceGateBlock.ignitedByLava = true;
-		fenceGateBlock.flammability = (int) Math.round(5 * factor);
+		fenceGateBlock.flammability = 20;
+		fenceGateBlock.fireSpreadSpeed = 5;
 		fenceGateBlock.lightOpacity = 0;
 		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, fenceGateBlock);
@@ -311,11 +323,11 @@ public class WoodPackMakerTool {
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		pressurePlateBlock.hardness = 2 * factor;
-		pressurePlateBlock.resistance = 3 * factor;
-		pressurePlateBlock.noteBlockInstrument = "BASS";
+		pressurePlateBlock.hardness = 0.5 * factor;
+		pressurePlateBlock.resistance = 0.5 * factor;
+		pressurePlateBlock.destroyTool = "axe";
+		pressurePlateBlock.noteBlockInstrument = "bass";
 		pressurePlateBlock.ignitedByLava = true;
-		pressurePlateBlock.flammability = (int) Math.round(5 * factor);
 		pressurePlateBlock.lightOpacity = 0;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		pressurePlateBlock.isNotColidable = true;
@@ -329,10 +341,10 @@ public class WoodPackMakerTool {
 		buttonBlock.blockBase = "Button";
 		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
-		buttonBlock.hardness = 2 * factor;
-		buttonBlock.resistance = 3 * factor;
+		buttonBlock.hardness = 0.5 * factor;
+		buttonBlock.resistance = 0.5 * factor;
+		buttonBlock.destroyTool = "axe";
 		buttonBlock.lightOpacity = 0;
-		buttonBlock.flammability = (int) Math.round(5 * factor);
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		buttonBlock.isNotColidable = true;
 		buttonBlock.reactionToPushing = "DESTROY";

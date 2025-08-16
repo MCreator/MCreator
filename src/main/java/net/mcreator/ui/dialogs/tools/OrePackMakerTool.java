@@ -193,7 +193,7 @@ public class OrePackMakerTool {
 		oreBlock.customModelName = "Single texture";
 		oreBlock.soundOnStep = new StepSound(workspace, "STONE");
 		oreBlock.hardness = 3.0 * factor;
-		oreBlock.resistance = 5.0 * Math.pow(factor, 0.8);
+		oreBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		oreBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
 			oreBlock.vanillaToolTier = "STONE";
@@ -203,7 +203,7 @@ public class OrePackMakerTool {
 			oreBlock.vanillaToolTier = "DIAMOND";
 		}
 		oreBlock.requiresCorrectTool = true;
-		oreBlock.noteBlockInstrument = "BASEDRUM";
+		oreBlock.noteBlockInstrument = "basedrum";
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
@@ -224,7 +224,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.customModelName = "Single texture";
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
-		oreBlockBlock.resistance = 10.0;
+		oreBlockBlock.resistance = 6.0;
 		oreBlockBlock.texture = new TextureHolder(workspace, oreBlockTextureName);
 		oreBlockBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
