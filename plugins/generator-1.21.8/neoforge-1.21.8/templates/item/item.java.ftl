@@ -254,6 +254,10 @@ public class ${name}Item extends Item {
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
+	<@everyTickWhileUsing data.everyTickWhileUsing/>
+
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
+
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
 		@Override public boolean releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 			<#if hasProcedure(data.onStoppedUsing)>
