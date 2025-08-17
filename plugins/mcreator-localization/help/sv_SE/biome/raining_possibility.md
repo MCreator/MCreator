@@ -1,0 +1,1 @@
+Denna parameter styr sannolikheten att det börjar regna i biomen.
