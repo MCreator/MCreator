@@ -5171,14 +5171,14 @@
   texture: JIGSAW
 
 - Blocks.TEST_BLOCK:
-    readable_name: "Test Block"
-    type: block
-    texture: TEST_BLOCK
+  readable_name: "Test Block"
+  type: block
+  texture: TEST_BLOCK
 
 - Blocks.TEST_INSTANCE_BLOCK:
-    readable_name: "Test Instance Block"
-    type: block
-    texture: TEST_INSTANCE_BLOCK
+  readable_name: "Test Instance Block"
+  type: block
+  texture: TEST_INSTANCE_BLOCK
 
 - Blocks.KELP:
   readable_name: "Kelp"
