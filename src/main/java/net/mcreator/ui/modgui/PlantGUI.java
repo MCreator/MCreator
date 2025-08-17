@@ -276,6 +276,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		ComponentUtils.deriveFont(tintType, 16);
+		ComponentUtils.deriveFont(offsetType, 16);
 		ComponentUtils.deriveFont(growapableSpawnType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -297,7 +298,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		isItemTinted.setOpaque(false);
 
-		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel rent = new JPanel(new GridLayout(6, 2, 2, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
@@ -318,6 +319,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_item_tinted"),
 				L10N.label("elementgui.plant.is_item_tinted")));
 		rent.add(isItemTinted);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
+				L10N.label("elementgui.common.offset_type")));
+		rent.add(offsetType);
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -345,7 +350,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		emissiveRendering.setOpaque(false);
-		isSolid.setOpaque(false);
 		isWaterloggable.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
@@ -454,7 +458,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(3, 2, 10, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/custom_bounding_box"),
@@ -463,9 +467,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
 				L10N.label("elementgui.common.disable_offset")));
 		northPanel.add(disableOffset);
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
+				L10N.label("elementgui.plant.is_solid")));
+		northPanel.add(isSolid);
 
 		customBoundingBox.setOpaque(false);
 		disableOffset.setOpaque(false);
+		isSolid.setOpaque(false);
 
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
@@ -486,14 +494,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
-		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel selp2 = new JPanel(new GridLayout(4, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -531,13 +539,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
-				L10N.label("elementgui.block.jump_factor")));
-		selp.add(jumpFactor);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.plant.is_unbreakable")));
+		selp.add(unbreakable);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
-				L10N.label("elementgui.block.speed_factor")));
-		selp.add(speedFactor);
+		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
@@ -547,9 +553,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
-				L10N.label("elementgui.plant.is_solid")));
-		selp.add(isSolid);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.plant.plant_is_replaceable")));
+		selp.add(isReplaceable);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
 				L10N.label("elementgui.plant.is_waterloggable")));
@@ -570,16 +576,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
-				L10N.label("elementgui.plant.is_unbreakable")));
-		selp2.add(unbreakable);
-
-		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
-				L10N.label("elementgui.plant.plant_is_replaceable")));
-		selp2.add(isReplaceable);
 
 		ButtonGroup bg2 = new ButtonGroup();
 		bg2.add(defaultSoundType);
@@ -655,7 +651,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp2, soundProperties)))));
 		pane3.setOpaque(false);
 
-		JPanel advancedProperties = new JPanel(new GridLayout(10, 2, 10, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(8, 2, 10, 2));
 		advancedProperties.setOpaque(false);
 
 		forceTicking.setOpaque(false);
@@ -674,25 +670,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.color_on_map")));
 		advancedProperties.add(colorOnMap);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
-				L10N.label("elementgui.block.ignited_by_lava")));
-		advancedProperties.add(ignitedByLava);
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
+				L10N.label("elementgui.block.jump_factor")));
+		advancedProperties.add(jumpFactor);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
-				L10N.label("elementgui.plant.flammability")));
-		advancedProperties.add(flammability);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
-				L10N.label("elementgui.common.fire_spread_speed")));
-		advancedProperties.add(fireSpreadSpeed);
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
+				L10N.label("elementgui.block.speed_factor")));
+		advancedProperties.add(speedFactor);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
-				L10N.label("elementgui.common.offset_type")));
-		advancedProperties.add(offsetType);
 
 		advancedProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
@@ -733,8 +721,28 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(plocb, PanelUtils.pullElementUp(bonemealMerger))));
+		JPanel flammabilityProperties = new JPanel(new GridLayout(3, 2, 0, 2));
+		flammabilityProperties.setOpaque(false);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		flammabilityProperties.add(ignitedByLava);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+				L10N.label("elementgui.plant.flammability")));
+		flammabilityProperties.add(flammability);
+
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
+				L10N.label("elementgui.common.fire_spread_speed")));
+		flammabilityProperties.add(fireSpreadSpeed);
+
+		flammabilityProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.properties_flammability"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
+
+		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(plocb,
+				PanelUtils.pullElementUp(PanelUtils.column(bonemealMerger, flammabilityProperties)))));
 		pane5.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
