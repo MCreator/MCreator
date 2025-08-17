@@ -74,6 +74,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private TextureSelectionButton texture;
 	private TextureSelectionButton textureBottom;
+	private JComponent textureContainer;
+	private JComponent textureBottomContainer;
 
 	private TextureSelectionButton itemTexture;
 	private TextureSelectionButton particleTexture;
@@ -289,7 +291,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
-		textureBottom.setVisible(false);
+		textureContainer = ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
+				L10N.t("elementgui.plant.texture_place_texture"));
+		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,
+				L10N.t("elementgui.plant.texture_place_bottom"));
+		textureBottomContainer.setOpaque(false);
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
@@ -331,10 +337,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel texturesAndRent = new JPanel(new BorderLayout(0, 0));
 		texturesAndRent.setOpaque(false);
 
-		JComponent texturesPan = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
-				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
-						L10N.t("elementgui.plant.texture_place_top_main")),
-				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom"))));
+		JComponent texturesPan = PanelUtils.totalCenterInPanel(
+				PanelUtils.gridElements(2, 1, textureContainer, textureBottomContainer));
 		texturesPan.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 		texturesAndRent.add("Center", texturesPan);
 
@@ -837,19 +841,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updatePlantType() {
-		texture.setVisible(false);
-		textureBottom.setVisible(false);
-
 		refreshBonemealProperties(); // disable settings if sapling is selected
 		updateWaterloggableSetting(); // disable waterlogging if sapling with mega trees is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
-			texture.setVisible(true);
-			textureBottom.setVisible(true);
+			textureBottomContainer.setVisible(true);
+			ComponentUtils.updateBorderTitle(textureContainer, L10N.t("elementgui.plant.texture_place_top_main"));
 			renderType.setSelectedItem(cross);
 			renderType.setEnabled(false);
 		} else {
-			texture.setVisible(true);
+			textureBottomContainer.setVisible(false);
+			ComponentUtils.updateBorderTitle(textureContainer, L10N.t("elementgui.plant.texture_place_texture"));
 			renderType.setEnabled(true);
 		}
 
