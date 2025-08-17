@@ -42,6 +42,8 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.generator.GTProcedureBlocks;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.*;
+import net.mcreator.ui.action.impl.workspace.resources.AnimationImportActions;
+import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -62,6 +64,7 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -329,6 +332,26 @@ public class TestWorkspaceDataProvider {
 					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
 			FileIO.writeBytesToFile(emptyNbtStructure,
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+		}
+
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("model_java")
+				!= GeneratorStats.CoverageStatus.NONE) {
+			try {
+				ModelImportActions.importJavaModel(null, workspace,
+						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
+				!= GeneratorStats.CoverageStatus.NONE) {
+			try {
+				AnimationImportActions.importJavaModelAnimation(null, workspace,
+						IOUtils.resourceToString("/entityanimation-mojmap.java", StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -946,18 +969,46 @@ public class TestWorkspaceDataProvider {
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);
-			armor.enableHelmet = !_true;
+			armor.enableHelmet = random.nextBoolean();
 			armor.textureHelmet = new TextureHolder(modElement.getWorkspace(), "test");
 			armor.helmetModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
-			armor.enableBody = !_true;
+			if (random.nextBoolean()) {
+				armor.helmetModelName = "ModelCustomJavaModel";
+				armor.helmetModelPart = "head";
+			} else {
+				armor.helmetModelName = "Default";
+			}
+			armor.enableBody = random.nextBoolean();
 			armor.textureBody = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.bodyModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
-			armor.enableLeggings = !_true;
+			if (random.nextBoolean()) {
+				armor.bodyModelName = "ModelCustomJavaModel";
+				armor.bodyModelPart = "head";
+				armor.armsModelPartL = "leg0";
+				armor.armsModelPartR = "leg1";
+			} else {
+				armor.bodyModelName = "Default";
+			}
+			armor.enableLeggings = random.nextBoolean();
 			armor.textureLeggings = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.leggingsModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
-			armor.enableBoots = !_true;
+			if (random.nextBoolean()) {
+				armor.leggingsModelName = "ModelCustomJavaModel";
+				armor.leggingsModelPartL = "leg0";
+				armor.leggingsModelPartR = "leg1";
+			} else {
+				armor.leggingsModelName = "Default";
+			}
+			armor.enableBoots = random.nextBoolean();
 			armor.textureBoots = new TextureHolder(modElement.getWorkspace(), "test4");
 			armor.bootsModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
+			if (random.nextBoolean()) {
+				armor.bootsModelName = "ModelCustomJavaModel";
+				armor.bootsModelPartL = "leg2";
+				armor.bootsModelPartR = "leg3";
+			} else {
+				armor.bootsModelName = "Default";
+			}
 			armor.helmetItemRenderType = 0;
 			armor.helmetItemCustomModelName = "Normal";
 			armor.bodyItemRenderType = 0;
@@ -1193,8 +1244,10 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
 			item.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
-			item.renderType = 0;
-			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+			item.renderType = emptyLists ? 0 : 3;
+			item.customModelName = emptyLists ?
+					getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName() :
+					"ModelCustomJavaModel";
 
 			item.customProperties = new HashMap<>();
 			item.states = new ArrayList<>();
@@ -1278,8 +1331,12 @@ public class TestWorkspaceDataProvider {
 			projectile.disableGravity = emptyLists;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			projectile.entityModel = "Default";
-			projectile.customModelTexture = "";
+			projectile.entityModel = emptyLists ? "Default" : "ModelCustomJavaModel";
+			if (!emptyLists) {
+				projectile.customModelTexture = "entity_texture_2.png";
+			} else {
+				projectile.customModelTexture = "";
+			}
 			if (emptyLists) {
 				projectile.modelWidth = 4.4;
 				projectile.modelHeight = 5.3;
@@ -1360,8 +1417,6 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BLOCK.equals(modElement.getType())) {
 			Block block = new Block(modElement);
 			block.name = modElement.getName();
-			block.hasTransparency = new boolean[] { _true, _true, true,
-					!emptyLists }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			block.connectedSides = _true;
 			block.displayFluidOverlay = _true;
 			block.emissiveRendering = _true;
@@ -1476,8 +1531,6 @@ public class TestWorkspaceDataProvider {
 			block.slipperiness = 12.342;
 			block.speedFactor = 34.632;
 			block.jumpFactor = 17.732;
-			block.lightOpacity = new int[] { 0, 2, 0,
-					3 }[valueIndex]; // third is 0 because third index for model is cross which requires transparency;
 			block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 			block.tickRate = _true ? 0 : 24;
 			block.isCustomSoundType = !_true;
@@ -1508,7 +1561,6 @@ public class TestWorkspaceDataProvider {
 			block.unbreakable = _true;
 			block.vanillaToolTier = getRandomString(random, Arrays.asList("NONE", "STONE", "IRON", "DIAMOND"));
 			block.tickRandomly = _true;
-			block.hasInventory = _true;
 			block.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
 			block.openGUIOnRightClick = random.nextBoolean();
 			block.inventorySize = 10;
@@ -1612,10 +1664,18 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
 			block.isItemTinted = _true;
-			block.renderType = new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
-					14 }[valueIndex];
-			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
-					"Grass block" }[valueIndex];
+			block.renderType = emptyLists ?
+					new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12,
+							14 }[valueIndex] :
+					4;
+			block.customModelName = emptyLists ?
+					new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex] :
+					"ModelCustomJavaModel";
+			// third is 0 because third index for model is cross which requires transparency; if render type 4 (Java model), also set to 0
+			block.lightOpacity = block.renderType == 4 ? 0 : new int[] { 0, 2, 0, 3 }[valueIndex];
+			block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
+			block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
+					false }[valueIndex]; // third is true because third index for model is cross which requires transparency
 			return block;
 		} else if (ModElementType.LOOTTABLE.equals(modElement.getType())) {
 			LootTable lootTable = new LootTable(modElement);
@@ -1910,7 +1970,9 @@ public class TestWorkspaceDataProvider {
 		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
 		livingEntity.visualScale = new NumberProcedure(emptyLists ? null : "number1", 8.123);
 		livingEntity.boundingBoxScale = new NumberProcedure(emptyLists ? null : "number2", 4.223);
-		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+		livingEntity.mobModelName = emptyLists ?
+				getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName() :
+				"ModelCustomJavaModel";
 		livingEntity.hasSpawnEgg = !_true;
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
