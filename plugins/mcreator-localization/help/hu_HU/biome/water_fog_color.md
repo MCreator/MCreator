@@ -1,1 +1,1 @@
-Ez a paraméter szabályozza a vízi köd színét a biomon belül
+Ez a paraméter szabályozza a biom belsejében lévő vízköd színét
