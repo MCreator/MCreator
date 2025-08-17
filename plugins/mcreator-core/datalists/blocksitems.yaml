@@ -4070,7 +4070,7 @@
 
 - Blocks.SKULL:
   readable_name: "Any Skull"
-  type: block
+  type: block_without_item
   texture: SKULL
   subtypes: true
 
