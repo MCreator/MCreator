@@ -1,0 +1,1 @@
+Jeśli pocisk uderza w żywą jednostkę (krowa, creeper, gracz itp.), to wykona wybraną procedurę.

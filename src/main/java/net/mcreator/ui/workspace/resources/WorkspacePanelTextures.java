@@ -19,8 +19,10 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
+import net.mcreator.ui.component.ScrollablePanel;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
@@ -78,7 +80,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 		};
 
-		JPanel respan = new JPanel(new GridBagLayout());
+		JPanel respan = new ScrollablePanel();
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
 		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
@@ -97,7 +99,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(20);
+		sp.getVerticalScrollBar().setUnitIncrement(65);
 		sp.setBorder(null);
 
 		add("Center", sp);
@@ -164,6 +166,34 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				e -> exportSelectedImages()));
 
 		add("North", bar);
+
+		// Register event handler for texture changes
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		fileWatcher.addListener(changedFiles -> SwingUtilities.invokeLater(() -> {
+			for (FileWatcher.FileChange change : changedFiles) {
+				File file = change.file();
+				if (file.getName().endsWith(".png") && file.isFile()) {
+					// flush cache for this image
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+					} catch (Exception ignored) {
+					}
+				}
+			}
+			reloadElements();
+		}));
+	}
+
+	public void attachGeneratorFileWatcher() {
+		// Watch texture folder for external program changes to flush image cache in this case
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					if (folder != null) {
+						fileWatcher.watchFolder(folder);
+					}
+				});
 	}
 
 	private void deleteCurrentlySelected() {

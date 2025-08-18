@@ -1,0 +1,1 @@
+A biom neve az a név, amit néhány mod használ, vagy maga a Minecraft például a Büfé (Egyetlen Biom) esetében. Azonban ez nem változtatja meg a nevet az F3 menüben.

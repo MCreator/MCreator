@@ -1,0 +1,1 @@
+Ez a kiterjesztés célja.

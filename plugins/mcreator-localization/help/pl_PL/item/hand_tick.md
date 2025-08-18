@@ -1,0 +1,1 @@
+Procedura jest wykonywana w każdym przypadku, gdy przedmiot jest trzymany w ręce przez gracza.

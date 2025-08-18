@@ -1,0 +1,1 @@
+Ezek azok a fák, amelyek nőhetnek, ha a facsemete közel van egy virághoz. Általában ezek ugyanolyanok, mint a normál fák, de méhkaptár díszítővel.

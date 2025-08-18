@@ -1,0 +1,1 @@
+Procedura ta jest wykonywana po wyrzuceniu danego przedmiotu.

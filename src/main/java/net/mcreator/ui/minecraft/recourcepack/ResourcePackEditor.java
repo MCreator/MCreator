@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft.recourcepack;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
@@ -266,6 +267,22 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		editFile.setEnabled(false);
 		importFile.setEnabled(false);
 		deleteOverrideOrFile.setEnabled(false);
+
+		// Register event handler for texture changes
+		FileWatcher fileWatcher = mcreator.getGenerator().getFileWatcher();
+		fileWatcher.addListener(changedFiles -> SwingUtilities.invokeLater(() -> {
+			for (FileWatcher.FileChange change : changedFiles) {
+				File file = change.file();
+				if (file.getName().endsWith(".png") && file.isFile()) {
+					// flush cache for this image
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+					} catch (Exception ignored) {
+					}
+				}
+			}
+			reloadElements();
+		}));
 	}
 
 	private void deleteMetadataIfApplicable(Workspace workspace, File file) {
@@ -441,7 +458,15 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 
 		FileTree<ResourcePackStructure.Entry> fileTree = new FileTree<>(new FileNode<>("", ""));
 		ResourcePackStructure.getResourcePackStructure(workspace, resourcePack.namespace(), resourcePack.packFile())
-				.forEach(entry -> fileTree.addElement(entry.path(), entry));
+				.forEach(entry -> {
+					fileTree.addElement(entry.path(), entry);
+
+					// If entry has png file override, register its folder for file watching
+					if (entry.override().isFile() && entry.extension().equals("png")) {
+						File folder = entry.override().getParentFile();
+						workspace.getGenerator().getFileWatcher().watchFolder(folder);
+					}
+				});
 		JFileTree.addFileNodeToRoot(root, fileTree.root());
 
 		model.setRoot(root);
@@ -479,14 +504,23 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 		}
 	}
 
+	private List<DefaultMutableTreeNode> preSearchState = null;
+
 	@Override public void refilterElements() {
 		if (filterProvider != null) {
 			String filter = filterProvider.get();
 			if (filter.length() >= 3) {
+				if (preSearchState == null)
+					preSearchState = TreeUtils.getExpansionState(tree);
+
 				model.setFilter(filter);
 				SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 			} else {
 				model.setFilter("");
+				if (preSearchState != null) {
+					TreeUtils.setExpansionState(tree, preSearchState);
+					preSearchState = null;
+				}
 			}
 		}
 	}

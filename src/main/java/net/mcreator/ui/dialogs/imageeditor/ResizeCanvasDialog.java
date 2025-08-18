@@ -46,11 +46,11 @@ public class ResizeCanvasDialog extends MCreatorDialog {
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		ok.addActionListener(e -> {
 			canvas.setSize((int) width.getValue(), (int) height.getValue());
-			setVisible(false);
+			dispose();
 		});
 
 		constraints.add(L10N.label("dialog.imageeditor.width"));

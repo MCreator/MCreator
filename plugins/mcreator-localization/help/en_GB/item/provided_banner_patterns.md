@@ -1,0 +1,1 @@
+If this list isn't empty, this item can be used in a loom to craft the selected banner patterns.

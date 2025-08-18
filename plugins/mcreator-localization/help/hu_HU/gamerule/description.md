@@ -1,0 +1,1 @@
+Ez a játékszabály leírása. Akkor használatos a játékszabály beállítási képernyőn, amikor az egeret fölé viszik.

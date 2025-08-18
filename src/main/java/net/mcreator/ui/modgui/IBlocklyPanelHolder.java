@@ -44,7 +44,7 @@ public interface IBlocklyPanelHolder {
 
 	interface BlocklyChangedListener {
 
-		void blocklyChanged(BlocklyPanel panel);
+		void blocklyChanged(BlocklyPanel panel, boolean jsEventTriggeredChange);
 
 	}
 

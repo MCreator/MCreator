@@ -1,0 +1,1 @@
+Jelölje be ezt az opciót, ha azt szeretné, hogy varázslatát falusi kereskedelemként értékesítsék.

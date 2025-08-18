@@ -1,0 +1,1 @@
+Im wyższa liczba, tym bardziej uderzenie bytowe zostanie popchnięte przez przedmiot dystansowy.

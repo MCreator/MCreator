@@ -1,0 +1,1 @@
+Hangcsoport, amely meghatározza ezt a blokkot. Ez a paraméter olyan hangokra van hatással, mint a blokk elhelyezési hang, blokk törési hang és a blokkon való sétáláskor lejátszott hang.

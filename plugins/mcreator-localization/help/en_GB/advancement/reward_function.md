@@ -1,0 +1,1 @@
+You can choose a function to execute when the player completes the advancement with this parameter.

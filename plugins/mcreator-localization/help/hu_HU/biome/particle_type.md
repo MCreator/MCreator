@@ -1,0 +1,1 @@
+A részecske, ami ebben a biomban létrejön.

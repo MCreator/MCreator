@@ -1,0 +1,1 @@
+This procedure is executed when this item is crafted or smelted.

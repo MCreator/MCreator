@@ -1,6 +1,6 @@
 name: Data Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 21.1.92
+buildfileversion: 21.1.190
 
 # gradle task definitions
 gradle:
@@ -14,7 +14,7 @@ mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-structures_dir: "@MODDATAROOT/structures"
+structures_dir: "@MODDATAROOT/structure"
 
 base_templates:
   - template: pack.mcmeta.ftl

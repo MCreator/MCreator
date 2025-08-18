@@ -1,0 +1,1 @@
+Ez az eljárás akkor fog végrehajtódni, amikor a kiválasztott billentyűt megnyomják.

@@ -1,0 +1,1 @@
+Hráč dostane některé věci z vybrané tabulky kořistí definované v tomto poli, když pokrok bude dokončen.

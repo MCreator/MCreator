@@ -1,0 +1,1 @@
+Ten parametr kontroluje dźwięk odtwarzany przez portal losowo, gdy jest aktywny.

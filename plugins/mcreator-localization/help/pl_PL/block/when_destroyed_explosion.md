@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy blok jest niszczony przez eksplozję.

@@ -1,0 +1,1 @@
+Ten parametr określa liczbę klatek w wybranej teksturze.

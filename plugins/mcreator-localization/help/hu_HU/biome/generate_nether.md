@@ -1,0 +1,1 @@
+Jelöld be ezt, hogy ez a biom a Nether dimenzióban jelenjen meg.

@@ -351,7 +351,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	@Override public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
 		super.triggerEvent(state, world, pos, eventID, eventParam);
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity == null ? false : blockEntity.triggerEvent(eventID, eventParam);
+		return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
 	}
 	</#if>
 
@@ -445,7 +445,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 <#macro toOptionalTree tree="">
 	<#if tree?has_content>
-	Optional.of(getFeatureKey("${generator.map(tree, "configuredfeatures")}"))
+	Optional.of(getFeatureKey("${tree}"))
 	<#else>
 	Optional.empty()
 	</#if>

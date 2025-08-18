@@ -1,0 +1,1 @@
+Jelöld be ezt a paramétert a környezeti részecskék megjelenésének engedélyezéséhez a biomban.

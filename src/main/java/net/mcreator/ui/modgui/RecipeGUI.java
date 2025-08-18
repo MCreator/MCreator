@@ -32,6 +32,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -45,6 +46,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -175,6 +178,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(campfireCookingRecipeMaker), "campfire cooking");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smithingRecipeMaker), "smithing");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(brewingRecipeMaker), "brewing");
+
+		craftingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smeltingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		blastFurnaceRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smokerRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		stoneCutterRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		campfireCookingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smithingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
 
 		JComponent recwrap = ComponentUtils.applyPadding(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
@@ -475,6 +486,16 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-recipe");
+	}
+
+	private void addIngredientMouseListener(MCItemHolder ingredient) {
+		ingredient.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (ingredient.containsItem() && (e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) != 0) {
+					unlockingItems.addListElement(ingredient.getBlock());
+				}
+			}
+		});
 	}
 
 }

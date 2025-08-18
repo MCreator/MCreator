@@ -1,0 +1,1 @@
+Jeśli ta opcja jest zdefiniowana, wymiar będzie miał efekty zdefiniowane przez użytkownika zamiast domyślnych.

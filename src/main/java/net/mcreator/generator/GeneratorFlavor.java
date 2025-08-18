@@ -49,7 +49,7 @@ public enum GeneratorFlavor {
 	/**
 	 * Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.
 	 */
-	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(QUILT);
+	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(SPIGOT);
 
 	private final BaseLanguage baseLanguage;
 

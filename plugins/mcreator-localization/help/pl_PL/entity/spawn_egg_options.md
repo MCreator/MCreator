@@ -1,3 +1,7 @@
-Jeżeli parametr jest zaznaczony, pierwszy kolor to będzie główny kolor jaja. Drugi kolor to będą łatki jaja.
+Jeżeli ten parametr jest zaznaczony, generowany jest przedmiot jajka przyzywającego.
 
-Możesz wybrać zakładkę w trybie kreatywnym dla jaja spawnującego.
+Jeśli określisz teksturę niestandardową, parametr koloru jajka zostanie zignorowany.
+
+Jeśli nie określono tekstury, tekstura jajka zostanie wygenerowana automatycznie i pokolorowana określonymi kolorami. Pierwszy kolor to tło jajka. Drugi kolor reprezentuje kropki na jajku.
+
+Możesz również wybrać zakładkę dla jajka w trybie kreatywnym.

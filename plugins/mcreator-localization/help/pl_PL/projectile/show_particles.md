@@ -1,0 +1,1 @@
+Zaznacz ten parametr, jeśli chcesz emitować cząstki w powietrzu.

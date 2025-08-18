@@ -1,0 +1,1 @@
+Ten parametr kontroluje przyspieszenie wirowania cząstek.

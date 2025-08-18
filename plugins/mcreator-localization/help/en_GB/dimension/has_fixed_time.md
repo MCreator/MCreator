@@ -1,0 +1,1 @@
+If this setting is enabled, time will be frozen at the given value inside this dimension.

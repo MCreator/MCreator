@@ -95,6 +95,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 	private final JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+	private final JPopupMenu recentListPopupMenu;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -241,7 +242,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
-		recentsList.setComponentPopupMenu(getRightClickMenu());
+		recentsList.setComponentPopupMenu(recentListPopupMenu = buildRightClickMenu());
 
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -301,6 +302,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
+				reloadRecents();
+				newWorkspace.requestFocusInWindow();
+			}
+		});
+
 		setSize(795, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -317,7 +326,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 	}
 
-	private JPopupMenu getRightClickMenu() {
+	public JPopupMenu getRecentListPopupMenu() {
+		return recentListPopupMenu;
+	}
+
+	private JPopupMenu buildRightClickMenu() {
 		JPopupMenu recentListMenu = new JPopupMenu();
 
 		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
@@ -485,16 +498,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentPanel.revalidate();
 	}
 
-	@Override public void setVisible(boolean b) {
-		if (b)
-			reloadRecents();
-
-		super.setVisible(b);
-
-		if (b)
-			newWorkspace.requestFocusInWindow();
-	}
-
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 13);
@@ -631,7 +634,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-80);
+			((ImagePanel) soim).setOffsetY(-190);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

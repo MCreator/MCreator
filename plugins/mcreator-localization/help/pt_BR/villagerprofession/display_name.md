@@ -1,0 +1,1 @@
+O nome de exibição desta profissão de aldeão. É exibido na interface de negociação.

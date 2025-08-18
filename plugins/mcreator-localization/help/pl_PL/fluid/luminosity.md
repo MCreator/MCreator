@@ -1,0 +1,1 @@
+Ustaw wartość światła płynu. Ustawienie wartości 0 wyłączy światło.

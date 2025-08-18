@@ -28,6 +28,8 @@ global_templates:
 localizationkeys:
   - key: fluid.@modid.@registryname
     mapto: name
+  - key: fluid_type.@modid.@registryname
+    mapto: name
   - key: block.@modid.@registryname
     mapto: name
   - key: item.@modid.@registryname_bucket

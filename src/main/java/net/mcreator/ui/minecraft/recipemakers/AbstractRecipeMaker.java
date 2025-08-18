@@ -23,11 +23,13 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 
 /**
  * Abstract class for recipe makers used in the Recipe element GUI. This class handles the background panel and the
@@ -79,4 +81,6 @@ public abstract class AbstractRecipeMaker extends JPanel {
 	 * @param exportedYet This parameter is false before the image is generated, true after.
 	 */
 	protected abstract void setupImageExport(boolean exportedYet);
+
+	public abstract List<MCItemHolder> getIngredientSlots();
 }

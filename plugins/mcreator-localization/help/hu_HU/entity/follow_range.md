@@ -1,0 +1,1 @@
+A követési tartomány meghatározza, hogy milyen távolságból veszi észre a mob a játékost/célt, és folytatja-e az üldözést

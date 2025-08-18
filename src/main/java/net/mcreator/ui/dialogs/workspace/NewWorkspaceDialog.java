@@ -118,7 +118,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 						workspaceSettings.getModID() + ".mcreator");
 				Workspace workspace = Workspace.createWorkspace(workspaceFile, workspaceSettings);
 				workspace.close();
-				setVisible(false);
+				dispose();
 			} else {
 				showErrorsMessage(w, current.getValidationResult());
 			}
@@ -126,24 +126,24 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		cancel.addActionListener(actionEvent -> {
 			workspaceFile = null;
-			setVisible(false);
+			dispose();
 		});
 
 		help.addActionListener(actionEvent -> DesktopUtils.browseSafe(
 				MCreatorApplication.SERVER_DOMAIN + "/wiki/create-new-workspace-window"));
 
-		workspacePanels.add("neoforge", PanelUtils.pullElementUp(neoforgeWorkspacePanel));
-		workspacePanels.add("fabric", PanelUtils.pullElementUp(fabricWorkspacePanel));
-		workspacePanels.add("forge", PanelUtils.pullElementUp(forgeWorkspacePanel));
-		workspacePanels.add("quilt", PanelUtils.pullElementUp(quiltWorkspacePanel));
-		workspacePanels.add("spigot", PanelUtils.pullElementUp(spigotWorkspacePanel));
-		workspacePanels.add("datapack", PanelUtils.pullElementUp(datapackWorkspacePanel));
-		workspacePanels.add("resourcepack", PanelUtils.pullElementUp(resourcepackWorkspacePanel));
-		workspacePanels.add("addon", PanelUtils.pullElementUp(addonWorkspacePanel));
+		workspacePanels.add("neoforge", neoforgeWorkspacePanel.getContainer());
+		workspacePanels.add("fabric", fabricWorkspacePanel.getContainer());
+		workspacePanels.add("forge", forgeWorkspacePanel.getContainer());
+		workspacePanels.add("quilt", quiltWorkspacePanel.getContainer());
+		workspacePanels.add("spigot", spigotWorkspacePanel.getContainer());
+		workspacePanels.add("datapack", datapackWorkspacePanel.getContainer());
+		workspacePanels.add("resourcepack", resourcepackWorkspacePanel.getContainer());
+		workspacePanels.add("addon", addonWorkspacePanel.getContainer());
 
 		workspacePanels.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
-		JComponent center = PanelUtils.centerInPanel(workspacePanels);
+		JComponent center = PanelUtils.gridElements(1,1, workspacePanels);
 		center.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		add("Center", center);

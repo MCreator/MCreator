@@ -1,0 +1,1 @@
+If enabled, all entities in the world that can have attributes will have this attribute present and set at its default value when spawned.

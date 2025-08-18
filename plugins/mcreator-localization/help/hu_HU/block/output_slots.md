@@ -1,0 +1,1 @@
+A kimeneti nyílások nem használhatók bemenetként a tartályos tételek továbbításához.

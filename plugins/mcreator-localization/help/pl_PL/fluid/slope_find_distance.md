@@ -1,0 +1,1 @@
+Ten parametr określa, jak daleko może być nachylenie wpływające na rozprzestrzenianie się tej cieczy. Zamiast równomiernie rozprzestrzeniać się, płyn spróbuje osiągnąć nachylenie. Przy niższych wartościach płyn zazwyczaj pokryje większe obszary, jeśli ziemia jest nierówna.

@@ -1,0 +1,1 @@
+Jeśli określono, byt rozpocznie wykonywanie tego zadania tylko wtedy, gdy przejdzie ten warunek.

@@ -1,0 +1,1 @@
+Ez a feltétel határozza meg, hogy a blokk fogadja-e az észlelt rezgést vagy sem.

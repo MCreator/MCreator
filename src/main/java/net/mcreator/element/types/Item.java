@@ -201,6 +201,10 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.OBJ;
 	}
 
+	public boolean hasCustomJAVAModel() {
+		return decodeModelType(renderType) == Model.Type.JAVA;
+	}
+
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty();
 	}
@@ -215,6 +219,11 @@ import java.util.*;
 
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
+	}
+
+	public boolean hasCustomEatResultItem() {
+		return isFood && eatResultItem != null && !eatResultItem.isEmpty() && eatResultItem.getUnmappedValue()
+				.startsWith("CUSTOM:");
 	}
 
 	public boolean hasBannerPatterns() {
@@ -315,6 +324,9 @@ import java.util.*;
 			return decodeModelType(renderType) == Model.Type.OBJ;
 		}
 
+		public boolean hasCustomJAVAModel() {
+			return decodeModelType(renderType) == Model.Type.JAVA;
+		}
 	}
 
 	public static int encodeModelType(Model.Type modelType) {
@@ -322,6 +334,7 @@ import java.util.*;
 			case BUILTIN -> 0;
 			case JSON -> 1;
 			case OBJ -> 2;
+			case JAVA -> 3;
 			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}
@@ -331,6 +344,7 @@ import java.util.*;
 			case 0 -> Model.Type.BUILTIN;
 			case 1 -> Model.Type.JSON;
 			case 2 -> Model.Type.OBJ;
+			case 3 -> Model.Type.JAVA;
 			default -> throw new IllegalStateException("Unexpected value: " + modelType);
 		};
 	}

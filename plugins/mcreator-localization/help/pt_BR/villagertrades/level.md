@@ -1,0 +1,1 @@
+Nível mínimo necessário para que o Aldeão ofereça a troca.

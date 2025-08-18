@@ -1,0 +1,1 @@
+Świecący efekt sprawia, że blask przedmiotu jest jak złote jabłko lub zaklęte przedmioty, z wyjątkiem blasku jest stałe.

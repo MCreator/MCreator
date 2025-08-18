@@ -87,9 +87,9 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 			displayCondition.setSelectedProcedure(tooltip.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			StringProcedure textProcedure = tooltipText.getSelectedProcedure();
 
 			if (tooltip == null) {

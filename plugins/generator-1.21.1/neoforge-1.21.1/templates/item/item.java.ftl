@@ -35,7 +35,12 @@
 
 package ${package}.item;
 
+<#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+
 <#compress>
+<#if hasCustomJAVAModels>
+@EventBusSubscriber
+</#if>
 public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
 	<#if data.hasBannerPatterns()>
 	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
@@ -77,8 +82,22 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		);
 	}
 
+	<#if hasCustomJAVAModels>
+	@SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		event.registerItem(new IClientItemExtensions() {
+			private ${name}ItemRenderer rendererInstance;
+
+			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				if (rendererInstance == null)
+					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return rendererInstance;
+			}
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
+	}
+	</#if>
+
 	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
-	public MutableComponent getDisplayName() {
+	@Override public MutableComponent getDisplayName() {
 		return Component.translatable(this.getDescriptionId() + ".patterns");
 	}
 	</#if>
@@ -86,6 +105,16 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
+	}
+	</#if>
+
+	<#if !data.isFood && data.animation == "eat">
+	@Override public SoundEvent getEatingSound() {
+		return SoundEvents.EMPTY;
+	}
+	<#elseif !data.isFood && data.animation == "drink">
+	@Override public SoundEvent getDrinkingSound() {
+		return SoundEvents.EMPTY;
 	}
 	</#if>
 

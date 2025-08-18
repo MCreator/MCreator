@@ -49,7 +49,8 @@ public class GuistateProceduresConverter extends ProcedureConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String attributeValue = element.getAttribute("type");
-			if ("gui_get_text_textfield".equals(attributeValue) || "gui_get_value_checkbox".equals(attributeValue) || "gui_set_text_textfield".equals(attributeValue)) {
+			if ("gui_get_text_textfield".equals(attributeValue) || "gui_get_value_checkbox".equals(attributeValue)
+					|| "gui_set_text_textfield".equals(attributeValue)) {
 				reportDependenciesChanged();
 
 				Element value = doc.createElement("value");

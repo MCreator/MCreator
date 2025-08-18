@@ -129,16 +129,16 @@ public class TextureMappingDialog {
 
 		d.add("South", PanelUtils.join(FlowLayout.CENTER, ok, cancel));
 
-		ok.addActionListener(e -> d.setVisible(false));
+		ok.addActionListener(e -> d.dispose());
 		cancel.addActionListener(e -> {
 			currentState = null;
-			d.setVisible(false);
+			d.dispose();
 		});
 		d.addWindowListener(new WindowAdapter() {
 			@Override public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
 				currentState = null;
-				d.setVisible(false);
+				d.dispose();
 			}
 		});
 

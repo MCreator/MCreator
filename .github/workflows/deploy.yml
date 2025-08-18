@@ -36,6 +36,8 @@ jobs:
         with:
           java-version: '21.0.7+6.0.LTS'
           distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Install Dependencies
         run: |
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
@@ -57,7 +59,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
+          xvfb-run -a gradle generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
@@ -67,7 +69,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
+          xvfb-run -a gradle generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
@@ -112,6 +114,8 @@ jobs:
         with:
           java-version: '21.0.7+6.0.LTS'
           distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Install Dependencies
         run: |
           brew install create-dmg
@@ -139,12 +143,12 @@ jobs:
         if: github.event.inputs.release-type == 'release'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: gradle generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: gradle generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
         with:

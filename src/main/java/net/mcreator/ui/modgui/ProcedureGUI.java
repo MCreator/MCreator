@@ -116,7 +116,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyChangedListeners.add(listener);
 	}
 
-	private synchronized void regenerateProcedure() {
+	private synchronized void regenerateProcedure(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE));
 		BlocklyToProcedure blocklyToJava;
@@ -270,7 +270,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
 	}
 
@@ -296,10 +296,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(isSelected ? value.getType().getBlocklyColor() : Theme.current().getBackgroundColor());
-			setForeground(isSelected ? Theme.current().getForegroundColor() : value.getType().getBlocklyColor());
+			Color col = value.getType().getBlocklyColor();
+			setBackground(isSelected ? col : Theme.current().getBackgroundColor());
+			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
+			setToolTipText(value.getTooltipText());
 			return this;
 		}
 	}
@@ -572,14 +574,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateProcedure(changeEvent.getSource() instanceof BlocklyPanel),
+					"ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
 		});
 
-		skipDependencyNullCheck.addActionListener(e -> regenerateProcedure());
+		skipDependencyNullCheck.addActionListener(e -> regenerateProcedure(false));
 
 		pane5.add("Center", blocklyPanel);
 

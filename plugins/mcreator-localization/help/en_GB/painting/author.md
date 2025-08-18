@@ -1,0 +1,1 @@
+This parameter defines the author of the painting.

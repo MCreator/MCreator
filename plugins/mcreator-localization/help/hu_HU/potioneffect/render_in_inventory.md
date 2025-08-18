@@ -1,0 +1,1 @@
+Engedélyezze ezt a paramétert, hogy az aktív állapotban a játékos inventárjában megjelenjen a hatás.

@@ -1,0 +1,1 @@
+Ez az érték a maximális energiamennyiség, amit az energia elem (blokk, tárgy, ...) kivonhat egy másik energia elemből.

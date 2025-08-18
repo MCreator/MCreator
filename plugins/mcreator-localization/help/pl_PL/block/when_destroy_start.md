@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy gracz zaczyna niszczyć blok.

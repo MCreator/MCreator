@@ -196,6 +196,10 @@ import java.util.*;
 		return tabMap;
 	}
 
+	public boolean hasModElement(String elementName) {
+		return workspace.containsModElement(GeneratorWrapper.getElementPlainName(elementName));
+	}
+
 	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(Collection<T> input) {
 		if (input == null)
 			return Collections.emptySet();

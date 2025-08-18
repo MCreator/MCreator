@@ -1,0 +1,1 @@
+Są to wartości, które może mieć ta własność bloku.

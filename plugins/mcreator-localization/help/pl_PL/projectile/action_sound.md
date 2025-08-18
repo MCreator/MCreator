@@ -1,0 +1,1 @@
+Ten parametr kontroluje odtwarzany dźwięk, gdy pocisk jest strzelany.

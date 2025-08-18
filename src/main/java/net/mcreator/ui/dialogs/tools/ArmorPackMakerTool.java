@@ -108,7 +108,7 @@ public class ArmorPackMakerTool {
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.armor_pack_create");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
@@ -119,7 +119,7 @@ public class ArmorPackMakerTool {
 						color.getColor(), (Double) power.getValue());
 				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
 

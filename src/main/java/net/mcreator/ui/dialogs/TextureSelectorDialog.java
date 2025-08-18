@@ -57,7 +57,7 @@ public class TextureSelectorDialog extends MCreatorDialog {
 		buttons.add(naprej2);
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		list.addListSelectionListener(event -> naprej.doClick());
-		naprej2.addActionListener(event -> setVisible(false));
+		naprej2.addActionListener(event -> dispose());
 
 		ComponentUtils.deriveFont(filterField, 12);
 		filterField.getDocument().addDocumentListener(new DocumentListener() {

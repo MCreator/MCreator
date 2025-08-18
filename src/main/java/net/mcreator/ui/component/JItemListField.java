@@ -382,6 +382,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		}
 	}
 
+	public void addListElement(T element) {
+		if (!elementsListModel.contains(element)) {
+			elementsListModel.addElement(element);
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		}
+	}
+
 	public boolean isExclusionMode() {
 		return exclude.isSelected();
 	}

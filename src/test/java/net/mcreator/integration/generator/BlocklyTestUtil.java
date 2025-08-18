@@ -33,6 +33,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -288,7 +289,7 @@ public class BlocklyTestUtil {
 		default: {
 			if (datalist.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
-						StringUtils.removeStart(datalist, "procedure_retval_"));
+						Strings.CS.removeStart(datalist, "procedure_retval_"));
 				return ElementUtil.getProceduresOfType(workspace, variableType);
 			} else if (!DataListLoader.loadDataList(datalist).isEmpty()) {
 				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,

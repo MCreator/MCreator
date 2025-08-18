@@ -1,0 +1,1 @@
+A távolsági tárgy használatakor a kiválasztott eljárás elindul.

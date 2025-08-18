@@ -1,0 +1,1 @@
+Az itt kiválasztott entitások rendelkezni fognak ezzel az attribútummal és az alapértelmezett értékére lesz állítva, amikor létrejönnek.

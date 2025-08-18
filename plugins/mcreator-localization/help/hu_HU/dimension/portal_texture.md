@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a portál textúráját, például a Nether portál lila animált textúráját.

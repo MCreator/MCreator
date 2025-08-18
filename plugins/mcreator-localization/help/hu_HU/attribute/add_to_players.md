@@ -1,0 +1,1 @@
+Ha engedélyezed, a világban minden játékos rendelkezni fog ezzel az attribútummal és az alapértelmezett értékére lesz állítva, amikor csatlakozik a világhoz.

@@ -1,0 +1,1 @@
+Se a ferramenta destruir um bloco, este procedimento será executado.

@@ -55,7 +55,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 	private static final String[] templateList = new String[] { "Random", "Sword", "Pickaxe", "Axe", "Shovel", "Hoe",
 			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore", "Block", "Gem",
-			"Dye" };
+			"Dye", "Spawn egg" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
 			Theme.current().getInterfaceAccentColor(), Color.magenta, Color.cyan, new Color(244, 67, 54),
@@ -136,25 +136,25 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		bt.addActionListener(event -> is.setVisible(true));
 		is.naprej.addActionListener(arg01 -> {
-			is.setVisible(false);
+			is.dispose();
 			cbs.setSelectedItem(is.list.getSelectedValue());
 		});
 
 		bt2.addActionListener(event -> is2.setVisible(true));
 		is2.naprej.addActionListener(arg01 -> {
-			is2.setVisible(false);
+			is2.dispose();
 			cbs2.setSelectedItem(is2.list.getSelectedValue());
 		});
 
 		bt3.addActionListener(event -> is3.setVisible(true));
 		is3.naprej.addActionListener(arg01 -> {
-			is3.setVisible(false);
+			is3.dispose();
 			cbs3.setSelectedItem(is3.list.getSelectedValue());
 		});
 
 		bt4.addActionListener(event -> is4.setVisible(true));
 		is4.naprej.addActionListener(arg01 -> {
-			is4.setVisible(false);
+			is4.dispose();
 			cbs4.setSelectedItem(is4.list.getSelectedValue());
 		});
 
@@ -230,13 +230,13 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		getRootPane().setDefaultButton(ok);
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		merge.addActionListener(e -> {
 			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
 					refreshIcon().getImage());
 			canvas.add(first);
-			setVisible(false);
+			dispose();
 		});
 
 		ok.addActionListener(e -> {
@@ -275,7 +275,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 			} catch (IOException ex) {
 				LOG.error(ex.getMessage(), e);
 			}
-			setVisible(false);
+			dispose();
 		});
 
 		controls.add(cancel, BorderLayout.WEST);
@@ -541,6 +541,25 @@ public class FromTemplateDialog extends MCreatorDialog {
 			type2.setSelected(Math.random() < 0.4);
 			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
 			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			break;
+		case "Spawn egg":
+			cbs.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_base"))
+							.collect(Collectors.toList())));
+			cbs2.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_base"))
+							.collect(Collectors.toList())));
+			cbs3.setSelectedItem(ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().equals("egg_accent"))
+							.collect(Collectors.toList())));
+			cbs4.setSelectedItem(noimage);
+			col1.setColor(ListUtils.getRandomItem(presetColors));
+			type1.setSelected(true);
+			col2.setColor(ListUtils.getRandomItem(presetColors));
+			type2.setSelected(true);
+			ang1.setValue(0);
+			ang2.setValue(0);
+			ang3.setValue(0);
 			break;
 		default:
 			randomizeSetup();

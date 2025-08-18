@@ -1,0 +1,1 @@
+Jeśli włączyłeś "${l10n.t("elementgui.item.container_item")}", możesz włączyć tę opcję, aby uszkodzić przedmiot, zamiast po prostu trzymając go w siatce tworzenia.

@@ -1,0 +1,1 @@
+Jelöld be ezt a tulajdonságot, hogy fénylő effektust (a láng részecskéhez hasonlót) alkalmazz a részecskédre.

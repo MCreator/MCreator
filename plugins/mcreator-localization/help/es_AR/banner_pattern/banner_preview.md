@@ -1,0 +1,1 @@
+Esta es una vista previa del patrón blanco cuando se aplica sobre una pancarta negra, con la cara frontal a la izquierda.

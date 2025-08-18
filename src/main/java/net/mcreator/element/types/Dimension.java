@@ -58,7 +58,7 @@ import java.util.List;
 	public String defaultEffects;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
-	public double cloudHeight;
+	public int cloudHeight;
 	public String skyType;
 	public Color airColor;
 	public boolean sunHeightAffectsFog;

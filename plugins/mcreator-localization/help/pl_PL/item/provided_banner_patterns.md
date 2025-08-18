@@ -1,0 +1,1 @@
+Jeśli ta lista nie jest pusta, ten przedmiot może być użyty w krośnie do tworzenia wybranych wzorców banerów.

@@ -61,11 +61,10 @@
 - Demo
 - DirtMessage
 - Disconnected
-- DisconnectedRealms
 - DownloadTerrain
 - EditGamerules
 - EditWorld
-- AbstractRecipeBookScreen
+- AbstractRecipeBook
 - Error
 - Experiments
 - FlatPresets
@@ -109,3 +108,12 @@
 - WorldLoadProgress
 - WorldSelection
 - FontOptions
+- ButtonListDialog
+- DialogListDialog
+- Dialog
+- MultiButtonDialog
+- SimpleDialog
+- WaitingForResponse
+- BookSign
+- TestBlockEdit
+- TestInstanceBlockEdit

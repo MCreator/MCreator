@@ -30,7 +30,7 @@ import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class GetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_get_");
+		String type = Strings.CS.removeStart(block.getAttribute("type"), "variables_get_");
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");

@@ -24,6 +24,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import java.awt.*;
+import java.util.List;
 
 public class BrewingRecipeMaker extends AbstractRecipeMaker {
 
@@ -63,4 +64,7 @@ public class BrewingRecipeMaker extends AbstractRecipeMaker {
 		cb3.setValidationShownFlag(exportedYet);
 	}
 
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(cb1, cb2);
+	}
 }

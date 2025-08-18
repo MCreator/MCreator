@@ -1,0 +1,1 @@
+Meghatározza a megjelenített entitásmodell méretét.

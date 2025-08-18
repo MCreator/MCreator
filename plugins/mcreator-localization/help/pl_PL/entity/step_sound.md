@@ -1,0 +1,1 @@
+Dźwięk odtwarzany, gdy byt chodzi.

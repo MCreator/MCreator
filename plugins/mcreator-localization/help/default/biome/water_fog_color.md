@@ -1,1 +1,1 @@
-This paremeter controls the color of the water fog inside the biome
+This parameter controls the color of the water fog inside the biome
