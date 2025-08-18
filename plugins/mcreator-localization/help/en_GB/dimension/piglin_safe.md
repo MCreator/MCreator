@@ -1,0 +1,1 @@
+If this option is enabled, piglins won't become zombified inside this dimension.

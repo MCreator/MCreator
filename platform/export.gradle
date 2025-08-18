@@ -1,3 +1,11 @@
+import javax.inject.Inject
+
+interface ExecCtx {
+    @Inject ExecOperations getExecOps()
+}
+
+ext.execCtx = objects.newInstance(ExecCtx)
+
 if (project.snapshot) {
     project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + "." + (String) project.builddate)
 }

@@ -1,0 +1,1 @@
+If the condition is specified, this sprite can only be displayed in case it passes.

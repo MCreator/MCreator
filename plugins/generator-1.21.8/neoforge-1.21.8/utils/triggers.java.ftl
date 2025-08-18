@@ -216,7 +216,7 @@
 	<#if hasProcedure(procedure)>
 		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
 		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
-		Entity entity = Minecraft.getInstance().player;
+		Entity entity = ${JavaModName}.clientPlayer();
 		</#if>
 		return <@procedureCode procedure, {
 			"x": "entity.getX()",
@@ -359,7 +359,7 @@
 		"y": "pos.getY()",
 		"z": "pos.getZ()",
 		"world": "world",
-		"entity": "Minecraft.getInstance().player",
+		"entity": "${JavaModName}.clientPlayer()",
 		"blockstate": "blockstate"
 	}/>
 }

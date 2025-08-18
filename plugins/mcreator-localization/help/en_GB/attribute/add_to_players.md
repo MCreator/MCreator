@@ -1,0 +1,1 @@
+If enabled, all players in the world will have this attribute present and set at its default value when joining the world.

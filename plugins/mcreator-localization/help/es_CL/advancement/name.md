@@ -1,1 +1,1 @@
-El nombre del logro. Si no tiene padre (logro raíz) también será el nombre de la rama.
+El nombre del logro. Si no tiene un padre (logro raíz), será el mismo que el de la ruta.

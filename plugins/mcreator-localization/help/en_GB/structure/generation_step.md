@@ -1,0 +1,1 @@
+This option determines at what stage of world generation the structure should be added.

@@ -1,0 +1,1 @@
+Detta värde anger tiden, i ticks, innan ljudet spelas (loop).

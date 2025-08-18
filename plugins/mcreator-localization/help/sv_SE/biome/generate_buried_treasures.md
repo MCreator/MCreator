@@ -1,0 +1,1 @@
+Klicka i denna ruta för att ha begravda skatter i din biom.
