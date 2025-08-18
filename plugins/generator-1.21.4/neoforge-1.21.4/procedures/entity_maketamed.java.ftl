@@ -1,1 +1,0 @@
-if (${input$entity} instanceof TamableAnimal _toTame && ${input$sourceentity} instanceof Player _owner) _toTame.tame(_owner);
