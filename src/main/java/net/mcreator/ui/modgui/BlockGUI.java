@@ -420,7 +420,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			rotationMode.setEnabled(!hasBlockBase);
 			isWaterloggable.setEnabled(!hasBlockBase);
 			hasGravity.setEnabled(!hasBlockBase);
-			isBonemealable.setEnabled(!hasBlockBase);
+			isBonemealable.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
@@ -431,7 +431,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
 				hasGravity.setSelected(false);
-				isBonemealable.setSelected(false);
 				if (!isEditingMode()) {
 					isNotColidable.setSelected(false);
 					reactionToPushing.setSelectedItem("NORMAL");
@@ -460,7 +459,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 						ignitedByLava.setSelected(true);
 					}
 				}
-				case "TrapDoor", "Fence" -> {
+				case "TrapDoor" -> {
+					isBonemealable.setEnabled(false);
+					isBonemealable.setSelected(false);
+					blockSetTypePanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+					}
+				}
+				case "Fence" -> {
 					blockSetTypePanel.setVisible(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
