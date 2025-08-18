@@ -325,7 +325,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#if hasProcedure(component.whenSliderMoves)>
 						@Override
 						protected void applyValue() {
-							PacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
+							ClientPacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
 							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
 						}
 					</#if>
