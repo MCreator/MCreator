@@ -56,6 +56,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class WoodPackMakerTool {
 
@@ -160,6 +161,33 @@ public class WoodPackMakerTool {
 		String leavesTextureName = registryName + "_leaves";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
 				mcreator.getFolderManager().getTextureFile(leavesTextureName, TextureType.BLOCK));
+
+		// Generate door and trapdoor textures (matching textures have the same suffix)
+		int doorSuffix = new Random().nextInt(2) + 1;
+
+		ImageIcon doorBottom = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/door_bottom_" + doorSuffix + ".png")), color, true);
+		String doorBottomTextureName = registryName + "_door_bottom";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorBottom.getImage()),
+				mcreator.getFolderManager().getTextureFile(doorBottomTextureName, TextureType.BLOCK));
+
+		ImageIcon doorTop = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/door_top_" + doorSuffix + ".png")), color, true);
+		String doorTopTextureName = registryName + "_door_top";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorTop.getImage()),
+				mcreator.getFolderManager().getTextureFile(doorTopTextureName, TextureType.BLOCK));
+
+		ImageIcon doorItem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+						"templates/textures/texturemaker/door_item_" + doorSuffix + ".png")), color, true);
+		String doorItemTextureName = registryName + "_door_item";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorItem.getImage()),
+				mcreator.getFolderManager().getTextureFile(doorItemTextureName, TextureType.ITEM));
+
+		ImageIcon trapdoor = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/trapdoor_" + doorSuffix + ".png")), color, true);
+		String trapdoorTextureName = registryName + "_trapdoor";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
+				mcreator.getFolderManager().getTextureFile(trapdoorTextureName, TextureType.BLOCK));
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -320,9 +348,9 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Door", ModElementType.BLOCK), false).getElementFromGUI();
 		doorBlock.name = readableName + " Door";
 		doorBlock.blockBase = "Door";
-		doorBlock.texture = new TextureHolder(workspace, planksTextureName);
-		doorBlock.textureTop = new TextureHolder(workspace, logTextureName);
-		doorBlock.itemTexture = new TextureHolder(workspace, leavesTextureName);
+		doorBlock.texture = new TextureHolder(workspace, doorBottomTextureName);
+		doorBlock.textureTop = new TextureHolder(workspace, doorTopTextureName);
+		doorBlock.itemTexture = new TextureHolder(workspace, doorItemTextureName);
 		doorBlock.hasTransparency = true;
 		doorBlock.transparencyType = "CUTOUT";
 		doorBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -339,7 +367,7 @@ public class WoodPackMakerTool {
 				new ModElement(workspace, name + "Trapdoor", ModElementType.BLOCK), false).getElementFromGUI();
 		trapdoorBlock.name = readableName + " Trapdoor";
 		trapdoorBlock.blockBase = "TrapDoor";
-		trapdoorBlock.texture = new TextureHolder(workspace, planksTextureName);
+		trapdoorBlock.texture = new TextureHolder(workspace, trapdoorTextureName);
 		trapdoorBlock.hasTransparency = true;
 		trapdoorBlock.transparencyType = "CUTOUT";
 		trapdoorBlock.soundOnStep = new StepSound(workspace, "WOOD");
