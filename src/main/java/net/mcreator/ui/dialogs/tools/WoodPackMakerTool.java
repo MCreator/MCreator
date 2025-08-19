@@ -323,6 +323,8 @@ public class WoodPackMakerTool {
 		doorBlock.texture = new TextureHolder(workspace, planksTextureName);
 		doorBlock.textureTop = new TextureHolder(workspace, logTextureName);
 		doorBlock.itemTexture = new TextureHolder(workspace, leavesTextureName);
+		doorBlock.hasTransparency = true;
+		doorBlock.transparencyType = "CUTOUT";
 		doorBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		doorBlock.hardness = 3 * factor;
 		doorBlock.resistance = 3 * factor;
@@ -338,6 +340,8 @@ public class WoodPackMakerTool {
 		trapdoorBlock.name = readableName + " Trapdoor";
 		trapdoorBlock.blockBase = "TrapDoor";
 		trapdoorBlock.texture = new TextureHolder(workspace, planksTextureName);
+		trapdoorBlock.hasTransparency = true;
+		trapdoorBlock.transparencyType = "CUTOUT";
 		trapdoorBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		trapdoorBlock.hardness = 3 * factor;
 		trapdoorBlock.resistance = 3 * factor;
