@@ -434,7 +434,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
