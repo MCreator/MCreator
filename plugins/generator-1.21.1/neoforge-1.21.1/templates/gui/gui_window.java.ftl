@@ -36,6 +36,7 @@ package ${package}.client.gui;
 <#assign checkboxes = data.getComponentsOfType("Checkbox")>
 <#assign buttons = data.getComponentsOfType("Button")>
 <#assign imageButtons = data.getComponentsOfType("ImageButton")>
+<#assign tooltips = data.getComponentsOfType("Tooltip")>
 
 <#compress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
@@ -123,10 +124,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 		</#compress>
 
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
-
-
-		<#list data.getComponentsOfType("Tooltip") as component>
+		<#if tooltips?has_content>
+		boolean customTooltipShown = false;
+		</#if>
+		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
 			<#if hasProcedure(component.displayCondition)>
@@ -141,11 +142,17 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#else>
 						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
 					</#if>
+					customTooltipShown = true;
 				}
 		</#list>
+
+		<#if tooltips?has_content>
+		if (!customTooltipShown)
+		</#if>
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
-	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int gx, int gy) {
+	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -266,8 +273,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				</#if>
 				<@buttonOnClick component/>
 			) {
-				@Override public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
+				@Override public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 					<#if hasProcedure(component.displayCondition)>
+					int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
+					int y = ${name}Screen.this.y;
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
 					guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
@@ -316,6 +325,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 <#macro buttonOnClick component>
 e -> {
 	<#if hasProcedure(component.onClick)>
+		int x = ${name}Screen.this.x; <#-- #5582 - x and y provided by buttons are in-GUI, not in-world coordinates -->
+		int y = ${name}Screen.this.y;
 		if (<@procedureOBJToConditionCode component.displayCondition/>) {
 			PacketDistributor.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);

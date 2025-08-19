@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a felhők megjelenésének magasságát, ha azok engedélyezve vannak.

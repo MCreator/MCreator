@@ -1,0 +1,1 @@
+Kolik zkušeností (Xp) hráč dostane po dokončení pokroku.

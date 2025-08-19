@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy hány kieső tárgy vagy blokk esik ki, amikor ezt a blokkot eltörik.

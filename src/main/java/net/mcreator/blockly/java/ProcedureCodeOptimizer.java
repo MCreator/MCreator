@@ -21,9 +21,11 @@ package net.mcreator.blockly.java;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
+
 public class ProcedureCodeOptimizer {
 	enum ParseState {
-		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
+		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, AFTER_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class ProcedureCodeOptimizer {
 	 * @param blacklist The characters that can't be contained at the top nesting level
 	 * @return If possible, the code without surrounding parentheses
 	 */
-	public static String removeParentheses(String code, String blacklist) {
+	public static String removeParentheses(String code, @Nullable String blacklist) {
 		String toClean = code.strip();
 		String prefix = "";
 		if (toClean.startsWith("/*@BlockState*/")) {
@@ -73,7 +75,7 @@ public class ProcedureCodeOptimizer {
 	 * @param blacklist The characters that can't be contained at the top nesting level
 	 * @return true if the parentheses can be removed
 	 */
-	private static boolean canRemoveParentheses(String toCheck, String blacklist) {
+	private static boolean canRemoveParentheses(String toCheck, @Nullable String blacklist) {
 		if (toCheck.startsWith("(") && toCheck.endsWith(")")) {
 			var state = ParseState.OUTSIDE;
 			int parentheses = 1;
@@ -83,30 +85,33 @@ public class ProcedureCodeOptimizer {
 			for (int i = 1; i < toCheck.length() - 1; i++) {
 				char c = toCheck.charAt(i);
 				switch (state) {
-				case OUTSIDE:
-					if (c == '/' && prevChar == '/') {
+				case OUTSIDE, AFTER_COMMENT_BLOCK:
+					// Comments cannot start right after a comment block was closed
+					if (state != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
 						state = ParseState.INSIDE_INLINE_COMMENT;
-						if (blacklist != null && parentheses == 1)
-							topLevelChars.deleteCharAt(
-									topLevelChars.length() - 1); // The previous character was part of the comment
-					} else if (c == '*' && prevChar == '/') {
-						state = ParseState.INSIDE_COMMENT_BLOCK;
-						if (blacklist != null && parentheses == 1)
+						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
 							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
-					} else if (c == '"')
+					} else if (state != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
+						state = ParseState.INSIDE_COMMENT_BLOCK;
+						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
+							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
+					} else if (c == '"') {
 						state = ParseState.INSIDE_STRING;
-					else if (c == '(')
+					} else if (c == '(') {
 						parentheses++;
-					else if (c == ')'
-							&& --parentheses == 0) // The first ( isn't paired with the last ), we can't remove them
-						return false;
-					else if (blacklist != null && parentheses == 1) {
+					} else if (c == ')' && --parentheses == 0) {
+						return false; // The first "(" isn't paired with the last ")", we can't remove them
+					} else if (blacklist != null && parentheses == 1) {
 						topLevelChars.append(c);
+					}
+					if (state == ParseState.AFTER_COMMENT_BLOCK) {
+						state = ParseState.OUTSIDE;
 					}
 					break;
 				case INSIDE_INLINE_COMMENT:
-					if (c == '\n' || c == '\r')
+					if (c == '\n' || c == '\r') {
 						state = ParseState.OUTSIDE;
+					}
 					break;
 				case INSIDE_STRING_ESCAPE_SEQUENCE:
 					if (c == '\\') {
@@ -123,8 +128,9 @@ public class ProcedureCodeOptimizer {
 					}
 					break;
 				case INSIDE_COMMENT_BLOCK:
-					if (c == '/' && prevChar == '*')
-						state = ParseState.OUTSIDE;
+					if (c == '/' && prevChar == '*') {
+						state = ParseState.AFTER_COMMENT_BLOCK;
+					}
 					break;
 				}
 				prevChar = c;
@@ -141,8 +147,19 @@ public class ProcedureCodeOptimizer {
 	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
 	 */
 	@SuppressWarnings("unused") public static String toInt(String code) {
+		return toInt(code, null);
+	}
+
+	/**
+	 * This method performs parentheses optimization and adds an (int) cast to the given code if needed.
+	 *
+	 * @param code      The code representing the number to cast
+	 * @param blacklist Characters that prevent removing the parenthesis if the code is already an int
+	 * @return The code without parentheses, if it's already an int, or with a cast to (int) behind otherwise
+	 */
+	@SuppressWarnings("unused") public static String toInt(String code, @Nullable String blacklist) {
 		if (code.startsWith("/*@int*/"))
-			return removeParentheses(code);
+			return removeParentheses(code, blacklist);
 		return "(int)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
 	}
 
@@ -156,6 +173,16 @@ public class ProcedureCodeOptimizer {
 		if (code.startsWith("/*@int*/") || code.startsWith("/*@float*/"))
 			return removeParentheses(code);
 		return "(float)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
+	}
+
+	/**
+	 * This method performs parentheses optimization and adds a (double) cast to the given code.
+	 *
+	 * @param code The code representing the number to cast
+	 * @return The code without parentheses and with a cast to (double) behind
+	 */
+	@SuppressWarnings("unused") public static String toDouble(String code) {
+		return "(double)" + (code.contains("instanceof") ? code : removeParentheses(code, "*/%+-!=><&^|?"));
 	}
 
 	/**

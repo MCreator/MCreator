@@ -1,0 +1,1 @@
+Írd le a lemezed leírását. Általában ez a zeneszerző - a zene címe.

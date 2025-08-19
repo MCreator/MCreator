@@ -1,0 +1,1 @@
+Jelöld be ezt a tulajdonságot, hogy fénylő effektust (a magma blokkhoz hasonlót) alkalmazz a blokkodra.

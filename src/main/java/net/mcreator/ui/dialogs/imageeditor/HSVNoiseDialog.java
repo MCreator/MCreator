@@ -64,7 +64,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		ok.addActionListener(e -> {
 			BufferedImage bim = ImageUtils.deepCopy(layer.getRaster());
@@ -90,7 +90,7 @@ public class HSVNoiseDialog extends MCreatorDialog {
 			g2d.dispose();
 			layer.mergeOverlay();
 			versionManager.addRevision(new Modification(canvas, layer));
-			setVisible(false);
+			dispose();
 		});
 
 		layoutConstraints.gridx = 0;

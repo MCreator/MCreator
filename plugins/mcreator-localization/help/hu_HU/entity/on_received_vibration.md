@@ -1,0 +1,1 @@
+Ez az eljárás határozza meg, hogy mi történik, amikor rezgés érkezik.

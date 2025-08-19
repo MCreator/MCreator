@@ -1,0 +1,1 @@
+Ha ez a beállítás engedélyezve van, az idő a megadott értéknél megáll ebben a dimenzióban.

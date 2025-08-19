@@ -1,0 +1,1 @@
+Ten parametr definiuje model wizualny (kształt wizualny) bytu.

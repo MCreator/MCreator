@@ -53,8 +53,11 @@ import net.mcreator.element.converter.v2024_2.*;
 import net.mcreator.element.converter.v2024_3.EnchantmentDefinitionConverter;
 import net.mcreator.element.converter.v2024_3.PlantTypeProcedureRemover;
 import net.mcreator.element.converter.v2024_4.*;
-import net.mcreator.element.converter.v2025_1.*;
-import net.mcreator.element.converter.v2025_2.*;
+import net.mcreator.element.converter.v2025_1.EnchantabilityConverter;
+import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
+import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
+import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
+import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 
 import java.util.HashMap;
 import java.util.List;

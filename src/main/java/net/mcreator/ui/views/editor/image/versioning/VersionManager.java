@@ -105,7 +105,7 @@ public class VersionManager {
 	 * This method handles two different cases:
 	 * 1. Elementary changes (without a group UUID): Returns true if this is the very first change (index = 0)
 	 * 2. Complex changes (with a group UUID): Returns true if the first element of the group change is the first
-	 *    overall change, making the group the initial full version.
+	 * overall change, making the group the initial full version.
 	 *
 	 * @return true if the current revision is the first atomic revision that cannot be undone, false otherwise
 	 */
@@ -115,7 +115,7 @@ public class VersionManager {
 			return true;
 		}
 
-		Change currentChange  = changes.get(index);
+		Change currentChange = changes.get(index);
 		UUID currentGroupId = currentChange.getGroup();
 
 		// If this is an elementary change (no group ID), it's not the first atomic revision

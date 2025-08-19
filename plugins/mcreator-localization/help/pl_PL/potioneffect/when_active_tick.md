@@ -1,0 +1,1 @@
+Procedura ta zostanie wykonana dla każdego bytu, który ma ten efekt mikstury.

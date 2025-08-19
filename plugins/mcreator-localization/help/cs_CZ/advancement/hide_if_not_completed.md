@@ -1,0 +1,1 @@
+Tento parametr schová pokrok v kategorii než bude dokončen.

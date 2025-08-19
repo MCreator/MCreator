@@ -1,0 +1,3 @@
+Procedura zostanie wykonana, gdy gracz użył wyzwalacz portalu na bloku.
+
+Procedura powinna zwracać wynik działania typu SUKCES/SPOŻYCIE, jeśli aktywator interweniował z blokiem, PORAŻKA jeśli interakcja nie powiodła się i PRZESZŁO, jeśli nie wystąpiła interakcja. Jeśli wyzwalacz pomyślnie utworzył portal lub jeśli procedura nie zwraca żadnej wartości, następnie wynik działania typu będzie SUKCES.

@@ -26,24 +26,26 @@ import java.lang.management.ManagementFactory;
 public class DeviceInfo {
 	private int screenWidth = 0, screenHeight = 0;
 	private final int systemBits;
-	private final int ramAmountMB;
+	private int ramAmountMB;
 
 	private final String osName;
 	private final String jvmVersion;
 
 	public DeviceInfo() {
+		this.osName = System.getProperty("os.name");
+		this.jvmVersion = System.getProperty("java.version");
+		this.systemBits = OS.getSystemBits();
+
 		try {
+			this.ramAmountMB = (int) (
+					((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
+							/ 1048576);
+
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			this.screenWidth = (int) screenSize.getWidth();
 			this.screenHeight = (int) screenSize.getHeight();
 		} catch (Exception ignored) {
 		}
-		this.systemBits = OS.getSystemBits();
-		this.ramAmountMB = (int) (
-				((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
-						/ 1048576);
-		this.osName = System.getProperty("os.name");
-		this.jvmVersion = System.getProperty("java.version");
 	}
 
 	int getScreenWidth() {

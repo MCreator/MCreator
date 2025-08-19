@@ -1,0 +1,1 @@
+Azok a játékesemények, amelyek rezgéseit ez az entitás képes fogadni.

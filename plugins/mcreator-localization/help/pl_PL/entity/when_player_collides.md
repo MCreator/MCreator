@@ -1,0 +1,1 @@
+To wyzwalanie wyzwala procedurę, gdy gracz koliduje z tym bytem.

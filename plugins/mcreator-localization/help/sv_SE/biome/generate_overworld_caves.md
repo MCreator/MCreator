@@ -1,0 +1,1 @@
+Klicka i denna rutan för att få biomen att generera under jord (i grottor) i överjorden.

@@ -1,0 +1,1 @@
+A portálkeret-blokk az a blokk, amelyet a portálkeret méretének kialakításához használnak, ha a portál engedélyezve van.

@@ -1,0 +1,1 @@
+Ha a feltétel meg van adva, a gomb csak akkor látható (megjelenik/kijelzésre kerül), ha a feltétel teljesül.

@@ -1,0 +1,1 @@
+Zaznacz, aby efekt był widoczny w grze

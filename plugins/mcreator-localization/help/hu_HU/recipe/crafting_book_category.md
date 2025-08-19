@@ -1,0 +1,1 @@
+A crafting könyv kategória határozza meg, hogy melyik fül alatt jelenik meg a recept a crafting könyvben.

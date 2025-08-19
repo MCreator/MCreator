@@ -1,0 +1,1 @@
+Ten parametr definiuje tekst wyświetlany przez etykietę, gdy GUI jest otwarty. Możesz użyć procedury typu ciągu dla bardziej złożonych tekstów.

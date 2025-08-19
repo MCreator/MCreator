@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg az átfedésed prioritását. A "Magas" beállítású átfedések az "Alacsony" beállítású átfedések felett lesznek megjelenítve.

@@ -1,0 +1,1 @@
+Kiedy przedmiot dystsansowy jest użyty, wybrana procedura będzie wyzwalana.

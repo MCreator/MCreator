@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, płyn będzie generował cząsteczki, gdy znajduje się nad stałym blokiem i znajduje się pod nim powietrze.

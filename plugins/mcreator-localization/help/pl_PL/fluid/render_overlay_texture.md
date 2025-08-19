@@ -1,0 +1,1 @@
+Jeśli wybrana zostanie tekstura, będzie ona wyświetlana jako nakładka podczas gdy gracz jest zanurzony.

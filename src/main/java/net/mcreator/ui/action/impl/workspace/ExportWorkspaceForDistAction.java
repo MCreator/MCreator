@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace;
 
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.ui.MCreatorApplication;
@@ -48,18 +49,19 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 			String exportFile = actionRegistry.getMCreator().getGeneratorConfiguration()
 					.getGradleTaskFor("export_file");
 			String exportExtension = FilenameUtilsPatched.getExtension(exportFile);
+			File exportFileObject = new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile);
 
-			if (new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile).isFile()) {
-				Object[] options2 = { L10N.t("dialog.workspace.export.option.just_export"),
-						L10N.t("dialog.workspace.export.option.donate_and_export"),
+			if (taskResult == GradleResultCode.STATUS_OK && exportFileObject.isFile()) {
+				Object[] options2 = { L10N.t("dialog.workspace.export.option.donate_and_export"),
+						L10N.t("dialog.workspace.export.option.just_export"),
 						UIManager.getString("OptionPane.cancelButtonText") };
 				int n = JOptionPane.showOptionDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.export.message"), L10N.t("dialog.workspace.export.title"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.get("export_donate"),
-						options2, options2[1]);
+						options2, options2[0]);
 				if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
 					return;
-				} else if (n == 1) {
+				} else if (n == 0) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
 				}
 
@@ -68,13 +70,13 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 						+ actionRegistry.getMCreator().getWorkspaceSettings().getCurrentGenerator() + "."
 						+ exportExtension;
 
-				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(), suggestedFileName,
+				File exportTargetFile = FileDialogs.getSaveDialog(actionRegistry.getMCreator(), suggestedFileName,
 						new String[] { "." + exportExtension });
-				if (loc != null) {
+				if (exportTargetFile != null) {
 					actionRegistry.getMCreator().getApplication().getAnalytics()
 							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, "build");
 
-					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
+					FileIO.copyFile(exportFileObject, exportTargetFile);
 				}
 			} else {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),

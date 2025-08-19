@@ -1,0 +1,1 @@
+To jest domyślna wartość zasady gry. Zasada będzie miała tę wartość, dopóki coś w grze (gracz lub polecenie) nie zmieni go.

@@ -1,0 +1,1 @@
+Ten warunek określa, czy byt powinien otrzymywać wykryte wibracje, czy nie.

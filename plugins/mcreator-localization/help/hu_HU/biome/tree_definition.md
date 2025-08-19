@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy vanilla fa magasságot és blokk adatokat használjon-e, vagy a lenti mezők által biztosított adatokat.

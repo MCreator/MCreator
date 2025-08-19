@@ -1,0 +1,1 @@
+A telítettség az első statisztikai érték, amely csökken, amikor a játékos energiaigényes tevékenységeket végez, és teljesen ki kell merülnie, mielőtt a látható éhségmérő csökkenni kezd.

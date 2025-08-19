@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy a lejtő milyen távolságban lehet ahhoz, hogy befolyásolja a folyadék terjedését. Ahelyett, hogy egyenletesen terjedne, a folyadék megpróbálja elérni a lejtőt. Alacsonyabb értékek esetén a folyadék általában nagyobb területeket fed le, ha a talaj egyenetlen.

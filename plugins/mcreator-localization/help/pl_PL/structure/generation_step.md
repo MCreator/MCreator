@@ -1,0 +1,1 @@
+Opcja ta określa, na jakim etapie generacji świata powinna zostać dodana.

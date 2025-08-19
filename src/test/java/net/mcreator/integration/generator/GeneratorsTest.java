@@ -24,8 +24,9 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleErrorCodes;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
@@ -112,7 +113,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						CountDownLatch latch = new CountDownLatch(1);
 						MCreator.create(null, workspace.get()).getGradleConsole()
 								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
-									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
+									if (taskResult == GradleResultCode.STATUS_OK) {
 										workspace.get().getGenerator().reloadGradleCaches();
 									} else {
 										fail("Gradle MDK setup failed!");
@@ -120,6 +121,12 @@ import static org.junit.jupiter.api.Assertions.*;
 									latch.countDown();
 								});
 						latch.await();
+
+						// Attach a blank file watcher to also test its operation
+						workspace.get().getGenerator().getFileWatcher()
+								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
+						workspace.get().getGenerator().getFileWatcher().addListener(changedFiles -> {
+						});
 					}));
 
 					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {

@@ -29,6 +29,8 @@ import org.fife.ui.rtextarea.SearchResult;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -42,12 +44,8 @@ public class ReplaceBar extends JPanel {
 	private final JCheckBox cb4 = new JCheckBox("Words");
 	private final JCheckBox cb5 = new JCheckBox("Selection");
 
-	private final RTextArea ra;
-
 	ReplaceBar(RTextArea ra) {
 		super(new BorderLayout(0, 1));
-
-		this.ra = ra;
 
 		jtf1.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 		jtf2.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
@@ -169,18 +167,21 @@ public class ReplaceBar extends JPanel {
 		add("South", bottom);
 
 		setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-	}
 
-	@Override public void setVisible(boolean is) {
-		super.setVisible(is);
-		if (is) {
-			jtf1.requestFocus();
-			jtf1.requestFocusInWindow();
-		} else {
-			SearchContext context = new SearchContext("");
-			context.setMarkAll(true);
-			SearchEngine.markAll(ra, context);
-		}
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
+				jtf1.requestFocus();
+				jtf1.requestFocusInWindow();
+			}
+
+			@Override public void componentHidden(ComponentEvent e) {
+				super.componentHidden(e);
+				SearchContext context = new SearchContext("");
+				context.setMarkAll(true);
+				SearchEngine.markAll(ra, context);
+			}
+		});
 	}
 
 }

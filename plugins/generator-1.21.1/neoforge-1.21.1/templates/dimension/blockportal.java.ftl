@@ -84,11 +84,11 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
 		<#if hasProcedure(data.onPortalTickUpdate)>
 			<@procedureCode data.onPortalTickUpdate, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"blockstate": "blockstate"
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
 			}/>
 		</#if>
 	}
@@ -120,6 +120,19 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 					random.nextFloat() * 0.4f + 0.8f);
         </#if>
 	}
+
+	<#if hasProcedure(data.portalUseCondition)>
+	@Override protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+		if (<@procedureCode data.portalUseCondition, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"entity": "entity",
+			"world": "world"
+		}, false/>)
+			super.entityInside(state, world, pos, entity);
+	}
+	</#if>
 
 }
 

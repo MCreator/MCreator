@@ -1,0 +1,1 @@
+Ezzel a paraméterrel aktiválhatod a tárgyad közelharci sebzését, és beállíthatod a sebzés értékét.

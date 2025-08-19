@@ -1,0 +1,1 @@
+A maximális távolság, amelyen ez az entitás rezgéseket tud fogadni.

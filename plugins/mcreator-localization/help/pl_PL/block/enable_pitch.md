@@ -1,0 +1,1 @@
+Jeśli twój blok obraca się poziomo, zaznacz to pole, aby umożliwić mu zwrócenie się w dowolnym kierunku do podłogi, ściany lub sufitu. Ta opcja jest używana przez dźwignię, kamień szlifierski, itp.

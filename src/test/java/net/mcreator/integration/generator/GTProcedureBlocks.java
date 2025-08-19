@@ -24,15 +24,19 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.java.JavaKeywordsMap;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -82,9 +86,6 @@ public class GTProcedureBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + procedureBlock.getMachineName(),
-					ModElementType.PROCEDURE);
-
 			String testXML = procedureBlock.getToolboxTestXML();
 
 			// replace common math blocks with blocks that contain double variable to verify things like type casting
@@ -116,96 +117,107 @@ public class GTProcedureBlocks {
 			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
-							+ TestWorkspaceDataProvider.getRandomMCItem(random,
-							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
+							+ TestWorkspaceDataProvider.getRandomMCItem(random, ElementUtil.loadBlocks(workspace))
+							.getName() + "</field></block>");
 
-			Procedure procedure = new Procedure(modElement);
+			prepareTestCase(workspace, generatorName, procedureBlock.getMachineName(), testXML,
+					procedureBlock.getType(), procedureBlock.getOutputType());
+		}
+	}
 
-			if (procedureBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				procedure.procedurexml = wrapWithBaseTestXML(testXML);
-			} else { // output block type
-				String rettype = procedureBlock.getOutputType();
-				switch (rettype) {
-				case "Number":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_number"><value name="return">
-								<block type="math_dual_ops">
-									<field name="OP">ADD</field>
-									<value name="A">%s</value>
-									<value name="B">%s</value>
-								</block>
-							</value></block>
-							""".formatted(testXML, testXML));
-					break;
-				case "Boolean":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_logic"><value name="return">
-								<block type="logic_binary_ops">
-									<field name="OP">OR</field>
-									<value name="A">%s</value>
-									<value name="B">%s</value>
-								</block>
-							</value></block>
-							""".formatted(testXML, testXML));
-					break;
-				case "MCItem":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_itemstack"><value name="return">%s</value></block>
-							""".formatted(testXML));
-					break;
-				case "MCItemBlock":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_blockstate"><value name="return">%s</value></block>
-							""".formatted(testXML));
-					break;
-				case "Direction":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_direction"><value name="return">%s</value></block>
-							""".formatted(testXML));
-					break;
-				case "Entity":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_entity"><value name="return">%s</value></block>
-							""".formatted(testXML));
-					break;
-				case "DamageSource":
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_damagesource"><value name="return">%s</value></block>
-							""".formatted(testXML));
-					break;
-				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="projectile_shoot_from_entity">
-								<value name="projectile">%s</value>
-								<value name="entity"><block type="entity_from_deps"></block></value>
-								<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
-								<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
-							</block>""".formatted(testXML));
-					break;
-				default:
-					procedure.procedurexml = wrapWithBaseTestXML("""
-							<block type="return_string"><value name="return">
-								<block type="text_join">
-									<mutation items="2"></mutation>
-									<value name="ADD0">%s</value>
-									<value name="ADD1">%s</value>
-								</block>
-							</value></block>
-							""".formatted(testXML, testXML));
-					break;
-				}
-			}
+	private static void prepareTestCase(Workspace workspace, String generatorName, String testCaseName, String testXML,
+			IBlockGenerator.BlockType blockType, @Nullable String rettype) {
+		ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + testCaseName,
+				ModElementType.PROCEDURE);
 
-			try {
-				workspace.addModElement(modElement);
-				workspace.getGenerator().generateElement(procedure, true);
-				workspace.getModElementManager().storeModElement(procedure);
-			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName(),
-						t);
+		Procedure procedure = new Procedure(modElement);
+
+		if (blockType == IBlockGenerator.BlockType.PROCEDURAL) {
+			procedure.procedurexml = wrapWithBaseTestXML(testXML);
+		} else { // output block type
+			switch (rettype) {
+			case "Number":
+				String numberOperator = ListUtils.getRandomItem(
+						ListUtils.merge(JavaKeywordsMap.BINARY_MATH_OPERATORS.keySet(), List.of("DIVIDE_DOUBLE")));
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_number"><value name="return">
+							<block type="math_dual_ops">
+								<field name="OP">%s</field>
+								<value name="A">%s</value>
+								<value name="B">%s</value>
+							</block>
+						</value></block>
+						""".formatted(numberOperator, testXML, testXML));
+				break;
+			case "Boolean":
+				String logicOperator = ListUtils.getRandomItem(List.of("EQ", "NEQ", "AND", "OR", "XOR"));
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_logic"><value name="return">
+							<block type="logic_binary_ops">
+								<field name="OP">%s</field>
+								<value name="A">%s</value>
+								<value name="B">%s</value>
+							</block>
+						</value></block>
+						""".formatted(logicOperator, testXML, testXML));
+				break;
+			case "MCItem":
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_itemstack"><value name="return">%s</value></block>
+						""".formatted(testXML));
+				break;
+			case "MCItemBlock":
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_blockstate"><value name="return">%s</value></block>
+						""".formatted(testXML));
+				break;
+			case "Direction":
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_direction"><value name="return">%s</value></block>
+						""".formatted(testXML));
+				break;
+			case "Entity":
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_entity"><value name="return">%s</value></block>
+						""".formatted(testXML));
+				break;
+			case "DamageSource":
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_damagesource"><value name="return">%s</value></block>
+						""".formatted(testXML));
+				break;
+			case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="projectile_shoot_from_entity">
+							<value name="projectile">%s</value>
+							<value name="entity"><block type="entity_from_deps"></block></value>
+							<value name="speed"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
+						</block>""".formatted(testXML));
+				break;
+			case null:
+				break;
+			default:
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_string"><value name="return">
+							<block type="text_join">
+								<mutation items="2"></mutation>
+								<value name="ADD0">%s</value>
+								<value name="ADD1">%s</value>
+							</block>
+						</value></block>
+						""".formatted(testXML, testXML));
+				break;
 			}
 		}
 
+		try {
+			workspace.addModElement(modElement);
+			workspace.getGenerator().generateElement(procedure, true);
+			workspace.getModElementManager().storeModElement(procedure);
+		} catch (Throwable t) {
+			fail("[" + generatorName + "] Failed generating procedure block: " + testCaseName, t);
+		}
 	}
 
 	public static String wrapWithBaseTestXML(String customXML) {

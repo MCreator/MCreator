@@ -72,10 +72,10 @@ public class AIConditionEditor {
 			retVal.set(1, continueCondition.getSelectedProcedure() != null ?
 					continueCondition.getSelectedProcedure().getName() :
 					"null");
-			window.setVisible(false);
+			window.dispose();
 		});
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> window.setVisible(false));
+		cancel.addActionListener(e -> window.dispose());
 		parent.getRootPane().setDefaultButton(ok);
 		JPanel options = new JPanel();
 		options.add(PanelUtils.join(ok, cancel));

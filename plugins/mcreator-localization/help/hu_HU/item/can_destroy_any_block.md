@@ -1,0 +1,1 @@
+Jelölje be ezt a paramétert, ha azt szeretné, hogy ez az eszköz vagy eszköz bármilyen blokkot elpusztítson, még a kőzetet is.

@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy przedmioty w tym miejscu są z niej przenoszone.

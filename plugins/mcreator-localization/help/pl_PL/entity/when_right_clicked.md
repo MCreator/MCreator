@@ -1,0 +1,3 @@
+Ten wyzwalacz wyzwala procedurę, gdy gracz kliknie prawym przyciskiem myszy na dany byt.
+
+Procedura powinna zwrócić wynik działania typu SUCCESS/CONSUME, jeżeli miała miejsce interakcja z podmiotem, Nieudane jeśli interakcja nie powiodła się i PASS, jeśli nie wystąpiła interakcja. Jeśli procedura nie zwraca żadnej wartości, wynik działania będzie określany na podstawie tego, czy jednostka jest możliwa do rozporządzania, lub otwiera GUI.

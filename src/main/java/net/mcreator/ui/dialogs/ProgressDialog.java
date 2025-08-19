@@ -31,6 +31,8 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,12 +97,20 @@ public class ProgressDialog extends MCreatorDialog {
 
 		add("Center", panes);
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowClosed(WindowEvent e) {
+				super.windowClosed(e);
+				if (mcreator != null)
+					mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
+			}
+		});
+
 		setSize(450, 280);
 		setLocationRelativeTo(w);
 	}
 
 	public void hideDialog() {
-		ThreadUtil.runOnSwingThread(() -> setVisible(false));
+		ThreadUtil.runOnSwingThread(this::dispose);
 	}
 
 	@Override public void setTitle(String title) {
@@ -108,13 +118,6 @@ public class ProgressDialog extends MCreatorDialog {
 		// setTitle can be called before the titleLabel is initialized
 		if (titleLabel != null)
 			titleLabel.setText(title);
-	}
-
-	@Override public void setVisible(boolean visible) {
-		super.setVisible(visible);
-
-		if (!visible && mcreator != null)
-			mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
 	}
 
 	public void addProgressUnit(final ProgressUnit progressUnit) {

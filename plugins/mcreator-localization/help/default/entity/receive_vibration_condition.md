@@ -1,0 +1,1 @@
+This condition specifies whether the entity should receive the detected vibration or not.

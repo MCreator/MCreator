@@ -4,6 +4,11 @@ templates:
   - template: item/item_container.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/inventory/@NAMEInventoryCapability.java"
     condition: hasInventory()
+  - template: item/item_renderer.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/@NAMEItemRenderer.java"
+    condition_any:
+      - hasCustomJAVAModel()
+      - "${data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content}"
   - template: json/musicdisc.json.ftl
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
@@ -14,7 +19,9 @@ templates:
     condition: hasBannerPatterns()
   - template: json/item.json.ftl
     writer: json
-    condition: hasNormalModel()
+    condition_any:
+      - hasNormalModel()
+      - hasCustomJAVAModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/tool.json.ftl
     writer: json
@@ -39,7 +46,9 @@ list_templates:
     forEach:
       - template: json/item.json.ftl
         writer: json
-        condition: hasNormalModel()
+        condition_any:
+          - hasNormalModel()
+          - hasCustomJAVAModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json

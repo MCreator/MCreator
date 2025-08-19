@@ -1,0 +1,1 @@
+Wenn der Haken gesetzt ist, können in dieser Dimension Betten benutzt werden. Falls nicht, explodieren Betten wenn man versucht sie zu benutzen.

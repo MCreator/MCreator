@@ -1,0 +1,1 @@
+Zaznacz tę opcję, jeśli chcesz, aby zaklęcie mogło generować w tabelach łupów.

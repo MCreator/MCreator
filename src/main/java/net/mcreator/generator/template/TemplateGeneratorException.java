@@ -27,4 +27,8 @@ public class TemplateGeneratorException extends Exception {
 		super(s);
 	}
 
+	public TemplateGeneratorException(String s, Throwable throwable) {
+		super(s, throwable);
+	}
+
 }

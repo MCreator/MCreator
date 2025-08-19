@@ -20,6 +20,7 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.io.TrackingFileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -27,8 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.util.List;
 
 public class ConverterUtils {
 
@@ -38,12 +37,7 @@ public class ConverterUtils {
 			@Nullable GeneratableElement result) {
 		if (result != null) {
 			// Delete old files of the source ME as it will be converted to a different ME that will have different/own files
-			Object oldFiles = source.getMetadata("files");
-			if (oldFiles instanceof List<?> fileList)
-				// filter by files in workspace so one can not create .mcreator file that would delete files on computer when opened
-				fileList.stream().map(e -> new File(source.getWorkspace().getWorkspaceFolder(),
-								e.toString().replace("/", File.separator)))
-						.filter(source.getWorkspace().getFolderManager()::isFileInWorkspace).forEach(File::delete);
+			source.getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(source.getWorkspace(), f));
 			source.getWorkspace().removeModElement(source);
 
 			result.getModElement()

@@ -1,0 +1,1 @@
+Ez a beállítás határozza meg, hogy a világgenerálás melyik szakaszában kell hozzáadni a struktúrát.

@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
@@ -154,6 +155,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeFruits = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+
+		if (!isEditingMode()) {
+			groundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"));
+			undergroundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT#0"));
+			underwaterBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRAVEL"));
+		}
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(customTrees);

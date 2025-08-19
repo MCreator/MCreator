@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy blok jest dodawany do świata (może nie być wywoływany przez niektóre naturalne generatory).

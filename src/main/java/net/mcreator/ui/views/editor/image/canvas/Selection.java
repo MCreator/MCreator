@@ -355,9 +355,8 @@ public class Selection {
 				} else if (x >= x_left - HANDLE_SIZE / 2 && x <= x_left + HANDLE_SIZE / 2
 						&& y >= y_bottom - HANDLE_SIZE / 2 && y <= y_bottom + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.BOTTOM_LEFT;
-				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2 && y >= y_top - HANDLE_SIZE
-						/ 2
-						&& y <= y_top + HANDLE_SIZE / 2) {
+				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2
+						&& y >= y_top - HANDLE_SIZE / 2 && y <= y_top + HANDLE_SIZE / 2) {
 					detected = SelectedBorder.TOP_RIGHT;
 				} else if (x >= x_right - HANDLE_SIZE / 2 && x <= x_right + HANDLE_SIZE / 2
 						&& y >= y_bottom - HANDLE_SIZE / 2 && y <= y_bottom + HANDLE_SIZE / 2) {

@@ -1,0 +1,1 @@
+A ragyogó hatás miatt a tárgy úgy ragyog, mint egy aranyalma vagy egy varázslatos tárgy, azzal a különbséggel, hogy a ragyogás állandó.

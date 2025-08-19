@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor a blokk hozzáadódik a világhoz (lehet, hogy egyes természetes generátorok nem hívják meg).

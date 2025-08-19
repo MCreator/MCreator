@@ -1,0 +1,1 @@
+Sprawdzić, aby cząsteczka mogła kolidować bloki (takie jak kropienie płynów lub cząstki ulegające rozpadowi).

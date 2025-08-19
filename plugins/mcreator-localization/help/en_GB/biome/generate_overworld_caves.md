@@ -1,0 +1,1 @@
+Check this box to make this biome spawn underground (in caves) in the overworld.

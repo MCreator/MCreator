@@ -1,0 +1,1 @@
+Maksymalna odległość, jaką ten blok może odbierać wibracje.

@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy milyen tárgyat kell hozzáadni annak a lénynek a készletéhez, amely megette ezt az ételt.

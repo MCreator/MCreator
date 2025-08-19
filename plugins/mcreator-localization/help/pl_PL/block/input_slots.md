@@ -1,0 +1,1 @@
+Wejściowe gniazda nie będą używane jako wyjście/źródło do transmisji przedmiotu lejowego.

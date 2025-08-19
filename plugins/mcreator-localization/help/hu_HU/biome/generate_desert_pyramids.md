@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Sivatagi Piramisokat szeretnél a biomodban.

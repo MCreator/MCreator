@@ -1,0 +1,1 @@
+﻿Ez az eljárás határozza meg, hogy a GUI megnyitásakor ezt a jelölőnégyzetet eleve bejelölje-e vagy sem.

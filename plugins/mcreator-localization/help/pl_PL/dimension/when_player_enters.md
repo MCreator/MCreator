@@ -1,0 +1,1 @@
+Procedura zostanie wykonana, gdy gracz wejdzie w ten wymiar.

@@ -34,7 +34,7 @@ public class TemplatesLoader {
 	public static List<ResourcePointer> loadTemplates(String templatePackage, String extension) {
 		try {
 			Set<String> fileNames = PluginLoader.INSTANCE.getResources("templates." + templatePackage,
-					Pattern.compile(".*\\." + extension));
+					Pattern.compile(".*\\." + extension + "$"));
 			List<String> templatesSorted = new ArrayList<>(fileNames);
 			templatesSorted.sort(String::compareToIgnoreCase);
 

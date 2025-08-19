@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy milyen széles ez a festmény (blokk egységekben).

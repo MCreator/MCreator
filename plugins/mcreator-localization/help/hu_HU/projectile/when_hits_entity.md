@@ -1,0 +1,1 @@
+Ha a lövedék élő lényt (tehenet, creepert, játékost stb.) talál el, akkor a kiválasztott eljárást hajtja végre.

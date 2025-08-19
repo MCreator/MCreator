@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
@@ -67,6 +68,9 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+
+		edit.setToolTipText(L10N.t("single_entry_selector.edit"));
+		remove.setToolTipText(L10N.t("single_entry_selector.remove"));
 
 		edit.addActionListener(event -> {
 			T newEntry = openEntrySelector();
@@ -116,26 +120,27 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		remove.setEnabled(enabled);
 	}
 
-	@Override public String getToolTipText() {
-		return readableText.getText();
-	}
-
 	public boolean isEmpty() {
 		return currentEntry == null;
 	}
 
 	public void updateReadableText() {
+		boolean isSupported = true;
 		readableText.setIcon(null);
 		if (currentEntry == null) {
 			readableText.setText(defaultText);
 			readableText.setForeground(Theme.current().getAltForegroundColor());
+			readableText.setToolTipText(readableText.getText());
 			return;
 		} else if (currentEntry instanceof MappableElement mappableElement) {
 			Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 			if (dataListEntryOpt.isPresent()) {
 				DataListEntry dataListEntry = dataListEntryOpt.get();
 				readableText.setText(dataListEntry.getReadableName());
-				if (dataListEntry.getTexture() != null) {
+				if (!dataListEntry.isSupportedInWorkspace(mcreator.getWorkspace())) {
+					readableText.setIcon(UIRES.get("18px.warning"));
+					isSupported = false;
+				} else if (dataListEntry.getTexture() != null) {
 					readableText.setIcon(
 							IconUtils.resize(BlockItemIcons.getIconForItem(dataListEntry.getTexture()), 18));
 				}
@@ -159,6 +164,8 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
 		}
 		readableText.setForeground(Theme.current().getForegroundColor());
+		readableText.setToolTipText(
+				isSupported ? readableText.getText() : L10N.t("single_entry_selector.unsupported_entry"));
 	}
 
 	protected abstract T openEntrySelector();

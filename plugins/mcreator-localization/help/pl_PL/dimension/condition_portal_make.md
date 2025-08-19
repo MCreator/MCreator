@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, gracz musi go przekazać, aby zbudować portal do tego wymiaru. Zależność stosu przedmiotów to przedmiot używany do aktywacji portalu.

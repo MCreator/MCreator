@@ -1,0 +1,1 @@
+Pokud je váš pokrok první z nové cesty (root), můžete si vybrat pozadí kategorie pokroku s touto možností.

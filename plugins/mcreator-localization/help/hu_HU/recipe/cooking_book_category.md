@@ -1,0 +1,1 @@
+A főzőkönyv kategória határozza meg, hogy melyik fül alatt jelenik meg a recept a főzőkönyvben.
