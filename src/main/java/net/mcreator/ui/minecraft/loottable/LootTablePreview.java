@@ -68,9 +68,9 @@ public class LootTablePreview extends JLayeredPane {
 		slotsPanel.setOpaque(false);
 
 		for (int i = 0; i < 27; i++) {
-			slotsPanel.add(new JLabel() {{
-				setHorizontalAlignment(SwingConstants.CENTER);
-			}});
+			JLabel slotComponent = new JLabel();
+			slotComponent.setHorizontalAlignment(SwingConstants.CENTER);
+			slotsPanel.add(slotComponent);
 		}
 
 		setPreferredSize(new Dimension(CONTAINER_WIDTH, CONTAINER_HEIGHT));
