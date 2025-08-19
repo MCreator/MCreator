@@ -167,12 +167,16 @@ public class WoodPackMakerTool {
 
 		ImageIcon doorBottom = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
 				"templates/textures/texturemaker/door_bottom_" + doorSuffix + ".png")), color, true);
+		doorBottom = ImageUtils.drawOver(doorBottom, ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/door_hinges_bottom.png")));
 		String doorBottomTextureName = registryName + "_door_bottom";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorBottom.getImage()),
 				mcreator.getFolderManager().getTextureFile(doorBottomTextureName, TextureType.BLOCK));
 
 		ImageIcon doorTop = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
 				"templates/textures/texturemaker/door_top_" + doorSuffix + ".png")), color, true);
+		doorTop = ImageUtils.drawOver(doorTop, ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/door_hinges_top.png")));
 		String doorTopTextureName = registryName + "_door_top";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorTop.getImage()),
 				mcreator.getFolderManager().getTextureFile(doorTopTextureName, TextureType.BLOCK));
