@@ -31,8 +31,10 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -135,8 +137,8 @@ public class LootTablePreview extends JLayeredPane {
 				String plainName = GeneratorWrapper.getElementPlainName(unmappedName);
 				ModElement modElement = mcreator.getWorkspace().getModElementByName(plainName);
 
-				item = modElement.getMCItems().stream().filter(e -> !e.getType().equals("block_without_item")).findFirst()
-						.orElse(null);
+				item = modElement.getMCItems().stream().filter(e -> !e.getType().equals("block_without_item"))
+						.findFirst().orElse(null);
 				id = mcreator.getWorkspaceSettings().getModID() + ":" + modElement.getRegistryName();
 			} else {
 				item = new MCItem(entry.item.getDataListEntry().get());
@@ -174,7 +176,7 @@ public class LootTablePreview extends JLayeredPane {
 
 		while (totalCount > 0) {
 			int maxPossible = Math.min(64, totalCount);
-			int stack = 1 +  rand.nextInt(maxPossible);
+			int stack = 1 + rand.nextInt(maxPossible);
 			stacks.add(stack);
 			totalCount -= stack;
 		}
