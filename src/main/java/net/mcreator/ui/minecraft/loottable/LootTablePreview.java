@@ -22,6 +22,7 @@ package net.mcreator.ui.minecraft.loottable;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
@@ -31,10 +32,8 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -141,8 +140,13 @@ public class LootTablePreview extends JLayeredPane {
 						.findFirst().orElse(null);
 				id = mcreator.getWorkspaceSettings().getModID() + ":" + modElement.getRegistryName();
 			} else {
-				item = new MCItem(entry.item.getDataListEntry().get());
-				id = "minecraft:" + entry.item.getMappedValue(1);
+				Optional<DataListEntry> dle = entry.item.getDataListEntry();
+				if (dle.isPresent()) {
+					item = new MCItem(dle.get());
+					id = "minecraft:" + entry.item.getMappedValue(1);
+				} else {
+					continue;
+				}
 			}
 
 			if (item == null || id.equals("minecraft:air"))
