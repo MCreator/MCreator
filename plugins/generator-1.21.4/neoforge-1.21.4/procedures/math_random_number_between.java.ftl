@@ -1,1 +1,0 @@
-(Mth.nextDouble(RandomSource.create(), ${opt.removeParentheses(input$min)}, ${opt.removeParentheses(input$max)}))
