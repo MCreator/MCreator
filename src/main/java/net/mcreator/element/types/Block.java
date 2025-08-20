@@ -71,6 +71,7 @@ import java.util.stream.Collectors;
 
 	public String blockBase;
 	public String blockSetType;
+	public MItemBlock pottedPlant;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -248,7 +249,7 @@ import java.util.stream.Collectors;
 	}
 
 	public int renderType() {
-		if (blockBase != null && !blockBase.isEmpty())
+		if (blockBase != null && !blockBase.isEmpty() && !blockBase.equals("FlowerPot"))
 			return -1;
 		return renderType;
 	}
@@ -288,7 +289,8 @@ import java.util.stream.Collectors;
 	@Override public boolean isFullCube() {
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
-				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase))
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
+				|| "FlowerPot".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();

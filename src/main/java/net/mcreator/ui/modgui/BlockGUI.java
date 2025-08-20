@@ -262,7 +262,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
@@ -272,7 +272,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Map.entry("IRON", "elementgui.block.block_set_type.iron")
 			//@formatter:on
 	);
+	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private JComponent blockSetTypePanel;
+	private JComponent flowerPotPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -426,6 +428,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
+			flowerPotPanel.setVisible(false);
+			// Re-enable block item if user switches from flower pot to any other block base option
+			if (!isEditingMode() && !hasBlockItem.isSelected()) {
+				hasBlockItem.setSelected(true);
+				updateBlockItemSettings();
+			}
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
@@ -493,6 +501,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
+				case "FlowerPot" -> {
+					flowerPotPanel.setVisible(true);
+					renderType.setEnabled(true);
+					if (!isEditingMode()) {
+						renderType.setSelectedItem(pottedPlantModel);
+						hasBlockItem.setSelected(false);
+						updateBlockItemSettings();
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+						transparencyType.setSelectedItem("CUTOUT");
+						hardness.setValue(0d);
+						resistance.setValue(0d);
+						soundOnStep.setSelectedItem("STONE");
+						reactionToPushing.setSelectedItem("DESTROY");
+					}
+				}
 				default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -547,7 +571,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
+		txblock4.add(flowerPotPanel = PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
+						L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)));
+
 		blockSetTypePanel.setVisible(false);
+		flowerPotPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -1639,6 +1668,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
+		pottedPlant.setBlock(block.pottedPlant);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1853,6 +1883,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
+		block.pottedPlant = pottedPlant.getBlock();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
