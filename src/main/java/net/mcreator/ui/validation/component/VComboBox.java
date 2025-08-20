@@ -24,6 +24,7 @@ import net.mcreator.ui.validation.Validator;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Vector;
 
 public class VComboBox<T> extends JComboBox<T> implements IValidable {
 
@@ -34,6 +35,10 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	}
 
 	public VComboBox(T[] items) {
+		super(items);
+	}
+
+	public VComboBox(Vector<T> items) {
 		super(items);
 	}
 

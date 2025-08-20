@@ -1,1 +1,1 @@
-Ez a paraméter szabályozza a víz színét a biomon belül
+Ez a paraméter szabályozza a biom belsejében lévő víz színét

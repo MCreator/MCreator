@@ -56,7 +56,8 @@ package ${package}.client.renderer.block;
 					"y": "blockEntity.getBlockPos().getY()",
 					"z": "blockEntity.getBlockPos().getZ()",
 					"blockstate": "blockEntity.getBlockState()",
-					"world": "blockEntity.getLevel()"
+					"world": "blockEntity.getLevel()",
+					"entity": (JavaModName + ".clientPlayer()")
 				}, false/>, tickCount);
 			<#else>
 				blockEntity.animationState${animation?index}.animateWhen(true, tickCount);
@@ -132,10 +133,6 @@ package ${package}.client.renderer.block;
 			this.keyframeAnimation${animation?index}.apply(blockEntity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 			</#list>
 			super.setupAnim(state);
-		}
-
-		public ModelPart getRoot() {
-			return root;
 		}
 
 	}
