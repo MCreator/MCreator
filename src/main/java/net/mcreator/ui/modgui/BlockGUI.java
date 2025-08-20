@@ -230,8 +230,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
+	private final Model pottedPlantModel = new Model.BuiltInModel("Potted plant");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
-			new Model[] { normal, singleTexture, cross, crop, grassBlock });
+			new Model[] { normal, singleTexture, cross, crop, grassBlock, pottedPlantModel });
 
 	private JBlockPropertiesStatesList blockStates;
 	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
@@ -1295,6 +1296,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				if (!isEditingMode() && selected.equals(grassBlock)) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
+				} else if (!isEditingMode() && selected.equals(pottedPlantModel)) {
+					transparencyType.setSelectedItem("CUTOUT");
 				}
 			}
 		});
@@ -1538,7 +1541,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		animations.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
-				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
+				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock, pottedPlantModel),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 								.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
@@ -1867,6 +1870,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 13;
 		else if (model.equals(grassBlock))
 			block.renderType = 14;
+		else if (model.equals(pottedPlantModel))
+			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 15 : 150;
 		block.customModelName = model.getReadableName();
 
 		return block;

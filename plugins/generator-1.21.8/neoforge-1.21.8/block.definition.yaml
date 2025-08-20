@@ -33,7 +33,7 @@ templates:
   - template: json/block_item.json.ftl
     condition:
       - hasBlockItem
-      - "renderType() #?= 10,11,12,14,110,120,2,4"
+      - "renderType() #?= 10,11,12,14,15,110,120,150,2,4"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/block_item_cmodel.json.ftl
@@ -75,6 +75,11 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block.json.ftl
+    condition: "renderType() #= 15"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+    variables: "model=flower_pot_cross;txname=plant"
+  - template: json/block.json.ftl
     condition: "renderType() #= 110"
     writer: json
     variables: "model=leaves;txname=all"
@@ -84,6 +89,11 @@ templates:
     writer: json
     variables: "model=tinted_cross;txname=cross"
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block.json.ftl
+    condition: "renderType() #= 150"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+    variables: "model=tinted_flower_pot_cross;txname=plant"
   - template: json/block_cmodel.json.ftl
     condition: "renderType() #= 2"
     writer: json
