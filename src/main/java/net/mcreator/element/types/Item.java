@@ -55,6 +55,8 @@ import java.util.*;
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations; // TODO: UI
+
 	public String name;
 	public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
@@ -137,6 +139,8 @@ import java.util.*;
 		this.animation = "eat";
 
 		this.providedBannerPatterns = new ArrayList<>();
+
+		this.animations = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -327,6 +331,15 @@ import java.util.*;
 		public boolean hasCustomJAVAModel() {
 			return decodeModelType(renderType) == Model.Type.JAVA;
 		}
+	}
+
+	public static class AnimationEntry {
+
+		public Animation animation;
+		public double speed;
+
+		public Procedure condition;
+
 	}
 
 	public static int encodeModelType(Model.Type modelType) {

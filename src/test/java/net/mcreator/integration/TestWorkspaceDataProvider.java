@@ -1305,6 +1305,16 @@ public class TestWorkspaceDataProvider {
 				item.providedBannerPatterns.add("Examplebannerpattern1");
 				item.providedBannerPatterns.add("Examplebannerpattern2");
 			}
+			item.animations = new ArrayList<>();
+			if (!emptyLists) {
+				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
+					Item.AnimationEntry animation = new Item.AnimationEntry();
+					animation.animation = new Animation(modElement.getWorkspace(), anim);
+					animation.condition = random.nextBoolean() ? null : new Procedure("condition2");
+					animation.speed = 12.3;
+					item.animations.add(animation);
+				}
+			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
