@@ -29,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.item;
 
 <#compress>
@@ -105,12 +107,12 @@ package ${package}.client.renderer.item;
 	<#if data.hasCustomJAVAModel() && data.animations?has_content>
 	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
 
-	private AnimationState getAnimationState(ItemStack stack) {
+	private Map<Integer, AnimationState> getAnimationState(ItemStack stack) {
 		return CACHE.computeIfAbsent(stack, s -> IntStream.range(0, ${data.animations?size}).boxed().collect(Collectors.toMap(i -> i, i -> new AnimationState(), (a, b) -> b)));
 	}
 
 	private void updateRenderState(ItemStack itemstack) {
-		int tickCount = (System.currentTimeMillis() - start) / 50;
+		int tickCount = (int) (System.currentTimeMillis() - start) / 50;
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
@@ -127,13 +129,13 @@ package ${package}.client.renderer.item;
 		</#list>
 	}
 
-	private static final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
+	private final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
 
 		private final ModelPart root;
 
 		private final BlockEntityHierarchicalModel animator = new BlockEntityHierarchicalModel();
 
-		public CustomHierarchicalModel(ModelPart root) {
+		public AnimatedModel(ModelPart root) {
 			super(root);
 			this.root = root;
 		}
@@ -141,10 +143,6 @@ package ${package}.client.renderer.item;
 		public void setupItemStackAnim(ItemStack itemstack, float ageInTicks) {
 			animator.setupItemStackAnim(itemstack, ageInTicks);
 			super.setupAnim(null, 0, 0, ageInTicks, 0, 0);
-		}
-
-		public ModelPart getRoot() {
-			return root;
 		}
 
 		private class BlockEntityHierarchicalModel extends HierarchicalModel<Entity> {
