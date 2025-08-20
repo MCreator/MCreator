@@ -260,9 +260,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
+	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
-			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
+			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
@@ -419,6 +420,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			rotationMode.setEnabled(!hasBlockBase);
 			isWaterloggable.setEnabled(!hasBlockBase);
 			hasGravity.setEnabled(!hasBlockBase);
+			isBonemealable.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
@@ -429,9 +431,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				renderType.setSelectedItem(singleTexture);
 				isWaterloggable.setSelected(false);
 				hasGravity.setSelected(false);
-				isNotColidable.setSelected(false);
-				reactionToPushing.setSelectedItem("NORMAL");
-				ignitedByLava.setSelected(false);
+				if (!isEditingMode()) {
+					isNotColidable.setSelected(false);
+					reactionToPushing.setSelectedItem("NORMAL");
+					ignitedByLava.setSelected(false);
+				}
 
 				String selectedBlockBase = blockBase.getSelectedItem();
 				switch (selectedBlockBase) {
@@ -455,7 +459,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 						ignitedByLava.setSelected(true);
 					}
 				}
-				case "TrapDoor", "Fence" -> {
+				case "TrapDoor" -> {
+					isBonemealable.setEnabled(false);
+					isBonemealable.setSelected(false);
+					blockSetTypePanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+					}
+				}
+				case "Fence" -> {
 					blockSetTypePanel.setVisible(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -492,6 +505,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
+			refreshBonemealProperties();
 		});
 
 		renderType.addActionListener(e -> updateTextureOptions());
@@ -1137,6 +1151,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
 
+		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
+
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
 				L10N.label("elementgui.block.vibrational_events")));
 		vibrationPanel.add(vibrationalEvents);
@@ -1372,27 +1388,32 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshFieldsTileEntity() {
-		inventorySize.setEnabled(hasInventory.isSelected());
-		inventoryAutomationTakeCondition.setEnabled(hasInventory.isSelected());
-		inventoryAutomationPlaceCondition.setEnabled(hasInventory.isSelected());
-		inventoryStackSize.setEnabled(hasInventory.isSelected());
-		inventoryDropWhenDestroyed.setEnabled(hasInventory.isSelected());
-		inventoryComparatorPower.setEnabled(hasInventory.isSelected());
-		outSlotIDs.setEnabled(hasInventory.isSelected());
-		inSlotIDs.setEnabled(hasInventory.isSelected());
-		hasEnergyStorage.setEnabled(hasInventory.isSelected());
-		energyInitial.setEnabled(hasInventory.isSelected());
-		energyCapacity.setEnabled(hasInventory.isSelected());
-		energyMaxReceive.setEnabled(hasInventory.isSelected());
-		energyMaxExtract.setEnabled(hasInventory.isSelected());
-		isFluidTank.setEnabled(hasInventory.isSelected());
-		fluidCapacity.setEnabled(hasInventory.isSelected());
-		fluidRestrictions.setEnabled(hasInventory.isSelected());
-		sensitiveToVibration.setEnabled(hasInventory.isSelected());
-		vibrationSensitivityRadius.setEnabled(hasInventory.isSelected());
-		vibrationalEvents.setEnabled(hasInventory.isSelected());
-		canReceiveVibrationCondition.setEnabled(hasInventory.isSelected());
-		onReceivedVibration.setEnabled(hasInventory.isSelected());
+		boolean hasInventorySelected = hasInventory.isSelected();
+
+		inventorySize.setEnabled(hasInventorySelected);
+		inventoryAutomationTakeCondition.setEnabled(hasInventorySelected);
+		inventoryAutomationPlaceCondition.setEnabled(hasInventorySelected);
+		inventoryStackSize.setEnabled(hasInventorySelected);
+		inventoryDropWhenDestroyed.setEnabled(hasInventorySelected);
+		inventoryComparatorPower.setEnabled(hasInventorySelected);
+		outSlotIDs.setEnabled(hasInventorySelected);
+		inSlotIDs.setEnabled(hasInventorySelected);
+		hasEnergyStorage.setEnabled(hasInventorySelected);
+		energyInitial.setEnabled(hasInventorySelected);
+		energyCapacity.setEnabled(hasInventorySelected);
+		energyMaxReceive.setEnabled(hasInventorySelected);
+		energyMaxExtract.setEnabled(hasInventorySelected);
+		isFluidTank.setEnabled(hasInventorySelected);
+		fluidCapacity.setEnabled(hasInventorySelected);
+		fluidRestrictions.setEnabled(hasInventorySelected);
+		sensitiveToVibration.setEnabled(hasInventorySelected);
+		vibrationSensitivityRadius.setEnabled(hasInventorySelected);
+		vibrationalEvents.setEnabled(hasInventorySelected);
+		canReceiveVibrationCondition.setEnabled(hasInventorySelected);
+		onReceivedVibration.setEnabled(hasInventorySelected);
+
+		if (hasInventorySelected)
+			refreshVibrationProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1422,6 +1443,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (model != null && model.getType() == Model.Type.JAVA) {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
+			refreshFieldsTileEntity();
 		} else {
 			hasInventory.setEnabled(true);
 		}
@@ -1471,6 +1493,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hardness.setEnabled(true);
 			resistance.setEnabled(true);
 		}
+	}
+
+	private void refreshVibrationProperties() {
+		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
+
+		vibrationSensitivityRadius.setEnabled(isSensitiveToVibration);
+		vibrationalEvents.setEnabled(isSensitiveToVibration);
+		canReceiveVibrationCondition.setEnabled(isSensitiveToVibration);
+		onReceivedVibration.setEnabled(isSensitiveToVibration);
 	}
 
 	@Override public void reloadDataLists() {

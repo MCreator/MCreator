@@ -37,6 +37,7 @@
 
 package net.mcreator.ui.variants.modmaker;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.StructureImportActions;
@@ -87,7 +88,8 @@ record ModMakerDropTarget(MCreator mcreator) implements DropTargetListener {
 						if (file.getName().endsWith(".ogg")) {
 							SoundElementDialog.importSound(mcreator, new File[] { file });
 						} else if (file.getName().endsWith(".java")) {
-							ModelImportActions.importJavaModel(mcreator, file);
+							ModelImportActions.importJavaModel(mcreator, mcreator.getWorkspace(),
+									FileIO.readFileToString(file));
 						} else if (file.getName().endsWith(".json")) {
 							ModelImportActions.importJSONModel(mcreator, file);
 						} else if (file.getName().endsWith(".obj")) {

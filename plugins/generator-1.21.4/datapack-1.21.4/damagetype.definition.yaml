@@ -1,6 +1,0 @@
-templates:
-  - template: damagetype.json.ftl
-    writer: json
-    name: "@MODDATAROOT/damage_type/@registryname.json"
-
-field_exclusions: [normalDeathMessage, itemDeathMessage, playerDeathMessage]
