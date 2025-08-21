@@ -507,6 +507,8 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+  - tag: BLOCKS:minecraft:flower_pots
+    condition: "${data.blockBase! == 'FlowerPot'}"
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
