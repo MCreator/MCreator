@@ -55,7 +55,8 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		sliderMachineName.enableRealtimeValidation();
 
 		JTextField sliderPrefix = new JTextField(8);
-		JMinMaxSpinner valuesSpinner = new JMinMaxSpinner(0.0, 10.0, -10000.0, 10000.0, 1.0);
+		JMinMaxSpinner valuesSpinner = new JMinMaxSpinner(0.0, 10.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
+		valuesSpinner.setPreferredSize(new Dimension(200, 20));
 		JSpinner valueSpinner = new JSpinner(new SpinnerNumberModel(5, -10000.0, 10000.0, 1));
 		JSpinner stepSpinner = new JSpinner(new SpinnerNumberModel(1, -10000.0, 10000.0, 1));
 		JTextField sliderSuffix = new JTextField(8);
