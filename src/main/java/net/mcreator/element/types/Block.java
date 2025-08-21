@@ -283,7 +283,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasDrops() {
-		return dropAmount > 0 && (hasBlockItem || hasCustomDrop());
+		return dropAmount > 0 && (hasBlockItem || hasCustomDrop() || "FlowerPot".equals(blockBase));
 	}
 
 	@Override public boolean isFullCube() {
