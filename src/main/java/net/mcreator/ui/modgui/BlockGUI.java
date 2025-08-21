@@ -54,6 +54,7 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -1351,6 +1352,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
+		page1group.addValidationElement(pottedPlant);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
 			Model model = renderType.getSelectedItem();
@@ -1359,6 +1361,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
+
+		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
+			@Override public ValidationResult validate() {
+				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
+					return Validator.ValidationResult.PASSED;
+				return super.validate();
+			}
+		});
 
 		page3group.addValidationElement(name);
 
