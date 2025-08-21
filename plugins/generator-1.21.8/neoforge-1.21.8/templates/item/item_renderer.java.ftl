@@ -128,7 +128,7 @@ package ${package}.client.renderer.item;
 	}
 
 	<#if data.hasCustomJAVAModel() && data.animations?has_content>
-	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
+	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = new WeakHashMap<>();
 
 	private Map<Integer, AnimationState> getAnimationState(ItemStack stack) {
 		return CACHE.computeIfAbsent(stack, s -> IntStream.range(0, ${data.animations?size}).boxed().collect(Collectors.toMap(i -> i, i -> new AnimationState(), (a, b) -> b)));
