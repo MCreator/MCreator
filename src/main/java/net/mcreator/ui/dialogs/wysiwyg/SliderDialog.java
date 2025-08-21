@@ -36,6 +36,7 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 
 public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 
