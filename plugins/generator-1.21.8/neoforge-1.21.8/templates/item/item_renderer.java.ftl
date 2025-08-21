@@ -29,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.item;
 
 <#assign models = []>
@@ -86,10 +88,12 @@ package ${package}.client.renderer.item;
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
 		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
 			animatedModel.setupItemStackAnim(itemstack, renderState);
 		else
-			model.setupAnim(renderState);
+		</#if>
+		model.setupAnim(renderState);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
@@ -154,7 +158,7 @@ package ${package}.client.renderer.item;
 		private final KeyframeAnimation keyframeAnimation${animation?index};
 		</#list>
 
-		public CustomHierarchicalModel(ModelPart root) {
+		public AnimatedModel(ModelPart root) {
 			super(root);
 			<#list data.animations as animation>
 			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);

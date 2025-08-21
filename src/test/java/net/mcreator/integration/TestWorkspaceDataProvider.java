@@ -1324,7 +1324,7 @@ public class TestWorkspaceDataProvider {
 				item.providedBannerPatterns.add("Examplebannerpattern2");
 			}
 			item.animations = new ArrayList<>();
-			if (!emptyLists) {
+			if (_true) {
 				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
 					Item.AnimationEntry animation = new Item.AnimationEntry();
 					animation.animation = new Animation(modElement.getWorkspace(), anim);
