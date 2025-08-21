@@ -60,8 +60,10 @@ package ${package}.client.renderer.item;
 
 	private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
 		<#list models as model>
-			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(new ${model[1]}(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
-				ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")))<#sep>,
+			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(
+				new <#if model[0] == -1 && data.animations?has_content>AnimatedModel<#else>${model[1]}</#if>(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
+				ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")
+			))<#sep>,
 		</#list>
 	);
 
@@ -90,7 +92,7 @@ package ${package}.client.renderer.item;
 		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(itemstack, renderState);
+			animatedModel.setupItemStackAnim(this, itemstack, renderState);
 		else
 		</#if>
 		model.setupAnim(renderState);
@@ -152,7 +154,7 @@ package ${package}.client.renderer.item;
 		</#list>
 	}
 
-	private final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
+	private static final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
 
 		<#list data.animations as animation>
 		private final KeyframeAnimation keyframeAnimation${animation?index};
@@ -165,10 +167,10 @@ package ${package}.client.renderer.item;
 			</#list>
 		}
 
-		public void setupItemStackAnim(ItemStack itemstack, LivingEntityRenderState state) {
+		public void setupItemStackAnim(${name}ItemRenderer renderer, ItemStack itemstack, LivingEntityRenderState state) {
 			this.root().getAllParts().forEach(ModelPart::resetPose);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index}.apply(getAnimationState(itemstack).get(${animation?index}), state.ageInTicks, ${animation.speed}f);
+			this.keyframeAnimation${animation?index}.apply(renderer.getAnimationState(itemstack).get(${animation?index}), state.ageInTicks, ${animation.speed}f);
 			</#list>
 			super.setupAnim(state);
 		}
