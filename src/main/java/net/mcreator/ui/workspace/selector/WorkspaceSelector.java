@@ -253,8 +253,20 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					removeRecentWorkspace(defaultListModel.elementAt(idx));
 					reloadRecents();
 				} else if (mouseEvent.getClickCount() == 2) {
-					workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-				}
+
+					// if the version is different, show the conform dialog
+					if (!recentsList.getSelectedValue().getMCRVersion().startsWith(Launcher.version.getMajorString())) {
+						int workspaceOpenConfirmResult = JOptionPane.showConfirmDialog(new JOptionPane(), "This workspace" +
+								" has been created or last used in a different or previous MCreator version. Opening it may break" +
+								" stuff if it has dependencies on plugins or components that have not been updated. Are you sure you" +
+								" want to continue?", "Open workspace", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+						if (workspaceOpenConfirmResult == JOptionPane.YES_OPTION)  {
+							workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+						}
+					} else {
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+				}	}
 			}
 		});
 		recentsList.addKeyListener(new KeyAdapter() {

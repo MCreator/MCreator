@@ -31,6 +31,7 @@ import java.awt.image.BaseMultiResolutionImage;
 public class SplashScreen extends JWindow {
 
 	private final ProgressBar initloadprogress = new ProgressBar();
+	int currentInitialLoadProgressValue = 0;
 	private final JLabel loadstate = new JLabel();
 
 	private final static int CORNER_RADIUS = 10;
@@ -51,10 +52,10 @@ public class SplashScreen extends JWindow {
 		imagePanel.add(pylo);
 
 		JLabel label = new JLabel(
-				"<html><p>MCreator is a Minecraft mod making toolkit developed by Pylo. Minecraft is a</p>"
-						+ "<p style='margin-top:-2'>registered trademark of Mojang. MCreator is not an official Minecraft product.</p>"
-						+ "<p style='margin-top:-2'>It is not approved by or associated with Mojang or Microsoft.</p>");
-		label.setFont(splashFont.deriveFont(10f));
+				"<html><p><strong>MCreator is a Minecraft mod making toolkit developed by Pylo. Minecraft is a</strong></p>"
+						+ "<p style='margin-top:-2'><strong>registered trademark of Mojang. MCreator is not an official Minecraft product.</strong></p>"
+						+ "<p style='margin-top:-2'><strong>It is not approved by or associated with Mojang or Microsoft.</strong></p>");
+		label.setFont(splashFont.deriveFont(10.0f));
 		label.setForeground(Color.white);
 		label.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 330 - 10 - 10, 500, 45);
 		imagePanel.add(label);
@@ -82,10 +83,10 @@ public class SplashScreen extends JWindow {
 		initloadprogress.setForeground(Color.white);
 		initloadprogress.setMaximalValue(100);
 		initloadprogress.init();
-		initloadprogress.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 283 - 10, 568, 3);
+		initloadprogress.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 283 - 10, 568, 5);
 		imagePanel.add(initloadprogress);
 
-		loadstate.setFont(splashFont.deriveFont(12f));
+		loadstate.setFont(splashFont.deriveFont(13.0f));
 		loadstate.setForeground(Color.white);
 		loadstate.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 283 - 39 - 10, 500, 45);
 		imagePanel.add(loadstate);
@@ -110,8 +111,22 @@ public class SplashScreen extends JWindow {
 
 	public void setProgress(int percentage, String message) {
 		SwingUtilities.invokeLater(() -> {
-			initloadprogress.setCurrentValue(percentage);
+
 			loadstate.setText(message);
+			new Thread(() -> {
+				loadstate.setText(message);
+				while (currentInitialLoadProgressValue < percentage) {
+					currentInitialLoadProgressValue++;
+					initloadprogress.setCurrentValue(currentInitialLoadProgressValue);
+					try {
+						Thread.sleep(5);
+					} catch (Exception e) {
+					}
+
+				}
+
+			}).start();
+
 		});
 	}
 

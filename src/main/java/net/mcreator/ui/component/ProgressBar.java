@@ -32,9 +32,9 @@ public class ProgressBar extends JPanel {
 
 		g.setColor(Color.white);
 		if (curr >= 0 && wid == -1 && max != 0)
-			g.fillRect(0, 0, (int) (((double) getWidth() / ((double) max)) * (double) curr), getHeight());
+			g.fillRoundRect(0, 0, (int) (((double) getWidth() / ((double) max)) * (double) curr), getHeight(), 3, 3);
 		else if (max != 0 && curr >= 0)
-			g.fillRect(0, 0, wid, getHeight());
+			g.fillRoundRect(0, 0, wid, getHeight(), 3, 3);
 	}
 
 	public void setMaximalValue(int max) {
