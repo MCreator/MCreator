@@ -273,7 +273,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Map.entry("IRON", "elementgui.block.block_set_type.iron")
 			//@formatter:on
 	);
-	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private JComponent blockSetTypePanel;
 	private JComponent flowerPotPanel;
 
