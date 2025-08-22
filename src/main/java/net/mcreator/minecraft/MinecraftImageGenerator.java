@@ -32,6 +32,8 @@ import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -198,6 +200,28 @@ public class MinecraftImageGenerator {
 		ImageIcon base = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_base"), baseColor, false);
 		ImageIcon dots = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_dots"), dotColor, true);
 		return ImageUtils.drawOver(base, dots);
+	}
+
+	public static ImageIcon generateItemWithCount(MCItem item, int count) {
+		Image baseImage = item.icon.getImage();
+
+		BufferedImage itemImage = new BufferedImage(baseImage.getWidth(null), baseImage.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = itemImage.createGraphics();
+		g.drawImage(baseImage, 0, 0, null);
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setFont(g.getFont().deriveFont(16f).deriveFont(Font.BOLD));
+
+		String text = String.valueOf(count);
+		FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, false);
+		int width = (int) (g.getFont().getStringBounds(text, frc).getWidth());
+
+		g.drawString(text, itemImage.getWidth() - width, itemImage.getHeight() - 2);
+
+		g.dispose();
+
+		return new ImageIcon(itemImage);
 	}
 
 	public static class Preview {
