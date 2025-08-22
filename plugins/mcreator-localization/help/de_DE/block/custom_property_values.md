@@ -1,0 +1,1 @@
+Dies sind die Werte, die diese benutzerdefinierte Blockeigenschaft haben kann.
