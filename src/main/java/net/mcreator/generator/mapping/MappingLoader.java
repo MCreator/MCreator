@@ -47,8 +47,6 @@ public class MappingLoader {
 					Pattern.compile(".*\\.yaml$")));
 		}
 
-		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
-
 		for (String mappingResource : fileNames) {
 			String mappingName = mappingResource.split("mappings/")[1].replace(".yaml", "");
 
@@ -59,7 +57,7 @@ public class MappingLoader {
 
 					try {
 						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
-								new LinkedHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config)));
+								new LinkedHashMap<>((Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)));
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))
