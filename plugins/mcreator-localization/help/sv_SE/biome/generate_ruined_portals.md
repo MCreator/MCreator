@@ -1,0 +1,1 @@
+Denna inställning låter dig generera förstörda portaler i din biom.
