@@ -29,6 +29,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -152,7 +153,39 @@ public class StatusBar extends JPanel {
 	}
 
 	public void setGradleMessage(String message) {
-		gradleMessages.setText(StringUtils.abbreviateString(message, 100));
+
+		switch (message) {
+
+			// Gradle client task
+			case "Gradle: runClient" -> gradleMessages.setText("Task: Run gradle client");
+
+			// Minecraft tasks
+			case "Task :writeClientLegacyClasspath" -> gradleMessages.setText("Task: Write minecraft client legacy path");
+			case "Task :createMinecraftArtifacts" -> gradleMessages.setText("Task: Create minecraft artifacts");
+			case "Task :processResources" -> gradleMessages.setText("Task: Process resources");
+			case "Task :processTestResources" -> gradleMessages.setText("Task: Process test resources");
+			case "Task :downloadAssets" -> gradleMessages.setText("Task: Download assets for minecraft and modloader");
+			case "Task :prepareClientRun" -> gradleMessages.setText("Task: Prepare minecraft client run");
+			case "Task :runClient" -> gradleMessages.setText("Task: Running minecraft local client");
+
+			// Java tasks
+			case "Task :compileJava" -> gradleMessages.setText("Task: Compile java");
+			case "Task :reobfJar" -> gradleMessages.setText("Task: Reobfuscate jar");
+			case "Task :classes" -> gradleMessages.setText("Task: Compile classes");
+			case "Task :assemble" -> gradleMessages.setText("Task: Assemble");
+			case "Task :test" -> gradleMessages.setText("Task: Test");
+			case "Task :jar" -> gradleMessages.setText("Task: Jar");
+			case "Task :testClasses" -> gradleMessages.setText("Task: Test classes");
+			case "Task :jarJar" -> gradleMessages.setText("Task: Jar jar");
+			case "Task :build" -> gradleMessages.setText("Task: Build");
+			case "Task :check" -> gradleMessages.setText("Task: Validate build");
+
+			// Default if the task is not in the list
+			default -> gradleMessages.setText(StringUtils.abbreviateString(message, 100));
+
+		}
+
+
 	}
 
 	public void reloadGradleIndicator() {
