@@ -1,1 +1,0 @@
-/*@ItemStack*/(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getOffhandItem():ItemStack.EMPTY)

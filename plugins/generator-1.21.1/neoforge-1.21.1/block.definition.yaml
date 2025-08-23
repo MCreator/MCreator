@@ -270,25 +270,30 @@ templates:
     condition: "blockBase %= Pane"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/pane_side.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Pane"
     writer: json
+    variables: "model=template_glass_pane_side;txname=pane;txname_top=edge"
     name: "@MODASSETSROOT/models/block/@registryname_side.json"
-  - template: json/txblock/pane_side_alt.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Pane"
     writer: json
+    variables: "model=template_glass_pane_side_alt;txname=pane;txname_top=edge"
     name: "@MODASSETSROOT/models/block/@registryname_side_alt.json"
-  - template: json/txblock/pane_post.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Pane"
     writer: json
+    variables: "model=template_glass_pane_post;txname=pane;txname_top=edge"
     name: "@MODASSETSROOT/models/block/@registryname_post.json"
-  - template: json/txblock/pane_noside.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= Pane"
     writer: json
+    variables: "model=template_glass_pane_noside;txname=pane"
     name: "@MODASSETSROOT/models/block/@registryname_noside.json"
-  - template: json/txblock/pane_noside_alt.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= Pane"
     writer: json
+    variables: "model=template_glass_pane_noside_alt;txname=pane"
     name: "@MODASSETSROOT/models/block/@registryname_noside_alt.json"
 
   # TX: Door templates
@@ -302,37 +307,45 @@ templates:
     condition: "blockBase %= Door"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/door_bottom_left.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_bottom_left;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_bottom_left.json"
-  - template: json/txblock/door_bottom_left_open.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_bottom_left_open;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_bottom_left_open.json"
-  - template: json/txblock/door_bottom_right.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_bottom_right;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_bottom_right.json"
-  - template: json/txblock/door_bottom_right_open.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_bottom_right_open;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_bottom_right_open.json"
-  - template: json/txblock/door_top_left.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_top_left;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_top_left.json"
-  - template: json/txblock/door_top_left_open.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_top_left_open;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_top_left_open.json"
-  - template: json/txblock/door_top_right.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_top_right;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_top_right.json"
-  - template: json/txblock/door_top_right_open.json.ftl
+  - template: json/block_model_tb.json.ftl
     condition: "blockBase %= Door"
     writer: json
+    variables: "model=door_top_right_open;txname=bottom;txname_top=top"
     name: "@MODASSETSROOT/models/block/@registryname_top_right_open.json"
 
   # TX: FenceGate templates
@@ -346,21 +359,25 @@ templates:
     condition: "blockBase %= FenceGate"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/fence_gate.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= FenceGate"
     writer: json
+    variables: "model=template_fence_gate;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/txblock/fence_gate_open.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= FenceGate"
     writer: json
+    variables: "model=template_fence_gate_open;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_open.json"
-  - template: json/txblock/fence_gate_wall.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= FenceGate"
     writer: json
+    variables: "model=template_fence_gate_wall;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_wall.json"
-  - template: json/txblock/fence_gate_wall_open.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= FenceGate"
     writer: json
+    variables: "model=template_fence_gate_wall_open;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_wall_open.json"
 
   # TX: EndRod template
@@ -374,9 +391,10 @@ templates:
     condition: "blockBase %= EndRod"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/end_rod.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= EndRod"
     writer: json
+    variables: "model=end_rod;txname=end_rod"
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
   # TX: PressurePlate templates
@@ -390,13 +408,15 @@ templates:
     condition: "blockBase %= PressurePlate"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/pressure_plate.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= PressurePlate"
     writer: json
+    variables: "model=pressure_plate_up;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/txblock/pressure_plate_down.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= PressurePlate"
     writer: json
+    variables: "model=pressure_plate_down;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_down.json"
 
   # TX: Wood StoneButton templates
@@ -410,19 +430,22 @@ templates:
     condition: "blockBase %= Button"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/button.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= Button"
     writer: json
+    variables: "model=button;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/txblock/button_pressed.json.ftl
+  - template: json/block.json.ftl
     condition: "blockBase %= Button"
     writer: json
+    variables: "model=button_pressed;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_pressed.json"
-  - template: json/txblock/button_inventory.json.ftl
+  - template: json/block.json.ftl
     condition:
       - hasBlockItem
       - "blockBase %= Button"
     writer: json
+    variables: "model=button_inventory;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
 block_base_properties:
@@ -474,6 +497,24 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+  - tag: BLOCKS:minecraft:wooden_trapdoors
+    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:trapdoors
+    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:wooden_doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:mob_interactable_doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'STONE')}"
+  - tag: BLOCKS:minecraft:wooden_pressure_plates
+    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:pressure_plates
+    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:wooden_buttons
+    condition: "${(data.blockBase! == 'Button') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:buttons
+    condition: "${(data.blockBase! == 'Button') && (data.blockSetType != 'OAK')}"
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable

@@ -156,7 +156,8 @@ public class LocalizationUtils {
 			if (prefix != null)
 				value = prefix + value;
 
-			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, template, entry)) {
+			if (value == null || value.isBlank() || TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(
+					generator, template, entry)) {
 				// If localization key is skipped, we make sure to remove the localization entry
 				generator.getWorkspace().removeLocalizationEntryByKey(key);
 			} else {

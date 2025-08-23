@@ -55,8 +55,8 @@ public class JBlockEntityAnimationListEntry extends JSimpleListEntry<Block.Anima
 
 		condition = new ProcedureSelector(gui.withEntry("animations/condition_animation"), mcreator,
 				L10N.t("elementgui.animations.animation_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity")).makeInline();
 
 		animation = new DataListComboBox(mcreator);
 
