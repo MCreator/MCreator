@@ -29,6 +29,8 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.item;
 
 <#assign models = []>
@@ -58,8 +60,10 @@ package ${package}.client.renderer.item;
 
 	private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
 		<#list models as model>
-			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(new ${model[1]}(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
-				ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")))<#sep>,
+			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(
+				new <#if model[0] == -1 && data.animations?has_content>AnimatedModel<#else>${model[1]}</#if>(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
+				ResourceLocation.parse("${model[2].format("%s:textures/item/%s")}.png")
+			))<#sep>,
 		</#list>
 	);
 
@@ -77,11 +81,20 @@ package ${package}.client.renderer.item;
 	}
 
 	@Override public void render(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
+		updateRenderState(itemstack);
+		</#if>
+
 		poseStack.pushPose();
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
 		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
+		if (model instanceof AnimatedModel animatedModel)
+			animatedModel.setupItemStackAnim(this, itemstack, renderState);
+		else
+		</#if>
 		model.setupAnim(renderState);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
@@ -115,6 +128,55 @@ package ${package}.client.renderer.item;
 			return ${name}ItemRenderer.MODELS.get(index).apply(modelSet);
 		}
 	}
+
+	<#if data.hasCustomJAVAModel() && data.animations?has_content>
+	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = new WeakHashMap<>();
+
+	private Map<Integer, AnimationState> getAnimationState(ItemStack stack) {
+		return CACHE.computeIfAbsent(stack, s -> IntStream.range(0, ${data.animations?size}).boxed().collect(Collectors.toMap(i -> i, i -> new AnimationState(), (a, b) -> b)));
+	}
+
+	private void updateRenderState(ItemStack itemstack) {
+		int tickCount = (int) (System.currentTimeMillis() - start) / 50;
+		<#list data.animations as animation>
+			<#if hasProcedure(animation.condition)>
+				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
+				"itemstack": "itemstack",
+				"x": "Minecraft.getInstance().player.getX()",
+				"y": "Minecraft.getInstance().player.getY()",
+				"z": "Minecraft.getInstance().player.getZ()",
+				"entity": "Minecraft.getInstance().player",
+				"world": "Minecraft.getInstance().level"
+				}, false/>, tickCount);
+			<#else>
+				getAnimationState(itemstack).get(${animation?index}).animateWhen(true, tickCount);
+			</#if>
+		</#list>
+	}
+
+	private static final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
+
+		<#list data.animations as animation>
+		private final KeyframeAnimation keyframeAnimation${animation?index};
+		</#list>
+
+		public AnimatedModel(ModelPart root) {
+			super(root);
+			<#list data.animations as animation>
+			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			</#list>
+		}
+
+		public void setupItemStackAnim(${name}ItemRenderer renderer, ItemStack itemstack, LivingEntityRenderState state) {
+			this.root().getAllParts().forEach(ModelPart::resetPose);
+			<#list data.animations as animation>
+			this.keyframeAnimation${animation?index}.apply(renderer.getAnimationState(itemstack).get(${animation?index}), state.ageInTicks, ${animation.speed}f);
+			</#list>
+			super.setupAnim(state);
+		}
+
+	}
+	</#if>
 
 }
 </#compress>
