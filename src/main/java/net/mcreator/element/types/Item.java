@@ -55,7 +55,7 @@ import java.util.*;
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
-	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations; // TODO: UI
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public String name;
 	public String rarity;
