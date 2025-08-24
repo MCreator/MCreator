@@ -64,7 +64,8 @@ public class SpecialEntity extends GeneratableElement implements ICommonType, IT
 		try {
 			File entityTextureLocation = new File(
 					getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/boat/" + getModElement().getRegistryName() + ".png");
+					"entity/" + ("Boat".equals(entityType) ? "boat/" : "chest_boat/")
+							+ getModElement().getRegistryName() + ".png");
 			FileIO.copyFile(entityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 		} catch (Exception e) {
 			LOG.error("Failed to copy special entity texture", e);
