@@ -1294,6 +1294,7 @@ import java.util.stream.Collectors;
 			String searchInput = search.getText();
 
 			List<ModElementType<?>> metfilters = new ArrayList<>();
+			List<ModElementType<?>> excludedMetfilters = new ArrayList<>();
 			List<String> filters = new ArrayList<>();
 			List<String> keyWords = new ArrayList<>();
 
@@ -1302,11 +1303,22 @@ import java.util.stream.Collectors;
 				String pat = m.group(1);
 				if (pat.contains("f:")) {
 					pat = pat.replaceFirst("f:", "");
+
+					boolean isExcluded = pat.startsWith("!");
+					if (isExcluded) {
+						pat = pat.substring(1);
+					}
+
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
-						filters.add(pat);
+						filters.add((isExcluded ? "!" : "") + pat);
+
 					for (ModElementType<?> type : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
-							metfilters.add(type);
+							if (isExcluded) {
+								excludedMetfilters.add(type);
+							} else {
+								metfilters.add(type);
+							}
 						}
 					}
 				} else
@@ -1318,7 +1330,7 @@ import java.util.stream.Collectors;
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
 					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
-						if (!filters.isEmpty() || !metfilters.isEmpty())
+						if (!filters.isEmpty() || !metfilters.isEmpty() || !excludedMetfilters.isEmpty())
 							return false;
 
 						if (keyWords.isEmpty())
@@ -1361,17 +1373,30 @@ import java.util.stream.Collectors;
 							return true;
 
 						for (String f : filters) {
-							switch (f) {
-							case "locked":
-								return item.isCodeLocked();
-							case "ok":
-								return item.doesCompile();
-							case "err":
-								return !item.doesCompile();
+							boolean isExcluded = f.startsWith("!");
+							String filterType = isExcluded ? f.substring(1) : f;
+
+							boolean matches = false;
+							switch (filterType) {
+							case "locked" -> matches = item.isCodeLocked();
+							case "ok" -> matches = item.doesCompile();
+							case "err" -> matches = !item.doesCompile();
+							}
+
+							if (isExcluded) {
+								if (matches)
+									return false;
+							} else {
+								if (matches)
+									return true;
 							}
 						}
-						return false;
+						return filters.stream().allMatch(f -> f.startsWith("!"));
 					}).filter(item -> {
+						for (ModElementType<?> excludeType : excludedMetfilters)
+							if (item.getType() == excludeType)
+								return false;
+
 						if (metfilters.isEmpty())
 							return true;
 
