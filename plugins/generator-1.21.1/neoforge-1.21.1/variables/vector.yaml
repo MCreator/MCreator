@@ -1,4 +1,4 @@
-defaultvalue: null
+defaultvalue: Vec3.ZERO
 scopes:
   local:
     init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};

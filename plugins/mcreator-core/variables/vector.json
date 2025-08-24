@@ -1,6 +1,6 @@
 {
 	"color": 270,
 	"blocklyVariableType": "Vector",
-	"nullable": true,
+	"nullable": false,
 	"ignoredByCoverage": true
 }
