@@ -1,1 +1,0 @@
-/*@float*/(${input$entity} instanceof LivingEntity _livEnt ? _livEnt.getHealth():-1)

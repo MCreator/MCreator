@@ -260,9 +260,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
+	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
-			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
+			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
@@ -419,6 +420,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			rotationMode.setEnabled(!hasBlockBase);
 			isWaterloggable.setEnabled(!hasBlockBase);
 			hasGravity.setEnabled(!hasBlockBase);
+			isBonemealable.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
@@ -457,7 +459,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 						ignitedByLava.setSelected(true);
 					}
 				}
-				case "TrapDoor", "Fence" -> {
+				case "TrapDoor" -> {
+					isBonemealable.setEnabled(false);
+					isBonemealable.setSelected(false);
+					blockSetTypePanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+					}
+				}
+				case "Fence" -> {
 					blockSetTypePanel.setVisible(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -494,6 +505,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
+			refreshBonemealProperties();
 		});
 
 		renderType.addActionListener(e -> updateTextureOptions());

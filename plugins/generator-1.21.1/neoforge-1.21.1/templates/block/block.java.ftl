@@ -36,6 +36,9 @@
 
 <#assign filteredCustomProperties = data.customProperties?filter(e ->
 	e.property().getName().startsWith("CUSTOM:") || generator.map(e.property().getName(), "blockstateproperties") != "")>
+<#if data.blockBase?has_content && data.blockBase == "Wall">
+	<#assign filteredCustomProperties = []>
+</#if>
 
 package ${package}.block;
 
@@ -58,7 +61,7 @@ public class ${name}Block extends
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
 	</#if>
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
 	</#if>
 	<#if interfaces?size gt 0>
@@ -595,7 +598,7 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBonemealable>
+	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
 	</#if>
 

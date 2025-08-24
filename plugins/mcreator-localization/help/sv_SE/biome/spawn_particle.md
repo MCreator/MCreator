@@ -1,0 +1,1 @@
+Klicka i denna ruta för att aktivera omgivande partiklar i biomen.
