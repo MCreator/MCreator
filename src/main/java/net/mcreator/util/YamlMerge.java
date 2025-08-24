@@ -71,7 +71,9 @@ public class YamlMerge {
 				}
 			} else if (existing instanceof List && value instanceof List) {
 				try {
-					((List<Object>) existing).addAll((List<Object>) value);
+					// merge lists so that new entries are added on the top, since most
+					// processors use the last match in MCreator's yaml files as the final result
+					((List<Object>) existing).addAll(0, (List<Object>) value);
 				} catch (Throwable t) {
 					LOG.warn("Failed to merge key {}", key, t);
 				}
