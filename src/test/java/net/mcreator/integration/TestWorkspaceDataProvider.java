@@ -1922,6 +1922,7 @@ public class TestWorkspaceDataProvider {
 		var blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
+		var blocksWithItemForm = ElementUtil.loadBlocksWithItemForm(modElement.getWorkspace());
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
@@ -2044,6 +2045,8 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
+		block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksWithItemForm).getName());
 		block.tickRate = _true ? 0 : 24;
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
