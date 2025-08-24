@@ -163,6 +163,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> PROCEDURE;
 	public static ModElementType<?> PROJECTILE;
 	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> SPECIALENTITY;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TOOL;

@@ -68,6 +68,7 @@ public class ModElementTypeLoader {
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', ProcedureGUI::new, Procedure.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', ProjectileGUI::new, Projectile.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', RecipeGUI::new, Recipe.class));
+		ModElementType.SPECIALENTITY = register(new ModElementType<>("specialentity", null, SpecialEntityGUI::new, SpecialEntity.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', StructureGUI::new, Structure.class)).coveredOn(GeneratorFlavor.gamePlatform(JAVAEDITION));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', TabGUI::new, Tab.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', ToolGUI::new, Tool.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
