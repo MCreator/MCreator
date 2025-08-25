@@ -29,6 +29,7 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -37,6 +38,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,6 +72,10 @@ public class SpecialEntity extends GeneratableElement implements ICommonType, IT
 		} catch (Exception e) {
 			LOG.error("Failed to copy special entity texture", e);
 		}
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
