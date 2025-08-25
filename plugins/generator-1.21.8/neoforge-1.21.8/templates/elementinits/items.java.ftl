@@ -73,6 +73,10 @@ public class ${JavaModName}Items {
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 				register("${item.getModElement().getRegistryName()}_spawn_egg",
 					properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties));
+		<#elseif item.getModElement().getTypeString() == "specialentity">
+			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+				register("${item.getModElement().getRegistryName()}",
+					properties -> new BoatItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties.stacksTo(1)));
 		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
 				register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);

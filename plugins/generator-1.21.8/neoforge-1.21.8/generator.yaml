@@ -85,7 +85,9 @@ base_templates:
       - "${w.hasElementsOfType('feature')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
+    condition_any:
+      - hasJavaModels()
+      - "${w.hasElementsOfType('specialentity')}"
   - template: modbase/enumextensions.json.ftl
     writer: json
     name: "@RESROOT/META-INF/enumextensions.json"

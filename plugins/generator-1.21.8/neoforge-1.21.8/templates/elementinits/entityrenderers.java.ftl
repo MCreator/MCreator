@@ -51,6 +51,9 @@ package ${package}.init;
 				<#if entity.hasCustomProjectile()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
 				</#if>
+			<#elseif entity.getModElement().getTypeString() == "specialentity">
+				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(),
+						context -> new BoatRenderer(context, ${JavaModName}Models.${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION));
 			</#if>
 		</#list>
 	}
