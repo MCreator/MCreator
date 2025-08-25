@@ -1,0 +1,25 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vector1",
+      "check": "Vector"
+    },
+    {
+      "type": "input_value",
+      "name": "vector2",
+      "check": "Vector"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 270,
+  "mcreator": {
+    "group": "base",
+    "toolbox_id": "logicoperations",
+    "inputs": [
+      "vector1",
+      "vector2"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vector",
+      "check": "Vector"
+    }
+  ],
+  "output": "vector",
+  "colour": 270,
+  "mcreator": {
+    "group": "base",
+    "toolbox_id": "vector",
+    "toolbox_init": [
+      "<value name=\"vector\"><block type=\"vectors_new_vector\"><value name=\\\"x\\\"><block type=\\\"math_number\\\"><field name=\\\"NUM\\\">0</field></block></value> <value name=\\\"y\\\"><block type=\\\"math_number\\\"><field name=\\\"NUM\\\">0</field></block></value> <value name=\\\"z\\\"><block type=\\\"math_number\\\"><field name=\\\"NUM\\\">0</field></block></value></block></value>"
+    ],
+    "inputs": [
+      "vector"
+    ]
+  }
+}
