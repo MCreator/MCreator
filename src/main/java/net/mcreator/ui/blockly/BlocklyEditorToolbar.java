@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -61,7 +62,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
 	private final JButton templateLib;
 
-	private final BlocklyPanel blocklyPanel;
+	public final BlocklyPanel blocklyPanel;
+	public static BlocklyPanel staticBlocklyPanel = null;
 
 	private final JTextField search;
 
@@ -76,12 +78,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param mcreator          <p>The {@link MCreator} instance used</p>
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link Procedure} such as variables are enabled.</p>
 	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
 			ProcedureGUI procedureGUI, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
+		staticBlocklyPanel = blocklyPanel;
 
 		setBorder(null);
 
@@ -326,6 +329,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	public JTextField getSearchField() {
 		return search;
+	}
+
+	public static BlocklyPanel getBlocklyPanel() {
+		return staticBlocklyPanel;
 	}
 
 }

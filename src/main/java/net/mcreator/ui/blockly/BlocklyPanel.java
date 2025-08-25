@@ -18,15 +18,20 @@
 
 package net.mcreator.ui.blockly;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.plugin.MCREvent;
@@ -34,6 +39,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ui.BlocklyPanelRegisterJSObjects;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
@@ -50,11 +56,19 @@ import org.w3c.dom.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -73,6 +87,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	private final MCreator mcreator;
 	private final BlocklyEditorType type;
+
 
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 
@@ -173,6 +188,184 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
 				}
 			});
+
+
+			// Quick search menu
+			browser.setOnMouseClicked(event -> {
+
+				if (event.getButton() == MouseButton.MIDDLE) {
+
+					class quickSearchMenuPopup extends JFrame {
+
+						public quickSearchMenuPopup(int x, int y) {
+
+							// Quick search frame parameters
+							setUndecorated(true);
+							setBackground(Theme.current().getBackgroundColor());
+							putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
+							setSize(770, 250);
+							setLocation(x, y);
+
+							if (getX() > 766) {
+								setLocation(766, getY());
+							}
+
+							if (getY() > 544) {
+								setLocation(getX(), 544);
+							}
+
+							// Search field
+							JTextField searchField = new JTextField();
+							searchField.setVisible(true);
+							add(searchField, BorderLayout.NORTH);
+
+
+							// Blocks list
+							JScrollablePopupMenu blocksMenu = new JScrollablePopupMenu();
+							blocksMenu.setBackground(Theme.current().getBackgroundColor());
+							blocksMenu.setBorder(BorderFactory.createEmptyBorder());
+							blocksMenu.putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
+							blocksMenu.setMaximumVisibleRows(0);
+							blocksMenu.setFocusable(false);
+							blocksMenu.setVisible(true);
+							add(blocksMenu, BorderLayout.CENTER);
+
+
+							// Update search
+							searchField.getDocument().addDocumentListener(new DocumentListener() {
+								@Override public void insertUpdate(DocumentEvent e) {
+									updateQuickSearch(searchField, blocksMenu);
+								}
+
+								@Override public void removeUpdate(DocumentEvent e) {
+									updateQuickSearch(searchField, blocksMenu);
+								}
+
+								@Override public void changedUpdate(DocumentEvent e) {
+									updateQuickSearch(searchField, blocksMenu);
+								}
+							});
+
+
+							// Show the quick search menu
+							setVisible(true);
+
+							addWindowFocusListener(new WindowFocusListener() {
+								@Override public void windowGainedFocus(WindowEvent e) {}
+
+								@Override public void windowLostFocus(WindowEvent e) {
+									dispose();
+								}
+							});
+
+						}
+
+						private void updateQuickSearch(JTextField quickSearchField, JScrollablePopupMenu scrollMenu) {
+
+							String[] keyWords = quickSearchField.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
+							Set<ToolboxBlock> filtered = new LinkedHashSet<>();
+
+							scrollMenu.removeAll();
+							scrollMenu.revalidate();
+							scrollMenu.repaint();
+
+							if (!quickSearchField.getText().isEmpty()) {
+
+								for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
+										BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
+									if (block.getName().toLowerCase(Locale.ENGLISH)
+											.contains(quickSearchField.getText().toLowerCase(Locale.ENGLISH))) {
+										filtered.add(block);
+									}
+								}
+
+								for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
+										BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
+									for (String keyWord : keyWords) {
+										if (block.getName().toLowerCase(Locale.ENGLISH)
+												.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
+												block.getToolboxCategory() != null && block.getToolboxCategory()
+														.getName().toLowerCase(Locale.ENGLISH)
+														.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+											filtered.add(block);
+											break;
+										} else if (block.getName().toLowerCase(Locale.ENGLISH)
+												.contains(keyWord.toLowerCase(Locale.ENGLISH))) {
+											filtered.add(block);
+											break;
+										}
+									}
+								}
+
+								// Add blocks items to scrollable popup menu
+
+								int maxAddIndex = 0;
+								for (ToolboxBlock block : filtered) {
+
+									JMenuItem quickSearchItem = new JMenuItem(getHTMLForBlock(block));
+									quickSearchItem.addActionListener(ev -> {
+										if (block.getToolboxXML() != null) {
+											// Add the block
+											BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+										} else {
+											// Add the block
+											BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+										}
+										dispose();
+									});
+									scrollMenu.add(quickSearchItem);
+									maxAddIndex++;
+
+									if (maxAddIndex > 9) {
+										break;
+									}
+
+								}
+
+							}
+
+						}
+
+						// Required for search to work
+
+						private String getHTMLForBlock(ToolboxBlock block) {
+							List<ToolboxCategory> categories = new ArrayList<>();
+							traverseCategories(categories, block.getToolboxCategory());
+
+							StringBuilder builder = new StringBuilder("<html>");
+							for (int i = categories.size() - 1; i >= 0; i--) {
+								ToolboxCategory category = categories.get(i);
+								builder.append("<span style='background: #")
+										.append(Integer.toHexString(category.getColor().getRGB()).substring(2)).append(";'>&nbsp;")
+										.append(category.getName()).append("&nbsp;</span>");
+								if (i != 0)
+									builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
+							}
+							builder.append("&nbsp;&nbsp;");
+							builder.append(block.getName()
+									.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+
+							return builder.toString();
+						}
+
+						private void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
+							if (category != null) {
+								categories.add(category);
+								if (category.getParent() != null)
+									traverseCategories(categories, category.getParent());
+							}
+						}
+
+					}
+
+					new quickSearchMenuPopup((int) event.getScreenX(), (int) event.getScreenY());
+
+				}
+
+			});
+
+
+
 		});
 	}
 
