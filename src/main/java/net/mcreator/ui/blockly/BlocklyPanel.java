@@ -191,175 +191,11 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 
 			// Quick search menu
+
 			browser.setOnMouseClicked(event -> {
 
 				if (event.getButton() == MouseButton.MIDDLE) {
-
-					class quickSearchMenuPopup extends JFrame {
-
-						public quickSearchMenuPopup(int x, int y) {
-
-							// Quick search frame parameters
-							setUndecorated(true);
-							setBackground(Theme.current().getBackgroundColor());
-							putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
-							setSize(770, 250);
-							setLocation(x, y);
-
-							if (getX() > 766) {
-								setLocation(766, getY());
-							}
-
-							if (getY() > 544) {
-								setLocation(getX(), 544);
-							}
-
-							// Search field
-							JTextField searchField = new JTextField();
-							searchField.setVisible(true);
-							add(searchField, BorderLayout.NORTH);
-
-
-							// Blocks list
-							JScrollablePopupMenu blocksMenu = new JScrollablePopupMenu();
-							blocksMenu.setBackground(Theme.current().getBackgroundColor());
-							blocksMenu.setBorder(BorderFactory.createEmptyBorder());
-							blocksMenu.putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
-							blocksMenu.setMaximumVisibleRows(0);
-							blocksMenu.setFocusable(false);
-							blocksMenu.setVisible(true);
-							add(blocksMenu, BorderLayout.CENTER);
-
-
-							// Update search
-							searchField.getDocument().addDocumentListener(new DocumentListener() {
-								@Override public void insertUpdate(DocumentEvent e) {
-									updateQuickSearch(searchField, blocksMenu);
-								}
-
-								@Override public void removeUpdate(DocumentEvent e) {
-									updateQuickSearch(searchField, blocksMenu);
-								}
-
-								@Override public void changedUpdate(DocumentEvent e) {
-									updateQuickSearch(searchField, blocksMenu);
-								}
-							});
-
-
-							// Show the quick search menu
-							setVisible(true);
-
-							addWindowFocusListener(new WindowFocusListener() {
-								@Override public void windowGainedFocus(WindowEvent e) {}
-
-								@Override public void windowLostFocus(WindowEvent e) {
-									dispose();
-								}
-							});
-
-						}
-
-						private void updateQuickSearch(JTextField quickSearchField, JScrollablePopupMenu scrollMenu) {
-
-							String[] keyWords = quickSearchField.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
-							Set<ToolboxBlock> filtered = new LinkedHashSet<>();
-
-							scrollMenu.removeAll();
-							scrollMenu.revalidate();
-							scrollMenu.repaint();
-
-							if (!quickSearchField.getText().isEmpty()) {
-
-								for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
-										BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
-									if (block.getName().toLowerCase(Locale.ENGLISH)
-											.contains(quickSearchField.getText().toLowerCase(Locale.ENGLISH))) {
-										filtered.add(block);
-									}
-								}
-
-								for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
-										BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
-									for (String keyWord : keyWords) {
-										if (block.getName().toLowerCase(Locale.ENGLISH)
-												.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
-												block.getToolboxCategory() != null && block.getToolboxCategory()
-														.getName().toLowerCase(Locale.ENGLISH)
-														.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
-											filtered.add(block);
-											break;
-										} else if (block.getName().toLowerCase(Locale.ENGLISH)
-												.contains(keyWord.toLowerCase(Locale.ENGLISH))) {
-											filtered.add(block);
-											break;
-										}
-									}
-								}
-
-								// Add blocks items to scrollable popup menu
-
-								int maxAddIndex = 0;
-								for (ToolboxBlock block : filtered) {
-
-									JMenuItem quickSearchItem = new JMenuItem(getHTMLForBlock(block));
-									quickSearchItem.addActionListener(ev -> {
-										if (block.getToolboxXML() != null) {
-											// Add the block
-											BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
-										} else {
-											// Add the block
-											BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
-										}
-										dispose();
-									});
-									scrollMenu.add(quickSearchItem);
-									maxAddIndex++;
-
-									if (maxAddIndex > 9) {
-										break;
-									}
-
-								}
-
-							}
-
-						}
-
-						// Required for search to work
-
-						private String getHTMLForBlock(ToolboxBlock block) {
-							List<ToolboxCategory> categories = new ArrayList<>();
-							traverseCategories(categories, block.getToolboxCategory());
-
-							StringBuilder builder = new StringBuilder("<html>");
-							for (int i = categories.size() - 1; i >= 0; i--) {
-								ToolboxCategory category = categories.get(i);
-								builder.append("<span style='background: #")
-										.append(Integer.toHexString(category.getColor().getRGB()).substring(2)).append(";'>&nbsp;")
-										.append(category.getName()).append("&nbsp;</span>");
-								if (i != 0)
-									builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
-							}
-							builder.append("&nbsp;&nbsp;");
-							builder.append(block.getName()
-									.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
-
-							return builder.toString();
-						}
-
-						private void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
-							if (category != null) {
-								categories.add(category);
-								if (category.getParent() != null)
-									traverseCategories(categories, category.getParent());
-							}
-						}
-
-					}
-
-					new quickSearchMenuPopup((int) event.getScreenX(), (int) event.getScreenY());
-
+					new QuickSearchMenuDialog((int) event.getScreenX(), (int) event.getScreenY());
 				}
 
 			});
@@ -368,6 +204,82 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 		});
 	}
+
+
+	class QuickSearchMenuDialog extends JDialog {
+
+		QuickSearchMenuDialog dialogInstance;
+
+
+		public QuickSearchMenuDialog(int x, int y) {
+			// Quick search frame parameters
+
+			setUndecorated(true);
+			setBackground(Theme.current().getBackgroundColor());
+			putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
+			setSize(770, 250);
+			setLocation(x, y);
+
+
+			if (getX() > 766) {
+				setLocation(766, getY());
+			}
+
+			if (getY() > 544) {
+				setLocation(getX(), 544);
+			}
+
+			dialogInstance = this;
+
+			// Search field
+			JTextField searchField = new JTextField();
+			searchField.setVisible(true);
+			add(searchField, BorderLayout.NORTH);
+
+			// Blocks list
+			JScrollablePopupMenu blocksMenu = new JScrollablePopupMenu();
+			blocksMenu.setBackground(Theme.current().getBackgroundColor());
+			blocksMenu.setBorder(BorderFactory.createEmptyBorder());
+			blocksMenu.putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
+			blocksMenu.setMaximumVisibleRows(0);
+			blocksMenu.setFocusable(false);
+			blocksMenu.setVisible(true);
+			add(blocksMenu, BorderLayout.CENTER);
+
+
+			// Update search
+			searchField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override public void insertUpdate(DocumentEvent e) {
+					BlocklyEditorToolbar.updateQuickSearch(searchField, blocksMenu, dialogInstance);
+				}
+
+				@Override public void removeUpdate(DocumentEvent e) {
+					BlocklyEditorToolbar.updateQuickSearch(searchField, blocksMenu, dialogInstance);
+				}
+
+				@Override public void changedUpdate(DocumentEvent e) {
+					BlocklyEditorToolbar.updateQuickSearch(searchField, blocksMenu, dialogInstance);
+				}
+			});
+
+
+			// Show the quick search menu
+
+			setVisible(true);
+
+			addWindowFocusListener(new WindowFocusListener() {
+				@Override public void windowGainedFocus(WindowEvent e) {}
+
+				@Override public void windowLostFocus(WindowEvent e) {
+					dispose();
+				}
+			});
+
+			BlocklyEditorToolbar.renderQuickSearchRecents(blocksMenu, dialogInstance);
+		}
+
+	}
+
 
 	private void makeComponentsTransparent(Scene scene) {
 		setOpaque(false);

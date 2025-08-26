@@ -21,11 +21,13 @@ package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.element.types.Tool;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -43,6 +45,7 @@ import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -67,6 +70,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private final JTextField search;
 
+	private static ArrayList<ToolboxBlock> recentlyUsedBlocks = new ArrayList<>();
+
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
 		this(mcreator, blocklyEditorType, blocklyPanel, null);
 	}
@@ -85,7 +90,6 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			ProcedureGUI procedureGUI, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 		staticBlocklyPanel = blocklyPanel;
-
 		setBorder(null);
 
 		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
@@ -262,6 +266,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							blocklyPanel.addBlocksFromXML(
 									"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
 						}
+						addBlockToRecents(block);
 						blocklyPanel.requestFocus();
 						results.setVisible(false);
 					});
@@ -279,11 +284,115 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 	}
 
+	public static void updateQuickSearch(JTextField quickSearchField, JScrollablePopupMenu scrollMenu, JDialog mainDialog) {
+
+		String[] keyWords = quickSearchField.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
+		Set<ToolboxBlock> filtered = new LinkedHashSet<>();
+
+		scrollMenu.removeAll();
+		scrollMenu.revalidate();
+		scrollMenu.repaint();
+
+		if (!quickSearchField.getText().isEmpty()) {
+
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
+					BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
+				if (block.getName().toLowerCase(Locale.ENGLISH)
+						.contains(quickSearchField.getText().toLowerCase(Locale.ENGLISH))) {
+					filtered.add(block);
+				}
+			}
+
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(
+					BlocklyEditorType.PROCEDURE).getDefinedBlocks().values()) {
+				for (String keyWord : keyWords) {
+					if (block.getName().toLowerCase(Locale.ENGLISH)
+							.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
+							block.getToolboxCategory() != null && block.getToolboxCategory()
+									.getName().toLowerCase(Locale.ENGLISH)
+									.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+						filtered.add(block);
+						break;
+					} else if (block.getName().toLowerCase(Locale.ENGLISH)
+							.contains(keyWord.toLowerCase(Locale.ENGLISH))) {
+						filtered.add(block);
+						break;
+					}
+				}
+			}
+
+			// Add blocks items to scrollable popup menu
+
+			int maxAddIndex = 0;
+			for (ToolboxBlock block : filtered) {
+
+				JMenuItem quickSearchItem = new JMenuItem(getHTMLForBlock(block));
+				quickSearchItem.addActionListener(ev -> {
+					if (block.getToolboxXML() != null) {
+						// Add the block
+						BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+					} else {
+						// Add the block
+						BlocklyEditorToolbar.getBlocklyPanel().addBlocksFromXML("<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+					}
+					addBlockToRecents(block);
+					mainDialog.dispose();
+				});
+				scrollMenu.add(quickSearchItem);
+				maxAddIndex++;
+
+				if (maxAddIndex > 9) {
+					break;
+				}
+
+			}
+
+		} else {
+			renderQuickSearchRecents(scrollMenu, mainDialog);
+		}
+
+	}
+
+	public static void renderQuickSearchRecents(JScrollablePopupMenu scrollMenu, JDialog mainDialog) {
+
+		scrollMenu.removeAll();
+		scrollMenu.revalidate();
+		scrollMenu.repaint();
+
+		JMenuItem recentsText = new JMenuItem("Recent searches:");
+		scrollMenu.add(recentsText);
+
+		if (recentlyUsedBlocks.isEmpty()) {
+			JMenuItem noRecentsText = new JMenuItem("No recent searches.");
+			scrollMenu.add(noRecentsText);
+		} else {
+			for (ToolboxBlock block : recentlyUsedBlocks) {
+
+				JMenuItem recentsQuickSearchItem = new JMenuItem(getHTMLForBlock(block));
+				recentsQuickSearchItem.addActionListener(ev -> {
+
+					if (block.getToolboxXML() != null) {
+						// Add the block
+						BlocklyEditorToolbar.getBlocklyPanel()
+								.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+					} else {
+						// Add the block
+						BlocklyEditorToolbar.getBlocklyPanel()
+								.addBlocksFromXML("<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+					}
+					addBlockToRecents(block);
+					mainDialog.dispose();
+				});
+				scrollMenu.add(recentsQuickSearchItem);
+			}
+		}
+	}
+
 	public void setTemplateLibButtonWidth(int w) {
 		templateLib.setPreferredSize(new Dimension(w, 16));
 	}
 
-	private String getHTMLForBlock(ToolboxBlock block) {
+	private static String getHTMLForBlock(ToolboxBlock block) {
 		List<ToolboxCategory> categories = new ArrayList<>();
 		traverseCategories(categories, block.getToolboxCategory());
 
@@ -303,7 +412,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		return builder.toString();
 	}
 
-	private void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
+	private static void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
 		if (category != null) {
 			categories.add(category);
 			if (category.getParent() != null)
@@ -333,6 +442,14 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	public static BlocklyPanel getBlocklyPanel() {
 		return staticBlocklyPanel;
+	}
+
+	private static void addBlockToRecents(ToolboxBlock blockName) {
+		recentlyUsedBlocks.remove(blockName);
+		recentlyUsedBlocks.addFirst(blockName);
+		if (recentlyUsedBlocks.size() > 9) {
+			recentlyUsedBlocks.removeLast();
+		}
 	}
 
 }
