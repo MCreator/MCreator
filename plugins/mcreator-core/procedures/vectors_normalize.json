@@ -6,6 +6,7 @@
       "check": "Vector"
     }
   ],
+  "inputsInline": true,
   "output": "vector",
   "colour": 270,
   "mcreator": {
