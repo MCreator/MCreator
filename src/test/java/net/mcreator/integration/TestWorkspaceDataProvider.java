@@ -1700,6 +1700,14 @@ public class TestWorkspaceDataProvider {
 				attribute.addToAllEntities = true;
 			}
 			return attribute;
+		} else if (ModElementType.SPECIALENTITY.equals(modElement.getType())) {
+			SpecialEntity entity = new SpecialEntity(modElement);
+			entity.name = modElement.getName();
+			entity.entityType = _true ? "Boat" : "ChestBoat";
+			entity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
+			entity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+			entity.creativeTabs = emptyLists ? List.of() : tabs;
+			return entity;
 		}
 		return null;
 	}
