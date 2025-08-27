@@ -6,6 +6,8 @@ templates:
 global_templates:
   - template: elementinits/boattypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBoatTypes.java"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
 
 localizationkeys:
   - key: item.@modid.@registryname

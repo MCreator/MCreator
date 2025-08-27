@@ -8,6 +8,10 @@ templates:
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"
 
+global_templates:
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+
 tags:
   - tag: ENTITIES:minecraft:boat
     condition: "${data.entityType == 'Boat'}"
