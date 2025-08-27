@@ -79,7 +79,14 @@ public class SpecialEntity extends GeneratableElement implements ICommonType, IT
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.ENTITY, BaseType.ITEM);
+		List<BaseType> baseTypes = new ArrayList<>();
+		baseTypes.add(BaseType.ITEM);
+
+		// In 1.21.1, custom boats are variants of the vanilla boat entity, and not stand-alone entity types
+		if (getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.8"))
+			baseTypes.add(BaseType.ENTITY);
+
+		return baseTypes;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

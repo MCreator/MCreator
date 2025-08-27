@@ -1,0 +1,12 @@
+templates:
+  - template: json/special_entity_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+global_templates:
+  - template: elementinits/boattypes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBoatTypes.java"
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name
