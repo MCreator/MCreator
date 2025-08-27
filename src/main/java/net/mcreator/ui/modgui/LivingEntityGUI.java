@@ -962,7 +962,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		vibrationPane.setOpaque(false);
 
 		mobName.setValidator(
-				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
+				new TextFieldValidator(mobName, L10N.t("elementgui.common.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
 
 		pane1.setOpaque(false);

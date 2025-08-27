@@ -32,7 +32,10 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,6 +64,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	private TextureSelectionButton itemTexture;
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
+
+	private final ValidationGroup page1group = new ValidationGroup();
 
 	public SpecialEntityGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -108,8 +113,18 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_texture"), entityTexture),
 				L10N.t("elementgui.special_entity.entity_texture")));
 
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.common.error_entity_needs_name")));
+		name.enableRealtimeValidation();
+		entityTexture.setValidator(new TextureSelectionButtonValidator(entityTexture));
+		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture));
+
+		page1group.addValidationElement(entityTexture);
+		page1group.addValidationElement(itemTexture);
+		page1group.addValidationElement(name);
+
 		addPage(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(entityTexturesPanel, PanelUtils.pullElementUp(properties), 25, 25)));
+				PanelUtils.northAndCenterElement(entityTexturesPanel, PanelUtils.pullElementUp(properties), 25,
+						25))).validate(page1group);
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
