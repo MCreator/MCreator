@@ -81,7 +81,7 @@ public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.description"),
 				workspaceDialogPanel.description));
 
-		addFormElement(new JEmptyBox(5, 5));
+		addFormElement(new JEmptyBox(10, 10));
 
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.license"),
 				workspaceDialogPanel.license));
