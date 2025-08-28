@@ -27,30 +27,43 @@ import java.util.Map;
 
 public class ModifyTemplateResultEvent extends MCREvent {
 
-	private String templateOutput;
 	private final String templateName;
 	private final Map<String, Object> dataModel;
+	private final String templateOutputOriginal;
+
+	private String templateOutput;
 
 	public ModifyTemplateResultEvent(@Nullable String templateName, @Nonnull String templateContent,
 			@Nonnull Map<String, Object> dataModel) {
 		this.templateName = templateName;
 		this.templateOutput = templateContent;
+		this.templateOutputOriginal = templateContent;
 		this.dataModel = dataModel;
 	}
 
 	/**
-	 * getter of the template name
-	 *
-	 * @return template name
+	 * @return Template file name
 	 */
 	public String getTemplateName() {
 		return templateName;
 	}
 
 	/**
-	 * template content
-	 *
-	 * @return template output content
+	 * @return Original template output content before any modifications from plugins
+	 */
+	public String getTemplateOutputOriginal() {
+		return templateOutputOriginal;
+	}
+
+	/**
+	 * @return Data model used to generate the template contents
+	 */
+	public Map<String, Object> getDataModel() {
+		return dataModel;
+	}
+
+	/**
+	 * @return Current template output content. At this point, plugins with higher priority may have already modified it
 	 */
 	public String getTemplateOutput() {
 		return templateOutput;
@@ -60,7 +73,4 @@ public class ModifyTemplateResultEvent extends MCREvent {
 		this.templateOutput = templateContent;
 	}
 
-	public Map<String, Object> getDataModel() {
-		return dataModel;
-	}
 }
