@@ -34,6 +34,12 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(20, 20));
 
+		JLabel requiredModInfosLabel = new JLabel("Required add-on infos");
+		requiredModInfosLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
+		addFormElement(PanelUtils.westAndEastElement(requiredModInfosLabel, new JEmptyBox(0, 0)));
+
+		addFormElement(new JEmptyBox(15, 15));
+
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.display_name"),
 				workspaceDialogPanel.modName));
 
@@ -51,6 +57,28 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
+
+		addFormElement(new JEmptyBox(10, 10));
+
+		JLabel additionalModInfosLabel = new JLabel("Additional add-on infos");
+		additionalModInfosLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
+
+		addFormElement(PanelUtils.westAndEastElement(additionalModInfosLabel, new JEmptyBox(0, 0)));
+
+		addFormElement(new JEmptyBox(15, 15));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.author"),
+				workspaceDialogPanel.author));
+
+		addFormElement(new JEmptyBox(10, 10));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.description"),
+				workspaceDialogPanel.description));
+
+		addFormElement(new JEmptyBox(5, 5));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.license"),
+				workspaceDialogPanel.license));
 
 		addNotice(UIRES.get("18px.warning"), "dialog.new_workspace.addon.notice1");
 		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.addon.notice2");

@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
@@ -32,6 +33,12 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		super(parent, GeneratorFlavor.FORGE);
 
 		addFormElement(new JEmptyBox(20, 20));
+
+		JLabel requiredModInfosLabel = new JLabel("Required mod infos");
+		requiredModInfosLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
+		addFormElement(PanelUtils.westAndEastElement(requiredModInfosLabel, new JEmptyBox(0, 0)));
+
+		addFormElement(new JEmptyBox(15, 15));
 
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.display_name"),
 				workspaceDialogPanel.modName));
@@ -51,10 +58,32 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.package"),
 				workspaceDialogPanel.packageName));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(10, 10));
 
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.forge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
+
+		addFormElement(new JEmptyBox(10, 10));
+
+		JLabel additionalModInfosLabel = new JLabel("Additional mod infos");
+		additionalModInfosLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
+
+		addFormElement(PanelUtils.westAndEastElement(additionalModInfosLabel, new JEmptyBox(0, 0)));
+
+		addFormElement(new JEmptyBox(15, 15));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.author"),
+				workspaceDialogPanel.author));
+
+		addFormElement(new JEmptyBox(10, 10));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.description"),
+				workspaceDialogPanel.description));
+
+		addFormElement(new JEmptyBox(5, 5));
+
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.workspace_settings.license"),
+				workspaceDialogPanel.license));
 
 		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.forge.notice");
 

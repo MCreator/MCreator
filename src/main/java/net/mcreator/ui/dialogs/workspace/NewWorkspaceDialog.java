@@ -75,7 +75,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 	public NewWorkspaceDialog(Window w) {
 		super(w, null, true);
-
+		setPreferredSize(new Dimension(825, 650));
+		revalidate();
+		repaint();
 		AbstractWorkspacePanel neoforgeWorkspacePanel = new NeoForgeWorkspacePanel(this);
 		AbstractWorkspacePanel fabricWorkspacePanel = new FabricWorkspacePanel(this);
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
