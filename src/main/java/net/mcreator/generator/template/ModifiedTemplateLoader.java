@@ -23,7 +23,10 @@ import freemarker.cache.TemplateLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.generator.ModifyTemplateEvent;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -64,8 +67,7 @@ public class ModifiedTemplateLoader implements TemplateLoader {
 		ModifyTemplateEvent modifyTemplateEvent = new ModifyTemplateEvent(templateSourceToName.get(templateSource),
 				originalTemplateContent);
 		MCREvent.event(modifyTemplateEvent);
-		return new InputStreamReader(
-				new ByteArrayInputStream(modifyTemplateEvent.getTemplateContent().getBytes(encoding)));
+		return new StringReader(modifyTemplateEvent.getTemplateContent());
 	}
 
 	@Override public void closeTemplateSource(Object templateSource) throws IOException {
