@@ -130,7 +130,6 @@ public class TemplateGenerator {
 		try {
 			Template freemarkerTemplate = templateGeneratorConfiguration.getConfiguration().getTemplate(templateName);
 			StringWriter stringWriter = new StringWriter();
-
 			freemarkerTemplate.process(dataModel, stringWriter,
 					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			ModifyTemplateResultEvent modifyTemplateEvent = new ModifyTemplateResultEvent(templateName,
