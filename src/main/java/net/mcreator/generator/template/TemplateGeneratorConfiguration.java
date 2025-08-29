@@ -47,7 +47,8 @@ public class TemplateGeneratorConfiguration {
 			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
 		}
 
-		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
+		configuration.setTemplateLoader(
+				new ModifiedTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0]))));
 	}
 
 	public DefaultFreemarkerConfiguration getConfiguration() {

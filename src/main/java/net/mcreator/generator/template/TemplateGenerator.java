@@ -24,7 +24,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.ModifyTemplateResultEvent;
+import net.mcreator.plugin.events.generator.ModifyTemplateResultEvent;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
@@ -130,6 +130,7 @@ public class TemplateGenerator {
 		try {
 			Template freemarkerTemplate = templateGeneratorConfiguration.getConfiguration().getTemplate(templateName);
 			StringWriter stringWriter = new StringWriter();
+
 			freemarkerTemplate.process(dataModel, stringWriter,
 					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			ModifyTemplateResultEvent modifyTemplateEvent = new ModifyTemplateResultEvent(templateName,
