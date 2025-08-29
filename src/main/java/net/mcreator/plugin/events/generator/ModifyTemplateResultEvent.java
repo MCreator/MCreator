@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.plugin.events;
+package net.mcreator.plugin.events.generator;
 
 import net.mcreator.plugin.MCREvent;
 
