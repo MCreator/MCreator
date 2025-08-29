@@ -39,7 +39,8 @@ public class TemplateGeneratorConfiguration {
 
 		// Load templates from the generator subfolder
 		for (String path : generatorConfiguration.getGeneratorPaths(generatorSubfolder)) {
-			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
+			templateLoaderList.add(
+					new ModifiedTemplateLoader(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path)));
 		}
 
 		// Load templates from the utils subfolder
@@ -47,8 +48,7 @@ public class TemplateGeneratorConfiguration {
 			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
 		}
 
-		configuration.setTemplateLoader(
-				new ModifiedTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0]))));
+		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
 	}
 
 	public DefaultFreemarkerConfiguration getConfiguration() {
