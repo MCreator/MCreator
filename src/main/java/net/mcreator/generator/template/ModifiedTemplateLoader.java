@@ -25,8 +25,6 @@ import net.mcreator.plugin.events.generator.ModifyTemplateEvent;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -61,13 +59,10 @@ public class ModifiedTemplateLoader implements TemplateLoader {
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
 		Reader originalTemplateReader = originalTemplateLoader.getReader(templateSource, encoding);
-		StringWriter stringWriter = new StringWriter();
-		originalTemplateReader.transferTo(stringWriter);
-		String originalTemplateContent = stringWriter.toString();
 		ModifyTemplateEvent modifyTemplateEvent = new ModifyTemplateEvent(templateSourceToName.get(templateSource),
-				originalTemplateContent);
+				originalTemplateReader);
 		MCREvent.event(modifyTemplateEvent);
-		return new StringReader(modifyTemplateEvent.getTemplateContent());
+		return modifyTemplateEvent.getTemplateContentReader();
 	}
 
 	@Override public void closeTemplateSource(Object templateSource) throws IOException {

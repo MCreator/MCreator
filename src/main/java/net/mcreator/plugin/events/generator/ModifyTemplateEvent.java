@@ -23,17 +23,18 @@ import net.mcreator.plugin.MCREvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Reader;
 
 public class ModifyTemplateEvent extends MCREvent {
 	private final String templateName;
-	private final String originalTemplateContent;
+	private final Reader originalTemplateContentReader;
 
-	private String templateContent;
+	private Reader templateContentReader;
 
-	public ModifyTemplateEvent(@Nullable String templateName, @Nonnull String templateContent) {
+	public ModifyTemplateEvent(@Nullable String templateName, @Nonnull Reader templateContentReader) {
 		this.templateName = templateName;
-		this.templateContent = templateContent;
-		this.originalTemplateContent = templateContent;
+		this.templateContentReader = templateContentReader;
+		this.originalTemplateContentReader = templateContentReader;
 	}
 
 	/**
@@ -46,18 +47,18 @@ public class ModifyTemplateEvent extends MCREvent {
 	/**
 	 * @return Original template output content before any modifications from plugins
 	 */
-	public String getOriginalTemplateContent() {
-		return originalTemplateContent;
+	public Reader getOriginalTemplateContentReader() {
+		return originalTemplateContentReader;
 	}
 
 	/**
 	 * @return Current template output content. At this point, plugins with higher priority may have already modified it
 	 */
-	public String getTemplateContent() {
-		return templateContent;
+	public Reader getTemplateContentReader() {
+		return templateContentReader;
 	}
 
-	public void setTemplateContent(String templateContent) {
-		this.templateContent = templateContent;
+	public void setTemplateContentReader(Reader templateContentReader) {
+		this.templateContentReader = templateContentReader;
 	}
 }
