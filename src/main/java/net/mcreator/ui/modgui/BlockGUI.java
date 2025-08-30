@@ -261,7 +261,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "Sign");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
@@ -272,6 +272,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			//@formatter:on
 	);
 	private JComponent blockSetTypePanel;
+	private TextureSelectionButton signEntityTexture;
+	private JComponent signPropertiesPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -425,6 +427,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
+			signPropertiesPanel.setVisible(false);
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
@@ -446,6 +449,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					if (!isEditingMode()) {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
 						lightOpacity.setValue(0);
+						maxStackSize.setValue(64);
 					}
 				}
 				case "Leaves" -> {
@@ -492,6 +496,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
+				case "Sign" -> {
+					signPropertiesPanel.setVisible(true);
+					if (!isEditingMode()) {
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+						isNotColidable.setSelected(true);
+						maxStackSize.setValue(16);
+					}
+				}
 				default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -524,9 +537,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		signEntityTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY), 32);
 
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
+		signEntityTexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -546,7 +561,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
+		txblock4.add(signPropertiesPanel = PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_entity_texture"),
+						L10N.label("elementgui.block.sign_entity_texture")), PanelUtils.centerInPanel(signEntityTexture)));
+
 		blockSetTypePanel.setVisible(false);
+		signPropertiesPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -1319,11 +1339,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
+		page1group.addValidationElement(signEntityTexture);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
+			String selectedBlockBase = blockBase.getSelectedItem();
 			Model model = renderType.getSelectedItem();
-			return model != null && model.getType() == Model.Type.JAVA;
+			return (model != null && model.getType() == Model.Type.JAVA) || ("Sign".equals(selectedBlockBase));
 		}));
+
+		signEntityTexture.setValidator(new TextureSelectionButtonValidator(signEntityTexture,
+				() -> "Sign".equals(blockBase.getSelectedItem())));
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
@@ -1636,6 +1661,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
+		signEntityTexture.setTexture(block.signEntityTexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1850,6 +1876,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
+		block.signEntityTexture = signEntityTexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
