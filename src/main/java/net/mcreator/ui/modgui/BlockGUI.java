@@ -422,6 +422,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			rotationMode.setEnabled(!hasBlockBase);
 			isWaterloggable.setEnabled(!hasBlockBase);
 			hasGravity.setEnabled(!hasBlockBase);
+			hasInventory.setEnabled(true);
 			isBonemealable.setEnabled(true);
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
@@ -497,6 +498,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "Sign" -> {
+					hasInventory.setEnabled(false);
+					hasInventory.setSelected(false);
 					signPropertiesPanel.setVisible(true);
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -518,6 +521,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			}
 
 			updateTextureOptions();
+			refreshFieldsTileEntity();
 			refreshBonemealProperties();
 		});
 
@@ -1469,7 +1473,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
 			refreshFieldsTileEntity();
-		} else {
+		} else if (!"Sign".equals(blockBase.getSelectedItem())) {
 			hasInventory.setEnabled(true);
 		}
 
