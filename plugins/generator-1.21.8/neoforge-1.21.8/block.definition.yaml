@@ -556,6 +556,11 @@ tags:
     condition: "${(data.blockBase! == 'Button') && (data.blockSetType == 'OAK')}"
   - tag: BLOCKS:minecraft:buttons
     condition: "${(data.blockBase! == 'Button') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:standing_signs
+    condition: "${(data.blockBase! == 'Sign')}"
+  - tag: BLOCKS:minecraft:wall_signs
+    condition: "${(data.blockBase! == 'Sign')}"
+    entry: "CUSTOM:@NAME.wall"
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
