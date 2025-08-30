@@ -708,11 +708,11 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 		</#if>
 	</#list>
 
-	<#if data.hasSpecialInformation(w)>
-	public static class Item extends <#if data.isDoubleBlock()>DoubleHigh</#if>BlockItem {
+	<#if data.hasSpecialInformation(w) && !(var_extends_class??)> <#-- Do not generate item class for secondary block templates -->
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.isSign()>Sign<#else>Block</#if>Item {
 
 		public Item(Item.Properties properties) {
-			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), properties);
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.WALL_${REGISTRYNAME}.get(), </#if>properties);
 		}
 
 		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
