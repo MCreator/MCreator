@@ -497,6 +497,24 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+  - tag: BLOCKS:minecraft:wooden_trapdoors
+    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:trapdoors
+    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:wooden_doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:mob_interactable_doors
+    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'STONE')}"
+  - tag: BLOCKS:minecraft:wooden_pressure_plates
+    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:pressure_plates
+    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType != 'OAK')}"
+  - tag: BLOCKS:minecraft:wooden_buttons
+    condition: "${(data.blockBase! == 'Button') && (data.blockSetType == 'OAK')}"
+  - tag: BLOCKS:minecraft:buttons
+    condition: "${(data.blockBase! == 'Button') && (data.blockSetType != 'OAK')}"
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable

@@ -52,9 +52,9 @@ import java.util.stream.Collectors;
 		put("slider", Slider.class);// weight 15
 		put("checkbox", Checkbox.class); //weight 20
 		put("imagebutton", ImageButton.class); //weight 25
-		put("button", Button.class);// weight 30
-		put("image", Image.class);// weight 40
-		put("sprite", Sprite.class);// weight 45
+		put("button", Button.class); // weight 30
+		put("image", Image.class); // weight 40
+		put("sprite", Sprite.class); // weight 45
 		put("inputslot", InputSlot.class); // weight 50
 		put("outputslot", OutputSlot.class); // weight 50
 	}};
