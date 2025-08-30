@@ -501,19 +501,26 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe
     condition: "${data.destroyTool == 'pickaxe'}"
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/axe
     condition: "${data.destroyTool == 'axe'}"
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/shovel
     condition: "${data.destroyTool == 'shovel'}"
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/hoe
     condition: "${data.destroyTool == 'hoe'}"
+    entryprovider: data.getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:needs_stone_tool
     condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'STONE'}"
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_iron_tool
     condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'IRON'}"
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_diamond_tool
     condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'DIAMOND'}"
+    entryprovider: data.getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:stairs
     condition: "${data.blockBase! == 'Stairs'}"
@@ -548,8 +555,10 @@ tags:
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+    entryprovider: data.getProvidedBlocks()
   - tag: BLOCKS:minecraft:climbable
     condition: isLadder
+    entryprovider: data.getProvidedBlocks()
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:

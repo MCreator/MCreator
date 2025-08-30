@@ -28,6 +28,7 @@ import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -451,6 +452,10 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public Set<String> getProvidedBlocks() {
+		return providedMCItems().stream().map(DataListEntry::getName).collect(Collectors.toSet());
 	}
 
 	public Set<String> getVibrationalEvents() {
