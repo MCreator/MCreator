@@ -39,6 +39,7 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
+<#assign hasSigns = false>
 <#assign hasItemsWithCustomProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
 <#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
 	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
@@ -95,6 +96,11 @@ public class ${JavaModName}Items {
 					public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
 						doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
 						<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "Sign")>
+					<#assign hasSigns = true>
+					public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+						signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.WALL_${item.getModElement().getRegistryNameUpper()}
+						<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 				<#else>
 					<#assign hasBlocks = true>
 					public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
@@ -132,6 +138,16 @@ public class ${JavaModName}Items {
 
 	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block, Item.Properties properties) {
 		return REGISTRY.registerItem(block.getId().getPath(), prop -> new DoubleHighBlockItem(block.get(), prop), properties);
+	}
+	</#if>
+
+	<#if hasSigns>
+	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock) {
+		return signBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.registerItem(block.getId().getPath(), prop -> new SignItem(block.get(), wallBlock.get(), prop), properties);
 	}
 	</#if>
 

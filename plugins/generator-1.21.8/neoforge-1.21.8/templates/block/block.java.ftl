@@ -42,11 +42,13 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
-public class ${name}Block extends
-	<#if data.hasGravity>
+public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends
+	<#if var_extends_class??>
+		${var_extends_class}
+	<#elseif data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")?replace("Sign", "StandingSign")}Block
 	<#else>
 		Block
 	</#if>
@@ -190,7 +192,8 @@ public class ${name}Block extends
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
-				data.blockBase == "Wall")>
+				data.blockBase == "Wall" ||
+				data.blockBase == "Sign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
@@ -201,7 +204,7 @@ public class ${name}Block extends
 		</#if>
 	</#macro>
 
-	public ${name}Block(BlockBehaviour.Properties properties) {
+	public <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block(BlockBehaviour.Properties properties) {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -213,6 +216,8 @@ public class ${name}Block extends
 				super(BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30<#else>20</#if>, <@blockProperties/>);
 			<#elseif data.blockBase == "FenceGate">
 				super(WoodType.OAK, <@blockProperties/>);
+			<#elseif data.blockBase == "Sign">
+				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
