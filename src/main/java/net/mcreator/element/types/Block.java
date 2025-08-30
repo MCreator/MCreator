@@ -386,11 +386,17 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+		ArrayList<MCItem> retval = new ArrayList<>();
+		retval.add(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+
+		if (isSign()) // Provide sign wall block
+			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block", "Wall sign"));
+
+		return retval;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return hasBlockItem ? providedMCItems() : Collections.emptyList();
+		return hasBlockItem ? List.of(new MCItem.Custom(this.getModElement(), null, "block")) : Collections.emptyList();
 	}
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
