@@ -336,7 +336,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					@Override
 					protected void applyValue() {
 						if (!menuStateUpdateActive)
-							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", value, false);
+							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
 							PacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
 							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());

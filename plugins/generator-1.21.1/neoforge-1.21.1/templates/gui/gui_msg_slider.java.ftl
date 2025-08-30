@@ -69,13 +69,16 @@ package ${package}.network;
 			return;
 
 		<#assign btid = 0>
+		<#-- We need to start at the right number to sync everything correctly, so we attribute id for buttons before -->
+		<#assign btid += data.getComponentsOfType("Button")?size>
+		<#assign btid += data.getComponentsOfType("ImageButton")?size>
 		<#list data.getComponentsOfType("Slider") as component>
-				<#if hasProcedure(component.whenSliderMoves)>
-					if (buttonID == ${btid}) {
-						<@procedureOBJToCode component.whenSliderMoves/>
-					}
-				</#if>
-				<#assign btid +=1>
+			<#if hasProcedure(component.whenSliderMoves)>
+				if (buttonID == ${btid}) {
+					<@procedureOBJToCode component.whenSliderMoves/>
+				}
+			</#if>
+			<#assign btid +=1>
 		</#list>
 	}
 
