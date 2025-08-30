@@ -33,6 +33,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
@@ -393,6 +394,13 @@ import java.util.stream.Collectors;
 			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block", "Wall sign"));
 
 		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if (isSign() && "wall".equals(suffix)) {
+			return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
+		}
+		return null;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
