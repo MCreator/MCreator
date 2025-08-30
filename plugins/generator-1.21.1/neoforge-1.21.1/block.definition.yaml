@@ -448,6 +448,35 @@ templates:
     variables: "model=button_inventory;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+  # TX: Sign templates
+  - template: block/block.java.ftl # Wall sign class
+    condition: "blockBase %= Sign"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/Wall@NAMEBlock.java"
+    variables: "extends_class=WallSignBlock"
+  - template: json/block_item.json.ftl
+    condition:
+      - hasBlockItem
+      - "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/block_states.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states.json.ftl # Wall sign blockstates definition
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/wall_@registryname.json"
+  - template: json/block_model_particle.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
+global_templates:
+  - template: elementinits/woodtypes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
+
 block_base_properties:
   Stairs: [facing, half, shape, waterlogged]
   Slab: [type, waterlogged]
@@ -461,6 +490,7 @@ block_base_properties:
   EndRod: [facing]
   PressurePlate: [powered]
   Button: [facing, face, powered]
+  Sign: [facing, rotation, waterlogged] # includes both standing sign and wall sign properties
 
 localizationkeys:
   - key: block.@modid.@registryname
