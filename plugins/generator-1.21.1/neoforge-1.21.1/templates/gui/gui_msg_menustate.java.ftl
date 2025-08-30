@@ -63,7 +63,7 @@ package ${package}.network;
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
 		} else if (elementType == 2) {
-         	elementState = buffer.redDouble();
+         	elementState = buffer.readDouble();
         }
 		return new MenuStateUpdateMessage(elementType, name, elementState);
 	}
