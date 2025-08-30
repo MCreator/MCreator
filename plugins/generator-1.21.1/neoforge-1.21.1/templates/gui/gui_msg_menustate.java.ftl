@@ -47,8 +47,11 @@ package ${package}.network;
 		} else if (message.elementType == 1) {
 			buffer.writeBoolean((boolean) message.elementState);
 		} else if (message.elementType == 2) {
-         	buffer.writeDouble((double) message.elementState);
-        }
+			if (message.elementState instanceof Integer i)
+				buffer.writeDouble(i.doubleValue());
+			else if (message.elementState instanceof Double d)
+				buffer.writeDouble(d);
+		}
 	}
 
 	public static MenuStateUpdateMessage read(FriendlyByteBuf buffer) {
@@ -59,7 +62,7 @@ package ${package}.network;
 			elementState = buffer.readUtf();
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
-		} else if (elementType == 1) {
+		} else if (elementType == 2) {
          	elementState = buffer.redDouble();
         }
 		return new MenuStateUpdateMessage(elementType, name, elementState);
