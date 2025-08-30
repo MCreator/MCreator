@@ -1,0 +1,76 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "command",
+      "check": "String"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "color",
+      "options": [
+        ["white", "white"],
+        ["gray", "gray"],
+        ["dark_gray", "dark_gray"],
+        ["black", "black"],
+        ["red", "red"],
+        ["dark_red", "dark_red"],
+        ["blue", "blue"],
+        ["dark_blue", "dark_blue"],
+        ["green", "green"],
+        ["dark_green", "dark_green"],
+        ["yellow", "yellow"],
+        ["gold", "gold"]
+      ]
+    },
+    {
+      "type": "field_checkbox",
+      "name": "bold",
+      "checked": false
+    },
+    {
+      "type": "field_checkbox",
+      "name": "italic",
+      "checked": false
+    },
+    {
+      "type": "field_checkbox",
+      "name": "underlined",
+      "checked": false
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"command\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>",
+      "<value name=\"bold\"><block type=\"field_checkbox\"></block></value>",
+      "<value name=\"italic\"><block type=\"field_checkbox\"></block></value>",
+      "<value name=\"underlined\"><block type=\"field_checkbox\"></block></value>"
+    ],
+    "inputs": [
+      "command"
+    ],
+    "fields": [
+      "color",
+      "bold",
+      "italic",
+      "underlined"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
