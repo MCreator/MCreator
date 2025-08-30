@@ -392,7 +392,7 @@ import java.util.stream.Collectors;
 		retval.add(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
 
 		if (isSign()) // Provide sign wall block
-			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block", "Wall sign"));
+			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block_without_item", "Wall sign"));
 
 		return retval;
 	}
