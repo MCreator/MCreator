@@ -46,6 +46,11 @@ package ${package}.network;
 			buffer.writeUtf((String) message.elementState);
 		} else if (message.elementType == 1) {
 			buffer.writeBoolean((boolean) message.elementState);
+		} else if (message.elementType == 2) {
+			if (message.elementState instanceof Integer i)
+				buffer.writeDouble(i.doubleValue());
+			else if (message.elementState instanceof Double d)
+				buffer.writeDouble(d);
 		}
 	}
 
@@ -57,6 +62,8 @@ package ${package}.network;
 			elementState = buffer.readUtf();
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
+		} else if (elementType == 2) {
+			elementState = buffer.readDouble();
 		}
 		return new MenuStateUpdateMessage(elementType, name, elementState);
 	}

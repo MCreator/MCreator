@@ -93,6 +93,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 
+		<#if sliders?has_content>
+		if (elementType == 2 && elementState instanceof Double doubleState) {
+			<#list sliders as component>
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}"))
+					${component.getName()}.setValue(doubleState);
+			</#list>
+		}
+		</#if>
+
 		menuStateUpdateActive = false;
 	}
 
@@ -324,16 +333,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, Component.translatable(
 				"gui.${modid}.${registryname}.${component.getName()}_prefix"), Component.translatable("gui.${modid}.${registryname}.${component.getName()}_suffix"),
 				${component.min}, ${component.max}, ${component.value}, ${component.step}, 0, true) {
-					<#if hasProcedure(component.whenSliderMoves)>
-						@Override
-						protected void applyValue() {
+					@Override
+					protected void applyValue() {
+						if (!menuStateUpdateActive)
+							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", value, false);
+						<#if hasProcedure(component.whenSliderMoves)>
 							PacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
 							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
-						}
-					</#if>
+						</#if>
+					}
 				};
-
 			this.addRenderableWidget(${component.getName()});
+			if (!menuStateUpdateActive)
+				menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", ${component.getName()}.getValue(), false);
 
 			<#assign btid +=1>
 		</#list>

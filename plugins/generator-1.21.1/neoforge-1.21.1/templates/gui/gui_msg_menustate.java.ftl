@@ -46,7 +46,9 @@ package ${package}.network;
 			buffer.writeUtf((String) message.elementState);
 		} else if (message.elementType == 1) {
 			buffer.writeBoolean((boolean) message.elementState);
-		}
+		} else if (message.elementType == 2) {
+         	buffer.writeDouble((double) message.elementState);
+        }
 	}
 
 	public static MenuStateUpdateMessage read(FriendlyByteBuf buffer) {
@@ -57,7 +59,9 @@ package ${package}.network;
 			elementState = buffer.readUtf();
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
-		}
+		} else if (elementType == 1) {
+         	elementState = buffer.redDouble();
+        }
 		return new MenuStateUpdateMessage(elementType, name, elementState);
 	}
 
