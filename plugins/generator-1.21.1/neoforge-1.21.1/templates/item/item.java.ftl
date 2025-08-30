@@ -286,6 +286,8 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
+
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
 		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 			<#if hasProcedure(data.onStoppedUsing)>
@@ -312,12 +314,25 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		}
 	</#if>
 
-	<#if data.enableRanged && data.shootConstantly>
-		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
-			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-				<@arrowShootCode/>
-				entity.releaseUsingItem();
-			}
+	<#if hasProcedure(data.everyTickWhileUsing) || (data.enableRanged && data.shootConstantly)>
+		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int time) {
+			<#if hasProcedure(data.everyTickWhileUsing)>
+				<@procedureCode data.everyTickWhileUsing, {
+            		"x": "entity.getX()",
+            		"y": "entity.getY()",
+            		"z": "entity.getZ()",
+            		"world": "world",
+            		"entity": "entity",
+            		"itemstack": "itemstack",
+            		"time": "time"
+            	}/>
+            </#if>
+			<#if data.enableRanged && data.shootConstantly>
+				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+					<@arrowShootCode/>
+					entity.releaseUsingItem();
+				}
+			</#if>
 		}
 	</#if>
 
