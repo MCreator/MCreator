@@ -24,7 +24,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class DatapackWorkspacePanel extends AbstractWorkspacePanel {

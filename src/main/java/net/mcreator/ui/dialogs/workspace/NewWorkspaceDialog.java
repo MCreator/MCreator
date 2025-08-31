@@ -143,7 +143,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		workspacePanels.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
-		JComponent center = PanelUtils.gridElements(1,1, workspacePanels);
+		JComponent center = PanelUtils.gridElements(1, 1, workspacePanels);
 		center.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		add("Center", center);
