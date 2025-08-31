@@ -33,7 +33,7 @@
 
 package ${package}.network;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public record ${name}SliderMessage(int buttonID, int x, int y, int z, double value) implements CustomPacketPayload {
+@EventBusSubscriber public record ${name}SliderMessage(int buttonID, int x, int y, int z, double value) implements CustomPacketPayload {
 
 	public static final Type<${name}SliderMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
 
