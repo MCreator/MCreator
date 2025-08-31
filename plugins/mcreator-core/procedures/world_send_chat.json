@@ -9,18 +9,18 @@
       "type": "field_dropdown",
       "name": "color",
       "options": [
-        ["white", "white"],
-        ["gray", "gray"],
-        ["dark gray", "dark gray"],
-        ["black", "black"],
-        ["red", "red"],
-        ["dark red", "dark red"],
-        ["blue", "blue"],
-        ["dark blue", "dark blue"],
-        ["green", "green"],
-        ["dark green", "dark green"],
-        ["yellow", "yellow"],
-        ["gold", "gold"]
+        ["white", "0xFFFFFF"],
+        ["gray", "0xAAAAAA"],
+        ["dark gray", "0x555555"],
+        ["black", "0x000000"],
+        ["red", "0xFF5555"],
+        ["dark red", "0xAA0000"],
+        ["blue", "0x5555FF"],
+        ["dark blue", "0x0000AA"],
+        ["green", "0x55FF55"],
+        ["dark green", "0x00AA00"],
+        ["yellow", "0xFFFF55"],
+        ["gold", "0xFFAA00"]
       ]
     },
     {
