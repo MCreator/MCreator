@@ -60,8 +60,14 @@ public class Slider extends SizedComponent {
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		g.drawImage(MinecraftImageGenerator.generateSliderBackground(this.width, this.height), cx, cy, width, height,
 				wysiwygEditor);
-		g.drawImage(MinecraftImageGenerator.generateButton(8, this.height), cx + this.width / 2 - 8 / 2, cy, 8, height,
+
+		int knobWidth = 8;
+		double normalized = (max > min) ? (value - min) / (max - min) : 0.0;
+		normalized = Math.max(0.0, Math.min(1.0, normalized));
+		int knobX = cx + (int) Math.round(normalized * (this.width - knobWidth));
+		g.drawImage(MinecraftImageGenerator.generateButton(knobWidth, this.height), knobX, cy, knobWidth, height,
 				wysiwygEditor);
+
 		String fullText = prefix + value + suffix;
 		g.setColor(new Color(0x373737));
 		g.drawString(fullText, cx + 1, cy + 13 + 1);
