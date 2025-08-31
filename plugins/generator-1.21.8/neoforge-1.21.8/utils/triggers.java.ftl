@@ -359,7 +359,7 @@
 		"y": "pos.getY()",
 		"z": "pos.getZ()",
 		"world": "world",
-		"entity": "${JavaModName}.clientPlayer()",
+		"entity": (JavaModName + ".clientPlayer()"),
 		"blockstate": "blockstate"
 	}/>
 }

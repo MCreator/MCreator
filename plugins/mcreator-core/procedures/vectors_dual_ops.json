@@ -1,0 +1,46 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vector1",
+      "check": "Vector"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "vector_opcodes",
+      "options": [
+        [
+          "+",
+          "add"
+        ],
+        [
+          "-",
+          "subtract"
+        ],
+        [
+          "*",
+          "multiply"
+        ]
+      ]
+    },
+    {
+      "type": "input_value",
+      "name": "vector2",
+      "check": "Vector"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Vector",
+  "colour": 270,
+  "mcreator": {
+    "group": "base",
+    "toolbox_id": "vector",
+    "inputs": [
+      "vector1",
+      "vector2"
+    ],
+    "fields": [
+      "vector_opcodes"
+    ]
+  }
+}
