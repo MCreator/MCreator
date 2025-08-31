@@ -43,7 +43,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 	public SliderDialog(WYSIWYGEditor editor, @Nullable Slider slider) {
 		super(editor, slider);
 		setModal(true);
-		setSize(460, 390);
+		setSize(460, 360);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.slider_add_title"));
 
@@ -62,29 +62,36 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		JSpinner stepSpinner = new JSpinner(new SpinnerNumberModel(1, -10000.0, 10000.0, 1));
 		JTextField sliderSuffix = new JTextField(8);
 
-		JPanel options = new JPanel();
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		JPanel grid = new JPanel(new GridLayout(-1, 2, 5, 2));
 
 		if (slider == null)
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.slider_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.slider_resize")));
 
-		options.add(PanelUtils.join(L10N.label("dialog.gui.slider_name"), sliderMachineName));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.slider_prefix"), sliderPrefix));
-		options.add(valuesSpinner);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.slider_value"), valueSpinner));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.slider_step"), stepSpinner));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.slider_suffix"), sliderSuffix));
+		sliderMachineName.setPreferredSize(new Dimension(200, 28));
+
+		grid.add(L10N.label("dialog.gui.slider_name"));
+		grid.add(sliderMachineName);
+		grid.add(L10N.label("dialog.gui.slider_values"));
+		grid.add(valuesSpinner);
+		grid.add(L10N.label("dialog.gui.slider_value"));
+		grid.add(valueSpinner);
+		grid.add(L10N.label("dialog.gui.slider_step"));
+		grid.add(stepSpinner);
+		grid.add(L10N.label("dialog.gui.slider_prefix"));
+		grid.add(sliderPrefix);
+		grid.add(L10N.label("dialog.gui.slider_suffix"));
+		grid.add(sliderSuffix);
 
 		ProcedureSelector whenSliderMoves = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slider_moves"),
 				editor.mcreator, L10N.t("dialog.gui.when_slider_moves"), ProcedureSelector.Side.CLIENT, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/value:number"));
 		whenSliderMoves.refreshList();
 
-		options.add(PanelUtils.centerInPanel(whenSliderMoves));
-
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(options)));
+		add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.join(grid), PanelUtils.centerInPanel(whenSliderMoves), 5,
+						5));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -113,7 +120,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 				String sliderName = sliderMachineName.getText();
 				if (!sliderName.isEmpty()) {
 					if (slider == null) {
-						String fullText = sliderPrefix.getText() + valueSpinner.getValue() + sliderSuffix.getText();
+						String fullText = sliderPrefix.getText() + valuesSpinner.getMaxValue() + sliderSuffix.getText();
 						int textWidth = (int) (WYSIWYG.fontMC.getStringBounds(fullText, WYSIWYG.frc).getWidth());
 
 						Slider component = new Slider(0, 0, textWidth + 25, 20, sliderName, valuesSpinner.getMinValue(),
