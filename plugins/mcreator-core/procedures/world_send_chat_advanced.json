@@ -11,14 +11,14 @@
       "options": [
         ["white", "white"],
         ["gray", "gray"],
-        ["dark_gray", "dark_gray"],
+        ["dark gray", "dark gray"],
         ["black", "black"],
         ["red", "red"],
-        ["dark_red", "dark_red"],
+        ["dark red", "dark red"],
         ["blue", "blue"],
-        ["dark_blue", "dark_blue"],
+        ["dark blue", "dark blue"],
         ["green", "green"],
-        ["dark_green", "dark_green"],
+        ["dark green", "dark green"],
         ["yellow", "yellow"],
         ["gold", "gold"]
       ]
