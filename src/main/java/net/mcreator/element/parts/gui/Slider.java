@@ -58,12 +58,15 @@ public class Slider extends SizedComponent {
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(MinecraftImageGenerator.generateSliderBackground(this.width, this.height), cx, cy, width, height, wysiwygEditor);
-		g.drawImage(MinecraftImageGenerator.generateButton(8, this.height), cx + this.width/2, cy, 8, height, wysiwygEditor);
+		g.drawImage(MinecraftImageGenerator.generateSliderBackground(this.width, this.height), cx, cy, width, height,
+				wysiwygEditor);
+		g.drawImage(MinecraftImageGenerator.generateButton(8, this.height), cx + this.width / 2 - 8 / 2, cy, 8, height,
+				wysiwygEditor);
 		String fullText = prefix + value + suffix;
 		g.setColor(new Color(0x373737));
-		g.drawString(fullText,  cx + 1, cy + 13 + 1);
+		g.drawString(fullText, cx + 1, cy + 13 + 1);
 		g.setColor(new Color(0xdddddd));
 		g.drawString(fullText, cx, cy + 13);
 	}
+
 }
