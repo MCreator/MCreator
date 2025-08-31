@@ -127,6 +127,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
 	private ProcedureSelector onFinishUsingItem;
+	private ProcedureSelector everyTickWhileUsing;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page5group = new ValidationGroup();
@@ -204,6 +206,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_finish_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
+				L10N.t("elementgui.item.player_useitem_tick"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -426,7 +434,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -438,6 +446,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
 		events.add(onFinishUsingItem);
+		events.add(everyTickWhileUsing);
+		events.add(onItemEntityDestroyed);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -656,6 +666,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		onFinishUsingItem.refreshListKeepSelected();
+		everyTickWhileUsing.refreshListKeepSelected();
+		onItemEntityDestroyed.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		onRangedItemUsed.refreshListKeepSelected();
@@ -707,6 +719,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		isMeat.setSelected(item.isMeat);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
+		everyTickWhileUsing.setSelectedProcedure(item.everyTickWhileUsing);
+		onItemEntityDestroyed.setSelectedProcedure(item.onItemEntityDestroyed);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
@@ -778,6 +792,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
+		item.everyTickWhileUsing = everyTickWhileUsing.getSelectedProcedure();
+		item.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.projectileDisableAmmoCheck = projectileDisableAmmoCheck.isSelected();
