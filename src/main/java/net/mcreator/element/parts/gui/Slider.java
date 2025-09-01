@@ -24,6 +24,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
 import java.awt.*;
+import java.math.BigDecimal;
 
 public class Slider extends SizedComponent {
 
@@ -68,11 +69,13 @@ public class Slider extends SizedComponent {
 		g.drawImage(MinecraftImageGenerator.generateButton(knobWidth, this.height), knobX, cy, knobWidth, height,
 				wysiwygEditor);
 
-		String fullText = prefix + value + suffix;
+		int decimals = BigDecimal.valueOf(step).stripTrailingZeros().scale();
+		String fullText = prefix + String.format("%." + decimals + "f", value) + suffix;
+		int tx = cx + (width - g.getFontMetrics().stringWidth(fullText)) / 2;
 		g.setColor(new Color(0x373737));
-		g.drawString(fullText, cx + 1, cy + 13 + 1);
+		g.drawString(fullText, tx + 1, cy + 13 + 1);
 		g.setColor(new Color(0xdddddd));
-		g.drawString(fullText, cx, cy + 13);
+		g.drawString(fullText, tx, cy + 13);
 	}
 
 }
