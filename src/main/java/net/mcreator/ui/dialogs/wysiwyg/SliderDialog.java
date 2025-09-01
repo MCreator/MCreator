@@ -56,10 +56,22 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		sliderMachineName.enableRealtimeValidation();
 
 		JTextField sliderPrefix = new JTextField(8);
-		JMinMaxSpinner valuesSpinner = new JMinMaxSpinner(0.0, 10.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
-		valuesSpinner.setPreferredSize(new Dimension(200, 20));
+		JMinMaxSpinner rangeSpinner = new JMinMaxSpinner(0.0, 10.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
+		rangeSpinner.setPreferredSize(new Dimension(200, 20));
 		JSpinner valueSpinner = new JSpinner(new SpinnerNumberModel(5, -10000.0, 10000.0, 1));
+		valueSpinner.addChangeListener(e -> {
+			double d = (double) valueSpinner.getValue();
+			if (d < rangeSpinner.getMinValue())
+				valueSpinner.setValue(rangeSpinner.getMinValue());
+			else if (d > rangeSpinner.getMaxValue())
+				valueSpinner.setValue(rangeSpinner.getMaxValue());
+		});
 		JSpinner stepSpinner = new JSpinner(new SpinnerNumberModel(1, -10000.0, 10000.0, 1));
+		stepSpinner.addChangeListener(e -> {
+			double d = (double) stepSpinner.getValue();
+			if ((rangeSpinner.getMaxValue() - rangeSpinner.getMinValue()) < d)
+				stepSpinner.setValue(rangeSpinner.getMaxValue());
+		});
 		JTextField sliderSuffix = new JTextField(8);
 
 		JPanel grid = new JPanel(new GridLayout(-1, 2, 5, 2));
@@ -73,8 +85,8 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 
 		grid.add(L10N.label("dialog.gui.slider_name"));
 		grid.add(sliderMachineName);
-		grid.add(L10N.label("dialog.gui.slider_values"));
-		grid.add(valuesSpinner);
+		grid.add(L10N.label("dialog.gui.slider_range"));
+		grid.add(rangeSpinner);
 		grid.add(L10N.label("dialog.gui.slider_value"));
 		grid.add(valueSpinner);
 		grid.add(L10N.label("dialog.gui.slider_step"));
@@ -104,8 +116,8 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 			sliderMachineName.setText(slider.name);
 			sliderPrefix.setText(slider.prefix);
 			sliderSuffix.setText(slider.suffix);
-			valuesSpinner.setMinValue(slider.min);
-			valuesSpinner.setMaxValue(slider.max);
+			rangeSpinner.setMinValue(slider.min);
+			rangeSpinner.setMaxValue(slider.max);
 			valueSpinner.setValue(slider.value);
 			stepSpinner.setValue(slider.step);
 
@@ -120,11 +132,11 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 				String sliderName = sliderMachineName.getText();
 				if (!sliderName.isEmpty()) {
 					if (slider == null) {
-						String fullText = sliderPrefix.getText() + valuesSpinner.getMaxValue() + sliderSuffix.getText();
+						String fullText = sliderPrefix.getText() + rangeSpinner.getMaxValue() + sliderSuffix.getText();
 						int textWidth = (int) (WYSIWYG.fontMC.getStringBounds(fullText, WYSIWYG.frc).getWidth());
 
-						Slider component = new Slider(0, 0, textWidth + 25, 20, sliderName, valuesSpinner.getMinValue(),
-								valuesSpinner.getMaxValue(), (Double) valueSpinner.getValue(),
+						Slider component = new Slider(0, 0, textWidth + 25, 20, sliderName, rangeSpinner.getMinValue(),
+								rangeSpinner.getMaxValue(), (Double) valueSpinner.getValue(),
 								(Double) stepSpinner.getValue(), sliderPrefix.getText(), sliderSuffix.getText(),
 								whenSliderMoves.getSelectedProcedure());
 
@@ -136,7 +148,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 						int idx = editor.components.indexOf(slider);
 						editor.components.remove(slider);
 						Slider sliderNew = new Slider(slider.getX(), slider.getY(), slider.width, slider.height,
-								slider.name, valuesSpinner.getMinValue(), valuesSpinner.getMaxValue(),
+								slider.name, rangeSpinner.getMinValue(), rangeSpinner.getMaxValue(),
 								(Double) valueSpinner.getValue(), (Double) stepSpinner.getValue(),
 								sliderPrefix.getText(), sliderSuffix.getText(), whenSliderMoves.getSelectedProcedure());
 						editor.components.add(idx, sliderNew);
