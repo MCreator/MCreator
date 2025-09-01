@@ -73,7 +73,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 				stepSpinner.setValue(rangeSpinner.getMaxValue() - rangeSpinner.getMinValue());
 		});
 
-		rangeSpinner.addChangeListener( e -> {
+		rangeSpinner.addChangeListener(e -> {
 			double value = (double) valueSpinner.getValue();
 			if (value < rangeSpinner.getMinValue())
 				valueSpinner.setValue(rangeSpinner.getMinValue());
@@ -83,7 +83,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 			double step = (double) stepSpinner.getValue();
 			if ((rangeSpinner.getMaxValue() - rangeSpinner.getMinValue()) < step)
 				stepSpinner.setValue(rangeSpinner.getMaxValue() - rangeSpinner.getMinValue());
-		} );
+		});
 		JTextField sliderSuffix = new JTextField(8);
 
 		JPanel grid = new JPanel(new GridLayout(-1, 2, 5, 2));
