@@ -21,6 +21,10 @@
       "type": "number"
     },
     {
+      "name": "equipmentslot",
+      "type": "number"
+    },
+    {
       "name": "olditemstack",
       "type": "itemstack"
     },
