@@ -94,10 +94,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
 
 		<#if sliders?has_content>
-		if (elementType == 2 && elementState instanceof Double doubleState) {
+		if (elementType == 2 && elementState instanceof Number n) {
 			<#list sliders as component>
 				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}"))
-					${component.getName()}.setValue(doubleState);
+					${component.getName()}.setValue(n.doubleValue());
 			</#list>
 		}
 		</#if>
@@ -213,12 +213,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		return super.keyPressed(key, b, c);
 	}
 
-	<#if sliders?has_content> <#-- AbstractContainerScreen overrides it for slots only, causing a bug with Sliders, so we override it. -->
-		@Override
-		public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-			return (this.getFocused() != null && this.isDragging() && button == 0) ? this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY)
-				: super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-		}
+	<#if sliders?has_content> <#-- AbstractContainerScreen overrides it for slots only, causing a bug with Sliders, so we override it again -->
+	@Override public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		return (this.getFocused() != null && this.isDragging() && button == 0) ? this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY)
+			: super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
 	</#if>
 
 	<#if textFields?has_content>
@@ -326,26 +325,26 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 
-		<#assign stid = 0>
+		<#assign slid = 0>
 		<#list sliders as component>
 			${component.getName()} = new ExtendedSlider(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, Component.translatable(
 				"gui.${modid}.${registryname}.${component.getName()}_prefix"), Component.translatable("gui.${modid}.${registryname}.${component.getName()}_suffix"),
 				${component.min}, ${component.max}, ${component.value}, ${component.step}, 0, true) {
-					@Override
-					protected void applyValue() {
+					@Override protected void applyValue() {
 						if (!menuStateUpdateActive)
-							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", getValue(), false);
+							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", this.getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
-							ClientPacketDistributor.sendToServer(new ${name}SliderMessage(${stid}, x, y, z, this.getValue()));
-							${name}SliderMessage.handleSliderAction(entity, ${stid}, x, y, z, this.getValue());
+							ClientPacketDistributor.sendToServer(new ${name}SliderMessage(${slid}, x, y, z, this.getValue()));
+							${name}SliderMessage.handleSliderAction(entity, ${slid}, x, y, z, this.getValue());
 						</#if>
 					}
 				};
 			this.addRenderableWidget(${component.getName()});
 			if (!menuStateUpdateActive)
 				menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", ${component.getName()}.getValue(), false);
-			<#assign stid +=1>
+
+			<#assign slid +=1>
 		</#list>
 	}
 
