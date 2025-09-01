@@ -33,13 +33,13 @@
 
 package ${package}.network;
 
-@EventBusSubscriber public record ${name}SliderMessage(int buttonID, int x, int y, int z, double value) implements CustomPacketPayload {
+@EventBusSubscriber public record ${name}SliderMessage(int sliderID, int x, int y, int z, double value) implements CustomPacketPayload {
 
 	public static final Type<${name}SliderMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SliderMessage> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, ${name}SliderMessage message) -> {
-				buffer.writeInt(message.buttonID);
+				buffer.writeInt(message.sliderID);
 				buffer.writeInt(message.x);
 				buffer.writeInt(message.y);
 				buffer.writeInt(message.z);
@@ -54,31 +54,28 @@ package ${package}.network;
 
 	public static void handleData(final ${name}SliderMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
-			context.enqueueWork(() -> handleSliderAction(context.player(), message.buttonID, message.x, message.y, message.z, message.value)).exceptionally(e -> {
+			context.enqueueWork(() -> handleSliderAction(context.player(), message.sliderID, message.x, message.y, message.z, message.value)).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
 				return null;
 			});
 		}
 	}
 
-	public static void handleSliderAction(Player entity, int buttonID, int x, int y, int z, double value) {
+	public static void handleSliderAction(Player entity, int sliderID, int x, int y, int z, double value) {
 		Level world = entity.level();
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
-		<#assign btid = 0>
-		<#-- We need to start at the right number to sync everything correctly, so we attribute id for buttons before -->
-		<#assign btid += data.getComponentsOfType("Button")?size>
-		<#assign btid += data.getComponentsOfType("ImageButton")?size>
+		<#assign stid = 0>
 		<#list data.getComponentsOfType("Slider") as component>
 			<#if hasProcedure(component.whenSliderMoves)>
-				if (buttonID == ${btid}) {
+				if (sliderID == ${stid}) {
 					<@procedureOBJToCode component.whenSliderMoves/>
 				}
 			</#if>
-			<#assign btid +=1>
+			<#assign stid +=1>
 		</#list>
 	}
 

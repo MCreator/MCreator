@@ -326,6 +326,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 
+		<#assign stid = 0>
 		<#list sliders as component>
 			${component.getName()} = new ExtendedSlider(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())}, Component.translatable(
@@ -336,15 +337,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 						if (!menuStateUpdateActive)
 							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
-							ClientPacketDistributor.sendToServer(new ${name}SliderMessage(${btid}, x, y, z, this.getValue()));
-							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
+							ClientPacketDistributor.sendToServer(new ${name}SliderMessage(${stid}, x, y, z, this.getValue()));
+							${name}SliderMessage.handleSliderAction(entity, ${stid}, x, y, z, this.getValue());
 						</#if>
 					}
 				};
 			this.addRenderableWidget(${component.getName()});
 			if (!menuStateUpdateActive)
 				menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", ${component.getName()}.getValue(), false);
-			<#assign btid +=1>
+			<#assign stid +=1>
 		</#list>
 	}
 
