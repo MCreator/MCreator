@@ -46,11 +46,8 @@ package ${package}.network;
 			buffer.writeUtf((String) message.elementState);
 		} else if (message.elementType == 1) {
 			buffer.writeBoolean((boolean) message.elementState);
-		} else if (message.elementType == 2) {
-			if (message.elementState instanceof Integer i)
-				buffer.writeDouble(i.doubleValue());
-			else if (message.elementState instanceof Double d)
-				buffer.writeDouble(d);
+		} else if (message.elementType == 2 && message.elementState instanceof Number n) {
+			buffer.writeDouble(n.doubleValue());
 		}
 	}
 
