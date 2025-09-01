@@ -68,14 +68,14 @@ package ${package}.network;
 		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
-		<#assign stid = 0>
+		<#assign slid = 0>
 		<#list data.getComponentsOfType("Slider") as component>
 			<#if hasProcedure(component.whenSliderMoves)>
-				if (sliderID == ${stid}) {
+				if (sliderID == ${slid}) {
 					<@procedureOBJToCode component.whenSliderMoves/>
 				}
 			</#if>
-			<#assign stid +=1>
+			<#assign slid +=1>
 		</#list>
 	}
 
