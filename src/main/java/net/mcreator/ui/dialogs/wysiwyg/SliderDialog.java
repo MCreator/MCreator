@@ -70,8 +70,20 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		stepSpinner.addChangeListener(e -> {
 			double d = (double) stepSpinner.getValue();
 			if ((rangeSpinner.getMaxValue() - rangeSpinner.getMinValue()) < d)
-				stepSpinner.setValue(rangeSpinner.getMaxValue());
+				stepSpinner.setValue(rangeSpinner.getMaxValue() - rangeSpinner.getMinValue());
 		});
+
+		rangeSpinner.addChangeListener( e -> {
+			double value = (double) valueSpinner.getValue();
+			if (value < rangeSpinner.getMinValue())
+				valueSpinner.setValue(rangeSpinner.getMinValue());
+			else if (value > rangeSpinner.getMaxValue())
+				valueSpinner.setValue(rangeSpinner.getMaxValue());
+
+			double step = (double) stepSpinner.getValue();
+			if ((rangeSpinner.getMaxValue() - rangeSpinner.getMinValue()) < step)
+				stepSpinner.setValue(rangeSpinner.getMaxValue() - rangeSpinner.getMinValue());
+		} );
 		JTextField sliderSuffix = new JTextField(8);
 
 		JPanel grid = new JPanel(new GridLayout(-1, 2, 5, 2));
