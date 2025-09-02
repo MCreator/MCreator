@@ -40,6 +40,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
+import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -168,6 +170,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private ModElementListField providedBannerPatterns;
 
+	private JItemAnimationList animations;
+
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -234,6 +238,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
 
+		animations = new JItemAnimationList(mcreator, this);
+
 		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
 				String selected = guiBoundTo.getEntry();
@@ -258,6 +264,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
@@ -284,6 +291,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		renderType.addActionListener(e -> updateTextureOptions());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -578,9 +587,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
 
+		JComponent animationsList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model_animations"),
+						L10N.label("elementgui.item.model_animations")), animations);
+		animationsList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		animationsPane.setOpaque(false);
+		animationsPane.add("Center", animationsList);
+
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false).lazyValidate(
 				customProperties::getValidationResult);
+		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
@@ -590,6 +608,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+	}
+
+	private void updateTextureOptions() {
+		Model model = renderType.getSelectedItem();
+		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
 	}
 
 	private void updateCraftingSettings() {
@@ -677,6 +700,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
+		animations.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
@@ -739,6 +764,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
 		providedBannerPatterns.setListElements(
 				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
+		animations.setEntries(item.animations);
 
 		updateCraftingSettings();
 		updateFoodPanel();
@@ -817,6 +843,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		item.customProperties = customProperties.getProperties();
 		item.states = customProperties.getStates();
+
+		item.animations = animations.getEntries();
 
 		return item;
 	}
