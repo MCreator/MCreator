@@ -8,7 +8,7 @@
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level()",
 				"entity": "event.getEntity()",
-				"equipmentslot": "event.getSlot().getIndex()",
+				"equipmentslot": "event.getSlot().getId()",
 				"olditemstack": "event.getFrom()",
 				"newitemstack": "event.getTo()",
 				"event": "event"
