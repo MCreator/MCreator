@@ -92,6 +92,8 @@ import java.util.*;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
 	public Procedure onFinishUsingItem;
+	public Procedure everyTickWhileUsing;
+	public Procedure onItemEntityDestroyed;
 
 	// Ranged properties
 	public boolean enableRanged;

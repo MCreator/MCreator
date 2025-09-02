@@ -37,8 +37,9 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
 		super(editor, textField);
 		setModal(true);
-		setSize(480, 150);
+		setSize(530, 150);
 		setLocationRelativeTo(editor.mcreator);
+		setTitle(L10N.t("dialog.gui.textfield_add"));
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
@@ -51,21 +52,23 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 		JTextField deft = new JTextField(20);
 		deft.setPreferredSize(new Dimension(200, 28));
-		JPanel options = new JPanel();
+		JPanel grid = new JPanel(new GridLayout(2, 2, 5, 2));
 
 		if (textField == null)
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_resize")));
 
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
-		add("Center", options);
-		setTitle(L10N.t("dialog.gui.textfield_add"));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_initial_text"), deft));
+		grid.add(L10N.label("dialog.gui.textfield_input_name"));
+		grid.add(nameField);
+
+		grid.add(L10N.label("dialog.gui.textfield_initial_text"));
+		grid.add(deft);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+
+		add("Center", PanelUtils.join(grid));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
