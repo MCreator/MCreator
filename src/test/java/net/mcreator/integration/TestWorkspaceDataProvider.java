@@ -1256,6 +1256,8 @@ public class TestWorkspaceDataProvider {
 			item.onStoppedUsing = new Procedure("procedure7");
 			item.onEntitySwing = new Procedure("procedure8");
 			item.onDroppedByPlayer = new Procedure("procedure9");
+			item.everyTickWhileUsing = new Procedure("procedure10");
+			item.onItemEntityDestroyed = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
@@ -1322,6 +1324,16 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				item.providedBannerPatterns.add("Examplebannerpattern1");
 				item.providedBannerPatterns.add("Examplebannerpattern2");
+			}
+			item.animations = new ArrayList<>();
+			if (_true) {
+				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
+					Item.AnimationEntry animation = new Item.AnimationEntry();
+					animation.animation = new Animation(modElement.getWorkspace(), anim);
+					animation.condition = random.nextBoolean() ? null : new Procedure("condition2");
+					animation.speed = 12.3;
+					item.animations.add(animation);
+				}
 			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
