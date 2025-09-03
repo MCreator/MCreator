@@ -28,6 +28,7 @@ import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -49,8 +50,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -95,6 +99,27 @@ public final class BlocklyJavascriptBridge {
 			LOG.error(ioe.getMessage(), ioe);
 			return "";
 		}
+	}
+
+	@SuppressWarnings("unused") public void openColorSelector(String color, JSObject callback) {
+		SwingUtilities.invokeLater(() -> {
+			AtomicReference<String> selected = new AtomicReference<>();
+			JColor.colorChooser.setColor(Color.decode(color));
+			JDialog dialog = JColorChooser.createDialog(mcreator,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
+					JColor.colorChooser, event -> {
+						Color c = JColor.colorChooser.getColor();
+						if (c != null) {
+							selected.set(String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
+						}
+					}, null);
+			dialog.setVisible(true);
+			Platform.runLater(
+					() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, selected.get() != null ? selected.get() : null));
+		});
+
+		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+		callback.call("callback", retval);
 	}
 
 	@SuppressWarnings("unused") public void openMCItemSelector(String type, JSObject callback) {
