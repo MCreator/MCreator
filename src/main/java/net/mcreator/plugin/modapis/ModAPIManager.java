@@ -20,7 +20,7 @@ package net.mcreator.plugin.modapis;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.YamlMerge;
+import net.mcreator.util.yaml.YamlMerge;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;

@@ -18,12 +18,11 @@
 
 package net.mcreator.generator;
 
-import com.google.gson.Gson;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlMerge;
+import net.mcreator.util.yaml.YamlMerge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;

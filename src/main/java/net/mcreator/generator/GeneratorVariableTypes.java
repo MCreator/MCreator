@@ -20,7 +20,7 @@
 package net.mcreator.generator;
 
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlMerge;
+import net.mcreator.util.yaml.YamlMerge;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;

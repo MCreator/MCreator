@@ -23,7 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.TestUtil;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
