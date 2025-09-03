@@ -6,22 +6,8 @@
       "check": "String"
     },
     {
-      "type": "field_dropdown",
-      "name": "color",
-      "options": [
-        ["white", "0xFFFFFF"],
-        ["gray", "0xAAAAAA"],
-        ["dark gray", "0x555555"],
-        ["black", "0x000000"],
-        ["red", "0xFF5555"],
-        ["dark red", "0xAA0000"],
-        ["blue", "0x5555FF"],
-        ["dark blue", "0x0000AA"],
-        ["green", "0x55FF55"],
-        ["dark green", "0x00AA00"],
-        ["yellow", "0xFFFF55"],
-        ["gold", "0xFFAA00"]
-      ]
+      "type": "field_color_selector",
+      "name": "color"
     },
     {
       "type": "field_checkbox",
@@ -53,6 +39,7 @@
     "toolbox_id": "worldmanagement",
     "toolbox_init": [
       "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>",
+      "<value name=\"color\"><block type=\"field_color\"></block></value>",
       "<value name=\"bold\"><block type=\"field_checkbox\"></block></value>",
       "<value name=\"italic\"><block type=\"field_checkbox\"></block></value>",
       "<value name=\"underlined\"><block type=\"field_checkbox\"></block></value>"
