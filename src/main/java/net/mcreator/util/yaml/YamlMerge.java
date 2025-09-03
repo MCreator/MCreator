@@ -100,8 +100,10 @@ public class YamlMerge {
 
 		default void mergeList(Object key, List<Object> existing, List<Object> addition) throws Exception {
 			try {
-				// merge lists so that new entries are added on the top, since most
-				// processors use the last match in MCreator's yaml files as the final result
+				// if a plugin is loaded earlier (higher weight), its entries should be on the bottom so
+				// they have the highest priority (latest template for file loaded is kept by Generator)
+				// therefore if a plugin adds more entries later (lower priority plugin), they should be
+				// added to the start of the list (so they are not the last option to consider and win)
 				existing.addAll(0, addition);
 			} catch (Throwable t) {
 				throw new Exception(t);
