@@ -233,22 +233,64 @@ public class GTProcedureBlocks {
 	}
 
 	public static String wrapWithBaseTestXML(String customXML) {
-		return "<xml xmlns=\"https://developers.google.com/blockly/xml\">" + "<variables>"
-				+ "<variable type=\"Number\" id=\"test\">test</variable>"
-				+ "<variable type=\"Boolean\" id=\"flag\">flag</variable>"
-				+ "<variable type=\"MCItem\" id=\"stackvar\">stackvar</variable>" + "</variables>"
-				+ "<block type=\"event_trigger\" deletable=\"false\" x=\"59\" y=\"38\">"
-				+ "<field name=\"trigger\">no_ext_trigger</field>" + "<next><block type=\"variables_set_logic\">"
-				+ "<field name=\"VAR\">local:flag</field><value name=\"VAL\"><block type=\"logic_negate\">"
-				+ "<value name=\"BOOL\"><block type=\"variables_get_logic\"><field name=\"VAR\">local:flag</field>"
-				+ "</block></value></block></value><next><block type=\"variables_set_number\">"
-				+ "<field name=\"VAR\">local:test</field><value name=\"VAL\"><block type=\"math_dual_ops\">"
-				+ "<field name=\"OP\">ADD</field><value name=\"A\"><block type=\"variables_get_number\">"
-				+ "<field name=\"VAR\">local:test</field></block></value><value name=\"B\"><block type=\"math_number\">"
-				+ "<field name=\"NUM\">1.23</field></block></value></block></value><next><block type=\"variables_set_itemstack\">"
-				+ "<field name=\"VAR\">local:stackvar</field><value name=\"VAL\"><block type=\"mcitem_all\"><field name=\"value\">"
-				+ "Blocks.STONE</field></block></value><next>" + customXML
-				+ "</next></block></next></block></next></block></next></block></xml>";
+		return """
+        <xml xmlns="https://developers.google.com/blockly/xml">
+          <variables>
+            <variable type="Number" id="test">test</variable>
+            <variable type="Boolean" id="flag">flag</variable>
+            <variable type="MCItem" id="stackvar">stackvar</variable>
+          </variables>
+          <block type="event_trigger" deletable="false" x="59" y="38">
+            <field name="trigger">no_ext_trigger</field>
+            <next>
+              <block type="variables_set_logic">
+                <field name="VAR">local:flag</field>
+                <value name="VAL">
+                  <block type="logic_negate">
+                    <value name="BOOL">
+                      <block type="variables_get_logic">
+                        <field name="VAR">local:flag</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="variables_set_number">
+                    <field name="VAR">local:test</field>
+                    <value name="VAL">
+                      <block type="math_dual_ops">
+                        <field name="OP">ADD</field>
+                        <value name="A">
+                          <block type="variables_get_number">
+                            <field name="VAR">local:test</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number">
+                            <field name="NUM">1.23</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set_itemstack">
+                        <field name="VAR">local:stackvar</field>
+                        <value name="VAL">
+                          <block type="mcitem_all">
+                            <field name="value">Blocks.STONE</field>
+                          </block>
+                        </value>
+                        <next>""" + customXML + """
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </xml>
+        """;
 	}
 
 }
