@@ -95,8 +95,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 
-		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
-
 		menuStateUpdateActive = false;
 	}
 
