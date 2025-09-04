@@ -86,7 +86,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 
-
 		<#if checkboxes?has_content>
 		if (elementType == 1 && elementState instanceof Boolean logicState) {
 			<#list checkboxes as component>
