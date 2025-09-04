@@ -199,7 +199,7 @@ public class GTProcedureBlocks {
 				String vectorOperator = ListUtils.getRandomItem(List.of("add", "subtract", "multiply"));
 				procedure.procedurexml = wrapWithBaseTestXML("""
 						<block type="return_vector"><value name="return">
-							<block type="vectors_dual_ops">
+							<block type="vector_dual_ops">
 								<field name="vector_opcodes">%s</field>
 								<value name="vector1">%s</value>
 								<value name="vector2">%s</value>
