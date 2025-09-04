@@ -43,6 +43,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -151,6 +152,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox flyingMob = L10N.checkbox("elementgui.living_entity.is_flying_mob");
 
 	private final JCheckBox hasSpawnEgg = new JCheckBox();
+	private final JColor spawnEggBaseColor = new JColor(mcreator, false, false).withColorTextColumns(5);
+	private final JColor spawnEggDotColor = new JColor(mcreator, false, false).withColorTextColumns(5);
+	private TextureSelectionButton spawnEggTexture;
+
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final JComboBox<String> mobSpawningType = new JComboBox<>(
@@ -169,14 +174,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
 	private MCItemHolder rangedAttackItem;
-
 	private final SearchableComboBox<String> rangedItemType = new SearchableComboBox<>();
 
 	private final JTextField mobLabel = new JTextField();
 
 	private final JCheckBox spawnInDungeons = L10N.checkbox("elementgui.living_entity.spawn_dungeons");
-	private final JColor spawnEggBaseColor = new JColor(mcreator, false, false);
-	private final JColor spawnEggDotColor = new JColor(mcreator, false, false);
 
 	private static final Model biped = new Model.BuiltInModel("Biped");
 	private static final Model chicken = new Model.BuiltInModel("Chicken");
@@ -258,6 +260,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private JEntityAnimationList animations;
 
+	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
+	private GameEventListField vibrationalEvents;
+	private NumberProcedureSelector vibrationSensitivityRadius;
+	private ProcedureSelector canReceiveVibrationCondition;
+	private ProcedureSelector onReceivedVibration;
+
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -280,7 +288,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private synchronized void regenerateAITasks() {
+	private synchronized void regenerateAITasks(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 
@@ -300,11 +308,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
 	}
 
 	@Override protected void initGUI() {
+		vibrationalEvents = new GameEventListField(mcreator, true);
+
 		onStruckByLightning = new ProcedureSelector(this.withEntry("entity/when_struck_by_lightning"), mcreator,
 				L10N.t("elementgui.living_entity.event_struck_by_lightning"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -367,6 +377,20 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 210,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("entity/vibration_sensitivity_radius"),
+				mcreator, L10N.t("elementgui.living_entity.vibration_sensitivity_radius"),
+				AbstractProcedureSelector.Side.SERVER, new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)),
+				130, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("entity/receive_vibration_condition"),
+				mcreator, L10N.t("elementgui.living_entity.receive_vibration_condition"),
+				AbstractProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+				L10N.t("condition.common.true")).makeInline();
+		onReceivedVibration = new ProcedureSelector(this.withEntry("entity/on_received_vibration"), mcreator,
+				L10N.t("elementgui.living_entity.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -375,6 +399,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataList = new JEntityDataList(mcreator, this);
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
+
+		spawnEggTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		spawnEggTexture.setOpaque(false);
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");
@@ -418,6 +445,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
+		JPanel vibrationPane = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -666,9 +694,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.westAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, new JEmptyBox(2, 2), spawnEggBaseColor,
-						new JEmptyBox(2, 2), spawnEggDotColor), creativeTabs, 5, 0));
+		spo2.add(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(
+						PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, new JEmptyBox(5, 2), spawnEggTexture,
+								new JEmptyBox(5, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor)), creativeTabs,
+				5, 0));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
@@ -737,7 +766,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> {
 			if (editorReady)
-				regenerateAITasks();
+				regenerateAITasks(false);
 		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
@@ -770,7 +799,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
+					changeEvent -> new Thread(() -> regenerateAITasks(changeEvent.getSource() instanceof BlocklyPanel),
+							"AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
@@ -900,6 +930,37 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane7.setOpaque(false);
 		pane7.setOpaque(false);
 
+		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
+		vibrationProps.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+		sensitiveToVibration.addActionListener(e -> enableOrDisableFields());
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
+				L10N.label("elementgui.living_entity.sensitive_to_vibration")));
+		vibrationProps.add(sensitiveToVibration);
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/vibrational_events"),
+				L10N.label("elementgui.living_entity.vibrational_events")));
+		vibrationProps.add(vibrationalEvents);
+
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
+
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2);
+		vibrationPane.add("Center", PanelUtils.totalCenterInPanel(vibrationMerger));
+		vibrationPane.setOpaque(false);
+
 		mobName.setValidator(
 				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
@@ -914,6 +975,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
+		addPage(L10N.t("elementgui.living_entity.page_vibration"), vibrationPane);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3).lazyValidate(
 				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
@@ -961,6 +1023,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		mobModelTexture.reload();
 
+		vibrationSensitivityRadius.refreshListKeepSelected();
+		canReceiveVibrationCondition.refreshListKeepSelected();
+		onReceivedVibration.refreshListKeepSelected();
+
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
@@ -1003,6 +1069,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		bossBarType.setEnabled(isBoss.isSelected());
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
+
+		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
+		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
+		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
+		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1018,8 +1089,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
+		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
 		spawnEggDotColor.setColor(livingEntity.spawnEggDotColor);
+		spawnEggTexture.setTexture(livingEntity.spawnEggTexture);
 		mobLabel.setText(livingEntity.mobLabel);
 		onStruckByLightning.setSelectedProcedure(livingEntity.onStruckByLightning);
 		whenMobFalls.setSelectedProcedure(livingEntity.whenMobFalls);
@@ -1067,7 +1140,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		raidCelebrationSound.setSound(livingEntity.raidCelebrationSound);
 		hasAI.setSelected(livingEntity.hasAI);
 		isBoss.setSelected(livingEntity.isBoss);
-		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		disableCollisions.setSelected(livingEntity.disableCollisions);
 		aiBase.setSelectedItem(livingEntity.aiBase);
 		spawningProbability.setValue(livingEntity.spawningProbability);
@@ -1111,6 +1183,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataList.setEntries(livingEntity.entityDataEntries);
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
+		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);
+		vibrationSensitivityRadius.setSelectedProcedure(livingEntity.vibrationSensitivityRadius);
+		vibrationalEvents.setListElements(livingEntity.vibrationalEvents);
+		canReceiveVibrationCondition.setSelectedProcedure(livingEntity.canReceiveVibrationCondition);
+		onReceivedVibration.setSelectedProcedure(livingEntity.onReceivedVibration);
 
 		Model model = livingEntity.getEntityModel();
 		if (model != null)
@@ -1129,14 +1206,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.mobName = mobName.getText();
 		livingEntity.mobLabel = mobLabel.getText();
 		livingEntity.mobModelTexture = mobModelTexture.getTextureName();
-		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.solidBoundingBox = solidBoundingBox.getSelectedProcedure();
 		livingEntity.visualScale = visualScale.getSelectedProcedure();
 		livingEntity.boundingBoxScale = boundingBoxScale.getSelectedProcedure();
-		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
+		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
+		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
+		livingEntity.spawnEggTexture = spawnEggTexture.getTextureHolder();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
 		livingEntity.isBoss = isBoss.isSelected();
 		livingEntity.bossBarColor = (String) bossBarColor.getSelectedItem();
@@ -1224,6 +1302,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getEntry();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
+		livingEntity.sensitiveToVibration = sensitiveToVibration.isSelected();
+		livingEntity.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
+		livingEntity.vibrationalEvents = vibrationalEvents.getListElements();
+		livingEntity.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();
+		livingEntity.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			livingEntity.raidSpawnsCount[i] = (int) raidSpawnsCount[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();

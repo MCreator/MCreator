@@ -1,0 +1,1 @@
+This parameter controls the colour of the foliage (leaves) in this biome.

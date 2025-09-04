@@ -83,9 +83,9 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			String text = buttonText.getText();
 			if (button == null) {
 				String name = textToMachineName(editor.getComponentList(), "button_", text);

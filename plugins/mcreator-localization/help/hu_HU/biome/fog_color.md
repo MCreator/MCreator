@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a köd színét a biomon belül.

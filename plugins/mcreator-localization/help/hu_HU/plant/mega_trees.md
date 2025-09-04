@@ -1,0 +1,1 @@
+Ezek azok a fák, amelyek akkor nőhetnek meg, ha a csemeték 2x2-es elrendezésben vannak. Mega fák használják.

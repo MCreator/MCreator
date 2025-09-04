@@ -40,6 +40,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
+import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -127,6 +129,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
 	private ProcedureSelector onFinishUsingItem;
+	private ProcedureSelector everyTickWhileUsing;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page5group = new ValidationGroup();
@@ -166,6 +170,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private ModElementListField providedBannerPatterns;
 
+	private JItemAnimationList animations;
+
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -201,9 +207,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
+		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_finish_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
+				L10N.t("elementgui.item.player_useitem_tick"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -225,6 +237,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
+
+		animations = new JItemAnimationList(mcreator, this);
 
 		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
@@ -250,6 +264,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
@@ -267,14 +282,17 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);
 
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.item.item_model")));
 		rent.add(renderType);
 
-		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"), L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"),
+				L10N.label("elementgui.common.item_gui_texture")));
 		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		renderType.addActionListener(e -> updateTextureOptions());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -425,7 +443,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -437,6 +455,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
 		events.add(onFinishUsingItem);
+		events.add(everyTickWhileUsing);
+		events.add(onItemEntityDestroyed);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -567,9 +587,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
 
+		JComponent animationsList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model_animations"),
+						L10N.label("elementgui.item.model_animations")), animations);
+		animationsList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		animationsPane.setOpaque(false);
+		animationsPane.add("Center", animationsList);
+
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false).lazyValidate(
 				customProperties::getValidationResult);
+		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
@@ -579,6 +608,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+	}
+
+	private void updateTextureOptions() {
+		Model model = renderType.getSelectedItem();
+		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
 	}
 
 	private void updateCraftingSettings() {
@@ -655,6 +689,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		onFinishUsingItem.refreshListKeepSelected();
+		everyTickWhileUsing.refreshListKeepSelected();
+		onItemEntityDestroyed.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		onRangedItemUsed.refreshListKeepSelected();
@@ -664,10 +700,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
+		animations.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 	}
 
 	@Override public void openInEditingMode(Item item) {
@@ -706,6 +744,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		isMeat.setSelected(item.isMeat);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
+		everyTickWhileUsing.setSelectedProcedure(item.everyTickWhileUsing);
+		onItemEntityDestroyed.setSelectedProcedure(item.onItemEntityDestroyed);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
@@ -724,6 +764,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
 		providedBannerPatterns.setListElements(
 				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
+		animations.setEntries(item.animations);
 
 		updateCraftingSettings();
 		updateFoodPanel();
@@ -777,6 +818,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
+		item.everyTickWhileUsing = everyTickWhileUsing.getSelectedProcedure();
+		item.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.projectileDisableAmmoCheck = projectileDisableAmmoCheck.isSelected();
@@ -800,6 +843,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		item.customProperties = customProperties.getProperties();
 		item.states = customProperties.getStates();
+
+		item.animations = animations.getEntries();
 
 		return item;
 	}

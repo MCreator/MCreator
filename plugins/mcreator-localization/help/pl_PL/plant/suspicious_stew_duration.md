@@ -1,0 +1,1 @@
+Ten parametr określa efekt podejrzanych potrawek stworzonych z tą rośliną.

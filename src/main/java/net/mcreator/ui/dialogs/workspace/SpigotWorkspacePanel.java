@@ -18,65 +18,50 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class SpigotWorkspacePanel extends AbstractWorkspacePanel {
 
 	public SpigotWorkspacePanel(Window parent) {
-		super(parent);
+		super(parent, GeneratorFlavor.SPIGOT);
 
-		add(new JEmptyBox(20, 20));
+		addFormElement(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.display_name"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.display_name"),
 				workspaceDialogPanel.modName));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.plugin_name"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.plugin_name"),
 				workspaceDialogPanel.modID));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.generator"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.package"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.package"),
 				workspaceDialogPanel.packageName));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.folder"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
-		add(new JEmptyBox(30, 170));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.spigot.notice")));
+		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.spigot.notice");
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
 		validationGroup.addValidationElement(workspaceDialogPanel.packageName);
 		validationGroup.addValidationElement(workspaceFolder);
-
-		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.SPIGOT);
-
-		workspaceDialogPanel.generator.removeAllItems();
-		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.SPIGOT)
-				.forEach(workspaceDialogPanel.generator::addItem);
-
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.SPIGOT);
-		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
+
 }

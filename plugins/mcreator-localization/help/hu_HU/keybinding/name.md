@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a billentyű nevét, amely a Minecraft beállítások Vezérlés lapján jelenik meg.

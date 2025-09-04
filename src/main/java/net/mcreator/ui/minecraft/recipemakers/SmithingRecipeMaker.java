@@ -24,6 +24,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import java.awt.*;
+import java.util.List;
 
 public class SmithingRecipeMaker extends AbstractRecipeMaker {
 
@@ -35,9 +36,9 @@ public class SmithingRecipeMaker extends AbstractRecipeMaker {
 	public SmithingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		super(UIRES.get("recipe.smithing").getImage());
 
-		cb4 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
-		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
+		cb4 = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
+		cb1 = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
+		cb2 = new MCItemHolder(mcreator, itemsWithTags, true).disableRightClick();
 		cb3 = new MCItemHolder(mcreator, items);
 
 		cb4.setBounds(18, 60, 28, 28);
@@ -66,5 +67,9 @@ public class SmithingRecipeMaker extends AbstractRecipeMaker {
 		cb2.setValidationShownFlag(exportedYet);
 		cb3.setValidationShownFlag(exportedYet);
 		cb4.setValidationShownFlag(exportedYet);
+	}
+
+	@Override public List<MCItemHolder> getIngredientSlots() {
+		return List.of(cb4, cb1, cb2);
 	}
 }

@@ -1,0 +1,1 @@
+Biomens namn är namnet som används av mods, eller Minecraft själv med buffetvärldar (singelbiom). Detta ändrar dock inte namnet i F3-menyn.

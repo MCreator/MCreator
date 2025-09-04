@@ -28,6 +28,7 @@ import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -41,6 +42,7 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,8 +50,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -94,6 +99,27 @@ public final class BlocklyJavascriptBridge {
 			LOG.error(ioe.getMessage(), ioe);
 			return "";
 		}
+	}
+
+	@SuppressWarnings("unused") public void openColorSelector(String color, JSObject callback) {
+		SwingUtilities.invokeLater(() -> {
+			AtomicReference<String> selected = new AtomicReference<>();
+			JColor.colorChooser.setColor(Color.decode(color));
+			JDialog dialog = JColorChooser.createDialog(mcreator,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
+					JColor.colorChooser, event -> {
+						Color c = JColor.colorChooser.getColor();
+						if (c != null) {
+							selected.set(String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
+						}
+					}, null);
+			dialog.setVisible(true);
+			Platform.runLater(
+					() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, selected.get() != null ? selected.get() : null));
+		});
+
+		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+		callback.call("callback", retval);
 	}
 
 	@SuppressWarnings("unused") public void openMCItemSelector(String type, JSObject callback) {
@@ -205,6 +231,14 @@ public final class BlocklyJavascriptBridge {
 			case "gamerulesnumber" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
+			case "eventparametersnumber" -> openDataListEntrySelector(
+					w -> DataListLoader.loadDataList("eventparameters").stream()
+							.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
+			case "eventparametersboolean" -> openDataListEntrySelector(
+					w -> DataListLoader.loadDataList("eventparameters").stream()
+							.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+							.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "structure" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
@@ -232,7 +266,7 @@ public final class BlocklyJavascriptBridge {
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
-							StringUtils.removeStart(type, "procedure_retval_"));
+							Strings.CS.removeStart(type, "procedure_retval_"));
 					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
 				}
 
@@ -340,7 +374,7 @@ public final class BlocklyJavascriptBridge {
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 					return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
-							StringUtils.removeStart(type, "procedure_retval_"));
+							Strings.CS.removeStart(type, "procedure_retval_"));
 				}
 				return false;
 			}).map(ModElement::getName).collect(Collectors.toList());
@@ -372,6 +406,7 @@ public final class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
+		case "eventparametersnumber", "eventparametersboolean" -> datalist = "eventparameters";
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}

@@ -131,9 +131,9 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 			anchor.setSelectedItem(sprite.anchorPoint);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			if (textureSelector.hasTexture()) {
 				if (sprite == null) {
 					Sprite component = new Sprite(0, 0, textureSelector.getTextureName(), (int) spritesCount.getValue(),

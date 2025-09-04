@@ -1,0 +1,1 @@
+Válassza ki a folyadék típusát: víz vagy láva

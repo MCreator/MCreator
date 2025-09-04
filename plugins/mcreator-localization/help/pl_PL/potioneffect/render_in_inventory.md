@@ -1,0 +1,1 @@
+Włącz ten parametr aby efekt był wyświetlany w ekwipunku gracza, gdy jest aktywny.

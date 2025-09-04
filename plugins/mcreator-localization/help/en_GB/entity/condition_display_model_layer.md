@@ -1,0 +1,1 @@
+While the returned value is true, this model layer is visible.

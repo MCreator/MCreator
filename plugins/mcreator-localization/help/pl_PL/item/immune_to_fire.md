@@ -1,0 +1,1 @@
+Ten parametr kontroluje czy przedmiot jest odporny na ogień, jak w przypadku rzeczy Netherite.

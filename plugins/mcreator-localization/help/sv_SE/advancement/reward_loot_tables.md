@@ -1,0 +1,1 @@
+Spelaren kommer att få några föremål från den valda föremålspoolen när framsteget slutförs.

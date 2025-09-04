@@ -1,0 +1,1 @@
+Jeśli ta opcja jest wybrana, obiekty nie będą w stanie przejść przez roślinę.

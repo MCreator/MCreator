@@ -1,0 +1,1 @@
+O ile nie zaznaczono, czerwona nakładka zostanie wyświetlona na tej warstwie po urazie bytu.

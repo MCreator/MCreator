@@ -58,7 +58,7 @@ public class BackgroundLoader {
 
 	public static List<Image> loadThemeBackgrounds() {
 		Set<String> bgFiles = PluginLoader.INSTANCE.getResources("themes." + Theme.current().getID() + ".backgrounds",
-				Pattern.compile("^[^$].*\\.png"));
+				Pattern.compile("^[^$].*\\.png$"));
 
 		List<Image> backgrounds = new ArrayList<>();
 		for (String name : bgFiles) {

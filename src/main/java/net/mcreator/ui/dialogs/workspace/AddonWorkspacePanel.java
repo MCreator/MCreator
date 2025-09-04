@@ -18,62 +18,45 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 	public AddonWorkspacePanel(Window parent) {
-		super(parent);
+		super(parent, GeneratorFlavor.ADDON);
 
-		add(new JEmptyBox(20, 20));
+		addFormElement(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.display_name"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.display_name"),
 				workspaceDialogPanel.modName));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
 				workspaceDialogPanel.modID));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.generator"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
-		add(new JEmptyBox(30, 204));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.warning")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.addon.notice1")));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.addon.notice2")));
+		addNotice(UIRES.get("18px.warning"), "dialog.new_workspace.addon.notice1");
+		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.addon.notice2");
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
 		validationGroup.addValidationElement(workspaceFolder);
-
-		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.ADDON);
-
-		workspaceDialogPanel.generator.removeAllItems();
-		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.ADDON)
-				.forEach(workspaceDialogPanel.generator::addItem);
-
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.ADDON);
-		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
+
 }

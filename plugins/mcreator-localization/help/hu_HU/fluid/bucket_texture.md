@@ -1,0 +1,1 @@
+Ez az opcionális tulajdonság megváltoztatja a vödör textúráját a leltárban, felváltva az automatikusan generáltat.

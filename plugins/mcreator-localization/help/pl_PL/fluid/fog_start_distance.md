@@ -1,0 +1,1 @@
+Ten parametr określa odległość od kamery, od której zaczyna się mgła.

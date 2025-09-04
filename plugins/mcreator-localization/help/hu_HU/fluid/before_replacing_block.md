@@ -1,0 +1,1 @@
+Ez az eljárás akkor kerül végrehajtásra, amikor a folyadék a levegőn kívül más anyagot (például magas füvet) is kiszorít.

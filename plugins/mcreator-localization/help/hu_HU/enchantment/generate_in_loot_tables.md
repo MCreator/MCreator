@@ -1,0 +1,1 @@
+Jelöld be ezt az opciót, ha azt szeretnéd, hogy a varázslatod a zsákmánytáblákban is megjelenjen.

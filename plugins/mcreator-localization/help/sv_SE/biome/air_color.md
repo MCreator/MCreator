@@ -1,0 +1,1 @@
+Denna parameter styr färgen på himlen i denna biom.

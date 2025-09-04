@@ -68,7 +68,7 @@ public class UpdatePluginDialog {
 			dialog.setModal(true);
 
 			JButton close = L10N.button("dialog.plugin_update_notify.close");
-			close.addActionListener(e -> dialog.setVisible(false));
+			close.addActionListener(e -> dialog.dispose());
 
 			dialog.add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
 			dialog.setVisible(true);

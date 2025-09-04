@@ -1,0 +1,1 @@
+Ten parametr steruje, jeśli cząstki są wyświetlane we wszystkich przypadkach, nawet jeśli w ustawieniach wideo wyświetlacz cząstek jest ustawiony na minimum.

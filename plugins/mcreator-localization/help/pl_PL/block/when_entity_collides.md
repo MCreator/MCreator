@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy byt znajduje się wewnątrz bloku.

@@ -1,0 +1,1 @@
+Ha ezt az opciót választja, az effektus időtartama végtelen lesz.

@@ -23,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.StructureUtils;
 import net.mcreator.plugin.MCREvent;
@@ -163,6 +164,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 					mcreator.getWorkspace().switchGenerator(change.workspaceSettings.getCurrentGenerator());
 
+					mcreator.workspaceGeneratorSwitched();
+
 					p2.markStateOk();
 					dial.hideDialog();
 
@@ -199,6 +202,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 			} else { // in any other case, we need to regenerate the whole code
 				if (change.gradleCachesRebuildNeeded()) { // and rebuild caches when needed
 					ModAPIManager.deleteAPIs(mcreator.getWorkspace(), change.oldSettings);
+					GradleUtils.clearGradleConfigurationCache(mcreator.getWorkspace());
 					mcreator.getActionRegistry().reloadGradleProject.doAction();
 				}
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);

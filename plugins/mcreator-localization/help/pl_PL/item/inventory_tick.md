@@ -1,0 +1,1 @@
+Ta procedura zostanie wykonana przy każdym zaznaczeniu, gdy przedmiot znajduje się w ekwipunku gracza.

@@ -83,9 +83,9 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			anchor.setSelectedItem(image.anchorPoint);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			if (textureSelector.hasTexture()) {
 				if (image == null) {
 					Image component = new Image(0, 0, textureSelector.getTextureName(), scale1x.isSelected(),

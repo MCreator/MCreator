@@ -1,0 +1,1 @@
+Ten parametr kontroluje ile ticków powinno przejść przed przełączeniem do następnej klatki animacyjnej.

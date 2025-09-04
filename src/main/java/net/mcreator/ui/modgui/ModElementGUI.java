@@ -60,8 +60,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext,
-		ITextFieldSearchable {
+public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase
+		implements IHelpContext, ITextFieldSearchable {
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 

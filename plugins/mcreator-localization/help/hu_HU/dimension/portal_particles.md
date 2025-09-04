@@ -1,0 +1,1 @@
+Ez a paraméter kiválasztja a portál által kibocsátott részecskétípust, amikor a portál aktív.

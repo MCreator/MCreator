@@ -1,0 +1,1 @@
+Jeśli to ustawienie jest włączone, czas zostanie zamrożony na podanej wartości w tym wymiarze.

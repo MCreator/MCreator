@@ -31,6 +31,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -65,16 +66,16 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
 
 	private TextureSelectionButton texture;
 	private TextureSelectionButton textureBottom;
+	private JComponent textureContainer;
+	private JComponent textureBottomContainer;
 
 	private TextureSelectionButton itemTexture;
 	private TextureSelectionButton particleTexture;
@@ -130,6 +131,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
+	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
+	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	// Sapling properties
@@ -181,6 +193,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
+	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
@@ -265,6 +278,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		ComponentUtils.deriveFont(tintType, 16);
+		ComponentUtils.deriveFont(offsetType, 16);
 		ComponentUtils.deriveFont(growapableSpawnType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -277,7 +291,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
-		textureBottom.setVisible(false);
+		textureContainer = ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
+				L10N.t("elementgui.plant.texture_place_texture"));
+		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,
+				L10N.t("elementgui.plant.texture_place_bottom"));
+		textureBottomContainer.setOpaque(false);
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
@@ -286,7 +304,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		isItemTinted.setOpaque(false);
 
-		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel rent = new JPanel(new GridLayout(6, 2, 2, 2));
 		rent.setOpaque(false);
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/model"),
@@ -308,6 +326,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.is_item_tinted")));
 		rent.add(isItemTinted);
 
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
+				L10N.label("elementgui.common.offset_type")));
+		rent.add(offsetType);
+
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -315,10 +337,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel texturesAndRent = new JPanel(new BorderLayout(0, 0));
 		texturesAndRent.setOpaque(false);
 
-		JComponent texturesPan = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
-				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
-						L10N.t("elementgui.plant.texture_place_top_main")),
-				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom"))));
+		JComponent texturesPan = PanelUtils.totalCenterInPanel(
+				PanelUtils.gridElements(2, 1, textureContainer, textureBottomContainer));
 		texturesPan.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 		texturesAndRent.add("Center", texturesPan);
 
@@ -334,7 +354,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		sbbp2.setOpaque(false);
 
 		emissiveRendering.setOpaque(false);
-		isSolid.setOpaque(false);
 		isWaterloggable.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
@@ -443,7 +462,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel northPanel = new JPanel(new GridLayout(2, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(3, 2, 10, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/custom_bounding_box"),
@@ -452,9 +471,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
 				L10N.label("elementgui.common.disable_offset")));
 		northPanel.add(disableOffset);
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
+				L10N.label("elementgui.plant.is_solid")));
+		northPanel.add(isSolid);
 
 		customBoundingBox.setOpaque(false);
 		disableOffset.setOpaque(false);
+		isSolid.setOpaque(false);
 
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
@@ -475,14 +498,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(10, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
-		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel selp2 = new JPanel(new GridLayout(4, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -501,16 +524,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		hardness.setOpaque(false);
 		resistance.setOpaque(false);
 		dropAmount.setOpaque(false);
+		hasBlockItem.setOpaque(false);
+		hasBlockItem.setSelected(true);
+		hasBlockItem.addActionListener(e -> updateBlockItemSettings());
+		immuneToFire.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
-				L10N.label("elementgui.common.creative_tabs")));
-		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -520,13 +543,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.resistance")));
 		selp.add(resistance);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
-				L10N.label("elementgui.block.jump_factor")));
-		selp.add(jumpFactor);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
+				L10N.label("elementgui.plant.is_unbreakable")));
+		selp.add(unbreakable);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
-				L10N.label("elementgui.block.speed_factor")));
-		selp.add(speedFactor);
+		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
@@ -536,9 +557,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.emissive_rendering")));
 		selp.add(emissiveRendering);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/is_solid"),
-				L10N.label("elementgui.plant.is_solid")));
-		selp.add(isSolid);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
+				L10N.label("elementgui.plant.plant_is_replaceable")));
+		selp.add(isReplaceable);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_waterloggable"),
 				L10N.label("elementgui.plant.is_waterloggable")));
@@ -559,14 +580,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/unbreakable"),
-				L10N.label("elementgui.plant.is_unbreakable")));
-		selp2.add(unbreakable);
-
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
-				L10N.label("elementgui.plant.plant_is_replaceable")));
-		selp2.add(isReplaceable);
 
 		ButtonGroup bg2 = new ButtonGroup();
 		bg2.add(defaultSoundType);
@@ -609,6 +622,86 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
+		JPanel blockItemSettings = new JPanel(new GridLayout(5, 2, 0, 2));
+		blockItemSettings.setOpaque(false);
+
+		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/has_block_item"),
+				L10N.label("elementgui.block.has_block_item")));
+		blockItemSettings.add(hasBlockItem);
+
+		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
+				L10N.label("elementgui.common.max_stack_size")));
+		blockItemSettings.add(maxStackSize);
+
+		blockItemSettings.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		blockItemSettings.add(rarity);
+
+		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.item.is_immune_to_fire")));
+		blockItemSettings.add(immuneToFire);
+
+		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		blockItemSettings.add(creativeTabs);
+
+		blockItemSettings.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.properties_block_item"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, blockItemSettings)),
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp2, soundProperties)))));
+		pane3.setOpaque(false);
+
+		JPanel advancedProperties = new JPanel(new GridLayout(8, 2, 10, 2));
+		advancedProperties.setOpaque(false);
+
+		forceTicking.setOpaque(false);
+		hasTileEntity.setOpaque(false);
+		ignitedByLava.setOpaque(false);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
+				L10N.label("elementgui.plant.has_tile_entity")));
+		advancedProperties.add(hasTileEntity);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/force_ticking"),
+				L10N.label("elementgui.plant.force_ticking")));
+		advancedProperties.add(forceTicking);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
+				L10N.label("elementgui.plant.color_on_map")));
+		advancedProperties.add(colorOnMap);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
+				L10N.label("elementgui.block.jump_factor")));
+		advancedProperties.add(jumpFactor);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
+				L10N.label("elementgui.block.speed_factor")));
+		advancedProperties.add(speedFactor);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
+				L10N.label("elementgui.common.ai_path_node_type")));
+		advancedProperties.add(aiPathNodeType);
+
+		advancedProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
+		advancedProperties.add(growapableSpawnType);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/can_be_placed_on"),
+				L10N.label("elementgui.plant.can_be_placed_on")));
+		advancedProperties.add(canBePlacedOn);
+
+		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
+				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
+		plocb.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor()));
+		plocb.setOpaque(false);
+
 		JPanel bonemealPanel = new JPanel(new GridLayout(1, 2, 0, 2));
 		bonemealPanel.setOpaque(false);
 
@@ -632,62 +725,28 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
-				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
-		pane3.setOpaque(false);
+		JPanel flammabilityProperties = new JPanel(new GridLayout(3, 2, 0, 2));
+		flammabilityProperties.setOpaque(false);
 
-		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
-		advancedProperties.setOpaque(false);
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		flammabilityProperties.add(ignitedByLava);
 
-		forceTicking.setOpaque(false);
-		hasTileEntity.setOpaque(false);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
-				L10N.label("elementgui.plant.has_tile_entity")));
-		advancedProperties.add(hasTileEntity);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/force_ticking"),
-				L10N.label("elementgui.plant.force_ticking")));
-		advancedProperties.add(forceTicking);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
-				L10N.label("elementgui.plant.color_on_map")));
-		advancedProperties.add(colorOnMap);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.plant.flammability")));
-		advancedProperties.add(flammability);
+		flammabilityProperties.add(flammability);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
+		flammabilityProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/fire_spread_speed"),
 				L10N.label("elementgui.common.fire_spread_speed")));
-		advancedProperties.add(fireSpreadSpeed);
+		flammabilityProperties.add(fireSpreadSpeed);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
-				L10N.label("elementgui.common.ai_path_node_type")));
-		advancedProperties.add(aiPathNodeType);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
-				L10N.label("elementgui.common.offset_type")));
-		advancedProperties.add(offsetType);
-
-		advancedProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
-		advancedProperties.add(growapableSpawnType);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/can_be_placed_on"),
-				L10N.label("elementgui.plant.can_be_placed_on")));
-		advancedProperties.add(canBePlacedOn);
-
-		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
-				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
-		plocb.setBorder(BorderFactory.createTitledBorder(
+		flammabilityProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor()));
-		plocb.setOpaque(false);
+				L10N.t("elementgui.common.properties_flammability"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(plocb,
+				PanelUtils.pullElementUp(PanelUtils.column(bonemealMerger, flammabilityProperties)))));
 		pane5.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
@@ -782,19 +841,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updatePlantType() {
-		texture.setVisible(false);
-		textureBottom.setVisible(false);
-
 		refreshBonemealProperties(); // disable settings if sapling is selected
 		updateWaterloggableSetting(); // disable waterlogging if sapling with mega trees is selected
 
 		if ("double".equals(plantType.getSelectedItem())) {
-			texture.setVisible(true);
-			textureBottom.setVisible(true);
+			textureBottomContainer.setVisible(true);
+			ComponentUtils.updateBorderTitle(textureContainer, L10N.t("elementgui.plant.texture_place_top_main"));
 			renderType.setSelectedItem(cross);
 			renderType.setEnabled(false);
 		} else {
-			texture.setVisible(true);
+			textureBottomContainer.setVisible(false);
+			ComponentUtils.updateBorderTitle(textureContainer, L10N.t("elementgui.plant.texture_place_texture"));
 			renderType.setEnabled(true);
 		}
 
@@ -855,6 +912,25 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		return new AggregatedValidationResult.FAIL(L10N.t("elementgui.plant.error_sapling_needs_tree"));
+	}
+
+	private void updateBlockItemSettings() {
+		itemTexture.setEnabled(hasBlockItem.isSelected());
+		isItemTinted.setEnabled(hasBlockItem.isSelected());
+		maxStackSize.setEnabled(hasBlockItem.isSelected());
+		rarity.setEnabled(hasBlockItem.isSelected());
+		immuneToFire.setEnabled(hasBlockItem.isSelected());
+		creativeTabs.setEnabled(hasBlockItem.isSelected());
+	}
+
+	private void refreshUnbreakableProperties() {
+		if (unbreakable.isSelected()) {
+			hardness.setEnabled(false);
+			resistance.setEnabled(false);
+		} else {
+			hardness.setEnabled(true);
+			resistance.setEnabled(true);
+		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -921,6 +997,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		emissiveRendering.setSelected(plant.emissiveRendering);
 		isSolid.setSelected(plant.isSolid);
 		isWaterloggable.setSelected(plant.isWaterloggable);
+		hasBlockItem.setSelected(plant.hasBlockItem);
+		maxStackSize.setValue(plant.maxStackSize);
+		rarity.setSelectedItem(plant.rarity);
+		immuneToFire.setSelected(plant.immuneToFire);
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
@@ -947,6 +1027,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		offsetType.setSelectedItem(plant.offsetType);
 		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
 		creativePickItem.setBlock(plant.creativePickItem);
+		ignitedByLava.setSelected(plant.ignitedByLava);
 		flammability.setValue(plant.flammability);
 		fireSpreadSpeed.setValue(plant.fireSpreadSpeed);
 		jumpFactor.setValue(plant.jumpFactor);
@@ -993,6 +1074,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		updatePlantType();
 		updateSoundType();
+		updateBlockItemSettings();
+		refreshUnbreakableProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {
@@ -1057,6 +1140,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();
+		plant.ignitedByLava = ignitedByLava.isSelected();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.speedFactor = (double) speedFactor.getValue();
@@ -1065,6 +1149,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
 		plant.isWaterloggable = isWaterloggable.isSelected();
+		plant.hasBlockItem = hasBlockItem.isSelected();
+		plant.maxStackSize = (int) maxStackSize.getValue();
+		plant.rarity = rarity.getSelectedItem();
+		plant.immuneToFire = immuneToFire.isSelected();
 		plant.isBonemealable = isBonemealable.isSelected();
 		plant.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
 		plant.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();

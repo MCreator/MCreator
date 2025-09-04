@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy ez a folyadék betölthető-e egy vödörbe.

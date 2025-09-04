@@ -1,0 +1,1 @@
+Ez a maximális millibucket (1 vödör = 1 000 milibuckets), amit a blokk tárolni tud.

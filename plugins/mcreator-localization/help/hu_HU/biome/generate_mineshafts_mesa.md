@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha a mesa biomokban használt bányajáratokat szeretnél a biomodban.

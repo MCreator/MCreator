@@ -1,0 +1,1 @@
+This is the default value of the block state property when the block is generated/placed in the world.

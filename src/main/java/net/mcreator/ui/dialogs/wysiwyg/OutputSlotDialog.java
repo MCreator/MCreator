@@ -89,14 +89,13 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH,
-				false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/slot:number"));
+				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/slot:number"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH,
-				false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/slot:number"));
+				false, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/slot:number/amount:number"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
@@ -138,10 +137,10 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 			slotID.setText("" + ++freeslotid);
 		}
 
-		cancel.addActionListener(event -> setVisible(false));
+		cancel.addActionListener(event -> dispose());
 		ok.addActionListener(event -> {
 			if (slotID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 				if (slot == null) {
 					editor.guiType.setSelectedIndex(1);

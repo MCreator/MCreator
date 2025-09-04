@@ -1,0 +1,1 @@
+﻿Procedura ta określa, czy najpierw zaznaczyć to pole, czy nie, kiedy GUI jest otwarty.

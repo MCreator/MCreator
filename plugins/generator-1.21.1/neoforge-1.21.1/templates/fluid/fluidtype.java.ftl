@@ -34,7 +34,7 @@
 package ${package}.fluid.types;
 
 <#compress>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}FluidType extends FluidType {
+@EventBusSubscriber public class ${name}FluidType extends FluidType {
 	public ${name}FluidType() {
 		super(FluidType.Properties.create()
 			<#if data.type == "WATER">
@@ -61,7 +61,8 @@ package ${package}.fluid.types;
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
-			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH));
+			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
+		);
 	}
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {

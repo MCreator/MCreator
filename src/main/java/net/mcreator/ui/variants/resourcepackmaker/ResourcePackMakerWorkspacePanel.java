@@ -84,7 +84,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 		tabbedPane.addTab(L10N.t("mcreator.resourcepack.tab.vanilla"), vanillaResourcePackEditor);
 		tabbedPane.setSelectedIndex(1);
 
-		addVerticalTab("mods", L10N.t("workspace.category.resources"), new WorkspacePanelResourcePack(tabbedPane));
+		addVerticalTab(L10N.t("workspace.category.resources"), new WorkspacePanelResourcePack(tabbedPane));
 	}
 
 	public ResourcePackEditor getCurrentResourcePackEditor() {

@@ -1,0 +1,1 @@
+Ten parametr definiuje, jaki element powinien być dodany do inwentarza bytu, która zjadła to jedzenie.

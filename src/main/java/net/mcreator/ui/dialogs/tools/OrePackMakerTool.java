@@ -95,7 +95,7 @@ public class OrePackMakerTool {
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.ore_pack_create");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
@@ -106,7 +106,7 @@ public class OrePackMakerTool {
 						(Double) power.getValue());
 				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
 
@@ -193,7 +193,7 @@ public class OrePackMakerTool {
 		oreBlock.customModelName = "Single texture";
 		oreBlock.soundOnStep = new StepSound(workspace, "STONE");
 		oreBlock.hardness = 3.0 * factor;
-		oreBlock.resistance = 5.0 * Math.pow(factor, 0.8);
+		oreBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		oreBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
 			oreBlock.vanillaToolTier = "STONE";
@@ -203,7 +203,7 @@ public class OrePackMakerTool {
 			oreBlock.vanillaToolTier = "DIAMOND";
 		}
 		oreBlock.requiresCorrectTool = true;
-		oreBlock.noteBlockInstrument = "BASEDRUM";
+		oreBlock.noteBlockInstrument = "basedrum";
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
@@ -224,7 +224,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.customModelName = "Single texture";
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
-		oreBlockBlock.resistance = 10.0;
+		oreBlockBlock.resistance = 6.0;
 		oreBlockBlock.texture = new TextureHolder(workspace, oreBlockTextureName);
 		oreBlockBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
@@ -252,6 +252,7 @@ public class OrePackMakerTool {
 		itemToBlockRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
+		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + oreItemName));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
 
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -260,6 +261,7 @@ public class OrePackMakerTool {
 		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
+		blockToItemRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Block"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -269,6 +271,7 @@ public class OrePackMakerTool {
 		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
+		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
 
 		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);

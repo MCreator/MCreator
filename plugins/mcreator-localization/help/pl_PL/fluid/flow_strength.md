@@ -1,0 +1,1 @@
+Ten parametr określa, ile płynu wypycha jednostki, gdy przepływa. Z wartościami ujemnymi przyciągnie jednostki zamiast ich wypychać.

@@ -1,0 +1,1 @@
+Wyzwala procedurę, gdy blok nie jest zasilany przez moc czerwonego kamienia.

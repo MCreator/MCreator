@@ -38,7 +38,6 @@ public class UISection extends PreferencesSection {
 	public final BooleanEntry usemacOSMenuBar;
 	public final BooleanEntry nativeFileChooser;
 	public final BooleanEntry expandSectionsByDefault;
-	public final BooleanEntry use2DAcceleration;
 	public final BooleanEntry autoReloadTabs;
 	public final BooleanEntry remindOfUnsavedChanges;
 	public final BooleanEntry discordRichPresenceEnable;
@@ -53,7 +52,6 @@ public class UISection extends PreferencesSection {
 		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
 		nativeFileChooser = addEntry(new BooleanEntry("nativeFileChooser", true));
 		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
-		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
 		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
 		remindOfUnsavedChanges = addEntry(new BooleanEntry("remindOfUnsavedChanges", false));
 		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));

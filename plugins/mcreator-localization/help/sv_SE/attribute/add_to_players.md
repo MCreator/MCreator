@@ -1,0 +1,1 @@
+Om aktiverat har alla spelare i världen attributet, inställt på standardvärdet när spelaren ansluter till världen.

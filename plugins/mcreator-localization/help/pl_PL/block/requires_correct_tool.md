@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, blok zostanie upuszczony tylko wtedy, gdy zostanie uszkodzony przy użyciu określonego narzędzia zbierania.

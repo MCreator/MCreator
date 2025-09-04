@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
+import net.mcreator.ui.minecraft.loottable.LootTablePreview;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -48,7 +49,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter" });
+					"Barter", "Archaeology" });
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -89,21 +90,12 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
 				if (type.getSelectedItem() != null)
 					switch (type.getSelectedItem().toString()) {
-					case "Block":
-						name.getEditor().setItem("blocks/" + currNameNoType);
-						break;
-					case "Chest":
-						name.getEditor().setItem("chests/" + currNameNoType);
-						break;
-					case "Entity":
-					case "Gift":
-					case "Barter":
-					case "Advancement reward":
-						name.getEditor().setItem("entities/" + currNameNoType);
-						break;
-					default:
-						name.getEditor().setItem("gameplay/" + currNameNoType);
-						break;
+					case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
+					case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
+					case "Entity", "Gift", "Barter", "Advancement reward" ->
+							name.getEditor().setItem("entities/" + currNameNoType);
+					case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
+					default -> name.getEditor().setItem("gameplay/" + currNameNoType);
 					}
 			});
 
@@ -142,9 +134,15 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
-		lootTablePools = new JLootTablePoolsList(mcreator, this);
+		LootTablePreview preview = new LootTablePreview(mcreator);
+		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
+		ModElementChangedListener listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		listener.registerUI(lootTablePools);
+
+		pane3.add(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
+						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
 
 		addPage(pane3, false).validate(name);
 

@@ -23,6 +23,7 @@ import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -120,7 +121,7 @@ public class NameMapper {
 
 			if (toMapTemplate != null) {
 				// Remove prefix and possibly the suffix
-				origName = StringUtils.removeEnd(origName.replace(MCREATOR_PREFIX, ""), suffix);
+				origName = Strings.CS.removeEnd(origName.replace(MCREATOR_PREFIX, ""), suffix);
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));

@@ -1,0 +1,1 @@
+Ez az eljárás akkor kerül végrehajtásra, amikor a bájital hatása egy entitásra kerül alkalmazásra. 

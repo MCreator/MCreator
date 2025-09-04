@@ -37,14 +37,18 @@ package ${package}.block.entity;
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer
  		<#if data.sensitiveToVibration>, GameEventListener.Provider<VibrationSystem.Listener>, VibrationSystem</#if> {
 
-	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
-
-	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
+	private NonNullList<ItemStack> stacks = NonNullList.withSize(${data.inventorySize}, ItemStack.EMPTY);
 
 	<#if data.sensitiveToVibration>
 	private final VibrationSystem.Listener vibrationListener = new VibrationSystem.Listener(this);
 	private final VibrationSystem.User vibrationUser = new VibrationUser(this.getBlockPos());
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
+	</#if>
+
+	<#if data.renderType() == 4>
+		<#list data.animations as animation>
+		public final AnimationState animationState${animation?index} = new AnimationState();
+		</#list>
 	</#if>
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
@@ -190,10 +194,6 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 	<#-- END: WorldlyContainer -->
 
-	public SidedInvWrapper getItemHandler() {
-		return handler;
-	}
-
 	<#if data.hasEnergyStorage>
 	private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
 		@Override public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -274,7 +274,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 		<#if data.vibrationalEvents?has_content>
 		@Override public TagKey<GameEvent> getListenableEvents() {
-			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.withDefaultNamespace("${data.getModElement().getRegistryName()}_can_listen"));
+			return TagKey.create(Registries.GAME_EVENT, ResourceLocation.withDefaultNamespace("${registryname}_can_listen"));
 		}
 		</#if>
 

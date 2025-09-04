@@ -18,15 +18,12 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -34,32 +31,29 @@ import java.awt.*;
 public class ResourcepackWorkspacePanel extends AbstractWorkspacePanel {
 
 	public ResourcepackWorkspacePanel(Window parent) {
-		super(parent);
+		super(parent, GeneratorFlavor.RESOURCEPACK);
 
-		add(new JEmptyBox(20, 20));
+		addFormElement(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.display_name"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.display_name"),
 				workspaceDialogPanel.modName));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.modid"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.modid"),
 				workspaceDialogPanel.modID));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.generator"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.folder"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
-		add(new JEmptyBox(30, 242));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.resourcepack.notice")));
+		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.resourcepack.notice");
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
@@ -78,17 +72,6 @@ public class ResourcepackWorkspacePanel extends AbstractWorkspacePanel {
 				workspaceDialogPanel.description.setText(workspaceDialogPanel.modName.getText());
 			}
 		});
-
-		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.RESOURCEPACK);
-
-		workspaceDialogPanel.generator.removeAllItems();
-		Generator.GENERATOR_CACHE.values().stream()
-				.filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.RESOURCEPACK)
-				.forEach(workspaceDialogPanel.generator::addItem);
-
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.RESOURCEPACK);
-		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
 
 }

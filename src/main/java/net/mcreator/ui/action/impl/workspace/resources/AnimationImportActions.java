@@ -37,6 +37,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.forge.roaster.ParserException;
@@ -44,6 +45,7 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
@@ -57,7 +59,8 @@ public class AnimationImportActions {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_java_animation"), actionEvent -> {
 				File file = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".java" });
 				if (file != null)
-					importJavaModelAnimation(actionRegistry.getMCreator(), file);
+					importJavaModelAnimation(actionRegistry.getMCreator(), actionRegistry.getMCreator().getWorkspace(),
+							FileIO.readFileToString(file));
 			});
 			setIcon(UIRES.get("16px.importjavamodelanimation"));
 		}
@@ -68,9 +71,7 @@ public class AnimationImportActions {
 		}
 	}
 
-	public static void importJavaModelAnimation(MCreator mcreator, File file) {
-		String origCode = FileIO.readFileToString(file);
-
+	public static void importJavaModelAnimation(@Nullable MCreator mcreator, Workspace workspace, String origCode) {
 		JavaClassSource classJavaSource;
 
 		try {
@@ -85,19 +86,25 @@ public class AnimationImportActions {
 					"class\\s+", "").split("\\s+?\\{")[0].trim();
 
 			if (!JavaConventions.isValidJavaIdentifier(className)) {
-				JOptionPane.showMessageDialog(null,
-						L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_name.message",
-								className),
-						L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_name.title"),
-						JOptionPane.ERROR_MESSAGE);
+				if (mcreator == null)
+					throw new RuntimeException("Invalid animation name");
+				else
+					JOptionPane.showMessageDialog(null,
+							L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_name.message",
+									className),
+							L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_name.title"),
+							JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		} catch (Exception err) {
-			LOG.error("Failed to load Java model animation: {}", file, err);
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_format.message"),
-					L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_format.title"),
-					JOptionPane.ERROR_MESSAGE);
+			LOG.error("Failed to load Java model animation", err);
+			if (mcreator == null)
+				throw new RuntimeException("Failed to load animation");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_format.message"),
+						L10N.t("dialog.workspace.resources.import_java_animation.invalid_animation_format.title"),
+						JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -111,22 +118,27 @@ public class AnimationImportActions {
 		if (!classJavaSource.getName().contains("Animation"))
 			classJavaSource.setName("Animations" + classJavaSource.getName());
 
-		if (new File(mcreator.getFolderManager().getModelAnimationsDir(),
+		if (new File(workspace.getFolderManager().getModelAnimationsDir(),
 				classJavaSource.getName() + ".java").exists()) {
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_animation.animation_already_exists.message",
-							classJavaSource.getName()),
-					L10N.t("dialog.workspace.resources.import_java_animation.animation_already_exists.title"),
-					JOptionPane.WARNING_MESSAGE);
+			if (mcreator == null)
+				throw new RuntimeException("Animation already exists");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_animation.animation_already_exists.message",
+								classJavaSource.getName()),
+						L10N.t("dialog.workspace.resources.import_java_animation.animation_already_exists.title"),
+						JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
 		FileIO.writeStringToFile(classJavaSource.toString(),
-				new File(mcreator.getFolderManager().getModelAnimationsDir(), classJavaSource.getName() + ".java"));
+				new File(workspace.getFolderManager().getModelAnimationsDir(), classJavaSource.getName() + ".java"));
 
-		mcreator.reloadWorkspaceTabContents();
-		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+		if (mcreator != null) {
+			mcreator.reloadWorkspaceTabContents();
+			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+		}
 	}
 
 }

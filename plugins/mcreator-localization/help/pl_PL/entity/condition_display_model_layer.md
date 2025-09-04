@@ -1,0 +1,1 @@
+Podczas gdy zwrócona wartość jest prawdą, ta warstwa modelu jest widoczna.

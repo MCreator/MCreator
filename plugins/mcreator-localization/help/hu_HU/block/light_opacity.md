@@ -1,0 +1,1 @@
+Ez a tulajdonság meghatározza, hogy mennyivel csökken a fény szint, amikor átmegy ezen a blokkon. Például a 15-ös érték minden fényt elzár, a 0-s érték pedig átlátszóvá teszi a blokkot a fény számára.

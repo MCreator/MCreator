@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy az attribútumot pozitívnak, negatívnak vagy semlegesnek kell-e tekinteni. Ez befolyásolja az ehhez az attribútumhoz tartozó attribútum módosítók színét is.

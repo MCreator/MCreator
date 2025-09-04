@@ -14,10 +14,12 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.6+7.0.LTS'
+          java-version: '21.0.7+6.0.LTS'
           distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Generate Javadoc
-        run: ./gradlew javadoc
+        run: gradle javadoc
       - name: Deploy Javadoc
         uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e
         with:

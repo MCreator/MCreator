@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza azt az elemet, amely a kézműves asztalon történő használatkor kicserélésre kerül. Ez azt jelenti, hogy az elem része lesz a receptnek, de egy másik elemmel lesz kicserélve.

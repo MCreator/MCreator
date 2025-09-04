@@ -27,7 +27,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -35,6 +34,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -64,6 +64,8 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
+
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
@@ -88,6 +90,11 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
+
+	public boolean hasBlockItem;
+	public int maxStackSize;
+	public String rarity;
+	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
@@ -205,6 +212,9 @@ import java.util.stream.Collectors;
 	public Block(ModElement element) {
 		super(element);
 
+		this.hasBlockItem = true;
+		this.maxStackSize = 64;
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 
 		this.customProperties = new ArrayList<>();
@@ -233,6 +243,8 @@ import java.util.stream.Collectors;
 		this.fluidCapacity = 8000;
 
 		this.vibrationalEvents = new ArrayList<>();
+
+		this.animations = new ArrayList<>();
 	}
 
 	public int renderType() {
@@ -267,6 +279,10 @@ import java.util.stream.Collectors;
 
 	public boolean shouldDisableOffset() {
 		return disableOffset || offsetType.equals("NONE");
+	}
+
+	public boolean hasDrops() {
+		return dropAmount > 0 && (hasBlockItem || hasCustomDrop());
 	}
 
 	@Override public boolean isFullCube() {
@@ -344,11 +360,11 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return providedMCItems();
+		return hasBlockItem ? providedMCItems() : Collections.emptyList();
 	}
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
@@ -373,8 +389,16 @@ import java.util.stream.Collectors;
 		return transparencyType.toLowerCase(Locale.ENGLISH);
 	}
 
+	@Override public boolean hasCustomItemProperties() {
+		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
+
+		if (hasBlockItem) {
+			baseTypes.add(BaseType.ITEM);
+		}
 
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
@@ -415,6 +439,15 @@ import java.util.stream.Collectors;
 
 	public TextureHolder getParticleTexture() {
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
+	}
+
+	public static class AnimationEntry {
+
+		public Animation animation;
+		public double speed;
+
+		public Procedure condition;
+
 	}
 
 }

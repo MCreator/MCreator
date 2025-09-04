@@ -57,7 +57,7 @@ public class DiscordClient implements Closeable {
 					discordRpc.Discord_RunCallbacks();
 				}
 			}, 0, 5000);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			LOG.warn("Failed to init", e);
 		}
 	}

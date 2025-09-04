@@ -19,65 +19,50 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 	public NeoForgeWorkspacePanel(Window parent) {
-		super(parent);
+		super(parent, GeneratorFlavor.NEOFORGE);
 
-		add(new JEmptyBox(20, 20));
+		addFormElement(new JEmptyBox(20, 20));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.display_name"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.display_name"),
 				workspaceDialogPanel.modName));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.modid"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.modid"),
 				workspaceDialogPanel.modID));
 
-		add(new JEmptyBox(10, 10));
+		addFormElement(new JEmptyBox(10, 10));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.generator"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.package"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.package"),
 				workspaceDialogPanel.packageName));
 
-		add(new JEmptyBox(30, 30));
+		addFormElement(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
-		add(new JEmptyBox(30, 170));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.neoforge.notice")));
+		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.neoforge.notice");
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
 		validationGroup.addValidationElement(workspaceDialogPanel.packageName);
 		validationGroup.addValidationElement(workspaceFolder);
-
-		workspaceDialogPanel.setFlavorFilter(GeneratorFlavor.NEOFORGE);
-
-		workspaceDialogPanel.generator.removeAllItems();
-		Generator.GENERATOR_CACHE.values().stream().filter(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
-				.forEach(workspaceDialogPanel.generator::addItem);
-
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.NEOFORGE);
-		workspaceDialogPanel.generator.setSelectedItem(generatorConfiguration);
 	}
+
 }

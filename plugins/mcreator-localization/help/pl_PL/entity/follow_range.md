@@ -1,0 +1,1 @@
+Zasięg śledzenia ustala z jakiego dystansu dany mob zauważy/kontynuuje gonienie gracza/celu

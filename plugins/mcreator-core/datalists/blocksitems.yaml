@@ -1716,6 +1716,21 @@
   type: block
   texture: DEADBUSH
 
+- Blocks.BUSH:
+  readable_name: "Bush"
+  type: block
+  texture: BUSH
+
+- Blocks.SHORT_DRY_GRASS:
+  readable_name: "Short Dry Grass"
+  type: block
+  texture: SHORT_DRY_GRASS
+
+- Blocks.TALL_DRY_GRASS:
+  readable_name: "Tall Dry Grass"
+  type: block
+  texture: TALL_DRY_GRASS
+
 - Blocks.TALLGRASS#1:
   readable_name: "Short Grass"
   type: block
@@ -1746,16 +1761,16 @@
   type: block_without_item
   texture: PISTON_EXTENSION
 
-- Blocks.YELLOW_FLOWER:
-  readable_name: "Dandelion"
-  type: block
-  texture: YELLOW_FLOWER
-
 - Blocks.RED_FLOWER:
   readable_name: "Any Flower"
   type: block
   texture: RED_FLOWER
   subtypes: true
+
+- Blocks.YELLOW_FLOWER:
+  readable_name: "Dandelion"
+  type: block
+  texture: YELLOW_FLOWER
 
 - Blocks.RED_FLOWER#0:
   readable_name: "Poppy"
@@ -1836,6 +1851,16 @@
   readable_name: "Pink Petals"
   type: block
   texture: PINK_PETALS
+
+- Blocks.WILDFLOWERS:
+  readable_name: "Wildflowers"
+  type: block
+  texture: WILDFLOWERS
+
+- Blocks.LEAF_LITTER:
+  readable_name: "Leaf Litter"
+  type: block
+  texture: LEAF_LITTER
 
 - Blocks.DOUBLE_PLANT:
   readable_name: "Any Large Flower"
@@ -2220,7 +2245,7 @@
   texture: CRAFTING_TABLE
 
 - Blocks.WHEAT:
-  readable_name: "Wheat"
+  readable_name: "Wheat Crop"
   type: block
   texture: WHEAT
 
@@ -3090,6 +3115,11 @@
   readable_name: "Cactus"
   type: block
   texture: CACTUS
+
+- Blocks.CACTUS_FLOWER:
+  readable_name: "Cactus Flower"
+  type: block
+  texture: CACTUS_FLOWER
 
 - Blocks.CLAY:
   readable_name: "Clay"
@@ -3988,6 +4018,11 @@
   type: block_without_item
   texture: POTTED_CLOSED_EYEBLOSSOM
 
+- Blocks.FIREFLY_BUSH:
+  readable_name: "Firefly Bush"
+  type: block
+  texture: FIREFLY_BUSH
+
 - Blocks.DECORATED_POT:
   readable_name: "Decorated Pot"
   type: block
@@ -4029,13 +4064,13 @@
   texture: PITCHER_CROP
 
 - Blocks.HAY_BLOCK:
-  readable_name: "Hay Block"
+  readable_name: "Hay Bale"
   type: block
   texture: HAY_BLOCK
 
 - Blocks.SKULL:
   readable_name: "Any Skull"
-  type: block
+  type: block_without_item
   texture: SKULL
   subtypes: true
 
@@ -5135,6 +5170,16 @@
   type: block
   texture: JIGSAW
 
+- Blocks.TEST_BLOCK:
+  readable_name: "Test Block"
+  type: block
+  texture: TEST_BLOCK
+
+- Blocks.TEST_INSTANCE_BLOCK:
+  readable_name: "Test Instance Block"
+  type: block
+  texture: TEST_INSTANCE_BLOCK
+
 - Blocks.KELP:
   readable_name: "Kelp"
   type: block
@@ -5169,6 +5214,11 @@
   readable_name: "Sniffer Egg"
   type: block
   texture: SNIFFER_EGG
+
+- Blocks.DRIED_GHAST:
+  readable_name: "Dried Ghast"
+  type: block
+  texture: DRIED_GHAST
 
 - Blocks.BAMBOO_SAPLING:
   readable_name: "Bamboo Sapling"
@@ -5636,15 +5686,10 @@
   texture: DYE
   subtypes: true
 
-- Items.DYE#0:
-  readable_name: "Ink Sac"
+- Items.DYE#16:
+  readable_name: "Black Dye"
   type: item
-  texture: DYE#0
-
-- Items.GLOW_INK_SAC:
-  readable_name: "Glow Ink Sac"
-  type: item
-  texture: GLOW_INK_SAC
+  texture: DYE#16
 
 - Items.DYE#1:
   readable_name: "Red Dye"
@@ -5656,15 +5701,15 @@
   type: item
   texture: DYE#2
 
-- Items.DYE#3:
-  readable_name: "Cocoa Beans"
+- Items.DYE#17:
+  readable_name: "Brown Dye"
   type: item
-  texture: DYE#3
+  texture: DYE#17
 
-- Items.DYE#4:
-  readable_name: "Lapis Lazuli"
+- Items.DYE#18:
+  readable_name: "Blue Dye"
   type: item
-  texture: DYE#4
+  texture: DYE#18
 
 - Items.DYE#5:
   readable_name: "Purple Dye"
@@ -5715,26 +5760,6 @@
   readable_name: "Orange Dye"
   type: item
   texture: DYE#14
-
-- Items.DYE#15:
-  readable_name: "Bone Meal"
-  type: item
-  texture: DYE#15
-
-- Items.DYE#16:
-  readable_name: "Black Dye"
-  type: item
-  texture: DYE#16
-
-- Items.DYE#17:
-  readable_name: "Brown Dye"
-  type: item
-  texture: DYE#17
-
-- Items.DYE#18:
-  readable_name: "Blue Dye"
-  type: item
-  texture: DYE#18
 
 - Items.DYE#19:
   readable_name: "White Dye"
@@ -5795,6 +5820,11 @@
   readable_name: "Gold Nugget"
   type: item
   texture: GOLD_NUGGET
+
+- Items.DYE#4:
+  readable_name: "Lapis Lazuli"
+  type: item
+  texture: DYE#4
 
 - Items.DIAMOND:
   readable_name: "Diamond"
@@ -7063,6 +7093,86 @@
   type: item
   texture: SADDLE
 
+- Items.WHITE_HARNESS:
+  readable_name: "White Harness"
+  type: item
+  texture: WHITE_HARNESS
+
+- Items.ORANGE_HARNESS:
+  readable_name: "Orange Harness"
+  type: item
+  texture: ORANGE_HARNESS
+
+- Items.MAGENTA_HARNESS:
+  readable_name: "Magenta Harness"
+  type: item
+  texture: MAGENTA_HARNESS
+
+- Items.LIGHT_BLUE_HARNESS:
+  readable_name: "Light Blue Harness"
+  type: item
+  texture: LIGHT_BLUE_HARNESS
+
+- Items.YELLOW_HARNESS:
+  readable_name: "Yellow Harness"
+  type: item
+  texture: YELLOW_HARNESS
+
+- Items.LIME_HARNESS:
+  readable_name: "Lime Harness"
+  type: item
+  texture: LIME_HARNESS
+
+- Items.PINK_HARNESS:
+  readable_name: "Pink Harness"
+  type: item
+  texture: PINK_HARNESS
+
+- Items.GRAY_HARNESS:
+  readable_name: "Gray Harness"
+  type: item
+  texture: GRAY_HARNESS
+
+- Items.LIGHT_GRAY_HARNESS:
+  readable_name: "Light Gray Harness"
+  type: item
+  texture: LIGHT_GRAY_HARNESS
+
+- Items.CYAN_HARNESS:
+  readable_name: "Cyan Harness"
+  type: item
+  texture: CYAN_HARNESS
+
+- Items.PURPLE_HARNESS:
+  readable_name: "Purple Harness"
+  type: item
+  texture: PURPLE_HARNESS
+
+- Items.BLUE_HARNESS:
+  readable_name: "Blue Harness"
+  type: item
+  texture: BLUE_HARNESS
+
+- Items.BROWN_HARNESS:
+  readable_name: "Brown Harness"
+  type: item
+  texture: BROWN_HARNESS
+
+- Items.GREEN_HARNESS:
+  readable_name: "Green Harness"
+  type: item
+  texture: GREEN_HARNESS
+
+- Items.RED_HARNESS:
+  readable_name: "Red Harness"
+  type: item
+  texture: RED_HARNESS
+
+- Items.BLACK_HARNESS:
+  readable_name: "Black Harness"
+  type: item
+  texture: BLACK_HARNESS
+
 - Items.BRICK:
   readable_name: "Brick"
   type: item
@@ -7108,6 +7218,16 @@
   type: item
   texture: EGG
 
+- Items.BLUE_EGG:
+  readable_name: "Blue Egg"
+  type: item
+  texture: BLUE_EGG
+
+- Items.BROWN_EGG:
+  readable_name: "Brown Egg"
+  type: item
+  texture: BROWN_EGG
+
 - Items.GLOWSTONE_DUST:
   readable_name: "Glowstone Dust"
   type: item
@@ -7117,6 +7237,11 @@
   readable_name: "Bone"
   type: item
   texture: BONE
+
+- Items.DYE#15:
+  readable_name: "Bone Meal"
+  type: item
+  texture: DYE#15
 
 - Items.SUGAR:
   readable_name: "Sugar"
@@ -7219,15 +7344,15 @@
   type: block_without_item
   texture: CANDLE_CAKE#16
 
-- Items.BED:
-  readable_name: "Bed"
-  type: item
-  texture: BED
-
 - Items.COOKIE:
   readable_name: "Cookie"
   type: item
   texture: COOKIE
+
+- Items.DYE#3:
+  readable_name: "Cocoa Beans"
+  type: item
+  texture: DYE#3
 
 - Items.MELON:
   readable_name: "Melon"
@@ -7249,8 +7374,18 @@
   type: item
   texture: GLOW_BERRIES
 
+- Items.DYE#0:
+  readable_name: "Ink Sac"
+  type: item
+  texture: DYE#0
+
+- Items.GLOW_INK_SAC:
+  readable_name: "Glow Ink Sac"
+  type: item
+  texture: GLOW_INK_SAC
+
 - Items.FISH#0:
-  readable_name: "Raw Fish"
+  readable_name: "Raw Cod"
   type: item
   texture: FISH#0
 
@@ -7270,7 +7405,7 @@
   texture: FISH#3
 
 - Items.COOKED_FISH#0:
-  readable_name: "Cooked Fish"
+  readable_name: "Cooked Cod"
   type: item
   texture: COOKED_FISH#0
 
@@ -7280,7 +7415,7 @@
   texture: COOKED_FISH#1
 
 - Items.PORKCHOP:
-  readable_name: "Porkchop"
+  readable_name: "Raw Porkchop"
   type: item
   texture: PORKCHOP
 
@@ -7290,17 +7425,17 @@
   texture: COOKED_PORKCHOP
 
 - Items.BEEF:
-  readable_name: "Beef"
+  readable_name: "Raw Beef"
   type: item
   texture: BEEF
 
 - Items.COOKED_BEEF:
-  readable_name: "Cooked Beef"
+  readable_name: "Steak"
   type: item
   texture: COOKED_BEEF
 
 - Items.CHICKEN:
-  readable_name: "Chicken"
+  readable_name: "Raw Chicken"
   type: item
   texture: CHICKEN
 
@@ -7310,7 +7445,7 @@
   texture: COOKED_CHICKEN
 
 - Items.RABBIT:
-  readable_name: "Rabbit"
+  readable_name: "Raw Rabbit"
   type: item
   texture: RABBIT
 
@@ -7335,7 +7470,7 @@
   texture: RABBIT_STEW
 
 - Items.MUTTON:
-  readable_name: "Mutton"
+  readable_name: "Raw Mutton"
   type: item
   texture: MUTTON
 
@@ -7508,6 +7643,11 @@
   readable_name: "Ghast Spawn Egg"
   type: item
   texture: SPAWN_EGG#56
+
+- Items.HAPPY_GHAST_SPAWN_EGG:
+  readable_name: "Happy Ghast Spawn Egg"
+  type: item
+  texture: HAPPY_GHAST_SPAWN_EGG
 
 - Items.SPAWN_EGG#57:
   readable_name: "Zombified Piglin Spawn Egg"
@@ -7971,11 +8111,23 @@
   texture: RECORD_PRECIPICE
   description: "Precipice"
 
+- Items.MUSIC_DISC_TEARS:
+  readable_name: "Music Disc"
+  type: item
+  texture: MUSIC_DISC_TEARS
+  description: "Tears"
+
 - Items.RECORD_FAR:
   readable_name: "Music Disc"
   type: item
   texture: RECORD_FAR
   description: "C418 - far"
+
+- Items.MUSIC_DISC_LAVA_CHICKEN:
+  readable_name: "Music Disc"
+  type: item
+  texture: MUSIC_DISC_LAVA_CHICKEN
+  description: "Lava Chicken"
 
 - Items.RECORD_MALL:
   readable_name: "Music Disc"

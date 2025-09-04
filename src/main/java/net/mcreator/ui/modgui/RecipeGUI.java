@@ -32,6 +32,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -44,6 +46,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -61,6 +65,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private CampfireCookingRecipeMaker campfireCookingRecipeMaker;
 	private SmithingRecipeMaker smithingRecipeMaker;
 	private BrewingRecipeMaker brewingRecipeMaker;
+
+	private MCItemListField unlockingItems;
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
@@ -93,6 +99,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private JComponent shapelessPanel;
 	private JComponent cookingBookCategoryPanel;
 	private JComponent craftingBookCategoryPanel;
+	private JComponent unlockRecipePanel;
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -117,6 +124,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				ElementUtil::loadBlocksAndItems);
 		brewingRecipeMaker = new BrewingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTagsAndPotions,
 				ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItemsAndPotions);
+
+		unlockingItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+		unlockingItems.setPreferredSize(new Dimension(260, 0));
 
 		craftingRecipeMaker.setOpaque(false);
 		smeltingRecipeMaker.setOpaque(false);
@@ -169,6 +179,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smithingRecipeMaker), "smithing");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(brewingRecipeMaker), "brewing");
 
+		craftingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smeltingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		blastFurnaceRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smokerRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		stoneCutterRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		campfireCookingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+		smithingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
+
 		JComponent recwrap = ComponentUtils.applyPadding(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -202,6 +220,10 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_book_category"),
 						L10N.label("elementgui.recipe.cooking_book_category")), cookingBookCategory));
 
+		northPanel.add(unlockRecipePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/unlocking_items"),
+						L10N.label("elementgui.recipe.unlocking_items")), unlockingItems));
+
 		northPanel.add(shapelessPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"),
 						L10N.label("elementgui.recipe.is_shapeless")), recipeShapeless));
@@ -225,6 +247,20 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		group.setValidator(new RegistryNameValidator(group, "Recipe group").setAllowEmpty(true).setMaxLength(128));
 
 		updateUIFields();
+
+		// Automatically update the unlocking items when creating a new single input recipe
+		if (!isEditingMode()) {
+			smeltingRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(smeltingRecipeMaker.getBlock())));
+			blastFurnaceRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(blastFurnaceRecipeMaker.getBlock())));
+			smokerRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(smokerRecipeMaker.getBlock())));
+			campfireCookingRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(campfireCookingRecipeMaker.getBlock())));
+			stoneCutterRecipeMaker.cb1.addBlockSelectedListener(
+					e -> unlockingItems.setListElements(List.of(stoneCutterRecipeMaker.getBlock())));
+		}
 
 		addPage(pane5).validate(name).validate(group).lazyValidate(() -> {
 			if ("Crafting".equals(recipeType.getSelectedItem())) {
@@ -292,6 +328,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
+			unlockRecipePanel.setVisible(isRecipeJSON);
 
 			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
 			shapelessPanel.setVisible(isRecipeCrafting);
@@ -321,6 +358,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		cookingBookCategory.setSelectedItem(recipe.cookingBookCategory);
 		craftingBookCategory.setSelectedItem(recipe.craftingBookCategory);
+
+		unlockingItems.setListElements(recipe.unlockingItems);
 
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
@@ -440,11 +479,23 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipe.cookingBookCategory = (String) cookingBookCategory.getSelectedItem();
 		recipe.craftingBookCategory = (String) craftingBookCategory.getSelectedItem();
 
+		recipe.unlockingItems = unlockingItems.getListElements();
+
 		return recipe;
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-recipe");
+	}
+
+	private void addIngredientMouseListener(MCItemHolder ingredient) {
+		ingredient.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (ingredient.containsItem() && (e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) != 0) {
+					unlockingItems.addListElement(ingredient.getBlock());
+				}
+			}
+		});
 	}
 
 }

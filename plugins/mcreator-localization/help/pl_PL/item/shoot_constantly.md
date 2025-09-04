@@ -1,0 +1,1 @@
+Jeśli zaznaczone, przedmiot dystansowy będzie ciągle strzelany, gdy gracz kliknie prawym przyciskiem myszy.

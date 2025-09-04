@@ -1,0 +1,1 @@
+To jest docelowy element tego rozszerzenia.

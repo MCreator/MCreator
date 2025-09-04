@@ -57,6 +57,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	private MCItemHolder projectileItem;
 	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableGravity = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JCheckBox igniteFire = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
@@ -112,8 +113,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		damage.setOpaque(false);
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
+		disableGravity.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(11, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
@@ -155,6 +157,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/ignite_fire"),
 				L10N.label("elementgui.projectile.ignite_fire")));
 		propertiesPanel.add(igniteFire);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/disable_gravity"),
+				L10N.label("elementgui.projectile.disable_gravity")));
+		propertiesPanel.add(disableGravity);
 
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
@@ -204,6 +210,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	@Override protected void openInEditingMode(Projectile projectile) {
 		projectileItem.setBlock(projectile.projectileItem);
 		showParticles.setSelected(projectile.showParticles);
+		disableGravity.setSelected(projectile.disableGravity);
 		actionSound.setSound(projectile.actionSound);
 		power.setValue(projectile.power);
 		damage.setValue(projectile.damage);
@@ -226,6 +233,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		Projectile projectile = new Projectile(modElement);
 		projectile.projectileItem = projectileItem.getBlock();
 		projectile.showParticles = showParticles.isSelected();
+		projectile.disableGravity = disableGravity.isSelected();
 		projectile.actionSound = actionSound.getSound();
 		projectile.igniteFire = igniteFire.isSelected();
 		projectile.power = (double) power.getValue();

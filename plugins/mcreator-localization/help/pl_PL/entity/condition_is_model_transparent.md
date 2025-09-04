@@ -1,0 +1,1 @@
+Podczas gdy zwrócona wartość jest prawdą, obiekt będzie przezroczysty. Gdy gracz jest w trybie obserwatora, spełnia ten warunek.

@@ -1,0 +1,1 @@
+Ha hang van kiválasztva, akkor az lejátszásra kerül, amikor ez a bájitalhatás hozzáadódik egy entitáshoz.

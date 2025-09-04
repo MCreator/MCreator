@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy a részecskék megjelennek-e a játékos közelében.

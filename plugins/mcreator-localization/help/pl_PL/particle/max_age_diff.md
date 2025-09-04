@@ -1,0 +1,1 @@
+Ten parametr kontroluje ile rzeczywistego maksymalnego wieku cząstek może różnić się w wartości dodatniej lub ujemnej od określonego maksymalnego wieku.

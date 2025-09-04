@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor a blokk nem kap redstone áramot.

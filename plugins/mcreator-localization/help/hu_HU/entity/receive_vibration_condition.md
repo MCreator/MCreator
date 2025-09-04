@@ -1,0 +1,1 @@
+Ez a feltétel határozza meg, hogy az entitásnak meg kell-e kapnia az észlelt rezgést vagy sem.
