@@ -39,10 +39,6 @@
     "toolbox_id": "worldmanagement",
     "toolbox_init": [
       "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>",
-      "<value name=\"color\"><block type=\"field_color\"></block></value>",
-      "<value name=\"bold\"><block type=\"field_checkbox\"></block></value>",
-      "<value name=\"italic\"><block type=\"field_checkbox\"></block></value>",
-      "<value name=\"underlined\"><block type=\"field_checkbox\"></block></value>"
     ],
     "inputs": [
       "text"
