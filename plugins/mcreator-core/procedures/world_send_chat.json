@@ -38,7 +38,7 @@
   "mcreator": {
     "toolbox_id": "worldmanagement",
     "toolbox_init": [
-      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>",
+      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>"
     ],
     "inputs": [
       "text"
