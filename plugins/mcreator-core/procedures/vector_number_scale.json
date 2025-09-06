@@ -1,0 +1,46 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vector",
+      "check": "Vector"
+    },
+    {
+      "type": "input_value",
+      "name": "scaleValue",
+      "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "vector_opcodes",
+      "options": [
+        [
+          "Multiplication",
+          "scale("
+        ],
+        [
+          "Division",
+          "scale(1.0/"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "Vector",
+  "colour": 270,
+  "mcreator": {
+    "group": "base",
+    "toolbox_id": "vector",
+    "toolbox_init": [
+      "~<value name=\"vector\"><block type=\"vector_new_vector\"><value name=\"x\"><block type=\"coord_x\"></block></value><value name=\"y\"><block type=\"coord_y\"></block></value><value name=\"z\"><block type=\"coord_z\"></block></value></block></value>",
+      "<value name=\"scaleValue\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+    ],
+    "inputs": [
+      "vector",
+      "scaleValue"
+    ],
+    "fields": [
+      "vector_opcodes"
+    ]
+  }
+}

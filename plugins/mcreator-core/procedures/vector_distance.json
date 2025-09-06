@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "vector1",
+      "check": "Vector"
+    },
+    {
+      "type": "input_value",
+      "name": "vector2",
+      "check": "Vector"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "group": "base",
+    "toolbox_id": "vector",
+    "toolbox_init": [
+      "~<value name=\"vector1\"><block type=\"vector_new_vector\"><value name=\"x\"><block type=\"coord_x\"></block></value><value name=\"y\"><block type=\"coord_y\"></block></value><value name=\"z\"><block type=\"coord_z\"></block></value></block></value>",
+      "~<value name=\"vector2\"><block type=\"vector_new_vector\"><value name=\"x\"><block type=\"coord_x\"></block></value><value name=\"y\"><block type=\"coord_y\"></block></value><value name=\"z\"><block type=\"coord_z\"></block></value></block></value>"
+    ],
+    "inputs": [
+      "vector1",
+      "vector2"
+    ]
+  }
+}

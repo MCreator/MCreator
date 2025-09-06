@@ -195,6 +195,18 @@ public class GTProcedureBlocks {
 							<value name="inaccuracy"><block type="math_number"><field name="NUM">0</field></block></value>
 						</block>""".formatted(testXML));
 				break;
+			case "Vector":
+				String vectorOperator = ListUtils.getRandomItem(List.of("add", "subtract", "multiply"));
+				procedure.procedurexml = wrapWithBaseTestXML("""
+						<block type="return_vector"><value name="return">
+							<block type="vector_dual_ops">
+								<field name="vector_opcodes">%s</field>
+								<value name="vector1">%s</value>
+								<value name="vector2">%s</value>
+							</block>
+						</value></block>
+						""".formatted(vectorOperator, testXML, testXML));
+				break;
 			case null:
 				break;
 			default:
