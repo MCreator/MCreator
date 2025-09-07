@@ -22,6 +22,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.yaml.AdaptiveYamlMergePolicy;
 import net.mcreator.util.yaml.YamlMerge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,7 +80,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		// load generator configuration
 		try {
 			generatorConfig = YamlMerge.multiLoadYAML(
-					PluginLoader.INSTANCE.getResources(generatorName + "/generator.yaml"));
+					PluginLoader.INSTANCE.getResources(generatorName + "/generator.yaml"),
+					new AdaptiveYamlMergePolicy("name"));
 			generatorConfig = new ConcurrentHashMap<>(
 					generatorConfig); // make this map concurrent, cache can be reused by multiple instances
 		} catch (YamlEngineException | IOException e) {

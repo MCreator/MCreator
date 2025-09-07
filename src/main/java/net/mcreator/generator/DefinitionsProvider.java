@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.yaml.AdaptiveYamlMergePolicy;
 import net.mcreator.util.yaml.YamlMerge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +48,8 @@ public class DefinitionsProvider {
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			try {
 				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE.getResources(
-						generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml"));
+								generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml"),
+						new AdaptiveYamlMergePolicy("name"));
 				if (result.isEmpty()) // definition not specified
 					continue;
 
@@ -59,8 +61,9 @@ public class DefinitionsProvider {
 
 		for (BaseType type : BaseType.values()) {
 			try {
-				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE.getResources(
-						generatorName + "/common." + type.getPluralName() + ".yaml"));
+				Map<?, ?> result = YamlMerge.multiLoadYAML(
+						PluginLoader.INSTANCE.getResources(generatorName + "/common." + type.getPluralName() + ".yaml"),
+						new AdaptiveYamlMergePolicy("name"));
 				if (result.isEmpty()) // definition not specified
 					continue;
 
