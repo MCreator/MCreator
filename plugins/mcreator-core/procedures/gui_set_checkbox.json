@@ -19,7 +19,7 @@
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
-  "colour": "110",
+  "colour": 110,
   "mcreator": {
     "group": "components",
     "toolbox_id": "guimanagement",
