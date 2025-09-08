@@ -107,6 +107,7 @@ net.mcreator.ui.minecraft.attributemodifiers
 net.mcreator.ui.minecraft.blockentityanimations
 net.mcreator.ui.minecraft.boundingboxes
 net.mcreator.ui.minecraft.entityanimations
+net.mcreator.ui.minecraft.itemanimations
 net.mcreator.ui.minecraft.jigsaw
 net.mcreator.ui.minecraft.loottable
 net.mcreator.ui.minecraft.modellayers
