@@ -81,4 +81,11 @@ public class ComponentUtils {
 		return squareAndBorder(gor, Theme.current().getForegroundColor(), text);
 	}
 
+	public static void updateBorderTitle(JComponent toUpdate, String text) {
+		if (toUpdate.getBorder() instanceof TitledBorder titledBorder) {
+			titledBorder.setTitle(text);
+			toUpdate.repaint();
+		}
+	}
+
 }

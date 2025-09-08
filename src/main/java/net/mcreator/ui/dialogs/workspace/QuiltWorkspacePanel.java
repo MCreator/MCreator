@@ -25,7 +25,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class QuiltWorkspacePanel extends AbstractWorkspacePanel {
@@ -40,7 +39,8 @@ public class QuiltWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(10, 10));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.quilt.modid"), workspaceDialogPanel.modID));
+		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.quilt.modid"),
+				workspaceDialogPanel.modID));
 
 		addFormElement(new JEmptyBox(10, 10));
 
