@@ -57,16 +57,15 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 
 					// Iterate additions and based on their policy, add them the correct way
 					addition.stream().map(e -> (Map<?, ?>) e).forEach(e -> {
-						String mergePolicy = e.get("merge_policy") instanceof String s ? s : "append";
-						if ("append".equals(mergePolicy)) {
-							appendList.add(e);
-						} else if ("append_end".equals(mergePolicy)) {
-							appendEndList.add(e);
-						} else if ("remove_all".equals(mergePolicy)) {
-							deleteList.add(e);
-						} else if ("override_all".equals(mergePolicy)) {
+						String mergePolicy = e.get("_merge_policy") instanceof String s ? s : "append";
+						switch (mergePolicy) {
+						case "append" -> appendList.add(e);
+						case "append_end" -> appendEndList.add(e);
+						case "remove_all" -> deleteList.add(e);
+						case "override_all" -> {
 							deleteList.add(e);
 							overrideList.add(e);
+						}
 						}
 					});
 
