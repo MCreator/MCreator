@@ -110,6 +110,8 @@ public class ProcedureGlobalTriggerFixer implements IConverter {
 		put("Mod server-side loaded", "mod_serverload");
 		put("On player tick update", "player_ticks");
 		put("On world tick update", "world_ticks");
+		put("On day start", "day_start");
+		put("On day end", "day_end");
 		put("Player goes to bed", "player_in_bed");
 		put("Player joins the world", "player_log_in");
 		put("Player leaves the world", "player_log_out");
