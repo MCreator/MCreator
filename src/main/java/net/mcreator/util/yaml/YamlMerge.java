@@ -46,6 +46,12 @@ public class YamlMerge {
 
 		List<URL> yamlResources = Collections.list(classLoader.getResources(resourcePath));
 
+		// YAML resources from plugins with higher priority are present in the list first, but we want to reverse this
+		// as other plugins with lower priority can otherwise apply merge changes to entries loaded from plugins with
+		// higher priority. As we reverse the list, it means entries from the plugin with the lowest priority will be
+		// loaded first and entries/merge changes from higher priority plugins will be applied later
+		yamlResources = yamlResources.reversed();
+
 		yamlResources.forEach(resource -> {
 			String yamlString = FileIO.readResourceToString(resource);
 
@@ -107,11 +113,7 @@ public class YamlMerge {
 
 		default void mergeList(Object key, List<Object> existing, List<Object> addition) throws Exception {
 			try {
-				// if a plugin is loaded earlier (higher weight), its entries should be on the bottom so
-				// they have the highest priority (latest template for file loaded is kept by Generator)
-				// therefore if a plugin adds more entries later (lower priority plugin), they should be
-				// added to the start of the list (so they are not the last option to consider and win)
-				existing.addAll(0, addition);
+				existing.addAll(addition);
 			} catch (Throwable t) {
 				throw new Exception(t);
 			}

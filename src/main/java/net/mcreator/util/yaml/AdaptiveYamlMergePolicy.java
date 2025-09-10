@@ -36,8 +36,8 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 	 * If the lists contain maps with a specified unique key, it merges them based on the merge policy for each entry.
 	 * <p/>
 	 * Possible merge policies (merging is done for every plugin depending on plugin weight):
-	 * - append (default): adds the entry to the top of the list (also considering plugin weight)
-	 * - append_end: adds the entry to the bottom of the list (also considering plugin weight, but in reverse sense practically)
+	 * - append (default): adds the entry to the end of the list
+	 * - append_start: adds the entry to the start of the list
 	 * - remove_all: removes all entries that match the unique key and does not add the entry
 	 * - override_all: removes all entries that match the unique key and adds the entry
 	 * <p>
@@ -51,7 +51,7 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 			if (!existing.isEmpty() && existing.getFirst() instanceof Map<?, ?> map) {
 				if (map.containsKey(uniqueKeySource)) {
 					List<Map<?, ?>> appendList = new ArrayList<>();
-					List<Map<?, ?>> appendEndList = new ArrayList<>();
+					List<Map<?, ?>> appendStartList = new ArrayList<>();
 					List<Map<?, ?>> deleteList = new ArrayList<>();
 					List<Map<?, ?>> overrideList = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 						String mergePolicy = e.get("_merge_policy") instanceof String s ? s : "append";
 						switch (mergePolicy) {
 						case "append" -> appendList.add(e);
-						case "append_end" -> appendEndList.add(e);
+						case "append_start" -> appendStartList.add(e);
 						case "remove_all" -> deleteList.add(e);
 						case "override_all" -> {
 							deleteList.add(e);
@@ -69,11 +69,11 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 						}
 					});
 
-					// First, we append entries at the start. See YamlMerge.MergePolicy.super.mergeList for an explanation why on the top (index 0)
-					existing.addAll(0, appendList);
+					// First, we append entries at the end of the list
+					existing.addAll(appendList);
 
-					// Then, we append entries at the end
-					existing.addAll(appendEndList);
+					// Then, we append entries at the start of the list
+					existing.addAll(0, appendStartList);
 
 					// Then, we remove all entries that match the unique keys of deleteList
 					List<Map<?, ?>> toRemove = new ArrayList<>();
@@ -86,7 +86,7 @@ public class AdaptiveYamlMergePolicy implements YamlMerge.MergePolicy {
 					existing.removeAll(toRemove);
 
 					// Finally, we add overrides for entries that were deleted in the previous step
-					existing.addAll(0, overrideList);
+					existing.addAll(overrideList);
 
 					return; // do not fallthrough to default behavior of super.mergeList
 				}
