@@ -899,7 +899,7 @@ Blockly.defineBlocksWithJsonArray([
             }
         ],
         "output": "Direction",
-        "colour": "20"
+        "colour": 20
     },
     {
         'type': 'controls_flow_statements',
