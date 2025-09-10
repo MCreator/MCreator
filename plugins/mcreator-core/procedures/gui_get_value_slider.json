@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "field_javaname",
+      "name": "slider",
+      "text": "sliderName"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "group": "components",
+    "toolbox_id": "guimanagement",
+    "fields": [
+      "slider"
+    ],
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}
