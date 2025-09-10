@@ -45,7 +45,7 @@ public class ModAPIManager {
 		for (String apidefinition : fileNames) {
 			// load generator configuration
 			try {
-				Map<?, ?> apiconfiguration = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE.getResources(apidefinition));
+				Map<?, ?> apiconfiguration = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, apidefinition);
 				if (apiconfiguration.isEmpty())
 					continue;
 

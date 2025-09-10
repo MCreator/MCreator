@@ -79,8 +79,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 		// load generator configuration
 		try {
-			generatorConfig = YamlMerge.multiLoadYAML(
-					PluginLoader.INSTANCE.getResources(generatorName + "/generator.yaml"),
+			generatorConfig = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, generatorName + "/generator.yaml",
 					new AdaptiveYamlMergePolicy("name"));
 			generatorConfig = new ConcurrentHashMap<>(
 					generatorConfig); // make this map concurrent, cache can be reused by multiple instances

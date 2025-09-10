@@ -48,7 +48,7 @@ public class GeneratorVariableTypes {
 			if (VariableTypeLoader.INSTANCE.doesVariableTypeExist(variableTypeName)) {
 				// load generator configuration
 				try {
-					Map<?, ?> variableTypesData = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE.getResources(res));
+					Map<?, ?> variableTypesData = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, res);
 					if (variableTypesData.isEmpty())
 						continue;
 

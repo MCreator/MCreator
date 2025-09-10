@@ -23,23 +23,30 @@ import net.mcreator.io.FileIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 public class YamlMerge {
 
 	private static final Logger LOG = LogManager.getLogger(YamlMerge.class);
 
-	public static Map<?, ?> multiLoadYAML(Enumeration<URL> resources) {
-		return multiLoadYAML(resources, null);
+	public static Map<?, ?> multiLoadYAML(URLClassLoader classLoader, String resourcePath)
+			throws YamlEngineException, IOException {
+		return multiLoadYAML(classLoader, resourcePath, null);
 	}
 
-	public static Map<?, ?> multiLoadYAML(Enumeration<URL> resources, @Nullable MergePolicy policy) {
+	public static Map<?, ?> multiLoadYAML(URLClassLoader classLoader, String resourcePath, @Nullable MergePolicy policy)
+			throws YamlEngineException, IOException {
 		List<Map<?, ?>> loadedMaps = new ArrayList<>();
 
-		Collections.list(resources).forEach(resource -> {
+		List<URL> yamlResources = Collections.list(classLoader.getResources(resourcePath));
+
+		yamlResources.forEach(resource -> {
 			String yamlString = FileIO.readResourceToString(resource);
 
 			if (!yamlString.isEmpty()) {

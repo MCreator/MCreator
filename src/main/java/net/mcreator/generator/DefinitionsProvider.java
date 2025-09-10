@@ -47,10 +47,9 @@ public class DefinitionsProvider {
 
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			try {
-				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE.getResources(
-								generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml"),
-						new AdaptiveYamlMergePolicy("name"));
-				if (result.isEmpty()) // definition not specified
+				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+						generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml",
+						new AdaptiveYamlMergePolicy("name")); if (result.isEmpty()) // definition not specified
 					continue;
 
 				cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
@@ -61,8 +60,8 @@ public class DefinitionsProvider {
 
 		for (BaseType type : BaseType.values()) {
 			try {
-				Map<?, ?> result = YamlMerge.multiLoadYAML(
-						PluginLoader.INSTANCE.getResources(generatorName + "/common." + type.getPluralName() + ".yaml"),
+				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+						generatorName + "/common." + type.getPluralName() + ".yaml",
 						new AdaptiveYamlMergePolicy("name"));
 				if (result.isEmpty()) // definition not specified
 					continue;
