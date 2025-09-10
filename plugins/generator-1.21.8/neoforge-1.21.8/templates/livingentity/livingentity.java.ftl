@@ -404,12 +404,6 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
-	<#if data.immuneToFire>
-	@Override public boolean fireImmune() {
-		return true;
-	}
-	</#if>
-
 	<#if hasProcedure(data.whenMobDies)>
 	@Override public void die(DamageSource source) {
 		super.die(source);
