@@ -23,22 +23,16 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="48.3125"
-     inkscape:cx="7.9689521"
-     inkscape:cy="6.3441138"
+     inkscape:cx="7.9482536"
+     inkscape:cy="6.3234153"
      inkscape:window-width="1920"
      inkscape:window-height="991"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1" />
-  <rect
-     width="4.2281"
-     height="4.2366"
-     fill="#66cdaa"
-     stroke-width=".26458"
-     id="rect1" />
   <path
-     style="font-weight:800;font-size:3.3595px;font-family:Roboto;fill:#ffffff;stroke-width:0.251966"
+     style="font-weight:800;font-size:3.3595px;font-family:Roboto;fill:#66cdaa;stroke-width:0.251966;stroke:none;fill-opacity:1"
      d="M 1.6374416,0.56338802 V 0.90832235 H 1.4031657 V 3.2691068 H 1.6374416 V 3.6125479 H 0.83729929 V 0.56338802 Z M 2.6051814,0.90832235 V 0.56338802 H 3.4071258 V 3.6125479 H 2.6051814 V 3.2691068 H 2.8430615 V 0.90832235 Z"
      id="text1"
      aria-label="[ ]" />

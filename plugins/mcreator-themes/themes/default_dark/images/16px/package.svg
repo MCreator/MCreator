@@ -23,7 +23,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="48.3125"
-     inkscape:cx="7.9896507"
+     inkscape:cx="7.9689521"
      inkscape:cy="8"
      inkscape:window-width="1920"
      inkscape:window-height="991"
@@ -31,16 +31,9 @@
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1" />
-  <rect
-     y=".0084901"
-     width="4.2281"
-     height="4.2196"
-     fill="#00fa9a"
-     stroke-width=".26458"
-     id="rect1" />
   <path
      d="M 1.3317013,2.9703663 1.9050885,0.64320501 h 0.31042 L 2.2352805,1.13355 1.6223493,3.5220044 H 1.2941345 Z M 0.96987416,0.64320501 1.4404471,2.9624575 V 3.5220044 H 1.0825744 L 0.43009928,0.64320501 Z M 2.8304169,2.9525715 3.2930811,0.64320501 h 0.541752 L 3.182358,3.5220044 H 2.8244853 Z M 2.3637983,0.64320501 2.9371855,2.9782751 2.9707979,3.5220044 H 2.6425831 L 2.0316291,1.1315728 2.0553555,0.64320501 Z"
      id="text1"
-     style="font-weight:600;font-size:4.0493px;font-family:Roboto;fill:#ffffff;stroke-width:0.3037"
+     style="font-weight:600;font-size:4.0493px;font-family:Roboto;fill:#00fa9a;stroke-width:0.3037;stroke:none"
      aria-label="W" />
 </svg>
