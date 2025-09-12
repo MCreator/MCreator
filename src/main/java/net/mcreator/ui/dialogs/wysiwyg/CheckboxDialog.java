@@ -40,13 +40,12 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
 		super(editor, checkbox);
-		setSize(480, 220);
+		setSize(520, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.checkbox_add"));
 
-		JPanel options = new JPanel();
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		JPanel grid = new JPanel(new GridLayout(2, 2, 5, 2));
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
@@ -56,11 +55,13 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));
+		grid.add(L10N.label("dialog.gui.checkbox_name"));
+		grid.add(nameField);
 
 		JTextField checkboxText = new JTextField(20);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), checkboxText));
 		checkboxText.setPreferredSize(new Dimension(200, 28));
+		grid.add(L10N.label("dialog.gui.checkbox_text"));
+		grid.add(checkboxText);
 
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
@@ -69,9 +70,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.false"));
 		isCheckedProcedure.refreshList();
-		options.add(PanelUtils.join(isCheckedProcedure));
 
-		add("Center", options);
+		add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(grid), PanelUtils.join(isCheckedProcedure)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));

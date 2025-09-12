@@ -49,11 +49,12 @@ import java.util.stream.Collectors;
 		put("entitymodel", EntityModel.class); //weight -10
 		put("textfield", TextField.class); // weight 0
 		put("label", Label.class); // weight 10
+		put("slider", Slider.class); // weight 15
 		put("checkbox", Checkbox.class); //weight 20
 		put("imagebutton", ImageButton.class); //weight 25
-		put("button", Button.class);// weight 30
-		put("image", Image.class);// weight 40
-		put("sprite", Sprite.class);// weight 45
+		put("button", Button.class); // weight 30
+		put("image", Image.class); // weight 40
+		put("sprite", Sprite.class); // weight 45
 		put("inputslot", InputSlot.class); // weight 50
 		put("outputslot", OutputSlot.class); // weight 50
 	}};

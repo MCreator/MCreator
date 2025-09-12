@@ -19,12 +19,12 @@
 package net.mcreator.ui.wysiwyg;
 
 import net.mcreator.element.parts.IWorkspaceDependent;
-import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
@@ -53,8 +53,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class WYSIWYGEditor extends JPanel {
 
@@ -66,6 +66,7 @@ public class WYSIWYGEditor extends JPanel {
 		add(new WYSIWYGComponentRegistration<>("button", "addbutton", false, Button.class, ButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("imagebutton", "addimagebutton", false, ImageButton.class, ImageButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
+		add(new WYSIWYGComponentRegistration<>("slider", "addslider", false, Slider.class, SliderDialog.class));
 		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class, TextFieldDialog.class));
 		add(new WYSIWYGComponentRegistration<>("tooltip", "addtooltip", false, Tooltip.class, TooltipDialog.class));
 		add(new WYSIWYGComponentRegistration<>("entity_model", "addmodel", true, EntityModel.class, EntityModelDialog.class));
