@@ -153,6 +153,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
+	private final JCheckBox helmetCanFly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyCanFly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox leggingsCanFly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bootsCanFly = L10N.checkbox("elementgui.common.enable");
+
 	private LogicProcedureSelector helmetGlowCondition;
 	private LogicProcedureSelector bodyGlowCondition;
 	private LogicProcedureSelector leggingsGlowCondition;
@@ -357,7 +362,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(4, 2, 2, 2));
+		helmetCanFly.setOpaque(false);
+		bodyCanFly.setOpaque(false);
+		leggingsCanFly.setOpaque(false);
+		bootsCanFly.setOpaque(false);
+
+		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -373,6 +383,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
+
+		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
+				L10N.label("elementgui.armor.can_fly")));
+		helmetSubPanel.add(helmetCanFly);
 
 		JPanel helmetConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		helmetConditionsPanel.setOpaque(false);
@@ -403,7 +417,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bodText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel bodySubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel bodySubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		bodySubPanel.setOpaque(false);
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -424,6 +438,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
+
+		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
+				L10N.label("elementgui.armor.can_fly")));
+		bodySubPanel.add(bodyCanFly);
 
 		JPanel bodyConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bodyConditionsPanel.setOpaque(false);
@@ -447,7 +465,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		legText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel leggingsSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel leggingsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		leggingsSubPanel.setOpaque(false);
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -469,6 +487,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
+
+		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
+				L10N.label("elementgui.armor.can_fly")));
+		leggingsSubPanel.add(leggingsCanFly);
 
 		JPanel leggingsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		leggingsConditionsPanel.setOpaque(false);
@@ -492,7 +514,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bootText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel bootsSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel bootsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		bootsSubPanel.setOpaque(false);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -514,6 +536,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
+
+		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
+				L10N.label("elementgui.armor.can_fly")));
+		bootsSubPanel.add(bootsCanFly);
 
 		JPanel bootsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bootsConditionsPanel.setOpaque(false);
@@ -978,6 +1004,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
+		helmetCanFly.setSelected(armor.helmetCanFly);
+		bodyCanFly.setSelected(armor.bodyCanFly);
+		leggingsCanFly.setSelected(armor.leggingsCanFly);
+		bootsCanFly.setSelected(armor.bootsCanFly);
+
 		helmetGlowCondition.setSelectedProcedure(armor.helmetGlowCondition);
 		bodyGlowCondition.setSelectedProcedure(armor.bodyGlowCondition);
 		leggingsGlowCondition.setSelectedProcedure(armor.leggingsGlowCondition);
@@ -1061,6 +1092,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+		armor.helmetCanFly = helmetCanFly.isSelected();
+		armor.bodyCanFly = bodyCanFly.isSelected();
+		armor.leggingsCanFly = leggingsCanFly.isSelected();
+		armor.bootsCanFly = bootsCanFly.isSelected();
 		armor.helmetGlowCondition = helmetGlowCondition.getSelectedProcedure();
 		armor.bodyGlowCondition = bodyGlowCondition.getSelectedProcedure();
 		armor.leggingsGlowCondition = leggingsGlowCondition.getSelectedProcedure();

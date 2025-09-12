@@ -161,7 +161,7 @@ import net.minecraft.client.model.Model;
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.helmetCanFly>.component(DataComponents.GLIDER, Unit.INSTANCE)</#if>);
 		}
 
 		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
@@ -184,7 +184,7 @@ import net.minecraft.client.model.Model;
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.bodyCanFly>.component(DataComponents.GLIDER, Unit.INSTANCE)</#if>);
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -207,7 +207,7 @@ import net.minecraft.client.model.Model;
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.leggingsCanFly>.component(DataComponents.GLIDER, Unit.INSTANCE)</#if>);
 		}
 
 		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
@@ -230,7 +230,7 @@ import net.minecraft.client.model.Model;
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if>);
+			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.bootsCanFly>.component(DataComponents.GLIDER, Unit.INSTANCE)</#if>);
 		}
 
 		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">

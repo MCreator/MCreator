@@ -1,0 +1,1 @@
+This parameter controls if the item is should fly, like Elytra.
