@@ -1255,6 +1255,7 @@ public class TestWorkspaceDataProvider {
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.immuneToFire = _true;
+			item.isPiglinCurrency = _true;
 			item.glowCondition = new LogicProcedure(emptyLists ? "condition3" : null, _true);
 			item.onRightClickedInAir = new Procedure("procedure1");
 			item.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
