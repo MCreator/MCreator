@@ -99,7 +99,7 @@ public class YamlMerge {
 				}
 			} else {
 				try {
-					policy.mergeScalar(key, existing, value);
+					target.put(key, policy.mergeScalar(key, existing, value));
 				} catch (Throwable t) {
 					LOG.warn("Failed to merge key {}", key, t);
 				}
@@ -119,7 +119,14 @@ public class YamlMerge {
 			}
 		}
 
-		default void mergeScalar(Object key, Object existing, Object addition) throws Exception {
+		// Since lower priority plugin data is loaded first, we need to override scalars so scalar from the
+		// plugin with the higher priority can override the scalar from the plugin with lower priority
+		default Object mergeScalar(Object key, Object existing, Object addition) throws Exception {
+			try {
+				return addition; // use the new value
+			} catch (Throwable t) {
+				throw new Exception(t);
+			}
 		}
 
 	}
