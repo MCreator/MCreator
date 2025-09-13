@@ -68,6 +68,7 @@ import java.util.*;
 	public MItemBlock recipeRemainder;
 	public boolean destroyAnyBlock;
 	public boolean immuneToFire;
+	public boolean isPiglinCurrency;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;

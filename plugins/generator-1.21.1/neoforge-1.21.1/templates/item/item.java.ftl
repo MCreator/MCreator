@@ -102,6 +102,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
+	<#if data.isPiglinCurrency>
+	@Override public boolean isPiglinCurrency(ItemStack stack) {
+		return true;
+	}
+	</#if>
+
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};

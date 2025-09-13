@@ -74,6 +74,8 @@ tags:
     condition: ${data.damageCount != 0}
   - tag: ITEMS:minecraft:music_discs
     condition: isMusicDisc
+  - tag: ITEMS:minecraft:piglin_loved
+    condition: isPiglinCurrency
 
 localizationkeys:
   - key: item.@modid.@registryname
