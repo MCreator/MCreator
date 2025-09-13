@@ -258,6 +258,14 @@
 </#if>
 </#macro>
 
+<#macro canFly retval=false>
+<#if retval>
+@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "canElytraFly", "ItemStack", "LivingEntity")}
+
+@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "elytraFlightTick", "ItemStack", "LivingEntity", "int")}
+</#if>
+</#macro>
+
 <#macro onItemEntityDestroyed procedure="">
 <#if hasProcedure(procedure)>
 @Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
