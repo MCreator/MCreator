@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "achievement",
+      "datalist": "achievements",
+      "customEntryProviders": "achievement"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 175,
+  "mcreator": {
+    "group": "advancements",
+    "toolbox_id": "playermanagement",
+    "fields": [
+      "achievement"
+    ],
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}

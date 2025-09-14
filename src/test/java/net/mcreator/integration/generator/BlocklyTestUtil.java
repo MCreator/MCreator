@@ -236,6 +236,10 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">condition1,condition2</field>");
 			processed++;
 		}
+		case "field_color_selector" -> {
+			additionalXML.append("<field name=\"").append(field).append("\">#ffffff</field>");
+			processed++;
+		}
 		}
 		return processed;
 	}

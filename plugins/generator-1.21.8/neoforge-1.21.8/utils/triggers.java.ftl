@@ -257,6 +257,23 @@
 </#if>
 </#macro>
 
+<#macro onItemEntityDestroyed procedure="">
+<#if hasProcedure(procedure)>
+@Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
+	super.onDestroyed(entity, damagesource);
+	<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "entity.level()",
+		"entity": "entity",
+		"itemstack": "entity.getItem()",
+		"damagesource": "damagesource"
+	}/>
+}
+</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
@@ -359,7 +376,7 @@
 		"y": "pos.getY()",
 		"z": "pos.getZ()",
 		"world": "world",
-		"entity": "${JavaModName}.clientPlayer()",
+		"entity": (JavaModName + ".clientPlayer()"),
 		"blockstate": "blockstate"
 	}/>
 }

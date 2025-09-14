@@ -29,23 +29,46 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
+
 package ${package}.client.renderer.item;
 
 <#compress>
-@OnlyIn(Dist.CLIENT)
-public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
+@OnlyIn(Dist.CLIENT) public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 
 	private final EntityModelSet entityModelSet;
 	private final ItemStack transformSource;
+
+	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
+	private final long start;
 
 	public ${name}ItemRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
 		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
+
+		this.start = System.currentTimeMillis();
+
+		<#if data.hasCustomJAVAModel()>
+			<#if data.animations?has_content>
+			this.models.put(0, new AnimatedModel(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			<#else>
+			this.models.put(0, new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			</#if>
+		</#if>
+		<#list data.getModels() as model>
+			<#if model.hasCustomJAVAModel()>
+			this.models.put(${model?index + 1}, new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION)));
+			</#if>
+		</#list>
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		Model model = <#if data.hasCustomJAVAModel()>new ${data.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION))<#else>null</#if>;
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
+		updateRenderState(itemstack);
+		</#if>
+
+		EntityModel<?> model = this.models.get(0);
 		ResourceLocation texture = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
 		<#list data.getModels() as model>
 			<#if model.hasCustomJAVAModel()>
@@ -53,7 +76,7 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
 						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
-				model = new ${model.customModelName.split(":")[0]}(this.entityModelSet.bakeLayer(${model.customModelName.split(":")[0]}.LAYER_LOCATION));
+				model = models.get(${model?index + 1});
 				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
 			}
 			</#if>
@@ -65,6 +88,12 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
+		if (model instanceof AnimatedModel animatedModel)
+			animatedModel.setupItemStackAnim(itemstack, (System.currentTimeMillis() - start) / 50.0f);
+		else
+		</#if>
+		model.setupAnim(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
@@ -76,6 +105,68 @@ public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 	private static boolean isInventory(ItemDisplayContext type) {
 		return type == ItemDisplayContext.GUI || type == ItemDisplayContext.FIXED;
 	}
+
+	<#if data.hasCustomJAVAModel() && data.animations?has_content>
+	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = new WeakHashMap<>();
+
+	private Map<Integer, AnimationState> getAnimationState(ItemStack stack) {
+		return CACHE.computeIfAbsent(stack, s -> IntStream.range(0, ${data.animations?size}).boxed().collect(Collectors.toMap(i -> i, i -> new AnimationState(), (a, b) -> b)));
+	}
+
+	private void updateRenderState(ItemStack itemstack) {
+		int tickCount = (int) (System.currentTimeMillis() - start) / 50;
+		<#list data.animations as animation>
+			<#if hasProcedure(animation.condition)>
+				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
+					"itemstack": "itemstack",
+					"x": "Minecraft.getInstance().player.getX()",
+					"y": "Minecraft.getInstance().player.getY()",
+					"z": "Minecraft.getInstance().player.getZ()",
+					"entity": "Minecraft.getInstance().player",
+					"world": "Minecraft.getInstance().level"
+				}, false/>, tickCount);
+			<#else>
+				getAnimationState(itemstack).get(${animation?index}).animateWhen(true, tickCount);
+			</#if>
+		</#list>
+	}
+
+	private final class AnimatedModel extends ${data.customModelName.split(":")[0]} {
+
+		private final ModelPart root;
+
+		private final BlockEntityHierarchicalModel animator = new BlockEntityHierarchicalModel();
+
+		public AnimatedModel(ModelPart root) {
+			super(root);
+			this.root = root;
+		}
+
+		public void setupItemStackAnim(ItemStack itemstack, float ageInTicks) {
+			animator.setupItemStackAnim(itemstack, ageInTicks);
+			super.setupAnim(null, 0, 0, ageInTicks, 0, 0);
+		}
+
+		private class BlockEntityHierarchicalModel extends HierarchicalModel<Entity> {
+
+			@Override public ModelPart root() {
+				return root;
+			}
+
+			@Override public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			}
+
+			public void setupItemStackAnim(ItemStack itemstack, float ageInTicks) {
+				animator.root().getAllParts().forEach(ModelPart::resetPose);
+				<#list data.animations as animation>
+				animator.animate(getAnimationState(itemstack).get(${animation?index}), ${animation.animation}, ageInTicks, ${animation.speed}f);
+				</#list>
+			}
+
+		}
+
+	}
+	</#if>
 
 }
 </#compress>

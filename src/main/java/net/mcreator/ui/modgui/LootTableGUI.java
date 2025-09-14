@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
+import net.mcreator.ui.minecraft.loottable.LootTablePreview;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -133,9 +134,15 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
-		lootTablePools = new JLootTablePoolsList(mcreator, this);
+		LootTablePreview preview = new LootTablePreview(mcreator);
+		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
+		ModElementChangedListener listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		listener.registerUI(lootTablePools);
+
+		pane3.add(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
+						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
 
 		addPage(pane3, false).validate(name);
 
