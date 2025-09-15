@@ -453,7 +453,7 @@ public class BlocklyBlockCodeGenerator {
 			}
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
-			if (!Objects.equals(master.getHeadSection(), head.get())) {
+			if (!Objects.equals(master.getHeadSection(), head.get()) || !Objects.equals(master.getTail(), tail.get())) {
 				//must be procedural. or it will pollute the head.
 				if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 					master.append(master.getTailSection());
