@@ -49,7 +49,8 @@ public class DefinitionsProvider {
 			try {
 				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
 						generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml",
-						new AdaptiveYamlMergePolicy("name")); if (result.isEmpty()) // definition not specified
+						new AdaptiveYamlMergePolicy("name"));
+				if (result.isEmpty()) // definition not specified
 					continue;
 
 				cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
