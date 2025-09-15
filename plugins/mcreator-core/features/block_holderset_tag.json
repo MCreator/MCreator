@@ -7,7 +7,7 @@
     }
   ],
   "output": "BlockHolderSet",
-  "colour": "45",
+  "colour": 45,
   "mcreator": {
     "group": "holderSets",
     "toolbox_id": "blocks",

@@ -1,0 +1,1 @@
+Wyzwala procedurę gdy suwak jest zaznaczony i kursur się ruszy.
