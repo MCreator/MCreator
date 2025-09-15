@@ -40,7 +40,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
-import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -211,11 +210,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
-				L10N.t("elementgui.item.player_useitem_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+				L10N.t("elementgui.item.player_useitem_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
-				L10N.t("elementgui.item.on_item_entity_destroyed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
