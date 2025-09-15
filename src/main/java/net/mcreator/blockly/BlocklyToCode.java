@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -198,7 +199,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
 							//if the generator do not support the part feature, we will reset the tail and head
-							if (!generator.isSupportedSection()) {
+							if (!(generator instanceof ProceduralBlockCodeGenerator)) {
 								this.append(this.getTail());
 								this.setHead("");
 								this.setTail("");

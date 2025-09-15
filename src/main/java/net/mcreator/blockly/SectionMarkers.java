@@ -27,7 +27,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public record PartLinker(AtomicReference<String> head, AtomicReference<String> tail) implements TemplateDirectiveModel {
+public record SectionMarkers(AtomicReference<String> head, AtomicReference<String> tail) implements TemplateDirectiveModel {
 	@Override public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 		if (params.get("type") instanceof TemplateScalarModel templateScalarModel) {
@@ -35,8 +35,7 @@ public record PartLinker(AtomicReference<String> head, AtomicReference<String> t
 				var writer = new StringWriter();
 				body.render(writer);
 				head.set(writer.toString());
-			}
-			if ("tail".equals(templateScalarModel.getAsString())) {
+			} else if ("tail".equals(templateScalarModel.getAsString())) {
 				var writer = new StringWriter();
 				body.render(writer);
 				tail.set(writer.toString());

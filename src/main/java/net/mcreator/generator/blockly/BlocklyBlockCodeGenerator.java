@@ -446,7 +446,7 @@ public class BlocklyBlockCodeGenerator {
 			//It could use the Map. But it is in the future.
 			AtomicReference<String> head = new AtomicReference<>("");
 			AtomicReference<String> tail = new AtomicReference<>("");
-			dataModel.put("definePart", new PartLinker(head, tail));
+			dataModel.put("definePart", new SectionMarkers(head, tail));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
