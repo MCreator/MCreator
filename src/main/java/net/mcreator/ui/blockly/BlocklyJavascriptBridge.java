@@ -114,8 +114,8 @@ public final class BlocklyJavascriptBridge {
 						}
 					}, null);
 			dialog.setVisible(true);
-			Platform.runLater(
-					() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, selected.get() != null ? selected.get() : null));
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY,
+					selected.get() != null ? selected.get() : null));
 		});
 
 		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);

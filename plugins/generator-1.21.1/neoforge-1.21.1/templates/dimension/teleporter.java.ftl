@@ -39,7 +39,7 @@ package ${package}.world.teleporter;
 
 	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
 		event.register(Registries.POINT_OF_INTEREST_TYPE, registerHelper -> {
-			PoiType poiType = new PoiType(ImmutableSet.copyOf(${JavaModName}Blocks.${registryname?upper_case}_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1);
+			PoiType poiType = new PoiType(ImmutableSet.copyOf(${JavaModName}Blocks.${REGISTRYNAME}_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1);
 			registerHelper.register(ResourceLocation.parse("${modid}:${registryname}_portal"), poiType);
 			poi = BuiltInRegistries.POINT_OF_INTEREST_TYPE.wrapAsHolder(poiType);
 		});
@@ -57,7 +57,7 @@ package ${package}.world.teleporter;
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "createPortal", "BlockPos", "Direction.Axis")
 		 .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
 		 .replace(",blockstate,18);", ", blockstate, 18);\nthis.level.getPoiManager().add(blockpos$mutableblockpos, poi);")
-		 .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")}
+		 .replace("Blocks.NETHER_PORTAL", JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL.get()")}
 
 	${mcc.getMethod("net.minecraft.world.level.portal.PortalForcer", "canHostFrame", "BlockPos", "BlockPos.MutableBlockPos", "Direction", "int")}
 

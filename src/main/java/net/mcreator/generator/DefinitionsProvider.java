@@ -21,14 +21,14 @@ package net.mcreator.generator;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.AdaptiveYamlMergePolicy;
+import net.mcreator.util.yaml.YamlMerge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -45,35 +45,30 @@ public class DefinitionsProvider {
 	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
 		final String generatorName = generatorConfiguration.getGeneratorName();
 
-		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
-
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
-			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
-					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
-							+ ".definition.yaml");
-
-			if (config.isEmpty()) // definition not specified
-				continue;
-
 			try {
-				cache.put(type, new ConcurrentHashMap<>(
-						(Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
-			} catch (YamlEngineException e) {
-				LOG.error("[{}] Error: {}", generatorName, e.getMessage());
+				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+						generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH) + ".definition.yaml",
+						new AdaptiveYamlMergePolicy("name"));
+				if (result.isEmpty()) // definition not specified
+					continue;
+
+				cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
+			} catch (YamlEngineException | IOException e) {
+				LOG.error("[{}] Error: {}", generatorName, e.getMessage(), e);
 			}
 		}
 
 		for (BaseType type : BaseType.values()) {
-			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
-					"/" + generatorName + "/common." + type.getPluralName() + ".yaml");
-
-			if (config.isEmpty()) // definition not specified
-				continue;
-
 			try {
-				global_cache.put(type, new ConcurrentHashMap<>(
-						(Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
-			} catch (YamlEngineException e) {
+				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+						generatorName + "/common." + type.getPluralName() + ".yaml",
+						new AdaptiveYamlMergePolicy("name"));
+				if (result.isEmpty()) // definition not specified
+					continue;
+
+				global_cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
+			} catch (YamlEngineException | IOException e) {
 				LOG.info("[{}] Error: {}", generatorName, e.getMessage());
 			}
 		}

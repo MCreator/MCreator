@@ -19,7 +19,7 @@
   ],
   "inputsInline": true,
   "output": "MCItemBlock",
-  "colour": "60",
+  "colour": 60,
   "mcreator": {
     "toolbox_id": "blockdata",
     "toolbox_init": [
