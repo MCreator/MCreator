@@ -60,8 +60,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Set<String> usedBlocks = new HashSet<>();
 	private final Set<String> usedTemplates = new LinkedHashSet<>(), generatedTemplates = new HashSet<>();
-	private String head = "";
-	private String tail = "";
+
+	// These variables hold the current template for the head/tail of the currently processed block
+	private String headSection = "";
+	private String tailSection = "";
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -200,9 +202,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 						try {
 							//if the generator do not support the part feature, we will reset the tail and head
 							if (!(generator instanceof ProceduralBlockCodeGenerator)) {
-								this.append(this.getTail());
-								this.setHead("");
-								this.setTail("");
+								this.append(this.getTailSection());
+								this.setHeadSection("");
+								this.setTailSection("");
 							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
@@ -229,9 +231,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			}
 		}
 		//reach the end of code area
-		append(getTail());
-		setTail("");
-		setHead("");
+		append(getTailSection());
+		setTailSection("");
+		setHeadSection("");
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
@@ -353,19 +355,20 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return Collections.unmodifiableSet(usedBlocks);
 	}
 
-	public String getHead() {
-		return head;
+	public String getHeadSection() {
+		return headSection;
 	}
 
-	public String getTail() {
-		return tail;
+	public String getTailSection() {
+		return tailSection;
 	}
 
-	public void setHead(String head) {
-		this.head = head;
+	public void setHeadSection(String headSection) {
+		this.headSection = headSection;
 	}
 
-	public void setTail(String tail) {
-		this.tail = tail;
+	public void setTailSection(String tailSection) {
+		this.tailSection = tailSection;
 	}
+
 }
