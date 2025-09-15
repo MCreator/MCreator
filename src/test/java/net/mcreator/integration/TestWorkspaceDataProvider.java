@@ -805,6 +805,15 @@ public class TestWorkspaceDataProvider {
 						new Procedure("condition3")));
 				components.add(new ImageButton("imagebutton4", 48, 0, "picture2", "", new Procedure("procedure2"),
 						new Procedure("condition4")));
+				components.add(
+						new Slider(80, 80, 30, 10, "slider1", 0, 10, 5, 1, "Be ", " Af", new Procedure("procedure10")));
+				components.add(
+						new Slider(80, 90, 30, 10, "slider2", -10, 45, 1, 1, "Be ", "", new Procedure("procedure9")));
+				components.add(new Slider(80, 100, 30, 10, "slider3", -1542, 1257, -145, 1, "", " Af",
+						new Procedure("procedure8")));
+				components.add(new Slider(80, 110, 30, 10, "slider4", 1.0, 10.0, 4.8, 0.1, "", "",
+						new Procedure("procedure11")));
+				components.add(new Slider(80, 120, 30, 10, "slider5", 1.0, 10.0, 4.8, 0.1, "Be", "Af", null));
 				components.add(new InputSlot(0, 20, 30, Color.red, new LogicProcedure("condition1", true),
 						new LogicProcedure("condition1", true), _true, new Procedure("procedure3"),
 						new Procedure("procedure10"), new Procedure("procedure2"),
@@ -1256,6 +1265,8 @@ public class TestWorkspaceDataProvider {
 			item.onStoppedUsing = new Procedure("procedure7");
 			item.onEntitySwing = new Procedure("procedure8");
 			item.onDroppedByPlayer = new Procedure("procedure9");
+			item.everyTickWhileUsing = new Procedure("procedure10");
+			item.onItemEntityDestroyed = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
@@ -1322,6 +1333,16 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				item.providedBannerPatterns.add("Examplebannerpattern1");
 				item.providedBannerPatterns.add("Examplebannerpattern2");
+			}
+			item.animations = new ArrayList<>();
+			if (_true) {
+				for (DataListEntry anim : ElementUtil.loadAnimations(modElement.getWorkspace())) {
+					Item.AnimationEntry animation = new Item.AnimationEntry();
+					animation.animation = new Animation(modElement.getWorkspace(), anim);
+					animation.condition = random.nextBoolean() ? null : new Procedure("condition2");
+					animation.speed = 12.3;
+					item.animations.add(animation);
+				}
 			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
