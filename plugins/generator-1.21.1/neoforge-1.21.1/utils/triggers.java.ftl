@@ -277,6 +277,7 @@
 
 	return true;
 }
+</#if>
 </#macro>
 
 <#macro onItemEntityDestroyed procedure="">
