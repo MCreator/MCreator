@@ -159,6 +159,7 @@ net.mcreator.util.diff
 net.mcreator.util.image
 net.mcreator.util.locale
 net.mcreator.util.math
+net.mcreator.util.yaml
 net.mcreator.workspace
 net.mcreator.workspace.elements
 net.mcreator.workspace.misc
