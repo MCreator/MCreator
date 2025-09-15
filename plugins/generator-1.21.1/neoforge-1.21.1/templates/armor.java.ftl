@@ -203,7 +203,7 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onBodyTick/>
 
-		<@canFly data.bodyCanFly "CHEST"/>
+		<@canFly data.bodyCanFly/>
 	}
 	</#if>
 

@@ -258,7 +258,7 @@
 </#if>
 </#macro>
 
-<#macro canFly condition=false slotType>
+<#macro canFly condition=false slotType="CHEST">
 <#if condition>
 @Override public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
 	return ElytraItem.isFlyEnabled(stack);
