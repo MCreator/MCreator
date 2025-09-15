@@ -178,11 +178,7 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onHelmetTick/>
 
-		<#if data.helmetCanFly>
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "canElytraFly", "ItemStack", "LivingEntity")}
-
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "elytraFlightTick", "ItemStack", "LivingEntity", "int")?replace("CHEST", "HEAD")}
-		</#if>
+		<@canFly data.helmetCanFly "HEAD"/>
 	}
 	</#if>
 
@@ -207,11 +203,7 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onBodyTick/>
 
-		<#if data.bodyCanFly>
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "canElytraFly", "ItemStack", "LivingEntity")}
-
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "elytraFlightTick", "ItemStack", "LivingEntity", "int")}
-		</#if>
+		<@canFly data.bodyCanFly "CHEST"/>
 	}
 	</#if>
 
@@ -236,11 +228,7 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onLeggingsTick/>
 
-		<#if data.leggingsCanFly>
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "canElytraFly", "ItemStack", "LivingEntity")}
-
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "elytraFlightTick", "ItemStack", "LivingEntity", "int")?replace("CHEST", "LEGS")}
-		</#if>
+		<@canFly data.leggingsCanFly "LEGS"/>
 	}
 	</#if>
 
@@ -265,11 +253,7 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onBootsTick/>
 
-		<#if data.bootsCanFly>
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "canElytraFly", "ItemStack", "LivingEntity")}
-
-		@Override ${mcc.getMethod("net.minecraft.world.item.ElytraItem", "elytraFlightTick", "ItemStack", "LivingEntity", "int")?replace("CHEST", "FEET")}
-		</#if>
+		<@canFly data.bootsCanFly "FEET"/>
 	}
 	</#if>
 

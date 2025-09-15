@@ -258,6 +258,27 @@
 </#if>
 </#macro>
 
+<#macro canFly condition=false slotType>
+<#if condition>
+@Override public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+	return ElytraItem.isFlyEnabled(stack);
+}
+
+@Override public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+	if (!entity.level().isClientSide) {
+		int nextFlightTick = flightTicks + 1;
+		if (nextFlightTick % 10 == 0) {
+			if (nextFlightTick % 20 == 0)
+				stack.hurtAndBreak(1, entity, EquipmentSlot.${slotType});
+
+		entity.gameEvent(GameEvent.ELYTRA_GLIDE);
+		}
+	}
+
+	return true;
+}
+</#macro>
+
 <#macro onItemEntityDestroyed procedure="">
 <#if hasProcedure(procedure)>
 @Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
