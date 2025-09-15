@@ -271,7 +271,7 @@
 			if (nextFlightTick % 20 == 0)
 				stack.hurtAndBreak(1, entity, EquipmentSlot.${slotType});
 
-		entity.gameEvent(GameEvent.ELYTRA_GLIDE);
+			entity.gameEvent(GameEvent.ELYTRA_GLIDE);
 		}
 	}
 
