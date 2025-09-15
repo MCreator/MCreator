@@ -200,11 +200,11 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
-							//if the generator do not support the part feature, we will reset the tail and head
+							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
+							// because the following block cannot be part of the current head/tail sections
 							if (!(generator instanceof ProceduralBlockCodeGenerator)) {
-								this.append(this.getTailSection());
-								this.setHeadSection("");
-								this.setTailSection("");
+								append(getTailSection());
+								clearSections();
 							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
@@ -232,8 +232,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		}
 		//reach the end of code area
 		append(getTailSection());
-		setTailSection("");
-		setHeadSection("");
+		clearSections();
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
@@ -355,20 +354,25 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		return Collections.unmodifiableSet(usedBlocks);
 	}
 
-	public String getHeadSection() {
-		return headSection;
-	}
-
-	public String getTailSection() {
-		return tailSection;
-	}
-
 	public void setHeadSection(String headSection) {
 		this.headSection = headSection;
 	}
 
 	public void setTailSection(String tailSection) {
 		this.tailSection = tailSection;
+	}
+
+	public void clearSections() {
+		this.headSection = "";
+		this.tailSection = "";
+	}
+
+	public String getHeadSection() {
+		return headSection;
+	}
+
+	public String getTailSection() {
+		return tailSection;
 	}
 
 }

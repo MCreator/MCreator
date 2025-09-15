@@ -1,8 +1,4 @@
 <#include "mcelements.ftl">
-<@definePart type="head">
-if(${input$entity} instanceof ServerPlayer _serverPlayer) {
-</@definePart>
+<@head>if(${input$entity} instanceof ServerPlayer _serverPlayer) {</@head>
 	_serverPlayer.awardRecipesByKey(Collections.singletonList(ResourceKey.create(Registries.RECIPE, ${toResourceLocation(input$recipe)})));
-<@definePart type="tail">
-}
-</@definePart>
+<@tail>}</@tail>
