@@ -37,5 +37,4 @@ public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBloc
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
-
 }
