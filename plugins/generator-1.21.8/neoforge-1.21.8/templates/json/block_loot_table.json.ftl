@@ -20,7 +20,7 @@
           "name": "minecraft:flower_pot"
         }
       ]
-    }<#if data.dropAmount != 0>,</#if>
+    }<#if data.hasDrops()>,</#if>
     </#if>
     <#if data.hasDrops()>
     {
