@@ -1,3 +1,2 @@
-#prevent git from changing line endings
-* -text
-* -crlf
+# Ensure all text files use CRLF
+* text eol=crlf
