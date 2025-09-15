@@ -1,5 +1,3 @@
-*.java text eol=crlf
-*.js   text eol=crlf
-*.json text eol=crlf
-*.yaml text eol=crlf
-*.ftl  text eol=crlf
+#prevent git from changing line endings
+* -text
+* -crlf
