@@ -230,7 +230,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
-		//reach the end of code area
+
+		// Append the last tail at the end of the processing, and clear sections data in case the method will be called again
 		append(getTailSection());
 		clearSections();
 	}
