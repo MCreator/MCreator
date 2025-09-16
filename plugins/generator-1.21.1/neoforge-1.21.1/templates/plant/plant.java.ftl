@@ -196,6 +196,16 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
+	<#if data.xpAmountMax != 0>
+	@Override public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, BlockEntity blockEntity, Entity breaker, ItemStack tool) {
+		<#if data.xpAmountMin == data.xpAmountMax>
+		return ${data.xpAmountMin};
+		<#else>
+		return Mth.randomBetweenInclusive(level.getRandom(), ${data.xpAmountMin}, ${data.xpAmountMax});
+		</#if>
+	}
+	</#if>
+
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 		<#if data.plantType != "growapable">
 		@Override public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {
