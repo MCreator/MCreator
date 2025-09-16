@@ -40,7 +40,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
-import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -95,7 +94,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox isPiglinCurrency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
@@ -212,11 +210,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
-				L10N.t("elementgui.item.player_useitem_tick"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+				L10N.t("elementgui.item.player_useitem_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
-				L10N.t("elementgui.item.on_item_entity_destroyed"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -314,7 +312,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -354,10 +352,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		subpane2.add(immuneToFire);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_piglin_currency"),
-				L10N.label("elementgui.item.is_piglin_currency")));
-		subpane2.add(isPiglinCurrency);
-
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
@@ -388,7 +382,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageCount.setOpaque(false);
 		damageCount.addChangeListener(e -> updateCraftingSettings());
 		immuneToFire.setOpaque(false);
-		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
@@ -736,7 +729,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageCount.setValue(item.damageCount);
 		recipeRemainder.setBlock(item.recipeRemainder);
 		immuneToFire.setSelected(item.immuneToFire);
-		isPiglinCurrency.setSelected(item.isPiglinCurrency);
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
@@ -799,7 +791,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.damageCount = (int) damageCount.getValue();
 		item.recipeRemainder = recipeRemainder.getBlock();
 		item.immuneToFire = immuneToFire.isSelected();
-		item.isPiglinCurrency = isPiglinCurrency.isSelected();
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();

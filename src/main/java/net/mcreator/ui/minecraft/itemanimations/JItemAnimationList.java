@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.minecraft.itemanimations;
 
-import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Item;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
@@ -30,8 +29,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.swing.*;
 import java.util.List;
 
-public class JItemAnimationList
-		extends JSimpleEntriesList<JItemAnimationListEntry, Item.AnimationEntry> {
+public class JItemAnimationList extends JSimpleEntriesList<JItemAnimationListEntry, Item.AnimationEntry> {
 
 	public JItemAnimationList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
