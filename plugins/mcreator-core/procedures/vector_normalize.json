@@ -7,7 +7,7 @@
     }
   ],
   "inputsInline": true,
-  "output": "vector",
+  "output": "Vector",
   "colour": 270,
   "mcreator": {
     "group": "base",
