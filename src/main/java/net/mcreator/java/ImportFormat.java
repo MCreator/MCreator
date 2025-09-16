@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 public class ImportFormat {
 
 	private final Map<String, List<String>> cache = new ConcurrentHashMap<>();
+	private static final int maxImport = 5;
 
 	public static String removeImports(String code, String replacement) {
 		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
@@ -129,8 +130,19 @@ public class ImportFormat {
 			cleanupAndResolveDuplicates(workspace, importsToAdd, imports, cu.getPackageName());
 
 			StringBuilder importscode = new StringBuilder();
-			importsToAdd.stream().sorted(Collections.reverseOrder())
-					.forEach(i -> importscode.append("import ").append(i).append(";\n"));
+
+			importsToAdd.stream().sorted(Collections.reverseOrder());
+
+			Map<String, List<String>> grouped = importsToAdd.stream()
+					.collect(Collectors.groupingBy(i -> i.substring(0, i.lastIndexOf('.'))));
+
+			grouped.forEach((pkg, classes) -> {
+				if (classes.size() >= maxImport) {
+					importscode.append("import ").append(pkg).append(".*;\n");
+				} else {
+					classes.forEach(i -> importscode.append("import ").append(i).append(";\n"));
+				}
+			});
 
 			return formatImportGroups(before + "\n" + importscode + "\n" + after);
 		}
