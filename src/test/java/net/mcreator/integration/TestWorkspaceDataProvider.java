@@ -1176,6 +1176,8 @@ public class TestWorkspaceDataProvider {
 			plant.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			plant.dropAmount = 4;
+			plant.xpAmountMin = 2;
+			plant.xpAmountMax = 5;
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
@@ -2053,6 +2055,8 @@ public class TestWorkspaceDataProvider {
 		block.flammability = 5;
 		block.fireSpreadSpeed = 12;
 		block.dropAmount = 3;
+		block.xpAmountMin = 2;
+		block.xpAmountMax = 5;
 		block.plantsGrowOn = _true;
 		block.isNotColidable = _true && blockBase == null;
 		block.canRedstoneConnect = _true;
