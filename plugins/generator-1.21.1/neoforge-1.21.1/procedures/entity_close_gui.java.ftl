@@ -1,1 +1,3 @@
-if(${input$entity} instanceof Player _player) _player.closeContainer();
+<@head>if(${input$entity} instanceof Player _player) {</@head>
+	_player.closeContainer();
+<@tail>}</@tail>

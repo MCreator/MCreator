@@ -1,2 +1,3 @@
-if (${input$entity} instanceof ${generator.map(field$customEntity, "entities")} _datEntSetS)
+<@head>if (${input$entity} instanceof ${generator.map(field$customEntity, "entities")} _datEntSetS) {</@head>
 	_datEntSetS.getEntityData().set(${generator.map(field$customEntity, "entities")}.DATA_${field$accessor}, ${input$value});
+<@tail>}</@tail>

@@ -1,8 +1,8 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (world instanceof ILevelExtension _ext) {
-	IEnergyStorage _entityStorage = _ext.getCapability(Capabilities.EnergyStorage.BLOCK, ${toBlockPos(input$x,input$y,input$z)}, ${input$direction});
+<@head>if (world instanceof ILevelExtension _ext) {</@head>
+	IEnergyStorage _entityStorage${cbi} = _ext.getCapability(Capabilities.EnergyStorage.BLOCK, ${toBlockPos(input$x,input$y,input$z)}, ${input$direction});
 	if (_entityStorage != null)
-		_entityStorage.receiveEnergy(${opt.toInt(input$amount)}, false);
-}
+		_entityStorage${cbi}.receiveEnergy(${opt.toInt(input$amount)}, false);
+<@tail>}</@tail>
 <#-- @formatter:on -->

@@ -1,1 +1,3 @@
-if(${input$entity} instanceof Player _player) _player.getInventory().clearContent();
+<@head>if(${input$entity} instanceof Player _player) {</@head>
+	_player.getInventory().clearContent();
+<@tail>}</@tail>
