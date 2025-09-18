@@ -79,6 +79,11 @@ public class SearchBar extends JToolBar {
 			}
 		});
 
+		cb2.addActionListener(e -> updateSearch());
+		cb3.addActionListener(e -> updateSearch());
+		cb4.addActionListener(e -> updateSearch());
+		cb5.addActionListener(e -> updateSearch());
+
 		setFloatable(false);
 		setBackground(Theme.current().getBackgroundColor());
 
