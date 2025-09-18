@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Dimension;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
@@ -258,9 +259,11 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimensionCustom":
+		case "dimensionCustomWithPortal":
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
+					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
+					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
+					.map(m -> "CUSTOM:" + m.getModElement().getName()).toArray(String[]::new);
 		case "fluid":
 			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":

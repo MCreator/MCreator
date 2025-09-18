@@ -18,7 +18,8 @@
     {
       "type": "field_data_list_selector",
       "name": "dimension",
-      "datalist": "dimensionCustom"
+      "datalist": "dimensionCustomWithPortal",
+      "customEntryProviders": "dimension"
     }
   ],
   "inputsInline": true,
