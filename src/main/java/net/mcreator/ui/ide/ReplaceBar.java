@@ -184,4 +184,8 @@ public class ReplaceBar extends JPanel {
 		});
 	}
 
+	public JTextField getSearchField() {
+		return jtf1;
+	}
+
 }
