@@ -18,6 +18,7 @@
 
 package net.mcreator.java;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
@@ -34,7 +35,6 @@ import java.util.stream.Collectors;
 public class ImportFormat {
 
 	private final Map<String, List<String>> cache = new ConcurrentHashMap<>();
-	private static final int maxImport = 5;
 
 	public static String removeImports(String code, String replacement) {
 		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
@@ -129,25 +129,50 @@ public class ImportFormat {
 			// then clean up imports that are not needed and resolve duplicates
 			cleanupAndResolveDuplicates(workspace, importsToAdd, imports, cu.getPackageName());
 
+			// Apply wildcard import optimization
+			importsToAdd = optimizeWithWildcardImports(importsToAdd);
+
 			StringBuilder importscode = new StringBuilder();
-
-			importsToAdd.stream().sorted(Collections.reverseOrder());
-
-			Map<String, List<String>> grouped = importsToAdd.stream()
-					.collect(Collectors.groupingBy(i -> i.substring(0, i.lastIndexOf('.'))));
-
-			grouped.forEach((pkg, classes) -> {
-				if (classes.size() >= maxImport) {
-					importscode.append("import ").append(pkg).append(".*;\n");
-				} else {
-					classes.forEach(i -> importscode.append("import ").append(i).append(";\n"));
-				}
-			});
+			importsToAdd.stream().sorted(Collections.reverseOrder())
+					.forEach(i -> importscode.append("import ").append(i).append(";\n"));
 
 			return formatImportGroups(before + "\n" + importscode + "\n" + after);
 		}
 
 		return code;
+	}
+
+	/**
+	 * Optimizes imports by converting to wildcard imports when there are more than PreferencesManager.PREFERENCES.ide.maximumImports imports from the same package
+	 *
+	 * @param importsToAdd Set of imports to optimize
+	 * @return Optimized set of imports with wildcards where appropriate
+	 */
+	private Set<String> optimizeWithWildcardImports(Set<String> importsToAdd) {
+		Map<String, Set<String>> packageToImports = new HashMap<>();
+
+		for (String importStatement : importsToAdd) {
+			int lastDotIndex = importStatement.lastIndexOf('.');
+			if (lastDotIndex != -1) {
+				String packageName = importStatement.substring(0, lastDotIndex);
+				packageToImports.computeIfAbsent(packageName, k -> new HashSet<>()).add(importStatement);
+			}
+		}
+
+		Set<String> optimizedImports = new HashSet<>();
+
+		for (Map.Entry<String, Set<String>> entry : packageToImports.entrySet()) {
+			String packageName = entry.getKey();
+			Set<String> packageImports = entry.getValue();
+
+			if (packageImports.size() >= PreferencesManager.PREFERENCES.ide.maximumImports.get()) {
+				optimizedImports.add(packageName + ".*");
+			} else {
+				optimizedImports.addAll(packageImports);
+			}
+		}
+
+		return optimizedImports;
 	}
 
 	private static final Pattern DEFAULT_PACKAGE_IMPORT = Pattern.compile("^java\\.lang\\.[A-Z]\\w+");
