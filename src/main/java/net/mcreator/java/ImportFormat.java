@@ -150,7 +150,6 @@ public class ImportFormat {
 	 */
 	private Set<String> optimizeWithWildcardImports(Set<String> importsToAdd) {
 		Map<String, Set<String>> packageToImports = new HashMap<>();
-
 		for (String importStatement : importsToAdd) {
 			int lastDotIndex = importStatement.lastIndexOf('.');
 			if (lastDotIndex != -1) {
@@ -160,7 +159,6 @@ public class ImportFormat {
 		}
 
 		Set<String> optimizedImports = new HashSet<>();
-
 		for (Map.Entry<String, Set<String>> entry : packageToImports.entrySet()) {
 			String packageName = entry.getKey();
 			Set<String> packageImports = entry.getValue();
