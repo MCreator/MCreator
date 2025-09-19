@@ -39,7 +39,7 @@ public class SearchBar extends JToolBar {
 
 	private final JTextField jtf1 = new JTextField(40);
 	private final JCheckBox cb2 = new JCheckBox("Regex");
-	private final JCheckBox cb3 = new JCheckBox("Match Case");
+	private final JCheckBox cb3 = new JCheckBox("Match case");
 	private final JCheckBox cb4 = new JCheckBox("Words");
 
 	private final RTextArea ra;
