@@ -343,7 +343,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private void setupCodeSupport(String fileName) {
 		if (fileName.endsWith(".java")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
 			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
@@ -366,6 +366,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
 				method.setAccessible(true);
 				ac = (AutoCompletion) method.invoke(jls, te);
+				ac.setAutoCompleteSingleChoices(false);
 			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
 					 NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
@@ -394,7 +395,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			te.addKeyListener(new KeyAdapter() {
 
-				private boolean completionInAction = false;
+				private volatile boolean completionInAction = false;
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
@@ -402,13 +403,24 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() && Character.isLetterOrDigit(
-							keyEvent.getKeyChar()) && jcp.getAlreadyEnteredText(te).length() > 1) {
+							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							// only smart autocomplete if the char we typed is a letter or digit
+							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// only smart autocomplete if we have at least one char already written
+							!jcp.getAlreadyEnteredText(te).isBlank()
+							// only smart autocomplete if we have more than one completion to choose from
+							// (so it is not applied automatically when we don't want to)
+							&& jcp.getCompletions(te).size() > 1) {
 						if (!completionInAction) {
 							new Thread(() -> {
 								if (ac != null) {
 									completionInAction = true;
-									ThreadUtil.runOnSwingThreadAndWait(() -> ac.doCompletion());
+									ThreadUtil.runOnSwingThreadAndWait(() -> {
+										try {
+											ac.doCompletion();
+										} catch (Throwable ignored) {
+										}
+									});
 									completionInAction = false;
 								}
 							}, "AutoComplete").start();
@@ -464,30 +476,31 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				}
 			});
 		} else if (fileName.endsWith(".mcfunction")) {
-			SwingUtilities.invokeLater(() -> {
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
 				atmf.putMapping("text/mcfunction", MinecraftCommandsTokenMaker.class.getName());
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			SwingUtilities.invokeLater(() -> {
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				try {
 					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 				} catch (Exception ignored) {
 				}
 			});
 		} else if (fileName.endsWith(".xml")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
+			ThreadUtil.runOnSwingThreadAndWait(
+					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
 		} else if (fileName.endsWith(".md")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
 		} else if (fileName.endsWith(".vsh") || fileName.endsWith(".fsh")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
 			JavaScriptLanguageSupport javaScriptLanguageSupport = new JavaScriptLanguageSupport();
 
@@ -502,7 +515,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
