@@ -91,7 +91,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 
-		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+		<#if checkboxes?has_content>
+		if (elementType == 1 && elementState instanceof Boolean logicState) {
+			<#list checkboxes as component>
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
+					if (${component.getName()}.selected() != logicState) ${component.getName()}.onPress();
+				}
+			</#list>
+		}
+		</#if>
 
 		<#if sliders?has_content>
 		if (elementType == 2 && elementState instanceof Number n) {
