@@ -42,7 +42,6 @@ public class ReplaceBar extends JPanel {
 	private final JCheckBox cb2 = new JCheckBox("Regex");
 	private final JCheckBox cb3 = new JCheckBox("Match Case");
 	private final JCheckBox cb4 = new JCheckBox("Words");
-	private final JCheckBox cb5 = new JCheckBox("Selection");
 
 	private final RTextArea ra;
 	private final SearchContext context = new SearchContext();
@@ -83,7 +82,6 @@ public class ReplaceBar extends JPanel {
 		cb2.addActionListener(e -> updateSearch());
 		cb3.addActionListener(e -> updateSearch());
 		cb4.addActionListener(e -> updateSearch());
-		cb5.addActionListener(e -> updateSearch());
 
 		jtf2.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
@@ -102,7 +100,6 @@ public class ReplaceBar extends JPanel {
 			context.setMatchCase(cb3.isSelected());
 			context.setRegularExpression(cb2.isSelected());
 			context.setWholeWord(cb4.isSelected());
-			context.setSearchSelectionOnly(cb5.isSelected());
 			SearchEngine.replace(ra, context);
 		});
 
@@ -112,7 +109,6 @@ public class ReplaceBar extends JPanel {
 			context.setMatchCase(cb3.isSelected());
 			context.setRegularExpression(cb2.isSelected());
 			context.setWholeWord(cb4.isSelected());
-			context.setSearchSelectionOnly(cb5.isSelected());
 			SearchEngine.replaceAll(ra, context);
 		});
 
@@ -129,20 +125,17 @@ public class ReplaceBar extends JPanel {
 		top.add(cb3);
 		top.add(cb2);
 		top.add(cb4);
-		top.add(cb5);
 		top.add(Box.createHorizontalStrut(10));
 		top.add(matches);
 		top.add(Box.createHorizontalGlue());
 
 		cb3.setOpaque(false);
 		cb2.setOpaque(false);
-		cb5.setOpaque(false);
 		cb4.setOpaque(false);
 
 		cb3.setForeground(new Color(0xE2E2E2));
 		cb2.setForeground(new Color(0xE2E2E2));
 		cb4.setForeground(new Color(0xE2E2E2));
-		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
@@ -181,7 +174,6 @@ public class ReplaceBar extends JPanel {
 		context.setMatchCase(cb3.isSelected());
 		context.setRegularExpression(cb2.isSelected());
 		context.setWholeWord(cb4.isSelected());
-		context.setSearchSelectionOnly(cb5.isSelected());
 		context.setSearchWrap(true);
 
 		SearchResult marked = SearchEngine.markAll(ra, context);

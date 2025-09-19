@@ -41,7 +41,6 @@ public class SearchBar extends JToolBar {
 	private final JCheckBox cb2 = new JCheckBox("Regex");
 	private final JCheckBox cb3 = new JCheckBox("Match Case");
 	private final JCheckBox cb4 = new JCheckBox("Words");
-	private final JCheckBox cb5 = new JCheckBox("Selection");
 
 	private final RTextArea ra;
 
@@ -82,7 +81,6 @@ public class SearchBar extends JToolBar {
 		cb2.addActionListener(e -> updateSearch());
 		cb3.addActionListener(e -> updateSearch());
 		cb4.addActionListener(e -> updateSearch());
-		cb5.addActionListener(e -> updateSearch());
 
 		setFloatable(false);
 		setBackground(Theme.current().getBackgroundColor());
@@ -92,7 +90,6 @@ public class SearchBar extends JToolBar {
 		add(cb3);
 		add(cb2);
 		add(cb4);
-		add(cb5);
 		add(Box.createHorizontalStrut(10));
 		add(matches);
 
@@ -130,7 +127,6 @@ public class SearchBar extends JToolBar {
 		context.setMatchCase(cb3.isSelected());
 		context.setRegularExpression(cb2.isSelected());
 		context.setWholeWord(cb4.isSelected());
-		context.setSearchSelectionOnly(cb5.isSelected());
 		context.setSearchWrap(true);
 
 		SearchResult marked = SearchEngine.markAll(ra, context);
