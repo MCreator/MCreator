@@ -39,9 +39,9 @@ public class ReplaceBar extends JPanel {
 	private final JTextField jtf1 = new JTextField(40);
 	private final JTextField jtf2 = new JTextField(40);
 
-	private final JCheckBox cb2 = new JCheckBox("Regex");
-	private final JCheckBox cb3 = new JCheckBox("Match case");
-	private final JCheckBox cb4 = new JCheckBox("Words");
+	private final JCheckBox cb2 = L10N.checkbox("ide.search.regex");
+	private final JCheckBox cb3 = L10N.checkbox("ide.search.match_case");
+	private final JCheckBox cb4 = L10N.checkbox("ide.search.whole_words");
 
 	private final RTextArea ra;
 	private final SearchContext context = new SearchContext();
@@ -178,7 +178,7 @@ public class ReplaceBar extends JPanel {
 
 		SearchResult marked = SearchEngine.markAll(ra, context);
 
-		matches.setText(marked.getMarkedCount() + " results");
+		matches.setText(L10N.t("ide.search.results", marked.getMarkedCount()));
 		if (marked.getMarkedCount() > 0) {
 			matches.setForeground(Theme.current().getAltForegroundColor());
 		} else {

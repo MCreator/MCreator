@@ -19,6 +19,7 @@
 package net.mcreator.ui.ide;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import org.fife.ui.rtextarea.RTextArea;
@@ -38,9 +39,9 @@ import java.awt.event.KeyEvent;
 public class SearchBar extends JToolBar {
 
 	private final JTextField jtf1 = new JTextField(40);
-	private final JCheckBox cb2 = new JCheckBox("Regex");
-	private final JCheckBox cb3 = new JCheckBox("Match case");
-	private final JCheckBox cb4 = new JCheckBox("Words");
+	private final JCheckBox cb2 = L10N.checkbox("ide.search.regex");
+	private final JCheckBox cb3 = L10N.checkbox("ide.search.match_case");
+	private final JCheckBox cb4 = L10N.checkbox("ide.search.whole_words");
 
 	private final RTextArea ra;
 
@@ -131,7 +132,7 @@ public class SearchBar extends JToolBar {
 
 		SearchResult marked = SearchEngine.markAll(ra, context);
 
-		matches.setText(marked.getMarkedCount() + " results");
+		matches.setText(L10N.t("ide.search.results", marked.getMarkedCount()));
 		if (marked.getMarkedCount() > 0) {
 			matches.setForeground(Theme.current().getAltForegroundColor());
 		} else {
