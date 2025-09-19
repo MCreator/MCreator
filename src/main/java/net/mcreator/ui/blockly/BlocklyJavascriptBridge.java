@@ -220,6 +220,9 @@ public final class BlocklyJavascriptBridge {
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
+			case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
+					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+							.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new), "dimensions");
 			case "dimensionCustomWithPortal" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)

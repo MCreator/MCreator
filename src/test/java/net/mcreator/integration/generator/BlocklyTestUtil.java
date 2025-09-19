@@ -259,6 +259,9 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "dimensionCustom": // For legacy reason
+			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
 		case "dimensionCustomWithPortal":
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
