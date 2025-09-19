@@ -29,6 +29,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -102,6 +103,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (!templatesDefined) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incomplete template: {}", toolboxBlock.getMachineName());
 				return false;
 			}
@@ -132,6 +134,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
 				return false;
 			}
@@ -154,6 +157,7 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: {}",
 						toolboxBlock.getMachineName());
 				return false;
