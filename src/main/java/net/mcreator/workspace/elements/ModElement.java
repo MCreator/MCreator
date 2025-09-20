@@ -43,6 +43,8 @@ import java.util.*;
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private final String name;
+	private String display_name;
+
 	private final String type;
 
 	private boolean compiles = true;
@@ -68,6 +70,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType<?> type) {
 		this.name = name;
+		this.display_name = name;
 		this.type = type.getRegistryName();
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
@@ -82,6 +85,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 */
 	public ModElement(@Nonnull Workspace workspace, @Nonnull ModElement mu, String duplicateName) {
 		this.name = duplicateName;
+		this.display_name = duplicateName;
 		this.type = mu.type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
@@ -220,6 +224,14 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (this.getType() == ModElementType.CODE && !codeLock)
 			return;
 		this.locked_code = codeLock;
+	}
+
+	public String getDisplayName() {
+		return this.display_name;
+	}
+
+	public void setDisplayName(String newName) {
+		this.display_name = newName;
 	}
 
 	/**

@@ -110,6 +110,7 @@ import java.util.stream.Collectors;
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
+	private final JMenuItem editDisplayName = new JMenuItem(L10N.t("workspace.elements.list.edit.display"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
 	private final JMenuItem renameElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
 
@@ -228,6 +229,7 @@ import java.util.stream.Collectors;
 						duplicateElement.setVisible(false);
 						codeElement.setVisible(false);
 						lockElement.setVisible(false);
+						editDisplayName.setVisible(false);
 						idElement.setVisible(false);
 						renameElementFolder.setVisible(true);
 					} else {
@@ -235,6 +237,7 @@ import java.util.stream.Collectors;
 						duplicateElement.setVisible(true);
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
+						editDisplayName.setVisible(true);
 						idElement.setVisible(true);
 						renameElementFolder.setVisible(false);
 					}
@@ -764,6 +767,8 @@ import java.util.stream.Collectors;
 		lockElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 		lockElement.addActionListener(e -> lockCode());
 
+
+		editDisplayName.addActionListener(e -> changeDisplayName((ModElement) list.getSelectedValue()));
 		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
@@ -788,6 +793,7 @@ import java.util.stream.Collectors;
 		contextMenu.add(searchElement);
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
+		contextMenu.add(editDisplayName);
 		contextMenu.add(idElement);
 
 		updateElementListRenderer();
@@ -912,6 +918,17 @@ import java.util.stream.Collectors;
 		but3.setEnabled(true);
 		deleteElement.setEnabled(true);
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	private void changeDisplayName(ModElement element) {
+		String newName = VOptionPane.showInputDialog(mcreator, L10N.t("workspace.elements.display_name.edit.message"),
+				L10N.t("workspace.elements.display_name.edit.title"), null, new OptionPaneValidator() {
+					@Override public ValidationResult validate(JComponent component) {
+						return ValidationResult.PASSED;
+					}
+				});
+		element.setDisplayName(newName);
+		reloadWorkspaceTab();
 	}
 
 	private void editIDOfCurrentlySelectedModElement() {

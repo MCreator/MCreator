@@ -62,10 +62,15 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 				label.setForeground(Theme.current().getForegroundColor());
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 25));
+
 
 			ImageIcon dva = null;
 			if (element instanceof ModElement ma) {
+				try {
+					label.setText(StringUtils.abbreviateString(((ModElement) element).getDisplayName(), 25));
+				} catch (Exception e) {
+					label.setText(StringUtils.abbreviateString(element.getName(), 25));
+				}
 				if (!ma.doesCompile()) {
 					dva = UIRES.get("mod_types.overlay_err");
 				}
@@ -76,6 +81,8 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 						dva = UIRES.get("mod_types.overlay_locked");
 					}
 				}
+			} else {
+				label.setText(StringUtils.abbreviateString(element.getName(), 25));
 			}
 
 			if (element instanceof FolderElement) {

@@ -66,9 +66,17 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				label_details.setForeground(Theme.current().getForegroundColor());
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 18));
+
 
 			if (element instanceof ModElement modElement) {
+				try {
+					label.setText(StringUtils.abbreviateString(modElement.getDisplayName(), 18));
+				} catch (Exception e) {
+					// If the workspace has been created in an older version, use the default name
+					label.setText(StringUtils.abbreviateString(element.getName(), 18));
+					// And also set the display name
+					modElement.setDisplayName(modElement.getName());
+				}
 				label_details.setText("<html><div width=210 style=\"overflow: hidden;\"><font" + (isSelected ?
 						(" color=#" + Integer.toHexString((Theme.current().getBackgroundColor()).getRGB())
 								.substring(2)) :
@@ -76,6 +84,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
 				label_details.setPreferredSize(new Dimension(210, 28));
 			} else {
+				label.setText(StringUtils.abbreviateString(element.getName(), 18));
 				label_details.setText("");
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 6, 0));
 				label_details.setPreferredSize(new Dimension(210, -1));

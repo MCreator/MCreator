@@ -59,10 +59,15 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 			label.setForeground(Theme.current().getForegroundColor());
 		}
 
-		label.setText(StringUtils.abbreviateString(element.getName(), 14));
+
 
 		ImageIcon dva = null;
 		if (element instanceof ModElement ma) {
+			try {
+				label.setText(StringUtils.abbreviateString(((ModElement) element).getDisplayName(), 14));
+			} catch (Exception e) {
+				label.setText(StringUtils.abbreviateString(element.getName(), 14));
+			}
 			if (!ma.doesCompile()) {
 				dva = UIRES.get("mod_types.overlay_err");
 			}
@@ -73,6 +78,8 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 					dva = UIRES.get("mod_types.overlay_locked");
 				}
 			}
+		} else {
+			label.setText(StringUtils.abbreviateString(element.getName(), 14));
 		}
 
 		if (element instanceof FolderElement) {
