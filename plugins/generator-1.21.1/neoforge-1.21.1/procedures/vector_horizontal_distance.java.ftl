@@ -1,0 +1,1 @@
+(new Vec3(${input$vector1}.x, 0, ${input$vector1}.z).distanceTo(new Vec3(${input$vector2}.x, 0, ${input$vector2}.z)))
