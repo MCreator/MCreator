@@ -28,10 +28,8 @@ import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class BlocklyBlockCodeGenerator {
@@ -446,11 +444,26 @@ public class BlocklyBlockCodeGenerator {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
 
+			AtomicReference<String> head = new AtomicReference<>("");
+			AtomicReference<String> tail = new AtomicReference<>("");
+			dataModel.put("head", new SectionMarker(head));
+			dataModel.put("tail", new SectionMarker(tail));
+
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
 			}
 
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
+			// only apply previous tail and current head if the procedure block is procedural
+			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
+				if (!Objects.equals(master.getHeadSection(), head.get()) || !Objects.equals(master.getTailSection(),
+						tail.get())) {
+					master.append(master.getTailSection());
+					master.setTailSection(tail.get());
+					master.setHeadSection(head.get());
+					master.append(master.getHeadSection());
+				}
+			}
 			master.append(code);
 		}
 

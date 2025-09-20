@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -59,6 +60,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Set<String> usedBlocks = new HashSet<>();
 	private final Set<String> usedTemplates = new LinkedHashSet<>(), generatedTemplates = new HashSet<>();
+
+	// These variables hold the current template for the head/tail of the currently processed block
+	private String headSection = "";
+	private String tailSection = "";
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -195,6 +200,12 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
 						try {
+							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
+							// because the following block cannot be part of the current head/tail sections
+							if (!(generator instanceof ProceduralBlockCodeGenerator)) {
+								append(getTailSection());
+								clearSections();
+							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
 							throw e;
@@ -219,6 +230,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
+
+		// Append the last tail at the end of the processing, and clear sections data in case the method will be called again
+		append(getTailSection());
+		clearSections();
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
@@ -338,6 +353,27 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	 */
 	public Collection<String> getUsedBlocks() {
 		return Collections.unmodifiableSet(usedBlocks);
+	}
+
+	public void setHeadSection(String headSection) {
+		this.headSection = headSection;
+	}
+
+	public void setTailSection(String tailSection) {
+		this.tailSection = tailSection;
+	}
+
+	public void clearSections() {
+		this.headSection = "";
+		this.tailSection = "";
+	}
+
+	public String getHeadSection() {
+		return headSection;
+	}
+
+	public String getTailSection() {
+		return tailSection;
 	}
 
 }
