@@ -76,8 +76,13 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			label5.setForeground(Theme.current().getForegroundColor());
 		}
 
-		label.setText(StringUtils.abbreviate(element.getName(), 24));
+
 		if (element instanceof ModElement ma) {
+			try {
+				label.setText(StringUtils.abbreviate(((ModElement) element).getDisplayName(), 24));
+			} catch (Exception e) {
+				label.setText(StringUtils.abbreviate(element.getName(), 24));
+			}
 			label2.setText(StringUtils.abbreviate(ma.getRegistryName(), 24));
 			label3.setText(ma.getType().getReadableName());
 			label4.setText(ma.isCodeLocked() ?
@@ -87,6 +92,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 					L10N.t("workspace.elements.list.compiles") :
 					L10N.t("workspace.elements.list.compile_errors"));
 		} else {
+			label.setText(StringUtils.abbreviate(element.getName(), 24));
 			label2.setText("-");
 			label3.setText(L10N.t("workspace.elements.list.folder"));
 			label4.setText("-");
