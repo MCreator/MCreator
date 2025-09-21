@@ -25,10 +25,12 @@ import com.google.gson.JsonObject;
 import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Dimension;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -102,6 +104,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (!templatesDefined) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incomplete template: {}", toolboxBlock.getMachineName());
 				return false;
 			}
@@ -132,6 +135,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
 				return false;
 			}
@@ -154,6 +158,7 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
+				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: {}",
 						toolboxBlock.getMachineName());
 				return false;
@@ -258,9 +263,14 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimensionCustom":
+		case "dimensionCustom": // For legacy reason
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
+		case "dimensionCustomWithPortal":
+			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
+					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
+					.map(m -> "CUSTOM:" + m.getModElement().getName()).toArray(String[]::new);
 		case "fluid":
 			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":

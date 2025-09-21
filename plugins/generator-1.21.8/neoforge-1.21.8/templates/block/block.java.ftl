@@ -489,6 +489,16 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.xpAmountMax != 0>
+	@Override public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, BlockEntity blockEntity, Entity breaker, ItemStack tool) {
+		<#if data.xpAmountMin == data.xpAmountMax>
+		return ${data.xpAmountMin};
+		<#else>
+		return Mth.randomBetweenInclusive(level.getRandom(), ${data.xpAmountMin}, ${data.xpAmountMax});
+		</#if>
+	}
+	</#if>
+
 	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
 		return PathType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
