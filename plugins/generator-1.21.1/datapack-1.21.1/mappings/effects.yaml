@@ -8,7 +8,7 @@ SPEED:
   - MobEffects.MOVEMENT_SPEED
   - "minecraft:speed"
 SLOWNESS:
-  - MobEffects.MOVEMENT_SLOWNESS
+  - MobEffects.MOVEMENT_SLOWDOWN
   - "minecraft:slowness"
 HASTE:
   - MobEffects.DIG_SPEED
