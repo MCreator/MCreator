@@ -12,4 +12,4 @@ if(!world.isClientSide()) {
 	if(world instanceof Level _level)
 		_level.sendBlockUpdated(_bp, _bs, _bs, 3);
 }
-</@tai>
+</@tail>
