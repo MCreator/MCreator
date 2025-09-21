@@ -56,6 +56,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -77,7 +78,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder, ISearchable {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -242,6 +243,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private BiomeListField restrictionBiomes;
 
+	private BlocklyEditorToolbar blocklyEditorToolbar;
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
@@ -814,7 +816,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(157);
 		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
@@ -1322,4 +1324,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		return Set.of(blocklyPanel);
 	}
 
+	@Override public void search(@Nullable String searchTerm) {
+		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
 }
