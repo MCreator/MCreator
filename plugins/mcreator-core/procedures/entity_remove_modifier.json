@@ -1,0 +1,39 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "name",
+      "check": "String"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "attribute",
+      "datalist": "attributes",
+      "customEntryProviders": "attribute"
+    },
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 195,
+  "mcreator": {
+    "group": "attributes",
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">modifier_name</field></block></value>",
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "fields": [
+      "attribute"
+    ],
+    "inputs": [
+      "name",
+      "entity"
+    ]
+  }
+}
