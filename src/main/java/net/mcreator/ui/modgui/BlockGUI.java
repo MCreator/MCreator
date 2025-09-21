@@ -893,7 +893,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.jump_factor")));
 		advancedProperties.add(jumpFactor);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/is_bouncy"),
 				L10N.label("elementgui.block.isbouncy")));
 		advancedProperties.add(isBouncy);
 
