@@ -110,8 +110,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("blockly.search_procedure_blocks"), 8,
-							18); //g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
+					g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
 				}
 			}
 		};
