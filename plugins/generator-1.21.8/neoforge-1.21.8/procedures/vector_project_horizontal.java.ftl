@@ -1,1 +1,1 @@
-(${input$vector1}.horizontal().distanceTo(${input$vector2}.horizontal()))
+(${input$vector}.horizontal())
