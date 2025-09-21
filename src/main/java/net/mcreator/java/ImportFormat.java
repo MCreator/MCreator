@@ -130,7 +130,7 @@ public class ImportFormat {
 			cleanupAndResolveDuplicates(workspace, importsToAdd, imports, cu.getPackageName());
 
 			// Apply wildcard import optimization
-			if (PreferencesManager.PREFERENCES.codeStyle.maximumImports.get() != -1)
+			if (PreferencesManager.PREFERENCES.codeStyle.maximumImports.get() != 0)
 				importsToAdd = optimizeWithWildcardImports(importsToAdd);
 
 			StringBuilder importscode = new StringBuilder();
@@ -164,7 +164,7 @@ public class ImportFormat {
 			String packageName = entry.getKey();
 			Set<String> packageImports = entry.getValue();
 
-			if (packageImports.size() >= PreferencesManager.PREFERENCES.codeStyle.maximumImports.get()) {
+			if (packageImports.size() > PreferencesManager.PREFERENCES.codeStyle.maximumImports.get()) {
 				optimizedImports.add(packageName + ".*");
 			} else {
 				optimizedImports.addAll(packageImports);

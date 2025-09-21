@@ -29,7 +29,7 @@ public class CodeStyleSection extends PreferencesSection {
 	CodeStyleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		maximumImports = addEntry(new IntegerEntry("maximumImports", 5, -1, 100));
+		maximumImports = addEntry(new IntegerEntry("maximumImports", 4, 0, 100));
 	}
 
 	@Override public String getSectionKey() {
