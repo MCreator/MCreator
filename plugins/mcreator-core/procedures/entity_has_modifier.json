@@ -12,9 +12,9 @@
       "customEntryProviders": "attribute"
     },
     {
-      "type": "input_value",
+      "type": "field_resourcelocation",
       "name": "name",
-      "check": "String"
+      "text": "modifier_name"
     }
   ],
   "inputsInline": true,
@@ -24,15 +24,14 @@
     "group": "attributes",
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">modifier_name</field></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "fields": [
-      "attribute"
+      "attribute",
+      "name"
     ],
     "inputs": [
-      "entity",
-      "name"
+      "entity"
     ]
   }
 }

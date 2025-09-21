@@ -1,9 +1,9 @@
 {
   "args0": [
     {
-      "type": "input_value",
+      "type": "field_resourcelocation",
       "name": "name",
-      "check": "String"
+      "text": "modifier_name"
     },
     {
       "type": "field_data_list_selector",
@@ -53,17 +53,16 @@
     "group": "attributes",
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">modifier_name</field></block></value>",
       "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "fields": [
+      "name",
       "attribute",
       "operation",
       "permanent"
     ],
     "inputs": [
-      "name",
       "value",
       "entity"
     ]
