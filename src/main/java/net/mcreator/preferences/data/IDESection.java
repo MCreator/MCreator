@@ -33,7 +33,6 @@ public class IDESection extends PreferencesSection {
 	public final BooleanEntry autocompleteDocWindow;
 	public final BooleanEntry lineNumbers;
 	public final BooleanEntry errorInfoEnable;
-	public final IntegerEntry maximumImports;
 
 	IDESection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -47,7 +46,6 @@ public class IDESection extends PreferencesSection {
 		autocompleteDocWindow = addEntry(new BooleanEntry("autocompleteDocWindow", true));
 		lineNumbers = addEntry(new BooleanEntry("lineNumbers", true));
 		errorInfoEnable = addEntry(new BooleanEntry("errorInfoEnable", true));
-		maximumImports = addEntry(new IntegerEntry("maximumImports", 5, 0, 100));
 	}
 
 	@Override public String getSectionKey() {
