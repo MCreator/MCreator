@@ -444,8 +444,8 @@ public class BlocklyBlockCodeGenerator {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
 
-			AtomicReference<String> head = new AtomicReference<>("");
-			AtomicReference<String> tail = new AtomicReference<>("");
+			AtomicReference<String> head = new AtomicReference<>(master.getHeadSection());
+			AtomicReference<String> tail = new AtomicReference<>(master.getTailSection());
 			dataModel.put("head", new SectionMarker(head));
 			dataModel.put("tail", new SectionMarker(tail));
 
