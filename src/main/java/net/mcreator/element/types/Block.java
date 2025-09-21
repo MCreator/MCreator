@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
+	public boolean isBouncy;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;

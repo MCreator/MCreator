@@ -199,6 +199,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JCheckBox isBouncy = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -717,7 +718,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -891,6 +892,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
 				L10N.label("elementgui.block.jump_factor")));
 		advancedProperties.add(jumpFactor);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/jump_factor"),
+				L10N.label("elementgui.block.isbouncy")));
+		advancedProperties.add(isBouncy);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/speed_factor"),
 				L10N.label("elementgui.block.speed_factor")));
@@ -1673,6 +1678,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 		jumpFactor.setValue(block.jumpFactor);
+		isBouncy.setSelected(block.isBouncy);
 		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
@@ -1838,6 +1844,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
+		block.isBouncy = isBouncy.isSelected();
 
 		block.sensitiveToVibration = sensitiveToVibration.isSelected();
 		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();

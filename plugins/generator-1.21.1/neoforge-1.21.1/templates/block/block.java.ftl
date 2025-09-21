@@ -423,6 +423,34 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.isBouncy>
+			@Override
+			public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
+				if (entity.isSuppressingBounce()) {
+					super.fallOn(world, state, pos, entity, misc);
+				} else {
+					entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
+				}
+			}
+
+			@Override
+			public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
+				if (entity.isSuppressingBounce()) {
+					super.updateEntityAfterFallOn(block, entity);
+				} else {
+					this.bounceUp(entity);
+				}
+			}
+
+			private void bounceUp(Entity entity) {
+				Vec3 vec3 = entity.getDeltaMovement();
+				if (vec3.y < 0.0) {
+					double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
+					entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
+				}
+			}
+		</#if>
+
 	<#if data.isWaterloggable>
 	@Override public FluidState getFluidState(BlockState state) {
 	    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
