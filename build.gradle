@@ -108,7 +108,7 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.20.0'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.14.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.2'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
     implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.2') {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
