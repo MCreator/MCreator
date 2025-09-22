@@ -423,6 +423,18 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if hasProcedure(data.onEntityFallsOn)>
+	@Override
+	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
+		<#if hasProcedure(data.onEntityFallsOn)>
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onEntityFallsOn/>
+		</#if>
+	}
+	</#if>
+
 	<#if data.isWaterloggable>
 	@Override public FluidState getFluidState(BlockState state) {
 	    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
