@@ -24,7 +24,6 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
