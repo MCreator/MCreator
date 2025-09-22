@@ -33,6 +33,11 @@ public class ShowReplaceAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				codeEditorView.sed.setVisible(false);
 				codeEditorView.rep.setVisible(true);
+				String selectedText = codeEditorView.te.getSelectedText();
+				if (selectedText != null && !selectedText.isEmpty())
+					codeEditorView.rep.getSearchField().setText(selectedText);
+				codeEditorView.rep.getSearchField().selectAll();
+				codeEditorView.rep.getSearchField().requestFocusInWindow();
 				codeEditorView.disableJumpToMode();
 			}
 		});

@@ -1,0 +1,123 @@
+_default:
+  - MobEffects.SPEED
+  - "minecraft:speed"
+_mcreator_map_template:
+  - "@JavaModNameMobEffects.@REGISTRYNAME"
+  - "@modid:@registryname"
+SPEED:
+  - MobEffects.SPEED
+  - "minecraft:speed"
+SLOWNESS:
+  - MobEffects.SLOWNESS
+  - "minecraft:slowness"
+HASTE:
+  - MobEffects.HASTE
+  - "minecraft:haste"
+MINING_FATIGUE:
+  - MobEffects.MINING_FATIGUE
+  - "minecraft:mining_fatigue"
+STRENGTH:
+  - MobEffects.STRENGTH
+  - "minecraft:strength"
+INSTANT_HEALTH:
+  - MobEffects.INSTANT_HEALTH
+  - "minecraft:instant_health"
+INSTANT_DAMAGE:
+  - MobEffects.INSTANT_DAMAGE
+  - "minecraft:instant_damage"
+JUMP_BOOST:
+  - MobEffects.JUMP_BOOST
+  - "minecraft:jump_boost"
+NAUSEA:
+  - MobEffects.NAUSEA
+  - "minecraft:nausea"
+REGENERATION:
+  - MobEffects.REGENERATION
+  - "minecraft:regeneration"
+RESISTANCE:
+  - MobEffects.RESISTANCE
+  - "minecraft:resistance"
+FIRE_RESISTANCE:
+  - MobEffects.FIRE_RESISTANCE
+  - "minecraft:fire_resistance"
+WATER_BREATHING:
+  - MobEffects.WATER_BREATHING
+  - "minecraft:water_breathing"
+INVISIBILITY:
+  - MobEffects.INVISIBILITY
+  - "minecraft:invisibility"
+BLINDNESS:
+  - MobEffects.BLINDNESS
+  - "minecraft:blindness"
+NIGHT_VISION:
+  - MobEffects.NIGHT_VISION
+  - "minecraft:night_vision"
+HUNGER:
+  - MobEffects.HUNGER
+  - "minecraft:hunger"
+WEAKNESS:
+  - MobEffects.WEAKNESS
+  - "minecraft:weakness"
+POISON:
+  - MobEffects.POISON
+  - "minecraft:poison"
+WITHER:
+  - MobEffects.WITHER
+  - "minecraft:wither"
+HEALTH_BOOST:
+  - MobEffects.HEALTH_BOOST
+  - "minecraft:health_boost"
+ABSORPTION:
+  - MobEffects.ABSORPTION
+  - "minecraft:absorption"
+SATURATION:
+  - MobEffects.SATURATION
+  - "minecraft:saturation"
+GLOWING:
+  - MobEffects.GLOWING
+  - "minecraft:glowing"
+LEVITATION:
+  - MobEffects.LEVITATION
+  - "minecraft:levitation"
+LUCK:
+  - MobEffects.LUCK
+  - "minecraft:luck"
+UNLUCK:
+  - MobEffects.UNLUCK
+  - "minecraft:unluck"
+SLOW_FALLING:
+  - MobEffects.SLOW_FALLING
+  - "minecraft:slow_falling"
+CONDUIT_POWER:
+  - MobEffects.CONDUIT_POWER
+  - "minecraft:conduit_power"
+DOLPHINS_GRACE:
+  - MobEffects.DOLPHINS_GRACE
+  - "minecraft:dolphins_grace"
+BAD_OMEN:
+  - MobEffects.BAD_OMEN
+  - "minecraft:bad_omen"
+HERO_OF_THE_VILLAGE:
+  - MobEffects.HERO_OF_THE_VILLAGE
+  - "minecraft:hero_of_the_village"
+DARKNESS:
+  - MobEffects.DARKNESS
+  - "minecraft:darkness"
+TRIAL_OMEN:
+  - MobEffects.TRIAL_OMEN
+  - "minecraft:trial_omen"
+RAID_OMEN:
+  - MobEffects.RAID_OMEN
+  - "minecraft:raid_omen"
+WIND_CHARGED:
+  - MobEffects.WIND_CHARGED
+  - "minecraft:wind_charged"
+WEAVING:
+  - MobEffects.WEAVING
+  - "minecraft:weaving"
+OOZING:
+  - MobEffects.OOZING
+  - "minecraft:oozing"
+INFESTED:
+  - MobEffects.INFESTED
+  - "minecraft:infested"
