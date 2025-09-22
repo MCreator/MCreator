@@ -433,12 +433,15 @@ public class ${name}Block extends
 	<#if hasProcedure(data.onEntityFallsOn)>
 	@Override
 	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
-		<#if hasProcedure(data.onEntityFallsOn)>
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onEntityFallsOn/>
-		</#if>
+		super.fallOn(world, state, pos, entity, misc);
+		<@procedureCode data.onEntityFallsOn, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"entity": "entity",
+			"blockstate": "state"
+		}/>
 	}
 	</#if>
 
