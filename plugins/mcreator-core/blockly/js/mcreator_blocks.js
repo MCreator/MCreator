@@ -694,6 +694,10 @@ registerSimpleMutatorInput(
 registerSimpleMutatorContainer('player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container',250);
 registerSimpleMutatorInput('player_effect_changed_mutator_input', 'blockly.block.player_effect_changed_mutator.input', 250);
 
+// Mutator blocks for enchantment entry advancement trigger mixin
+registerSimpleMutatorContainer('item_enchanted_mutator_container', 'blockly.block.item_enchanted_mutator.container',250);
+registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_enchanted_mutator.input', 250);
+
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];
 
