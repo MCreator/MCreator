@@ -2,5 +2,4 @@
 	_menu.getSlots().get(${opt.toInt(input$slotid)}).set(ItemStack.EMPTY);
 <@tail>
 	_player.containerMenu.broadcastChanges();
-}
-</@tail>
+}</@tail>

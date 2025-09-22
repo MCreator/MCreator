@@ -5,5 +5,4 @@
 		_pt.setNameTagVisibility(Team.Visibility.${field$visibility});
 <@tail>
 	}
-}
-</@tail>
+}</@tail>

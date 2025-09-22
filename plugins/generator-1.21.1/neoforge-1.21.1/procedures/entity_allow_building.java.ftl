@@ -2,5 +2,4 @@
     _player.getAbilities().mayBuild = ${input$condition};
 <@tail>
     _player.onUpdateAbilities();
-}
-</@tail>
+}</@tail>

@@ -5,5 +5,4 @@
 		_pt.setAllowFriendlyFire(${input$condition});
 <@tail>
 	}
-}
-</@tail>
+}</@tail>

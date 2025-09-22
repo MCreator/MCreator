@@ -2,5 +2,4 @@
     _player.getAbilities().invulnerable = ${input$condition};
 <@tail>
     _player.onUpdateAbilities();
-}
-</@tail>
+}</@tail>
