@@ -51,6 +51,7 @@ import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -200,8 +201,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
-	private ProcedureSelector isBouncyCondition;
-	private ProcedureSelector preventsFallDamage;
+	private LogicProcedureSelector isBouncyCondition;
+	private LogicProcedureSelector preventsFallDamage;
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -370,17 +371,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-
-		isBouncyCondition = new ProcedureSelector(this.withEntry("block/is_bouncy"), mcreator,
-				L10N.t("elementgui.block.isbouncy"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString(
-						"entity:entity")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
-		preventsFallDamage = new ProcedureSelector(this.withEntry("block/prevents_fall_damage"), mcreator,
-				L10N.t("elementgui.block.prevents_fall_damage"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString(
-						"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
+	
+		isBouncyCondition = new LogicProcedureSelector(this.withEntry("block/is_bouncy"), mcreator,
+			L10N.t("elementgui.block.isbouncy"), AbstractProcedureSelector.Side.BOTH,
+			L10N.checkbox("elementgui.common.enable"), 0, Dependency.fromString("entity:entity")
+		);
+		preventsFallDamage = new LogicProcedureSelector(this.withEntry("block/prevents_fall_damage"), mcreator, 
+			L10N.t("elementgui.block.prevents_fall_damage"), AbstractProcedureSelector.Side.BOTH,
+			L10N.checkbox("elementgui.common.enable"), 0, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate")
+		);
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,

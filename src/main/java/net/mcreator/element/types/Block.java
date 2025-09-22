@@ -24,6 +24,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
@@ -74,8 +75,8 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public Procedure isBouncyCondition;
-	public Procedure preventsFallDamage;
+	public LogicProcedure isBouncyCondition;
+	public LogicProcedure preventsFallDamage;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;

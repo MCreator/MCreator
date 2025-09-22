@@ -424,45 +424,60 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if hasProcedure(data.preventsFallDamage) || hasProcedure(data.onEntityFallsOn)>
+	<#if (data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())) || hasProcedure(data.onEntityFallsOn)>
 	@Override
-    public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
-		<#if hasProcedure(data.preventsFallDamage)>
-		if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
-			if (!entity.isSuppressingBounce()) {
-				entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
+	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
+
+		<#if data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())>
+			<#if hasProcedure(data.preventsFallDamage)>
+				if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
+			<#else>
+				if (${data.preventsFallDamage.getFixedValue()}) {
+			</#if>
+				if (!entity.isSuppressingBounce()) {
+					entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
+				}
 			}
-		}
 		</#if>
+
 		<#if hasProcedure(data.onEntityFallsOn)>
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-		<@procedureOBJToCode data.onEntityFallsOn/>
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			<@procedureOBJToCode data.onEntityFallsOn/>
 		</#if>
-    }
+	}
 	</#if>
 
-	<#if hasProcedure(data.isBouncyCondition)>
-    @Override
-    public void updateEntityMovementAfterFallOn(BlockGetter block, Entity entity) {
-		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+	<#if data.isBouncyCondition?? && (hasProcedure(data.isBouncyCondition) || data.isBouncyCondition.getFixedValue())>
+	@Override
+	public void updateEntityMovementAfterFallOn(BlockGetter block, Entity entity) {
+		<#if hasProcedure(data.isBouncyCondition)>
+			if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+		<#else>
+			if (${data.isBouncyCondition.getFixedValue()}) {
+		</#if>
 			if (entity.isSuppressingBounce()) {
 				super.updateEntityMovementAfterFallOn(block, entity);
 			} else {
 				this.bounceUp(entity);
 			}
 		}
-    }
-    private void bounceUp(Entity entity) {
-		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+	}
+
+	private void bounceUp(Entity entity) {
+		<#if hasProcedure(data.isBouncyCondition)>
+			if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+		<#else>
+			if (${data.isBouncyCondition.getFixedValue()}) {
+		</#if>
 			Vec3 vec3 = entity.getDeltaMovement();
 			if (vec3.y < 0.0) {
 				double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
 				entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
 			}
 		}
-    }
+	}
 	</#if>
 
 	<#if data.isWaterloggable>
