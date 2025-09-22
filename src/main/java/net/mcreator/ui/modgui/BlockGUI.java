@@ -113,6 +113,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
+	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -817,6 +818,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(useLootTableForDrops);
+
+		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/xp_amount"),
+				L10N.label("elementgui.common.xp_amount")));
+		selp3.add(xpAmount);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
@@ -1628,6 +1633,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
+		xpAmount.setMinValue(block.xpAmountMin);
+		xpAmount.setMaxValue(block.xpAmountMax);
 		isNotColidable.setSelected(block.isNotColidable);
 		unbreakable.setSelected(block.unbreakable);
 		canRedstoneConnect.setSelected(block.canRedstoneConnect);
@@ -1745,6 +1752,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
+		block.xpAmountMin = xpAmount.getIntMinValue();
+		block.xpAmountMax = xpAmount.getIntMaxValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
 		block.isFluidTank = isFluidTank.isSelected();
 		block.hasEnergyStorage = hasEnergyStorage.isSelected();
