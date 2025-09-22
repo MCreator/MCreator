@@ -1,0 +1,1 @@
+If this option is enabled, the block becomes bouncy like a slimeblock. Prevents fall damage as well.

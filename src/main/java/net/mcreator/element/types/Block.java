@@ -74,7 +74,8 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public boolean isBouncy;
+	public Procedure isBouncyCondition;
+	public Procedure preventsFallDamage;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;
@@ -196,6 +197,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;

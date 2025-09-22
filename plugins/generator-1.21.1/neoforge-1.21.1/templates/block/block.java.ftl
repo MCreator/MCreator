@@ -423,33 +423,49 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBouncy>
-			@Override
-			public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
-				if (entity.isSuppressingBounce()) {
-					super.fallOn(world, state, pos, entity, misc);
-				} else {
-					entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
-				}
+	<#if hasProcedure(data.preventsFallDamage) || hasProcedure(data.onEntityFallsOn)>
+	@Override
+	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
+		<#if hasProcedure(data.preventsFallDamage)>
+		if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
+			if (entity.isSuppressingBounce()) {
+				super.fallOn(world, state, pos, entity, misc);
+			} else {
+				entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
 			}
-
-			@Override
-			public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
-				if (entity.isSuppressingBounce()) {
-					super.updateEntityAfterFallOn(block, entity);
-				} else {
-					this.bounceUp(entity);
-				}
-			}
-
-			private void bounceUp(Entity entity) {
-				Vec3 vec3 = entity.getDeltaMovement();
-				if (vec3.y < 0.0) {
-					double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
-					entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
-				}
-			}
+		}
 		</#if>
+		<#if hasProcedure(data.onEntityFallsOn)>
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		<@procedureOBJToCode data.onEntityFallsOn/>
+		</#if>
+	}
+	</#if>
+
+	<#if hasProcedure(data.isBouncyCondition)>
+	@Override
+	public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
+		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+			if (entity.isSuppressingBounce()) {
+				super.updateEntityAfterFallOn(block, entity);
+			} else {
+				this.bounceUp(entity);
+			}
+		}
+	}
+
+	private void bounceUp(Entity entity) {
+		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+			Vec3 vec3 = entity.getDeltaMovement();
+			if (vec3.y < 0.0) {
+				double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
+			}
+		}
+	}
+	</#if>
 
 	<#if data.isWaterloggable>
 	@Override public FluidState getFluidState(BlockState state) {

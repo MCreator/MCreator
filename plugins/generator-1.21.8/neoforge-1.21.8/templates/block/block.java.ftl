@@ -424,27 +424,44 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBouncy>
+	<#if hasProcedure(data.preventsFallDamage) || hasProcedure(data.onEntityFallsOn)>
 	@Override
-    public void fallOn(Level world, BlockState state, BlockPos p_154569_, Entity entity, double misc) { //float is misc since I have no idea what it actually does
-        if (!entity.isSuppressingBounce()) {
-            entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
-        }
+    public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
+		<#if hasProcedure(data.preventsFallDamage)>
+		if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
+			if (!entity.isSuppressingBounce()) {
+				entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
+			}
+		}
+		</#if>
+		<#if hasProcedure(data.onEntityFallsOn)>
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		<@procedureOBJToCode data.onEntityFallsOn/>
+		</#if>
     }
+	</#if>
+
+	<#if hasProcedure(data.isBouncyCondition)>
     @Override
-    public void updateEntityMovementAfterFallOn(BlockGetter block, Entity blockentity) {
-        if (blockentity.isSuppressingBounce()) {
-            super.updateEntityMovementAfterFallOn(block, blockentity);
-        } else {
-            this.bounceUp(blockentity);
-        }
+    public void updateEntityMovementAfterFallOn(BlockGetter block, Entity entity) {
+		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+			if (entity.isSuppressingBounce()) {
+				super.updateEntityMovementAfterFallOn(block, entity);
+			} else {
+				this.bounceUp(entity);
+			}
+		}
     }
     private void bounceUp(Entity entity) {
-        Vec3 vec3 = entity.getDeltaMovement();
-        if (vec3.y < 0.0) {
-            double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
-            entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
-        }
+		if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
+			Vec3 vec3 = entity.getDeltaMovement();
+			if (vec3.y < 0.0) {
+				double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
+			}
+		}
     }
 	</#if>
 
