@@ -1,0 +1,26 @@
+- ALL_RECIPES:
+  readable_name: "All recipes"
+- AVAILABLE_SOUNDS:
+  readable_name: "Available sounds"
+- SUMMONABLE_ENTITIES:
+  readable_name: "Summonable entities"
+- SUGGEST_BOSS_BAR:
+  readable_name: "Available bossbars"
+- SUGGEST_ADVANCEMENTS:
+  readable_name: "Available advancements"
+- SUGGEST_PREDICATE:
+  readable_name: "Available predicates"
+- SELECTED_PACKS:
+  readable_name: "Selected packs"
+- UNSELECTED_PACKS:
+  readable_name: "Unselected packs"
+- SUGGEST_FUNCTION:
+  readable_name: "Available functions"
+- SUGGEST_MODIFIER:
+  readable_name: "Available modifiers"
+- SUGGEST_LOOT_TABLE:
+  readable_name: "Available loottables"
+- SUGGEST_TEMPLATES:
+  readable_name: "Available templates"
+- SUGGEST_SCHEDULE:
+  readable_name: "Available schedules"

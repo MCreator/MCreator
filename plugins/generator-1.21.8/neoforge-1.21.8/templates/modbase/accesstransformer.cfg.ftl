@@ -17,5 +17,15 @@ public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lco
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z
 </#if>
 
+<#if w.hasElementsOfType("command")>
+public net.minecraft.server.commands.AdvancementCommands SUGGEST_ADVANCEMENTS # SUGGEST_ADVANCEMENTS
+public net.minecraft.server.commands.ItemCommands SUGGEST_MODIFIER # SUGGEST_MODIFIER
+public net.minecraft.server.commands.ScheduleCommand SUGGEST_SCHEDULE # SUGGEST_SCHEDULE
+public net.minecraft.server.commands.PlaceCommand SUGGEST_TEMPLATES # SUGGEST_TEMPLATES
+public net.minecraft.server.commands.ExecuteCommand SUGGEST_PREDICATE # SUGGEST_PREDICATE
+public net.minecraft.server.commands.DataPackCommand SELECTED_PACKS # SELECTED_PACKS
+public net.minecraft.server.commands.DataPackCommand UNSELECTED_PACKS # UNSELECTED_PACKS
+</#if>
+
 # Start of user code block custom ATs
 # End of user code block custom ATs
