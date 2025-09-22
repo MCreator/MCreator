@@ -51,6 +51,7 @@ import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -99,6 +100,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
 	private ProcedureSelector onBonemealSuccess;
+	private ProcedureSelector onEntityFallsOn;
 
 	private StringListProcedureSelector specialInformation;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -112,7 +114,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -335,6 +336,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+		onEntityFallsOn = new ProcedureSelector(this.withEntry("block/when_entity_falls_on"), mcreator,
+				L10N.t("elementgui.block.event_on_entity_falls_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
@@ -715,10 +719,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.add("Center", blockStates);
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -814,10 +818,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
 		selp3.add(useLootTableForDrops);
-
-		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/xp_amount"),
-				L10N.label("elementgui.common.xp_amount")));
-		selp3.add(xpAmount);
 
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/creative_pick_item"),
 				L10N.label("elementgui.common.creative_pick_item")));
@@ -925,7 +925,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
-		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
+		//JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
+		JPanel advancedWithCondition = new JPanel();
+		advancedWithCondition.setLayout(new BoxLayout(advancedWithCondition, BoxLayout.Y_AXIS));
+		advancedWithCondition.add(advancedProperties);
+		advancedWithCondition.add(placingCondition);
+		advancedWithCondition.setOpaque(false);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
@@ -995,6 +1000,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRedstoneOn);
 		events.add(onRedstoneOff);
 		events.add(onRandomUpdateEvent);
+		events.add(onEntityFallsOn);
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
@@ -1527,6 +1533,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 		onReceivedVibration.refreshListKeepSelected();
+		onEntityFallsOn.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1587,6 +1594,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onEntityFallsOn.setSelectedProcedure(block.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
@@ -1622,8 +1630,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
-		xpAmount.setMinValue(block.xpAmountMin);
-		xpAmount.setMaxValue(block.xpAmountMax);
 		isNotColidable.setSelected(block.isNotColidable);
 		unbreakable.setSelected(block.unbreakable);
 		canRedstoneConnect.setSelected(block.canRedstoneConnect);
@@ -1741,8 +1747,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
-		block.xpAmountMin = xpAmount.getIntMinValue();
-		block.xpAmountMax = xpAmount.getIntMaxValue();
 		block.plantsGrowOn = plantsGrowOn.isSelected();
 		block.isFluidTank = isFluidTank.isSelected();
 		block.hasEnergyStorage = hasEnergyStorage.isSelected();
@@ -1809,6 +1813,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = textures.getTexture();
 		block.textureTop = textures.getTextureTop();
