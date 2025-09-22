@@ -61,6 +61,6 @@ public class BlocklySection extends PreferencesSection {
 	@Override public String getSectionKey() {
 		return "blockly";
 	}
+	
 }
-
 
