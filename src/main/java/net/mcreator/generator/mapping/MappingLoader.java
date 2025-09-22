@@ -56,8 +56,8 @@ public class MappingLoader {
 					String config = FileIO.readResourceToString(resource);
 
 					try {
-						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
-								new LinkedHashMap<>((Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)));
+						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(new LinkedHashMap<>(
+								(Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)));
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))

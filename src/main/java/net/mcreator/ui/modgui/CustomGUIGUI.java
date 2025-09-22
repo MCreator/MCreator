@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.ModElement;
@@ -53,9 +54,10 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		editor = new WYSIWYGEditor(mcreator, true);
 
 		onOpen = new ProcedureSelector(this.withEntry("gui/gui_opened"), mcreator, L10N.t("elementgui.gui.gui_opened"),
+				AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onTick = new ProcedureSelector(this.withEntry("gui/gui_open_tick"), mcreator,
-				L10N.t("elementgui.gui.gui_open_ticks"),
+				L10N.t("elementgui.gui.gui_open_ticks"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onClosed = new ProcedureSelector(this.withEntry("gui/gui_closed"), mcreator,
 				L10N.t("elementgui.gui.gui_closed"),
