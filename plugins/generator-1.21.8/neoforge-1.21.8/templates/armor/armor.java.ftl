@@ -39,14 +39,21 @@ import java.util.Map;
 
 public abstract class ${name}Item extends Item {
 
+	<#if data.isHorseArmor>
+		public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("${modid}");
+	</#if>
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},
 		Map.of(
-			ArmorType.BOOTS, ${data.damageValueBoots},
-			ArmorType.LEGGINGS, ${data.damageValueLeggings},
-			ArmorType.CHESTPLATE, ${data.damageValueBody},
-			ArmorType.HELMET, ${data.damageValueHelmet},
-			ArmorType.BODY, ${data.damageValueBody}
+			<#if !(data.isHorseArmor!false)>
+				ArmorType.BOOTS, ${data.damageValueBoots},
+				ArmorType.LEGGINGS, ${data.damageValueLeggings},
+				ArmorType.CHESTPLATE, ${data.damageValueBody},
+				ArmorType.HELMET, ${data.damageValueHelmet},
+				ArmorType.BODY, ${data.damageValueBody}
+			<#else>
+				ArmorType.BODY, ${data.damageValueBody}
+			</#if>
 		),
 		${data.enchantability},
 		<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
@@ -59,12 +66,21 @@ public abstract class ${name}Item extends Item {
 		TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")), <#-- data.repairItems are put into a tag -->
 		ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
 	);
+	<#if data.isHorseArmor!false>
+		public static final DeferredItem<Item> HORSE_ARMOR =
+			ITEMS.registerItem("${name?lower_case}", props -> new Item(
+			new Item.Properties()
+				.horseArmor(ARMOR_MATERIAL)
+				.durability(500)
+				.rarity(Rarity.RARE)
+				.fireResistant()));
+	</#if>
 
 	private ${name}Item(Item.Properties properties) {
 		super(properties);
 	}
 
-	<#if data.enableHelmet>
+	<#if data.enableHelmet && !(data.isHorseArmor!false)>
 	public static class Helmet extends ${name}Item {
 
 		public Helmet(Item.Properties properties) {
@@ -81,11 +97,10 @@ public abstract class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.enableBody>
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE));
+			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if !(data.isHorseArmor!false)>.humanoidArmor<#else>.horseArmor</#if>(ARMOR_MATERIAL<#if !(data.isHorseArmor!false)>, ArmorType.CHESTPLATE</#if>));
 		}
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
@@ -96,9 +111,8 @@ public abstract class ${name}Item extends Item {
 
 		<@onArmorTick data.onBodyTick/>
 	}
-	</#if>
 
-	<#if data.enableLeggings>
+	<#if data.enableLeggings && !(data.isHorseArmor!false)>
 	public static class Leggings extends ${name}Item {
 
 		public Leggings(Item.Properties properties) {
@@ -115,7 +129,7 @@ public abstract class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.enableBoots>
+	<#if data.enableBoots && !(data.isHorseArmor!false)>
 	public static class Boots extends ${name}Item {
 
 		public Boots(Item.Properties properties) {

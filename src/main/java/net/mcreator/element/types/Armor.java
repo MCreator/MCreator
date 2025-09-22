@@ -110,6 +110,7 @@ import java.util.stream.Collectors;
 	public boolean bodyImmuneToFire;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
+	public boolean isHorseArmor;
 
 	public LogicProcedure helmetGlowCondition;
 	public LogicProcedure bodyGlowCondition;
