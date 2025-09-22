@@ -122,7 +122,7 @@ dependencies {
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.17'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '9.0.0'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '9.1.0'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
