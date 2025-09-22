@@ -24,6 +24,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
@@ -100,8 +101,6 @@ import java.util.stream.Collectors;
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
-	public int xpAmountMin;
-	public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
@@ -197,6 +196,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
