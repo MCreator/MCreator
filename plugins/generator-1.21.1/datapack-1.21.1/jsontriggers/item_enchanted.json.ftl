@@ -2,18 +2,12 @@
   "trigger": "minecraft:enchanted_item",
   "conditions": {
 	"item": {
-		"items": [
-			"${input$item}"
-		],
+		"items": "${input$item}",
 		"predicates": {
 			"enchantments": [
-				{
-					"enchantments": "${generator.map(field$enchantment, "enchantments", 1)}",
-					"levels": {
-						"min": ${input$minLevel},
-						"max": ${input$maxLevel}
-					}
-				}
+				<#list input_list$enchantment as enchantment>
+					${enchantment}<#sep>,
+				</#list>
 			]
 		}
 	},
