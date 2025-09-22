@@ -103,6 +103,8 @@ import java.util.stream.Collectors;
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
+	public int xpAmountMin;
+	public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
