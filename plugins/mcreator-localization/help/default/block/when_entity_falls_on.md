@@ -1,1 +1,1 @@
-Triggers a procedure ONLY when the entity falls onto the block from any arbitrary height.
+Triggers a procedure *only* when the entity falls onto the block from any arbitrary height.

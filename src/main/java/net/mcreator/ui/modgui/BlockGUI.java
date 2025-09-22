@@ -731,10 +731,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.add("Center", blockStates);
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
-		JPanel selp3 = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(13, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -937,7 +937,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
-		//JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 		JPanel advancedWithCondition = new JPanel();
 		advancedWithCondition.setLayout(new BoxLayout(advancedWithCondition, BoxLayout.Y_AXIS));
 		advancedWithCondition.add(advancedProperties);
