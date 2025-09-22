@@ -1,5 +1,3 @@
-- ALL_RECIPES:
-  readable_name: "All recipes"
 - AVAILABLE_SOUNDS:
   readable_name: "Available sounds"
 - SUMMONABLE_ENTITIES:
