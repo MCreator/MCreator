@@ -24,3 +24,5 @@
   readable_name: "Available templates"
 - SUGGEST_SCHEDULE:
   readable_name: "Available schedules"
+- SUGGEST_SCORE_HOLDERS:
+  readable_name: "Available score holders"
