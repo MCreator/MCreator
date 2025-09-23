@@ -56,7 +56,7 @@ public class GTJSONTriggersBlocks {
 			if (!BlocklyTestUtil.populateFields(triggerBlock, workspace, random, additionalXML))
 				continue; // failed to populate all fields
 
-			ModElement modElement = new ModElement(workspace, "TestJTriggerBlock" + triggerBlock.getMachineName(),
+			ModElement modElement = new ModElement(workspace, "TestJSONTriggerBlock" + triggerBlock.getMachineName(),
 					ModElementType.ADVANCEMENT);
 
 			String testXML = triggerBlock.getToolboxTestXML();
