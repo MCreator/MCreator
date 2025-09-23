@@ -75,33 +75,10 @@ public class GTJSONTriggersBlocks {
 					Collections.emptyList(), 1);
 
 			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				// All special triggers are tested with their respective output blocks
-				switch (triggerBlock.getMachineName()) {
-				// Effect changed block is tested with the Effect entry output block
-				case "player_effect_changed" -> advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-						+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\">"
-						+ "<next><block type=\"player_effect_changed\"><mutation xmlns=\"http://www.w3.org/1999/xhtml\" inputs=\"1\"></mutation>"
-						+ "<value name=\"effect0\"><block type=\"effect_entry\"><field name=\"effect\">"
-						+ TestWorkspaceDataProvider.getRandomDataListEntry(random,
-						ElementUtil.loadAllPotionEffects(modElement.getWorkspace())).getName()
-						+ "</field><value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
-						+ "<value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value></block></value></block></next></block></xml>";
-				// Item enchanted block is tested with the Enchantment entry output block
-				case "item_enchanted" -> advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-						+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\">"
-						+ "<next><block type=\"item_enchanted\"><mutation xmlns=\"http://www.w3.org/1999/xhtml\" inputs=\"1\"></mutation>"
-						+ "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\">" + randomMCItem
-						+ "</field></block></value><value name=\"levelsSpent\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
-						+ "<value name=\"enchantment0\"><block type=\"enchantment_entry\"><field name=\"enchantment\">"
-						+ TestWorkspaceDataProvider.getRandomDataListEntry(random,
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName()
-						+ "</field><value name=\"minLevel\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
-						+ "<value name=\"maxLevel\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value></block></value></block></next></block></xml>";
-				default ->  // If the block is not a special case, we can test it as a regular block
-						advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-								+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-								+ testXML + "</next></block></xml>";
-				}
+				// If the block is not a special case, we can test it as a regular block
+				advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+						+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>" + testXML
+						+ "</next></block></xml>";
 			}
 
 			try {
