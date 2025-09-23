@@ -487,38 +487,7 @@ public class TestWorkspaceDataProvider {
 				.collect(Collectors.toList());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
-			Achievement achievement = new Achievement(modElement);
-			achievement.achievementName = "Test Achievement";
-			achievement.achievementDescription = "Description of it";
-			achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
-			achievement.parent = new AchievementEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
-			achievement.announceToChat = _true;
-			achievement.showPopup = _true;
-			achievement.disableDisplay = !_true;
-			achievement.rewardXP = 14;
-			achievement.hideIfNotCompleted = !_true;
-			var functions = modElement.getWorkspace().getModElements().stream()
-					.filter(var -> var.getType() == ModElementType.FUNCTION).map(ModElement::getName)
-					.collect(Collectors.toList());
-			achievement.rewardFunction = emptyLists || functions.isEmpty() ? null : getRandomItem(random, functions);
-			achievement.background = emptyLists ? "Default" : "test.png";
-			achievement.rewardLoot = new ArrayList<>();
-			if (!emptyLists) {
-				achievement.rewardLoot.add("ExampleLootTable1");
-				achievement.rewardLoot.add("ExampleLootTable2");
-			}
-			achievement.rewardRecipes = new ArrayList<>();
-			if (!emptyLists) {
-				achievement.rewardRecipes.add("ExampleRecipe1");
-				achievement.rewardRecipes.add("ExampleRecipe2");
-			}
-			achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-					+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-					+ "<block type=\"tick\"></block></next></block></xml>";
-			return achievement;
+			return getAdvancementExample(modElement, random, _true, emptyLists, blocksAndItems, valueIndex);
 		} else if (ModElementType.BANNERPATTERN.equals(modElement.getType())) {
 			BannerPattern bannerPattern = new BannerPattern(modElement);
 			bannerPattern.texture = new TextureHolder(modElement.getWorkspace(), "other0");
@@ -2396,6 +2365,43 @@ public class TestWorkspaceDataProvider {
 		default -> throw new RuntimeException("Unknown recipe type");
 		}
 		return recipe;
+	}
+
+	public static Achievement getAdvancementExample(ModElement modElement, Random random, boolean _true,
+			boolean emptyLists, List<MCItem> blocksAndItems, int valueIndex) {
+		Achievement achievement = new Achievement(modElement);
+		achievement.achievementName = "Test Achievement";
+		achievement.achievementDescription = "Description of it";
+		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
+		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
+				getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
+		achievement.announceToChat = _true;
+		achievement.showPopup = _true;
+		achievement.disableDisplay = !_true;
+		achievement.rewardXP = 14;
+		achievement.hideIfNotCompleted = !_true;
+		var functions = modElement.getWorkspace().getModElements().stream()
+				.filter(var -> var.getType() == ModElementType.FUNCTION).map(ModElement::getName)
+				.collect(Collectors.toList());
+		achievement.rewardFunction = emptyLists || functions.isEmpty() ? null : getRandomItem(random, functions);
+		achievement.background = emptyLists ? "Default" : "test.png";
+		achievement.rewardLoot = new ArrayList<>();
+		if (!emptyLists) {
+			achievement.rewardLoot.add("ExampleLootTable1");
+			achievement.rewardLoot.add("ExampleLootTable2");
+		}
+		achievement.rewardRecipes = new ArrayList<>();
+		if (!emptyLists) {
+			achievement.rewardRecipes.add("ExampleRecipe1");
+			achievement.rewardRecipes.add("ExampleRecipe2");
+		}
+		achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+				+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
+				+ "<block type=\"tick\"></block></next></block></xml>";
+
+		return achievement;
 	}
 
 	public static <T> T getRandomItem(Random random, T[] list) {
