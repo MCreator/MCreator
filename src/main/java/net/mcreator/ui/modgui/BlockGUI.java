@@ -115,6 +115,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
+	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));

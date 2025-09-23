@@ -99,6 +99,8 @@ import java.util.stream.Collectors;
 	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
 	public int dropAmount;
+	public int xpAmountMin;
+	public int xpAmountMax;
 	public boolean forceTicking;
 	public boolean emissiveRendering;
 
