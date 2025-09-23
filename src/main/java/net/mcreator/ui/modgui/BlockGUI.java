@@ -434,12 +434,19 @@ public class BlockGUI extends ModElementGUI<Block> {
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
 			flowerPotPanel.setVisible(false);
-			// Re-enable block item if user switches from flower pot to any other block base option
-			if (!isEditingMode() && !hasBlockItem.isSelected()) {
-				hasBlockItem.setSelected(true);
-				updateBlockItemSettings();
-			}
 			signPropertiesPanel.setVisible(false);
+
+			if (!isEditingMode()) {
+				// Re-enable block item if user switches from flower pot to any other block base option
+				if (!hasBlockItem.isSelected()) {
+					hasBlockItem.setSelected(true);
+					updateBlockItemSettings();
+				}
+				// Reset max stack size to 64 if user switches from sign to any other block base option
+				if ((int) maxStackSize.getValue() == 16) {
+					maxStackSize.setValue(64);
+				}
+			}
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
@@ -461,7 +468,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					if (!isEditingMode()) {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
 						lightOpacity.setValue(0);
-						maxStackSize.setValue(64);
 					}
 				}
 				case "Leaves" -> {
