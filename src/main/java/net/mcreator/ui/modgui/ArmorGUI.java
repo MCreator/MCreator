@@ -551,30 +551,27 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		});
 
 		isHorseArmor.addActionListener(event -> {
+			textureHelmet.setEnabled(!isHorseArmor.isSelected());
+			textureBody.setEnabled(true);
+			textureLeggings.setEnabled(!isHorseArmor.isSelected());
+			textureBoots.setEnabled(!isHorseArmor.isSelected());
+
+			enableHelmet.setSelected(!isHorseArmor.isSelected());
+			enableHelmet.setEnabled(!isHorseArmor.isSelected());
+			enableBody.setSelected(true);
+			enableBody.setEnabled(!isHorseArmor.isSelected());
+			enableLeggings.setSelected(!isHorseArmor.isSelected());
+			enableLeggings.setEnabled(!isHorseArmor.isSelected());
+			enableBoots.setSelected(!isHorseArmor.isSelected());
+			enableBoots.setEnabled(!isHorseArmor.isSelected());
+
+			helmetName.setEnabled(!isHorseArmor.isSelected());
+			leggingsName.setEnabled(!isHorseArmor.isSelected());
+			bootsName.setEnabled(!isHorseArmor.isSelected());
+
 			damageValueHelmet.setEnabled(!isHorseArmor.isSelected());
 			damageValueLeggings.setEnabled(!isHorseArmor.isSelected());
 			damageValueBoots.setEnabled(!isHorseArmor.isSelected());
-
-			enableHelmet.setEnabled(!isHorseArmor.isSelected());
-			enableHelmet.setSelected(!isHorseArmor.isSelected());
-			textureHelmet.setEnabled(!isHorseArmor.isSelected());
-
-			helmetName.setEnabled(!isHorseArmor.isSelected());
-
-			enableBody.setSelected(true);
-			textureBody.setEnabled(true);
-			bodyName.setEnabled(true);
-			enableBody.setEnabled(!isHorseArmor.isSelected());
-
-			enableLeggings.setEnabled(!isHorseArmor.isSelected());
-			enableLeggings.setSelected(!isHorseArmor.isSelected());
-			textureLeggings.setEnabled(!isHorseArmor.isSelected());
-			leggingsName.setEnabled(!isHorseArmor.isSelected());
-
-			enableBoots.setEnabled(!isHorseArmor.isSelected());
-			enableBoots.setSelected(!isHorseArmor.isSelected());
-			textureBoots.setEnabled(!isHorseArmor.isSelected());
-			bootsName.setEnabled(!isHorseArmor.isSelected());
 
 			onHelmetTick.setEnabled(!isHorseArmor.isSelected());
 			onLeggingsTick.setEnabled(!isHorseArmor.isSelected());
@@ -944,26 +941,20 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		toughness.setValue(armor.toughness);
 		knockbackResistance.setValue(armor.knockbackResistance);
 		onHelmetTick.setSelectedProcedure(armor.onHelmetTick);
-		onHelmetTick.setEnabled(!armor.isHorseArmor);
 		onBodyTick.setSelectedProcedure(armor.onBodyTick);
 		onLeggingsTick.setSelectedProcedure(armor.onLeggingsTick);
-		onLeggingsTick.setEnabled(!armor.isHorseArmor);
 		onBootsTick.setSelectedProcedure(armor.onBootsTick);
-		onBootsTick.setEnabled(!armor.isHorseArmor);
 		helmetSpecialInformation.setSelectedProcedure(armor.helmetSpecialInformation);
 		bodySpecialInformation.setSelectedProcedure(armor.bodySpecialInformation);
 		leggingsSpecialInformation.setSelectedProcedure(armor.leggingsSpecialInformation);
 		bootsSpecialInformation.setSelectedProcedure(armor.bootsSpecialInformation);
 		enableHelmet.setSelected(armor.enableHelmet);
-		enableHelmet.setEnabled(!armor.isHorseArmor && armor.enableHelmet);
-		enableBody.setSelected(armor.enableBody);
+		enableBody.setSelected(armor.enableBody || armor.isHorseArmor);
 		enableLeggings.setSelected(armor.enableLeggings);
-		enableLeggings.setEnabled(!armor.isHorseArmor);
 		enableBoots.setSelected(armor.enableBoots);
-		enableBoots.setEnabled(!armor.isHorseArmor);
 		creativeTabs.setListElements(armor.creativeTabs);
-		textureHelmet.setEnabled(!armor.isHorseArmor && armor.enableHelmet);
-		textureBody.setEnabled(enableBody.isSelected());
+		textureHelmet.setEnabled(armor.enableHelmet);
+		textureBody.setEnabled(enableBody.isSelected() || armor.isHorseArmor);
 		textureLeggings.setEnabled(enableLeggings.isSelected());
 		textureBoots.setEnabled(enableBoots.isSelected());
 		helmetName.setText(armor.helmetName);
@@ -972,6 +963,34 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setText(armor.bootsName);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
+
+		if (armor.isHorseArmor) {
+			textureHelmet.setEnabled(false);
+			textureLeggings.setEnabled(false);
+			textureBoots.setEnabled(false);
+
+			enableHelmet.setSelected(false);
+			enableHelmet.setEnabled(false);
+			enableBody.setSelected(true);
+			enableBody.setSelected(true);
+			enableBody.setEnabled(false);
+			enableLeggings.setSelected(false);
+			enableLeggings.setEnabled(false);
+			enableBoots.setSelected(false);
+			enableBoots.setEnabled(false);
+
+			helmetName.setEnabled(false);
+			leggingsName.setEnabled(false);
+			bootsName.setEnabled(false);
+
+			damageValueHelmet.setEnabled(false);
+			damageValueLeggings.setEnabled(false);
+			damageValueBoots.setEnabled(false);
+
+			onHelmetTick.setEnabled(false);
+			onLeggingsTick.setEnabled(false);
+			onBootsTick.setEnabled(false);
+		}
 
 		Model _helmetModel = armor.getHelmetModel();
 		if (_helmetModel != null)
