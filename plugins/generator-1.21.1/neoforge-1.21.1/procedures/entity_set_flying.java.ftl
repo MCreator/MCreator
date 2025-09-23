@@ -2,5 +2,4 @@
 	_player.getAbilities().flying = ${input$condition};
 <@tail>
 	_player.onUpdateAbilities();
-}
-</@tail>
+}</@tail>
