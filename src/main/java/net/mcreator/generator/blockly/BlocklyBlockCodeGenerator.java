@@ -452,13 +452,7 @@ public class BlocklyBlockCodeGenerator {
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
 			// only apply previous tail and current head if the procedure block is procedural
 			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				if (!Objects.equals(master.getHeadSection(), sections.head().get()) || !Objects.equals(
-						master.getTailSection(), sections.tail().get())) {
-					master.append(master.getTailSection());
-					master.setTailSection(sections.tail().get());
-					master.setHeadSection(sections.head().get());
-					master.append(master.getHeadSection());
-				}
+				IBlockGeneratorWithSections.handleSections(master, sections);
 			}
 			master.append(code);
 		}
