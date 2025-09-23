@@ -430,21 +430,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if hasProcedure(data.onEntityFallsOn)>
-	@Override
-	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
-		super.fallOn(world, state, pos, entity, misc);
-		<@procedureCode data.onEntityFallsOn, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"entity": "entity",
-			"blockstate": "state"
-		}/>
-	}
-	</#if>
-
 	<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 	@Override public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 	    <#if data.isWaterloggable>
@@ -579,6 +564,8 @@ public class ${name}Block extends
 	<@onEntityCollides data.onEntityCollides/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onEntityFallsOn data.onEntityFallsOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 

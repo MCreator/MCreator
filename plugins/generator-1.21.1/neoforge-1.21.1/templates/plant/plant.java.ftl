@@ -206,21 +206,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
-	<#if hasProcedure(data.onEntityFallsOn)>
-	@Override
-	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
-		super.fallOn(world, state, pos, entity, misc);
-		<@procedureCode data.onEntityFallsOn, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"entity": "entity",
-			"blockstate": "state"
-		}/>
-	}
-	</#if>
-
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 		<#if data.plantType != "growapable">
 		@Override public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {
@@ -355,6 +340,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<@onBlockRightClicked data.onRightClicked/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onEntityFallsOn data.onEntityFallsOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
