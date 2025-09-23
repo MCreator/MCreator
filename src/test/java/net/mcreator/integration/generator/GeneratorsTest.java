@@ -180,6 +180,10 @@ import static org.junit.jupiter.api.Assertions.*;
 							generator + " - Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
 
+					// Verify JSON files
+					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
+							() -> verifyGeneratedJSON(workspace.get())));
+
 					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
 							== GeneratorFlavor.BaseLanguage.JAVA) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising imports",
@@ -207,10 +211,6 @@ import static org.junit.jupiter.api.Assertions.*;
 									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
 						}
 					}
-
-					// Verify JSON files
-					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
-							() -> verifyGeneratedJSON(workspace.get())));
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 						workspace.get().close();
