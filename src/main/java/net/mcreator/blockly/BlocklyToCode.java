@@ -202,7 +202,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 						try {
 							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
 							// because the following block cannot be part of the current head/tail sections
-							if (!(generator instanceof ProceduralBlockCodeGenerator)) {
+							if (!(generator instanceof IBlockGeneratorWithSections)) {
 								append(getTailSection());
 								clearSections();
 							}
