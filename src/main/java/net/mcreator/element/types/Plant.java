@@ -53,6 +53,8 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
+	public LogicProcedure isBouncyCondition;
+	public LogicProcedure preventsFallDamage;
 
 	public String plantType;
 
@@ -141,6 +143,7 @@ import java.util.stream.Collectors;
 	public Procedure onRightClicked;
 	public Procedure onEntityWalksOn;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	private Plant() {
 		this(null);

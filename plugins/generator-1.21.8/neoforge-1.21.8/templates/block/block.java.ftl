@@ -440,12 +440,14 @@ public class ${name}Block extends
 			}
 		</#if>
 
-		<#if hasProcedure(data.onEntityFallsOn)>
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			<@procedureOBJToCode data.onEntityFallsOn/>
-		</#if>
+		<@procedureCode data.onEntityFallsOn, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"entity": "entity",
+			"blockstate": "state"
+		}/>
 	}
 	</#if>
 
