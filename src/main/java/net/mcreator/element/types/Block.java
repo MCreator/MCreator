@@ -79,6 +79,7 @@ import java.util.stream.Collectors;
 
 	public String blockBase;
 	public String blockSetType;
+	public MItemBlock pottedPlant;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 
 	public String tintType;
@@ -109,6 +110,8 @@ import java.util.stream.Collectors;
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
+	public int xpAmountMin;
+	public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
@@ -270,7 +273,7 @@ import java.util.stream.Collectors;
 	}
 
 	public int renderType() {
-		if (blockBase != null && !blockBase.isEmpty())
+		if (blockBase != null && !blockBase.isEmpty() && !blockBase.equals("FlowerPot"))
 			return -1;
 		return renderType;
 	}
@@ -308,13 +311,14 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasDrops() {
-		return dropAmount > 0 && (hasBlockItem || hasCustomDrop());
+		return dropAmount > 0 && (hasBlockItem || hasCustomDrop() || "FlowerPot".equals(blockBase));
 	}
 
 	@Override public boolean isFullCube() {
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
-				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase))
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
+				|| "FlowerPot".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
