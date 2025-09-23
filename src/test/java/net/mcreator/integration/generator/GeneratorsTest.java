@@ -158,7 +158,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.ADVANCEMENT) != GeneratorStats.CoverageStatus.NONE)
-						tests.add(DynamicTest.dynamicTest(generator + " - Testing json trigger blocks",
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing JSON trigger blocks",
 								() -> GTJSONTriggersBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
