@@ -929,11 +929,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
-		JPanel advancedWithCondition = new JPanel();
-		advancedWithCondition.setLayout(new BoxLayout(advancedWithCondition, BoxLayout.Y_AXIS));
-		advancedWithCondition.add(advancedProperties);
-		advancedWithCondition.add(placingCondition);
-		advancedWithCondition.setOpaque(false);
+		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
