@@ -42,9 +42,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTJSONTriggersBlocks {
 
-	private static final List<String> PROCEDURAL_BLOCKS_TO_SKIP = List.of("player_effect_changed",
-			"item_enchanted"); // we skip those procedural blocks as they are tested via their specific output block
-
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER);
 
@@ -79,40 +76,12 @@ public class GTJSONTriggersBlocks {
 			Achievement advancement = TestWorkspaceDataProvider.getAdvancementExample(modElement, random, true, true,
 					Collections.emptyList(), 1);
 
-			if (triggerBlock.getType() == IBlockGenerator.BlockType.OUTPUT) {
-				switch (triggerBlock.getOutputType()) {
-				// Effect changed block is tested with the Effect entry output block
-				case "Effect" -> advancement.triggerxml = """
+			if (triggerBlock.getType() != IBlockGenerator.BlockType.OUTPUT) { // We skip output blocks as they are already tested with their specific procedural block
+				advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80">
-						<next><block type="player_effect_changed"><mutation xmlns="http://www.w3.org/1999/xhtml" inputs="1"></mutation>
-						<value name="effect0"><block type="effect_entry"><field name="effect">%s</field>
-						<value name="minAmplifier"><block type="math_number"><field name="NUM">0</field></block></value>
-						<value name="minDuration"><block type="math_number"><field name="NUM">20</field></block></value>
-						</block></value></block></next></block></xml>
-						""".formatted(
-						getRandomEntryName(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
-				// Item enchanted block is tested with the Enchantment entry output block
-				case "Enchantment" -> advancement.triggerxml = """
-						<xml xmlns="https://developers.google.com/blockly/xml">
-						<block type="advancement_trigger" deletable="false" x="40" y="80">
-						<next><block type="item_enchanted"><mutation xmlns="http://www.w3.org/1999/xhtml" inputs="1"></mutation>
-						<value name="item"><block type="mcitem_all"><field name="value">%s</field></block></value>
-						<value name="levelsSpent"><block type="math_number"><field name="NUM">1</field></block></value>
-						<value name="enchantment0"><block type="enchantment_entry"><field name="enchantment">%s</field>
-						<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
-						<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
-						</block></value></block></next></block></xml>
-						""".formatted(randomMCItem,
-						getRandomEntryName(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace())));
-				}
-			} else if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				// If the block is not a special case, we can test it as a regular block
-				if (!PROCEDURAL_BLOCKS_TO_SKIP.contains(triggerBlock.getMachineName())) {
-					advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-							+ testXML + "</next></block></xml>";
-				}
+						<next>%s</next></block></xml>
+						""".formatted(testXML);
 			}
 
 			try {
@@ -123,10 +92,6 @@ public class GTJSONTriggersBlocks {
 				fail("[" + generatorName + "] Failed generating procedure block: " + triggerBlock.getMachineName(), t);
 			}
 		}
-	}
-
-	private static String getRandomEntryName(Random random, List<DataListEntry> entries) {
-		return TestWorkspaceDataProvider.getRandomDataListEntry(random, entries).getName();
 	}
 
 }
