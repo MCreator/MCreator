@@ -1894,4 +1894,3 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 }
-
