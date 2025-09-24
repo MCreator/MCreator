@@ -755,7 +755,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				PanelUtils.pullElementUp(PanelUtils.column(bonemealMerger, flammabilityProperties)))));
 		pane5.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
+		JPanel events = new JPanel(new GridLayout(4, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClicked);
 		events.add(onBlockAdded);
@@ -770,6 +770,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events.add(onEntityWalksOn);
 		events.add(onHitByProjectile);
 		events.add(onEntityFallsOn);
+		events.add(new JEmptyBox());
+		events.add(new JEmptyBox());
+		events.add(new JEmptyBox());
 
 		JPanel spawning = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawning.setOpaque(false);

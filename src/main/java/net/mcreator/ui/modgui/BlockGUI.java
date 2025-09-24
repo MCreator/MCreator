@@ -982,7 +982,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
+		JPanel events = new JPanel(new GridLayout(4, 4, 5, 5));
 		events.setOpaque(false);
 
 		events.add(onRightClicked);
@@ -1000,6 +1000,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRedstoneOff);
 		events.add(onRandomUpdateEvent);
 		events.add(onEntityFallsOn);
+		events.add(new JEmptyBox());
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
