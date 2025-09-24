@@ -385,7 +385,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(helmetImmuneToFire);
 
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
-				L10N.label("elementgui.armor.can_fly")));
+				L10N.label("elementgui.armor.can_glide")));
 		helmetSubPanel.add(helmetCanFly);
 
 		JPanel helmetConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
@@ -440,7 +440,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySubPanel.add(bodyImmuneToFire);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
-				L10N.label("elementgui.armor.can_fly")));
+				L10N.label("elementgui.armor.can_glide")));
 		bodySubPanel.add(bodyCanFly);
 
 		JPanel bodyConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
@@ -489,7 +489,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
-				L10N.label("elementgui.armor.can_fly")));
+				L10N.label("elementgui.armor.can_glide")));
 		leggingsSubPanel.add(leggingsCanFly);
 
 		JPanel leggingsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
@@ -538,7 +538,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(bootsImmuneToFire);
 
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/can_fly"),
-				L10N.label("elementgui.armor.can_fly")));
+				L10N.label("elementgui.armor.can_glide")));
 		bootsSubPanel.add(bootsCanFly);
 
 		JPanel bootsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
