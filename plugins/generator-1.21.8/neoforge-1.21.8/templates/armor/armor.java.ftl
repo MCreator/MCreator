@@ -73,7 +73,7 @@ public abstract class ${name}Item extends Item {
 				.horseArmor(ARMOR_MATERIAL)
 				.durability(500)
 				.rarity(Rarity.RARE)
-				.fireResistant()));
+				<#if data.bodyImmuneToFire>.fireResistant()));</#if>
 	</#if>
 
 	private ${name}Item(Item.Properties properties) {
