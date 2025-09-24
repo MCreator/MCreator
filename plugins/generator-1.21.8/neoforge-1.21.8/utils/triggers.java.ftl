@@ -427,7 +427,7 @@
 		"world": "world",
 		"entity": "entity",
 		"blockstate": "state",
-		"double": "distance"
+		"distance": "distance"
 	}/>
 }
 </#if>
@@ -551,3 +551,4 @@
 }
 
 </#macro>
+
