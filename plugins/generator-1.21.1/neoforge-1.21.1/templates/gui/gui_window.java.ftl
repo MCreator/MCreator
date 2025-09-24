@@ -49,23 +49,23 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private boolean menuStateUpdateActive = false;
 
 	<#list textFields as component>
-	EditBox ${component.getName()};
+	private EditBox ${component.getName()};
 	</#list>
 
 	<#list checkboxes as component>
-	Checkbox ${component.getName()};
+	private Checkbox ${component.getName()};
 	</#list>
 
 	<#list buttons as component>
-	Button ${component.getName()};
+	private Button ${component.getName()};
 	</#list>
 
 	<#list imageButtons as component>
-	ImageButton ${component.getName()};
+	private ImageButton ${component.getName()};
 	</#list>
 
 	<#list sliders as component>
-	ExtendedSlider ${component.getName()};
+	private ExtendedSlider ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
