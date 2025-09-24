@@ -427,7 +427,8 @@
 		"z": "pos.getZ()",
 		"world": "world",
 		"entity": "entity",
-		"blockstate": "state"
+		"blockstate": "state",
+		"distance": "distance"
 	}/>
 }
 </#if>
@@ -549,4 +550,5 @@
 	}/>
 </#if>
 }
+
 </#macro>
