@@ -1206,4 +1206,3 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 }
-
