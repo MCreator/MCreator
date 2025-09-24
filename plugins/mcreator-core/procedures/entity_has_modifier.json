@@ -14,7 +14,7 @@
     {
       "type": "field_resourcelocation",
       "name": "name",
-      "text": "modifier_name"
+      "text": "name"
     }
   ],
   "inputsInline": true,

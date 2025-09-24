@@ -3,7 +3,7 @@
     {
       "type": "field_resourcelocation",
       "name": "name",
-      "text": "modifier_name"
+      "text": "name"
     },
     {
       "type": "field_data_list_selector",
