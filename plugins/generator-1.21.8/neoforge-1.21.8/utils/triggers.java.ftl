@@ -422,7 +422,8 @@
 @Override public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double distance) {
     <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)>
         <#if hasProcedure(data.fallDamageInduced)>
-            entity.causeFallDamage(distance, (<@procedureCode data.fallDamageInduced/>), world.damageSources().fall());
+			float damage = (float) <@procedureCode data.fallDamageInduced/>
+            entity.causeFallDamage(distance, damage, world.damageSources().fall());
         <#else>
             entity.causeFallDamage(distance, ${data.fallDamageInduced.getFixedValue()}F, world.damageSources().fall());
         </#if>

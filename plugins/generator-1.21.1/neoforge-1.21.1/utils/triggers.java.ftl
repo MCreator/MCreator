@@ -423,7 +423,8 @@
 @Override public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float distance) {
     <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)>
         <#if hasProcedure(data.fallDamageInduced)>
-            super.fallOn(world, state, pos, entity, distance * (<@procedureCode data.fallDamageInduced/>));
+			float damage = (float) <@procedureCode data.fallDamageInduced/>
+            super.fallOn(world, state, pos, entity, distance * damage);
         <#else>
             super.fallOn(world, state, pos, entity, distance * ${data.fallDamageInduced.getFixedValue()}F);
         </#if>
