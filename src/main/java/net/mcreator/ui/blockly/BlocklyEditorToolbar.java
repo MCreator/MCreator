@@ -140,9 +140,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 
-		JComponent component = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-		component.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
-		add(component);
+		JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
+		searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+		searchWrapper.setMaximumSize(
+				new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
+		add(searchWrapper);
 
 		for (var component1 : extraComponents) {
 			add(component1);
