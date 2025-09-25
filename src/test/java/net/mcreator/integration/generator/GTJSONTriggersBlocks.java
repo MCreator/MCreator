@@ -91,29 +91,25 @@ public class GTJSONTriggersBlocks {
 				// Effect providers are tested using effect changed procedure block
 				case "Effect" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
-						<block type="advancement_trigger" deletable="false" x="40" y="80">
-						<next><block type="player_effect_changed"><mutation xmlns="http://www.w3.org/1999/xhtml" inputs="1"></mutation>
-						<value name="effect0"><block type="effect_entry"><field name="effect">%s</field>
-						<value name="minAmplifier"><block type="math_number"><field name="NUM">0</field></block></value>
-						<value name="minDuration"><block type="math_number"><field name="NUM">20</field></block></value>
-						</block></value></block></next></block></xml>
-						""".formatted(TestWorkspaceDataProvider.getRandomItem(random,
-						ElementUtil.loadAllPotionEffects(modElement.getWorkspace())).getName());
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="player_effect_changed">
+							<mutation inputs="1"></mutation>
+							<value name="effect0">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
 				// Enchantment entries are tested using item enchanted procedure block
 				case "Enchantment" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
-						<block type="advancement_trigger" deletable="false" x="40" y="80">
-						<next><block type="item_enchanted"><mutation xmlns="http://www.w3.org/1999/xhtml" inputs="1"></mutation>
-						<value name="item"><block type="mcitem_all"><field name="value">%s</field></block></value>
-						<value name="levelsSpent"><block type="math_number"><field name="NUM">1</field></block></value>
-						<value name="enchantment0"><block type="enchantment_entry"><field name="enchantment">%s</field>
-						<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
-						<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
-						</block></value></block></next></block></xml>
-						""".formatted(TestWorkspaceDataProvider.getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName(),
-						TestWorkspaceDataProvider.getRandomItem(random,
-								ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName());
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="item_enchanted">
+							<mutation inputs="1"></mutation>
+							<value name="item"><block type="mcitem_all"><field name="value">Blocks.STONE</field></block></value>
+							<value name="levelsSpent"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
+							<value name="enchantment0">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
 				}
 			}
 
