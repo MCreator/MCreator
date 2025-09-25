@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
 	public String tintType;
 	public boolean isItemTinted;
 	public LogicProcedure isBouncyCondition;
-	public LogicProcedure preventsFallDamage;
+	public NumberProcedure fallDamageInduced;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;

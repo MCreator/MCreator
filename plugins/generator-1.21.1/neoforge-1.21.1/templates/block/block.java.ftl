@@ -423,35 +423,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if (data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())) || hasProcedure(data.onEntityFallsOn)>
-	@Override
-	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float misc) {
-
-		<#if data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())>
-			<#if hasProcedure(data.preventsFallDamage)>
-				if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
-			<#else>
-				if (${data.preventsFallDamage.getFixedValue()}) {
-			</#if>
-				if (entity.isSuppressingBounce()) {
-					super.fallOn(world, state, pos, entity, misc);
-				} else {
-					entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
-				}
-			}
-		</#if>
-		
-		<@procedureCode data.onEntityFallsOn, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"entity": "entity",
-			"blockstate": "state"
-		}/>
-	}
-	</#if>
-
 	<#if data.isBouncyCondition?? && (hasProcedure(data.isBouncyCondition) || data.isBouncyCondition.getFixedValue())>
 	@Override
 	public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
@@ -476,7 +447,7 @@ public class ${name}Block extends
 		</#if>
 			Vec3 vec3 = entity.getDeltaMovement();
 			if (vec3.y < 0.0) {
-				double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
+				double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
 				entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
 			}
 		}
@@ -624,6 +595,8 @@ public class ${name}Block extends
 	<@onEntityCollides data.onEntityCollides/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onEntityFallsOn data.onEntityFallsOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 

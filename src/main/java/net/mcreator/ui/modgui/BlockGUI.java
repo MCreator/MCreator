@@ -115,7 +115,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -204,7 +203,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private LogicProcedureSelector isBouncyCondition;
-	private LogicProcedureSelector preventsFallDamage;
+	private NumberProcedureSelector fallDamageInduced;
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -343,7 +342,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
 				L10N.t("elementgui.common.event_on_entity_falls_on"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/blockstate:blockstate"));
@@ -378,9 +377,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			L10N.t("elementgui.block.isbouncy"), AbstractProcedureSelector.Side.BOTH,
 			L10N.checkbox("elementgui.common.enable"), 0, Dependency.fromString("entity:entity")
 		);
-		preventsFallDamage = new LogicProcedureSelector(this.withEntry("block/prevents_fall_damage"), mcreator, 
-			L10N.t("elementgui.block.prevents_fall_damage"), AbstractProcedureSelector.Side.BOTH,
-			L10N.checkbox("elementgui.common.enable"), 0, Dependency.fromString(
+		fallDamageInduced = new NumberProcedureSelector(this.withEntry("common/fall_damage_induced"), mcreator, 
+			L10N.t("elementgui.common.fall_damage_induced"), AbstractProcedureSelector.Side.BOTH,
+			new JSpinner(new SpinnerNumberModel(1.0, 0.0, Float.MAX_VALUE, 0.01)),
+			130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate")
 		);
 
@@ -947,7 +947,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedWithCondition.setLayout(new BoxLayout(advancedWithCondition, BoxLayout.Y_AXIS));
 		advancedWithCondition.add(advancedProperties);
 		advancedWithCondition.add(isBouncyCondition);
-		advancedWithCondition.add(preventsFallDamage);
+		advancedWithCondition.add(fallDamageInduced);
 		advancedWithCondition.add(placingCondition);
 		advancedWithCondition.setOpaque(false);
 
@@ -1560,7 +1560,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		isBouncyCondition.refreshListKeepSelected();
-		preventsFallDamage.refreshListKeepSelected();
+		fallDamageInduced.refreshListKeepSelected();
 		additionalHarvestCondition.refreshListKeepSelected();
 		vibrationSensitivityRadius.refreshListKeepSelected();
 		canReceiveVibrationCondition.refreshListKeepSelected();
@@ -1710,7 +1710,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		slipperiness.setValue(block.slipperiness);
 		jumpFactor.setValue(block.jumpFactor);
 		isBouncyCondition.setSelectedProcedure(block.isBouncyCondition);
-		preventsFallDamage.setSelectedProcedure(block.preventsFallDamage);
+		fallDamageInduced.setSelectedProcedure(block.fallDamageInduced);
 		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
@@ -1880,7 +1880,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
 		block.isBouncyCondition = isBouncyCondition.getSelectedProcedure();
-		block.preventsFallDamage = preventsFallDamage.getSelectedProcedure();
+		block.fallDamageInduced = fallDamageInduced.getSelectedProcedure();
 
 		block.sensitiveToVibration = sensitiveToVibration.isSelected();
 		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();

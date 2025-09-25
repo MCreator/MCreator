@@ -424,33 +424,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if (data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())) || hasProcedure(data.onEntityFallsOn)>
-	@Override
-	public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double misc) {
-
-		<#if data.preventsFallDamage?? && (hasProcedure(data.preventsFallDamage) || data.preventsFallDamage.getFixedValue())>
-			<#if hasProcedure(data.preventsFallDamage)>
-				if (<@procedureOBJToConditionCode data.preventsFallDamage/>) {
-			<#else>
-				if (${data.preventsFallDamage.getFixedValue()}) {
-			</#if>
-				if (!entity.isSuppressingBounce()) {
-					entity.causeFallDamage(misc, 0.0F, world.damageSources().fall());
-				}
-			}
-		</#if>
-
-		<@procedureCode data.onEntityFallsOn, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"entity": "entity",
-			"blockstate": "state"
-		}/>
-	}
-	</#if>
-
 	<#if data.isBouncyCondition?? && (hasProcedure(data.isBouncyCondition) || data.isBouncyCondition.getFixedValue())>
 	@Override
 	public void updateEntityMovementAfterFallOn(BlockGetter block, Entity entity) {
@@ -622,6 +595,8 @@ public class ${name}Block extends
 	<@onEntityCollides data.onEntityCollides/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onEntityFallsOn data.onEntityFallsOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 

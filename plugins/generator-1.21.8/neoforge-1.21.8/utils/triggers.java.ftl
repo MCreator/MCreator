@@ -416,6 +416,32 @@
 </#if>
 </#macro>
 
+<#macro onEntityFallsOn procedure="">
+<#if (data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() > 0)) 
+   || hasProcedure(data.onEntityFallsOn)>
+@Override public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double distance) {
+    <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() > 0)>
+        <#if hasProcedure(data.fallDamageInduced)>
+            entity.causeFallDamage(distance, (<@procedureCode data.fallDamageInduced/>), world.damageSources().fall());
+        <#else>
+            entity.causeFallDamage(distance, ${data.fallDamageInduced.getFixedValue()}F, world.damageSources().fall());
+        </#if>
+    </#if>
+    <#if hasProcedure(data.onEntityFallsOn)>
+        <@procedureCode data.onEntityFallsOn, {
+            "x": "pos.getX()",
+            "y": "pos.getY()",
+            "z": "pos.getZ()",
+            "world": "world",
+            "entity": "entity",
+            "blockstate": "state",
+            "distance": "distance"
+        }/>
+    </#if>
+}
+</#if>
+</#macro>
+
 <#macro onBlockPlacedBy procedure="">
 <#if hasProcedure(procedure)>
 @Override public void setPlacedBy(Level world, BlockPos pos, BlockState blockstate, LivingEntity entity, ItemStack itemstack) {

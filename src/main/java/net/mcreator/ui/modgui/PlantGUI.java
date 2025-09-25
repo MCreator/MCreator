@@ -253,7 +253,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
 				L10N.t("elementgui.common.event_on_entity_falls_on"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
@@ -1026,7 +1026,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBlockPlacedBy.setSelectedProcedure(plant.onBlockPlacedBy);
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
-		onEntityFallsOn.setSelectedProcedure(block.onEntityFallsOn);
+		onEntityFallsOn.setSelectedProcedure(plant.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		specialInformation.setSelectedProcedure(plant.specialInformation);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
@@ -1140,7 +1140,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onBlockPlacedBy = onBlockPlacedBy.getSelectedProcedure();
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
-		block.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
+		plant.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		plant.specialInformation = specialInformation.getSelectedProcedure();
 		plant.generateFeature = generateFeature.isSelected();
