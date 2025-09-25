@@ -86,10 +86,14 @@ import net.minecraft.client.model.Model;
 			</#if>
 
 			@Override public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation _default) {
-				<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-				return ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+				<#if !(data.isHorseArmor!false)>
+					<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+					return ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+					<#else>
+					return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
+					</#if>
 				<#else>
-				return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
+					return ResourceLocation.parse("${modid}:textures/entity/horse/armor/${data.armorTextureFile}.png");
 				</#if>
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());

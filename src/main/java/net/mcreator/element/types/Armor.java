@@ -66,6 +66,7 @@ import java.util.stream.Collectors;
 
 	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
+	@TextureReference(value = TextureType.HORSE_ARMOR, files = { "horse_armor_%s" }) public String horseArmorTextureFile;
 
 	public String helmetName;
 	public String bodyName;

@@ -46,6 +46,7 @@ effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+horsearmor_textures_dir: "@MODASSETSROOT/textures/entity/horse/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources

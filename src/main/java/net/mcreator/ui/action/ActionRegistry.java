@@ -123,6 +123,7 @@ public class ActionRegistry {
 	public final BasicAction importParticleTexture;
 	public final BasicAction importScreenTexture;
 	public final BasicAction importArmorTexture;
+	public final BasicAction importHorseArmorTexture;
 	public final BasicAction importOtherTexture;
 	public final BasicAction importSound;
 	public final BasicAction importStructure;
@@ -257,6 +258,10 @@ public class ActionRegistry {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.reloadWorkspaceTabContents();
 		}, TextureType.ARMOR).setIcon(UIRES.get("16px.importarmor"));
+		this.importHorseArmorTexture = new TextureAction(this, L10N.t("action.import.horse_armor_texture"), actionEvent -> {
+			TextureImportDialogs.importHorseArmor(mcreator);
+			mcreator.reloadWorkspaceTabContents();
+		}, TextureType.HORSE_ARMOR).setIcon(UIRES.get("16px.importarmor"));
 		this.importOtherTexture = new TextureImportAction(this, L10N.t("action.import_other_texture"),
 				TextureType.OTHER).setIcon(UIRES.get("16px.importtexture"));
 		this.importSound = new SoundImportAction(this);

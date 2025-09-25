@@ -121,6 +121,17 @@ public final class WorkspaceFolderManager {
 		return new File(getTexturesFolder(section), textureIdentifier + ".png");
 	}
 
+	public String getHorseArmorTexturesPath() {
+		File workspaceFolder = getWorkspaceFolder();
+		String workspaceName = workspaceFolder.getName();
+		return workspaceFolder + "\\src\\main\\resources\\assets\\" + workspaceName + "\\textures\\entity\\horse\\armor";
+	}
+
+	public void buildHorseArmorTexturesDirs() {
+		File horseArmorDir = new File(getHorseArmorTexturesPath());
+		horseArmorDir.mkdirs();
+	}
+
 	public List<String> getStructureList() {
 		List<String> structures = new ArrayList<>();
 		File structuresDir = getStructuresDir();
@@ -136,6 +147,10 @@ public final class WorkspaceFolderManager {
 	public File[] getArmorTextureFilesForName(String armorTextureName) {
 		return new File[] { new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_1.png"),
 				new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_2.png") };
+	}
+
+	public File[] getHorseArmorTextureFilesForName(String armorTextureName) {
+		return new File[] { new File(getHorseArmorTexturesPath(), "horse_armor_" + armorTextureName + ".png") };
 	}
 
 	/**
