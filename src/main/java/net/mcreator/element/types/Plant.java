@@ -24,7 +24,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.parts.procedure.LogicProcedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
@@ -54,8 +54,8 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public LogicProcedure blockBounciness;
-	public LogicProcedure preventsFallDamage;
+	public NumberProcedure blockBounciness;
+	public NumberProcedure preventsFallDamage;
 
 	public String plantType;
 

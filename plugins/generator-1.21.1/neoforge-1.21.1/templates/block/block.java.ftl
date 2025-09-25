@@ -423,33 +423,26 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.isBouncyCondition?? && (hasProcedure(data.isBouncyCondition) || data.isBouncyCondition.getFixedValue())>
+	<#if data.blockBounciness?? && (hasProcedure(data.blockBounciness) || data.blockBounciness.getFixedValue() > 0)>
 	@Override
 	public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
-		<#if hasProcedure(data.isBouncyCondition)>
-			if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
-		<#else>
-			if (${data.isBouncyCondition.getFixedValue()}) {
-		</#if>
-			if (entity.isSuppressingBounce()) {
-				super.updateEntityAfterFallOn(block, entity);
-			} else {
-				this.bounceUp(entity);
-			}
+		if (entity.isSuppressingBounce()) {
+			super.updateEntityAfterFallOn(block, entity);
+		} else {
+			this.bounceUp(entity);
 		}
 	}
 
 	private void bounceUp(Entity entity) {
-		<#if hasProcedure(data.isBouncyCondition)>
-			if (<@procedureOBJToConditionCode data.isBouncyCondition/>) {
-		<#else>
-			if (${data.isBouncyCondition.getFixedValue()}) {
-		</#if>
-			Vec3 vec3 = entity.getDeltaMovement();
-			if (vec3.y < 0.0) {
-				double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
-				entity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
-			}
+		Vec3 vec3 = entity.getDeltaMovement();
+		if (vec3.y < 0.0) {
+			double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
+			<#if hasProcedure(data.blockBounciness)>
+				float restitution = (float) <@procedureCode data.blockBounciness/>
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * restitution, vec3.z);
+			<#else>
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * ${data.blockBounciness.getFixedValue()}F, vec3.z);
+			</#if>
 		}
 	}
 	</#if>
