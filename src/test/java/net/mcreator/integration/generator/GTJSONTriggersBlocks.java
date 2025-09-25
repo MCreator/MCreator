@@ -79,9 +79,16 @@ public class GTJSONTriggersBlocks {
 			Achievement advancement = TestWorkspaceDataProvider.getAdvancementExample(modElement, random, true, true,
 					Collections.emptyList(), 1);
 
-			if (triggerBlock.getType() == IBlockGenerator.BlockType.OUTPUT) {
+			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
+				// If the block is not a special case, we can test it as a regular block
+				if (!PROCEDURAL_BLOCKS_TO_SKIP.contains(triggerBlock.getMachineName())) {
+					advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+							+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
+							+ testXML + "</next></block></xml>";
+				}
+			} else {
 				switch (triggerBlock.getOutputType()) {
-				// Effect changed block is tested with the Effect entry output block
+				// Effect providers are tested using effect changed procedure block
 				case "Effect" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80">
@@ -92,7 +99,7 @@ public class GTJSONTriggersBlocks {
 						</block></value></block></next></block></xml>
 						""".formatted(
 						getRandomEntryName(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
-				// Item enchanted block is tested with the Enchantment entry output block
+				// Enchantment entries are tested using item enchanted procedure block
 				case "Enchantment" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80">
@@ -105,13 +112,6 @@ public class GTJSONTriggersBlocks {
 						</block></value></block></next></block></xml>
 						""".formatted(randomMCItem,
 						getRandomEntryName(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace())));
-				}
-			} else if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				// If the block is not a special case, we can test it as a regular block
-				if (!PROCEDURAL_BLOCKS_TO_SKIP.contains(triggerBlock.getMachineName())) {
-					advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-							+ testXML + "</next></block></xml>";
 				}
 			}
 
