@@ -5,6 +5,7 @@
         <option name="USE_TAB_CHARACTER" value="true" />
       </value>
     </option>
+    <option name="LINE_SEPARATOR" value="&#13;&#10;" />
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
     <codeStyleSettings language="JAVA">
       <option name="KEEP_LINE_BREAKS" value="false" />
