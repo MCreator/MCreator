@@ -2088,6 +2088,8 @@ public class TestWorkspaceDataProvider {
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
+		block.blockBounciness = new NumberProcedure(emptyLists ? null : "number1", 0);
+		block.fallDamageInduced = new NumberProcedure(emptyLists ? null : "number1", 1);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
