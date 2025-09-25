@@ -146,8 +146,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
 		add(searchWrapper);
 
-		for (var component1 : extraComponents) {
-			add(component1);
+		for (var component : extraComponents) {
+			add(component);
 		}
 
 		add(Box.createHorizontalGlue());
