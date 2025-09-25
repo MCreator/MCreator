@@ -231,10 +231,6 @@ public class ElementUtil {
 		return animations;
 	}
 
-	public static List<DataListEntry> loadSuggestionProviders() {
-		return DataListLoader.loadDataList("suggestionproviders");
-	}
-
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
