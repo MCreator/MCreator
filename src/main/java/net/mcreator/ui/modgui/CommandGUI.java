@@ -126,8 +126,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		page1group.addValidationElement(commandName);
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
-				ComponentUtils.applyPadding(args, 10, true, true, true, true))).validate(page1group).lazyValidate(
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel), args)).validate(
+				page1group).lazyValidate(
 				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
 						message -> message.replace("Command", "Command arguments")));
 
