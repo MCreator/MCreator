@@ -9,7 +9,7 @@
     "toolbox_id": "entities",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
-      "<value name=\"effect0\"><block type=\"effect_entry\"><value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value><value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value></block></value>"
+      "<value name=\"effect0\"><block type=\"effect_entry\"><field name=\"effect\"></field><value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value><value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value></block></value>"
     ],
     "repeating_inputs": [
       "effect"

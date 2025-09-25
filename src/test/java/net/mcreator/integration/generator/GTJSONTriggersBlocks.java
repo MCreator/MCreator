@@ -32,7 +32,6 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -40,9 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTJSONTriggersBlocks {
-
-	private static final List<String> PROCEDURAL_BLOCKS_TO_SKIP = List.of("player_effect_changed",
-			"item_enchanted"); // we skip those procedural blocks as they are tested via their specific output block
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER);
@@ -65,12 +61,20 @@ public class GTJSONTriggersBlocks {
 
 			String testXML = triggerBlock.getToolboxTestXML();
 
-			// Set block selectors to some value
-			String randomMCItem = TestWorkspaceDataProvider.getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName();
+			// Set selectors to some value
 
-			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_allblocks\"><field name=\"value\">" + randomMCItem + "</field></block>");
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
+							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
+							+ "</field></block>");
+
+			testXML = testXML.replace("<field name=\"effect\"></field>",
+					"<field name=\"effect\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllPotionEffects(modElement.getWorkspace())).getName() + "</field>");
+
+			testXML = testXML.replace("<field name=\"enchantment\"></field>",
+					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName() + "</field>");
 
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
@@ -79,12 +83,9 @@ public class GTJSONTriggersBlocks {
 					Collections.emptyList(), 1);
 
 			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				// If the block is not a special case, we can test it as a regular block
-				if (!PROCEDURAL_BLOCKS_TO_SKIP.contains(triggerBlock.getMachineName())) {
-					advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-							+ testXML + "</next></block></xml>";
-				}
+				advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+						+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>" + testXML
+						+ "</next></block></xml>";
 			} else {
 				switch (triggerBlock.getOutputType()) {
 				// Effect providers are tested using effect changed procedure block
@@ -109,8 +110,10 @@ public class GTJSONTriggersBlocks {
 						<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
 						<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
 						</block></value></block></next></block></xml>
-						""".formatted(randomMCItem, TestWorkspaceDataProvider.getRandomItem(random,
-						ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName());
+						""".formatted(TestWorkspaceDataProvider.getRandomMCItem(random,
+								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName(),
+						TestWorkspaceDataProvider.getRandomItem(random,
+								ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName());
 				}
 			}
 
