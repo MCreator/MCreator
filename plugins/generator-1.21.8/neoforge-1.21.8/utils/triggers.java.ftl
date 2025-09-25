@@ -417,10 +417,10 @@
 </#macro>
 
 <#macro onEntityFallsOn procedure="">
-<#if (data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() > 0)) 
+<#if (data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)) 
    || hasProcedure(data.onEntityFallsOn)>
 @Override public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, double distance) {
-    <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() > 0)>
+    <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)>
         <#if hasProcedure(data.fallDamageInduced)>
             entity.causeFallDamage(distance, (<@procedureCode data.fallDamageInduced/>), world.damageSources().fall());
         <#else>
