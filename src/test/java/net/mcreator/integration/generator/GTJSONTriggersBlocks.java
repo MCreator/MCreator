@@ -25,7 +25,6 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
@@ -97,8 +96,8 @@ public class GTJSONTriggersBlocks {
 						<value name="minAmplifier"><block type="math_number"><field name="NUM">0</field></block></value>
 						<value name="minDuration"><block type="math_number"><field name="NUM">20</field></block></value>
 						</block></value></block></next></block></xml>
-						""".formatted(
-						getRandomEntryName(random, ElementUtil.loadAllPotionEffects(modElement.getWorkspace())));
+						""".formatted(TestWorkspaceDataProvider.getRandomItem(random,
+						ElementUtil.loadAllPotionEffects(modElement.getWorkspace())).getName());
 				// Enchantment entries are tested using item enchanted procedure block
 				case "Enchantment" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
@@ -110,8 +109,8 @@ public class GTJSONTriggersBlocks {
 						<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
 						<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
 						</block></value></block></next></block></xml>
-						""".formatted(randomMCItem,
-						getRandomEntryName(random, ElementUtil.loadAllEnchantments(modElement.getWorkspace())));
+						""".formatted(randomMCItem, TestWorkspaceDataProvider.getRandomItem(random,
+						ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName());
 				}
 			}
 
@@ -123,10 +122,6 @@ public class GTJSONTriggersBlocks {
 				fail("[" + generatorName + "] Failed generating procedure block: " + triggerBlock.getMachineName(), t);
 			}
 		}
-	}
-
-	private static String getRandomEntryName(Random random, List<DataListEntry> entries) {
-		return TestWorkspaceDataProvider.getRandomDataListEntry(random, entries).getName();
 	}
 
 }
