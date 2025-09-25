@@ -61,12 +61,12 @@ public class GTJSONTriggersBlocks {
 
 			String testXML = triggerBlock.getToolboxTestXML();
 
-			// Set block selectors to some value
-			String randomMCItem = TestWorkspaceDataProvider.getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName();
+			// Set selectors to some value
 
-			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_allblocks\"><field name=\"value\">" + randomMCItem + "</field></block>");
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
+							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
+							+ "</field></block>");
 
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
