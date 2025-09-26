@@ -34,21 +34,24 @@ import net.minecraft.nbt.Tag;
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 	@SubscribeEvent public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player)
-			player.getData(PLAYER_VARIABLES).syncPlayerVariables(event.getEntity());
+			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
 	}
 
 	@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player)
-			player.getData(PLAYER_VARIABLES).syncPlayerVariables(event.getEntity());
+			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
 	}
 
 	@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player)
-			player.getData(PLAYER_VARIABLES).syncPlayerVariables(event.getEntity());
+			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
 	}
 
-	@SubscribeEvent public static void onPlayerTickUpdate(TODO) {
-		TODO: sync if dirty and then mark as clean
+	@SubscribeEvent public static void onPlayerTickUpdateSyncPlayerVariables(PlayerTickEvent.Post event) {
+		if (event.getEntity() instanceof ServerPlayer player && player.getData(PLAYER_VARIABLES).syncDirty) {
+			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
+			player.getData(PLAYER_VARIABLES).syncDirty = false;
+		}
 	}
 
 	@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
@@ -246,7 +249,7 @@ import net.minecraft.nbt.Tag;
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 	public static class PlayerVariables implements INBTSerializable<CompoundTag> {
 
-		private boolean syncDirty = false;
+		boolean syncDirty = false;
 
 		<#list variables as var>
 			<#if var.getScope().name() == "PLAYER_LIFETIME">
@@ -280,10 +283,6 @@ import net.minecraft.nbt.Tag;
 
 		public void markSyncDirty() {
 			syncDirty = true;
-		}
-
-		void clearSyncDirty() {
-			syncDirty = false;
 		}
 
 	}
