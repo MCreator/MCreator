@@ -92,6 +92,22 @@ import net.minecraft.nbt.Tag;
 				PacketDistributor.sendToPlayer(player, new SavedDataSyncMessage(1, worlddata));
 		}
 	}
+
+	@SubscribeEvent public static void onWorldTick(LevelTickEvent.Post event) {
+		if (event.getLevel() instanceof ServerLevel level) {
+			WorldVariables worldVariables = WorldVariables.get(level);
+			if (worldVariables._syncDirty) {
+				PacketDistributor.sendToPlayersInDimension(level, new SavedDataSyncMessage(1, worldVariables));
+				worldVariables._syncDirty = false;
+			}
+
+			MapVariables mapVariables = MapVariables.get(level);
+			if (mapVariables._syncDirty) {
+				PacketDistributor.sendToAllPlayers(new SavedDataSyncMessage(0, mapVariables));
+				mapVariables._syncDirty = false;
+			}
+		}
+	}
 	</#if>
 
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
@@ -107,6 +123,8 @@ import net.minecraft.nbt.Tag;
 				instance -> instance.save(new CompoundTag(), ctx.levelOrThrow().registryAccess())
 			)
 		);
+
+		boolean _syncDirty = false;
 
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_WORLD">
@@ -131,11 +149,9 @@ import net.minecraft.nbt.Tag;
 			return nbt;
 		}
 
-		public void syncData(LevelAccessor world) {
+		public void markSyncDirty() {
 			this.setDirty();
-
-			if (world instanceof ServerLevel level)
-				PacketDistributor.sendToPlayersInDimension(level, new SavedDataSyncMessage(1, this));
+			this._syncDirty = true;
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
@@ -163,6 +179,8 @@ import net.minecraft.nbt.Tag;
 			)
 		);
 
+		boolean _syncDirty = false;
+
 		<#list variables as var>
 			<#if var.getScope().name() == "GLOBAL_MAP">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['init']?interpret/>
@@ -186,11 +204,9 @@ import net.minecraft.nbt.Tag;
 			return nbt;
 		}
 
-		public void syncData(LevelAccessor world) {
+		public void markSyncDirty() {
 			this.setDirty();
-
-			if (world instanceof Level && !world.isClientSide())
-				PacketDistributor.sendToAllPlayers(new SavedDataSyncMessage(0, this));
+			this._syncDirty = true;
 		}
 
 		static MapVariables clientSide = new MapVariables();
