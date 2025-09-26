@@ -54,8 +54,11 @@ import net.minecraft.nbt.Tag;
 		}
 	}
 
-	@SubscribeEvent public static void onPlayerTickUpdate(TODO) {
-		TODO: sync if dirty and then mark as clean
+	@SubscribeEvent public static void onPlayerTickUpdateSyncPlayerVariables(PlayerTickEvent.Post event) {
+		if (event.getEntity() instanceof ServerPlayer player && player.getData(PLAYER_VARIABLES).syncDirty) {
+			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
+			player.getData(PLAYER_VARIABLES).syncDirty = false;
+		}
 	}
 
 	@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
@@ -309,7 +312,6 @@ import net.minecraft.nbt.Tag;
 		public void markSyncDirty() {
 			_syncDirty = true;
 		}
-
 	}
 
 	public record PlayerVariablesSyncMessage(PlayerVariables data) implements CustomPacketPayload {
