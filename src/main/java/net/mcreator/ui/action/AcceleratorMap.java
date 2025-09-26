@@ -86,6 +86,7 @@ public class AcceleratorMap {
 
 		actionKeyStrokeMap.put(actionRegistry.closeCurrentTab, KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
 		actionKeyStrokeMap.put(actionRegistry.closeAllTabs, KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0));
+		actionKeyStrokeMap.put(actionRegistry.support, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		//Image Editor accelerators
 		actionKeyStrokeMap.put(actionRegistry.imageEditorUndo,

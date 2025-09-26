@@ -19,8 +19,8 @@
 
 package net.mcreator.ui.variants.modmaker;
 
-import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.gradle.GradleResultCode;
+import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.MainMenuBar;

@@ -258,6 +258,23 @@
 </#if>
 </#macro>
 
+<#macro onItemEntityDestroyed procedure="">
+<#if hasProcedure(procedure)>
+@Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
+	super.onDestroyed(entity, damagesource);
+	<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "entity.level()",
+		"entity": "entity",
+		"itemstack": "entity.getItem()",
+		"damagesource": "damagesource"
+	}/>
+}
+</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
@@ -395,6 +412,23 @@
 		"world": "world",
 		"entity": "entity",
 		"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onEntityFallsOn procedure="">
+<#if hasProcedure(data.onEntityFallsOn)>
+@Override public void fallOn(Level world, BlockState blockstate, BlockPos pos, Entity entity, float distance) {
+	super.fallOn(world, blockstate, pos, entity, distance);
+	<@procedureCode data.onEntityFallsOn, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate",
+		"distance": "distance"
 	}/>
 }
 </#if>

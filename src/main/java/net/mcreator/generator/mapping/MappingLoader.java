@@ -23,7 +23,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.TestUtil;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
@@ -47,8 +47,6 @@ public class MappingLoader {
 					Pattern.compile(".*\\.yaml$")));
 		}
 
-		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
-
 		for (String mappingResource : fileNames) {
 			String mappingName = mappingResource.split("mappings/")[1].replace(".yaml", "");
 
@@ -58,8 +56,8 @@ public class MappingLoader {
 					String config = FileIO.readResourceToString(resource);
 
 					try {
-						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
-								new LinkedHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config)));
+						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(new LinkedHashMap<>(
+								(Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)));
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))

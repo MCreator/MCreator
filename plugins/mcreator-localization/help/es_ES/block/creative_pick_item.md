@@ -1,0 +1,1 @@
+Esto determina qué elemento se selecciona cuando "escoges" (con el 'Middle-Click' del ratón) el bloque. Si está vacío, el elemento a escoger es el propio bloque.

@@ -172,6 +172,10 @@ public class ExternalBlockLoader {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
 				if (categoryCode.contains("<block type=") || categoryCode.contains("<category name="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
+			} else if (BlocklyLoader.getBuiltinCategories()
+					.contains(category.parent_category)) { // parent is built-in category
+				String categoryXML = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
+				toolbox.get(category.parent_category).add(new Tuple<>(null, categoryXML));
 			}
 		}
 	}

@@ -144,6 +144,23 @@ public class ElementUtil {
 	}
 
 	/**
+	 * Loads all blocks with an item form, without those that are wildcard elements to subtypes
+	 * (wood: oak wood, cherry wood, ...), so only oak wood, cherry wood, ... are loaded, without wildcard wood element
+	 *
+	 * @return All Blocks from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksWithItemForm(Workspace workspace) {
+		List<MCItem> elements = new ArrayList<>();
+		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		elements.sort(MCItem.getComparator(workspace, elements)); // sort custom elements
+		elements.addAll(
+				DataListLoader.loadDataList("blocksitems").stream().map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes)
+						.toList());
+		return elements.stream().filter(typeMatches("block")).filter(e -> e.isSupportedInWorkspace(workspace))
+				.collect(Collectors.toList());
+	}
+
+	/**
 	 * Loads all mod elements and all Minecraft blocks, including those that
 	 * are wildcard elements to subtypes (wood: oak wood, cherry wood, ...)
 	 *

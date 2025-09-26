@@ -38,6 +38,10 @@ public class Plugin implements Comparable<Plugin> {
 	@Nullable transient String loaded_failure = null; // indicates if plugin was fully loaded without any errors
 
 	String id;
+
+	/**
+	 * Higher weight means the plugin will load earlier and its files will override files from plugins with lower weight
+	 */
 	private int weight = 0;
 
 	@Nullable private List<Long> supportedversions;
