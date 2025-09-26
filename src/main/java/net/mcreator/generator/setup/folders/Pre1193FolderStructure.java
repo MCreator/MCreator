@@ -45,7 +45,7 @@ class Pre1193FolderStructure extends AbstractFolderStructure {
 			case BLOCK -> "/textures/blocks";
 			case ITEM -> "/textures/items";
 			case ARMOR -> "/textures/models/armor";
-			case HORSE_ARMOR -> "/textires/entity/hose/armor";
+			case HORSE_ARMOR -> "/textures/entity/hose/armor";
 			case OTHER -> "/textures";
 			// The types below may not exist on older generators with shared folder for all but block, item and armor,
 			// but this will be taken care of by converters from other texture type section

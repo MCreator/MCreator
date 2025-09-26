@@ -126,7 +126,9 @@ public class TextureImportDialogs {
 		JButton p1 = new JButton("...");
 
 		dialogContent.add(L10N.label("dialog.textures_import.horsearmor_text"));
-		dialogContent.add(L10N.label("dialog.textures_import.horsearmor_note"));
+		JLabel horseArmorNote = new JLabel("<html>" + L10N.t("dialog.textures_import.horsearmor_note") + "</html>");
+		horseArmorNote.setPreferredSize(new Dimension(300, 35));
+		dialogContent.add(horseArmorNote);
 		dialogContent.add(p1);
 
 		p1.addActionListener(event -> {
@@ -139,7 +141,7 @@ public class TextureImportDialogs {
 		});
 
 		int ret = JOptionPane.showConfirmDialog(mcreator, dialogContent,
-				L10N.t("dialog.textures_import.import_horse_armor_texture"), JOptionPane.OK_CANCEL_OPTION,
+				L10N.t("dialog.textures_import.horsearmor"), JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null);
 		if (ret == JOptionPane.OK_OPTION)
 			if (f1.get() == null) {

@@ -49,7 +49,7 @@ class Pre1210FolderStructure extends AbstractFolderStructure {
 			case ITEM -> "/textures/item";
 			case ENTITY -> "/textures/entities";
 			case ARMOR -> "/textures/models/armor";
-			case HORSE_ARMOR -> "/textires/entity/hose/armor";
+			case HORSE_ARMOR -> "/textures/entity/hose/armor";
 			case OTHER -> "/textures";
 			case EFFECT -> "/textures/mob_effect";
 			case PARTICLE -> "/textures/particle";
