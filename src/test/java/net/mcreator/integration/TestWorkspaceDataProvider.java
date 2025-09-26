@@ -1128,6 +1128,8 @@ public class TestWorkspaceDataProvider {
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocks).getName());
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
