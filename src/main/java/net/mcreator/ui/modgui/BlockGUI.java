@@ -54,6 +54,7 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -231,8 +232,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final Model grassBlock = new Model.BuiltInModel("Grass block");
+	private final Model pottedPlantModel = new Model.BuiltInModel("Potted plant");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
-			new Model[] { normal, singleTexture, cross, crop, grassBlock });
+			new Model[] { normal, singleTexture, cross, crop, grassBlock, pottedPlantModel });
 
 	private JBlockPropertiesStatesList blockStates;
 	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
@@ -262,7 +264,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
@@ -272,7 +274,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			Map.entry("IRON", "elementgui.block.block_set_type.iron")
 			//@formatter:on
 	);
+	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private JComponent blockSetTypePanel;
+	private JComponent flowerPotPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -426,6 +430,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
+			flowerPotPanel.setVisible(false);
+			// Re-enable block item if user switches from flower pot to any other block base option
+			if (!isEditingMode() && !hasBlockItem.isSelected()) {
+				hasBlockItem.setSelected(true);
+				updateBlockItemSettings();
+			}
 
 			if (hasBlockBase) {
 				rotationMode.setSelectedIndex(0);
@@ -493,6 +503,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
+				case "FlowerPot" -> {
+					flowerPotPanel.setVisible(true);
+					renderType.setEnabled(true);
+					if (!isEditingMode()) {
+						renderType.setSelectedItem(pottedPlantModel);
+						hasBlockItem.setSelected(false);
+						updateBlockItemSettings();
+						lightOpacity.setValue(0);
+						hasTransparency.setSelected(true);
+						transparencyType.setSelectedItem("CUTOUT");
+						hardness.setValue(0d);
+						resistance.setValue(0d);
+						soundOnStep.setSelectedItem("STONE");
+						reactionToPushing.setSelectedItem("DESTROY");
+					}
+				}
 				default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
@@ -547,7 +573,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
+		txblock4.add(flowerPotPanel = PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
+						L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)));
+
 		blockSetTypePanel.setVisible(false);
+		flowerPotPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -1300,6 +1331,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				if (!isEditingMode() && selected.equals(grassBlock)) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
+				} else if (!isEditingMode() && selected.equals(pottedPlantModel)) {
+					transparencyType.setSelectedItem("CUTOUT");
 				}
 			}
 		});
@@ -1324,6 +1357,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
+		page1group.addValidationElement(pottedPlant);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
 			Model model = renderType.getSelectedItem();
@@ -1332,6 +1366,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
 		name.enableRealtimeValidation();
+
+		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
+			@Override public ValidationResult validate() {
+				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
+					return Validator.ValidationResult.PASSED;
+				return super.validate();
+			}
+		});
 
 		page3group.addValidationElement(name);
 
@@ -1543,7 +1585,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		animations.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
-				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
+				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock, pottedPlantModel),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 								.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
@@ -1643,6 +1685,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
+		pottedPlant.setBlock(block.pottedPlant);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1859,6 +1902,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
+		block.pottedPlant = pottedPlant.getBlock();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
@@ -1876,6 +1920,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.renderType = 13;
 		else if (model.equals(grassBlock))
 			block.renderType = 14;
+		else if (model.equals(pottedPlantModel))
+			block.renderType = "No tint".equals(tintType.getSelectedItem()) ? 15 : 150;
 		block.customModelName = model.getReadableName();
 
 		return block;
