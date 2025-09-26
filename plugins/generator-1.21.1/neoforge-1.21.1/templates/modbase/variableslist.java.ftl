@@ -47,6 +47,10 @@ import net.minecraft.nbt.Tag;
 			player.getData(PLAYER_VARIABLES).syncPlayerVariables(event.getEntity());
 	}
 
+	@SubscribeEvent public static void onPlayerTickUpdate(TODO) {
+		TODO: sync if dirty and then mark as clean
+	}
+
 	@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
 		PlayerVariables original = event.getOriginal().getData(PLAYER_VARIABLES);
 		PlayerVariables clone = new PlayerVariables();
@@ -242,6 +246,8 @@ import net.minecraft.nbt.Tag;
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 	public static class PlayerVariables implements INBTSerializable<CompoundTag> {
 
+		private boolean syncDirty = false;
+
 		<#list variables as var>
 			<#if var.getScope().name() == "PLAYER_LIFETIME">
 				<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['init']?interpret/>
@@ -272,9 +278,12 @@ import net.minecraft.nbt.Tag;
 			</#list>
 		}
 
-		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayer serverPlayer)
-				PacketDistributor.sendToPlayer(serverPlayer, new PlayerVariablesSyncMessage(this));
+		public void markSyncDirty() {
+			syncDirty = true;
+		}
+
+		void clearSyncDirty() {
+			syncDirty = false;
 		}
 
 	}
