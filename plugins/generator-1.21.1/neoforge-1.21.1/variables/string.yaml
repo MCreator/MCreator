@@ -32,7 +32,7 @@ scopes:
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
       _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.syncPlayerVariables(${entity});}</@tail>
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
@@ -41,4 +41,4 @@ scopes:
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
       _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.syncPlayerVariables(${entity});}</@tail>
+      <@tail>_vars.markSyncDirty();}</@tail>
