@@ -227,7 +227,8 @@ public final class BlocklyJavascriptBridge {
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
 							.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-							.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new), "dimensions");
+							.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new),
+					"dimensions");
 			case "fluid" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"fluids");

@@ -100,6 +100,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
 	private ProcedureSelector onBonemealSuccess;
+	private ProcedureSelector onEntityFallsOn;
 
 	private StringListProcedureSelector specialInformation;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -342,6 +343,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
+				L10N.t("elementgui.common.event_on_entity_falls_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/blockstate:blockstate"));
@@ -1039,7 +1043,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
+		JPanel events = new JPanel(new GridLayout(4, 4, 5, 5));
 		events.setOpaque(false);
 
 		events.add(onRightClicked);
@@ -1056,6 +1060,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRedstoneOn);
 		events.add(onRedstoneOff);
 		events.add(onRandomUpdateEvent);
+		events.add(onEntityFallsOn);
+		events.add(new JEmptyBox());
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
@@ -1604,6 +1610,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 		onReceivedVibration.refreshListKeepSelected();
+		onEntityFallsOn.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
@@ -1664,6 +1671,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onEntityFallsOn.setSelectedProcedure(block.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
@@ -1888,6 +1896,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = textures.getTexture();
 		block.textureTop = textures.getTextureTop();

@@ -143,6 +143,7 @@ import java.util.stream.Collectors;
 	public Procedure onRightClicked;
 	public Procedure onEntityWalksOn;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	private Plant() {
 		this(null);

@@ -576,6 +576,8 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<@onBlockPlacedBy data.onBlockPlayedBy/>
