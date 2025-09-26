@@ -996,8 +996,8 @@ public class TestWorkspaceDataProvider {
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);
-			armor.isHorseArmor = random.nextBoolean();
-			armor.enableHelmet = armor.isHorseArmor ? false : random.nextBoolean();
+			armor.isHorseArmor = false;
+			armor.enableHelmet = random.nextBoolean();
 			armor.textureHelmet = new TextureHolder(modElement.getWorkspace(), "test");
 			armor.helmetModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
 			if (random.nextBoolean()) {
@@ -1006,7 +1006,7 @@ public class TestWorkspaceDataProvider {
 			} else {
 				armor.helmetModelName = "Default";
 			}
-			armor.enableBody = armor.isHorseArmor ? true : random.nextBoolean();
+			armor.enableBody = random.nextBoolean();
 			armor.textureBody = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.bodyModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
 			if (random.nextBoolean()) {
@@ -1017,7 +1017,7 @@ public class TestWorkspaceDataProvider {
 			} else {
 				armor.bodyModelName = "Default";
 			}
-			armor.enableLeggings = armor.isHorseArmor ? false : random.nextBoolean();
+			armor.enableLeggings = random.nextBoolean();
 			armor.textureLeggings = new TextureHolder(modElement.getWorkspace(), "test2");
 			armor.leggingsModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
 			if (random.nextBoolean()) {
@@ -1027,7 +1027,7 @@ public class TestWorkspaceDataProvider {
 			} else {
 				armor.leggingsModelName = "Default";
 			}
-			armor.enableBoots = armor.isHorseArmor ? false : random.nextBoolean();
+			armor.enableBoots = random.nextBoolean();
 			armor.textureBoots = new TextureHolder(modElement.getWorkspace(), "test4");
 			armor.bootsModelTexture = emptyLists ? "From armor" : "entity_texture_0.png";
 			if (random.nextBoolean()) {
