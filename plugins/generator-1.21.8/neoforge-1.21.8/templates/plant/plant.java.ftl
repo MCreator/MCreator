@@ -339,6 +339,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<#if data.isBonemealable && data.plantType != "sapling">

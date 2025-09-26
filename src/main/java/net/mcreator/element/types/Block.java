@@ -198,6 +198,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
