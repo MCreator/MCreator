@@ -123,6 +123,7 @@ import java.util.stream.Collectors;
 	public String offsetType;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
+	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
 	public int flammability;
