@@ -54,6 +54,10 @@ import net.minecraft.nbt.Tag;
 		}
 	}
 
+	@SubscribeEvent public static void onPlayerTickUpdate(TODO) {
+		TODO: sync if dirty and then mark as clean
+	}
+
 	@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
 		PlayerVariables original = event.getOriginal().getData(PLAYER_VARIABLES);
 		PlayerVariables clone = new PlayerVariables();
