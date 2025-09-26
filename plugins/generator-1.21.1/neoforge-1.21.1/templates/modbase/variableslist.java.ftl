@@ -48,9 +48,9 @@ import net.minecraft.nbt.Tag;
 	}
 
 	@SubscribeEvent public static void onPlayerTickUpdateSyncPlayerVariables(PlayerTickEvent.Post event) {
-		if (event.getEntity() instanceof ServerPlayer player && player.getData(PLAYER_VARIABLES).syncDirty) {
+		if (event.getEntity() instanceof ServerPlayer player && player.getData(PLAYER_VARIABLES)._syncDirty) {
 			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
-			player.getData(PLAYER_VARIABLES).syncDirty = false;
+			player.getData(PLAYER_VARIABLES)._syncDirty = false;
 		}
 	}
 
@@ -249,7 +249,7 @@ import net.minecraft.nbt.Tag;
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 	public static class PlayerVariables implements INBTSerializable<CompoundTag> {
 
-		boolean syncDirty = false;
+		boolean _syncDirty = false;
 
 		<#list variables as var>
 			<#if var.getScope().name() == "PLAYER_LIFETIME">
@@ -282,7 +282,7 @@ import net.minecraft.nbt.Tag;
 		}
 
 		public void markSyncDirty() {
-			syncDirty = true;
+			_syncDirty = true;
 		}
 
 	}
