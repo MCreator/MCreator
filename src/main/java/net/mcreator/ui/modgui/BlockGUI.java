@@ -100,6 +100,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onRedstoneOff;
 	private ProcedureSelector onHitByProjectile;
 	private ProcedureSelector onBonemealSuccess;
+	private ProcedureSelector onEntityFallsOn;
 
 	private StringListProcedureSelector specialInformation;
 	private NumberProcedureSelector emittedRedstonePower;
@@ -111,9 +112,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
 	private final VTextField name = new VTextField(19);
 
+	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -201,6 +202,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
 	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private NumberProcedureSelector blockBounciness;
+	private NumberProcedureSelector fallDamageInduced;
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -340,6 +343,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
+				L10N.t("elementgui.common.event_on_entity_falls_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/blockstate:blockstate"));
@@ -369,6 +375,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+	
+		blockBounciness = new NumberProcedureSelector(this.withEntry("common/bounciness"), mcreator,
+			L10N.t("elementgui.common.bounciness"), AbstractProcedureSelector.Side.BOTH,
+			new JSpinner(new SpinnerNumberModel(0.0, 0.0, Float.MAX_VALUE, 0.1)),
+			130, Dependency.fromString("entity:entity")
+		);
+		fallDamageInduced = new NumberProcedureSelector(this.withEntry("common/fall_damage_induced"), mcreator, 
+			L10N.t("elementgui.common.fall_damage_induced"), AbstractProcedureSelector.Side.BOTH,
+			new JSpinner(new SpinnerNumberModel(1.0, 0.0, Float.MAX_VALUE, 0.01)),
+			130, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate")
+		);
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -829,7 +847,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		blockItemSettings.add(immuneToFire);
-
+		
 		blockItemSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
 		blockItemSettings.add(creativeTabs);
@@ -956,7 +974,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
 
-		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
+		JPanel advancedWithCondition = new JPanel();
+		advancedWithCondition.setLayout(new BoxLayout(advancedWithCondition, BoxLayout.Y_AXIS));
+		advancedWithCondition.add(advancedProperties);
+		advancedWithCondition.add(blockBounciness);
+		advancedWithCondition.add(fallDamageInduced);
+		advancedWithCondition.add(placingCondition);
+		advancedWithCondition.setOpaque(false);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
@@ -1026,6 +1050,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRedstoneOn);
 		events.add(onRedstoneOff);
 		events.add(onRandomUpdateEvent);
+		events.add(onEntityFallsOn);
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
@@ -1569,12 +1594,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 		onReceivedVibration.refreshListKeepSelected();
+		onEntityFallsOn.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
+		blockBounciness.refreshListKeepSelected();
+		fallDamageInduced.refreshListKeepSelected();
 		additionalHarvestCondition.refreshListKeepSelected();
 		vibrationSensitivityRadius.refreshListKeepSelected();
 		canReceiveVibrationCondition.refreshListKeepSelected();
@@ -1629,6 +1657,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onRightClicked.setSelectedProcedure(block.onRightClicked);
 		onRedstoneOn.setSelectedProcedure(block.onRedstoneOn);
 		onRedstoneOff.setSelectedProcedure(block.onRedstoneOff);
+		onEntityFallsOn.setSelectedProcedure(block.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(block.onHitByProjectile);
 		name.setText(block.name);
 		generationShape.setSelectedItem(block.generationShape);
@@ -1723,6 +1752,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		reactionToPushing.setSelectedItem(block.reactionToPushing);
 		slipperiness.setValue(block.slipperiness);
 		jumpFactor.setValue(block.jumpFactor);
+		blockBounciness.setSelectedProcedure(block.blockBounciness);
+		fallDamageInduced.setSelectedProcedure(block.fallDamageInduced);
 		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
@@ -1852,6 +1883,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onRightClicked = onRightClicked.getSelectedProcedure();
 		block.onRedstoneOn = onRedstoneOn.getSelectedProcedure();
 		block.onRedstoneOff = onRedstoneOff.getSelectedProcedure();
+		block.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
 		block.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		block.texture = textures.getTexture();
 		block.textureTop = textures.getTextureTop();
@@ -1890,6 +1922,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
+		block.blockBounciness = blockBounciness.getSelectedProcedure();
+		block.fallDamageInduced = fallDamageInduced.getSelectedProcedure();
 
 		block.sensitiveToVibration = sensitiveToVibration.isSelected();
 		block.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
