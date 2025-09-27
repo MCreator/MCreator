@@ -1,0 +1,1 @@
+To jest ilość doświadczenia upuszczony przez ten blok, gdy jest zniszczony przez gracza.

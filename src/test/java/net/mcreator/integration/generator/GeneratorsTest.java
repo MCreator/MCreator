@@ -157,6 +157,11 @@ import static org.junit.jupiter.api.Assertions.*;
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.ADVANCEMENT) != GeneratorStats.CoverageStatus.NONE)
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing JSON trigger blocks",
+								() -> GTJSONTriggersBlocks.runTest(LOG, generator, random, workspace.get())));
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.COMMAND) != GeneratorStats.CoverageStatus.NONE)
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
 								() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace.get())));
@@ -174,6 +179,10 @@ import static org.junit.jupiter.api.Assertions.*;
 					tests.add(DynamicTest.dynamicTest(
 							generator + " - Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
+
+					// Verify JSON files
+					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
+							() -> verifyGeneratedJSON(workspace.get())));
 
 					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
 							== GeneratorFlavor.BaseLanguage.JAVA) {
@@ -202,10 +211,6 @@ import static org.junit.jupiter.api.Assertions.*;
 									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
 						}
 					}
-
-					// Verify JSON files
-					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
-							() -> verifyGeneratedJSON(workspace.get())));
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 						workspace.get().close();
