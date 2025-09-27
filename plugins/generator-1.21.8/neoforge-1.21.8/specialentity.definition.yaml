@@ -1,0 +1,29 @@
+templates:
+  - template: specialentity/specialentity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: json/special_entity_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/items/@registryname.json"
+
+global_templates:
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+
+tags:
+  - tag: ENTITIES:minecraft:boat
+    condition: "${data.entityType == 'Boat'}"
+  - tag: ENTITIES:c:boats
+    condition: "${data.entityType == 'ChestBoat'}"
+  - tag: ITEMS:minecraft:boats
+    condition: "${data.entityType == 'Boat'}"
+  - tag: ITEMS:minecraft:chest_boats
+    condition: "${data.entityType == 'ChestBoat'}"
+
+localizationkeys:
+  - key: entity.@modid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname
+    mapto: name
