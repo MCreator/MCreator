@@ -33,6 +33,11 @@ public class ShowFindAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				codeEditorView.sed.setVisible(true);
 				codeEditorView.rep.setVisible(false);
+				String selectedText = codeEditorView.te.getSelectedText();
+				if (selectedText != null && !selectedText.isEmpty())
+					codeEditorView.sed.getSearchField().setText(selectedText);
+				codeEditorView.sed.getSearchField().selectAll();
+				codeEditorView.sed.getSearchField().requestFocusInWindow();
 				codeEditorView.disableJumpToMode();
 			}
 		});
