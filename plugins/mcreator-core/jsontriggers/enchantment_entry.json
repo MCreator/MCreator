@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "enchantment",
+      "datalist": "enchantments",
+      "customEntryProviders": "enchantment"
+    },
+    {
+      "type": "input_value",
+      "name": "minLevel",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "maxLevel",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Enchantment",
+  "colour": 250,
+  "mcreator": {
+    "group": "enchantment",
+    "toolbox_id": "items",
+    "toolbox_init": [
+      "<value name=\"minLevel\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"maxLevel\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>"
+    ],
+    "inputs": [
+      "minLevel",
+      "maxLevel"
+    ],
+    "fields": [
+      "enchantment"
+    ]
+  }
+}

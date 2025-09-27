@@ -25,6 +25,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -98,7 +99,8 @@ import java.util.List;
 			BlocklyToJSONTrigger blocklyToJSONTrigger = new BlocklyToJSONTrigger(this.getModElement().getWorkspace(),
 					this.getModElement(), this.triggerxml, this.getModElement().getGenerator()
 					.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
 			if (triggerCode.isEmpty())
