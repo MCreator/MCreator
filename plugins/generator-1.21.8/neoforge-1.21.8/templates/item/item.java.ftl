@@ -116,6 +116,12 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
+	<#if data.isPiglinCurrency>
+	@Override public boolean isPiglinCurrency(ItemStack stack) {
+		return true;
+	}
+	</#if>
+
 	<#if !data.isFood && data.animation != "none"> <#-- If item is food, this is handled by the consumable component -->
 	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
 		return ItemUseAnimation.${data.animation?upper_case};
