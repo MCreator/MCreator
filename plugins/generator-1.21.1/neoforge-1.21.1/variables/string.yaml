@@ -15,7 +15,7 @@ scopes:
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      <@tail>${JavaModName}Variables.WorldVariables.get(world).syncData(world);</@tail>
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
@@ -23,7 +23,7 @@ scopes:
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      <@tail>${JavaModName}Variables.MapVariables.get(world).syncData(world);</@tail>
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
@@ -32,7 +32,7 @@ scopes:
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
       _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.syncPlayerVariables(${entity});}</@tail>
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
@@ -41,4 +41,4 @@ scopes:
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
       _vars.${name} = ${opt.removeParentheses(value)};
-      <@tail>_vars.syncPlayerVariables(${entity});}</@tail>
+      <@tail>_vars.markSyncDirty();}</@tail>
