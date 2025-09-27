@@ -54,13 +54,6 @@ import net.minecraft.nbt.Tag;
 		}
 	}
 
-	@SubscribeEvent public static void onPlayerTickUpdateSyncPlayerVariables(PlayerTickEvent.Post event) {
-		if (event.getEntity() instanceof ServerPlayer player && player.getData(PLAYER_VARIABLES)._syncDirty) {
-			PacketDistributor.sendToPlayer(player, new PlayerVariablesSyncMessage(player.getData(PLAYER_VARIABLES)));
-			player.getData(PLAYER_VARIABLES)._syncDirty = false;
-		}
-	}
-
 	@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
 		PlayerVariables original = event.getOriginal().getData(PLAYER_VARIABLES);
 		PlayerVariables clone = new PlayerVariables();
