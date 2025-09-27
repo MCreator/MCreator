@@ -50,7 +50,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder, ISearchable {
+public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
 	private final VTextField commandName = new VTextField(25);
 	private final JComboBox<String> type = new JComboBox<>(
@@ -59,7 +59,6 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			new String[] { "No requirement", "1", "2", "3", "4" });
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private BlocklyEditorToolbar blocklyEditorToolbar;
 	private BlocklyPanel blocklyPanel;
 	private Map<String, ToolboxBlock> externalBlocks;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -110,9 +109,9 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel);
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						blocklyEditorToolbar, blocklyPanel),
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG,
+				blocklyPanel, false);
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -181,10 +180,4 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		return Set.of(blocklyPanel);
 	}
 
-	@Override public void search(@Nullable String searchTerm) {
-		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
-
-		if (searchTerm != null)
-			blocklyEditorToolbar.getSearchField().setText(searchTerm);
-	}
 }

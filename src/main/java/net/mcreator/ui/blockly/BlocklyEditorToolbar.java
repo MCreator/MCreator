@@ -67,7 +67,15 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private final JTextField search;
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
-		this(mcreator, blocklyEditorType, blocklyPanel, null);
+		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel, boolean hasSearchBar) {
+		this(mcreator, blocklyEditorType, blocklyPanel, null, hasSearchBar);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel, ProcedureGUI procedureGUI, JComponent... extraComponents) {
+		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
 	}
 
 	/**
@@ -78,10 +86,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param hasSearchBar      <p>If this toolbar will have a search bar.</p>
 	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, JComponent... extraComponents) {
+			ProcedureGUI procedureGUI, boolean hasSearchBar, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 
 		setBorder(null);
@@ -117,35 +126,37 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		};
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
-		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-		search.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				super.focusLost(e);
-				search.setText("");
-				results.setFocusable(true);
-			}
-		});
-		search.setPreferredSize(new Dimension(340, 22));
+		if (hasSearchBar) {
+			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+			search.addFocusListener(new FocusAdapter() {
+				@Override public void focusLost(FocusEvent e) {
+					super.focusLost(e);
+					search.setText("");
+					results.setFocusable(true);
+				}
+			});
+			search.setPreferredSize(new Dimension(340, 22));
 
-		search.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void insertUpdate(DocumentEvent e) {
-				updateSearch(blocklyEditorType);
-			}
+			search.getDocument().addDocumentListener(new DocumentListener() {
+				@Override public void insertUpdate(DocumentEvent e) {
+					updateSearch(blocklyEditorType);
+				}
 
-			@Override public void removeUpdate(DocumentEvent e) {
-				updateSearch(blocklyEditorType);
-			}
+				@Override public void removeUpdate(DocumentEvent e) {
+					updateSearch(blocklyEditorType);
+				}
 
-			@Override public void changedUpdate(DocumentEvent e) {
-				updateSearch(blocklyEditorType);
-			}
-		});
+				@Override public void changedUpdate(DocumentEvent e) {
+					updateSearch(blocklyEditorType);
+				}
+			});
 
-		JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-		searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-		searchWrapper.setMaximumSize(
-				new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
-		add(searchWrapper);
+			JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
+			searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+			searchWrapper.setMaximumSize(
+					new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
+			add(searchWrapper);
+		}
 
 		for (var component : extraComponents) {
 			add(component);
