@@ -1,10 +1,28 @@
 <#include "../mcitems.ftl">
 <#assign defaultSlabDrops = data.getModElement().getTypeString() == "block" && data.blockBase?has_content && data.blockBase == "Slab" && !(data.customDrop?? && !data.customDrop.isEmpty())/>
+<#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
-  <#if data.hasDrops()>,
+  <#if data.hasDrops() || isFlowerPot>,
   "pools": [
+    <#if isFlowerPot>
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flower_pot"
+        }
+      ]
+    }<#if data.hasDrops()>,</#if>
+    </#if>
+    <#if data.hasDrops()>
     {
       "rolls": 1.0,
       <#if data.dropAmount == 1 && !defaultSlabDrops>
@@ -19,6 +37,14 @@
           <#if data.customDrop?? && !data.customDrop.isEmpty()>
             <#assign dropItem = mappedMCItemToRegistryName(data.customDrop)>
             <#if data.customDrop.isAir() || dropItem == "minecraft:air">
+            "type": "minecraft:empty"
+            <#else>
+            "type": "minecraft:item",
+            "name": "${dropItem}"
+            </#if>
+          <#elseif isFlowerPot>
+            <#assign dropItem = mappedMCItemToRegistryName(data.pottedPlant)>
+            <#if data.pottedPlant.isAir() || dropItem == "minecraft:air">
             "type": "minecraft:empty"
             <#else>
             "type": "minecraft:item",
@@ -72,6 +98,7 @@
         }
       ]
     }
+    </#if>
   ]
   </#if>
 }
