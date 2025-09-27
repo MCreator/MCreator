@@ -1188,7 +1188,8 @@ public class TestWorkspaceDataProvider {
 			plant.onBlockPlacedBy = new Procedure("procedure9");
 			plant.onRandomUpdateEvent = new Procedure("procedure10");
 			plant.onEntityWalksOn = new Procedure("procedure11");
-			plant.onHitByProjectile = new Procedure("procedure12");
+			plant.onEntityFallsOn = new Procedure("procedure12");
+			plant.onHitByProjectile = new Procedure("procedure13");
 			plant.placingCondition = emptyLists ? null : new Procedure("condition2");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
@@ -2153,7 +2154,8 @@ public class TestWorkspaceDataProvider {
 			block.onRedstoneOn = new Procedure("procedure11");
 			block.onRedstoneOff = new Procedure("procedure12");
 			block.onEntityWalksOn = new Procedure("procedure13");
-			block.onHitByProjectile = new Procedure("procedure14");
+			block.onEntityFallsOn = new Procedure("procedure14");
+			block.onHitByProjectile = new Procedure("procedure15");
 			block.placingCondition = new Procedure("condition2");
 			block.additionalHarvestCondition = new Procedure("condition1");
 			block.isBonemealTargetCondition = new Procedure("condition3");
