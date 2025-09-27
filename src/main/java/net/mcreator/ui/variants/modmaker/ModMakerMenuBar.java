@@ -52,6 +52,7 @@ class ModMakerMenuBar extends MainMenuBar {
 		resources.add(mcreator.getActionRegistry().importParticleTexture);
 		resources.add(mcreator.getActionRegistry().importScreenTexture);
 		resources.add(mcreator.getActionRegistry().importArmorTexture);
+		resources.add(mcreator.getActionRegistry().importHorseArmorTexture);
 		resources.add(mcreator.getActionRegistry().importOtherTexture);
 		resources.addSeparator();
 		resources.add(mcreator.getActionRegistry().importSound);
