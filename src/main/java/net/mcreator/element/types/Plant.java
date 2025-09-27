@@ -97,6 +97,8 @@ import java.util.stream.Collectors;
 	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
 	public int dropAmount;
+	public int xpAmountMin;
+	public int xpAmountMax;
 	public boolean forceTicking;
 	public boolean emissiveRendering;
 
@@ -141,6 +143,7 @@ import java.util.stream.Collectors;
 	public Procedure onRightClicked;
 	public Procedure onEntityWalksOn;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	private Plant() {
 		this(null);

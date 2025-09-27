@@ -28,10 +28,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -89,6 +86,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
+	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
@@ -180,6 +178,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onEntityWalksOn;
 	private ProcedureSelector onHitByProjectile;
 	private ProcedureSelector onBonemealSuccess;
+	private ProcedureSelector onEntityFallsOn;
 
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector isBonemealTargetCondition;
@@ -252,6 +251,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityWalksOn = new ProcedureSelector(this.withEntry("block/when_entity_walks_on"), mcreator,
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
+		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
+				L10N.t("elementgui.common.event_on_entity_falls_on"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
@@ -505,7 +507,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
-		JPanel selp2 = new JPanel(new GridLayout(4, 2, 5, 2));
+		JPanel selp2 = new JPanel(new GridLayout(5, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -572,6 +574,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
 				L10N.label("elementgui.common.drop_amount")));
 		selp2.add(dropAmount);
+
+		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/xp_amount"),
+				L10N.label("elementgui.common.xp_amount")));
+		selp2.add(xpAmount);
 
 		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/use_loot_table_for_drops"),
 				L10N.label("elementgui.common.use_loot_table_for_drop")));
@@ -749,7 +755,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				PanelUtils.pullElementUp(PanelUtils.column(bonemealMerger, flammabilityProperties)))));
 		pane5.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
+		JPanel events = new JPanel(new GridLayout(4, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClicked);
 		events.add(onBlockAdded);
@@ -763,6 +769,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events.add(onRandomUpdateEvent);
 		events.add(onEntityWalksOn);
 		events.add(onHitByProjectile);
+		events.add(onEntityFallsOn);
+		events.add(new JEmptyBox());
+		events.add(new JEmptyBox());
+		events.add(new JEmptyBox());
 
 		JPanel spawning = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawning.setOpaque(false);
@@ -948,6 +958,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityWalksOn.refreshListKeepSelected();
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
+		onEntityFallsOn.refreshListKeepSelected();
 
 		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
@@ -1004,6 +1015,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
+		xpAmount.setMinValue(plant.xpAmountMin);
+		xpAmount.setMaxValue(plant.xpAmountMax);
 		creativeTabs.setListElements(plant.creativeTabs);
 		onBlockAdded.setSelectedProcedure(plant.onBlockAdded);
 		onNeighbourBlockChanges.setSelectedProcedure(plant.onNeighbourBlockChanges);
@@ -1016,6 +1029,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBlockPlacedBy.setSelectedProcedure(plant.onBlockPlacedBy);
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
+		onEntityFallsOn.setSelectedProcedure(plant.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		specialInformation.setSelectedProcedure(plant.specialInformation);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
@@ -1115,6 +1129,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.useLootTableForDrops = useLootTableForDrops.isSelected();
 		plant.customDrop = customDrop.getBlock();
 		plant.dropAmount = (int) dropAmount.getValue();
+		plant.xpAmountMin = xpAmount.getIntMinValue();
+		plant.xpAmountMax = xpAmount.getIntMaxValue();
 		plant.frequencyOnChunks = (int) frequencyOnChunks.getValue();
 		plant.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		plant.onNeighbourBlockChanges = onNeighbourBlockChanges.getSelectedProcedure();
@@ -1127,6 +1143,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onBlockPlacedBy = onBlockPlacedBy.getSelectedProcedure();
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
+		plant.onEntityFallsOn = onEntityFallsOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
 		plant.specialInformation = specialInformation.getSelectedProcedure();
 		plant.generateFeature = generateFeature.isSelected();
