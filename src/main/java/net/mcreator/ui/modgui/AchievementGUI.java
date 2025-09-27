@@ -34,10 +34,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -92,8 +89,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	private final JSpinner rewardXP = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
 
 	private BlocklyPanel blocklyPanel;
-	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -214,6 +211,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		page1group.addValidationElement(achievementDescription);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks();
+
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
@@ -222,22 +220,27 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					changeEvent -> new Thread(() -> regenerateTrigger(changeEvent.getSource() instanceof BlocklyPanel),
 							"TriggerRegenerate").start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
+				blocklyPanel.setXML(Achievement.XML_BASE);
 			}
 		});
 
-		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		blocklyPanel.setPreferredSize(new Dimension(450, 440));
+
+		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
+						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER, blocklyPanel), blocklyPanel),
+				compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
+		advancementTrigger.setOpaque(false);
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-		addPage(wrap, false).validate(page1group).lazyValidate(
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger)).validate(
+				page1group).lazyValidate(
 				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
 						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 

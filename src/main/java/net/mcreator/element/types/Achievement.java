@@ -41,6 +41,8 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
 
+	public static final String XML_BASE = "<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>";
+
 	public String achievementName;
 	public String achievementDescription;
 
