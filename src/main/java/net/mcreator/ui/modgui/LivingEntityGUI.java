@@ -78,7 +78,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder, ISearchable {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -1324,10 +1324,4 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		return Set.of(blocklyPanel);
 	}
 
-	@Override public void search(@Nullable String searchTerm) {
-		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
-
-		if (searchTerm != null)
-			blocklyEditorToolbar.getSearchField().setText(searchTerm);
-	}
 }
