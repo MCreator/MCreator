@@ -119,54 +119,6 @@ public class TextureImportDialogs {
 			}
 	}
 
-	public static void importHorseArmor(final MCreator mcreator) {
-		AtomicReference<File> f1 = new AtomicReference<>(null);
-
-		JPanel dialogContent = new JPanel(new GridLayout(3, 1, 20, 2));
-		JButton p1 = new JButton("...");
-
-		dialogContent.add(L10N.label("dialog.textures_import.horsearmor_text"));
-		JLabel horseArmorNote = new JLabel("<html>" + L10N.t("dialog.textures_import.horsearmor_note") + "</html>");
-		horseArmorNote.setPreferredSize(new Dimension(300, 35));
-		dialogContent.add(horseArmorNote);
-		dialogContent.add(p1);
-
-		p1.addActionListener(event -> {
-			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Horse armor texture files", "*.png"));
-			if (f1a != null && f1a.length > 0) {
-				f1.set(f1a[0]);
-				p1.setText(FilenameUtilsPatched.removeExtension(f1.get().getName()));
-			}
-		});
-
-		int ret = JOptionPane.showConfirmDialog(mcreator, dialogContent,
-				L10N.t("dialog.textures_import.horsearmor"), JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null);
-		if (ret == JOptionPane.OK_OPTION)
-			if (f1.get() == null) {
-				JOptionPane.showMessageDialog(mcreator,
-						L10N.t("dialog.textures_import.horsearmor.error_not_selected"), null,
-						JOptionPane.ERROR_MESSAGE);
-			} else {
-				String namec = RegistryNameFixer.fix(FilenameUtilsPatched.removeExtension(
-						f1.get().getName().toLowerCase(Locale.ENGLISH).replace("layer_1", "")));
-				if (namec.endsWith("_"))
-					namec = namec.substring(0, namec.length() - 1);
-				if (namec.isBlank()) {
-					Toolkit.getDefaultToolkit().beep();
-					return;
-				}
-
-				File[] horseArmor = mcreator.getFolderManager().getHorseArmorTextureFilesForName(namec);
-				FileIO.copyFile(f1.get(), horseArmor[0]);
-
-				mcreator.reloadWorkspaceTabContents();
-				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)
-					modElementGUI.reloadDataLists();
-			}
-	}
-
 	/**
 	 * <p>This method will open a file dialog to let the user select textures to import. Those textures then be saved as the provided {@link TextureType}.</p>
 	 *

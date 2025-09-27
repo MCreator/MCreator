@@ -138,10 +138,6 @@ public final class WorkspaceFolderManager {
 				new File(getTexturesFolder(TextureType.ARMOR), armorTextureName + "_layer_2.png") };
 	}
 
-	public File[] getHorseArmorTextureFilesForName(String armorTextureName) {
-		return new File[] { new File(getTexturesFolder(TextureType.OTHER), armorTextureName + ".png") };
-	}
-
 	/**
 	 * @param section <p>The {@link TextureType} we want to get the folder, defined by each generator.</p>
 	 * @return <p> A list containing all texture files found in the {@link TextureType} provided.</p>

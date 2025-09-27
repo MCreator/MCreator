@@ -120,7 +120,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testTextureDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importArmor(mcreator));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> TextureImportDialogs.importHorseArmor(mcreator));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> TextureImportDialogs.importSingleTexture(mcreator, new File(""),
 						L10N.t("workspace.textures.select_texture_type")));

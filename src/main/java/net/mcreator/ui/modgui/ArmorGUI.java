@@ -577,7 +577,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			onLeggingsTick.setEnabled(!isHorseArmor.isSelected());
 			onBootsTick.setEnabled(!isHorseArmor.isSelected());
 
-			armorTextureFile.changeTextureType(isHorseArmor.isSelected() ? TextureType.OTHER : TextureType.ARMOR);
+			armorTextureFile.changeTextureType(isHorseArmor.isSelected() ? TextureType.ENTITY : TextureType.ARMOR);
 		});
 
 		armorTextureFile.getComboBox().addActionListener(e -> updateArmorTexturePreview());
@@ -993,7 +993,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			onLeggingsTick.setEnabled(false);
 			onBootsTick.setEnabled(false);
 
-			armorTextureFile.changeTextureType(TextureType.OTHER);
+			armorTextureFile.changeTextureType(TextureType.ENTITY);
 			armorTextureFile.setTextureFromTextureName(armor.armorTextureFile);
 		}
 
