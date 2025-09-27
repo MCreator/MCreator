@@ -111,43 +111,41 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("blockly.search_procedure_blocks"), 8, 18);
+					g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
 				}
 			}
 		};
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
-		if (procedureGUI != null) {
-			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
-			search.addFocusListener(new FocusAdapter() {
-				@Override public void focusLost(FocusEvent e) {
-					super.focusLost(e);
-					search.setText("");
-					results.setFocusable(true);
-				}
-			});
-			search.setPreferredSize(new Dimension(340, 22));
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+		search.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				super.focusLost(e);
+				search.setText("");
+				results.setFocusable(true);
+			}
+		});
+		search.setPreferredSize(new Dimension(340, 22));
 
-			search.getDocument().addDocumentListener(new DocumentListener() {
-				@Override public void insertUpdate(DocumentEvent e) {
-					updateSearch();
-				}
+		search.getDocument().addDocumentListener(new DocumentListener() {
+			@Override public void insertUpdate(DocumentEvent e) {
+				updateSearch(blocklyEditorType);
+			}
 
-				@Override public void removeUpdate(DocumentEvent e) {
-					updateSearch();
-				}
+			@Override public void removeUpdate(DocumentEvent e) {
+				updateSearch(blocklyEditorType);
+			}
 
-				@Override public void changedUpdate(DocumentEvent e) {
-					updateSearch();
-				}
-			});
+			@Override public void changedUpdate(DocumentEvent e) {
+				updateSearch(blocklyEditorType);
+			}
+		});
 
-			JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-			searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-			searchWrapper.setMaximumSize(
-					new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
-			add(searchWrapper);
-		}
+		JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
+		searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+		searchWrapper.setMaximumSize(
+				new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
+		add(searchWrapper);
 
 		for (var component : extraComponents) {
 			add(component);
@@ -214,22 +212,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
-	private void updateSearch() {
+	private void updateSearch(BlocklyEditorType blocklyEditorType) {
 		if (!search.getText().isEmpty()) {
 			String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				if (block.getName().toLowerCase(Locale.ENGLISH)
 						.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 					filtered.add(block);
 				}
 			}
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				for (String keyWord : keyWords) {
 					if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
 							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
