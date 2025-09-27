@@ -261,7 +261,7 @@ public class ActionRegistry {
 		this.importHorseArmorTexture = new TextureAction(this, L10N.t("action.import.horse_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importHorseArmor(mcreator);
 			mcreator.reloadWorkspaceTabContents();
-		}, TextureType.HORSE_ARMOR).setIcon(UIRES.get("16px.importhorsearmor"));
+		}, TextureType.OTHER).setIcon(UIRES.get("16px.importhorsearmor"));
 		this.importOtherTexture = new TextureImportAction(this, L10N.t("action.import_other_texture"),
 				TextureType.OTHER).setIcon(UIRES.get("16px.importtexture"));
 		this.importSound = new SoundImportAction(this);

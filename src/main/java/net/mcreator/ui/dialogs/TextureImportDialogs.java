@@ -158,9 +158,8 @@ public class TextureImportDialogs {
 					return;
 				}
 
-				mcreator.getFolderManager().buildHorseArmorTexturesDirs();
-				File[] armor = mcreator.getFolderManager().getHorseArmorTextureFilesForName(namec);
-				FileIO.copyFile(f1.get(), armor[0]);
+				File[] horseArmor = mcreator.getFolderManager().getHorseArmorTextureFilesForName(namec);
+				FileIO.copyFile(f1.get(), horseArmor[0]);
 
 				mcreator.reloadWorkspaceTabContents();
 				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI<?> modElementGUI)

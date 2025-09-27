@@ -80,6 +80,8 @@ public class JavaMemberNameValidator implements Validator {
 				textField.getText().charAt(0))) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 					L10N.t("validators.java_names.upper_case_first_character"));
+		} else if (text.toLowerCase().contains("horse") && text.toLowerCase().contains("armor") && text.toLowerCase().indexOf("horse") - text.toLowerCase().indexOf("armor") == -5 || text.toLowerCase().indexOf("horse") - text.toLowerCase().indexOf("armor") == -6) {
+			return new Validator.ValidationResult(ValidationResultType.ERROR, L10N.t("validators.java_name.horse_armor_name"));
 		} else {
 			return Validator.ValidationResult.PASSED;
 		}

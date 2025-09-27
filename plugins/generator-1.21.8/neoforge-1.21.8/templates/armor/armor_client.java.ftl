@@ -93,7 +93,7 @@ import net.minecraft.client.model.Model;
 					return ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 					</#if>
 				<#else>
-					return ResourceLocation.parse("${modid}:textures/entity/horse/armor/${data.armorTextureFile}.png");
+					return ResourceLocation.parse("${modid}:textures/entity/horse/armor/horse_armor_${registryname}.png");
 				</#if>
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());

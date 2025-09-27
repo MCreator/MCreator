@@ -330,8 +330,10 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armor_texture");
+			File[] horseArmorPars = workspace.getFolderManager().getHorseArmorTextureFilesForName("horse_armor_texture");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), horseArmorPars[0]);
 		}
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
@@ -1045,7 +1047,7 @@ public class TestWorkspaceDataProvider {
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
-			armor.armorTextureFile = "armor_texture";
+			armor.armorTextureFile = armor.isHorseArmor ? "horse_armor_texture" : "armor_texture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
