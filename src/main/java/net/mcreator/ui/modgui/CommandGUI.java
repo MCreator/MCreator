@@ -35,7 +35,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -109,9 +108,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG,
-				blocklyPanel, false);
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel),
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG,
+						blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
