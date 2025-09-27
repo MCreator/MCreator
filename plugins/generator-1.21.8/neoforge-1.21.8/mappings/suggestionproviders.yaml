@@ -1,6 +1,6 @@
-_default: SuggestionProviders.AVAILABLE_SOUNDS
-AVAILABLE_SOUNDS: SuggestionProviders.AVAILABLE_SOUNDS
-SUMMONABLE_ENTITIES: SuggestionProviders.SUMMONABLE_ENTITIES
+_default: SuggestionProviders.cast(SuggestionProviders.AVAILABLE_SOUNDS)
+AVAILABLE_SOUNDS: SuggestionProviders.cast(SuggestionProviders.AVAILABLE_SOUNDS)
+SUMMONABLE_ENTITIES: SuggestionProviders.cast(SuggestionProviders.SUMMONABLE_ENTITIES)
 SUGGEST_BOSS_BAR: BossBarCommands.SUGGEST_BOSS_BAR
 SUGGEST_FUNCTION: FunctionCommand.SUGGEST_FUNCTION
 SUGGEST_LOOT_TABLE: LootCommand.SUGGEST_LOOT_TABLE

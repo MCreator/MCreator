@@ -17,7 +17,7 @@ public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lco
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z
 </#if>
 
-<#if w.getGElementsOfType('command')?filter(e -> !e.argsxml?contains('resource_location'))?size != 0>
+<#if w.hasElementsOfType("command")>
 public net.minecraft.server.commands.PlaceCommand SUGGEST_TEMPLATES # SUGGEST_TEMPLATES
 </#if>
 
