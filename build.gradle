@@ -106,9 +106,9 @@ dependencies {
 
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.20.0'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.19.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.14.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.2'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
     implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.2') {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
@@ -122,7 +122,7 @@ dependencies {
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.17'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '9.0.0'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '9.1.0'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
@@ -132,7 +132,7 @@ dependencies {
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.4.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.17.0' // needed by discord-rpc.jar
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.18.0' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '2.0.0'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.6.1', classifier: 'no-natives'
