@@ -420,7 +420,7 @@ import java.util.stream.Collectors;
 		try {
 			File texturePath = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER) + "/" + armorTextureFile + ".png");
 			File newLocation = new File(getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/horse/armor/" + "horse_armor_" + getModElement().getRegistryNameForHorseArmors() + ".png");
+					"entity/horse/armor/" + "horse_armor_" + getModElement().getRegistryName() + ".png");
 			FileIO.copyFile(texturePath, newLocation);
 		} catch (Exception e) {
 			LOG.error("Failed to copy horse armor texture", e);
