@@ -20,7 +20,7 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.IBlockGeneratorWithSections;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.BlocklyToProcedure;
@@ -33,12 +33,9 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-public class SetVariableBlock implements IBlockGenerator {
+public class SetVariableBlock implements IBlockGeneratorWithSections {
 	private final String[] names;
 
 	public SetVariableBlock() {
@@ -138,8 +135,11 @@ public class SetVariableBlock implements IBlockGenerator {
 					if (entitycode != null)
 						dataModel.put("entity", entitycode);
 
+					Sections sections = IBlockGeneratorWithSections.addSectionsToDataModel(
+							dataModel);
 					String code = master.getTemplateGenerator()
 							.generateFromString(setterTemplate.toString(), dataModel);
+					IBlockGeneratorWithSections.handleSections(master, sections);
 					master.append(code);
 				}
 			}

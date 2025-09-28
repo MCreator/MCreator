@@ -442,6 +442,19 @@
             "distance": "distance"
         }/>
     </#if>
+
+<#if hasProcedure(data.onEntityFallsOn)>
+@Override public void fallOn(Level world, BlockState blockstate, BlockPos pos, Entity entity, float distance) {
+	super.fallOn(world, blockstate, pos, entity, distance);
+	<@procedureCode data.onEntityFallsOn, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate",
+		"distance": "distance"
+	}/>
 }
 </#if>
 </#macro>
