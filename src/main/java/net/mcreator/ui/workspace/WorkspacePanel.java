@@ -235,7 +235,7 @@ import java.util.stream.Collectors;
 					} else {
 						searchElement.setVisible(true);
 						duplicateElement.setVisible(true);
-						changeFolder.setVisible(mcreator.getWorkspace().getFoldersRoot().getChildrenSize() > 0);
+						changeFolder.setVisible(!mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren().isEmpty());
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
 						idElement.setVisible(true);
@@ -779,20 +779,6 @@ import java.util.stream.Collectors;
 				renameFolder((FolderElement) list.getSelectedValue());
 			}
 		});
-
-		FolderElement folderElement = mcreator.getWorkspace().getFoldersRoot();
-		{
-			JMenuItem jMenuItem = new JMenuItem(mcreator.getWorkspace().getWorkspaceSettings().getModID());
-			jMenuItem.addActionListener((e) -> changeFolder(folderElement));
-			changeFolder.add(jMenuItem);
-		}
-
-		for (int i = 0; i < folderElement.getChildrenSize(); i++) {
-			JMenuItem jMenuItem = new JMenuItem(folderElement.getChilren(i).getName());
-			int finalI = i;
-			jMenuItem.addActionListener((e) -> changeFolder(folderElement.getChilren(finalI)));
-			changeFolder.add(jMenuItem);
-		}
 
 		contextMenu.add(openElement);
 		contextMenu.add(codeElement);
@@ -1514,11 +1500,29 @@ import java.util.stream.Collectors;
 					modElementsBar.setFractionPoint(0.91f);
 					elementsCount.setIcon(new EmptyIcon(0, 0));
 				}
+
+				updateChangeFolderMenu();
 			}
 		}
 
 		@Override public void refilterElements() {
 			dml.refilter();
+		}
+	}
+
+	private void updateChangeFolderMenu() {
+		changeFolder.removeAll();
+
+		FolderElement folderElement = mcreator.getWorkspace().getFoldersRoot();
+		JMenuItem rootMenuItem = new JMenuItem(mcreator.getWorkspaceSettings().getModID());
+		rootMenuItem.addActionListener((e) -> changeFolder(folderElement));
+		changeFolder.add(rootMenuItem);
+
+		List<FolderElement> allFolders = folderElement.getRecursiveFolderChildren();
+		for (FolderElement folder : allFolders) {
+			JMenuItem folderMenuItem = new JMenuItem(folder.getName());
+			folderMenuItem.addActionListener((e) -> changeFolder(folder));
+			changeFolder.add(folderMenuItem);
 		}
 	}
 

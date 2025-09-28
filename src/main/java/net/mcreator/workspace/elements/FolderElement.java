@@ -184,11 +184,4 @@ public class FolderElement implements IElement {
 				.filter(folder -> folder.getPath().equals(path)).findFirst().orElse(null);
 	}
 
-	public int getChildrenSize() {
-		return children.size();
-	}
-
-	public FolderElement getChilren(int i) {
-		return children.get(i);
-	}
 }
