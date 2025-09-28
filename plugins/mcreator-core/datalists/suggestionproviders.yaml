@@ -8,7 +8,5 @@
   readable_name: "Available functions"
 - SUGGEST_LOOT_TABLE:
   readable_name: "Available loottables"
-- SUGGEST_TEMPLATES:
-  readable_name: "Available templates"
 - SUGGEST_SCORE_HOLDERS:
   readable_name: "Available score holders"
