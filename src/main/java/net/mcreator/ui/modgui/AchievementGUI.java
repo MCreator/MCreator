@@ -225,9 +225,11 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		});
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 240));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER, blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
 
 		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER, blocklyPanel), blocklyPanel),
+						blocklyEditorToolbar, blocklyPanel),
 				compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
