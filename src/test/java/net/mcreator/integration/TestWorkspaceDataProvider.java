@@ -330,7 +330,7 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
 			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armor_texture");
-			File horseArmorPars = new File(workspace.getFolderManager().getTexturesFolder(TextureType.OTHER), "horse_armor_texture.png");
+			File horseArmorPars = new File(workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY), "horse_armor_texture.png");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), horseArmorPars);
