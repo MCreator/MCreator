@@ -1,1 +1,1 @@
-Determinate if it is a horse armor.
+Determine if it is a horse armor
