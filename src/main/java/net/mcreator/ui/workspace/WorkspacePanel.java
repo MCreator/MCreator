@@ -108,6 +108,7 @@ import java.util.stream.Collectors;
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
+	private final JMenu changeFolder = new JMenu(L10N.t("workspace.elements.list.edit.change_folder"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
@@ -226,6 +227,7 @@ import java.util.stream.Collectors;
 					if (selected instanceof FolderElement) {
 						searchElement.setVisible(false);
 						duplicateElement.setVisible(false);
+						changeFolder.setVisible(false);
 						codeElement.setVisible(false);
 						lockElement.setVisible(false);
 						idElement.setVisible(false);
@@ -233,6 +235,7 @@ import java.util.stream.Collectors;
 					} else {
 						searchElement.setVisible(true);
 						duplicateElement.setVisible(true);
+						changeFolder.setVisible(mcreator.getWorkspace().getFoldersRoot().getChildrenSize() > 0);
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
 						idElement.setVisible(true);
@@ -777,6 +780,20 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		FolderElement folderElement = mcreator.getWorkspace().getFoldersRoot();
+		{
+			JMenuItem jMenuItem = new JMenuItem(mcreator.getWorkspace().getWorkspaceSettings().getModID());
+			jMenuItem.addActionListener((e) -> changeFolder(folderElement));
+			changeFolder.add(jMenuItem);
+		}
+
+		for (int i = 0; i < folderElement.getChildrenSize(); i++) {
+			JMenuItem jMenuItem = new JMenuItem(folderElement.getChilren(i).getName());
+			int finalI = i;
+			jMenuItem.addActionListener((e) -> changeFolder(folderElement.getChilren(finalI)));
+			changeFolder.add(jMenuItem);
+		}
+
 		contextMenu.add(openElement);
 		contextMenu.add(codeElement);
 		contextMenu.addSeparator();
@@ -787,6 +804,7 @@ import java.util.stream.Collectors;
 		contextMenu.addSeparator();
 		contextMenu.add(searchElement);
 		contextMenu.add(duplicateElement);
+		contextMenu.add(changeFolder);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
 
@@ -1080,6 +1098,22 @@ import java.util.stream.Collectors;
 					reloadWorkspaceTab();
 				}
 			}
+		}
+	}
+
+	private void changeFolder(FolderElement e) {
+		List<IElement> selectedElements = list.getSelectedValuesList();
+
+		if (selectedElements.stream().anyMatch(i -> i instanceof ModElement)) {
+			for (IElement el : selectedElements) {
+				if (el instanceof ModElement mod) {
+					mod.setParentFolder(e);
+				}
+			}
+
+			mcreator.getWorkspace().markDirty();
+			getVerticalTab(WorkspacePanelMods.class).reloadElements();
+			reloadWorkspaceTab();
 		}
 	}
 
