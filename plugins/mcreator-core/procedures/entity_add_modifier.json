@@ -43,7 +43,7 @@
     {
       "type": "field_checkbox",
       "name": "permanent",
-      "checked": false
+      "checked": true
     }
   ],
   "inputsInline": true,
