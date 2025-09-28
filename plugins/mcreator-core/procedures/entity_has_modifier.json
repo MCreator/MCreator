@@ -14,7 +14,8 @@
     {
       "type": "field_resourcelocation",
       "name": "name",
-      "text": "name"
+      "text": "name",
+      "allowNamespace": false
     }
   ],
   "inputsInline": true,

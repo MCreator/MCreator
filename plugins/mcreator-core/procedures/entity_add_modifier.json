@@ -3,7 +3,8 @@
     {
       "type": "field_resourcelocation",
       "name": "name",
-      "text": "name"
+      "text": "name",
+      "allowNamespace": false
     },
     {
       "type": "field_data_list_selector",
