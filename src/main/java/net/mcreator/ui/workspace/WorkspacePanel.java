@@ -1501,7 +1501,7 @@ import java.util.stream.Collectors;
 					elementsCount.setIcon(new EmptyIcon(0, 0));
 				}
 
-				updateChangeFolderMenu();
+				updateFolderMenu();
 			}
 		}
 
@@ -1510,7 +1510,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private void updateChangeFolderMenu() {
+	private void updateFolderMenu() {
 		changeFolder.removeAll();
 
 		FolderElement folderElement = mcreator.getWorkspace().getFoldersRoot();
