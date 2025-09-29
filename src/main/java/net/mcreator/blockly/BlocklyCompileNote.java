@@ -26,7 +26,7 @@ public record BlocklyCompileNote(Type type, String message) implements Comparabl
 
 	@Override public int compareTo(BlocklyCompileNote o) {
 		if (this.type() == o.type()) {
-			return this.message().compareTo(o.message());
+			return 0;
 		} else {
 			return this.type().priority > o.type().priority ? -1 : 1;
 		}
