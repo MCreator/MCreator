@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 	public String tintType;
 	public boolean isItemTinted;
 	public NumberProcedure blockBounciness;
-	public NumberProcedure preventsFallDamage;
+	public NumberProcedure fallDamageInduced;
 
 	public String plantType;
 

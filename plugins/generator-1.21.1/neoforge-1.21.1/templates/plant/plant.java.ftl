@@ -219,7 +219,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	private void bounceUp(Entity entity) {
 		Vec3 vec3 = entity.getDeltaMovement();
 		if (vec3.y < 0.0) {
-			double d0 = entity instanceof LivingEntity ? 1.0 : 0.8;
+			double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
 			<#if hasProcedure(data.blockBounciness)>
 				float restitution = (float) <@procedureCode data.blockBounciness/>
 				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * restitution, vec3.z);

@@ -1178,6 +1178,8 @@ public class TestWorkspaceDataProvider {
 			plant.dropAmount = 4;
 			plant.xpAmountMin = 2;
 			plant.xpAmountMax = 5;
+			plant.blockBounciness = new NumberProcedure(emptyLists ? null : "number1", 0);
+			plant.fallDamageInduced = new NumberProcedure(emptyLists ? null : "number2", 1);
 			plant.useLootTableForDrops = !_true;
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
@@ -2088,8 +2090,8 @@ public class TestWorkspaceDataProvider {
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
-		block.blockBounciness = new NumberProcedure(emptyLists ? null : "number1", 0.0);
-		block.fallDamageInduced = new NumberProcedure(emptyLists ? null : "number1", 1.0);
+		block.blockBounciness = new NumberProcedure(emptyLists ? null : "number2", 0);
+		block.fallDamageInduced = new NumberProcedure(emptyLists ? null : "number3", 1);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
