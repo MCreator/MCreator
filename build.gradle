@@ -106,7 +106,7 @@ dependencies {
 
     // from maven
     implementation group: 'commons-io', name: 'commons-io', version: '2.20.0'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.19.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.14.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.2'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
@@ -132,7 +132,7 @@ dependencies {
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.4.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.17.0' // needed by discord-rpc.jar
+    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.18.0' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '2.0.0'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.6.1', classifier: 'no-natives'
