@@ -7,14 +7,16 @@
       "customEntryProviders": "enchantment"
     },
     {
-      "type": "input_value",
+      "type": "field_number",
       "name": "min",
-      "check": "Number"
+      "value": 1,
+      "precision": 1
     },
     {
-      "type": "input_value",
+      "type": "field_number",
       "name": "max",
-      "check": "Number"
+      "value": 5,
+      "precision": 1
     }
   ],
   "inputsInline": true,
@@ -26,16 +28,10 @@
   "mcreator": {
     "group": "enchantment",
     "toolbox_id": "items",
-    "toolbox_init": [
-      "<value name=\"min\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"max\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>"
-    ],
-    "inputs": [
+    "fields": [
+      "enchantment",
       "min",
       "max"
-    ],
-    "fields": [
-      "enchantment"
     ]
   }
 }
