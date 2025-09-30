@@ -145,7 +145,7 @@ dependencies {
     linux64 group: 'com.formdev', name: 'flatlaf', version: '3.6.1', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
-    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '5.13.4')
+    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '6.0.0')
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
