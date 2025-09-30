@@ -110,8 +110,8 @@ public class GTJSONTriggersBlocks {
 							<mutation inputs="1"></mutation>
 							<value name="item"><block type="mcitem_all"><field name="value">Blocks.STONE</field></block></value>
 							<value name="levelsSpent"><block type="math_number"><field name="NUM">1</field></block></value>
-							<value name="minLevel"><block type="math_number"><field name="NUM">1</field></block></value>
-							<value name="maxLevel"><block type="math_number"><field name="NUM">5</field></block></value>
+							<value name="min"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="max"><block type="math_number"><field name="NUM">5</field></block></value>
 							<value name="enchantment0">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);

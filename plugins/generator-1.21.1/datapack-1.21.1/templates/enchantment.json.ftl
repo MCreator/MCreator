@@ -19,7 +19,7 @@
   ],
   </#if>
   "weight": ${data.weight},
-  "max_level": ${data.maxLevel},
+  "max_level": ${data.max},
   "min_cost": {
     "base": 1,
     "per_level_above_first": 10

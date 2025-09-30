@@ -1,8 +1,8 @@
 {
 	"${generator.map(field$enchantment, "enchantments", 1)}": {
     	"levels": {
-    		"min": ${input$minLevel},
-    		"max": ${input$maxLevel}
+    		"min": ${input$min},
+    		"max": ${input$max}
     	}
     }
 }

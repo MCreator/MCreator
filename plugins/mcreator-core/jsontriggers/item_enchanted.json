@@ -22,7 +22,7 @@
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
-      "<value name=\"enchantment0\"><block type=\"enchantment_entry\"><field name=\"enchantment\"></field><value name=\"minLevel\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value><value name=\"maxLevel\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value></block></value>",
+      "<value name=\"enchantment0\"><block type=\"enchantment_entry\"><field name=\"enchantment\"></field><value name=\"min\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value><value name=\"max\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value></block></value>",
       "<value name=\"levelsSpent\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
     ],
     "inputs": [
