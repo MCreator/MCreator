@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "levelsSpent",
+      "check": "Number"
+    }
+  ],
+  "mutator": "item_enchanted_mutator",
+  "inputsInline": false,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 60,
+  "mcreator": {
+    "group": "enchantments",
+    "toolbox_id": "items",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "<value name=\"enchantment0\"><block type=\"enchantment_entry\"><field name=\"enchantment\"></field><field name=\"min\">1</field><field name=\"max\">5</field></block></value>",
+      "<value name=\"levelsSpent\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+    ],
+    "inputs": [
+      "item",
+      "levelsSpent"
+    ],
+    "repeating_inputs": [
+      "enchantment"
+    ]
+  }
+}

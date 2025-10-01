@@ -1,0 +1,37 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "enchantment",
+      "datalist": "enchantments",
+      "customEntryProviders": "enchantment"
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 1,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 5,
+      "precision": 1
+    }
+  ],
+  "inputsInline": true,
+  "output": "Enchantment",
+  "colour": 290,
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "group": "enchantment",
+    "toolbox_id": "items",
+    "fields": [
+      "enchantment",
+      "min",
+      "max"
+    ]
+  }
+}

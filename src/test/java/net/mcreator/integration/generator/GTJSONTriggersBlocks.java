@@ -63,15 +63,23 @@ public class GTJSONTriggersBlocks {
 
 			// Set selectors to some value
 
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
+							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
+							+ "</field></block>");
+
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
-			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
-							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
-							+ "</field></block>");
+			testXML = testXML.replace("<field name=\"effect\"></field>",
+					"<field name=\"effect\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllPotionEffects(modElement.getWorkspace())).getName() + "</field>");
+
+			testXML = testXML.replace("<field name=\"enchantment\"></field>",
+					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName() + "</field>");
 
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
@@ -80,10 +88,34 @@ public class GTJSONTriggersBlocks {
 					Collections.emptyList(), 1);
 
 			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				// If the block is not a special case, we can test it as a regular block
 				advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
 						+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>" + testXML
 						+ "</next></block></xml>";
+			} else {
+				switch (triggerBlock.getOutputType()) {
+				// Effect providers are tested using effect changed procedure block
+				case "Effect" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="player_effect_changed">
+							<mutation inputs="1"></mutation>
+							<value name="effect0">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				// Enchantment entries are tested using item enchanted procedure block
+				case "Enchantment" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="item_enchanted">
+							<mutation inputs="1"></mutation>
+							<value name="item"><block type="mcitem_all"><field name="value">Blocks.STONE</field></block></value>
+							<value name="levelsSpent"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="min"><block type="math_number"><field name="NUM">1</field></block></value>
+							<value name="max"><block type="math_number"><field name="NUM">5</field></block></value>
+							<value name="enchantment0">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				}
 			}
 
 			try {
