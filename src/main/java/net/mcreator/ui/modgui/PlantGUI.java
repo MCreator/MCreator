@@ -782,6 +782,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.generate_feature")));
 		spawning.add(generateFeature);
 
+		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		refreshSpawnProperties();
+
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
 				L10N.label("elementgui.plant.gen_chunk_count")));
 		spawning.add(frequencyOnChunks);
@@ -934,13 +937,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void refreshUnbreakableProperties() {
-		if (unbreakable.isSelected()) {
-			hardness.setEnabled(false);
-			resistance.setEnabled(false);
-		} else {
-			hardness.setEnabled(true);
-			resistance.setEnabled(true);
-		}
+		boolean isUnbreakable = unbreakable.isSelected();
+
+		hardness.setEnabled(!isUnbreakable);
+		resistance.setEnabled(!isUnbreakable);
+	}
+
+	private void refreshSpawnProperties() {
+		boolean canSpawn = generateFeature.isSelected();
+
+		frequencyOnChunks.setEnabled(canSpawn);
+		restrictionBiomes.setEnabled(canSpawn);
+		patchSize.setEnabled(canSpawn);
+		generateAtAnyHeight.setEnabled(canSpawn);
+		generationType.setEnabled(canSpawn);
 	}
 
 	@Override public void reloadDataLists() {
@@ -1090,6 +1100,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshSpawnProperties();
 	}
 
 	@Override public Plant getElementFromGUI() {
