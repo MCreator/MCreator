@@ -94,6 +94,7 @@ public abstract class MainMenuBar extends JMenuBar {
 		file.add(mcreator.getActionRegistry().importWorkspace);
 		file.add(mcreator.getActionRegistry().exportWorkspaceToZIP);
 		file.add(mcreator.getActionRegistry().exportWorkspaceToZIPWithRunDir);
+		file.add(mcreator.getActionRegistry().mergeExternalWorkspace);
 		file.addSeparator();
 		file.add(mcreator.getActionRegistry().closeWorkspace);
 		file.addSeparator();
