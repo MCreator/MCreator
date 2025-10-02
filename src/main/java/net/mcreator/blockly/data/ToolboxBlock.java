@@ -122,6 +122,10 @@ import java.util.Objects;
 		return toolboxCategory;
 	}
 
+	@Nullable public String getToolboxCategoryRaw() {
+		return toolbox_id;
+	}
+
 	public IBlockGenerator.BlockType getType() {
 		return type;
 	}

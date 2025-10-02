@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,30 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly;
+package net.mcreator.preferences.data;
 
-public record BlocklyCompileNote(Type type, String message) implements Comparable<BlocklyCompileNote> {
+import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.preferences.entries.IntegerEntry;
 
-	@Override public String toString() {
-		return type.name() + ": " + message;
+public class CodeStyleSection extends PreferencesSection {
+
+	public final IntegerEntry maximumImports;
+
+	CodeStyleSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		maximumImports = addEntry(new IntegerEntry("maximumImports", 5, 0, 100));
 	}
 
-	@Override public int compareTo(BlocklyCompileNote o) {
-		if (this.type() == o.type()) {
-			return 0;
-		} else {
-			return this.type().priority > o.type().priority ? -1 : 1;
-		}
-	}
-
-	public enum Type {
-		INFO(0), WARNING(1), ERROR(2);
-
-		private final int priority;
-
-		Type(int priority) {
-			this.priority = priority;
-		}
+	@Override public String getSectionKey() {
+		return "codeStyle";
 	}
 
 }

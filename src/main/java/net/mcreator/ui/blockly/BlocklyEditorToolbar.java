@@ -38,6 +38,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ProcedureGUI;
 import net.mcreator.util.ColorUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -283,10 +284,18 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	}
 
 	private String getHTMLForBlock(ToolboxBlock block) {
+		StringBuilder builder = new StringBuilder("<html>");
+
 		List<ToolboxCategory> categories = new ArrayList<>();
 		traverseCategories(categories, block.getToolboxCategory());
 
-		StringBuilder builder = new StringBuilder("<html>");
+		if (categories.isEmpty()) {
+			String category_raw = block.getToolboxCategoryRaw();
+			if (category_raw != null && !category_raw.isBlank()) {
+				categories.add(ToolboxCategory.tryGetBuiltin(category_raw));
+			}
+		}
+
 		for (int i = categories.size() - 1; i >= 0; i--) {
 			ToolboxCategory category = categories.get(i);
 			builder.append("<span style='background: #")
@@ -295,9 +304,15 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			if (i != 0)
 				builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
 		}
+
+		String name = block.getName();
+		name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
+		name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
+				""); // make sure to strip away potential reminders of %N parameters
+
 		builder.append("&nbsp;&nbsp;");
-		builder.append(block.getName()
-				.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+		builder.append(name.replaceAll("%\\d+?",
+				"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
 
 		return builder.toString();
 	}
