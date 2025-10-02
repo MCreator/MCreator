@@ -142,9 +142,17 @@ public class L10N {
 		if (key == null)
 			return null;
 
-		if (resourceBundle.containsKey(key))
-			return MessageFormat.format(resourceBundle.getString(key), parameters);
-		else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
+		if (resourceBundle.containsKey(key)) {
+			String value = resourceBundle.getString(key);
+
+			if (resourceBundle.containsKey(value) && !value.equals(key)) {
+				Set<String> visited = new HashSet<>();
+				visited.add(key);
+				value = resolveReference(resourceBundle, value, visited);
+			}
+
+			return MessageFormat.format(value, parameters);
+		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description")))
 			return null;
 		else if (TestUtil.isTestingEnvironment())
@@ -153,6 +161,25 @@ public class L10N {
 			return null;
 		else
 			return key;
+	}
+
+	private static String resolveReference(ResourceBundle resourceBundle, String key, Set<String> visited) {
+		if (visited.contains(key)) {
+			LOG.warn("Circular reference detected for translation key: {}", key);
+			return key;
+		}
+
+		if (!resourceBundle.containsKey(key))
+			return key;
+
+		String value = resourceBundle.getString(key);
+
+		if (resourceBundle.containsKey(value) && !value.equals(key)) {
+			visited.add(key);
+			return resolveReference(resourceBundle, value, visited);
+		}
+
+		return value;
 	}
 
 	public static JLabel label(String key, Object... parameter) {
