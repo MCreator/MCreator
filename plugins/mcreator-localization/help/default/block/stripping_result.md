@@ -1,0 +1,1 @@
+This parameter controls what this block turns into when it's stripped with an axe.

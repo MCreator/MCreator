@@ -1128,6 +1128,8 @@ public class TestWorkspaceDataProvider {
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocks).getName());
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -2040,6 +2042,7 @@ public class TestWorkspaceDataProvider {
 		block.slipperiness = 12.342;
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
+		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 		block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksWithItemForm).getName());

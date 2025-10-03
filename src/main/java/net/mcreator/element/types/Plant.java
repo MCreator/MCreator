@@ -109,6 +109,7 @@ import java.util.stream.Collectors;
 	public MItemBlock creativePickItem;
 	public String offsetType;
 	public String aiPathNodeType;
+	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
 	public int flammability;

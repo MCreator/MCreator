@@ -155,6 +155,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
+	private final MCItemHolder strippingResult = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
@@ -661,7 +662,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp2, soundProperties)))));
 		pane3.setOpaque(false);
 
-		JPanel advancedProperties = new JPanel(new GridLayout(8, 2, 10, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
 		advancedProperties.setOpaque(false);
 
 		forceTicking.setOpaque(false);
@@ -691,6 +692,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ai_path_node_type"),
 				L10N.label("elementgui.common.ai_path_node_type")));
 		advancedProperties.add(aiPathNodeType);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/stripping_result"),
+				L10N.label("elementgui.block.stripping_result")));
+		advancedProperties.add(PanelUtils.centerInPanel(strippingResult));
 
 		advancedProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("plant/type"), L10N.label("elementgui.plant.type")));
@@ -1050,6 +1055,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
 		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
+		strippingResult.setBlock(plant.strippingResult);
 		creativePickItem.setBlock(plant.creativePickItem);
 		ignitedByLava.setSelected(plant.ignitedByLava);
 		flammability.setValue(plant.flammability);
@@ -1167,6 +1173,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		plant.strippingResult = strippingResult.getBlock();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.ignitedByLava = ignitedByLava.isSelected();
 		plant.flammability = (int) flammability.getValue();
