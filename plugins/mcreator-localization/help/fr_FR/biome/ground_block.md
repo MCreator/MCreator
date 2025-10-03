@@ -6,10 +6,10 @@ Ce bloc devrait être tagué dans les étiquettes de blocs `minecraft:dirt` pour
 
 Évitez d'utiliser des blocs complexes tels que :
 
-* Les blocs transparents
-* Les blocs qui ne sont pas des cubes complets
+* bloc transparent
+* blocs qui ne sont pas cube complet
 * Bloc qui est considéré comme des blocs entité ou qui ont un inventaire
 * blocs qui sont utilisés comme des point d'intérêts
-* Les blocs qui ticks
+* blocs qui ticks
 
 Si vous utilisez ce genre de blocs, la génération de la map va être plus lente et le monde chargé peut lagger sévèrement.

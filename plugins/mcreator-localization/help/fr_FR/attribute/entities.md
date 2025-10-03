@@ -1,0 +1,1 @@
+Les entités sélectionnées ici auront cet attribut présent défini à sa valeur par défaut lors de son apparition.

@@ -1,0 +1,1 @@
+Ceci est un aperçu du motif blanc lorsqu'il est appliqué sur une bannière noire, avec la face avant sur la gauche.

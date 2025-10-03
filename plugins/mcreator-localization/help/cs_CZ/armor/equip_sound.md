@@ -1,0 +1,1 @@
+Zvuk, který se vyvolá když hráč si nasadí brnění.
