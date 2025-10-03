@@ -1,0 +1,1 @@
+Si cette option est cochée, alors ce bloc pourra prend feu quand il sera proche de la lave.

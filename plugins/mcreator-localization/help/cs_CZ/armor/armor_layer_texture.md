@@ -1,0 +1,1 @@
+Textura brnění, která bude zobrazena, když hráč bude nosit toto brnění.
