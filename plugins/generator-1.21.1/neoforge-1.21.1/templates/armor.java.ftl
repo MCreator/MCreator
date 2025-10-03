@@ -177,6 +177,8 @@ import net.minecraft.client.model.Model;
 		<@piglinNeutral data.helmetPiglinNeutral/>
 
 		<@onArmorTick data.onHelmetTick/>
+
+		<@canFly data.helmetCanFly "HEAD"/>
 	}
 	</#if>
 
@@ -200,6 +202,8 @@ import net.minecraft.client.model.Model;
 		<@piglinNeutral data.bodyPiglinNeutral/>
 
 		<@onArmorTick data.onBodyTick/>
+
+		<@canFly data.bodyCanFly/>
 	}
 	</#if>
 
@@ -223,6 +227,8 @@ import net.minecraft.client.model.Model;
 		<@piglinNeutral data.leggingsPiglinNeutral/>
 
 		<@onArmorTick data.onLeggingsTick/>
+
+		<@canFly data.leggingsCanFly "LEGS"/>
 	}
 	</#if>
 
@@ -246,6 +252,8 @@ import net.minecraft.client.model.Model;
 		<@piglinNeutral data.bootsPiglinNeutral/>
 
 		<@onArmorTick data.onBootsTick/>
+
+		<@canFly data.bootsCanFly "FEET"/>
 	}
 	</#if>
 

@@ -1,0 +1,1 @@
+This parameter controls if the item makes the player fly, similar to Elytra.
