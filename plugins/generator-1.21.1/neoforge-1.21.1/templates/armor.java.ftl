@@ -38,8 +38,11 @@ package ${package}.item;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
-@EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
+@EventBusSubscriber public abstract class ${name}Item extends <#if !(data.isHorseArmor!false)>ArmorItem<#else>AnimalArmorItem</#if> {
 
+	<#if data.isHorseArmor!false>
+		public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("${modid}");
+	</#if>
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
 
 	@SubscribeEvent public static void registerArmorMaterial(RegisterEvent event) {
@@ -68,10 +71,15 @@ import net.minecraft.client.model.Model;
 		});
 	}
 
+	<#if data.isHorseArmor!false>
+		public static DeferredItem<Item> HORSE_ARMOR = ITEMS.register("${name?lower_case}",
+		() -> new AnimalArmorItem(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1)));
+	</#if>
+
 	<#if (data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet) || (data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody) ||
 		 (data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings) || (data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots)>
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {
-		<#if data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet>
+		<#if data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet && !(data.isHorseArmor!false)>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -111,7 +119,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
 		</#if>
 
-		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings>
+		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings && !(data.isHorseArmor!false)>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -131,7 +139,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
 		</#if>
 
-		<#if data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots>
+		<#if data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots && !(data.isHorseArmor!false)>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
@@ -153,11 +161,17 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	public ${name}Item(ArmorItem.Type type, Item.Properties properties) {
-		super(ARMOR_MATERIAL, type, properties);
-	}
+	<#if !(data.isHorseArmor!false)>
+		public ${name}Item(ArmorItem.Type type, Item.Properties properties) {
+			super(ARMOR_MATERIAL, type, properties);
+		}
+	<#else>
+		public ${name}Item(Holder<ArmorMaterial> material, AnimalArmorItem.BodyType bodyType, boolean hasOverlay, Item.Properties properties) {
+			super(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1));
+		}
+	</#if>
 
-	<#if data.enableHelmet>
+	<#if data.enableHelmet && !(data.isHorseArmor!false)>
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
@@ -180,11 +194,15 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	<#if data.enableBody>
+	<#if data.enableBody || data.isHorseArmor!false>
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			<#if !(data.isHorseArmor)>
+				super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			<#else>
+				super(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().durability(${data.maxDamage}));
+			</#if>
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -203,7 +221,7 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	<#if data.enableLeggings>
+	<#if data.enableLeggings && !(data.isHorseArmor!false)>
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
@@ -226,7 +244,7 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	<#if data.enableBoots>
+	<#if data.enableBoots && !(data.isHorseArmor!false)>
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
