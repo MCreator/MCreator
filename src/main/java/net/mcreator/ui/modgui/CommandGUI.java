@@ -108,8 +108,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
+		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG,
+						blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
