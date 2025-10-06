@@ -29,9 +29,9 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
-<#include "procedures.java.ftl">
-<#include "triggers.java.ftl">
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
+<#include "../triggers.java.ftl">
 
 package ${package}.item;
 

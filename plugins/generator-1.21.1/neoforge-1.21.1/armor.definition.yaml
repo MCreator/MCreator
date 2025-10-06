@@ -1,5 +1,5 @@
 templates:
-  - template: armor.java.ftl
+  - template: armor/armor.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
 # Helmet item model
@@ -121,6 +121,20 @@ templates:
       - "bootsItemRenderType #= 2"
     variables: "item=boots"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
+
+global_templates:
+  - template: armor/mixin_player.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('armor')?filter(e -> e.helmetCanFly || e.leggingsCanFly || e.bootsCanFly)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/PlayerMixin.java"
+  - template: armor/mixin_localplayer.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('armor')?filter(e -> e.helmetCanFly || e.leggingsCanFly || e.bootsCanFly)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/LocalPlayerMixin.java"
+  - template: armor/mixin_livingentity.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('armor')?filter(e -> e.helmetCanFly || e.leggingsCanFly || e.bootsCanFly)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/LivingEntityMixin.java"
 
 tags:
   - tag: ITEMS:minecraft:head_armor
