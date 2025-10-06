@@ -23,6 +23,8 @@ import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList;
+import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -31,6 +33,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
@@ -48,8 +51,16 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
 
+		ValidationGroup validationGroup = new ValidationGroup() {
+			@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
+				validationElements.clear();
+				villagerTradeProfessions.getValidatorElements().forEach(this::addValidationElement);
+				return super.getGroupedValidationResults();
+			}
+		};
+
 		pane.add(villagerTradeProfessions);
-		addPage(pane, false);
+		addPage(pane, false).validate(validationGroup);
 
 		// Add first pool
 		if (!isEditingMode()) {

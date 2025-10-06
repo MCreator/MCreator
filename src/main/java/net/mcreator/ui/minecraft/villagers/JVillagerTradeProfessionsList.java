@@ -24,8 +24,11 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,4 +72,11 @@ public class JVillagerTradeProfessionsList
 		});
 	}
 
+	public List<MCItemHolder> getValidatorElements() {
+		List<MCItemHolder> mcItemHolders = new ArrayList<>();
+		for (JVillagerTradeProfession jVillagerTradeEntry : entryList) {
+			Collections.addAll(mcItemHolders, jVillagerTradeEntry.getValidatorElements().toArray(new MCItemHolder[0]));
+		}
+		return mcItemHolders;
+	}
 }
