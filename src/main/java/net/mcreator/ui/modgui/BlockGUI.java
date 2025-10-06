@@ -1237,6 +1237,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.generate_feature")));
 		genPanel.add(generateFeature);
 
+		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		refreshSpawnProperties();
+
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
 		genPanel.add(blocksToReplace);
@@ -1539,13 +1542,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshUnbreakableProperties() {
-		if (unbreakable.isSelected()) {
-			hardness.setEnabled(false);
-			resistance.setEnabled(false);
-		} else {
-			hardness.setEnabled(true);
-			resistance.setEnabled(true);
-		}
+		boolean isUnbreakable = unbreakable.isSelected();
+
+		hardness.setEnabled(!isUnbreakable);
+		resistance.setEnabled(!isUnbreakable);
 	}
 
 	private void refreshVibrationProperties() {
@@ -1555,6 +1555,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		vibrationalEvents.setEnabled(isSensitiveToVibration);
 		canReceiveVibrationCondition.setEnabled(isSensitiveToVibration);
 		onReceivedVibration.setEnabled(isSensitiveToVibration);
+	}
+
+	private void refreshSpawnProperties() {
+		boolean canSpawn = generateFeature.isSelected();
+
+		generationShape.setEnabled(canSpawn);
+		generateHeight.setEnabled(canSpawn);
+		frequencyOnChunk.setEnabled(canSpawn);
+		frequencyPerChunks.setEnabled(canSpawn);
+		restrictionBiomes.setEnabled(canSpawn);
+		blocksToReplace.setEnabled(canSpawn);
 	}
 
 	@Override public void reloadDataLists() {
@@ -1761,6 +1772,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshSpawnProperties();
 	}
 
 	@Override public Block getElementFromGUI() {

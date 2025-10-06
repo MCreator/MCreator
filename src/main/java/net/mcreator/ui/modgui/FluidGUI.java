@@ -277,6 +277,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
+		spawnParticles.addActionListener(e -> refreshDripSettings());
+		refreshDripSettings();
+
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
 				L10N.label("elementgui.fluid.drip_particle")));
 		destal.add(dripParticle);
@@ -478,9 +481,15 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	private void refreshFogSettings() {
-		fogColor.setEnabled(hasFog.isSelected());
-		fogStartDistance.setEnabled(hasFog.isSelected());
-		fogEndDistance.setEnabled(hasFog.isSelected());
+		boolean hasFogSelected = hasFog.isSelected();
+
+		fogColor.setEnabled(hasFogSelected);
+		fogStartDistance.setEnabled(hasFogSelected);
+		fogEndDistance.setEnabled(hasFogSelected);
+	}
+
+	private void refreshDripSettings() {
+		dripParticle.setEnabled(spawnParticles.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -557,6 +566,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		specialInformation.setEnabled(generateBucket.isSelected());
 
 		refreshFogSettings();
+		refreshDripSettings();
 	}
 
 	@Override public Fluid getElementFromGUI() {
