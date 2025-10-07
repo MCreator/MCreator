@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -108,6 +109,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 			else
 				LOG.warn("Failed to remove element files for element {}", element);
 		}
+
+		// remove any potential references to this mod element in tags
+		TagsUtils.removeTagsForModElement(workspace, element);
 
 		// after we don't need the definition anymore, remove actual files
 		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();

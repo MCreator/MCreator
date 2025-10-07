@@ -334,7 +334,7 @@ public class Generator implements IGenerator, Closeable {
 		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
 
-		// delete tag elements associated with the mod element from the workspace
+		// delete managed tag entries/elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
 
 		// delete tab sorting info associated with the mod element from the workspace
