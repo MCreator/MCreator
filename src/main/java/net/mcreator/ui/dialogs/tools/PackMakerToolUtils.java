@@ -20,6 +20,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -51,17 +52,19 @@ public class PackMakerToolUtils {
 	}
 
 	public static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
-		// Create tag if it doesn't exist yet
-		TagElement tag = new TagElement(tagType, tagName);
-		if (!workspace.getTagElements().containsKey(tag)) {
-			workspace.addTagElement(tag);
-		}
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
+			// Create tag if it doesn't exist yet
+			TagElement tag = new TagElement(tagType, tagName);
+			if (!workspace.getTagElements().containsKey(tag)) {
+				workspace.addTagElement(tag);
+			}
 
-		// Add entries if they're not already contained in the tag (in normal or managed form)
-		ArrayList<String> tagEntries = workspace.getTagElements().get(tag);
-		for (String entry : entries) {
-			if (!tagEntries.contains(entry) && !tagEntries.contains(TagElement.makeEntryManaged(entry))) {
-				tagEntries.add(entry);
+			// Add entries if they're not already contained in the tag (in normal or managed form)
+			ArrayList<String> tagEntries = workspace.getTagElements().get(tag);
+			for (String entry : entries) {
+				if (!tagEntries.contains(entry) && !tagEntries.contains(TagElement.makeEntryManaged(entry))) {
+					tagEntries.add(entry);
+				}
 			}
 		}
 	}
