@@ -100,7 +100,7 @@ public abstract class ${name}Item extends Item {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if !data.isHorseArmor!false)>.humanoidArmor<#else>.horseArmor</#if>(ARMOR_MATERIAL<#if !data.isHorseArmor>, ArmorType.CHESTPLATE</#if>));
+			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.isHorseArmor>.horseArmor<#else>.humanoidArmor</#if>(ARMOR_MATERIAL<#if !data.isHorseArmor>, ArmorType.CHESTPLATE</#if>));
 		}
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
