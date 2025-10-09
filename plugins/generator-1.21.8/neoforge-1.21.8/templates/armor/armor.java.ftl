@@ -39,9 +39,7 @@ import java.util.Map;
 
 public abstract class ${name}Item extends Item {
 
-	<#if data.isHorseArmor>
-		public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("${modid}");
-	</#if>
+	<#if data.isHorseArmor>public static DeferredItem<Item> HORSE_ARMOR = null;</#if>
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},
 		Map.of(
@@ -67,13 +65,15 @@ public abstract class ${name}Item extends Item {
 		ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
 	);
 	<#if data.isHorseArmor>
-		public static final DeferredItem<Item> HORSE_ARMOR =
-			ITEMS.registerItem("${name?lower_case}", props -> new Item(
-			new Item.Properties()
-				.horseArmor(ARMOR_MATERIAL)
-				.durability(500)
-				.rarity(Rarity.RARE)<#if !(data.bodyImmuneToFire)>));</#if>
-				<#if data.bodyImmuneToFire>.fireResistant()));</#if>
+		@SubscribeEvent public static void registerItems(RegisterEvent event) {
+			HORSE_ARMOR =
+				${JavaModName}Items.REGISTRY.registerItem("${name?lower_case}", props -> new Item(
+				new Item.Properties()
+					.horseArmor(ARMOR_MATERIAL)
+					.durability(500)
+					.rarity(Rarity.RARE)<#if !(data.bodyImmuneToFire)>));</#if>
+					<#if data.bodyImmuneToFire>.fireResistant()));</#if>
+		}
 	</#if>
 
 	private ${name}Item(Item.Properties properties) {
