@@ -277,7 +277,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 										recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (m == JOptionPane.YES_OPTION) {
-							FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+							FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 							reloadRecents();
 						}
 					}
@@ -361,7 +361,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (m == 0) {
-					FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+					FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 					reloadRecents();
 				}
 			}
