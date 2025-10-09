@@ -40,9 +40,6 @@ import net.minecraft.client.model.Model;
 
 @EventBusSubscriber public abstract class ${name}Item extends <#if data.isHorseArmor>Animal</#if>ArmorItem {
 
-	<#if data.isHorseArmor>
-		public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("${modid}");
-	</#if>
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
 
 	@SubscribeEvent public static void registerArmorMaterial(RegisterEvent event) {
@@ -72,7 +69,7 @@ import net.minecraft.client.model.Model;
 	}
 
 	<#if data.isHorseArmor>
-		public static DeferredItem<Item> HORSE_ARMOR = ITEMS.register("${name?lower_case}",
+		public static DeferredItem<Item> HORSE_ARMOR = ${JavaModName}Items.REGISTRY.register("${name?lower_case}",
 		() -> new AnimalArmorItem(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1)<#if data.bodyImmuneToFire>.fireResistant()</#if>));
 	</#if>
 
