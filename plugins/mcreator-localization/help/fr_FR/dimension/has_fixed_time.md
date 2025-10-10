@@ -1,0 +1,1 @@
+Si ce paramètre est activé, le temps sera fixé à la valeur donnée à l'intérieur de cette dimension.
