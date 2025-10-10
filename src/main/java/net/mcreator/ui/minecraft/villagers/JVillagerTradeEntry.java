@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 
 import javax.swing.*;
@@ -157,7 +158,7 @@ public class JVillagerTradeEntry extends JPanel {
 		priceMultiplier.setValue(e.priceMultiplier);
 	}
 
-	public MCItemHolder[] getValidatorElements() {
-		return new MCItemHolder[] { price1, offer };
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(price1, offer);
 	}
 }

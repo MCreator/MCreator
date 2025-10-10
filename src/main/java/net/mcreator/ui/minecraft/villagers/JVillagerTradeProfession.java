@@ -31,13 +31,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -140,11 +139,9 @@ public class JVillagerTradeProfession extends JEntriesList {
 			});
 	}
 
-	public List<MCItemHolder> getValidatorElements() {
-		List<MCItemHolder> mcItemHolders = new ArrayList<>();
-		for (JVillagerTradeEntry jVillagerTradeEntry : entryList) {
-			Collections.addAll(mcItemHolders, jVillagerTradeEntry.getValidatorElements());
-		}
-		return mcItemHolders;
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
+		return validationResult;
 	}
 }

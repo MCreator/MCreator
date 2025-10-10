@@ -25,7 +25,6 @@ import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
 import java.util.List;
@@ -72,15 +71,8 @@ public class JVillagerTradeProfessionsList
 	}
 
 	public AggregatedValidationResult getValidationResult() {
-		for (JVillagerTradeProfession profession : entryList) {
-			for (var holder : profession.getValidatorElements()) {
-				var validationStatus = holder.getValidationStatus();
-				if (validationStatus.getValidationResultType() != Validator.ValidationResultType.PASSED) {
-					return new AggregatedValidationResult.FAIL(validationStatus.getMessage());
-				}
-			}
-		}
-
-		return new AggregatedValidationResult.PASS();
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
+		return validationResult;
 	}
 }
