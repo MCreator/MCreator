@@ -1,0 +1,38 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "effect",
+      "datalist": "effects",
+      "customEntryProviders": "effect"
+    },
+    {
+      "type": "input_value",
+      "name": "minAmplifier",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "minDuration",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Effect",
+  "colour": 250,
+  "mcreator": {
+    "group": "effects",
+    "toolbox_id": "entities",
+    "toolbox_init": [
+      "<value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value>"
+    ],
+    "inputs": [
+      "minAmplifier",
+      "minDuration"
+    ],
+    "fields": [
+      "effect"
+    ]
+  }
+}

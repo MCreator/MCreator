@@ -287,3 +287,20 @@ Blockly.Extensions.registerMutator('fixed_placement_mutator', simpleRepeatingInp
                 .appendField(new Blockly.FieldNumber(0, null, null, 1), 'z' + index)
         }, false, ['x', 'y', 'z']),
     undefined, ['fixed_placement_mutator_input']);
+
+// Mutators for advancement triggers
+Blockly.Extensions.registerMutator('player_effect_changed_mutator', simpleRepeatingInputMixin(
+        'player_effect_changed_mutator_container', 'player_effect_changed_mutator_input', 'effect',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('Effect').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['player_effect_changed_mutator_input']);
+
+Blockly.Extensions.registerMutator('item_enchanted_mutator', simpleRepeatingInputMixin(
+        'item_enchanted_mutator_container', 'item_enchanted_mutator_input', 'enchantment',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('Enchantment').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['item_enchanted_mutator_input']);
