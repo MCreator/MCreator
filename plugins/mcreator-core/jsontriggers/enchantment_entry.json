@@ -26,8 +26,7 @@
     "min_max_fields_validator"
   ],
   "mcreator": {
-    "group": "enchantment",
-    "toolbox_id": "items",
+    "toolbox_id": "conditions",
     "fields": [
       "enchantment",
       "min",

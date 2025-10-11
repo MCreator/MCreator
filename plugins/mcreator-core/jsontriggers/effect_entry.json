@@ -21,8 +21,7 @@
   "output": "Effect",
   "colour": 250,
   "mcreator": {
-    "group": "effects",
-    "toolbox_id": "entities",
+    "toolbox_id": "conditions",
     "toolbox_init": [
       "<value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
       "<value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value>"
