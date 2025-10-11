@@ -62,6 +62,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -76,7 +77,7 @@ public final class MCreatorApplication {
 
 	private static boolean applicationStarted = false;
 
-	private final List<MCreator> openMCreators = new ArrayList<>();
+	private final List<MCreator> openMCreators = new CopyOnWriteArrayList<>();
 
 	private WorkspaceSelector workspaceSelector;
 	private DeviceInfo deviceInfo;
