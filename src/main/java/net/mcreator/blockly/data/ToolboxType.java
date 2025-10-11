@@ -24,6 +24,5 @@ public record ToolboxType(String name) {
 	public static final ToolboxType PROCEDURE = new ToolboxType("procedure");
 	public static final ToolboxType COMMAND = new ToolboxType("command");
 	public static final ToolboxType FEATURE = new ToolboxType("feature");
-	public static final ToolboxType JSON_TRIGGER = new ToolboxType("json_trigger");
 	public static final ToolboxType EMPTY = new ToolboxType("empty");
 }

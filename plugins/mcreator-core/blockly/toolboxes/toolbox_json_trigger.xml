@@ -1,7 +1,0 @@
-<xml id="toolbox">
-    <custom-other/>
-    <sep/>
-    <category name="${t:blockly.category.conditions}" colour="300">
-        <custom-conditions/>
-    </category>
-</xml>
