@@ -17,6 +17,7 @@
   "nextStatement": null,
   "colour": 60,
   "mcreator": {
+    "group": "enchantments",
     "toolbox_id": "items",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",

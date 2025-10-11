@@ -5,6 +5,7 @@
   "nextStatement": null,
   "colour": 195,
   "mcreator": {
+    "group": "effects",
     "toolbox_id": "entities",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
