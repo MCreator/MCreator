@@ -297,6 +297,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override protected void initGUI() {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
+		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
