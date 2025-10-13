@@ -152,8 +152,8 @@ public class WoodPackMakerTool {
 				mcreator.getFolderManager().getTextureFile(logTextureName, TextureType.BLOCK));
 
 		// then we generate the stripped log side texture
-		ImageIcon strippedLogSide = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/stripped_log_side.png")), strippedColor, true);
+		ImageIcon strippedLogSide = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/stripped_log_side.png")), strippedColor, true);
 		String strippedLogSideTextureName = "stripped_" + registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogSide.getImage()),
 				mcreator.getFolderManager().getTextureFile(strippedLogSideTextureName, TextureType.BLOCK));
@@ -502,8 +502,8 @@ public class WoodPackMakerTool {
 		PackMakerToolUtils.addTagEntries(workspace, TagType.BLOCKS, "minecraft:logs_that_burn",
 				"TAG:mod:" + registryName + "_logs");
 		PackMakerToolUtils.addTagEntries(workspace, TagType.BLOCKS, "minecraft:planks", planksEntry);
-		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "mod:" + registryName + "_logs", logEntry,
-				woodEntry, strippedLogEntry, strippedWoodEntry);
+		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "mod:" + registryName + "_logs", logEntry, woodEntry,
+				strippedLogEntry, strippedWoodEntry);
 		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "minecraft:logs_that_burn",
 				"TAG:mod:" + registryName + "_logs");
 		PackMakerToolUtils.addTagEntries(workspace, TagType.ITEMS, "minecraft:planks", planksEntry);

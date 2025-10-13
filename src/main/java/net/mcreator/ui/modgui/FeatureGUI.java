@@ -145,8 +145,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel, null, featureHelperButton);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
+				featureHelperButton);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 

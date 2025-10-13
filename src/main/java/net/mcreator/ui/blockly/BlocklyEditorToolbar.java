@@ -70,11 +70,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
 	}
 
-	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel, boolean hasSearchBar) {
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			boolean hasSearchBar) {
 		this(mcreator, blocklyEditorType, blocklyPanel, null, hasSearchBar);
 	}
 
-	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel, ProcedureGUI procedureGUI, JComponent... extraComponents) {
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			ProcedureGUI procedureGUI, JComponent... extraComponents) {
 		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
 	}
 

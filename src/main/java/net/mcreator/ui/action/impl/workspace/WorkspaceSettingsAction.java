@@ -98,8 +98,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// Update file references of workspace core files
 				if (mcreator.getWorkspace().getMetadata("files") instanceof List<?> fileList) {
-					List<String> updatedFileList = fileList.stream()
-							.filter(item -> item instanceof String)
+					List<String> updatedFileList = fileList.stream().filter(item -> item instanceof String)
 							.map(item -> (String) item)
 							.map(path -> path.replace(originalPackageSubpath, newPackageSubpath))
 							.collect(Collectors.toList());
