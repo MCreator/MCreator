@@ -234,6 +234,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
 				L10N.label("elementgui.tool.blocks_drop_tier")));
 		selp.add(blockDropsTier);
+		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		selp.add(new JEmptyBox());
 		selp.add(additionalDropCondition);

@@ -81,6 +81,15 @@ public class BlockItemIcons {
 		put("Shears", 				"SHEARS");
 		put("Fishing rod",			"FISHING_ROD");
 
+		//Tool tiers
+		put("NONE", 				"BARRIER");
+		put("WOOD", 				"OAK_WOOD");
+		put("STONE", 				"STONE#0");
+		put("IRON", 				"IRON_INGOT");
+		put("GOLD", 				"GOLD_INGOT");
+		put("DIAMOND", 				"DIAMOND");
+		put("NETHERITE", 			"NETHERITE_INGOT");
+
 		//NewBlockGUI
 		put("pickaxe", 				"IRON_PICKAXE");
 		put("axe", 					"IRON_AXE");

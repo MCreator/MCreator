@@ -872,6 +872,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
 				L10N.label("elementgui.block.vanilla_tool_tier")));
 		selp3.add(vanillaToolTier);
+		vanillaToolTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
