@@ -288,6 +288,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
+		master.append(master.getTailSection());
+		master.clearSections();
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
