@@ -510,31 +510,53 @@ tags:
   - tag: BLOCKS:minecraft:slabs
     condition: "blockBase %= Slab"
   - tag: BLOCKS:minecraft:wooden_fences
-    condition: "${(data.blockBase! == 'Fence') && (data.blockSetType == 'OAK')}"
+    condition:
+      - "blockBase %= Fence"
+      - "blockSetType %= OAK"
   - tag: BLOCKS:minecraft:fences
-    condition: "${(data.blockBase! == 'Fence') && (data.blockSetType != 'OAK')}"
+    condition:
+      - "blockBase %= Fence"
+      - "${data.blockSetType != 'OAK'}"
   - tag: BLOCKS:minecraft:walls
     condition: "blockBase %= Wall"
   - tag: BLOCKS:minecraft:leaves
     condition: "blockBase %= Leaves"
   - tag: BLOCKS:minecraft:wooden_trapdoors
-    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType == 'OAK')}"
+    condition:
+      - "blockBase %= TrapDoor"
+      - "blockSetType %= OAK"
   - tag: BLOCKS:minecraft:trapdoors
-    condition: "${(data.blockBase! == 'TrapDoor') && (data.blockSetType != 'OAK')}"
+    condition:
+      - "blockBase %= TrapDoor"
+      - "${data.blockSetType != 'OAK'}"
   - tag: BLOCKS:minecraft:wooden_doors
-    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'OAK')}"
+    condition:
+      - "blockBase %= Door"
+      - "blockSetType %= OAK"
   - tag: BLOCKS:minecraft:doors
-    condition: "${(data.blockBase! == 'Door') && (data.blockSetType != 'OAK')}"
+    condition:
+      - "blockBase %= Door"
+      - "${data.blockSetType != 'OAK'}"
   - tag: BLOCKS:minecraft:mob_interactable_doors
-    condition: "${(data.blockBase! == 'Door') && (data.blockSetType == 'STONE')}"
+    condition:
+      - "blockBase %= Door"
+      - "blockSetType %= STONE"
   - tag: BLOCKS:minecraft:wooden_pressure_plates
-    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType == 'OAK')}"
+    condition:
+      - "blockBase %= PressurePlate"
+      - "blockSetType %= OAK"
   - tag: BLOCKS:minecraft:pressure_plates
-    condition: "${(data.blockBase! == 'PressurePlate') && (data.blockSetType != 'OAK')}"
+    condition:
+      - "blockBase %= PressurePlate"
+      - "${data.blockSetType != 'OAK'}"
   - tag: BLOCKS:minecraft:wooden_buttons
-    condition: "${(data.blockBase! == 'Button') && (data.blockSetType == 'OAK')}"
+    condition:
+      - "blockBase %= Button"
+      - "blockSetType %= OAK"
   - tag: BLOCKS:minecraft:buttons
-    condition: "${(data.blockBase! == 'Button') && (data.blockSetType != 'OAK')}"
+    condition:
+      - "blockBase %= Button"
+      - "${data.blockSetType != 'OAK'}"
   - tag: BLOCKS:minecraft:flower_pots
     condition: "blockBase %= FlowerPot"
 

@@ -81,7 +81,9 @@ list_templates:
 
 tags:
   - tag: ITEMS:minecraft:meat
-    condition: "${data.isFood && data.isMeat}"
+    condition:
+      - isFood
+      - isMeat
   - tag: ITEMS:minecraft:enchantable/durability
     condition: ${data.damageCount != 0}
   - tag: ITEMS:minecraft:music_discs
