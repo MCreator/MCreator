@@ -218,7 +218,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		if (hasBlockItem && !itemTexture.isEmpty()) {
+		if (hasBlockItem && itemTexture != null && !itemTexture.isEmpty()) {
 			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		}
 		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.BLOCK), 32);

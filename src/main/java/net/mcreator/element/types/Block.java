@@ -327,7 +327,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		if ((hasBlockItem && !itemTexture.isEmpty()) || (renderType() == 4)) {
+		if ((hasBlockItem && itemTexture != null && !itemTexture.isEmpty()) || (renderType() == 4)) {
 			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else if (renderType() == 10) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
