@@ -125,7 +125,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		bar.add(help);
 	}
 
-	@Override void deleteCurrentlySelected() {
+	@Override protected void deleteCurrentlySelected() {
 		List<Model> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
