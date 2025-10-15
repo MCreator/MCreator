@@ -68,11 +68,6 @@ import net.minecraft.client.model.Model;
 		});
 	}
 
-	<#if data.isHorseArmor>
-		public static DeferredItem<Item> HORSE_ARMOR = ${JavaModName}Items.REGISTRY.register("${name?lower_case}",
-		() -> new AnimalArmorItem(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1)<#if data.bodyImmuneToFire>.fireResistant()</#if>));
-	</#if>
-
 	<#if (data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet) || (data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody) ||
 		 (data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings) || (data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots)>
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {

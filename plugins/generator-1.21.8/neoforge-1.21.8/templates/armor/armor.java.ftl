@@ -39,7 +39,6 @@ import java.util.Map;
 
 public abstract class ${name}Item extends Item {
 
-	<#if data.isHorseArmor>public static DeferredItem<Item> HORSE_ARMOR = null;</#if>
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},
 		Map.of(
@@ -64,17 +63,6 @@ public abstract class ${name}Item extends Item {
 		TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")), <#-- data.repairItems are put into a tag -->
 		ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
 	);
-	<#if data.isHorseArmor>
-		@SubscribeEvent public static void registerItems(RegisterEvent event) {
-			HORSE_ARMOR =
-				${JavaModName}Items.REGISTRY.registerItem("${name?lower_case}", props -> new Item(
-				new Item.Properties()
-					.horseArmor(ARMOR_MATERIAL)
-					.durability(500)
-					.rarity(Rarity.RARE)<#if !(data.bodyImmuneToFire)>));</#if>
-					<#if data.bodyImmuneToFire>.fireResistant()));</#if>
-		}
-	</#if>
 
 	private ${name}Item(Item.Properties properties) {
 		super(properties);
@@ -100,7 +88,11 @@ public abstract class ${name}Item extends Item {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.isHorseArmor>.horseArmor<#else>.humanoidArmor</#if>(ARMOR_MATERIAL<#if !data.isHorseArmor>, ArmorType.CHESTPLATE</#if>));
+			<#if !data.isHorseArmor>
+				super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE));
+			<#else>
+				super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.horseArmor(ARMOR_MATERIAL));
+			</#if>
 		}
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
