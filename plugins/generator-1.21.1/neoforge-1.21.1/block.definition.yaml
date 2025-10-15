@@ -489,11 +489,17 @@ tags:
     condition: "destroyTool %= hoe"
 
   - tag: BLOCKS:minecraft:needs_stone_tool
-    condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'STONE'}"
+    condition:
+      - requiresCorrectTool
+      - "vanillaToolTier %= STONE"
   - tag: BLOCKS:minecraft:needs_iron_tool
-    condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'IRON'}"
+    condition:
+      - requiresCorrectTool
+      - "vanillaToolTier %= IRON"
   - tag: BLOCKS:minecraft:needs_diamond_tool
-    condition: "${data.requiresCorrectTool && data.vanillaToolTier == 'DIAMOND'}"
+    condition:
+      - requiresCorrectTool
+      - "vanillaToolTier %= DIAMOND"
 
   - tag: BLOCKS:minecraft:stairs
     condition: "blockBase %= Stairs"
