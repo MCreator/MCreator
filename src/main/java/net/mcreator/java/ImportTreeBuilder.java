@@ -138,12 +138,8 @@ public class ImportTreeBuilder {
 	}
 
 	private static void addClassToTree(String packageName, String className, Map<String, List<String>> store) {
-		if (store.get(className) == null) {
-			store.put(className, Collections.synchronizedList(
-					new ArrayList<>(Collections.singletonList(packageName + '.' + className))));
-		} else {
-			store.get(className).add(packageName + '.' + className);
-		}
+		store.computeIfAbsent(className, key -> Collections.synchronizedList(new ArrayList<>()))
+				.add(packageName + '.' + className);
 	}
 
 }
