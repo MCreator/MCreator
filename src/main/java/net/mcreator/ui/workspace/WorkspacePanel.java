@@ -79,9 +79,9 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends AbstractMainWorkspacePanel {
 
@@ -1351,63 +1351,70 @@ import java.util.stream.Collectors;
 				Collections.reverse(filterItems);
 			}
 
-			//noinspection FuseStreamOperations
-			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
-							&& currentFolder.getRecursiveFolderChildren().stream()
-							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
-						if (keyWords.isEmpty())
+			final Predicate<ModElement> conditionSubFolders = item -> currentFolder.equals(item.getFolderPath()) || (
+					flattenFolders && currentFolder.getRecursiveFolderChildren().stream()
+							.anyMatch(folder -> folder.equals(item.getFolderPath())));
+
+			final Predicate<ModElement> conditionByKeyWord = item -> {
+				if (keyWords.isEmpty())
+					return true;
+
+				for (String key : keyWords) {
+					boolean match =
+							(item.getName().toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))
+									|| (item.getType().getReadableName().toLowerCase(Locale.ENGLISH)
+									.contains(key.toLowerCase(Locale.ENGLISH)));
+					if (match)
+						return true;
+				}
+
+				return false;
+			};
+
+			final Predicate<ModElement> conditionByFilters = item -> {
+				if (filters.isEmpty())
+					return true;
+
+				for (String f : filters) {
+					boolean isExcluded = f.startsWith("!");
+					String filterType = isExcluded ? f.substring(1) : f;
+
+					boolean matches = false;
+					switch (filterType) {
+					case "locked" -> matches = item.isCodeLocked();
+					case "ok" -> matches = item.doesCompile();
+					case "err" -> matches = !item.doesCompile();
+					}
+
+					if (isExcluded) {
+						if (matches)
+							return false;
+					} else {
+						if (matches)
 							return true;
+					}
+				}
+				return filters.stream().allMatch(f -> f.startsWith("!"));
+			};
 
-						for (String key : keyWords) {
-							boolean match = (item.getName().toLowerCase(Locale.ENGLISH)
-									.contains(key.toLowerCase(Locale.ENGLISH))) || (item.getType().getReadableName()
-									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)));
-							if (match)
-								return true;
-						}
-
+			final Predicate<ModElement> conditionMetFilters = item -> {
+				for (ModElementType<?> excludeType : excludedMetfilters)
+					if (item.getType() == excludeType)
 						return false;
-					}).filter(item -> {
-						if (filters.isEmpty())
-							return true;
 
-						for (String f : filters) {
-							boolean isExcluded = f.startsWith("!");
-							String filterType = isExcluded ? f.substring(1) : f;
+				if (metfilters.isEmpty())
+					return true;
 
-							boolean matches = false;
-							switch (filterType) {
-							case "locked" -> matches = item.isCodeLocked();
-							case "ok" -> matches = item.doesCompile();
-							case "err" -> matches = !item.doesCompile();
-							}
+				for (ModElementType<?> type : metfilters)
+					if (item.getType() == type)
+						return true;
+				return false;
+			};
 
-							if (isExcluded) {
-								if (matches)
-									return false;
-							} else {
-								if (matches)
-									return true;
-							}
-						}
-						return filters.stream().allMatch(f -> f.startsWith("!"));
-					}).filter(item -> {
-						for (ModElementType<?> excludeType : excludedMetfilters)
-							if (item.getType() == excludeType)
-								return false;
-
-						if (metfilters.isEmpty())
-							return true;
-
-						for (ModElementType<?> type : metfilters)
-							if (item.getType() == type)
-								return true;
-						return false;
-					}).collect(Collectors.toList());
-			modElements.sort(ModElement.getComparator(mcreator.getWorkspace(), modElements));
-
-			filterItems.addAll(modElements);
+			filterItems.addAll(items.stream()
+					.filter(e -> e instanceof ModElement me && conditionSubFolders.test(me) && conditionByKeyWord.test(
+							me) && conditionByFilters.test(me) && conditionMetFilters.test(me)).map(e -> (ModElement) e)
+					.sorted(ModElement.getComparator(mcreator.getWorkspace(), items)).toList());
 
 			fireContentsChanged(this, 0, getSize());
 		}

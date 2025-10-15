@@ -315,7 +315,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		}
 	}
 
-	public static Comparator<ModElement> getComparator(Workspace workspace, List<ModElement> originalOrder) {
+	public static Comparator<ModElement> getComparator(Workspace workspace, List<?> originalOrder) {
 		return (a, b) -> {
 			if (workspace.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
 				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
