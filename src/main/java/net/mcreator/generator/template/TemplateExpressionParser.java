@@ -77,33 +77,39 @@ public class TemplateExpressionParser {
 
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
+		// Negate conditions that start with a !
+		boolean negate = condition.startsWith("!");
+		if (negate)
+			condition = condition.substring(1);
+		boolean result = false;
+
 		try {
 			int indexOf;
 			if (condition.startsWith("${")) {
 				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
-				return processed instanceof Boolean check && check;
+				result = processed instanceof Boolean check && check;
 			} else if ((indexOf = condition.indexOf("#?=")) >= 0) { // check if value == one of the other values in list
 				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
-				return Arrays.stream(condition.substring(indexOf + 3).trim().split(",")).mapToInt(Integer::parseInt)
+				result = Arrays.stream(condition.substring(indexOf + 3).trim().split(",")).mapToInt(Integer::parseInt)
 						.anyMatch(e -> e == field);
 			} else if ((indexOf = condition.indexOf("#=")) >= 0) { // check if value == other value
 				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				int value = Integer.parseInt(condition.substring(indexOf + 2).trim());
-				return value == field;
+				result = value == field;
 			} else if ((indexOf = condition.indexOf("%=")) >= 0) { // compare strings
 				String field = (String) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				String value = condition.substring(indexOf + 2).trim();
-				return value.equals(field);
+				result = value.equals(field);
 			} else {
-				return (boolean) getValueFrom(condition, conditionDataProvider);
+				result = (boolean) getValueFrom(condition, conditionDataProvider);
 			}
 		} catch (Exception e) {
 			LOG.error("Failed to parse condition: {}", condition, e);
 			TestUtil.failIfTestingEnvironment();
 		}
 
-		return false;
+		return result != negate;
 	}
 
 	private static Object getValueFrom(String memberName, Object conditionDataProvider)

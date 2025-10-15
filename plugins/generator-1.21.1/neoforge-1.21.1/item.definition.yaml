@@ -73,7 +73,7 @@ tags:
       - isFood
       - isMeat
   - tag: ITEMS:minecraft:enchantable/durability
-    condition: ${data.damageCount != 0}
+    condition: "!damageCount #= 0"
   - tag: ITEMS:minecraft:music_discs
     condition: isMusicDisc
   - tag: ITEMS:minecraft:piglin_loved

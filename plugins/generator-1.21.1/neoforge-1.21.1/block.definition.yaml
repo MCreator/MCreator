@@ -512,7 +512,7 @@ tags:
   - tag: BLOCKS:minecraft:fences
     condition:
       - "blockBase %= Fence"
-      - "${data.blockSetType != 'OAK'}"
+      - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:walls
     condition: "blockBase %= Wall"
   - tag: BLOCKS:minecraft:leaves
@@ -524,7 +524,7 @@ tags:
   - tag: BLOCKS:minecraft:trapdoors
     condition:
       - "blockBase %= TrapDoor"
-      - "${data.blockSetType != 'OAK'}"
+      - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:wooden_doors
     condition:
       - "blockBase %= Door"
@@ -532,7 +532,7 @@ tags:
   - tag: BLOCKS:minecraft:doors
     condition:
       - "blockBase %= Door"
-      - "${data.blockSetType != 'OAK'}"
+      - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:mob_interactable_doors
     condition:
       - "blockBase %= Door"
@@ -544,7 +544,7 @@ tags:
   - tag: BLOCKS:minecraft:pressure_plates
     condition:
       - "blockBase %= PressurePlate"
-      - "${data.blockSetType != 'OAK'}"
+      - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:wooden_buttons
     condition:
       - "blockBase %= Button"
@@ -552,7 +552,7 @@ tags:
   - tag: BLOCKS:minecraft:buttons
     condition:
       - "blockBase %= Button"
-      - "${data.blockSetType != 'OAK'}"
+      - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:flower_pots
     condition: "blockBase %= FlowerPot"
 
