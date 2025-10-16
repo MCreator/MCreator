@@ -2,7 +2,7 @@
   "trigger": "minecraft:enchanted_item",
   "conditions": {
 	"item": {
-		"items": "${input$item}",
+		"items": ${input$item},
 		"predicates": {
 			"enchantments": [
 				<#list input_list$enchantment as enchantment>

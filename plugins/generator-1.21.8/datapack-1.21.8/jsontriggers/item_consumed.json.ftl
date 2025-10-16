@@ -3,7 +3,7 @@
   "conditions": {
     "item": {
         "items": [
-            "${input$item}"
+            ${input$item}
         ]
     }
   }
