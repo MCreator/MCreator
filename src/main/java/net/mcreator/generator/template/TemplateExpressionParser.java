@@ -112,7 +112,7 @@ public class TemplateExpressionParser {
 		return result != negate;
 	}
 
-	private static Object getValueFrom(String memberName, Object conditionDataProvider)
+	public static Object getValueFrom(String memberName, Object conditionDataProvider)
 			throws ReflectiveOperationException {
 		memberName = memberName.trim();
 		if (memberName.endsWith("()")) { // method
