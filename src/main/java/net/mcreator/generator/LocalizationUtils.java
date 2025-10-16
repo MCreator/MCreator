@@ -139,31 +139,32 @@ public class LocalizationUtils {
 
 	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
-			String mapto = (String) template.get("mapto");
-			String value;
-			if (mapto == null)
-				value = (String) entry;
-			else if (mapto.contains("()"))
-				value = (String) entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry);
-			else
-				value = (String) entry.getClass().getField(mapto.trim()).get(entry);
-
-			String suffix = (String) template.get("suffix");
-			if (suffix != null)
-				value += suffix;
-
-			String prefix = (String) template.get("prefix");
-			if (prefix != null)
-				value = prefix + value;
-
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, template, entry)) {
 				// If localization key is skipped, we make sure to remove the localization entry
 				generator.getWorkspace().removeLocalizationEntryByKey(key);
 			} else {
+				// Only process value if we are adding it
+				String mapto = (String) template.get("mapto");
+				String value;
+				if (mapto == null) {
+					value = (String) entry;
+				} else {
+					Object rawValue = TemplateExpressionParser.getValueFrom(mapto, entry);
+					value = rawValue != null ? rawValue.toString() : "";
+				}
+
+				String suffix = (String) template.get("suffix");
+				if (suffix != null)
+					value += suffix;
+
+				String prefix = (String) template.get("prefix");
+				if (prefix != null)
+					value = prefix + value;
+
 				generator.getWorkspace().setLocalization(key, value);
 			}
-		} catch (ReflectiveOperationException e) {
-			generator.getLogger().error("Failed to parse values", e);
+		} catch (Throwable e) {
+			generator.getLogger().error("Failed to parse values for key {}", key, e);
 		}
 	}
 
