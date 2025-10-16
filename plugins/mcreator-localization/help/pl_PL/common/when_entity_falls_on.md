@@ -1,0 +1,1 @@
+Uruchamia procedurę _tylko_ w sytuacji, gdy obiekt spadnie na blok z dowolnej wysokości.

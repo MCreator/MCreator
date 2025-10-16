@@ -816,7 +816,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				getFont(), Theme.current().getForegroundColor()));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(157);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(155);
 		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
@@ -998,24 +998,28 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		disableMobModelCheckBoxListener = true;
 
 		super.reloadDataLists();
-		onStruckByLightning.refreshListKeepSelected();
-		whenMobFalls.refreshListKeepSelected();
-		whenMobDies.refreshListKeepSelected();
-		whenMobIsHurt.refreshListKeepSelected();
-		onRightClickedOn.refreshListKeepSelected();
-		whenThisMobKillsAnother.refreshListKeepSelected();
-		onMobTickUpdate.refreshListKeepSelected();
-		onPlayerCollidesWith.refreshListKeepSelected();
-		onInitialSpawn.refreshListKeepSelected();
 
-		spawningCondition.refreshListKeepSelected();
-		transparentModelCondition.refreshListKeepSelected();
-		isShakingCondition.refreshListKeepSelected();
-		solidBoundingBox.refreshListKeepSelected();
-		breatheUnderwater.refreshListKeepSelected();
-		pushedByFluids.refreshListKeepSelected();
-		visualScale.refreshListKeepSelected();
-		boundingBoxScale.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onStruckByLightning.refreshListKeepSelected(context);
+		whenMobFalls.refreshListKeepSelected(context);
+		whenMobDies.refreshListKeepSelected(context);
+		whenMobIsHurt.refreshListKeepSelected(context);
+		onRightClickedOn.refreshListKeepSelected(context);
+		whenThisMobKillsAnother.refreshListKeepSelected(context);
+		onMobTickUpdate.refreshListKeepSelected(context);
+		onPlayerCollidesWith.refreshListKeepSelected(context);
+		onInitialSpawn.refreshListKeepSelected(context);
+
+		spawningCondition.refreshListKeepSelected(context);
+		transparentModelCondition.refreshListKeepSelected(context);
+		isShakingCondition.refreshListKeepSelected(context);
+		solidBoundingBox.refreshListKeepSelected(context);
+		breatheUnderwater.refreshListKeepSelected(context);
+		pushedByFluids.refreshListKeepSelected(context);
+		visualScale.refreshListKeepSelected(context);
+		boundingBoxScale.refreshListKeepSelected(context);
 
 		modelLayers.reloadDataLists();
 
@@ -1023,9 +1027,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		mobModelTexture.reload();
 
-		vibrationSensitivityRadius.refreshListKeepSelected();
-		canReceiveVibrationCondition.refreshListKeepSelected();
-		onReceivedVibration.refreshListKeepSelected();
+		vibrationSensitivityRadius.refreshListKeepSelected(context);
+		canReceiveVibrationCondition.refreshListKeepSelected(context);
+		onReceivedVibration.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()

@@ -168,8 +168,11 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		additionalExpiryCondition.refreshListKeepSelected();
-		scale.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		additionalExpiryCondition.refreshListKeepSelected(context);
+		scale.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(Particle particle) {

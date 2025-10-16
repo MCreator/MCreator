@@ -234,6 +234,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
 				L10N.label("elementgui.tool.blocks_drop_tier")));
 		selp.add(blockDropsTier);
+		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		selp.add(new JEmptyBox());
 		selp.add(additionalDropCondition);
@@ -374,28 +375,30 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onBlockDestroyedWithTool.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		additionalDropCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onBlockDestroyedWithTool.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normalBlocking),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		additionalDropCondition.refreshListKeepSelected(context);
+
+		List<Model> itemModels = Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+				.collect(Collectors.toList());
+
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal), itemModels));
+		ComboBoxUtil.updateComboBoxContents(blockingModel,
+				ListUtils.merge(Collections.singletonList(normalBlocking), itemModels));
 	}
 
 	@Override public void openInEditingMode(Tool tool) {

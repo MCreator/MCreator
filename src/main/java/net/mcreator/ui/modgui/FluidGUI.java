@@ -277,6 +277,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
+		spawnParticles.addActionListener(e -> refreshDripSettings());
+		refreshDripSettings();
+
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
 				L10N.label("elementgui.fluid.drip_particle")));
 		destal.add(dripParticle);
@@ -478,25 +481,35 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	private void refreshFogSettings() {
-		fogColor.setEnabled(hasFog.isSelected());
-		fogStartDistance.setEnabled(hasFog.isSelected());
-		fogEndDistance.setEnabled(hasFog.isSelected());
+		boolean hasFogSelected = hasFog.isSelected();
+
+		fogColor.setEnabled(hasFogSelected);
+		fogStartDistance.setEnabled(hasFogSelected);
+		fogEndDistance.setEnabled(hasFogSelected);
+	}
+
+	private void refreshDripSettings() {
+		dripParticle.setEnabled(spawnParticles.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourChanges.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		flowCondition.refreshListKeepSelected();
-		beforeReplacingBlock.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		fogStartDistance.refreshListKeepSelected();
-		fogEndDistance.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourChanges.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		flowCondition.refreshListKeepSelected(context);
+		beforeReplacingBlock.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+
+		fogStartDistance.refreshListKeepSelected(context);
+		fogEndDistance.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
@@ -557,6 +570,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		specialInformation.setEnabled(generateBucket.isSelected());
 
 		refreshFogSettings();
+		refreshDripSettings();
 	}
 
 	@Override public Fluid getElementFromGUI() {

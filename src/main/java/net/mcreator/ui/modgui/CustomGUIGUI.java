@@ -78,9 +78,12 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		onOpen.refreshListKeepSelected();
-		onTick.refreshListKeepSelected();
-		onClosed.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onOpen.refreshListKeepSelected(context);
+		onTick.refreshListKeepSelected(context);
+		onClosed.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(GUI gui) {

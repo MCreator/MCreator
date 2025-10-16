@@ -94,7 +94,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	public void reloadDataLists() {
-		value.refreshListKeepSelected();
+		value.refreshListKeepSelected(null);
 	}
 
 	PropertyData.NumberType toPropertyData() {

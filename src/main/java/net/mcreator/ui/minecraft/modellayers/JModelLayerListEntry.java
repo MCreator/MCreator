@@ -90,7 +90,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 	}
 
 	@Override public void reloadDataLists() {
-		condition.refreshListKeepSelected();
+		condition.refreshListKeepSelected(null);
 
 		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Collections.singletonList(default_model),
 				Model.getModels(mcreator.getWorkspace()).stream()

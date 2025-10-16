@@ -1,0 +1,1 @@
+Este parâmetro controla se o item é uma moeda piglin, como um lingote de ouro.

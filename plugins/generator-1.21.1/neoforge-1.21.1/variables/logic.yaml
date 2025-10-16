@@ -15,7 +15,7 @@ scopes:
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public boolean ${var.getName()} = ${var.getValue()};
     read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
@@ -23,26 +23,22 @@ scopes:
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
-      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public boolean ${var.getName()} = ${var.getValue()};
     read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
     write: nbt.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${opt.removeParentheses(value)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public boolean ${var.getName()} = ${var.getValue()};
     read: ${var.getName()} = nbt.getBoolean("${var.getName()}");
     write: nbt.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${opt.removeParentheses(value)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>

@@ -625,14 +625,18 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		whenPortaTriggerlUsed.refreshListKeepSelected();
-		onPortalTickUpdate.refreshListKeepSelected();
-		onPlayerEntersDimension.refreshListKeepSelected();
-		onPlayerLeavesDimension.refreshListKeepSelected();
 
-		portalMakeCondition.refreshListKeepSelected();
-		portalUseCondition.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		whenPortaTriggerlUsed.refreshListKeepSelected(context);
+		onPortalTickUpdate.refreshListKeepSelected(context);
+		onPlayerEntersDimension.refreshListKeepSelected(context);
+		onPlayerLeavesDimension.refreshListKeepSelected(context);
+
+		portalMakeCondition.refreshListKeepSelected(context);
+		portalUseCondition.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("PORTAL"));

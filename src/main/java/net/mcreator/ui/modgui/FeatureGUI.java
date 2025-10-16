@@ -42,7 +42,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -59,7 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
+public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder, ISearchable {
 
 	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
@@ -67,6 +69,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
+	private BlocklyEditorToolbar blocklyEditorToolbar;
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
@@ -143,9 +146,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel, null, featureHelperButton);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
+				featureHelperButton);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
@@ -201,7 +204,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		generateCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		generateCondition.refreshListKeepSelected(context);
 	}
 
 	private void refreshPlacementSettings(boolean updateCompileNotes) {
@@ -245,4 +252,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return false;
 	}
 
+	@Override public void search(@Nullable String searchTerm) {
+		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
 }

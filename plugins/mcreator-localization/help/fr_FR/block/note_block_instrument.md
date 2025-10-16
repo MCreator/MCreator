@@ -1,0 +1,1 @@
+Ce paramètre contrôle l'instrument du bloc de note quand placés quand sur ce bloc.
