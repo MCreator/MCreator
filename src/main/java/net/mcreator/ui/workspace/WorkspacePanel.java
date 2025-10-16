@@ -1321,15 +1321,18 @@ import java.util.regex.Pattern;
 							}
 						}
 					}
-				} else
+				} else {
 					keyWords.add(pat.replace("\"", ""));
+				}
 			}
 
 			boolean flattenFolders = !searchInput.isEmpty();
 
+			Set<FolderElement> recursiveFolderChildren = new HashSet<>(currentFolder.getRecursiveFolderChildren());
+
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
 					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (flattenFolders
-							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
+							&& recursiveFolderChildren.contains(item))).filter(item -> {
 						if (!filters.isEmpty() || !metfilters.isEmpty() || !excludedMetfilters.isEmpty())
 							return false;
 
@@ -1352,18 +1355,18 @@ import java.util.regex.Pattern;
 			}
 
 			final Predicate<ModElement> conditionSubFolders = item -> currentFolder.equals(item.getFolderPath()) || (
-					flattenFolders && currentFolder.getRecursiveFolderChildren().stream()
+					flattenFolders && recursiveFolderChildren.stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())));
 
 			final Predicate<ModElement> conditionByKeyWord = item -> {
 				if (keyWords.isEmpty())
 					return true;
 
+				String lcItem = item.getName().toLowerCase(Locale.ENGLISH);
+				String lcItemReadable = item.getType().getReadableName().toLowerCase(Locale.ENGLISH);
 				for (String key : keyWords) {
-					boolean match =
-							(item.getName().toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))
-									|| (item.getType().getReadableName().toLowerCase(Locale.ENGLISH)
-									.contains(key.toLowerCase(Locale.ENGLISH)));
+					boolean match = lcItem.contains(key.toLowerCase(Locale.ENGLISH)) || lcItemReadable.contains(
+							key.toLowerCase(Locale.ENGLISH));
 					if (match)
 						return true;
 				}
