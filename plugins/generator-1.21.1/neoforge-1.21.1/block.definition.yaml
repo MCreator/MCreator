@@ -593,9 +593,9 @@ tags:
   - tag: BLOCKS:minecraft:flower_pots
     condition: "blockBase %= FlowerPot"
   - tag: BLOCKS:minecraft:standing_signs
-    condition: "${(data.blockBase! == 'Sign')}"
+    condition: "blockBase %= Sign"
   - tag: BLOCKS:minecraft:wall_signs
-    condition: "${(data.blockBase! == 'Sign')}"
+    condition: "blockBase %= Sign"
     entry: "CUSTOM:@NAME.wall"
 
   - tag: BLOCKS:minecraft:replaceable
