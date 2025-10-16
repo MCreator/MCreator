@@ -30,13 +30,15 @@ scopes:
     write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${opt.removeParentheses(value)};
-      <@tail>${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
     read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
     write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${opt.removeParentheses(value)};
-      <@tail>${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>

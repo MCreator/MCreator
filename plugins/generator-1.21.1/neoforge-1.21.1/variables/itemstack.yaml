@@ -33,8 +33,9 @@ scopes:
     get: /*@ItemStack*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
-      <@tail>${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.parseOptional(lookupProvider, nbt.getCompound("${var.getName()}"));
@@ -42,5 +43,6 @@ scopes:
     get: /*@ItemStack*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
-      <@tail>${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>_vars.markSyncDirty();}</@tail>

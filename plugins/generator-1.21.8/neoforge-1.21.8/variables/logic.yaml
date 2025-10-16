@@ -30,13 +30,15 @@ scopes:
     write: output.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      {entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${opt.removeParentheses(value)};
-      <@tail>{entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public boolean ${var.getName()} = ${var.getValue()};
     read: ${var.getName()} = input.getBooleanOr("${var.getName()}", false);
     write: output.putBoolean("${var.getName()}", ${var.getName()});
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
-      {entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name} = ${opt.removeParentheses(value)};
-      <@tail>{entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).markSyncDirty();</@tail>
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
