@@ -30,11 +30,30 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 
 	private static final Logger LOG = LogManager.getLogger(AstTreeCellRendererCustom.class);
+
+	private static final MethodHandle GET_TEXT;
+	private static final MethodHandle GET_ICON;
+
+	static {
+		MethodHandle text = null, icon = null;
+		try {
+			Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
+			MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(treeNodeClass, MethodHandles.lookup());
+			text = lookup.findVirtual(treeNodeClass, "getText", MethodType.methodType(String.class, boolean.class));
+			icon = lookup.findVirtual(treeNodeClass, "getIcon", MethodType.methodType(Icon.class));
+		} catch (Throwable t) {
+			LOG.debug("JavaTreeNode handles not available: {}", t.getMessage());
+		}
+		GET_TEXT = text;
+		GET_ICON = icon;
+	}
 
 	public AstTreeCellRendererCustom() {
 		setBorderSelectionColor(Theme.current().getBackgroundColor());
@@ -69,14 +88,14 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		case JsonTree.JsonNode node -> {
 			JsonElement element = node.getElement();
 			String type = null;
-			if (element.isJsonNull())
+			if (element.isJsonNull()) {
 				type = "null";
-			if (element.isJsonPrimitive()) {
+			} else if (element.isJsonPrimitive()) {
 				if (element.getAsJsonPrimitive().isBoolean())
 					type = "bool";
-				if (element.getAsJsonPrimitive().isString())
+				else if (element.getAsJsonPrimitive().isString())
 					type = "text";
-				if (element.getAsJsonPrimitive().isNumber())
+				else if (element.getAsJsonPrimitive().isNumber())
 					type = "number";
 			}
 			setText(value + (type == null ? "" : (" [" + type + "]")));
@@ -84,17 +103,17 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		}
 		case null, default -> {
 			try {
-				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
-				Method text = treeNodeClass.getMethod("getText", boolean.class);
-				Method icon = treeNodeClass.getMethod("getIcon");
-				icon.setAccessible(true);
-				text.setAccessible(true);
-				setText((String) text.invoke(value, sel));
-
-				setIcon(RSTAIcons.themeRSTAIcon((Icon) icon.invoke(value)));
-			} catch (Exception e) {
-				if (value instanceof DefaultMutableTreeNode) {
-					setText(value.toString());
+				if (GET_TEXT != null && GET_ICON != null) {
+					setText((String) GET_TEXT.invoke(value, sel));
+					setIcon(RSTAIcons.themeRSTAIcon((Icon) GET_ICON.invoke(value)));
+				} else if (value instanceof DefaultMutableTreeNode node) {
+					setText(node.toString());
+				} else {
+					setText(value != null ? value.toString() : "null");
+				}
+			} catch (Throwable e) {
+				if (value instanceof DefaultMutableTreeNode node) {
+					setText(node.toString());
 				} else {
 					LOG.warn(e.getMessage(), e);
 				}
@@ -103,5 +122,4 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		}
 		return this;
 	}
-
 }
