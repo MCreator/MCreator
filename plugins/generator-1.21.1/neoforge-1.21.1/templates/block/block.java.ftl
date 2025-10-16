@@ -45,11 +45,13 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
-public class ${name}Block extends
-	<#if data.hasGravity>
+public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends
+	<#if var_extends_class??>
+		${var_extends_class}
+	<#elseif data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Sign", "StandingSign")}Block
 	<#else>
 		Block
 	</#if>
@@ -189,7 +191,8 @@ public class ${name}Block extends
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
-				data.blockBase == "Wall")>
+				data.blockBase == "Wall" ||
+				data.blockBase == "Sign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
@@ -198,9 +201,12 @@ public class ${name}Block extends
 		<#if data.blockBase?has_content && data.blockBase == "Leaves">
 			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
 		</#if>
+		<#if var_extends_class! == "WallSignBlock">
+			.dropsLike(${JavaModName}Blocks.${REGISTRYNAME}.get())
+		</#if>
 	</#macro>
 
-	public ${name}Block() {
+	public <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block() {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -213,6 +219,8 @@ public class ${name}Block extends
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
+			<#elseif data.blockBase == "Sign">
+				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
