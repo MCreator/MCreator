@@ -545,7 +545,7 @@ import java.util.regex.Pattern;
 					IconUtils.resize(type.getIcon(), 16, 16)));
 		}
 
-		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
+		filter.addActionListener(e -> filterPopup.show(filter, -1, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
@@ -571,7 +571,7 @@ import java.util.regex.Pattern;
 		sortTwo.add(sortType);
 		sortPopup.add(sortType);
 
-		sort.addActionListener(e -> sortPopup.show(sort, 0, 26));
+		sort.addActionListener(e -> sortPopup.show(sort, -1, 26));
 
 		JPopupMenu viewPopup = new JPopupMenu();
 		viewPopup.add(tilesIcons);
