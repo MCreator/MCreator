@@ -1578,35 +1578,39 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourBlockChanges.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByPlayer.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		onStartToDestroy.refreshListKeepSelected();
-		onEntityWalksOn.refreshListKeepSelected();
-		onBlockPlayedBy.refreshListKeepSelected();
-		onRightClicked.refreshListKeepSelected();
-		onRedstoneOn.refreshListKeepSelected();
-		onRedstoneOff.refreshListKeepSelected();
-		onHitByProjectile.refreshListKeepSelected();
-		onBonemealSuccess.refreshListKeepSelected();
-		onReceivedVibration.refreshListKeepSelected();
-		onEntityFallsOn.refreshListKeepSelected();
 
-		specialInformation.refreshListKeepSelected();
-		emittedRedstonePower.refreshListKeepSelected();
-		isBonemealTargetCondition.refreshListKeepSelected();
-		bonemealSuccessCondition.refreshListKeepSelected();
-		placingCondition.refreshListKeepSelected();
-		additionalHarvestCondition.refreshListKeepSelected();
-		vibrationSensitivityRadius.refreshListKeepSelected();
-		canReceiveVibrationCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		inventoryAutomationTakeCondition.refreshListKeepSelected();
-		inventoryAutomationPlaceCondition.refreshListKeepSelected();
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourBlockChanges.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByPlayer.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		onStartToDestroy.refreshListKeepSelected(context);
+		onEntityWalksOn.refreshListKeepSelected(context);
+		onBlockPlayedBy.refreshListKeepSelected(context);
+		onRightClicked.refreshListKeepSelected(context);
+		onRedstoneOn.refreshListKeepSelected(context);
+		onRedstoneOff.refreshListKeepSelected(context);
+		onHitByProjectile.refreshListKeepSelected(context);
+		onBonemealSuccess.refreshListKeepSelected(context);
+		onReceivedVibration.refreshListKeepSelected(context);
+		onEntityFallsOn.refreshListKeepSelected(context);
+
+		specialInformation.refreshListKeepSelected(context);
+		emittedRedstonePower.refreshListKeepSelected(context);
+		isBonemealTargetCondition.refreshListKeepSelected(context);
+		bonemealSuccessCondition.refreshListKeepSelected(context);
+		placingCondition.refreshListKeepSelected(context);
+		additionalHarvestCondition.refreshListKeepSelected(context);
+		vibrationSensitivityRadius.refreshListKeepSelected(context);
+		canReceiveVibrationCondition.refreshListKeepSelected(context);
+
+		inventoryAutomationTakeCondition.refreshListKeepSelected(context);
+		inventoryAutomationPlaceCondition.refreshListKeepSelected(context);
 
 		animations.reloadDataLists();
 

@@ -74,7 +74,7 @@ public class JBlockEntityAnimationListEntry extends JSimpleListEntry<Block.Anima
 	}
 
 	@Override public void reloadDataLists() {
-		condition.refreshListKeepSelected();
+		condition.refreshListKeepSelected(null);
 
 		ComboBoxUtil.updateComboBoxContents(animation, ElementUtil.loadAnimations(mcreator.getWorkspace()));
 	}

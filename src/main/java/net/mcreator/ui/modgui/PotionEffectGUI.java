@@ -33,6 +33,7 @@ import net.mcreator.ui.minecraft.SingleParticleEntryField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -216,12 +217,15 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		modifierList.reloadDataLists();
 
-		onStarted.refreshListKeepSelected();
-		onActiveTick.refreshListKeepSelected();
-		onExpired.refreshListKeepSelected();
-		activeTickCondition.refreshListKeepSelected();
-		onMobHurt.refreshListKeepSelected();
-		onMobRemoved.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onStarted.refreshListKeepSelected(context);
+		onActiveTick.refreshListKeepSelected(context);
+		onExpired.refreshListKeepSelected(context);
+		activeTickCondition.refreshListKeepSelected(context);
+		onMobHurt.refreshListKeepSelected(context);
+		onMobRemoved.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(PotionEffect potion) {

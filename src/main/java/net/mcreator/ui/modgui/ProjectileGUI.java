@@ -34,6 +34,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -194,10 +195,14 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onHitsBlock.refreshListKeepSelected();
-		onHitsPlayer.refreshListKeepSelected();
-		onHitsEntity.refreshListKeepSelected();
-		onFlyingTick.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onHitsBlock.refreshListKeepSelected(context);
+		onHitsPlayer.refreshListKeepSelected(context);
+		onHitsEntity.refreshListKeepSelected(context);
+		onFlyingTick.refreshListKeepSelected(context);
 
 		customModelTexture.reload();
 

@@ -494,18 +494,22 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourChanges.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		flowCondition.refreshListKeepSelected();
-		beforeReplacingBlock.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		fogStartDistance.refreshListKeepSelected();
-		fogEndDistance.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourChanges.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		flowCondition.refreshListKeepSelected(context);
+		beforeReplacingBlock.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+
+		fogStartDistance.refreshListKeepSelected(context);
+		fogEndDistance.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}

@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
@@ -47,11 +48,14 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		JPanel options = new JPanel(new BorderLayout(15, 15));
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		ProcedureSelector entityModel = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/entity_model"),
 				editor.mcreator, L10N.t("dialog.gui.entity_model_procedure"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		entityModel.refreshList();
+		entityModel.refreshList(context);
 		entityModel.setValidator(new ProcedureSelectorValidator(entityModel));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
@@ -59,7 +63,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				L10N.t("dialog.gui.model_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		displayCondition.refreshList();
+		displayCondition.refreshList(context);
 
 		JSpinner scale = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
 		JSpinner rotationX = new JSpinner(new SpinnerNumberModel(0, -360, 360, 1));

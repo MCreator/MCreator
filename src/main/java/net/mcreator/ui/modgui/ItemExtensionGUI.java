@@ -30,6 +30,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -151,10 +152,14 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		fuelPower.refreshListKeepSelected();
-		fuelSuccessCondition.refreshListKeepSelected();
-		dispenseSuccessCondition.refreshListKeepSelected();
-		dispenseResultItemstack.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		fuelPower.refreshListKeepSelected(context);
+		fuelSuccessCondition.refreshListKeepSelected(context);
+		dispenseSuccessCondition.refreshListKeepSelected(context);
+		dispenseResultItemstack.refreshListKeepSelected(context);
 	}
 
 	private void updateDispenseElements() {

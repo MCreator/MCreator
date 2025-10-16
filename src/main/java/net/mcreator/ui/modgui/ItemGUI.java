@@ -684,22 +684,26 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		onDroppedByPlayer.refreshListKeepSelected();
-		onFinishUsingItem.refreshListKeepSelected();
-		everyTickWhileUsing.refreshListKeepSelected();
-		onItemEntityDestroyed.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
-		rangedUseCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onStoppedUsing.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onFinishUsingItem.refreshListKeepSelected(context);
+		everyTickWhileUsing.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		onRangedItemUsed.refreshListKeepSelected(context);
+		rangedUseCondition.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
