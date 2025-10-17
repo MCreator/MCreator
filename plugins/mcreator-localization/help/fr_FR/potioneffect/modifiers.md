@@ -1,0 +1,1 @@
+Ces modificateurs d'attribut sont appliqués à l'entité tant que l'effet est actif.

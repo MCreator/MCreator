@@ -1,0 +1,1 @@
+Questa è un'anteprima del motivo bianco applicato su uno stendardo nero, con la parte anteriore rivolta a sinistra.
