@@ -46,7 +46,6 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -173,7 +172,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -306,8 +306,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.add(onEntitySwing);
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
-
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		page1group.addValidationElement(texture);
 

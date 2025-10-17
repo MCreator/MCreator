@@ -27,7 +27,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 
 import javax.swing.*;
@@ -47,7 +46,7 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		setOpaque(false);
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
+				true).requireValue();
 		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
 				true);
 
@@ -90,8 +89,6 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 				textureRight.setTexture(textureLeft.getTextureHolder());
 			}
 		});
-
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
 	}
 
 	public void setTextures(TextureHolder texture, TextureHolder textureTop, TextureHolder textureLeft,
