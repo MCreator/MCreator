@@ -38,7 +38,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -121,7 +120,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInHUD.setOpaque(false);
 		isCuredbyHoney.setOpaque(false);
 
-		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
+		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT)).requireValue();
 		icon.setOpaque(false);
 
 		particle = new SingleParticleEntryField(mcreator);
@@ -192,7 +191,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		icon.setValidator(new TextureSelectionButtonValidator(icon));
 		effectName.setValidator(
 				new TextFieldValidator(effectName, L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
 		effectName.enableRealtimeValidation();

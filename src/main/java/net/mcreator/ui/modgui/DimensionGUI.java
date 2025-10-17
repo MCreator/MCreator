@@ -407,8 +407,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		generationPage.setOpaque(false);
 
-		portalTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		portalTexture = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.dimension.error_portal_needs_texture");
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.dimension.error_portal_igniter_needs_texture");
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
@@ -534,8 +537,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
 				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
-		portalTexture.setValidator(new TextureSelectionButtonValidator(portalTexture, enablePortal));
-		texture.setValidator(new TextureSelectionButtonValidator(texture, enableIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
