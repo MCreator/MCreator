@@ -1,0 +1,1 @@
+Ce sont les arbres qui peuvent pousser si les jeunes pousses sont dans une configuration de 2x2. Utilisé par les méga-arbres.

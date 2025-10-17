@@ -1,0 +1,1 @@
+Ce paramètre spécifie le nombre de lutins dans la texture sélectionnée.

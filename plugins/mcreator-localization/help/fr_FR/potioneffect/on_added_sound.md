@@ -1,0 +1,1 @@
+Si un son est sélectionné, il sera joué quand cet effet de potion sera ajouté à une entité.
