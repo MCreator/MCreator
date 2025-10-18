@@ -13,7 +13,7 @@ tags:
   - tag: ENCHANTMENTS:minecraft:treasure
     condition: isTreasureEnchantment
   - tag: ENCHANTMENTS:minecraft:non_treasure
-    condition: ${!data.isTreasureEnchantment}
+    condition: "!isTreasureEnchantment"
 
 localizationkeys:
   - key: enchantment.@modid.@registryname

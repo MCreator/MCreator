@@ -1,0 +1,1 @@
+Ce paramètre détermine la distance de la caméra à laquelle le brouillard commence.

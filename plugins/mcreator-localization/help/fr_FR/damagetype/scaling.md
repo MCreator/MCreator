@@ -1,4 +1,4 @@
-Ce paramètre détermine si les dégâts infligés doivent augmenter avec difficulté.
+Ce paramètre détermine si les dégâts infligés doivent augmenter avec la difficulté.
 
 - `never` : la difficulté n'affecte pas les dégâts infligés
 - `always` : la difficulté augmente toujours les dégâts infligés, quelle qu'en soit la source

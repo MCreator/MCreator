@@ -23,6 +23,7 @@ import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -53,17 +54,20 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 		isUndecoratedButton.setOpaque(false);
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_is_undecorated"), isUndecoratedButton));
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		eh.refreshList();
+		eh.refreshList(context);
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		displayCondition.refreshList();
+		displayCondition.refreshList(context);
 
 		options.add(PanelUtils.gridElements(1, 2, 5, 5, eh, displayCondition));
 

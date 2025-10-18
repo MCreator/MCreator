@@ -1,0 +1,1 @@
+Les blocs ajoutés à ce tag brûleront pour toujours à l'intérieur de cette dimension (similaire à la Netherrack).

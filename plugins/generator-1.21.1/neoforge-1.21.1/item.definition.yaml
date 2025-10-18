@@ -69,11 +69,15 @@ list_templates:
 
 tags:
   - tag: ITEMS:minecraft:meat
-    condition: "${data.isFood && data.isMeat}"
+    condition:
+      - isFood
+      - isMeat
   - tag: ITEMS:minecraft:enchantable/durability
-    condition: ${data.damageCount != 0}
+    condition: "!damageCount #= 0"
   - tag: ITEMS:minecraft:music_discs
     condition: isMusicDisc
+  - tag: ITEMS:minecraft:piglin_loved
+    condition: isPiglinCurrency
 
 localizationkeys:
   - key: item.@modid.@registryname

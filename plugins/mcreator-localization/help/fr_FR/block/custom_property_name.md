@@ -1,0 +1,1 @@
+Ce paramètre spécifie le nom de cette propriété de bloc personnalisé.
