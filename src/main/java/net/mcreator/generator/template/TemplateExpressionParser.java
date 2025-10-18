@@ -27,7 +27,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.invoke.VarHandle;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TemplateExpressionParser {
@@ -77,43 +82,69 @@ public class TemplateExpressionParser {
 
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
+		// Negate conditions that start with a !
+		boolean negate = condition.startsWith("!");
+		if (negate)
+			condition = condition.substring(1);
+		boolean result = false;
+
 		try {
 			int indexOf;
 			if (condition.startsWith("${")) {
 				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
-				return processed instanceof Boolean check && check;
+				result = processed instanceof Boolean check && check;
 			} else if ((indexOf = condition.indexOf("#?=")) >= 0) { // check if value == one of the other values in list
 				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
-				return Arrays.stream(condition.substring(indexOf + 3).trim().split(",")).mapToInt(Integer::parseInt)
+				result = Arrays.stream(condition.substring(indexOf + 3).trim().split(",")).mapToInt(Integer::parseInt)
 						.anyMatch(e -> e == field);
 			} else if ((indexOf = condition.indexOf("#=")) >= 0) { // check if value == other value
 				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				int value = Integer.parseInt(condition.substring(indexOf + 2).trim());
-				return value == field;
+				result = value == field;
 			} else if ((indexOf = condition.indexOf("%=")) >= 0) { // compare strings
 				String field = (String) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				String value = condition.substring(indexOf + 2).trim();
-				return value.equals(field);
+				result = value.equals(field);
 			} else {
-				return (boolean) getValueFrom(condition, conditionDataProvider);
+				result = (boolean) getValueFrom(condition, conditionDataProvider);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			LOG.error("Failed to parse condition: {}", condition, e);
 			TestUtil.failIfTestingEnvironment();
 		}
 
-		return false;
+		return result != negate;
 	}
 
-	private static Object getValueFrom(String memberName, Object conditionDataProvider)
-			throws ReflectiveOperationException {
-		memberName = memberName.trim();
-		if (memberName.endsWith("()")) { // method
-			return conditionDataProvider.getClass().getMethod(memberName.substring(0, memberName.length() - 2))
-					.invoke(conditionDataProvider);
+	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+	private static final Map<ClassMemberKey, MethodHandle> METHOD_CACHE = new ConcurrentHashMap<>();
+	private static final Map<ClassMemberKey, VarHandle> VAR_CACHE = new ConcurrentHashMap<>();
+
+	public static Object getValueFrom(String memberNameRaw, Object conditionDataProvider) throws Throwable {
+		ClassMemberKey key = new ClassMemberKey(conditionDataProvider.getClass(), memberNameRaw.trim());
+
+		if (key.memberName().endsWith("()")) { // method
+			MethodHandle mh = METHOD_CACHE.computeIfAbsent(key, k -> {
+				try {
+					String methodName = key.memberName().substring(0, key.memberName().length() - 2);
+					Class<?> returnType = key.clazz().getMethod(methodName).getReturnType();
+					return LOOKUP.findVirtual(key.clazz(), methodName, MethodType.methodType(returnType));
+				} catch (ReflectiveOperationException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			return mh.invoke(conditionDataProvider);
 		} else { // field
-			return conditionDataProvider.getClass().getField(memberName).get(conditionDataProvider);
+			VarHandle vh = VAR_CACHE.computeIfAbsent(key, k -> {
+				try {
+					return LOOKUP.findVarHandle(key.clazz(), key.memberName(),
+							key.clazz().getField(key.memberName()).getType());
+				} catch (ReflectiveOperationException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			return vh.get(conditionDataProvider);
 		}
 	}
 
@@ -140,5 +171,7 @@ public class TemplateExpressionParser {
 	private enum Operator {
 		AND, OR
 	}
+
+	private record ClassMemberKey(Class<?> clazz, String memberName) {}
 
 }

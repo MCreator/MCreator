@@ -23,7 +23,6 @@ import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.generator.IGeneratorProvider;
-import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -203,8 +202,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
 							// because the following block cannot be part of the current head/tail sections
 							if (!(generator instanceof IBlockGeneratorWithSections)) {
-								append(getTailSection());
-								clearSections();
+								IBlockGeneratorWithSections.terminateSections(this);
 							}
 							generator.generateBlock(this, block);
 						} catch (TemplateGeneratorException e) {
@@ -289,6 +287,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
+		// first terminate any potential code sections as they in most cases don't work right nested in statements
+		IBlockGeneratorWithSections.terminateSections(master);
+
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code

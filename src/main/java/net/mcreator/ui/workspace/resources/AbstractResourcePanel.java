@@ -90,7 +90,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		add("North", bar);
 	}
 
-	abstract void deleteCurrentlySelected();
+	abstract protected void deleteCurrentlySelected();
 
 	@Override public void refilterElements() {
 		filterModel.refilter();

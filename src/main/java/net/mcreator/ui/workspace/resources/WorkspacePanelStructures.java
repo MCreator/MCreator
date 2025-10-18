@@ -60,7 +60,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
-	@Override void deleteCurrentlySelected() {
+	@Override protected void deleteCurrentlySelected() {
 		List<String> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

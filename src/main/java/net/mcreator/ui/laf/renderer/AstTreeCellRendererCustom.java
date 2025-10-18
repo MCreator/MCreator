@@ -30,24 +30,48 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 
 	private static final Logger LOG = LogManager.getLogger(AstTreeCellRendererCustom.class);
+
+	private static final MethodHandle GET_TEXT;
+	private static final MethodHandle GET_ICON;
+	private static final Class<?> JAVA_TREE_NODE_CLASS;
+
+	static {
+		MethodHandle text = null, icon = null;
+		Class<?> cls = null;
+		try {
+			cls = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
+			MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(cls, MethodHandles.lookup());
+			text = lookup.findVirtual(cls, "getText", MethodType.methodType(String.class, boolean.class));
+			icon = lookup.findVirtual(cls, "getIcon", MethodType.methodType(Icon.class));
+		} catch (Throwable t) {
+			LOG.debug("JavaTreeNode handles not available: {}", t.getMessage());
+		}
+		GET_TEXT = text;
+		GET_ICON = icon;
+		JAVA_TREE_NODE_CLASS = cls;
+	}
 
 	public AstTreeCellRendererCustom() {
 		setBorderSelectionColor(Theme.current().getBackgroundColor());
 		setBackground(Theme.current().getBackgroundColor());
 		setBackgroundSelectionColor(Theme.current().getInterfaceAccentColor());
 		setFont(Theme.current().getConsoleFont().deriveFont((float) PreferencesManager.PREFERENCES.ide.fontSize.get()));
+		setOpaque(true);
 	}
 
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf,
 			int row, boolean hasFocus) {
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-		setOpaque(true);
+
+		if (value == null) return this;
 
 		if (!sel) {
 			setBackground(Theme.current().getBackgroundColor());
@@ -57,50 +81,42 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			setForeground(Theme.current().getBackgroundColor());
 		}
 
-		switch (value) {
-		case JsonTree.JsonObjectNode ignored -> {
+		if (value instanceof JsonTree.JsonObjectNode) {
 			setIcon(UIRES.get("16px.jsonobj"));
 			setText(value.toString());
-		}
-		case JsonTree.JsonArrayNode ignored -> {
+		} else if (value instanceof JsonTree.JsonArrayNode) {
 			setIcon(UIRES.get("16px.jsonarray"));
 			setText(value.toString());
-		}
-		case JsonTree.JsonNode node -> {
+		} else if (value instanceof JsonTree.JsonNode node) {
 			JsonElement element = node.getElement();
 			String type = null;
-			if (element.isJsonNull())
+			if (element.isJsonNull()) {
 				type = "null";
-			if (element.isJsonPrimitive()) {
-				if (element.getAsJsonPrimitive().isBoolean())
+			} else if (element.isJsonPrimitive()) {
+				var prim = element.getAsJsonPrimitive();
+				if (prim.isBoolean())
 					type = "bool";
-				if (element.getAsJsonPrimitive().isString())
+				else if (prim.isString())
 					type = "text";
-				if (element.getAsJsonPrimitive().isNumber())
+				else if (prim.isNumber())
 					type = "number";
 			}
-			setText(value + (type == null ? "" : (" [" + type + "]")));
+			setText(node + (type != null ? " [" + type + "]" : ""));
 			setIcon(UIRES.get("16px.jsonel"));
-		}
-		case null, default -> {
+		} else if (value.getClass() == DefaultMutableTreeNode.class) {
+			setText(value.toString());
+		} else if (GET_TEXT != null && GET_ICON != null && JAVA_TREE_NODE_CLASS != null
+				&& JAVA_TREE_NODE_CLASS.isAssignableFrom(value.getClass())) {
 			try {
-				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
-				Method text = treeNodeClass.getMethod("getText", boolean.class);
-				Method icon = treeNodeClass.getMethod("getIcon");
-				icon.setAccessible(true);
-				text.setAccessible(true);
-				setText((String) text.invoke(value, sel));
-
-				setIcon(RSTAIcons.themeRSTAIcon((Icon) icon.invoke(value)));
-			} catch (Exception e) {
-				if (value instanceof DefaultMutableTreeNode) {
-					setText(value.toString());
-				} else {
-					LOG.warn(e.getMessage(), e);
-				}
+				setText((String) GET_TEXT.invoke(value, sel));
+				setIcon(RSTAIcons.themeRSTAIcon((Icon) GET_ICON.invoke(value)));
+			} catch (Throwable t) { // this should never happen
+				setText(value.toString());
 			}
+		} else {
+			setText(value.toString());
 		}
-		}
+
 		return this;
 	}
 
