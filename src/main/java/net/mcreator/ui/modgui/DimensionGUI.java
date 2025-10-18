@@ -407,8 +407,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		generationPage.setOpaque(false);
 
-		portalTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		portalTexture = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.dimension.error_portal_needs_texture");
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.dimension.error_portal_igniter_needs_texture");
 
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
@@ -534,8 +537,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
 				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
-		portalTexture.setValidator(new TextureSelectionButtonValidator(portalTexture, enablePortal));
-		texture.setValidator(new TextureSelectionButtonValidator(texture, enableIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
@@ -625,14 +626,18 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		whenPortaTriggerlUsed.refreshListKeepSelected();
-		onPortalTickUpdate.refreshListKeepSelected();
-		onPlayerEntersDimension.refreshListKeepSelected();
-		onPlayerLeavesDimension.refreshListKeepSelected();
 
-		portalMakeCondition.refreshListKeepSelected();
-		portalUseCondition.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		whenPortaTriggerlUsed.refreshListKeepSelected(context);
+		onPortalTickUpdate.refreshListKeepSelected(context);
+		onPlayerEntersDimension.refreshListKeepSelected(context);
+		onPlayerLeavesDimension.refreshListKeepSelected(context);
+
+		portalMakeCondition.refreshListKeepSelected(context);
+		portalUseCondition.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("PORTAL"));

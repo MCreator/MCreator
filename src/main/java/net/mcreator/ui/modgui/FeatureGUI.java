@@ -42,6 +42,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
@@ -145,8 +146,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel, null, featureHelperButton);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
+				featureHelperButton);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
@@ -203,7 +204,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		generateCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		generateCondition.refreshListKeepSelected(context);
 	}
 
 	private void refreshPlacementSettings(boolean updateCompileNotes) {

@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -48,8 +49,11 @@ public class AIConditionEditor {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		startCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList();
-		continueCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				parent.getWorkspace());
+
+		startCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList(context);
+		continueCondition.setDefaultName(L10N.t("condition.common.no_additional")).refreshList(context);
 
 		if (data != null && data.length == 2) {
 			startCondition.setSelectedProcedure(data[0]);

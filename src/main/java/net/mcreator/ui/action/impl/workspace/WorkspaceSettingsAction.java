@@ -40,6 +40,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.util.diff.DiffResult;
 import net.mcreator.util.diff.ListDiff;
 import net.mcreator.workspace.ShareableZIPManager;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
@@ -66,8 +67,9 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 	public static void refactorWorkspace(MCreator mcreator, WorkspaceSettingsChange change) {
 		if (change.refactorNeeded() && change.oldSettings != null) {
-
 			MCREvent.event(new WorkspaceRefactoringEvent(mcreator, change));
+
+			File originalWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getPath());
 
 			if (change.generatorFlavorChanged) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
@@ -76,16 +78,35 @@ public class WorkspaceSettingsAction extends GradleAction {
 			}
 
 			if (change.packagechanged) { // we need to copy all source files to new package and remove the old one
-				File originalPackage = new File(mcreator.getGenerator().getSourceRoot(),
-						change.oldSettings.getModElementsPackage().replace(".", "/"));
-				File newPackage = new File(mcreator.getGenerator().getSourceRoot(),
-						change.workspaceSettings.getModElementsPackage().replace(".", "/"));
+				String originalPackageSubpath = change.oldSettings.getModElementsPackage().replace(".", "/");
+				String newPackageSubpath = change.workspaceSettings.getModElementsPackage().replace(".", "/");
+
+				File originalPackage = new File(mcreator.getGenerator().getSourceRoot(), originalPackageSubpath);
+				File newPackage = new File(mcreator.getGenerator().getSourceRoot(), newPackageSubpath);
+
 				FileIO.copyDirectory(originalPackage, newPackage);
 				FileIO.deleteDir(originalPackage);
+
+				// Update file references of mod elements
+				for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+					List<File> oldPaths = modElement.getAssociatedFiles();
+					List<File> newPaths = oldPaths.stream()
+							.map(file -> new File(file.getPath().replace(originalPackageSubpath, newPackageSubpath)))
+							.collect(Collectors.toList());
+					modElement.setAssociatedFiles(newPaths);
+				}
+
+				// Update file references of workspace core files
+				if (mcreator.getWorkspace().getMetadata("files") instanceof List<?> fileList) {
+					List<String> updatedFileList = fileList.stream().filter(item -> item instanceof String)
+							.map(item -> (String) item)
+							.map(path -> path.replace(originalPackageSubpath, newPackageSubpath))
+							.collect(Collectors.toList());
+					mcreator.getWorkspace().putMetadata("files", updatedFileList);
+				}
 			}
 
 			if (change.modidchanged) { // we need to refactor structures (modid in nbt files), change workspace file modid and reference in file manager
-				File originalWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getPath());
 				File newWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getParentFile().getPath(),
 						change.workspaceSettings.getModID() + ".mcreator");
 
@@ -95,9 +116,6 @@ public class WorkspaceSettingsAction extends GradleAction {
 				// move workspace file to a new file
 				FileIO.copyFile(originalWorkspaceFile, newWorkspaceFile);
 				mcreator.getWorkspace().bindToNewWorkspaceFile(newWorkspaceFile);
-
-				// delete the original workspace file
-				originalWorkspaceFile.delete();
 
 				// refactor assets folder if it contains modid
 				if (mcreator.getGeneratorConfiguration().getModAssetsRoot() != null
@@ -206,6 +224,11 @@ public class WorkspaceSettingsAction extends GradleAction {
 					mcreator.getActionRegistry().reloadGradleProject.doAction();
 				}
 				RegenerateCodeAction.regenerateCode(mcreator, true, true);
+			}
+
+			if (change.modidchanged) {
+				// delete the original workspace file
+				originalWorkspaceFile.delete();
 			}
 		}
 	}

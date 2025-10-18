@@ -47,7 +47,6 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -184,9 +183,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel mainTextures = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		mainTextures.setOpaque(false);
 
-		textureStill = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureStill = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.fluid.error_fluid_needs_still_texture");
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.fluid.error_fluid_needs_flowing_texture");
 		textureFlowing.setOpaque(false);
 
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -453,9 +456,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		textureStill.setValidator(new TextureSelectionButtonValidator(textureStill));
-		textureFlowing.setValidator(new TextureSelectionButtonValidator(textureFlowing));
-
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
 
@@ -494,18 +494,22 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourChanges.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		flowCondition.refreshListKeepSelected();
-		beforeReplacingBlock.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		fogStartDistance.refreshListKeepSelected();
-		fogEndDistance.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourChanges.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		flowCondition.refreshListKeepSelected(context);
+		beforeReplacingBlock.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+
+		fogStartDistance.refreshListKeepSelected(context);
+		fogEndDistance.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}

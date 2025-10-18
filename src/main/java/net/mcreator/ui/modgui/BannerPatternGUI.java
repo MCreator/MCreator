@@ -34,7 +34,6 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -75,10 +74,12 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		JPanel texturesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		texturesPanel.setOpaque(false);
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER))
+				.requireValue("elementgui.banner_pattern.error_pattern_needs_banner_texture");
 		texture.setOpaque(false);
 		texture.addTextureSelectedListener(e -> updatePatternPreviews());
-		shieldTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		shieldTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER))
+				.requireValue("elementgui.banner_pattern.error_pattern_needs_shield_texture");
 		shieldTexture.setOpaque(false);
 		shieldTexture.addTextureSelectedListener(e -> updatePatternPreviews());
 
@@ -129,8 +130,6 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		texturesWithProperties.add("South", properties);
 		texturesWithProperties.setOpaque(false);
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-		shieldTexture.setValidator(new TextureSelectionButtonValidator(shieldTexture));
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.banner_pattern.pattern_needs_name")));
 		name.enableRealtimeValidation();
 
