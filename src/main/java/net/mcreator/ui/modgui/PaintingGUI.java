@@ -30,7 +30,6 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -58,7 +57,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override protected void initGUI() {
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
+		texture = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue();
 		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(
@@ -92,8 +92,6 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 		pane3.add("Center",
 				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 25, 25)));
-
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		title.setValidator(new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
 		title.enableRealtimeValidation();

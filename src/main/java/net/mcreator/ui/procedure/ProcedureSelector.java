@@ -251,7 +251,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 						newGUI.setModElementCreatedListener(generatableElement -> {
 							String modName = JavaConventions.convertToValidClassName(
 									generatableElement.getModElement().getName());
-							refreshList();
+							refreshList(AbstractProcedureSelector.ReloadContext.create(mcreator.getWorkspace()));
 							setSelectedProcedure(modName);
 						});
 					}

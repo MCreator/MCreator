@@ -4,12 +4,12 @@ Biomi con continentalità simile si genereranno più vicini e competeranno per l
 
 Sebbene i valori da -2 a 2 siano validi, i biomi vanilla utilizzano solo valori compresi nell'intervallo da -1 a 1.
 
-I biomi Vanilla dell'Overworld utilizzano questi intervalli di valori:
+I biomi vanilla dell'overworld utilizzano questi intervalli di valori:
 
-* Oceano profondo: da -1,05 a -0,455
-* Oceano: da -0,455 a -0,19
-* Costa: da -0,19 a -0,11
-* Entroterra: da -0,11 a 0,55
-* Vicino all'entroterra: da -0,11 a 0,03
-* Centro interno: da 0,03 a 0,3
-* Nell'entroterra: da 0,3 a 1,0
+* Oceano profondo: da -1.05 a -0.455
+* Oceano: da -0.455 a -0.19
+* Costa: da -0.19 a -0.11
+* Entroterra: da -0.11 a 0.55
+* Vicino all'entroterra: da -0.11 a 0.03
+* Centro entroterra: da 0.03 a 0.3
+* Nell'entroterra: da 0.3 a 1.0

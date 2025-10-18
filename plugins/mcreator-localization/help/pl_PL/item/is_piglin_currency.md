@@ -1,0 +1,1 @@
+Ten parametr kontroluje, czy przedmiot jest walutą dla piglinów, jak sztabka złota.

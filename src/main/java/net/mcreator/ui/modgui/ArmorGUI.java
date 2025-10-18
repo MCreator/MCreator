@@ -800,69 +800,52 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsModel.removeActionListener(leggingsModelListener);
 		bootsModel.removeActionListener(bootsModelListener);
 
-		helmetGlowCondition.refreshListKeepSelected();
-		bodyGlowCondition.refreshListKeepSelected();
-		leggingsGlowCondition.refreshListKeepSelected();
-		bootsGlowCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		helmetPiglinNeutral.refreshListKeepSelected();
-		bodyPiglinNeutral.refreshListKeepSelected();
-		leggingsPiglinNeutral.refreshListKeepSelected();
-		bootsPiglinNeutral.refreshListKeepSelected();
+		helmetGlowCondition.refreshListKeepSelected(context);
+		bodyGlowCondition.refreshListKeepSelected(context);
+		leggingsGlowCondition.refreshListKeepSelected(context);
+		bootsGlowCondition.refreshListKeepSelected(context);
 
-		onHelmetTick.refreshListKeepSelected();
-		onBodyTick.refreshListKeepSelected();
-		onLeggingsTick.refreshListKeepSelected();
-		onBootsTick.refreshListKeepSelected();
-		helmetSpecialInformation.refreshListKeepSelected();
-		bodySpecialInformation.refreshListKeepSelected();
-		leggingsSpecialInformation.refreshListKeepSelected();
-		bootsSpecialInformation.refreshListKeepSelected();
+		helmetPiglinNeutral.refreshListKeepSelected(context);
+		bodyPiglinNeutral.refreshListKeepSelected(context);
+		leggingsPiglinNeutral.refreshListKeepSelected(context);
+		bootsPiglinNeutral.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(helmetModel, ListUtils.merge(Collections.singleton(defaultModel),
+		onHelmetTick.refreshListKeepSelected(context);
+		onBodyTick.refreshListKeepSelected(context);
+		onLeggingsTick.refreshListKeepSelected(context);
+		onBootsTick.refreshListKeepSelected(context);
+		helmetSpecialInformation.refreshListKeepSelected(context);
+		bodySpecialInformation.refreshListKeepSelected(context);
+		leggingsSpecialInformation.refreshListKeepSelected(context);
+		bootsSpecialInformation.refreshListKeepSelected(context);
+
+		List<Model> armorModels = ListUtils.merge(Collections.singleton(defaultModel),
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()));
 
-		ComboBoxUtil.updateComboBoxContents(bodyModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(leggingsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(bootsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(helmetModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(bodyModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(leggingsModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(bootsModel, armorModels);
 
 		helmetModelTexture.reload();
 		bodyModelTexture.reload();
 		leggingsModelTexture.reload();
 		bootsModelTexture.reload();
 
-		ComboBoxUtil.updateComboBoxContents(helmetItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+		List<Model> itemModels = ListUtils.merge(Arrays.asList(normal, tool),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()));
 
-		ComboBoxUtil.updateComboBoxContents(bodyItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(leggingsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(bootsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(helmetItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(bodyItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(leggingsItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(bootsItemRenderType, itemModels);
 
 		armorTextureFile.reload();
 

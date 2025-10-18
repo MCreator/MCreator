@@ -1,0 +1,1 @@
+Questo parametro controlla i valori minimi e massimi a cui può essere impostato il valore dell'attributo.

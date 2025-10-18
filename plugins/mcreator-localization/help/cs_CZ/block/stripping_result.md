@@ -1,0 +1,1 @@
+Tento parametr určuje, do jakého bloku se blok promění, když je oloupán.

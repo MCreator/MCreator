@@ -26,6 +26,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -53,17 +54,20 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 			}
 		});
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		StringProcedureSelector tooltipText = new StringProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/tooltip_text"), editor.mcreator, textField, 200,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		tooltipText.refreshList();
+		tooltipText.refreshList(context);
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/tooltip_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.tooltip_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		displayCondition.refreshList();
+		displayCondition.refreshList(context);
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));

@@ -1,0 +1,1 @@
+Cochez cette option pour appliquer un effet lumineux à votre particule (similaire à la particule de flamme).

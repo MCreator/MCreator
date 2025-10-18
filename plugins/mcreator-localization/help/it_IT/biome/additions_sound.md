@@ -1,1 +1,1 @@
-Il suono delle aggiunte viene riprodotto nel bioma.
+Suono aggiuntivo riprodotto nel bioma.

@@ -167,6 +167,7 @@ public class GeneratorFileTasks {
 					case "JAVA_viatemplate":
 						String template = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 								(String) ((Map<?, ?>) task).get("template"));
+						Map<File, String> javaFiles = new HashMap<>();
 						for (Model model : modelList) {
 							if (model.getType() == Model.Type.JAVA) {
 								String modelCode = FileIO.readFileToString(model.getFile());
@@ -180,10 +181,10 @@ public class GeneratorFileTasks {
 									generator.getLogger()
 											.error("Failed to generate code for model: {}", model.getFile(), e);
 								}
-								ClassWriter.writeClassToFile(generator.getWorkspace(), modelCode,
-										new File(to, model.getReadableName() + ".java"), true);
+								javaFiles.put(new File(to, model.getReadableName() + ".java"), modelCode);
 							}
 						}
+						ClassWriter.batchWriteClassToFile(generator.getWorkspace(), javaFiles, true, null);
 						break;
 					}
 				}
@@ -204,6 +205,7 @@ public class GeneratorFileTasks {
 					if (((Map<?, ?>) task).get("type").toString().equals("JAVA_viatemplate")) {
 						String template = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 								(String) ((Map<?, ?>) task).get("template"));
+						Map<File, String> javaFiles = new HashMap<>();
 						for (Animation animation : animations) {
 							String animationCode = FileIO.readFileToString(animation.getFile());
 							try {
@@ -216,9 +218,9 @@ public class GeneratorFileTasks {
 								generator.getLogger()
 										.error("Failed to generate code for animation: {}", animation.getFile(), e);
 							}
-							ClassWriter.writeClassToFile(generator.getWorkspace(), animationCode,
-									new File(to, animation.getName() + ".java"), true);
+							javaFiles.put(new File(to, animation.getName() + ".java"), animationCode);
 						}
+						ClassWriter.batchWriteClassToFile(generator.getWorkspace(), javaFiles, true, null);
 					}
 				}
 			}

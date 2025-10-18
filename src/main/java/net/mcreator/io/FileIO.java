@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
@@ -178,6 +179,15 @@ public final class FileIO {
 			}
 		}
 		return dir.delete();
+	}
+
+	public static boolean moveToTrash(File dir) {
+		if (dir.isDirectory() && Desktop.isDesktopSupported() && Desktop.getDesktop()
+				.isSupported(Desktop.Action.MOVE_TO_TRASH)) {
+			return Desktop.getDesktop().moveToTrash(dir);
+		} else {
+			return deleteDir(dir);
+		}
 	}
 
 	public static void emptyDirectory(File directory, String... excludes) {

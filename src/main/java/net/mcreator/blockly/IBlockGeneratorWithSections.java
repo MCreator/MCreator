@@ -45,6 +45,11 @@ public interface IBlockGeneratorWithSections extends IBlockGenerator {
 		}
 	}
 
+	static void terminateSections(BlocklyToCode master) {
+		master.append(master.getTailSection());
+		master.clearSections();
+	}
+
 	@Override default BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
