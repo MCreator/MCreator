@@ -42,11 +42,15 @@ public abstract class ${name}Item extends Item {
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
 		${data.maxDamage},
 		Map.of(
-			ArmorType.BOOTS, ${data.damageValueBoots},
-			ArmorType.LEGGINGS, ${data.damageValueLeggings},
-			ArmorType.CHESTPLATE, ${data.damageValueBody},
-			ArmorType.HELMET, ${data.damageValueHelmet},
-			ArmorType.BODY, ${data.damageValueBody}
+			<#if !data.isHorseArmor>
+				ArmorType.BOOTS, ${data.damageValueBoots},
+				ArmorType.LEGGINGS, ${data.damageValueLeggings},
+				ArmorType.CHESTPLATE, ${data.damageValueBody},
+				ArmorType.HELMET, ${data.damageValueHelmet},
+				ArmorType.BODY, ${data.damageValueBody}
+			<#else>
+				ArmorType.BODY, ${data.damageValueBody}
+			</#if>
 		),
 		${data.enchantability},
 		<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
@@ -64,7 +68,7 @@ public abstract class ${name}Item extends Item {
 		super(properties);
 	}
 
-	<#if data.enableHelmet>
+	<#if data.enableHelmet && !data.isHorseArmor>
 	public static class Helmet extends ${name}Item {
 
 		public Helmet(Item.Properties properties) {
@@ -81,24 +85,40 @@ public abstract class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.enableBody>
-	public static class Chestplate extends ${name}Item {
+	<#if data.enableBody && !data.isHorseArmor>
+		public static class Chestplate extends ${name}Item {
 
-		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE));
+			public Chestplate(Item.Properties properties) {
+				super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE));
+			}
+
+			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+
+			<@hasGlow data.bodyGlowCondition/>
+
+			<@piglinNeutral data.bodyPiglinNeutral/>
+
+			<@onArmorTick data.onBodyTick/>
 		}
-
-		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
-
-		<@hasGlow data.bodyGlowCondition/>
-
-		<@piglinNeutral data.bodyPiglinNeutral/>
-
-		<@onArmorTick data.onBodyTick/>
-	}
+	</#if>
+	
+	<#if data.isHorseArmor>
+		public static class HorseArmorChestplate extends ${name}Item {
+			public HorseArmorChestplate(Item.Properties properties) {
+				super(properties.horseArmor(ARMOR_MATERIAL).durability(${data.maxDamage}).rarity(Rarity.RARE)<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			}
+			
+			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+             
+            <@hasGlow data.bodyGlowCondition/>
+             
+            <@piglinNeutral data.bodyPiglinNeutral/>
+             
+            <@onArmorTick data.onBodyTick/>	
+		}
 	</#if>
 
-	<#if data.enableLeggings>
+	<#if data.enableLeggings && !data.isHorseArmor>
 	public static class Leggings extends ${name}Item {
 
 		public Leggings(Item.Properties properties) {
@@ -115,7 +135,7 @@ public abstract class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.enableBoots>
+	<#if data.enableBoots && !data.isHorseArmor>
 	public static class Boots extends ${name}Item {
 
 		public Boots(Item.Properties properties) {

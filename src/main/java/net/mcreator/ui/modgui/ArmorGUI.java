@@ -152,6 +152,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox bodyImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isHorseArmor = L10N.checkbox("elementgui.common.enable");
 
 	private LogicProcedureSelector helmetGlowCondition;
 	private LogicProcedureSelector bodyGlowCondition;
@@ -356,6 +357,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyImmuneToFire.setOpaque(false);
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
+		isHorseArmor.setOpaque(false);
 
 		JPanel helmetSubPanel = new JPanel(new GridLayout(4, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
@@ -548,6 +550,36 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			bootsName.setEnabled(enableBoots.isSelected());
 		});
 
+		isHorseArmor.addActionListener(event -> {
+			textureHelmet.setEnabled(!isHorseArmor.isSelected());
+			textureBody.setEnabled(true);
+			textureLeggings.setEnabled(!isHorseArmor.isSelected());
+			textureBoots.setEnabled(!isHorseArmor.isSelected());
+
+			enableHelmet.setSelected(!isHorseArmor.isSelected());
+			enableHelmet.setEnabled(!isHorseArmor.isSelected());
+			enableBody.setSelected(true);
+			enableBody.setEnabled(!isHorseArmor.isSelected());
+			enableLeggings.setSelected(!isHorseArmor.isSelected());
+			enableLeggings.setEnabled(!isHorseArmor.isSelected());
+			enableBoots.setSelected(!isHorseArmor.isSelected());
+			enableBoots.setEnabled(!isHorseArmor.isSelected());
+
+			helmetName.setEnabled(!isHorseArmor.isSelected());
+			leggingsName.setEnabled(!isHorseArmor.isSelected());
+			bootsName.setEnabled(!isHorseArmor.isSelected());
+
+			damageValueHelmet.setEnabled(!isHorseArmor.isSelected());
+			damageValueLeggings.setEnabled(!isHorseArmor.isSelected());
+			damageValueBoots.setEnabled(!isHorseArmor.isSelected());
+
+			onHelmetTick.setEnabled(!isHorseArmor.isSelected());
+			onLeggingsTick.setEnabled(!isHorseArmor.isSelected());
+			onBootsTick.setEnabled(!isHorseArmor.isSelected());
+
+			armorTextureFile.changeTextureType(isHorseArmor.isSelected() ? TextureType.ENTITY : TextureType.ARMOR);
+		});
+
 		armorTextureFile.getComboBox().addActionListener(e -> updateArmorTexturePreview());
 
 		JPanel sbbp22 = new JPanel();
@@ -565,7 +597,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp22));
 
-		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 2));
+		JPanel enderpanel = new JPanel(new GridLayout(10, 2, 20, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
 				L10N.label("elementgui.armor.layer_texture")));
@@ -578,6 +610,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/equip_sound"),
 				L10N.label("elementgui.armor.equip_sound")));
 		enderpanel.add(equipSound);
+
+		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/is_horse"),
+				L10N.label("elementgui.armor.is_horse")));
+		enderpanel.add(isHorseArmor);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/max_damage_absorbed"),
 				L10N.label("elementgui.armor.max_damage_absorption")));
@@ -898,12 +934,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSpecialInformation.setSelectedProcedure(armor.leggingsSpecialInformation);
 		bootsSpecialInformation.setSelectedProcedure(armor.bootsSpecialInformation);
 		enableHelmet.setSelected(armor.enableHelmet);
-		enableBody.setSelected(armor.enableBody);
+		enableBody.setSelected(armor.enableBody || armor.isHorseArmor);
 		enableLeggings.setSelected(armor.enableLeggings);
 		enableBoots.setSelected(armor.enableBoots);
 		creativeTabs.setListElements(armor.creativeTabs);
-		textureHelmet.setEnabled(enableHelmet.isSelected());
-		textureBody.setEnabled(enableBody.isSelected());
+		textureHelmet.setEnabled(armor.enableHelmet);
+		textureBody.setEnabled(enableBody.isSelected() || armor.isHorseArmor);
 		textureLeggings.setEnabled(enableLeggings.isSelected());
 		textureBoots.setEnabled(enableBoots.isSelected());
 		helmetName.setText(armor.helmetName);
@@ -912,6 +948,37 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setText(armor.bootsName);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
+
+		if (armor.isHorseArmor) {
+			textureHelmet.setEnabled(false);
+			textureLeggings.setEnabled(false);
+			textureBoots.setEnabled(false);
+
+			enableHelmet.setSelected(false);
+			enableHelmet.setEnabled(false);
+			enableBody.setSelected(true);
+			enableBody.setSelected(true);
+			enableBody.setEnabled(false);
+			enableLeggings.setSelected(false);
+			enableLeggings.setEnabled(false);
+			enableBoots.setSelected(false);
+			enableBoots.setEnabled(false);
+
+			helmetName.setEnabled(false);
+			leggingsName.setEnabled(false);
+			bootsName.setEnabled(false);
+
+			damageValueHelmet.setEnabled(false);
+			damageValueLeggings.setEnabled(false);
+			damageValueBoots.setEnabled(false);
+
+			onHelmetTick.setEnabled(false);
+			onLeggingsTick.setEnabled(false);
+			onBootsTick.setEnabled(false);
+
+			armorTextureFile.changeTextureType(TextureType.ENTITY);
+			armorTextureFile.setTextureFromTextureName(armor.armorTextureFile);
+		}
 
 		Model _helmetModel = armor.getHelmetModel();
 		if (_helmetModel != null)
@@ -960,6 +1027,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
+		isHorseArmor.setSelected(armor.isHorseArmor);
 
 		helmetGlowCondition.setSelectedProcedure(armor.helmetGlowCondition);
 		bodyGlowCondition.setSelectedProcedure(armor.bodyGlowCondition);
@@ -1044,6 +1112,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+		armor.isHorseArmor = isHorseArmor.isSelected();
 		armor.helmetGlowCondition = helmetGlowCondition.getSelectedProcedure();
 		armor.bodyGlowCondition = bodyGlowCondition.getSelectedProcedure();
 		armor.leggingsGlowCondition = leggingsGlowCondition.getSelectedProcedure();
