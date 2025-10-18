@@ -1,4 +1,4 @@
-Si ce paramètre est coché, un œuf d'apparition est généré.
+Si ce paramètre est coché, un item d'œuf d'apparition est généré.
 
 Si vous spécifiez une texture personnalisée, le paramètre de couleur d'œuf de spawn est ignoré.
 

@@ -1,4 +1,4 @@
-Ce paramètre contrôle la taille de la boîte de collision de votre projectile dans les unités de bloc.
+Ce paramètre contrôle la taille de la boîte de collision de votre projectile en unités de blocs.
 La première option définit la largeur et la profondeur, tandis que la seconde option définit la hauteur.
 
 Les projectiles de largeur/profondeur ou de hauteur supérieure à 0,5 ne entrent pas en collision avec
