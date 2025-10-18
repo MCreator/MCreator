@@ -186,15 +186,11 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	<#if data.enableBody && !data.isHorseArmor >
+	<#if data.enableBody && !data.isHorseArmor>
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			<#if !data.isHorseArmor>
-				super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if>);
-			<#else>
-				super(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().durability(${data.maxDamage}));
-			</#if>
+			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if>);
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">

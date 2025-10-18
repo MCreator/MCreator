@@ -105,7 +105,7 @@ public abstract class ${name}Item extends Item {
 	<#if data.isHorseArmor>
 		public static class HorseArmorChestplate extends ${name}Item {
 			public HorseArmorChestplate(Item.Properties properties) {
-				super(properties.horseArmor(ARMOR_MATERIAL).durability(500).rarity(Rarity.RARE)<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+				super(properties.horseArmor(ARMOR_MATERIAL).durability(${data.maxDamage}).rarity(Rarity.RARE)<#if data.bodyImmuneToFire>.fireResistant()</#if>);
 			}
 			
 			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
