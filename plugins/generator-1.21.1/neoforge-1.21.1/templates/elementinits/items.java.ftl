@@ -52,7 +52,7 @@ public class ${JavaModName}Items {
 
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
-			<#if item.enableHelmet && !data.isHorseArmor>
+			<#if item.enableHelmet && !item.isHorseArmor>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
 			</#if>
