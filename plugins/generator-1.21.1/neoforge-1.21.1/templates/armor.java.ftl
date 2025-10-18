@@ -186,7 +186,7 @@ import net.minecraft.client.model.Model;
 	}
 	</#if>
 
-	<#if data.enableBody || data.isHorseArmor>
+	<#if data.enableBody && !data.isHorseArmor >
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
@@ -211,6 +211,28 @@ import net.minecraft.client.model.Model;
 
 		<@onArmorTick data.onBodyTick/>
 	}
+	</#if>
+	
+	<#if data.isHorseArmor>
+		public static class HorseArmorChestplate extends ${name}Item {
+			public HorseArmorChestplate() {
+				super(ARMOR_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().durability(${data.maxDamage}));
+			}
+
+			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+			@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+				return ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+			}
+			</#if>
+
+			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+
+			<@hasGlow data.bodyGlowCondition/>
+
+			<@piglinNeutral data.bodyPiglinNeutral/>
+
+			<@onArmorTick data.onBodyTick/>
+		}
 	</#if>
 
 	<#if data.enableLeggings && !data.isHorseArmor>

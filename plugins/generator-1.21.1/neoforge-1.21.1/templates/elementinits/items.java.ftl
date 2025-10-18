@@ -56,9 +56,13 @@ public class ${JavaModName}Items {
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
 			</#if>
-			<#if item.enableBody>
+			<#if item.enableBody && !item.isHorseArmor>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
 				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new);
+			</#if>
+			<#if item.isHorseArmor>
+				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
+				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.HorseArmorChestplate::new);
 			</#if>
 			<#if item.enableLeggings && !item.isHorseArmor>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =

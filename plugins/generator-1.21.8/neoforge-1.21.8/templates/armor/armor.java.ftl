@@ -85,24 +85,38 @@ public abstract class ${name}Item extends Item {
 	}
 	</#if>
 
-	public static class Chestplate extends ${name}Item {
+	<#if data.enableBody && !data.isHorseArmor>
+		public static class Chestplate extends ${name}Item {
 
-		public Chestplate(Item.Properties properties) {
-			<#if !data.isHorseArmor>
+			public Chestplate(Item.Properties properties) {
 				super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE));
-			<#else>
-				super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if>.horseArmor(ARMOR_MATERIAL));
-			</#if>
+			}
+
+			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+
+			<@hasGlow data.bodyGlowCondition/>
+
+			<@piglinNeutral data.bodyPiglinNeutral/>
+
+			<@onArmorTick data.onBodyTick/>
 		}
-
-		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
-
-		<@hasGlow data.bodyGlowCondition/>
-
-		<@piglinNeutral data.bodyPiglinNeutral/>
-
-		<@onArmorTick data.onBodyTick/>
-	}
+	</#if>
+	
+	<#if data.isHorseArmor>
+		public static class HorseArmorChestplate extends ${name}Item {
+			public HorseArmorChestplate(Item.Properties properties) {
+				super(properties.horseArmor(ARMOR_MATERIAL).durability(500).rarity(Rarity.RARE)<#if data.bodyImmuneToFire>.fireResistant()</#if>);
+			}
+			
+			<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
+             
+            <@hasGlow data.bodyGlowCondition/>
+             
+            <@piglinNeutral data.bodyPiglinNeutral/>
+             
+            <@onArmorTick data.onBodyTick/>	
+		}
+	</#if>
 
 	<#if data.enableLeggings && !data.isHorseArmor>
 	public static class Leggings extends ${name}Item {
