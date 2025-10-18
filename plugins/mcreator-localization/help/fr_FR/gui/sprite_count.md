@@ -1,1 +1,1 @@
-Ce paramètre spécifie le nombre de lutins dans la texture sélectionnée.
+Ce paramètre spécifie le nombre de sprites dans la texture sélectionnée.

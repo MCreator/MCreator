@@ -1,1 +1,1 @@
-Si une condition est spécifiée, cette image ne sera affichée que si la condition est vraie.
+Si une condition est spécifiée, ce sprite ne sera affichée que si la condition est vraie.

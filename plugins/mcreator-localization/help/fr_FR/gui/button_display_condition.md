@@ -1,1 +1,1 @@
-Si une condition est spécifiée, ce bouton ne peut être affiché que si la condition est passée.
+Si une condition est spécifiée, ce bouton ne peut être affiché que si résultat de la condition est vrai.
