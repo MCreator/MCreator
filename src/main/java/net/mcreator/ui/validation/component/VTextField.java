@@ -94,7 +94,7 @@ public class VTextField extends JTextField implements IValidable {
 			g.fillRect(1, 1, getWidth() - 1, 13);
 			g.setFont(getFont().deriveFont(10.0f));
 			g.setColor(Theme.current().getForegroundColor());
-			String message = "This input field is validated";
+			String message = L10N.t("validators.input_field_is_validated");
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
 			if (currentValidationResult != null && currentValidationResult.getMessage() != null
