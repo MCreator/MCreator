@@ -53,10 +53,8 @@ import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -93,10 +91,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private TextureSelectionButton textureLeggings;
 	private TextureSelectionButton textureBoots;
 
-	private final VTextField helmetName = new VTextField();
-	private final VTextField bodyName = new VTextField();
-	private final VTextField leggingsName = new VTextField();
-	private final VTextField bootsName = new VTextField();
+	private final VTextField helmetName = new VTextField().requireValue("elementgui.armor.helmet_needs_name")
+			.enableRealtimeValidation();
+	private final VTextField bodyName = new VTextField().requireValue("elementgui.armor.chestplate_needs_name")
+			.enableRealtimeValidation();
+	private final VTextField leggingsName = new VTextField().requireValue("elementgui.armor.leggings_need_name")
+			.enableRealtimeValidation();
+	private final VTextField bootsName = new VTextField().requireValue("elementgui.armor.boots_need_name")
+			.enableRealtimeValidation();
 
 	private static final Model defaultModel = new Model.BuiltInModel("Default");
 	private final VComboBox<Model> helmetModel = new SearchableComboBox<>(new Model[] { defaultModel });
@@ -332,10 +334,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBody = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBoots = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.helmet_needs_item_texture");
+		textureBody = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.chestplate_needs_item_texture");
+		textureLeggings = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.leggings_need_item_texture");
+		textureBoots = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.boots_need_item_texture");
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);
@@ -625,34 +635,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(clopa));
 
-		textureHelmet.setValidator(() -> {
-			if (enableHelmet.isSelected() && !textureHelmet.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureBody.setValidator(() -> {
-			if (enableBody.isSelected() && !textureBody.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureLeggings.setValidator(() -> {
-			if (enableLeggings.isSelected() && !textureLeggings.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureBoots.setValidator(() -> {
-			if (enableBoots.isSelected() && !textureBoots.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
 		helmetModelListener = actionEvent -> {
 			Model model = helmetModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
@@ -746,24 +728,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModelListener.actionPerformed(new ActionEvent("", 0, ""));
 		leggingsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 		bootsModelListener.actionPerformed(new ActionEvent("", 0, ""));
-
-		bootsName.setValidator(
-				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
-						true));
-		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"),
-						enableBody, true));
-		leggingsName.setValidator(
-				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
-						enableLeggings, true));
-		helmetName.setValidator(
-				new ConditionalTextFieldValidator(helmetName, L10N.t("elementgui.armor.helmet_needs_name"),
-						enableHelmet, true));
-
-		bootsName.enableRealtimeValidation();
-		bodyName.enableRealtimeValidation();
-		leggingsName.enableRealtimeValidation();
-		helmetName.enableRealtimeValidation();
 
 		group1page.addValidationElement(textureHelmet);
 		group1page.addValidationElement(textureBody);
