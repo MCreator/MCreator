@@ -1092,15 +1092,19 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			tameable.setEnabled(false);
 		}
 
-		bossBarColor.setEnabled(isBoss.isSelected());
-		bossBarType.setEnabled(isBoss.isSelected());
+		boolean isBossSelected = isBoss.isSelected();
+
+		bossBarColor.setEnabled(isBossSelected);
+		bossBarType.setEnabled(isBossSelected);
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
-		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
-		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
-		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
-		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
+		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
+
+		vibrationSensitivityRadius.setEnabled(isSensitiveToVibration);
+		vibrationalEvents.setEnabled(isSensitiveToVibration);
+		canReceiveVibrationCondition.setEnabled(isSensitiveToVibration);
+		onReceivedVibration.setEnabled(isSensitiveToVibration);
 
 		refreshEggProperties();
 		refreshSpawnProperties();
