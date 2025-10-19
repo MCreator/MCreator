@@ -36,7 +36,6 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -53,7 +52,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final VTextField displayName = new VTextField(30).requireValue(
 			"elementgui.villager_profession.profession_needs_display_name").enableRealtimeValidation();
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-	private final SoundSelector actionSound = new SoundSelector(mcreator);
+	private final SoundSelector actionSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.common.error_sound_empty_null").enableRealTimeValidation();
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 
 	private TextureComboBox professionTextureFile;
@@ -118,8 +118,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 								.map(DataListEntry::getName).toList(),
 						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty()).setIsPresentOnList(
 						this::isEditingMode));
-		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null")));
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(
 				page1group);

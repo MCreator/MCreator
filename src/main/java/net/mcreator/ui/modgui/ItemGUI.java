@@ -48,7 +48,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -163,7 +162,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	// Music disc parameters
 	private final JCheckBox isMusicDisc = L10N.checkbox("elementgui.common.enable");
-	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator);
+	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator).requireValue(
+			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
 	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
 			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
@@ -577,10 +577,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
 		page1group.addValidationElement(texture);
-
-		musicDiscMusic.getVTextField().setValidator(new TextFieldValidator(musicDiscMusic.getVTextField(),
-				L10N.t("elementgui.item.musicdisc.error_needs_sound")));
-		musicDiscMusic.getVTextField().enableRealtimeValidation();
 
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
