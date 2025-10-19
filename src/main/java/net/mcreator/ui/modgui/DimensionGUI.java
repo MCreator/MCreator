@@ -63,7 +63,8 @@ import java.util.Map;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
-	private final VTextField igniterName = new VTextField(19);
+	private final VTextField igniterName = new VTextField(19).requireValue(
+			"elementgui.dimension.error_portal_igniter_needs_name").enableRealtimeValidation();
 	private final TranslatedComboBox igniterRarity = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("COMMON", "elementgui.common.rarity_common"),
@@ -535,10 +536,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 						true));
 		infiniburnTag.enableRealtimeValidation();
 
-		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
-				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
-		igniterName.enableRealtimeValidation();
 
 		portalPageGroup.addValidationElement(igniterName);
 		portalPageGroup.addValidationElement(portalTexture);
