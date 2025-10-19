@@ -58,7 +58,6 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -104,7 +103,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final SoundSelector stepSound = new SoundSelector(mcreator);
 	private final SoundSelector raidCelebrationSound = new SoundSelector(mcreator);
 
-	private final VTextField mobName = new VTextField();
+	private final VTextField mobName = new VTextField().requireValue("elementgui.living_entity.error_entity_needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner attackStrength = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
@@ -960,10 +960,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2);
 		vibrationPane.add("Center", PanelUtils.totalCenterInPanel(vibrationMerger));
 		vibrationPane.setOpaque(false);
-
-		mobName.setValidator(
-				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
-		mobName.enableRealtimeValidation();
 
 		pane1.setOpaque(false);
 

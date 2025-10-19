@@ -50,7 +50,8 @@ import java.net.URISyntaxException;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
-	private final VTextField displayName = new VTextField(30);
+	private final VTextField displayName = new VTextField(30).requireValue(
+			"elementgui.villager_profession.profession_needs_display_name").enableRealtimeValidation();
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
@@ -108,9 +109,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(professionTextureFile);
 		page1group.addValidationElement(zombifiedProfessionTextureFile);
 
-		displayName.setValidator(new TextFieldValidator(displayName,
-				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
-		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(
 				new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
 						() -> pointOfInterest.getBlock().getUnmappedValue(),
