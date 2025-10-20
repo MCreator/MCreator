@@ -699,6 +699,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 								new JEmptyBox(5, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor)), creativeTabs,
 				5, 0));
 
+		hasSpawnEgg.addActionListener(e -> refreshEggProperties());
+
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, isBoss, new JEmptyBox(5, 5), bossBarColor, new JEmptyBox(5, 5),
@@ -871,6 +873,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.enable_mob_spawning")));
 		selp.add(spawnThisMob);
 
+		spawnThisMob.addActionListener(e -> refreshSpawnProperties());
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/despawn_idle"),
 				L10N.label("elementgui.living_entity.despawn_idle")));
 		selp.add(doesDespawnWhenIdle);
@@ -990,6 +994,25 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		editorReady = true;
 	}
 
+	private void refreshSpawnProperties() {
+		boolean canSpawn = spawnThisMob.isSelected();
+
+		numberOfMobsPerGroup.setEnabled(canSpawn);
+		mobSpawningType.setEnabled(canSpawn);
+		restrictionBiomes.setEnabled(canSpawn);
+		spawningCondition.setEnabled(canSpawn);
+		spawningProbability.setEnabled(canSpawn);
+	}
+
+	private void refreshEggProperties() {
+		boolean isSelected = hasSpawnEgg.isSelected();
+
+		spawnEggBaseColor.setEnabled(isSelected);
+		spawnEggDotColor.setEnabled(isSelected);
+		spawnEggTexture.setEnabled(isSelected);
+		creativeTabs.setEnabled(isSelected);
+	}
+
 	@Override public void reloadDataLists() {
 		disableMobModelCheckBoxListener = true;
 
@@ -1065,15 +1088,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			tameable.setEnabled(false);
 		}
 
-		bossBarColor.setEnabled(isBoss.isSelected());
-		bossBarType.setEnabled(isBoss.isSelected());
+		boolean isBossSelected = isBoss.isSelected();
+
+		bossBarColor.setEnabled(isBossSelected);
+		bossBarType.setEnabled(isBossSelected);
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
-		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
-		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
-		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
-		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
+		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
+
+		vibrationSensitivityRadius.setEnabled(isSensitiveToVibration);
+		vibrationalEvents.setEnabled(isSensitiveToVibration);
+		canReceiveVibrationCondition.setEnabled(isSensitiveToVibration);
+		onReceivedVibration.setEnabled(isSensitiveToVibration);
+
+		refreshEggProperties();
+		refreshSpawnProperties();
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
