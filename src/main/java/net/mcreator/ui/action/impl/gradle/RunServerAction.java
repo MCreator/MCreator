@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
-import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.minecraft.ServerUtil;
 import net.mcreator.preferences.PreferencesManager;
@@ -86,10 +85,12 @@ public class RunServerAction extends GradleAction {
 											.getGradleTaskFor("run_client") != null) {
 										actionRegistry.getMCreator().getGradleConsole()
 												.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-														.getGradleTaskFor("run_client"));
+																.getGradleTaskFor("run_client"),
+														e -> actionRegistry.getMCreator().getGradleConsole()
+																.cancelTask());
 									}
 								}
-							}, (GradleTaskFinishedListener) null);
+							}, e -> actionRegistry.getMCreator().getGradleConsole().cancelTask());
 		} catch (Exception e) { // if something fails, we still need to free the gradle console
 			LOG.error("Failed to run server", e);
 			actionRegistry.getMCreator().getGradleConsole().markReady();
