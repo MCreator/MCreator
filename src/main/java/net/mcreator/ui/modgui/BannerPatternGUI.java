@@ -33,7 +33,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -51,7 +50,8 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 
 	private TextureSelectionButton texture;
 	private TextureSelectionButton shieldTexture;
-	private final VTextField name = new VTextField(28);
+	private final VTextField name = new VTextField(28).requireValue("elementgui.banner_pattern.pattern_needs_name")
+			.enableRealtimeValidation();
 	private final JCheckBox requireItem = L10N.checkbox("elementgui.common.enable");
 
 	// Banner pattern previews
@@ -129,9 +129,6 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		texturesWithProperties.add("Center", texturesPanel);
 		texturesWithProperties.add("South", properties);
 		texturesWithProperties.setOpaque(false);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.banner_pattern.pattern_needs_name")));
-		name.enableRealtimeValidation();
 
 		page1group.addValidationElement(texture);
 		page1group.addValidationElement(shieldTexture);

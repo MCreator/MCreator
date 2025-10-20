@@ -29,7 +29,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -47,9 +46,12 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 			new String[] { "never", "always", "when_caused_by_living_non_player" });
 	private final JComboBox<String> effects = new JComboBox<>(
 			new String[] { "hurt", "thorns", "drowning", "burning", "poking", "freezing" });
-	private final VTextField normalDeathMessage = new VTextField(28);
-	private final VTextField itemDeathMessage = new VTextField(28);
-	private final VTextField playerDeathMessage = new VTextField(28);
+	private final VTextField normalDeathMessage = new VTextField(28).requireValue(
+			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
+	private final VTextField itemDeathMessage = new VTextField(28).requireValue(
+			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
+	private final VTextField playerDeathMessage = new VTextField(28).requireValue(
+			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -107,19 +109,8 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 				L10N.label("elementgui.damagetype.player_death_message")));
 		localizationPanel.add(playerDeathMessage);
 
-		normalDeathMessage.setValidator(
-				new TextFieldValidator(normalDeathMessage, L10N.t("elementgui.damagetype.error_empty_death_message")));
-		normalDeathMessage.enableRealtimeValidation();
 		page1group.addValidationElement(normalDeathMessage);
-
-		itemDeathMessage.setValidator(
-				new TextFieldValidator(itemDeathMessage, L10N.t("elementgui.damagetype.error_empty_death_message")));
-		itemDeathMessage.enableRealtimeValidation();
 		page1group.addValidationElement(itemDeathMessage);
-
-		playerDeathMessage.setValidator(
-				new TextFieldValidator(playerDeathMessage, L10N.t("elementgui.damagetype.error_empty_death_message")));
-		playerDeathMessage.enableRealtimeValidation();
 		page1group.addValidationElement(playerDeathMessage);
 
 		page.add("Center",
