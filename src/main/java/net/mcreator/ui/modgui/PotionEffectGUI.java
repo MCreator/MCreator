@@ -37,7 +37,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -50,7 +49,8 @@ import java.net.URISyntaxException;
 
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
-	private final VTextField effectName = new VTextField(20);
+	private final VTextField effectName = new VTextField(20).requireValue(
+			"elementgui.potioneffect.error_effect_needs_display_name").enableRealtimeValidation();
 	private final JColor color = new JColor(mcreator, false, false);
 	private SingleParticleEntryField particle;
 	private final SoundSelector onAddedSound = new SoundSelector(mcreator);
@@ -191,11 +191,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		effectName.setValidator(
-				new TextFieldValidator(effectName, L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
-		effectName.enableRealtimeValidation();
 		page1group.addValidationElement(effectName);
-
 		page1group.addValidationElement(icon);
 
 		if (!isEditingMode()) {

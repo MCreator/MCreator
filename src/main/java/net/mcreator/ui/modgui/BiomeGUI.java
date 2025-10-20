@@ -44,7 +44,6 @@ import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -58,7 +57,8 @@ import java.util.Arrays;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 
@@ -546,7 +546,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page3group.addValidationElement(treeStem);
 		page3group.addValidationElement(treeBranch);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
 		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
 		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
 		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));

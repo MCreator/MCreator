@@ -27,7 +27,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -41,8 +40,10 @@ import java.net.URISyntaxException;
 public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 	private final VTextField name = new VTextField(30);
-	private final VTextField displayName = new VTextField(30);
-	private final VTextField description = new VTextField(30);
+	private final VTextField displayName = new VTextField(30).requireValue(
+			"elementgui.gamerule.gamerule_needs_display_name").enableRealtimeValidation();
+	private final VTextField description = new VTextField(30).requireValue(
+			"elementgui.gamerule.gamerule_needs_description").enableRealtimeValidation();
 
 	private final JComboBox<String> gameruleCategory = new JComboBox<>(
 			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
@@ -104,14 +105,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 		page1group.addValidationElement(displayName);
 		page1group.addValidationElement(description);
-
-		displayName.setValidator(
-				new TextFieldValidator(displayName, L10N.t("elementgui.gamerule.gamerule_needs_display_name")));
-		displayName.enableRealtimeValidation();
-
-		description.setValidator(
-				new TextFieldValidator(description, L10N.t("elementgui.gamerule.gamerule_needs_description")));
-		description.enableRealtimeValidation();
 
 		pane3.add(PanelUtils.totalCenterInPanel(subpane2));
 		pane3.setOpaque(false);
