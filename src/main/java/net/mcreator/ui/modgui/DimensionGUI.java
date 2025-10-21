@@ -185,9 +185,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalParticles.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXX"));
 
-		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.dimension.error_portal_needs_frame_block");
+		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.dimension.error_dimension_needs_main_block", true);
+		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.dimension.error_dimension_needs_fluid_block");
 
 		JPanel propertiesPage = new JPanel(new BorderLayout(10, 10));
 		JPanel generationPage = new JPanel(new BorderLayout(10, 10));
@@ -536,8 +539,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 						true));
 		infiniburnTag.enableRealtimeValidation();
 
-		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
-
 		portalPageGroup.addValidationElement(igniterName);
 		portalPageGroup.addValidationElement(portalTexture);
 		portalPageGroup.addValidationElement(texture);
@@ -545,8 +546,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		biomesInDimension.setValidator(
 				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
-		mainFillerBlock.setValidator(new MCItemHolderValidator(mainFillerBlock).considerAirAsEmpty());
-		fluidBlock.setValidator(new MCItemHolderValidator(fluidBlock));
 
 		generationPageGroup.addValidationElement(biomesInDimension);
 		generationPageGroup.addValidationElement(mainFillerBlock);

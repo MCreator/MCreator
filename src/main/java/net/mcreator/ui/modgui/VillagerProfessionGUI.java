@@ -116,7 +116,8 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
 								.map(DataListEntry::getName).toList(),
-						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty()).setIsPresentOnList(
+						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty().setEmptyMessage(
+								L10N.t("elementgui.villager_profession.error_profession_needs_block"))).setIsPresentOnList(
 						this::isEditingMode));
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(

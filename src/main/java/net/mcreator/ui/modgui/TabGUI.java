@@ -30,7 +30,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -57,7 +56,8 @@ public class TabGUI extends ModElementGUI<Tab> {
 	}
 
 	@Override protected void initGUI() {
-		icon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		icon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.tab.error_tab_needs_icon");
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel selp = new JPanel(new GridLayout(3, 2, 100, 1));
@@ -93,8 +93,6 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);
-
-		icon.setValidator(new MCItemHolderValidator(icon));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(icon);

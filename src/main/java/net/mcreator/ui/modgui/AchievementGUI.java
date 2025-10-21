@@ -48,7 +48,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -109,7 +108,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected void initGUI() {
-		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.advancement.error_advancement_needs_icon");
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
@@ -202,8 +202,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
-
-		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
 
 		page1group.addValidationElement(achievementIcon);
 		page1group.addValidationElement(achievementName);
