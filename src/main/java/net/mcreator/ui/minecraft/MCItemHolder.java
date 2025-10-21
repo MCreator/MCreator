@@ -89,11 +89,9 @@ public class MCItemHolder extends JButton implements IValidable {
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), mItemBlock.getUnmappedValue()).getImage(),
 					25)));
 			this.block = mItemBlock.getUnmappedValue();
-			this.setToolTipText(mItemBlock.getMappedValue());
 		} else {
 			setIcon(new EmptyIcon(25, 25));
 			block = "";
-			this.setToolTipText(null);
 		}
 		listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 		getValidationStatus();
@@ -210,6 +208,20 @@ public class MCItemHolder extends JButton implements IValidable {
 		return this;
 	}
 
+	private void updateTooltipText() {
+		boolean hasValidationMessage = currentValidationResult != null &&
+				currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED;
+		if (!block.isEmpty()) {
+			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
+					"\n" + currentValidationResult.getMessage() :
+					""));
+		} else if (hasValidationMessage) {
+			this.setToolTipText(currentValidationResult.getMessage());
+		} else {
+			this.setToolTipText(null);
+		}
+	}
+
 	//validation code
 	private Validator validator = null;
 	private Validator.ValidationResult currentValidationResult = null;
@@ -221,6 +233,8 @@ public class MCItemHolder extends JButton implements IValidable {
 
 		//repaint as new validation status might have to be rendered
 		repaint();
+		// Update tooltip text as validation status might have changed
+		updateTooltipText();
 
 		return validationResult;
 	}
