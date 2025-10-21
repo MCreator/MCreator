@@ -22,9 +22,11 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
@@ -194,6 +196,18 @@ public class MCItemHolder extends JButton implements IValidable {
 	public void setValidationShownFlag(boolean showValidation) {
 		this.showValidation = showValidation;
 		repaint();
+	}
+
+	public MCItemHolder requireValue(String errorMessageKey) {
+		return requireValue(errorMessageKey, false);
+	}
+
+	public MCItemHolder requireValue(String errorMessageKey, boolean considerAirAsEmpty) {
+		MCItemHolderValidator validator = new MCItemHolderValidator(this).setEmptyMessage(L10N.t(errorMessageKey));
+		if (considerAirAsEmpty)
+			validator.considerAirAsEmpty();
+		this.setValidator(validator);
+		return this;
 	}
 
 	//validation code
