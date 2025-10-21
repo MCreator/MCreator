@@ -70,7 +70,7 @@ public class ArmorPackMakerTool {
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
-				"dialog.tools_armor_pack_base_item_validator");
+				"dialog.tools.armor_pack_base_item_validator");
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
