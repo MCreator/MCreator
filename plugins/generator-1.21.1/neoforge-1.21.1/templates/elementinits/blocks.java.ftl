@@ -59,7 +59,6 @@ package ${package}.init;
 <#assign chunks = blocks?chunk(3000)>
 <#assign has_chunks = chunks?size gt 1>
 
-<#compress>
 public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(${JavaModName}.MODID);
@@ -124,5 +123,4 @@ public class ${JavaModName}Blocks {
 	</#if>
 
 }
-</#compress>
 <#-- @formatter:on -->

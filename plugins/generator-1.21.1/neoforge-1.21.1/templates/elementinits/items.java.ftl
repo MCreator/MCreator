@@ -46,7 +46,6 @@ package ${package}.init;
 <#if itemsWithInventory?size != 0>
 @EventBusSubscriber
 </#if>
-<#compress>
 public class ${JavaModName}Items {
 
 	public static DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
@@ -199,7 +198,6 @@ public class ${JavaModName}Items {
 	</#if>
 
 }
-</#compress>
 
 <#macro blockItemProperties block>
 new Item.Properties()
