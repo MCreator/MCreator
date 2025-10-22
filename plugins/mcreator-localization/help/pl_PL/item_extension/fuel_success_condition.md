@@ -1,0 +1,1 @@
+Jeśli określony jest warunek, wybrany element może być użyty jako paliwo tylko wtedy, gdy warunek zostanie spełniony.

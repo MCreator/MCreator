@@ -1,0 +1,1 @@
+O número máximo desse comércio que o Aldeão pode fazer sem se recarregar.

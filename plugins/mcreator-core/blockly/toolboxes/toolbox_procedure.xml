@@ -56,11 +56,21 @@
         <block type="text_join"/>
         <block type="text_print"/>
         <block type="text_length"/>
+        <block type="text_new_line"/>
+        <block type="text_index_of">
+            <value name="from">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
         <block type="text_is_empty"/>
         <block type="text_replace"/>
+        <block type="text_replace_regex"/>
         <block type="text_substring_from"/>
         <block type="text_substring"/>
         <block type="text_contains"/>
+        <block type="text_matches"/>
         <block type="text_starts_with"/>
         <block type="text_ends_with"/>
         <block type="text_trim"/>
@@ -99,6 +109,20 @@
     <category name="${t:blockly.category.advanced}" colour="250">
         <block type="cancel_event"/>
         <block type="set_event_result"/>
+        <block type="event_number_parameter_set">
+            <value name="value">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
+        <block type="event_logic_parameter_set">
+            <value name="value">
+                <block type="logic_boolean">
+                    <field name="BOOL">TRUE</field>
+                </block>
+            </value>
+        </block>
         <block type="call_procedure">
             <mutation inputs="0"/>
         </block>
@@ -120,6 +144,7 @@
         <block type="java_code"/>
         <block type="java_code_get"/>
         <block type="debug_marker"/>
+        <block type="logic_null_comparison"/>
         <block type="entity_none"/>
         <custom-advanced/>
     </category>

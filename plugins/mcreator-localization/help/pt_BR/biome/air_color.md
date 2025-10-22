@@ -1,0 +1,1 @@
+Este parâmetro define a cor do céu deste bioma.

@@ -1,5 +1,6 @@
 * {
     font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 ::-webkit-scrollbar {
@@ -47,15 +48,15 @@ body {
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    rx: 0;
-    ry: 0;
-    width: 7px;
+    rx: 3;
+    ry: 3;
+    width: 6px;
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    rx: 0;
-    ry: 0;
-    height: 7px;
+    rx: 3;
+    ry: 3;
+    height: 6px;
 }
 
 .blocklySelected > .blocklyPath {

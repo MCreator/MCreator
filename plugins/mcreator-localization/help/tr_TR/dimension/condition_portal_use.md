@@ -1,0 +1,1 @@
+Koşul belirtilirse, oyuncunun bu boyuta seyahat etmek için koşulu geçmesi gerekir.

@@ -80,7 +80,7 @@ public class ShapeTool extends AbstractModificationTool {
 			graphics2D.setClip(previousShape);
 
 		graphics2D.dispose();
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		return true;
 	}
 

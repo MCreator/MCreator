@@ -1,0 +1,1 @@
+Bu parametre bloğun patlamalara nasıl tepki vereceğini kontrol eder. Daha yüksek bir değer bloğu patlamalara karşı daha dirençli hale getirir.

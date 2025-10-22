@@ -25,26 +25,19 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Plant;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class PlantGenerationTypeConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(PlantGenerationTypeConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Plant plant = (Plant) input;
-		try {
-			JsonObject definition = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
-			if ("normal".equals(plant.plantType) && definition.get("staticPlantGenerationType") != null) {
-				plant.generationType = definition.get("staticPlantGenerationType").getAsString();
-			} else if ("double".equals(plant.plantType) && definition.get("doublePlantGenerationType") != null) {
-				plant.generationType = definition.get("doublePlantGenerationType").getAsString();
-			} else {
-				plant.generationType = "Flower";
-			}
-		} catch (Exception e) {
-			LOG.warn("Could not update generation type of plant: {}", plant.getModElement().getName());
+		JsonObject definition = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
+		if ("normal".equals(plant.plantType) && definition.get("staticPlantGenerationType") != null) {
+			plant.generationType = definition.get("staticPlantGenerationType").getAsString();
+		} else if ("double".equals(plant.plantType) && definition.get("doublePlantGenerationType") != null) {
+			plant.generationType = definition.get("doublePlantGenerationType").getAsString();
+		} else {
+			plant.generationType = "Flower";
 		}
 		return plant;
 	}

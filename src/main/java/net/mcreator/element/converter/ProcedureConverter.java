@@ -30,30 +30,22 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 
 public abstract class ProcedureConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(ProcedureConverter.class);
-
 	private boolean dependencies_changed = false;
 
 	@Override
-	public final GeneratableElement convert(Workspace workspace, GeneratableElement input,
-			JsonElement jsonElementInput) {
+	public final GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Procedure procedure = (Procedure) input;
 
-		try {
-			procedure.procedurexml = fixXML(procedure, procedure.procedurexml);
+		procedure.procedurexml = fixXML(procedure, procedure.procedurexml);
 
-			if (dependencies_changed)
-				refreshDependencies(procedure);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert procedure block setup for {}", input.getModElement().getName(), e);
-		}
+		if (dependencies_changed)
+			refreshDependencies(procedure);
 
 		return procedure;
 	}

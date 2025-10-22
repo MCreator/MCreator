@@ -26,32 +26,24 @@ import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class GUIBindingInverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger("GUIBindingInverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		GUI gui = (GUI) input;
-		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("containerBlock")
-					!= null) { // treat as crafting
-				String containerBlock = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("containerBlock").getAsString();
-				ModElement blockelement = workspace.getModElementByName(containerBlock);
-				if (blockelement != null) {
-					Block block = (Block) blockelement.getGeneratableElement();
-					if (block != null) {
-						block.guiBoundTo = input.getModElement().getName();
-						workspace.getModElementManager().storeModElement(block);
-					}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("containerBlock")
+				!= null) { // treat as crafting
+			String containerBlock = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("containerBlock").getAsString();
+			ModElement blockelement = workspace.getModElementByName(containerBlock);
+			if (blockelement != null) {
+				Block block = (Block) blockelement.getGeneratableElement();
+				if (block != null) {
+					block.guiBoundTo = input.getModElement().getName();
+					workspace.getModElementManager().storeModElement(block);
 				}
 			}
-		} catch (Exception e) {
-			LOG.warn("Could not get bound block for {}", input.getModElement().getName());
 		}
 		return gui;
 	}

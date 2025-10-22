@@ -1,0 +1,7 @@
+global_templates:
+  - template: elementinits/attributes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameAttributes.java"
+
+localizationkeys:
+  - key: attribute.@modid.@registryname
+    mapto: name

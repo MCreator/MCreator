@@ -28,13 +28,11 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -46,7 +44,8 @@ import java.net.URISyntaxException;
 
 public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.enchantment.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
 	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
@@ -76,7 +75,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	@Override protected void initGUI() {
 		supportedItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
-		incompatibleEnchantments = new EnchantmentListField(mcreator, false, true);
+		incompatibleEnchantments = new EnchantmentListField(mcreator, true);
 
 		supportedItems.addAdditionalTagSuggestions("enchantable/foot_armor", "enchantable/leg_armor",
 				"enchantable/chest_armor", "enchantable/head_armor", "enchantable/armor", "enchantable/sword",
@@ -152,9 +151,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.enchantment.needs_name")));
-		name.enableRealtimeValidation();
-
 		supportedItems.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
 				new ItemListFieldSingleTagValidator(supportedItems)));
@@ -165,16 +161,12 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		page1group.addValidationElement(supportedItems);
 		page1group.addValidationElement(incompatibleEnchantments);
 
-		addPage(pane1);
+		addPage(pane1).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Enchantment enchantment) {

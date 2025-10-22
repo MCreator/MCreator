@@ -1,0 +1,1 @@
+Ten parametr kontroluje reakcję bloku na eksplozje. Większa wartość sprawia, że blok jest bardziej odporny na eksplozje.

@@ -1,1 +1,0 @@
-Dieser Parameter steuert die Geschwindigkeit der Kugel (ihre kinetische Energie).

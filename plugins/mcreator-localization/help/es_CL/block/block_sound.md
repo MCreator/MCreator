@@ -1,0 +1,1 @@
+Grupo de sonidos que define este bloque. (Este parámetro afecta a los sonido tipo: colocación del bloque, rotura del bloque, reproducido al caminar sobre el bloque, etc).

@@ -1,0 +1,1 @@
+Üretim defteri kategorisi, tarifin üretim defterinde hangi sekme altında gösterileceğini tanımlar.

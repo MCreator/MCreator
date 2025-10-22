@@ -1,0 +1,1 @@
+Esta é a quantidade de experiência perdida por este bloco quando ele é quebrado por um jogador.

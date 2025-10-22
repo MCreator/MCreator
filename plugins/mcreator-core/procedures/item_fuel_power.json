@@ -20,6 +20,12 @@
     ],
     "warnings": [
       "no_item_extension_fuel"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

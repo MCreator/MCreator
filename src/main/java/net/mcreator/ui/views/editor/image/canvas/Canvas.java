@@ -18,50 +18,84 @@
 
 package net.mcreator.ui.views.editor.image.canvas;
 
+import com.google.gson.*;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
-import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.views.editor.image.versioning.change.*;
 import net.mcreator.util.ArrayListListModel;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.UUID;
 
 public class Canvas extends ArrayListListModel<Layer> {
+
+	/*
+	 * Transient references and fields
+	 */
+	// ImageMakerView reference (needs to be set right after creation)
+	private transient ImageMakerView imageMakerView;
+
+	// Preview fields
+	private transient boolean drawPreview = false;
+	private transient Shape shape = Shape.SQUARE;
+	private transient int size = 1;
+
+	// Preview image (if custom image is provided for preview)
+	private transient Image previewImage;
+	private transient boolean drawCustomPreview;
+
+	// Preview changed event
+	private transient MouseEvent previewEvent;
+
+	// Pasted layer reference
+	private transient Layer floatingLayer = null;
+
+	/*
+	 * Serialized references and fields
+	 */
+	// Canvas size
 	private int width;
 	private int height;
-	private final LayerPanel layerPanel;
-	private final VersionManager versionManager;
-	private final Selection selection;
-	private CanvasRenderer canvasRenderer;
-	private boolean drawPreview;
-	private MouseEvent previewEvent;
-	private Shape shape;
-	private int size;
 
-	private Image previewImage;
-	private boolean drawCustomPreview;
-	private Layer floatingLayer;
+	// Selection object
+	private Selection selection = new Selection(this);
 
-	public Canvas(int width, int height, LayerPanel layerPanel, VersionManager versionManager) {
+	// Dummy constructor for deserialization
+	private Canvas() {
+	}
+
+	public Canvas(ImageMakerView imageMakerView, int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.layerPanel = layerPanel;
-		this.versionManager = versionManager;
-		this.selection = new Selection(this);
-		layerPanel.setCanvas(this);
-		layerPanel.updateSelection();
+		initReferences(imageMakerView);
+	}
+
+	private void initReferences(ImageMakerView imageMakerView) {
+		this.imageMakerView = imageMakerView;
+		imageMakerView.getLayerPanel().setCanvas(this);
+		for (Layer layer : this) {
+			layer.setCanvas(this);
+			floatingCheck(layer);
+		}
+		selection.setCanvas(this);
+		imageMakerView.getCanvasRenderer().setCanvas(this);
+		imageMakerView.getToolPanel().setCanvas(this);
+		imageMakerView.getLayerPanel().updateSelection();
 	}
 
 	public boolean add(Layer layer, UUID group) {
 		boolean success = super.add(layer);
 		layer.setCanvas(this);
-		layerPanel.select(indexOf(layer));
+		imageMakerView.getLayerPanel().select(indexOf(layer));
 		Addition addition = new Addition(this, layer);
 		addition.setUUID(group);
-		versionManager.addRevision(addition);
+		imageMakerView.getVersionManager().addRevision(addition);
 		floatingCheck(layer);
 		return success;
 	}
@@ -69,10 +103,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 	public boolean add(Layer layer, int index, UUID group) {
 		super.add(index, layer);
 		layer.setCanvas(this);
-		layerPanel.select(indexOf(layer));
+		imageMakerView.getLayerPanel().select(indexOf(layer));
 		Addition addition = new Addition(this, layer);
 		addition.setUUID(group);
-		versionManager.addRevision(addition);
+		imageMakerView.getVersionManager().addRevision(addition);
 		floatingCheck(layer);
 		return true;
 	}
@@ -80,19 +114,19 @@ public class Canvas extends ArrayListListModel<Layer> {
 	@Override public boolean add(Layer layer) {
 		super.add(0, layer);
 		layer.setCanvas(this);
-		layerPanel.select(indexOf(layer));
-		versionManager.addRevision(new Addition(this, layer));
+		imageMakerView.getLayerPanel().select(indexOf(layer));
+		imageMakerView.getVersionManager().addRevision(new Addition(this, layer));
 		floatingCheck(layer);
 		return true;
 	}
 
 	public boolean addOnTop(Layer layer, UUID group) {
-		super.add(layerPanel.selectedID(), layer);
+		super.add(imageMakerView.getLayerPanel().selectedID(), layer);
 		layer.setCanvas(this);
-		layerPanel.select(indexOf(layer));
+		imageMakerView.getLayerPanel().select(indexOf(layer));
 		Addition addition = new Addition(this, layer);
 		addition.setUUID(group);
-		versionManager.addRevision(addition);
+		imageMakerView.getVersionManager().addRevision(addition);
 		floatingCheck(layer);
 		return true;
 	}
@@ -104,7 +138,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	@Override public void add(int index, Layer element) {
 		super.add(index, element);
 		element.setCanvas(this);
-		layerPanel.select(indexOf(element));
+		imageMakerView.getLayerPanel().select(indexOf(element));
 		floatingCheck(element);
 	}
 
@@ -116,7 +150,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	public void floatingCheck(Layer layer) {
 		if (layer == null || layer.isPasted()) {
 			floatingLayer = layer;
-			layerPanel.updateFloatingLayer();
+			imageMakerView.getLayerPanel().updateFloatingLayer();
 		}
 	}
 
@@ -136,54 +170,60 @@ public class Canvas extends ArrayListListModel<Layer> {
 	@Override public Layer set(int index, Layer layer) {
 		Layer inserted = super.set(index, layer);
 		layer.setCanvas(this);
-		layerPanel.select(indexOf(layer));
+		imageMakerView.getLayerPanel().select(indexOf(layer));
 		return inserted;
 	}
 
 	public Layer remove(int index, UUID group) {
 		Removal removal = new Removal(this, get(index));
 		Layer removed = super.remove(index);
-		layerPanel.select(index - 1);
+		imageMakerView.getLayerPanel().select(index - 1);
 		removal.setUUID(group);
-		versionManager.addRevision(removal);
+		imageMakerView.getVersionManager().addRevision(removal);
 		floatingCheck(null);
-		versionManager.refreshPreview();
+		imageMakerView.getVersionManager().refreshPreview();
 		return removed;
 	}
 
 	public Layer remove(int index, UUID group, int toSelect) {
-		Removal removal = new Removal(this, get(index), layerPanel, toSelect);
+		Removal removal = new Removal(this, get(index), imageMakerView.getLayerPanel(), toSelect);
 		Layer removed = super.remove(index);
-		layerPanel.select(toSelect);
+		imageMakerView.getLayerPanel().select(toSelect);
 		removal.setUUID(group);
-		versionManager.addRevision(removal);
+		imageMakerView.getVersionManager().addRevision(removal);
 		floatingCheck(null);
-		versionManager.refreshPreview();
+		imageMakerView.getVersionManager().refreshPreview();
 		return removed;
 	}
 
 	@Override public Layer remove(int index) {
-		versionManager.addRevision(new Removal(this, get(index)));
+		imageMakerView.getVersionManager().addRevision(new Removal(this, get(index)));
 		Layer removed = super.remove(index);
-		layerPanel.select(Math.max(index - 1, 0));
+		imageMakerView.getLayerPanel().select(Math.max(index - 1, 0));
 		floatingCheck(null);
-		versionManager.refreshPreview();
+		imageMakerView.getVersionManager().refreshPreview();
 		return removed;
 	}
 
 	@Override public boolean remove(Object o) {
 		int index = indexOf(o);
-		versionManager.addRevision(new Removal(this, (Layer) o));
+		imageMakerView.getVersionManager().addRevision(new Removal(this, (Layer) o));
 		boolean removed = super.remove(o);
-		layerPanel.select(Math.max(index - 1, 0));
+		imageMakerView.getLayerPanel().select(Math.max(index - 1, 0));
 		floatingCheck(null);
-		versionManager.refreshPreview();
+		imageMakerView.getVersionManager().refreshPreview();
 		return removed;
 	}
 
+	/**
+	 * Removes the layer at the specified index without adding a revision (hence NR - No Revision).
+	 *
+	 * @param index the index of the layer to remove
+	 * @return the removed layer
+	 */
 	public Layer removeNR(int index) {
 		Layer removed = super.remove(index);
-		layerPanel.select(index - 1);
+		imageMakerView.getLayerPanel().select(index - 1);
 		floatingCheck(null);
 		return removed;
 	}
@@ -191,14 +231,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 	@Override public boolean moveUp(int index) {
 		boolean mu = super.moveUp(index);
 		if (mu)
-			layerPanel.select(index - 1);
+			imageMakerView.getLayerPanel().select(index - 1);
 		return mu;
 	}
 
 	@Override public boolean moveDown(int index) {
 		boolean md = super.moveDown(index);
 		if (md)
-			layerPanel.select(index + 1);
+			imageMakerView.getLayerPanel().select(index + 1);
 		return md;
 	}
 
@@ -212,23 +252,26 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 		Modification adt = new Modification(this, get(selectedID + 1));
 		adt.setUUID(uuid);
-		versionManager.addRevision(adt);
+		imageMakerView.getVersionManager().addRevision(adt);
 
 		boolean success = remove(selectedID, uuid, selectedID) != null;
-		layerPanel.select(selectedID);
+		imageMakerView.getLayerPanel().select(selectedID);
 		return success;
 	}
 
 	public boolean consolidateFloating() {
-		Consolidation consolidation = new Consolidation(this, floatingLayer);
-		floatingLayer.setPasted(false);
-		consolidation.setAfter(floatingLayer);
-		versionManager.addRevision(consolidation);
-		return true;
+		if (floatingLayer != null) {
+			Consolidation consolidation = new Consolidation(this, floatingLayer);
+			floatingLayer.setPasted(false);
+			consolidation.setAfter(floatingLayer);
+			imageMakerView.getVersionManager().addRevision(consolidation);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean mergeSelectedDown() {
-		return mergeDown(layerPanel.selectedID());
+		return mergeDown(imageMakerView.getLayerPanel().selectedID());
 	}
 
 	public void update(Layer layer) {
@@ -237,7 +280,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public void update(int index) {
 		fireContentsChanged(this, index, index);
-		canvasRenderer.repaint();
+		imageMakerView.getCanvasRenderer().repaint();
 	}
 
 	public int getWidth() {
@@ -256,14 +299,6 @@ public class Canvas extends ArrayListListModel<Layer> {
 		this.height = height;
 	}
 
-	public CanvasRenderer getCanvasRenderer() {
-		return canvasRenderer;
-	}
-
-	void setCanvasRenderer(CanvasRenderer canvasRenderer) {
-		this.canvasRenderer = canvasRenderer;
-	}
-
 	public void updateCustomPreview(MouseEvent event, Shape shape, int size) {
 		previewEvent = event;
 		this.shape = shape;
@@ -274,8 +309,8 @@ public class Canvas extends ArrayListListModel<Layer> {
 		this.drawPreview = drawPreview;
 	}
 
-	public void updateCustomPreview(MouseEvent e, Image image) {
-		previewEvent = e;
+	public void updateCustomPreview(MouseEvent event, Image image) {
+		previewEvent = event;
 		this.previewImage = image;
 	}
 
@@ -307,34 +342,120 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return drawCustomPreview;
 	}
 
-	public Layer selected() {
-		return layerPanel.selected();
-	}
-
-	public LayerPanel getLayerPanel() {
-		return layerPanel;
-	}
-
-	public VersionManager getVersionManager() {
-		return versionManager;
-	}
-
 	public void setSize(int width, int height, UUID group) {
-		CanvasResize canvasResize = new CanvasResize(this, layerPanel.selected(), width, height);
+		CanvasResize canvasResize = new CanvasResize(this, imageMakerView.getLayerPanel().selected(), width, height);
 		canvasResize.setUUID(group);
-		versionManager.addRevision(canvasResize);
+		imageMakerView.getVersionManager().addRevision(canvasResize);
 		this.width = width;
 		this.height = height;
-		canvasRenderer.recalculateBounds();
-		canvasRenderer.repaint();
+		imageMakerView.getCanvasRenderer().recalculateBounds();
+		imageMakerView.getCanvasRenderer().repaint();
 	}
 
 	public void setSize(int width, int height) {
-		CanvasResize canvasResize = new CanvasResize(this, layerPanel.selected(), width, height);
-		versionManager.addRevision(canvasResize);
+		CanvasResize canvasResize = new CanvasResize(this, imageMakerView.getLayerPanel().selected(), width, height);
+		imageMakerView.getVersionManager().addRevision(canvasResize);
 		this.width = width;
 		this.height = height;
-		canvasRenderer.recalculateBounds();
-		canvasRenderer.repaint();
+		imageMakerView.getCanvasRenderer().recalculateBounds();
+		imageMakerView.getCanvasRenderer().repaint();
 	}
+
+	public ImageMakerView getImageMakerView() {
+		return imageMakerView;
+	}
+
+	public static class GSONAdapter implements JsonDeserializer<Canvas>, JsonSerializer<Canvas> {
+
+		private static final Gson gson = new GsonBuilder().create();
+
+		@Nonnull private final ImageMakerView deserializedCanvasOwner;
+
+		private BufferedImage[] rasters;
+
+		public GSONAdapter(@Nonnull ImageMakerView deserializedCanvasOwner) {
+			this.deserializedCanvasOwner = deserializedCanvasOwner;
+		}
+
+		public GSONAdapter setRasters(BufferedImage[] rasters) {
+			this.rasters = rasters;
+			return this;
+		}
+
+		@Override
+		public Canvas deserialize(JsonElement jsonElement, Type type,
+				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+			SerializableCanvasShadow shadow = gson.fromJson(jsonElement, SerializableCanvasShadow.class);
+			Canvas retval = shadow.getCanvas(rasters);
+
+			// Populate canvas and layers with canvas and image maker view references
+			retval.initReferences(deserializedCanvasOwner);
+
+			// Initialize version history
+			UUID group = UUID.randomUUID();
+			for (Layer layer : retval) {
+				Addition addition = new Addition(retval, layer);
+				addition.setUUID(group);
+				retval.imageMakerView.getVersionManager().addRevision(addition);
+			}
+
+			deserializedCanvasOwner.getLayerPanel().select(0);
+
+			return retval;
+		}
+
+		@Override public JsonElement serialize(Canvas src, Type typeOfSrc, JsonSerializationContext context) {
+			SerializableCanvasShadow shadow = new SerializableCanvasShadow(src);
+			return gson.toJsonTree(shadow);
+		}
+
+		/**
+		 * This is needed because GSON handles Canvas as array by default, ignoring other fields
+		 */
+		private static class SerializableCanvasShadow {
+
+			private final int width;
+			private final int height;
+			private final List<Layer> layers;
+			private final Selection selection;
+
+			public SerializableCanvasShadow(Canvas canvas) {
+				this.layers = canvas;
+				this.width = canvas.getWidth();
+				this.height = canvas.getHeight();
+				this.selection = canvas.getSelection();
+			}
+
+			private Canvas getCanvas(BufferedImage[] rasters) {
+				Canvas canvas = new Canvas();
+				canvas.width = this.width;
+				canvas.height = this.height;
+				canvas.selection = selection;
+				if (canvas.selection.hasSurface()) {
+					canvas.selection.setEditing(SelectedBorder.ANY);
+				} else {
+					canvas.selection.setEditing(SelectedBorder.NONE);
+				}
+
+				// Load layers with rasters
+				for (int i = 0; i < layers.size(); i++) {
+					Layer layer = layers.get(i);
+					if (rasters != null && rasters.length > i) {
+						layer.setRaster(rasters[i]);
+					} else {
+						// If no raster is provided, create a blank image
+						layer.setRaster(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+					}
+				}
+
+				// Add layers to canvas
+				canvas.addAll(layers);
+
+				return canvas;
+			}
+
+		}
+
+	}
+
 }

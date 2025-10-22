@@ -1,1 +1,0 @@
-Se viene specificata una condizione, questa scritta può essere visualizzata solo nel caso in cui la condizione venga superata.

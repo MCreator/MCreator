@@ -1,0 +1,1 @@
+Bu oyun kuralı açıklamasıdır. Oyun kuralları ayar ekranında üzerine gelindiğinde kullanılır.

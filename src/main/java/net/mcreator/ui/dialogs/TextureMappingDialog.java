@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.parts.TextureHolder;
-import net.mcreator.io.Transliteration;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -29,7 +29,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -40,7 +40,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -84,13 +83,13 @@ public class TextureMappingDialog {
 					pane.setSelectedIndex(1);
 					String mapping = VOptionPane.showInputDialog(mcreator,
 							L10N.t("dialog.textures_mapping.enter_name_message"),
-							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidatior() {
+							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidator() {
 								@Override public Validator.ValidationResult validate(JComponent component) {
 									return new JavaMemberNameValidator((VTextField) component, false).validate();
 								}
 							});
 					if (mapping != null) {
-						mapping = Transliteration.transliterateString(mapping.toLowerCase(Locale.ENGLISH));
+						mapping = RegistryNameFixer.fix(mapping);
 						Map<String, TextureHolder> textureMap = new HashMap<>();
 						for (String texture : finalTexturesList)
 							textureMap.put(texture, new TextureHolder(mcreator.getWorkspace(), ""));
@@ -130,16 +129,16 @@ public class TextureMappingDialog {
 
 		d.add("South", PanelUtils.join(FlowLayout.CENTER, ok, cancel));
 
-		ok.addActionListener(e -> d.setVisible(false));
+		ok.addActionListener(e -> d.dispose());
 		cancel.addActionListener(e -> {
 			currentState = null;
-			d.setVisible(false);
+			d.dispose();
 		});
 		d.addWindowListener(new WindowAdapter() {
 			@Override public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
 				currentState = null;
-				d.setVisible(false);
+				d.dispose();
 			}
 		});
 
@@ -166,7 +165,7 @@ public class TextureMappingDialog {
 				tx[idx].setTexture(s.getValue());
 			panel.add(PanelUtils.join(tx[idx]));
 			int finalIdx = idx;
-			tx[idx].setActionListener(e -> currentState.get(currentMappingName).getTextureMap()
+			tx[idx].addTextureSelectedListener(e -> currentState.get(currentMappingName).getTextureMap()
 					.put(s.getKey(), tx[finalIdx].getTextureHolder()));
 			idx++;
 		}

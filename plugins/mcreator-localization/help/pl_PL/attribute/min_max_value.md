@@ -1,0 +1,1 @@
+Ten parametr kontroluje wartości minimalne i maksymalne, na które można ustawić wartość atrybutu.

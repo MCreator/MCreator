@@ -1,0 +1,1 @@
+Mobun hareket hızını ayarlar. Çoğu normal mob 0.25 civarında bir hızda hareket ederken, örümcekler ve kurtlar gibi daha hızlı olanlar 0.3'te hareket eder.

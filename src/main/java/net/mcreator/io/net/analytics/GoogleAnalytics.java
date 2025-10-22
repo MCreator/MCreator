@@ -140,7 +140,7 @@ public class GoogleAnalytics {
 
 			LOG.info("Tracked event: {}, context: {}", name, context);
 		} catch (Exception e) {
-			LOG.warn("Failed to track event: {}, context: {}", name, context, e);
+			LOG.warn("Failed to track event: {}, context: {}, error: {}", name, context, e.getMessage());
 		}
 	}
 

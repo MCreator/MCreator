@@ -1,0 +1,1 @@
+Recepty, které se hráčovi odemknou po splnění pokroku.

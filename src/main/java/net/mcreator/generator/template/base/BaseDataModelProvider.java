@@ -23,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.template.TemplateHelper;
 import net.mcreator.java.JavaConventions;
+import net.mcreator.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +47,7 @@ public class BaseDataModelProvider {
 		providedData.put("thelper", new TemplateHelper());
 		providedData.put("opt", new ProcedureCodeOptimizer());
 		providedData.put("JavaConventions", new JavaConventions());
+		providedData.put("StringUtils", new StringUtils());
 
 		// Data that does not change for the current generator (BaseDataModelProvider is generator specific)
 		providedData.put("generator", new GeneratorWrapper(generator));

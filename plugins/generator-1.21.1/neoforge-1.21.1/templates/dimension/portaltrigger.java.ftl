@@ -37,10 +37,13 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().rarity(Rarity.${data.igniterRarity}).durability(64));
+		super(new Item.Properties()
+			<#if data.igniterRarity != "COMMON">.rarity(Rarity.${data.igniterRarity})</#if>
+			.durability(64)
+		);
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	@Override public InteractionResult useOn(UseOnContext context) {
 		Player entity = context.getPlayer();

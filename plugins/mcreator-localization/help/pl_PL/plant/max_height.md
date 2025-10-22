@@ -1,0 +1,1 @@
+Roślina uprawiana będzie rosnąć, dopóki nie osiągnie tej wysokości.

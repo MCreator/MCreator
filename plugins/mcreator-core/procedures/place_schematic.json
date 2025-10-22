@@ -34,6 +34,10 @@
         [
           "COUNTERCLOCKWISE_90",
           "COUNTERCLOCKWISE_90"
+        ],
+        [
+          "RANDOM",
+          "RANDOM"
         ]
       ]
     },
@@ -52,6 +56,10 @@
         [
           "LEFT_RIGHT",
           "LEFT_RIGHT"
+        ],
+        [
+          "RANDOM",
+          "RANDOM"
         ]
       ]
     },

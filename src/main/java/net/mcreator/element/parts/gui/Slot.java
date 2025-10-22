@@ -26,8 +26,8 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
-import java.awt.Image;
 import java.awt.*;
+import java.awt.Image;
 
 public abstract class Slot extends GUIComponent {
 

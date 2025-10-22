@@ -1,0 +1,1 @@
+Ce paramètre contrôle la hauteur à laquelle les nuages apparaissent s'ils sont activés.

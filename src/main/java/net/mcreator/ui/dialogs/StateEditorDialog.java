@@ -81,9 +81,9 @@ public class StateEditorDialog {
 				if (part.useEntry.isSelected())
 					retVal.get().put(data, data.getValue(part.entryComponent));
 			}
-			dialog.setVisible(false);
+			dialog.dispose();
 		});
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 
 		dialog.getContentPane().add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/state_definition"),

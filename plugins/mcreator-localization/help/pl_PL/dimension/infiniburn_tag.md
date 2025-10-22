@@ -1,0 +1,1 @@
+Bloki dodane do tego tagu będą płonąć na zawsze w tym wymiarze (podobnie jak w przypadku Netherrack).

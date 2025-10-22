@@ -1,4 +1,4 @@
-Si ce paramètre est activé, la fonctionnalité ne générera pas naturellement et les paramètres de placement seront ignorés.
+Si ce paramètre est activé, la caractéristique ne sera pas générée naturellement, et les paramètres de placement seront ignorés.
 
 La fonctionnalité sera placée uniquement en utilisant la commande `/place`, à partir des procédures, ou quand elle sera référencée par d'autres fonctionnalités.
 

@@ -1,0 +1,1 @@
+Bu seçenek, çimen, yaprak ve suya benzer şekilde biyom renklerine dayalı olarak bloğa bir renk tonu uygular. En iyi sonuç için, renklendirilmiş yüzler gri tonlamalı bir doku kullanmalıdır.

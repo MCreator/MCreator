@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
@@ -28,6 +29,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -39,11 +41,8 @@ import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -57,7 +56,8 @@ import java.util.Arrays;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 
@@ -113,6 +113,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder treeFruits;
 
 	private final JColor airColor = new JColor(mcreator, true, false);
+	private final JColor fogColor = new JColor(mcreator, true, false);
 	private final JColor grassColor = new JColor(mcreator, true, false);
 	private final JColor foliageColor = new JColor(mcreator, true, false);
 	private final JColor waterColor = new JColor(mcreator, true, false);
@@ -146,13 +147,23 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	@Override protected void initGUI() {
-		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_biome_needs_ground_block");
+		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_biome_needs_underground_block");
 		underwaterBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeVines = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_tree_needs_stem_block");
+		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_tree_needs_branch_block");
 		treeFruits = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+
+		if (!isEditingMode()) {
+			groundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"));
+			undergroundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT#0"));
+			underwaterBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRAVEL"));
+		}
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(customTrees);
@@ -167,6 +178,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		name.setOpaque(true);
 		airColor.setOpaque(false);
+		fogColor.setOpaque(false);
 		grassColor.setOpaque(false);
 		foliageColor.setOpaque(false);
 		waterColor.setOpaque(false);
@@ -293,7 +305,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
 
-		JPanel spawnproperties = new JPanel(new GridLayout(12, 2, 25, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(13, 2, 25, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -311,6 +323,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/coverage_estimate"),
 				L10N.label("elementgui.biome.coverage_estimate")));
 		spawnproperties.add(PanelUtils.centerInPanel(coverageEstimate));
+
+		spawnproperties.add(new JEmptyBox());
+		spawnproperties.add(L10N.label("elementgui.biome.gen_params_warning"));
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_temperature"),
 				L10N.label("elementgui.biome.gen_temperature")));
@@ -407,7 +422,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(sbbp3, sbbp5)));
 
-		JPanel sbbp4 = new JPanel(new GridLayout(8, 2, 35, 2));
+		JPanel sbbp4 = new JPanel(new GridLayout(9, 2, 35, 2));
 
 		name.setPreferredSize(new Dimension(350, 36));
 
@@ -425,6 +440,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
 				L10N.label("elementgui.biome.air_color")));
 		sbbp4.add(airColor);
+
+		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fog_color"),
+				L10N.label("elementgui.biome.fog_color")));
+		sbbp4.add(fogColor);
 
 		sbbp4.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/grass_color"),
 				L10N.label("elementgui.biome.grass_color")));
@@ -530,15 +549,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page3group.addValidationElement(treeStem);
 		page3group.addValidationElement(treeBranch);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
-		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
-		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
-		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
-		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
-
-		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
-		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
-		addPage(L10N.t("elementgui.biome.features"), pane3);
+		addPage(L10N.t("elementgui.biome.general_properties"), pane4).validate(page1group);
+		addPage(L10N.t("elementgui.biome.biome_generation"), pane5).validate(page2group);
+		addPage(L10N.t("elementgui.biome.features"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1, false);
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
@@ -586,16 +599,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 		spawnEntries.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
-		else if (page == 2)
-			return new AggregatedValidationResult(page3group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void updateBiomeTreesForm() {
@@ -677,6 +680,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		minHeight.setValue(biome.minHeight);
 		airColor.setColor(biome.airColor);
+		fogColor.setColor(biome.fogColor);
 		grassColor.setColor(biome.grassColor);
 		foliageColor.setColor(biome.foliageColor);
 		waterColor.setColor(biome.waterColor);
@@ -740,6 +744,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		else
 			biome.treeType = biome.TREES_VANILLA;
 		biome.airColor = airColor.getColor();
+		biome.fogColor = fogColor.getColor();
 		biome.grassColor = grassColor.getColor();
 		biome.foliageColor = foliageColor.getColor();
 		biome.waterColor = waterColor.getColor();

@@ -19,16 +19,15 @@
 
 package net.mcreator.generator;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.YamlMerge;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -42,22 +41,21 @@ public class GeneratorVariableTypes {
 
 	GeneratorVariableTypes(GeneratorConfiguration generatorConfiguration) {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
-				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
-
-		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml$"));
 
 		for (String res : fileNames) {
 			String variableTypeName = res.split("variables/")[1].replace(".yaml", "");
 			if (VariableTypeLoader.INSTANCE.doesVariableTypeExist(variableTypeName)) {
-				String config = FileIO.readResourceToString(PluginLoader.INSTANCE, res);
-
 				// load generator configuration
 				try {
-					Map<?, ?> variableTypesData = (Map<?, ?>) yamlLoad.loadFromString(config);
+					Map<?, ?> variableTypesData = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, res);
+					if (variableTypesData.isEmpty())
+						continue;
+
 					variableTypesData = new ConcurrentHashMap<>(
 							variableTypesData); // make this map concurrent, cache can be reused by multiple instances
 					variableTypesCache.put(VariableTypeLoader.INSTANCE.fromName(variableTypeName), variableTypesData);
-				} catch (YamlEngineException e) {
+				} catch (YamlEngineException | IOException e) {
 					LOG.fatal("[{}] Failed to load variable type definition: {}",
 							generatorConfiguration.getGeneratorName(), e.getMessage());
 				}

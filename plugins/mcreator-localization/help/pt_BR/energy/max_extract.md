@@ -1,0 +1,1 @@
+Este valor é o valor máximo de energia que o elemento energético (bloco, item, ...) pode extrair de outro elemento energético.

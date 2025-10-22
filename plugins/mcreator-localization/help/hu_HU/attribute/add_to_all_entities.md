@@ -1,0 +1,1 @@
+Ha engedélyezed, a világban minden entitás, amely rendelkezhet attribútumokkal, rendelkezni fog ezzel az attribútummal és az alapértelmezett értékére lesz állítva, amikor létrejön.

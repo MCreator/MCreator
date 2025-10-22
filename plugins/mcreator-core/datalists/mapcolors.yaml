@@ -4,123 +4,184 @@
   readable_name: "None"
 - GRASS:
   readable_name: "Grass"
+  texture: 8368696
 - SAND:
   readable_name: "Sand"
+  texture: 16247203
 - CLOTH:
   readable_name: "Wool"
+  texture: 13092807
 - TNT:
   readable_name: "Tnt / Fire"
+  texture: 16711680
 - ICE:
   readable_name: "Ice"
+  texture: 10526975
 - IRON:
   readable_name: "Iron"
+  texture: 10987431
 - FOLIAGE:
   readable_name: "Plant"
+  texture: 31744
 - SNOW:
   readable_name: "Snow"
+  texture: 16777215
 - CLAY:
   readable_name: "Clay"
+  texture: 10791096
 - DIRT:
   readable_name: "Dirt"
+  texture: 9923917
 - STONE:
   readable_name: "Stone"
+  texture: 7368816
 - WATER:
   readable_name: "Water"
+  texture: 4210943
 - WOOD:
   readable_name: "Wood"
+  texture: 9402184
 - QUARTZ:
   readable_name: "Quartz"
+  texture: 16776437
 - ADOBE:
   readable_name: "Orange"
+  texture: 14188339
 - MAGENTA:
   readable_name: "Magenta"
+  texture: 11685080
 - LIGHT_BLUE:
   readable_name: "Light blue"
+  texture: 6724056
 - YELLOW:
   readable_name: "Yellow"
+  texture: 15066419
 - LIME:
   readable_name: "Lime"
+  texture: 8375321
 - PINK:
   readable_name: "Pink"
+  texture: 15892389
 - GRAY:
   readable_name: "Gray"
+  texture: 5000268
 - SILVER:
   readable_name: "Light gray"
+  texture: 10066329
 - CYAN:
   readable_name: "Cyan"
+  texture: 5013401
 - PURPLE:
   readable_name: "Purple"
+  texture: 8339378
 - BLUE:
   readable_name: "Blue"
+  texture: 3361970
 - BROWN:
   readable_name: "Brown"
+  texture: 6704179
 - GREEN:
   readable_name: "Green"
+  texture: 6717235
 - RED:
   readable_name: "Red"
+  texture: 10040115
 - BLACK:
   readable_name: "Black"
+  texture: 1644825
 - GOLD:
   readable_name: "Gold"
+  texture: 16445005
 - DIAMOND:
   readable_name: "Diamond"
+  texture: 6085589
 - LAPIS:
   readable_name: "Lapis"
+  texture: 4882687
 - EMERALD:
   readable_name: "Emerald"
+  texture: 55610
 - PODZOL:
   readable_name: "Podzol"
+  texture: 8476209
 - NETHERRACK:
   readable_name: "Nether"
+  texture: 7340544
 - WHITE_TERRACOTTA:
   readable_name: "Terracotta white"
+  texture: 13742497
 - ORANGE_TERRACOTTA:
   readable_name: "Terracotta orange"
+  texture: 10441252
 - MAGENTA_TERRACOTTA:
   readable_name: "Terracotta magenta"
+  texture: 9787244
 - LIGHT_BLUE_TERRACOTTA:
   readable_name: "Terracotta light blue"
+  texture: 7367818
 - YELLOW_TERRACOTTA:
   readable_name: "Terracotta yellow"
+  texture: 12223780
 - LIME_TERRACOTTA:
   readable_name: "Terracotta lime"
+  texture: 6780213
 - PINK_TERRACOTTA:
   readable_name: "Terracotta pink"
+  texture: 10505550
 - GRAY_TERRACOTTA:
   readable_name: "Terracotta gray"
+  texture: 3746083
 - LIGHT_GRAY_TERRACOTTA:
   readable_name: "Terracotta light gray"
+  texture: 8874850
 - CYAN_TERRACOTTA:
   readable_name: "Terracotta cyan"
+  texture: 5725276
 - PURPLE_TERRACOTTA:
   readable_name: "Terracotta purple"
+  texture: 8014168
 - BLUE_TERRACOTTA:
   readable_name: "Terracotta blue"
+  texture: 4996700
 - BROWN_TERRACOTTA:
   readable_name: "Terracotta brown"
+  texture: 4993571
 - GREEN_TERRACOTTA:
   readable_name: "Terracotta green"
+  texture: 5001770
 - RED_TERRACOTTA:
   readable_name: "Terracotta red"
+  texture: 9321518
 - BLACK_TERRACOTTA:
   readable_name: "Terracotta black"
+  texture: 2430480
 - CRIMSON_NYLIUM:
   readable_name: "Crimson nylium"
+  texture: 12398641
 - CRIMSON_STEM:
   readable_name: "Crimson stem"
+  texture: 9715553
 - CRIMSON_HYPHAE:
   readable_name: "Crimson hyphae"
+  texture: 6035741
 - WARPED_NYLIUM:
   readable_name: "Warped nylium"
+  texture: 1474182
 - WARPED_STEM:
   readable_name: "Warped stem"
+  texture: 3837580
 - WARPED_HYPHAE:
   readable_name: "Warped hyphae"
+  texture: 5647422
 - WARPED_WART:
   readable_name: "Warped wart"
+  texture: 1356933
 - DEEPSLATE_GRAY:
   readable_name: "Deepslate"
+  texture: 6579300
 - RAW_IRON_PINK:
   readable_name: "Raw iron"
+  texture: 14200723
 - LICHEN_GREEN:
   readable_name: "Glow lichen"
+  texture: 8365974

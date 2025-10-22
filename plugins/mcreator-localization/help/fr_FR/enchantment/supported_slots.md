@@ -1,0 +1,1 @@
+Ce paramètre définit les types d'emplacements qui correspondent à ce type d'enchantement.

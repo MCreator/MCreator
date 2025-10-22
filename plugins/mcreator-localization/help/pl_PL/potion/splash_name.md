@@ -1,0 +1,1 @@
+Ten parametr kontroluje nazwę miotanej mikstury.

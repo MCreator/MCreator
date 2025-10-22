@@ -43,8 +43,8 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -73,7 +73,8 @@ public class ToolPackMakerTool {
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"dialog.tools.tool_pack_base_item_validator");
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
@@ -81,7 +82,6 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
-		base.setValidator(new MCItemHolderValidator(base));
 		base.addBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {
@@ -112,7 +112,7 @@ public class ToolPackMakerTool {
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
@@ -121,9 +121,9 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.reloadElementsInCurrentTab();
+				mcreator.reloadWorkspaceTabContents();
 				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
 
@@ -141,7 +141,9 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator instanceof ModMaker modMaker ?
+				modMaker.getWorkspacePanel().currentFolder :
+				null;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -257,6 +259,7 @@ public class ToolPackMakerTool {
 		pickaxeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
+		pickaxeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pickaxeRecipe);
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -268,6 +271,7 @@ public class ToolPackMakerTool {
 		axeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
+		axeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -277,6 +281,7 @@ public class ToolPackMakerTool {
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
+		swordRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -286,6 +291,7 @@ public class ToolPackMakerTool {
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
+		shovelRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, shovelRecipe);
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -296,6 +302,7 @@ public class ToolPackMakerTool {
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
+		hoeRecipe.unlockingItems.add(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, hoeRecipe);
 	}
 

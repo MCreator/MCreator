@@ -1,0 +1,1 @@
+Ez egy előnézet a fehér mintáról, amikor fekete zászlóra van alkalmazva, az elülső oldallal a bal oldalon.

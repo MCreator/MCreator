@@ -21,10 +21,10 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -41,28 +41,31 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 	public CheckboxDialog(WYSIWYGEditor editor, @Nullable Checkbox checkbox) {
 		super(editor, checkbox);
-		setSize(480, 220);
+		setSize(520, 200);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		setTitle(L10N.t("dialog.gui.checkbox_add"));
 
-		JPanel options = new JPanel();
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
+		JPanel grid = new JPanel(new GridLayout(2, 2, 5, 2));
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"),
-				() -> Transliteration.transliterateString(nameField.getText()),
-				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
 				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_name"), nameField));
+		grid.add(L10N.label("dialog.gui.checkbox_name"));
+		grid.add(nameField);
 
 		JTextField checkboxText = new JTextField(20);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.checkbox_text"), checkboxText));
 		checkboxText.setPreferredSize(new Dimension(200, 28));
+		grid.add(L10N.label("dialog.gui.checkbox_text"));
+		grid.add(checkboxText);
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
 
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
@@ -70,10 +73,9 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.false"));
-		isCheckedProcedure.refreshList();
-		options.add(PanelUtils.join(isCheckedProcedure));
+		isCheckedProcedure.refreshList(context);
 
-		add("Center", options);
+		add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(grid), PanelUtils.join(isCheckedProcedure)));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -88,10 +90,10 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				String checkBoxName = nameField.getText();
 				if (!checkBoxName.isEmpty()) {
 					if (checkbox == null) {

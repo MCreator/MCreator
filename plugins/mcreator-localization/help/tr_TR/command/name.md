@@ -1,1 +1,1 @@
-Gamemode, give, setblock vb. gibi komutları tanımlamak için oyuncunun / işaretinden sonra yazması gereken kelime.
+Komutu tanımlamak için oyuncunun yazması gereken /'den sonraki kelime, örneğin gamemode, give, setblock vb.

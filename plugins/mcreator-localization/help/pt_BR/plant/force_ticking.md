@@ -1,0 +1,1 @@
+Alguns tipos de plantas naturalmente marcam, mas outros não. Marque este parâmetro para forçar a marcação em todos os casos.

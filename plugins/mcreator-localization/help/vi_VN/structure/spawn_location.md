@@ -1,1 +1,0 @@
-Tham số này xác định nơi mà kiến trúc của bạn sẽ khởi tạo trong thế giới.

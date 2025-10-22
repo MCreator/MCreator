@@ -1,0 +1,1 @@
+If this option is enabled, the fluid will generate particles when it's above a solid block and there's air below it.

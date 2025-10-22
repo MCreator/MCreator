@@ -1,0 +1,1 @@
+Przedmiot, który uzyskujesz po transakcji.

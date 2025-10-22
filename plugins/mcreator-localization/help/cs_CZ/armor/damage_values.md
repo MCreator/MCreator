@@ -1,0 +1,1 @@
+Tato čísla definují, jak dobře toto brnění ubrání příchozí poškození od každé části brnění.

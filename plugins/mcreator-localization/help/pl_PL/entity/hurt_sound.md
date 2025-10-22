@@ -1,0 +1,1 @@
+Ten dźwięk jest odtwarzany, gdy byt jest raniony.

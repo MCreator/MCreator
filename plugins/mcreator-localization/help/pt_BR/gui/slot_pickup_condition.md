@@ -1,0 +1,1 @@
+Se a condição retornar verdadeiro, os jogadores não poderão pegar itens que estão neste slot. No entanto, eles ainda poderão colocar itens sem nenhuma restrição.

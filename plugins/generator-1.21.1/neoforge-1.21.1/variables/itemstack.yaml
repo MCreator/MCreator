@@ -3,11 +3,11 @@ scopes:
   local:
     init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
     get: /*@ItemStack*/${name}
-    set: <#include "mcitems.ftl"> ${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    set: <#include "mcitems.ftl"> ${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
   global_session:
     init: public static ItemStack ${var.getName()} = ItemStack.EMPTY;
     get: /*@ItemStack*/${JavaModName}Variables.${name}
-    set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedMCItemToItemStackCode(value, 1)};
+    set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
   global_world:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.parseOptional(lookupProvider, nbt.getCompound("${var.getName()}"));
@@ -15,8 +15,8 @@ scopes:
     get: /*@ItemStack*/${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
-      ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
-      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.parseOptional(lookupProvider, nbt.getCompound("${var.getName()}"));
@@ -24,8 +24,8 @@ scopes:
     get: /*@ItemStack*/${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
-      ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
-      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+      ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.parseOptional(lookupProvider, nbt.getCompound("${var.getName()}"));
@@ -33,11 +33,9 @@ scopes:
     get: /*@ItemStack*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.parseOptional(lookupProvider, nbt.getCompound("${var.getName()}"));
@@ -45,8 +43,6 @@ scopes:
     get: /*@ItemStack*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedMCItemToItemStackCode(value, 1)}.copy();
+      <@tail>_vars.markSyncDirty();}</@tail>

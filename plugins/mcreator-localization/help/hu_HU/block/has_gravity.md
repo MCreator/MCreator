@@ -1,0 +1,1 @@
+Ha ez a paraméter be van pipálva, a blokk le fog esni, mint a homok.

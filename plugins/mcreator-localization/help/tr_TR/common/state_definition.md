@@ -1,0 +1,1 @@
+Bu durum için elemanınızın özellikleri tarafından kabul edilecek değerleri belirtin. Bir özelliğin solundaki kutunun işaretini kaldırırsanız, bu durumu hiçbir şekilde etkilemeyecektir.

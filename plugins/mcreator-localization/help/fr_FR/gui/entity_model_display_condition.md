@@ -1,1 +1,1 @@
-Si la condition est spécifiée, le modèle d'entité sera uniquement affiché dans le cas où la condition sera validée.
+Si une condition est spécifiée, cette image ne sera affichée que si la condition est vraie.

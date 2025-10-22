@@ -28,11 +28,8 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -45,7 +42,8 @@ import java.net.URISyntaxException;
 
 public class TabGUI extends ModElementGUI<Tab> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.tab.error_needs_name")
+			.enableRealtimeValidation();
 	private MCItemHolder icon;
 	private final JCheckBox showSearch = L10N.checkbox("elementgui.common.enable");
 
@@ -58,7 +56,8 @@ public class TabGUI extends ModElementGUI<Tab> {
 	}
 
 	@Override protected void initGUI() {
-		icon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		icon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.tab.error_tab_needs_icon");
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel selp = new JPanel(new GridLayout(3, 2, 100, 1));
@@ -95,23 +94,15 @@ public class TabGUI extends ModElementGUI<Tab> {
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.tab.error_needs_name")));
-		name.enableRealtimeValidation();
-		icon.setValidator(new MCItemHolderValidator(icon));
-
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(icon);
 
-		addPage(pane3);
+		addPage(pane3).validate(page1group);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Tab tab) {

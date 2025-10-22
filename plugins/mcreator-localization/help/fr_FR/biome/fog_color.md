@@ -1,0 +1,1 @@
+Ce paramètre contrôle la couleur du brouillard à l'intérieur du biome.

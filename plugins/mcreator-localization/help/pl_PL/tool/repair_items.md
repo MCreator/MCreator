@@ -1,0 +1,1 @@
+Przedmiot(y) wykorzystywane do naprawy narzędzia kowadłem.

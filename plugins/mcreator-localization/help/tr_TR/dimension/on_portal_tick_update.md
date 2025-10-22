@@ -1,0 +1,1 @@
+Portal bloğu dünyada mevcut olduğunda, prosedür her tikte yürütülecektir.

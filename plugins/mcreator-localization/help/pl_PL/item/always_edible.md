@@ -1,0 +1,1 @@
+Włączenie tego parametru pozwoli graczowi na jedzenie, nawet jeśli pasek głodu jest pełny(Np. Złote jabłko)

@@ -1,0 +1,1 @@
+Dieser Parameter legt die Farbe des Nebels in diesem Biom fest.

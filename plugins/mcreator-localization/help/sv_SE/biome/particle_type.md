@@ -1,0 +1,1 @@
+Partikeln som uppstår i denna biom.

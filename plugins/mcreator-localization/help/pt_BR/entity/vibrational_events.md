@@ -1,0 +1,1 @@
+Eventos do jogo cujas vibrações esta entidade pode receber.

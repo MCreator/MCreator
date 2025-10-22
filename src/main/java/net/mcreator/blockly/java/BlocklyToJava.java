@@ -127,19 +127,25 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new ProcedureRetvalBlock());
 
 		// add standard output blocks
-		blockGenerators.add(new BinaryOperationsBlock());
+		blockGenerators.add(new LogicBinaryOperationsBlock());
+		blockGenerators.add(new NumberBinaryOperationsBlock());
 		blockGenerators.add(new TextBinaryOperationsBlock());
 		blockGenerators.add(new LogicNegateBlock());
+		blockGenerators.add(new NullComparisonBlock());
 		blockGenerators.add(new BooleanBlock());
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new NumberConstantsBlock());
 		blockGenerators.add(new TextBlock());
+		blockGenerators.add(new TextNewLineBlock());
 		blockGenerators.add(new TextReplace());
+		blockGenerators.add(new TextReplaceRegex());
 		blockGenerators.add(new TextFormatNumber());
 		blockGenerators.add(new TextContains());
+		blockGenerators.add(new TextMatches());
 		blockGenerators.add(new TextSubstring());
 		blockGenerators.add(new TextJoinBlock());
 		blockGenerators.add(new TextLengthBlock());
+		blockGenerators.add(new TextIndexOfBlock());
 		blockGenerators.add(new TextIsEmptyBlock());
 		blockGenerators.add(new TextTrimBlock());
 		blockGenerators.add(new TextUppercaseBlock());
@@ -177,5 +183,6 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+		blockGenerators.add(new EventParameterSetBlock());
 	}
 }

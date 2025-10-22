@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg az entitás vizuális modelljét (vizuális alakját).

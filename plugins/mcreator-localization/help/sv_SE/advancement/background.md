@@ -1,0 +1,1 @@
+Om ditt framsteg är det första i ett nytt led kan du välja bakgrunden för framsteget i denna ruta.

@@ -1,0 +1,1 @@
+Bir şey bu bloğun yanına bir blok (varlık/blok) yerleştirdiğinde bir prosedürü tetikler.

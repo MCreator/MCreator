@@ -1,0 +1,68 @@
+- pillager_outpost:
+  readable_name: "Pillager Outpost"
+- mineshaft:
+  readable_name: "Mineshaft"
+- mineshaft_mesa:
+  readable_name: "Mineshaft Mesa"
+- mansion:
+  readable_name: "Maision"
+- jungle_pyramid:
+  readable_name: "Jungle Pyramid"
+- desert_pyramid:
+  readable_name: "Desert Pyramid"
+- igloo:
+  readable_name: "Igloo"
+- shipwreck:
+  readable_name: "Shipwreck"
+- shipwreck_beached:
+  readable_name: "Shipwreck Beached"
+- swamp_hut:
+  readable_name: "Swamp Hut"
+- stronghold:
+  readable_name: "Stronghold"
+- monument:
+  readable_name: "Monument"
+- ocean_ruin_cold:
+  readable_name: "Ocean Ruin Cold"
+- ocean_ruin_warm:
+  readable_name: "Ocean Ruin Warm"
+- fortress:
+  readable_name: "Fortress"
+- nether_fossil:
+  readable_name: "Nether Fossil"
+- end_city:
+  readable_name: "End City"
+- buried_treasure:
+  readable_name: "Buried Treasure"
+- bastion_remnant:
+  readable_name: "Bastion Remnant"
+- village_plains:
+  readable_name: "Village Plains"
+- village_desert:
+  readable_name: "Village Desert"
+- village_savanna:
+  readable_name: "Village Savanna"
+- village_snowy:
+  readable_name: "Village Snowy"
+- village_taiga:
+  readable_name: "Village Taiga"
+- ruined_portal:
+  readable_name: "Ruined Portal"
+- ruined_portal_desert:
+  readable_name: "Ruined Portal Desert"
+- ruined_portal_jungle:
+  readable_name: "Ruined Portal Jungle"
+- ruined_portal_swamp:
+  readable_name: "Ruined Portal Swamp"
+- ruined_portal_mountain:
+  readable_name: "Ruined Portal Mountain"
+- ruined_portal_ocean:
+  readable_name: "Ruined Portal Ocean"
+- ruined_portal_nether:
+  readable_name: "Ruined Portal Nether"
+- ancient_city:
+  readable_name: "Ancient City"
+- trail_ruins:
+  readable_name: "Trail Ruins"
+- trial_chambers:
+  readable_name: "Trial Chambers"

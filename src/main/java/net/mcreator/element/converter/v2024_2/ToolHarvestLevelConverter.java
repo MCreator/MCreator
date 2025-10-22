@@ -24,34 +24,26 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Tool;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ToolHarvestLevelConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(ToolHarvestLevelConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Tool tool = (Tool) input;
-		try {
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("harvestLevel") != null) {
-				int harvestLevel = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("harvestLevel").getAsInt();
-				if (harvestLevel == 0) {
-					tool.blockDropsTier = "WOOD";
-				} else if (harvestLevel == 1) {
-					tool.blockDropsTier = "STONE";
-				} else if (harvestLevel == 2) {
-					tool.blockDropsTier = "IRON";
-				} else if (harvestLevel == 3) {
-					tool.blockDropsTier = "DIAMOND";
-				} else {
-					tool.blockDropsTier = "NETHERITE";
-				}
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("harvestLevel") != null) {
+			int harvestLevel = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("harvestLevel").getAsInt();
+			if (harvestLevel == 0) {
+				tool.blockDropsTier = "WOOD";
+			} else if (harvestLevel == 1) {
+				tool.blockDropsTier = "STONE";
+			} else if (harvestLevel == 2) {
+				tool.blockDropsTier = "IRON";
+			} else if (harvestLevel == 3) {
+				tool.blockDropsTier = "DIAMOND";
+			} else {
+				tool.blockDropsTier = "NETHERITE";
 			}
-		} catch (Exception e) {
-			LOG.warn("Could convert harvestLevel of: {}", tool.getModElement().getName());
 		}
 		return tool;
 	}

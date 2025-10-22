@@ -1,0 +1,1 @@
+Ha ez az opció be van pipálva, ez a blokk meggyulladhat, ha közel van lávához.

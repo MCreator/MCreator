@@ -45,14 +45,14 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 				if (file.isDirectory() && FileIO.isFileSomewhereInDirectory(file,
 						browser.mcreator.getGenerator().getSourceRoot())) {
 					fileActionsAllowed = true;
-					createMenu.add(browser.mcreator.actionRegistry.newClass);
-					createMenu.add(browser.mcreator.actionRegistry.newPackage);
+					createMenu.add(browser.mcreator.getActionRegistry().newClass);
+					createMenu.add(browser.mcreator.getActionRegistry().newPackage);
 				} else if (file.isDirectory() && FileIO.isFileSomewhereInDirectory(file,
 						browser.mcreator.getGenerator().getResourceRoot())) {
 					fileActionsAllowed = true;
-					createMenu.add(browser.mcreator.actionRegistry.newJson);
-					createMenu.add(browser.mcreator.actionRegistry.newImage);
-					createMenu.add(browser.mcreator.actionRegistry.newFolder);
+					createMenu.add(browser.mcreator.getActionRegistry().newJson);
+					createMenu.add(browser.mcreator.getActionRegistry().newImage);
+					createMenu.add(browser.mcreator.getActionRegistry().newFolder);
 				}
 			} else {
 				if (file.isDirectory() && (
@@ -60,38 +60,38 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 								|| FileIO.isFileSomewhereInDirectory(file,
 								browser.mcreator.getGenerator().getResourceRoot()))) {
 					fileActionsAllowed = true;
-					createMenu.add(browser.mcreator.actionRegistry.newJson);
-					createMenu.add(browser.mcreator.actionRegistry.newImage);
-					createMenu.add(browser.mcreator.actionRegistry.newFolder);
+					createMenu.add(browser.mcreator.getActionRegistry().newJson);
+					createMenu.add(browser.mcreator.getActionRegistry().newImage);
+					createMenu.add(browser.mcreator.getActionRegistry().newFolder);
 				}
 			}
 		} else if (selected == browser.sourceCode) {
 			fileActionsAllowed = true;
-			createMenu.add(browser.mcreator.actionRegistry.newClass);
-			createMenu.add(browser.mcreator.actionRegistry.newPackage);
+			createMenu.add(browser.mcreator.getActionRegistry().newClass);
+			createMenu.add(browser.mcreator.getActionRegistry().newPackage);
 		} else if (selected == browser.currRes) {
 			fileActionsAllowed = true;
-			createMenu.add(browser.mcreator.actionRegistry.newJson);
-			createMenu.add(browser.mcreator.actionRegistry.newImage);
-			createMenu.add(browser.mcreator.actionRegistry.newFolder);
+			createMenu.add(browser.mcreator.getActionRegistry().newJson);
+			createMenu.add(browser.mcreator.getActionRegistry().newImage);
+			createMenu.add(browser.mcreator.getActionRegistry().newFolder);
 		}
 
 		boolean fileInWorkspace = selected.getUserObject() instanceof File file && browser.mcreator.getFolderManager()
 				.isFileInWorkspace(file, true);
-		browser.mcreator.actionRegistry.openFile.setEnabled(true);
-		browser.mcreator.actionRegistry.openFileInDesktop.setEnabled(
+		browser.mcreator.getActionRegistry().openFile.setEnabled(true);
+		browser.mcreator.getActionRegistry().openFileInDesktop.setEnabled(
 				fileInWorkspace || selected == browser.sourceCode || selected == browser.currRes);
-		browser.mcreator.actionRegistry.showFileInExplorer.setEnabled(
+		browser.mcreator.getActionRegistry().showFileInExplorer.setEnabled(
 				fileInWorkspace && selected != browser.sourceCode && selected != browser.currRes);
 		createMenu.setEnabled(fileActionsAllowed);
-		browser.mcreator.actionRegistry.deleteFile.setEnabled(
+		browser.mcreator.getActionRegistry().deleteFile.setEnabled(
 				fileActionsAllowed && selected != browser.sourceCode && selected != browser.currRes);
 
-		add(browser.mcreator.actionRegistry.openFile);
-		add(browser.mcreator.actionRegistry.openFileInDesktop);
-		add(browser.mcreator.actionRegistry.showFileInExplorer);
+		add(browser.mcreator.getActionRegistry().openFile);
+		add(browser.mcreator.getActionRegistry().openFileInDesktop);
+		add(browser.mcreator.getActionRegistry().showFileInExplorer);
 		addSeparator();
 		add(createMenu);
-		add(browser.mcreator.actionRegistry.deleteFile);
+		add(browser.mcreator.getActionRegistry().deleteFile);
 	}
 }

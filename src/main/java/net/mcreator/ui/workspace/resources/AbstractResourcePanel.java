@@ -43,7 +43,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 
 	protected final WorkspacePanel workspacePanel;
 
-	private final TransparentToolBar bar = new TransparentToolBar();
+	protected final TransparentToolBar bar = new TransparentToolBar();
 
 	protected final ResourceFilterModel<T> filterModel;
 	protected final JSelectableList<T> elementList;
@@ -90,7 +90,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		add("North", bar);
 	}
 
-	abstract void deleteCurrentlySelected();
+	abstract protected void deleteCurrentlySelected();
 
 	@Override public void refilterElements() {
 		filterModel.refilter();

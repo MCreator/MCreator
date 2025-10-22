@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Dzsungel Templomokat szeretnél a biomodban.

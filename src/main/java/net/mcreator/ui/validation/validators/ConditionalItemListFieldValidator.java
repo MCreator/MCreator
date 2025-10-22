@@ -22,6 +22,7 @@ import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
+import java.util.function.Supplier;
 
 public class ConditionalItemListFieldValidator implements Validator {
 
@@ -29,14 +30,19 @@ public class ConditionalItemListFieldValidator implements Validator {
 	private final String emptyMessage;
 	private final ValidationResultType answer;
 	private final boolean validateTextWhenBooleanIs;
-	private final JToggleButton conditionElement;
+	private final Supplier<Boolean> conditionElement;
 
-	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, JToggleButton condition,
+	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, Supplier<Boolean> condition,
 			boolean validateTextWhenBooleanIs) {
 		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResultType.ERROR);
 	}
 
 	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, JToggleButton condition,
+			boolean validateTextWhenBooleanIs) {
+		this(holder, emptyMessage, condition::isSelected, validateTextWhenBooleanIs, ValidationResultType.ERROR);
+	}
+
+	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, Supplier<Boolean> condition,
 			boolean validateTextWhenBooleanIs, ValidationResultType answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
@@ -46,7 +52,7 @@ public class ConditionalItemListFieldValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (!holder.getListElements().isEmpty() || conditionElement.isSelected() != validateTextWhenBooleanIs)
+		if (!holder.getListElements().isEmpty() || conditionElement.get() != validateTextWhenBooleanIs)
 			return new ValidationResult(ValidationResultType.PASSED, "");
 		else
 			return new ValidationResult(answer, emptyMessage);

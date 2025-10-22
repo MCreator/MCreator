@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a köd színe a napszaknak megfelelően változik.

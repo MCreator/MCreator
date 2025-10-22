@@ -24,11 +24,13 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -37,20 +39,15 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.TabListField;
-import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -65,19 +62,28 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureSelectionButton texture;
+	private TextureSelectionButton guiTexture;
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
-	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
+			.enableRealtimeValidation();
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -87,6 +93,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isPiglinCurrency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
@@ -94,10 +101,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private LogicProcedureSelector glowCondition;
 
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
-
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox rangedItemChargesPower = L10N.checkbox("elementgui.common.enable");
-
+	private final JCheckBox projectileDisableAmmoCheck = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector onRangedItemUsed;
 	private ProcedureSelector rangedUseCondition;
 
@@ -122,15 +128,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
 	private ProcedureSelector onFinishUsingItem;
+	private ProcedureSelector everyTickWhileUsing;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private final ValidationGroup page1group = new ValidationGroup();
+	private final ValidationGroup page5group = new ValidationGroup();
 
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
-	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
+	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
@@ -138,9 +147,31 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
+	private final TranslatedComboBox animation = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("none", "elementgui.item.item_animation_none"),
+			Map.entry("eat", "elementgui.item.item_animation_eat"),
+			Map.entry("block", "elementgui.item.item_animation_block"),
+			Map.entry("bow", "elementgui.item.item_animation_bow"),
+			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
+			Map.entry("drink", "elementgui.item.item_animation_drink"),
+			Map.entry("spear", "elementgui.item.item_animation_spear")
+			//@formatter:on
+	);
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+
+	// Music disc parameters
+	private final JCheckBox isMusicDisc = L10N.checkbox("elementgui.common.enable");
+	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator).requireValue(
+			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
+	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
+			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
+	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
+	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+
+	private ModElementListField providedBannerPatterns;
+
+	private JItemAnimationList animations;
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -177,9 +208,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
 				L10N.t("elementgui.item.event_on_dropped"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
+		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_finish_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
+				L10N.t("elementgui.item.player_useitem_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -197,10 +234,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
+		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
-		guiBoundTo.addActionListener(e -> {
+		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
+
+		animations = new JItemAnimationList(mcreator, this);
+
+		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
-				String selected = guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -222,9 +265,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
+
+		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		guiTexture.setOpaque(false);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
@@ -233,16 +281,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.deriveFont(renderType, 16);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
-
+		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
-				PanelUtils.join(renderType)));
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.item.item_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"),
+				L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
+
+		renderType.addActionListener(e -> updateTextureOptions());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -263,7 +315,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -303,6 +355,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		subpane2.add(immuneToFire);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_piglin_currency"),
+				L10N.label("elementgui.item.is_piglin_currency")));
+		subpane2.add(isPiglinCurrency);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
@@ -331,10 +387,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
+		damageCount.addChangeListener(e -> updateCraftingSettings());
 		immuneToFire.setOpaque(false);
+		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
+
+		updateCraftingSettings();
 
 		subpane2.setOpaque(false);
 
@@ -389,7 +450,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -401,6 +462,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
 		events.add(onFinishUsingItem);
+		events.add(everyTickWhileUsing);
+		events.add(onItemEntityDestroyed);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -423,9 +486,44 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		updateRangedPanel();
+		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
+		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.section_musicdisc_banner"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+		musicDiscBannerProperties.setOpaque(false);
 
-		JPanel rangedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
+				L10N.label("elementgui.item.musicdisc")));
+		musicDiscBannerProperties.add(isMusicDisc);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_music"),
+				L10N.label("elementgui.item.musicdisc_music")));
+		musicDiscBannerProperties.add(musicDiscMusic);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_description"),
+				L10N.label("elementgui.item.musicdisc_description")));
+		musicDiscBannerProperties.add(musicDiscDescription);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_length"),
+				L10N.label("elementgui.item.musicdisc_length")));
+		musicDiscBannerProperties.add(musicDiscLengthInTicks);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc_analog_output"),
+				L10N.label("elementgui.item.musicdisc_analog_output")));
+		musicDiscBannerProperties.add(musicDiscAnalogOutput);
+
+		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/provided_banner_patterns"),
+				L10N.label("elementgui.item.provided_banner_patterns")));
+		musicDiscBannerProperties.add(providedBannerPatterns);
+
+		ComponentUtils.deriveFont(musicDiscDescription, 16);
+
+		updateMusicDiscBannerPanel();
+
+		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
+
+		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
@@ -438,14 +536,22 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.projectile")));
 		rangedProperties.add(projectile);
 
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
+				L10N.label("elementgui.item.projectile_disable_ammo_check")));
+		projectileDisableAmmoCheck.setOpaque(false);
+		rangedProperties.add(projectileDisableAmmoCheck);
+
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
 				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
+
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
 				L10N.label("elementgui.item.charges_power")));
 		rangedItemChargesPower.setOpaque(false);
 		rangedProperties.add(rangedItemChargesPower);
+
+		updateRangedPanel();
 
 		shootConstantly.addActionListener((e) -> {
 			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
@@ -465,29 +571,55 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 
-		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(inventoryProperties), rangedPanel, 10, 10)));
-
-		texture.setValidator(new TileHolderValidator(texture));
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
+				PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
+				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
 		page1group.addValidationElement(texture);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
-		name.enableRealtimeValidation();
+		page5group.addValidationElement(musicDiscDescription);
+		page5group.addValidationElement(musicDiscMusic.getVTextField());
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		JComponent animationsList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model_animations"),
+						L10N.label("elementgui.item.model_animations")), animations);
+		animationsList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		animationsPane.setOpaque(false);
+		animationsPane.add("Center", animationsList);
+
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
+		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false).lazyValidate(
+				customProperties::getValidationResult);
+		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
-		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+	}
 
-		updateFoodPanel();
+	private void updateTextureOptions() {
+		Model model = renderType.getSelectedItem();
+		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
+	}
+
+	private void updateCraftingSettings() {
+		recipeRemainder.setEnabled(stayInGridWhenCrafting.isSelected());
+		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) damageCount.getValue() > 0));
+	}
+
+	private void updateMusicDiscBannerPanel() {
+		boolean isDisc = isMusicDisc.isSelected();
+		musicDiscMusic.setEnabled(isDisc);
+		musicDiscDescription.setEnabled(isDisc);
+		musicDiscLengthInTicks.setEnabled(isDisc);
+		musicDiscAnalogOutput.setEnabled(isDisc);
 	}
 
 	private void updateFoodPanel() {
@@ -513,6 +645,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
+			projectileDisableAmmoCheck.setEnabled(true);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 0)
 					useDuration.setValue(72000);
@@ -527,6 +660,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			rangedUseCondition.setEnabled(false);
+			projectileDisableAmmoCheck.setEnabled(false);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 72000)
 					useDuration.setValue(0);
@@ -539,49 +673,44 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		onDroppedByPlayer.refreshListKeepSelected();
-		onFinishUsingItem.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
-		rangedUseCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onStoppedUsing.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onFinishUsingItem.refreshListKeepSelected(context);
+		everyTickWhileUsing.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		onRangedItemUsed.refreshListKeepSelected(context);
+		rangedUseCondition.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
 		customProperties.reloadDataLists();
 
+		animations.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
-				mcreator.getWorkspace().getModElements().stream().filter(var -> var.getType() == ModElementType.GUI)
-						.map(ModElement::getName).collect(Collectors.toList())), "<NONE>");
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return customProperties.getValidationResult();
-		else if (page == 2)
-			return new AggregatedValidationResult(name);
-		return new AggregatedValidationResult.PASS();
+						.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 	}
 
 	@Override public void openInEditingMode(Item item) {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTexture(item.texture);
+		guiTexture.setTexture(item.guiTexture);
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -599,6 +728,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageCount.setValue(item.damageCount);
 		recipeRemainder.setBlock(item.recipeRemainder);
 		immuneToFire.setSelected(item.immuneToFire);
+		isPiglinCurrency.setSelected(item.isPiglinCurrency);
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
@@ -606,26 +736,39 @@ public class ItemGUI extends ModElementGUI<Item> {
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
-		guiBoundTo.setSelectedItem(item.guiBoundTo);
+		guiBoundTo.setEntry(item.guiBoundTo);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
 		isFood.setSelected(item.isFood);
 		isMeat.setSelected(item.isMeat);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
+		everyTickWhileUsing.setSelectedProcedure(item.everyTickWhileUsing);
+		onItemEntityDestroyed.setSelectedProcedure(item.onItemEntityDestroyed);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
 		eatResultItem.setBlock(item.eatResultItem);
 		enableRanged.setSelected(item.enableRanged);
+		projectileDisableAmmoCheck.setSelected(item.projectileDisableAmmoCheck);
 		shootConstantly.setSelected(item.shootConstantly);
 		rangedItemChargesPower.setSelected(item.rangedItemChargesPower);
 		projectile.setSelectedItem(item.projectile);
 		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
 		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
+		isMusicDisc.setSelected(item.isMusicDisc);
+		musicDiscMusic.setSound(item.musicDiscMusic);
+		musicDiscDescription.setText(item.musicDiscDescription);
+		musicDiscLengthInTicks.setValue(item.musicDiscLengthInTicks);
+		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
+		providedBannerPatterns.setListElements(
+				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
+		animations.setEntries(item.animations);
 
+		updateCraftingSettings();
 		updateFoodPanel();
 		updateRangedPanel();
+		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
 		Model model = item.getItemModel();
@@ -639,7 +782,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	@Override public Item getElementFromGUI() {
 		Item item = new Item(modElement);
 		item.name = name.getText();
-		item.rarity = (String) rarity.getSelectedItem();
+		item.rarity = rarity.getSelectedItem();
 		item.creativeTabs = creativeTabs.getListElements();
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
@@ -648,6 +791,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.damageCount = (int) damageCount.getValue();
 		item.recipeRemainder = recipeRemainder.getBlock();
 		item.immuneToFire = immuneToFire.isSelected();
+		item.isPiglinCurrency = isPiglinCurrency.isSelected();
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
@@ -666,28 +810,41 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
-		item.guiBoundTo = guiBoundTo.getSelectedItem();
+		item.guiBoundTo = guiBoundTo.getEntry();
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();
 		item.isMeat = isMeat.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
-		item.animation = (String) animation.getSelectedItem();
+		item.animation = animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
+		item.everyTickWhileUsing = everyTickWhileUsing.getSelectedProcedure();
+		item.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
+		item.projectileDisableAmmoCheck = projectileDisableAmmoCheck.isSelected();
 		item.shootConstantly = shootConstantly.isSelected();
 		item.rangedItemChargesPower = rangedItemChargesPower.isSelected();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();
+		item.isMusicDisc = isMusicDisc.isSelected();
+		item.musicDiscMusic = musicDiscMusic.getSound();
+		item.musicDiscDescription = musicDiscDescription.getText();
+		item.musicDiscLengthInTicks = (int) musicDiscLengthInTicks.getValue();
+		item.musicDiscAnalogOutput = (int) musicDiscAnalogOutput.getValue();
+		item.providedBannerPatterns = providedBannerPatterns.getListElements().stream()
+				.map(NonMappableElement::getUnmappedValue).collect(Collectors.toList());
 
 		item.texture = texture.getTextureHolder();
+		item.guiTexture = guiTexture.getTextureHolder();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		item.customProperties = customProperties.getProperties();
 		item.states = customProperties.getStates();
+
+		item.animations = animations.getEntries();
 
 		return item;
 	}

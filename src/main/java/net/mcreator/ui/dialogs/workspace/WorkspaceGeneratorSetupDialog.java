@@ -20,7 +20,7 @@ package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
-import net.mcreator.gradle.GradleErrorCodes;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.dialogs.ProgressDialog;
@@ -71,11 +71,11 @@ public class WorkspaceGeneratorSetupDialog {
 					L10N.t("dialog.setup_workspace.step.gradle_project"));
 			dial.addProgressUnit(p2);
 
-			m.mcreatorTabs.showTab(m.consoleTab);
+			m.getTabs().showTab(m.consoleTab);
 
 			m.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
-				if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
+				if (taskResult == GradleResultCode.STATUS_OK) {
 					p2.markStateOk();
 
 					finalizeTheSetup(m, dial);
@@ -118,7 +118,11 @@ public class WorkspaceGeneratorSetupDialog {
 
 				dial.hideDialog();
 
-				m.mcreatorTabs.showTab(m.workspaceTab);
+				SwingUtilities.invokeLater(() -> {
+					m.getTabs().showTab(m.workspaceTab);
+					if (m.hasProjectBrowser())
+						m.getProjectBrowser().reloadTree();
+				});
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
 				p3.markStateError();

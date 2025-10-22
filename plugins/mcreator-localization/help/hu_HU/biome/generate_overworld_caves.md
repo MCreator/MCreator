@@ -1,0 +1,1 @@
+Jelöld be ezt a négyzetet, hogy ez a biom a föld alatt (barlangokban) jelenjen meg a Normál világban.

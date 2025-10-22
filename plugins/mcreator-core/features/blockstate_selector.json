@@ -22,7 +22,7 @@
     "group": "blockstates",
     "toolbox_id": "blocks",
     "toolbox_init": [
-      "<mutation inputs=\"1\"></mutation>"
+      "<mutation inputs=\"0\"></mutation>"
     ],
     "fields": [
       "block"
@@ -31,14 +31,14 @@
       {
         "name": "property",
         "field_definition": {
-          "testCount": 1,
+          "testCount": 0,
           "type": "field_input"
         }
       },
       {
         "name": "value",
         "field_definition": {
-          "testCount": 1,
+          "testCount": 0,
           "type": "field_input"
         }
       }

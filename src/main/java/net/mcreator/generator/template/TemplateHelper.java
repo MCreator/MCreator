@@ -19,7 +19,6 @@
 package net.mcreator.generator.template;
 
 import com.google.gson.Gson;
-import net.mcreator.util.StringUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -69,10 +68,6 @@ import java.util.Random;
 
 	public String obj2str(Object object) {
 		return new Gson().toJson(object);
-	}
-
-	public String lowercaseFirstLetter(String str) {
-		return StringUtils.lowercaseFirstLetter(str);
 	}
 
 	public <T> List<T> removeDuplicates(List<T> original) {

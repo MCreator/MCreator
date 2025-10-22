@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan puestos de saqueadores en tu bioma.

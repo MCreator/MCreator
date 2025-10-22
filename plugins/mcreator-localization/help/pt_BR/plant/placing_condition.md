@@ -1,0 +1,3 @@
+Para adicionar mais condições ao posicionamento da sua planta, independentemente do bloco em que ela deve estar, adicione seu procedimento com valor de retorno aqui.
+
+NOTA: Substitui a condição de posicionamento do tipo de planta e estende a lista de blocos "pode ​​ser colocado em" com esta condição adicional. Se a lista de blocos "pode ​​ser colocado em" estiver vazia, este procedimento será usado como a principal condição de posicionamento/crescimento.

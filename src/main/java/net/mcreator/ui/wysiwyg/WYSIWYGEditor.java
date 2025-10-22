@@ -18,16 +18,18 @@
 
 package net.mcreator.ui.wysiwyg;
 
+import net.mcreator.element.parts.IWorkspaceDependent;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
-import net.mcreator.element.parts.gui.*;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.wysiwyg.*;
@@ -40,16 +42,19 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
+import net.mcreator.util.GSONClone;
+import net.mcreator.util.image.IconUtils;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class WYSIWYGEditor extends JPanel {
 
@@ -57,9 +62,11 @@ public class WYSIWYGEditor extends JPanel {
 	public static final List<WYSIWYGComponentRegistration<?>> COMPONENT_REGISTRY = new ArrayList<>() {{
 		add(new WYSIWYGComponentRegistration<>("text_label", "addlabel", true, Label.class, LabelDialog.class));
 		add(new WYSIWYGComponentRegistration<>("image", "addimage", true, Image.class, ImageDialog.class));
+		add(new WYSIWYGComponentRegistration<>("sprite", "addsprite", true, Sprite.class, SpriteDialog.class));
 		add(new WYSIWYGComponentRegistration<>("button", "addbutton", false, Button.class, ButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("imagebutton", "addimagebutton", false, ImageButton.class, ImageButtonDialog.class));
 		add(new WYSIWYGComponentRegistration<>("checkbox", "addcheckbox", false, Checkbox.class, CheckboxDialog.class));
+		add(new WYSIWYGComponentRegistration<>("slider", "addslider", false, Slider.class, SliderDialog.class));
 		add(new WYSIWYGComponentRegistration<>("text_input", "addtextinput", false, TextField.class, TextFieldDialog.class));
 		add(new WYSIWYGComponentRegistration<>("tooltip", "addtooltip", false, Tooltip.class, TooltipDialog.class));
 		add(new WYSIWYGComponentRegistration<>("entity_model", "addmodel", true, EntityModel.class, EntityModelDialog.class));
@@ -78,6 +85,7 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton removeComponent = new JButton(UIRES.get("18px.remove"));
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
+	private final JButton lockComponent = new JButton(UIRES.get("18px.lock"));
 
 	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
 	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
@@ -92,14 +100,22 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(
+			new String[] { L10N.t("elementgui.gui.without_slots"), L10N.t("elementgui.gui.with_slots") });
 
 	private boolean opening = false;
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final JComboBox<String> priority = new JComboBox<>(
-			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final TranslatedComboBox priority = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("NORMAL", "elementgui.gui.priority_normal"),
+			Map.entry("HIGH", "elementgui.gui.priority_high"),
+			Map.entry("HIGHEST", "elementgui.gui.priority_highest"),
+			Map.entry("LOW", "elementgui.gui.priority_low"),
+			Map.entry("LOWEST", "elementgui.gui.priority_lowest")
+			//@formatter:on
+	);
 
 	public TextureComboBox overlayBaseTexture;
 
@@ -144,17 +160,19 @@ public class WYSIWYGEditor extends JPanel {
 		list.addListSelectionListener(event -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
-				moveComponent.setEnabled(true);
+				moveComponent.setEnabled(!list.getSelectedValue().locked);
 				editComponent.setEnabled(true);
 				removeComponent.setEnabled(true);
 				moveComponentUp.setEnabled(true);
 				moveComponentDown.setEnabled(true);
+				lockComponent.setEnabled(true);
 			} else {
 				moveComponent.setEnabled(false);
 				editComponent.setEnabled(false);
 				removeComponent.setEnabled(false);
 				moveComponentUp.setEnabled(false);
 				moveComponentDown.setEnabled(false);
+				lockComponent.setEnabled(false);
 			}
 		});
 
@@ -163,6 +181,12 @@ public class WYSIWYGEditor extends JPanel {
 				if (evt.getClickCount() == 2) {
 					editComponent.doClick();
 				}
+			}
+		});
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE)
+					editor.removeMode();
 			}
 		});
 
@@ -178,6 +202,13 @@ public class WYSIWYGEditor extends JPanel {
 			boolean mu = components.moveDown(list.getSelectedIndex());
 			if (mu)
 				list.setSelectedIndex(list.getSelectedIndex() + 1);
+		});
+
+		lockComponent.addActionListener(e -> {
+			GUIComponent component = list.getSelectedValue();
+			component.locked = !component.locked;
+			moveComponent.setEnabled(!component.locked);
+			list.repaint();
 		});
 
 		editComponent.addActionListener(e -> editCurrentlySelectedComponent());
@@ -209,17 +240,20 @@ public class WYSIWYGEditor extends JPanel {
 		removeComponent.setToolTipText((L10N.t("elementgui.gui.remove_component")));
 		moveComponentUp.setToolTipText((L10N.t("elementgui.gui.move_component_up")));
 		moveComponentDown.setToolTipText((L10N.t("elementgui.gui.move_component_down")));
+		lockComponent.setToolTipText(L10N.t("elementgui.gui.lock_component"));
 
 		moveComponent.setMargin(new Insets(1, 1, 1, 1));
 		removeComponent.setMargin(new Insets(1, 1, 1, 1));
 		editComponent.setMargin(new Insets(1, 1, 1, 1));
 		moveComponentUp.setMargin(new Insets(1, 1, 1, 1));
 		moveComponentDown.setMargin(new Insets(1, 1, 1, 1));
+		lockComponent.setMargin(new Insets(1, 1, 1, 1));
 
 		bar2.add(moveComponent);
 		bar2.add(moveComponentUp);
 		bar2.add(moveComponentDown);
 		bar2.add(editComponent);
+		bar2.add(lockComponent);
 		bar2.add(removeComponent);
 
 		comppan.add("North", bar2);
@@ -306,6 +340,7 @@ public class WYSIWYGEditor extends JPanel {
 		removeComponent.setEnabled(false);
 		moveComponentUp.setEnabled(false);
 		moveComponentDown.setEnabled(false);
+		lockComponent.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
@@ -365,7 +400,14 @@ public class WYSIWYGEditor extends JPanel {
 		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
-			sidebar.add("North", adds2);
+			JScrollPane scrollPane = new JScrollPane(adds2);
+			scrollPane.setOpaque(false);
+			scrollPane.getViewport().setOpaque(false);
+			scrollPane.setBorder(BorderFactory.createEmptyBorder());
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			sidebar.add("North", scrollPane);
 		} else {
 			ovst.setOpaque(false);
 			ovst.setLayout(new BoxLayout(ovst, BoxLayout.PAGE_AXIS));
@@ -428,6 +470,7 @@ public class WYSIWYGEditor extends JPanel {
 	protected void editCurrentlySelectedComponent() {
 		if (list.getSelectedValue() != null) {
 			GUIComponent component = list.getSelectedValue();
+			final boolean wasLocked = component.locked;
 
 			for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
 				if (componentRegistration.component() == component.getClass()
@@ -443,6 +486,8 @@ public class WYSIWYGEditor extends JPanel {
 					break;
 				}
 			}
+			if (component != null)
+				component.locked = wasLocked;
 
 			list.setSelectedValue(component, true);
 		}
@@ -474,17 +519,31 @@ public class WYSIWYGEditor extends JPanel {
 
 	public void setComponentList(List<GUIComponent> components) {
 		this.components.clear();
-		this.components.addAll(components);
+		for (GUIComponent component : components) {
+			GUIComponent copy = GSONClone.clone(component, component.getClass());
+			copy.uuid = UUID.randomUUID(); // init UUID for deserialized component
+			// Populate workspace-dependant fields with workspace reference
+			IWorkspaceDependent.processWorkspaceDependentObjects(copy,
+					workspaceDependent -> workspaceDependent.setWorkspace(mcreator.getWorkspace()));
+
+			this.components.add(copy);
+		}
 	}
 
 	public List<GUIComponent> getComponentList() {
 		return components;
 	}
 
-	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<Object> {
+	static class GUIComponentRenderer extends JLabel implements ListCellRenderer<GUIComponent> {
+
+		public GUIComponentRenderer() {
+			setBorder(null);
+			setHorizontalTextPosition(JLabel.RIGHT);
+		}
+
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<? extends GUIComponent> list, GUIComponent value, int index,
+				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
 				setForeground(Theme.current().getBackgroundColor());
 				setBackground(Theme.current().getForegroundColor());
@@ -494,8 +553,16 @@ public class WYSIWYGEditor extends JPanel {
 				setOpaque(false);
 			}
 
+			if (value.locked) {
+				ImageIcon icon = IconUtils.resize(UIRES.get("18px.lock"), 16);
+				if (isSelected)
+					icon = ImageUtils.colorize(icon, Theme.current().getBackgroundColor(), true);
+				setIcon(icon);
+			} else {
+				setIcon(null);
+			}
+
 			setOpaque(isSelected);
-			setBorder(null);
 			setText(value.toString());
 			return this;
 		}

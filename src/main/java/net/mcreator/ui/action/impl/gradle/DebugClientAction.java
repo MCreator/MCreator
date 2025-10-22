@@ -20,10 +20,10 @@ package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.debug.JVMDebugClient;
+import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.MinecraftOptionsUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,9 +47,12 @@ public class DebugClientAction extends GradleAction {
 
 				JVMDebugClient debugClient = new JVMDebugClient();
 
-				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
-						.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client"),
-								debugClient));
+				SwingUtilities.invokeLater(() -> {
+					actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
+					actionRegistry.getMCreator().getGradleConsole()
+							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+									.getGradleTaskFor("run_client"), debugClient);
+				});
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);
 				actionRegistry.getMCreator().getGradleConsole().markReady();

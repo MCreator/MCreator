@@ -1,0 +1,1 @@
+Ten dźwięk gra, gdy blok jest zniszczony.

@@ -28,8 +28,8 @@ import org.apache.logging.log4j.Logger;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class BackgroundLoader {
@@ -58,7 +58,7 @@ public class BackgroundLoader {
 
 	public static List<Image> loadThemeBackgrounds() {
 		Set<String> bgFiles = PluginLoader.INSTANCE.getResources("themes." + Theme.current().getID() + ".backgrounds",
-				Pattern.compile("^[^$].*\\.png"));
+				Pattern.compile("^[^$].*\\.png$"));
 
 		List<Image> backgrounds = new ArrayList<>();
 		for (String name : bgFiles) {

@@ -44,6 +44,7 @@ import java.util.List;
 	public MItemBlock underwaterBlock;
 
 	public Color airColor;
+	public Color fogColor;
 	public Color grassColor;
 	public Color foliageColor;
 	public Color waterColor;

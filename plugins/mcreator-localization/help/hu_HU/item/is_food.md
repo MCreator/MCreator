@@ -1,0 +1,1 @@
+﻿Jelölje be ezt a négyzetet, hogy ez a tárgy ehető legyen (Kaja-tulajdonságokkal rendelkezzen).

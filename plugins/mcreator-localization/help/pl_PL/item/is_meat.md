@@ -1,0 +1,1 @@
+Ten parametr kontroluje czy dane jedzenie jest jadalne dla psów i innych mięsożerców

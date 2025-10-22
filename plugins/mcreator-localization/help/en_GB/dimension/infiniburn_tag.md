@@ -1,0 +1,1 @@
+Blocks added to this tag will burn forever inside this dimension (similar to Netherrack).

@@ -20,8 +20,10 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.Texture;
 
@@ -29,6 +31,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextureSelectionButton extends VButton {
 
@@ -39,7 +43,7 @@ public class TextureSelectionButton extends VButton {
 	private boolean removeButtonHover;
 	private boolean uvFlip;
 
-	private ActionListener actionListener;
+	private final List<ActionListener> textureSelectedListeners = new ArrayList<>();
 
 	public TextureSelectionButton(TypedTextureSelectorDialog td) {
 		this(td, 70);
@@ -53,12 +57,11 @@ public class TextureSelectionButton extends VButton {
 		setMargin(new Insets(0, 0, 0, 0));
 		setPreferredSize(new Dimension(this.size, this.size));
 		td.getConfirmButton().addActionListener(event -> {
-			td.setVisible(false);
+			td.setVisible(false); // we can't call dispose method here, as we need to keep it for next time
 			Texture texture = td.list.getSelectedValue();
 			if (texture != null) {
 				setTexture(texture);
-				if (actionListener != null)
-					actionListener.actionPerformed(new ActionEvent(this, 0, ""));
+				textureSelectedListeners.forEach(listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
 			}
 		});
 
@@ -71,6 +74,8 @@ public class TextureSelectionButton extends VButton {
 						setIcon(null);
 						getValidationStatus();
 						setToolTipText(null);
+						textureSelectedListeners.forEach(
+								listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
 					} else {
 						td.setVisible(true);
 					}
@@ -117,13 +122,23 @@ public class TextureSelectionButton extends VButton {
 		return selectedTexture != null && !selectedTexture.getTextureName().isEmpty();
 	}
 
-	public void setActionListener(ActionListener actionListener) {
-		this.actionListener = actionListener;
+	public void addTextureSelectedListener(ActionListener textureSelectionListener) {
+		textureSelectedListeners.add(textureSelectionListener);
 	}
 
 	public TextureSelectionButton setFlipUV(boolean uvFlip) {
 		this.uvFlip = uvFlip;
 		repaint();
+		return this;
+	}
+
+	public TextureSelectionButton requireValue() {
+		this.setValidator(new TextureSelectionButtonValidator(this));
+		return this;
+	}
+
+	public TextureSelectionButton requireValue(String errorTranslationKey) {
+		this.setValidator(new TextureSelectionButtonValidator(this).setEmptyMessage(L10N.t(errorTranslationKey)));
 		return this;
 	}
 

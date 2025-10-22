@@ -1,0 +1,1 @@
+The colour of the fog inside the dimension. 

@@ -1,0 +1,1 @@
+Denna ruta gömmer framsteget i framstegsmenyn tills det är avklarat.

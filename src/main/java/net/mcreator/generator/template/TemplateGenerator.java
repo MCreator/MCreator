@@ -23,6 +23,9 @@ import freemarker.template.TemplateException;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.ModifyTemplateResultEvent;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,6 +77,7 @@ public class TemplateGenerator {
 
 		dataModel.put("data", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
+		dataModel.put("REGISTRYNAME", element.getModElement().getRegistryNameUpper());
 		dataModel.put("name", element.getModElement().getName());
 
 		if (provider != null)
@@ -93,6 +97,7 @@ public class TemplateGenerator {
 		dataModel.put("itemindex", itemIndex);
 		dataModel.put("parent", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());
+		dataModel.put("REGISTRYNAME", element.getModElement().getRegistryNameUpper());
 		dataModel.put("name", element.getModElement().getName());
 
 		if (provider != null)
@@ -127,9 +132,13 @@ public class TemplateGenerator {
 			StringWriter stringWriter = new StringWriter();
 			freemarkerTemplate.process(dataModel, stringWriter,
 					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
-			return stringWriter.getBuffer().toString();
+			ModifyTemplateResultEvent modifyTemplateEvent = new ModifyTemplateResultEvent(templateName,
+					stringWriter.getBuffer().toString(), dataModel);
+			MCREvent.event(modifyTemplateEvent);
+			return modifyTemplateEvent.getTemplateOutput();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: {}", templateName, e);
+			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException();
 		}
 	}
@@ -143,13 +152,16 @@ public class TemplateGenerator {
 						templateGeneratorConfiguration.getConfiguration());
 				inline_template_cache.put(template, freemarkerTemplate);
 			}
-
 			StringWriter stringWriter = new StringWriter();
 			freemarkerTemplate.process(dataModel, stringWriter,
 					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
-			return stringWriter.getBuffer().toString();
+			ModifyTemplateResultEvent modifyTemplateEvent = new ModifyTemplateResultEvent(null,
+					stringWriter.getBuffer().toString(), dataModel);
+			MCREvent.event(modifyTemplateEvent);
+			return modifyTemplateEvent.getTemplateOutput();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
+			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException();
 		}
 	}
@@ -170,6 +182,7 @@ public class TemplateGenerator {
 				}
 			} catch (Exception e) {
 				LOG.warn("Failed to parse hardcoded variables", e);
+				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

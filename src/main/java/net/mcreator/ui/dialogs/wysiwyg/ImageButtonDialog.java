@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -35,7 +36,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.util.Locale;
 
 public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
@@ -77,21 +77,24 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 		add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.image_button_size")));
 
 		options.add(PanelUtils.northAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.image_texture"), textureSelector),
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.hovered_image_texture"),
-						hoveredTextureSelector)));
+				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.image_texture"), textureSelector),
+				PanelUtils.westAndCenterElement(L10N.label("dialog.gui.hovered_image_texture"), hoveredTextureSelector),
+				2, 2));
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		onClick.refreshList();
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onClick.refreshList(context);
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		displayCondition.refreshList();
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		displayCondition.refreshList(context);
 
 		options.add(new JEmptyBox(20, 20));
 
@@ -113,11 +116,11 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (hoveredTextureSelector.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				if (textureSelector.hasTexture()) {
 					if (button == null) {
 						String name = textToMachineName(editor.getComponentList(), "imagebutton_",

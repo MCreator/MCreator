@@ -1,0 +1,1 @@
+Az entitás halála után lejátszott hang.

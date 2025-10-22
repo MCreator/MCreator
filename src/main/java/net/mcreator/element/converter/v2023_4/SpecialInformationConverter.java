@@ -26,8 +26,6 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Armor;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,48 +33,43 @@ import java.util.List;
 
 public class SpecialInformationConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("SpecialInformationConverter");
-
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws NoSuchFieldException, IllegalAccessException {
+		JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			if (input instanceof Armor armor) { // Armor is special case, we can handle this one without reflection
-				List<String> helmetSpecialInfo = new ArrayList<>();
-				List<String> bodySpecialInfo = new ArrayList<>();
-				List<String> leggingsSpecialInfo = new ArrayList<>();
-				List<String> bootsSpecialInfo = new ArrayList<>();
+		if (input instanceof Armor armor) { // Armor is special case, we can handle this one without reflection
+			List<String> helmetSpecialInfo = new ArrayList<>();
+			List<String> bodySpecialInfo = new ArrayList<>();
+			List<String> leggingsSpecialInfo = new ArrayList<>();
+			List<String> bootsSpecialInfo = new ArrayList<>();
 
-				if (oldObject.get("helmetSpecialInfo") != null)
-					oldObject.getAsJsonArray("helmetSpecialInfo").iterator()
-							.forEachRemaining(jsonElement -> helmetSpecialInfo.add(jsonElement.getAsString()));
-				if (oldObject.get("bodySpecialInfo") != null)
-					oldObject.getAsJsonArray("bodySpecialInfo").iterator()
-							.forEachRemaining(jsonElement -> bodySpecialInfo.add(jsonElement.getAsString()));
-				if (oldObject.get("leggingsSpecialInfo") != null)
-					oldObject.getAsJsonArray("leggingsSpecialInfo").iterator()
-							.forEachRemaining(jsonElement -> leggingsSpecialInfo.add(jsonElement.getAsString()));
-				if (oldObject.get("bootsSpecialInfo") != null)
-					oldObject.getAsJsonArray("bootsSpecialInfo").iterator()
-							.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
+			if (oldObject.get("helmetSpecialInfo") != null)
+				oldObject.getAsJsonArray("helmetSpecialInfo").iterator()
+						.forEachRemaining(jsonElement -> helmetSpecialInfo.add(jsonElement.getAsString()));
+			if (oldObject.get("bodySpecialInfo") != null)
+				oldObject.getAsJsonArray("bodySpecialInfo").iterator()
+						.forEachRemaining(jsonElement -> bodySpecialInfo.add(jsonElement.getAsString()));
+			if (oldObject.get("leggingsSpecialInfo") != null)
+				oldObject.getAsJsonArray("leggingsSpecialInfo").iterator()
+						.forEachRemaining(jsonElement -> leggingsSpecialInfo.add(jsonElement.getAsString()));
+			if (oldObject.get("bootsSpecialInfo") != null)
+				oldObject.getAsJsonArray("bootsSpecialInfo").iterator()
+						.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
 
-				armor.helmetSpecialInformation = new StringListProcedure(null, helmetSpecialInfo);
-				armor.bodySpecialInformation = new StringListProcedure(null, bodySpecialInfo);
-				armor.leggingsSpecialInformation = new StringListProcedure(null, leggingsSpecialInfo);
-				armor.bootsSpecialInformation = new StringListProcedure(null, bootsSpecialInfo);
-			} else {
-				List<String> specialInfo = new ArrayList<>();
-				if (oldObject.get("specialInfo") != null)
-					oldObject.getAsJsonArray("specialInfo").iterator()
-							.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
+			armor.helmetSpecialInformation = new StringListProcedure(null, helmetSpecialInfo);
+			armor.bodySpecialInformation = new StringListProcedure(null, bodySpecialInfo);
+			armor.leggingsSpecialInformation = new StringListProcedure(null, leggingsSpecialInfo);
+			armor.bootsSpecialInformation = new StringListProcedure(null, bootsSpecialInfo);
+		} else {
+			List<String> specialInfo = new ArrayList<>();
+			if (oldObject.get("specialInfo") != null)
+				oldObject.getAsJsonArray("specialInfo").iterator()
+						.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
 
-				Field specialInformationField = input.getClass().getDeclaredField("specialInformation");
-				specialInformationField.setAccessible(true);
-				specialInformationField.set(input, new StringListProcedure(null, specialInfo));
-			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert special information for {}", input.getModElement().getName(), e);
+			Field specialInformationField = input.getClass().getDeclaredField("specialInformation");
+			specialInformationField.setAccessible(true);
+			specialInformationField.set(input, new StringListProcedure(null, specialInfo));
 		}
 
 		return input;

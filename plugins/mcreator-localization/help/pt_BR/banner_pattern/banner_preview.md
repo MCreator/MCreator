@@ -1,0 +1,1 @@
+Esta é uma prévia do padrão branco quando aplicado em um banner preto, com a face frontal à esquerda.

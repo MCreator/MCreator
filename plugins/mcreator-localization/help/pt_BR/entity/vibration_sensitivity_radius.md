@@ -1,0 +1,1 @@
+A distância máxima que esta entidade pode receber vibrações.

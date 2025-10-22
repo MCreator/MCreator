@@ -20,7 +20,6 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.TextField;
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
@@ -38,14 +37,14 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 	public TextFieldDialog(WYSIWYGEditor editor, @Nullable TextField textField) {
 		super(editor, textField);
 		setModal(true);
-		setSize(480, 150);
+		setSize(530, 150);
 		setLocationRelativeTo(editor.mcreator);
+		setTitle(L10N.t("dialog.gui.textfield_add"));
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.textfield_name_validator"),
-				() -> Transliteration.transliterateString(nameField.getText()),
-				() -> editor.getComponentList().stream().map(GUIComponent::getName),
+				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
 				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(textField != null);
 		nameField.setValidator(validator);
@@ -53,21 +52,23 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 		JTextField deft = new JTextField(20);
 		deft.setPreferredSize(new Dimension(200, 28));
-		JPanel options = new JPanel();
+		JPanel grid = new JPanel(new GridLayout(2, 2, 5, 2));
 
 		if (textField == null)
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.textfield_resize")));
 
-		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_input_name"), nameField));
-		add("Center", options);
-		setTitle(L10N.t("dialog.gui.textfield_add"));
-		options.add(PanelUtils.join(L10N.label("dialog.gui.textfield_initial_text"), deft));
+		grid.add(L10N.label("dialog.gui.textfield_input_name"));
+		grid.add(nameField);
+
+		grid.add(L10N.label("dialog.gui.textfield_initial_text"));
+		grid.add(deft);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+
+		add("Center", PanelUtils.join(grid));
 		add("South", PanelUtils.join(ok, cancel));
 
 		getRootPane().setDefaultButton(ok);
@@ -78,11 +79,11 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 			deft.setText(textField.placeholder);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				setVisible(false);
-				String text = Transliteration.transliterateString(nameField.getText());
+				dispose();
+				String text = nameField.getText();
 				if (!text.isEmpty()) {
 					if (textField == null) {
 						TextField component = new TextField(text, 0, 0, 120, 20, deft.getText());

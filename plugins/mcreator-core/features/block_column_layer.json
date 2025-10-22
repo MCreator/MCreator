@@ -1,0 +1,33 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "height",
+      "check": "IntProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "extensions": [
+    "simple_column_validator",
+    "add_image_to_bsp_inputs"
+  ],
+  "inputsInline": true,
+  "output": "BlockColumnLayer",
+  "colour": "265",
+  "mcreator": {
+    "group": "featureBlockColumn",
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<value name=\"height\"><block type=\"int_provider_constant\"><field name=\"value\">3</field></block></value>",
+      "<value name=\"block\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
+    ],
+    "inputs": [
+      "height",
+      "block"
+    ]
+  }
+}

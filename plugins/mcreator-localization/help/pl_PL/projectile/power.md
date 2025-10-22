@@ -1,0 +1,1 @@
+Ten parametr kontroluje prędkość pocisku (jego energię kinetyczną).

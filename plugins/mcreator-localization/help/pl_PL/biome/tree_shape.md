@@ -1,0 +1,1 @@
+Ten parametr ustala jaki kształt drzewa ma wykorzystywać twój typ.

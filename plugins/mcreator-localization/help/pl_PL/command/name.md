@@ -1,0 +1,1 @@
+Słowo po ukośniku(/), które gracz ma napisać by sprecyzować komendę, tak jak gamemode, five, setblock itd.

@@ -1,0 +1,1 @@
+Koşul belirtilirse, bu varlık modeli yalnızca koşulun geçmesi durumunda görüntülenebilir.

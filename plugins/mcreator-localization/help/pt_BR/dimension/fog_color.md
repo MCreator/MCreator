@@ -1,0 +1,1 @@
+A cor da névoa na dimensão. 

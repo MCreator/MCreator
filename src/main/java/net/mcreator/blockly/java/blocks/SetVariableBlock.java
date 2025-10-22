@@ -20,7 +20,7 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.IBlockGeneratorWithSections;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.BlocklyToProcedure;
@@ -30,7 +30,7 @@ import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class SetVariableBlock implements IBlockGenerator {
+public class SetVariableBlock implements IBlockGeneratorWithSections {
 	private final String[] names;
 
 	public SetVariableBlock() {
@@ -47,7 +47,7 @@ public class SetVariableBlock implements IBlockGenerator {
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
+		String type = Strings.CS.removeStart(block.getAttribute("type"), "variables_set_");
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
@@ -80,7 +80,7 @@ public class SetVariableBlock implements IBlockGenerator {
 					return;
 				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.variables.local_scope_unsupported") + L10N.t(
+							L10N.t("blockly.warnings.variables.local_scope_unsupported") + " " + L10N.t(
 									"blockly.warnings.skip")));
 					return;
 				} else if (scope.equalsIgnoreCase("local")) {
@@ -105,6 +105,12 @@ public class SetVariableBlock implements IBlockGenerator {
 										L10N.t("blockly.block.set_var"))));
 						return;
 					}
+				}
+
+				if (!typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.variables.not_supported", type)));
+					return;
 				}
 
 				Object setterTemplate = typeObject.getScopeDefinition(master.getWorkspace(),
@@ -132,15 +138,17 @@ public class SetVariableBlock implements IBlockGenerator {
 					if (entitycode != null)
 						dataModel.put("entity", entitycode);
 
+					Sections sections = IBlockGeneratorWithSections.addSectionsToDataModel(dataModel);
 					String code = master.getTemplateGenerator()
 							.generateFromString(setterTemplate.toString(), dataModel);
+					IBlockGeneratorWithSections.handleSections(master, sections);
 					master.append(code);
 				}
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.set_var")) + L10N.t(
-							"blockly.warnings.skip")));
+					L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.set_var")) + " "
+							+ L10N.t("blockly.warnings.skip")));
 		}
 	}
 

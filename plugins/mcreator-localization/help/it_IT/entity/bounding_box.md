@@ -1,3 +1,0 @@
- Questo parametro controlla la dimensione della casella hitbox del mob nei blocchi, così come la dimensione della sua ombra. La prima opzione imposta la larghezza e la profondità, mentre la seconda imposta l'altezza. L'opzione finale imposta la dimensione in blocchi per il raggio dell'ombra del mob.
-
- È possibile ottenere maggiori dettagli sulla dimensione del modello di entità [qui](https://mcreator.net/wiki/entity-model-sizes).

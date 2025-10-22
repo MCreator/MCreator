@@ -22,6 +22,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class FilteredTreeModel extends DefaultTreeModel {
 
+	private String filter = "";
+
 	/**
 	 * @param node the node to apply filtering to
 	 */
@@ -39,12 +41,22 @@ public class FilteredTreeModel extends DefaultTreeModel {
 			node.setFilter(filter);
 	}
 
-	public void setFilter(String filter) {
-		if (root != null) {
+	public boolean setFilter(String filter) {
+		String current = ((FilterTreeNode) root).getFilter();
+		boolean changed = !filter.equals(current);
+
+		this.filter = filter;
+		if (root != null && changed) {
 			((FilterTreeNode) root).setFilter(filter);
 			Object[] path = { root };
 			fireTreeStructureChanged(this, path, null, null);
 		}
+
+		return changed;
+	}
+
+	public void refilter() {
+		setFilter(filter);
 	}
 
 	@Override public int getChildCount(Object parent) {

@@ -31,9 +31,19 @@
       "type": "input_value",
       "name": "condition",
       "check": "BlockPredicate"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "schedule_tick"
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "Feature",
   "colour": 0,
   "extensions": [
@@ -52,7 +62,8 @@
     "fields": [
       "tries",
       "xzSpread",
-      "ySpread"
+      "ySpread",
+      "schedule_tick"
     ]
   }
 }

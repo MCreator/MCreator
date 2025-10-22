@@ -1,0 +1,3 @@
+Bu seçenek işaretlenirse, blok envanterdeyken renk türüne uygun sabit bir renk tonu uygulanır.
+
+Bir öğe dokusu belirtildiğinde de renk tonu uygulanır...

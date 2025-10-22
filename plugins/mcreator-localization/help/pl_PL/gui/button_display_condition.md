@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, przycisk jest widoczny tylko (wyświetlony/pokazany) na wypadek przejścia warunku.

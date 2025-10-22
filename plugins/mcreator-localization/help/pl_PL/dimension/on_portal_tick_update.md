@@ -1,0 +1,1 @@
+Gdy blok portalu jest obecny na świecie, procedura zostanie wykonana przy każdym tiku.

@@ -44,19 +44,29 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public boolean showParticles;
 	public Sound actionSound;
 	public boolean igniteFire;
+	public boolean disableGravity;
 	public double power;
 	public double damage;
 	public int knockback;
 	public String entityModel;
 	@TextureReference(TextureType.ENTITY) public String customModelTexture;
 
+	public double modelWidth, modelHeight;
+
 	public Procedure onHitsBlock;
 	public Procedure onHitsPlayer;
 	public Procedure onHitsEntity;
 	public Procedure onFlyingTick;
 
+	private Projectile() {
+		this(null);
+	}
+
 	public Projectile(ModElement element) {
 		super(element);
+
+		this.modelWidth = 0.5f;
+		this.modelHeight = 0.5f;
 	}
 
 	@Override @Nullable public Model getEntityModel() {

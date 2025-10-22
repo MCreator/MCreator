@@ -19,8 +19,10 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.FileWatcher;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.ListGroup;
+import net.mcreator.ui.component.ScrollablePanel;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
@@ -32,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -48,8 +51,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
@@ -77,15 +80,16 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 		};
 
-		JPanel respan = new JPanel(new GridBagLayout());
+		JPanel respan = new ScrollablePanel();
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
-		Arrays.stream(TextureType.values()).forEach(section -> {
-			JComponentWithList<File> compList = createListElement(
-					L10N.t("workspace.textures.category." + section.getID()));
-			respan.add(compList.component());
-			mapLists.put(section.getID(), compList);
-		});
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					JComponentWithList<File> compList = createListElement(
+							L10N.t("workspace.textures.category." + section.getID()));
+					respan.add(compList.component());
+					mapLists.put(section.getID(), compList);
+				});
 
 		respan.setOpaque(false);
 
@@ -95,7 +99,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(20);
+		sp.getVerticalScrollBar().setUnitIncrement(65);
 		sp.setBorder(null);
 
 		add("Center", sp);
@@ -104,23 +108,23 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
-		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
-		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
+		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createMCItemTexture);
+		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createArmorTexture);
+		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createAnimatedTexture);
 
 		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEffectTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importParticleTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importScreenTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importArmorTexture);
-		importMenu.add(workspacePanel.getMCreator().actionRegistry.importOtherTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importBlockTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importItemTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importEntityTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importEffectTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importParticleTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importScreenTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importArmorTexture);
+		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importOtherTexture);
 
 		JButton importt = AbstractWorkspacePanel.createToolBarButton("workspace.textures.import",
 				UIRES.get("16px.open"));
@@ -162,6 +166,34 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				e -> exportSelectedImages()));
 
 		add("North", bar);
+
+		// Register event handler for texture changes
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		fileWatcher.addListener(changedFiles -> SwingUtilities.invokeLater(() -> {
+			for (FileWatcher.FileChange change : changedFiles) {
+				File file = change.file();
+				if (file.getName().endsWith(".png") && file.isFile()) {
+					// flush cache for this image
+					try {
+						new ImageIcon(file.getAbsolutePath()).getImage().flush();
+					} catch (Exception ignored) {
+					}
+				}
+			}
+			reloadElements();
+		}));
+	}
+
+	public void attachGeneratorFileWatcher() {
+		// Watch texture folder for external program changes to flush image cache in this case
+		FileWatcher fileWatcher = workspacePanel.getMCreator().getGenerator().getFileWatcher();
+		Arrays.stream(TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(), true))
+				.forEach(section -> {
+					File folder = workspacePanel.getMCreator().getFolderManager().getTexturesFolder(section);
+					if (folder != null) {
+						fileWatcher.watchFolder(folder);
+					}
+				});
 	}
 
 	private void deleteCurrentlySelected() {
@@ -192,6 +224,11 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 						File mcmeta = new File(file.getAbsolutePath() + ".mcmeta");
 						if (mcmeta.isFile())
 							mcmeta.delete();
+
+						File imageEditorMetadata = MetadataManager.getMetadataFile(
+								workspacePanel.getMCreator().getWorkspace(), file);
+						if (imageEditorMetadata.isFile())
+							imageEditorMetadata.delete();
 					}
 				});
 				reloadElements();
@@ -213,8 +250,18 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void duplicateSelectedFile() {
 		File file = listGroup.getSelectedItem();
 		if (file != null) {
-			TextureImportDialogs.importSingleTexture(workspacePanel.getMCreator(), file,
+			File newFile = TextureImportDialogs.importSingleTexture(workspacePanel.getMCreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
+			// Copy image editor metadata if it exists
+			if (newFile != null) {
+				File originalMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
+						file);
+				if (originalMetadata.isFile()) {
+					File newMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
+							newFile);
+					FileIO.copyFile(originalMetadata, newMetadata);
+				}
+			}
 		}
 	}
 
@@ -226,6 +273,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				FileIO.copyFile(newTexture, file);
 				new ImageIcon(file.getAbsolutePath()).getImage().flush();
 				reloadElements();
+
+				// Delete image editor metadata as it's not valid anymore
+				File imageEditorMetadata = MetadataManager.getMetadataFile(workspacePanel.getMCreator().getWorkspace(),
+						file);
+				if (imageEditorMetadata.isFile())
+					imageEditorMetadata.delete();
 			}
 		}
 	}
@@ -344,9 +397,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 					if (!ma.getName().matches("[a-z0-9/._-]+")) {
 						if (getIcon() instanceof ImageIcon icon) {
-							icon = ImageUtils.changeSaturation(icon, 0.5f);
+							icon = ImageUtils.changeSaturation(icon, 0);
 							setIcon(ImageUtils.drawOver(icon, UIRES.get("18px.warning"), 0, 0, 18, 18));
-							setForeground(new Color(255, 245, 15));
+							setForeground(new Color(255, 215, 55));
 						}
 					}
 				}

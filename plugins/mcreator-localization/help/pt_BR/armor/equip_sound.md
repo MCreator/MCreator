@@ -1,0 +1,1 @@
+O som tocado quando o jogador equipa uma peça de armadura.

@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import javafx.scene.web.WebView;
 import net.mcreator.Launcher;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,6 +55,9 @@ public abstract class WebConsoleListener {
 				@Override public void messageAdded(WebView webView, String message, int lineNumber, String sourceId) {
 					String[] sidparsed = sourceId.split("/");
 					logger.info("[JFX JS bridge] [{}: {}] {}", sidparsed[sidparsed.length - 1], lineNumber, message);
+					if (message.contains("Error")) {
+						TestUtil.failIfTestingEnvironment();
+					}
 				}
 			};
 

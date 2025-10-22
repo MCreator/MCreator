@@ -22,10 +22,9 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -68,16 +67,14 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		addPage(pane5, false);
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
 		editor.overlayBaseTexture.reload();
 
-		displayCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+		displayCondition.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(Overlay overlay) {
@@ -100,7 +97,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 	@Override public Overlay getElementFromGUI() {
 		Overlay overlay = new Overlay(modElement);
-		overlay.priority = (String) editor.priority.getSelectedItem();
+		overlay.priority = editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getTextureName();
 		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();

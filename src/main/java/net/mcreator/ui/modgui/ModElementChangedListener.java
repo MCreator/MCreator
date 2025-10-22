@@ -20,13 +20,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.component.ITechnicalComponent;
-import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -63,9 +61,11 @@ public interface ModElementChangedListener
 
 		switch (component) {
 		case MCItemHolder itemHolder -> itemHolder.addBlockSelectedListener(this);
+		case TextureSelectionButton textureSelectionButton -> textureSelectionButton.addTextureSelectedListener(this);
 		case JColor jcolor -> jcolor.addColorSelectedListener(this);
 		case SoundSelector soundSelector -> soundSelector.addSoundSelectedListener(this);
 		case JItemListField<?> listField -> listField.addChangeListener(this);
+		case JSingleEntrySelector<?> entrySelector -> entrySelector.addEntrySelectedListener(this);
 		case JStringListField stringList -> stringList.addChangeListener(this);
 		case AbstractButton button -> button.addActionListener(this);
 		case JSpinner spinner -> spinner.addChangeListener(this);
@@ -78,7 +78,8 @@ public interface ModElementChangedListener
 				component.addKeyListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
 				entriesList.addEntryRegisterListener(c -> {
-					registerUI(c);
+					if (c != null)
+						registerUI(c);
 					modElementChanged();
 				});
 			}

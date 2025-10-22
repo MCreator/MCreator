@@ -28,6 +28,7 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -39,10 +40,11 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 69;
+	public static final int formatVersion = 79;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -183,12 +185,23 @@ public abstract class GeneratableElement {
 					List<IConverter> applicableConverters = converters.stream()
 							.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo()).sorted()
 							.toList();
-					int currentFormatVersion = importedFormatVersion;
+					// If there are converters applicable to this mod element type, log the conversion
+					if (!applicableConverters.isEmpty()) {
+						LOG.debug("Converting {} ({}) from FV{} using: {}", lastModElement.getName(), modElementType,
+								importedFormatVersion, applicableConverters.stream()
+										.map(converter -> converter.getClass().getSimpleName() + " to FV"
+												+ converter.getVersionConvertingTo())
+										.collect(Collectors.joining(", ")));
+					}
 					for (IConverter converter : applicableConverters) {
-						LOG.debug("Converting {} ({}) from FV{} to FV{} using {}", lastModElement.getName(),
-								modElementType, currentFormatVersion, converter.getVersionConvertingTo(),
-								converter.getClass().getSimpleName());
-						generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
+						try {
+							generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
+						} catch (Exception e) {
+							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
+									lastModElement.getName(), modElementType, converter.getVersionConvertingTo(),
+									converter.getClass().getSimpleName(), e);
+							TestUtil.failIfTestingEnvironment();
+						}
 
 						if (generatableElement == null
 								|| generatableElement.getClass() != modElementType.getModElementStorageClass()) {
@@ -196,7 +209,6 @@ public abstract class GeneratableElement {
 							return null;
 						} else {
 							generatableElement.conversionApplied = true;
-							currentFormatVersion = converter.getVersionConvertingTo();
 						}
 					}
 				}
@@ -206,8 +218,15 @@ public abstract class GeneratableElement {
 				IConverter converter = ConverterRegistry.getConverterForModElementType(modElementTypeString);
 				if (converter != null && importedFormatVersion < converter.getVersionConvertingTo()) {
 					try {
-						GeneratableElement result = converter.convert(this.workspace, new Unknown(lastModElement),
-								jsonElement);
+						GeneratableElement result = null;
+						try {
+							result = converter.convert(this.workspace, new Unknown(lastModElement), jsonElement);
+						} catch (Exception e2) {
+							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
+									lastModElement.getName(), modElementTypeString, converter.getVersionConvertingTo(),
+									converter.getClass().getSimpleName(), e2);
+							TestUtil.failIfTestingEnvironment();
+						}
 						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {
 						LOG.warn("Failed to convert mod element {} of type {} to a potential alternative.",

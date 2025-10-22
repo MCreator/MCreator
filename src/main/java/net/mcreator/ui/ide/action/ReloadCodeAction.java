@@ -32,7 +32,7 @@ public class ReloadCodeAction extends BasicAction {
 
 	public ReloadCodeAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.reload_code"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				File curr = codeEditorView.fileWorkingOn;
 				if (curr.isFile()) {
@@ -51,8 +51,8 @@ public class ReloadCodeAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.ide.reload_code.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
 
 }

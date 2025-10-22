@@ -1,0 +1,1 @@
+Ten parametr kontroluje cząsteczkę, którą płyn będzie generował podczas kropienia z bloku.

@@ -33,10 +33,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -50,9 +49,11 @@ import java.net.URISyntaxException;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
-	private final VTextField displayName = new VTextField(30);
+	private final VTextField displayName = new VTextField(30).requireValue(
+			"elementgui.villager_profession.profession_needs_display_name").enableRealtimeValidation();
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-	private final SoundSelector actionSound = new SoundSelector(mcreator);
+	private final SoundSelector actionSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.common.error_sound_empty_null").enableRealTimeValidation();
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 
 	private TextureComboBox professionTextureFile;
@@ -108,20 +109,19 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(professionTextureFile);
 		page1group.addValidationElement(zombifiedProfessionTextureFile);
 
-		displayName.setValidator(new TextFieldValidator(displayName,
-				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
-		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(
 				new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
 						() -> pointOfInterest.getBlock().getUnmappedValue(),
 						() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace()).stream()
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
-								.map(DataListEntry::getName).toList(), null).setIsPresentOnList(this::isEditingMode));
-		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null")));
+								.map(DataListEntry::getName).toList(),
+						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty().setEmptyMessage(
+								L10N.t("elementgui.villager_profession.error_profession_needs_block"))).setIsPresentOnList(
+						this::isEditingMode));
 
-		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel));
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(
+				page1group);
 
 		if (!isEditingMode()) {
 			displayName.setText(StringUtils.machineToReadableName(modElement.getName()));
@@ -133,12 +133,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
 		professionTextureFile.reload();
 		zombifiedProfessionTextureFile.reload();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void openInEditingMode(VillagerProfession profession) {

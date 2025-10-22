@@ -1,1 +1,0 @@
-Nếu điều kiện được chỉ định, ảnh này chỉ được hiển thị khi điều kiện được thỏa mãn.

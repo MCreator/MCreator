@@ -1,0 +1,1 @@
+Bir mermi bloğa çarptığında bir prosedürü tetikler.

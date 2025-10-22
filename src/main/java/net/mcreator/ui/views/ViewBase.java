@@ -46,7 +46,7 @@ public abstract class ViewBase extends JPanel {
 	}
 
 	public ViewBase showView() {
-		mcreator.mcreatorTabs.addTab(new MCreatorTabs.Tab(this));
+		mcreator.getTabs().addTab(new MCreatorTabs.Tab(this));
 		return this;
 	}
 

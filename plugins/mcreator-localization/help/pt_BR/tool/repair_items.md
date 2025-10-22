@@ -1,0 +1,1 @@
+O(s) item(ns) com o(s) qual(is) a ferramenta pode ser reparada em uma bigorna.

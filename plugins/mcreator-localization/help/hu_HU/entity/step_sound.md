@@ -1,0 +1,1 @@
+Az entitás járásakor hallható hang.

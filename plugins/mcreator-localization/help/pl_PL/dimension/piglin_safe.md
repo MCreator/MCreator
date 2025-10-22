@@ -1,0 +1,1 @@
+Jeżeli opcja jest włączona, pigliny nie zombifikują się w tym wymiarze.

@@ -1,0 +1,1 @@
+Ha feltétel van megadva, ez a címke csak akkor jeleníthető meg, ha a feltétel teljesül.

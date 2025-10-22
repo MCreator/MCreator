@@ -19,6 +19,7 @@
 package net.mcreator.ui.ide;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import org.fife.ui.rtextarea.RTextArea;
@@ -30,16 +31,17 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class SearchBar extends JToolBar {
 
 	private final JTextField jtf1 = new JTextField(40);
-	private final JCheckBox cb2 = new JCheckBox("Regex");
-	private final JCheckBox cb3 = new JCheckBox("Match Case");
-	private final JCheckBox cb4 = new JCheckBox("Words");
-	private final JCheckBox cb5 = new JCheckBox("Selection");
+	private final JCheckBox cb2 = L10N.checkbox("ide.search.regex");
+	private final JCheckBox cb3 = L10N.checkbox("ide.search.match_case");
+	private final JCheckBox cb4 = L10N.checkbox("ide.search.whole_words");
 
 	private final RTextArea ra;
 
@@ -77,6 +79,10 @@ public class SearchBar extends JToolBar {
 			}
 		});
 
+		cb2.addActionListener(e -> updateSearch());
+		cb3.addActionListener(e -> updateSearch());
+		cb4.addActionListener(e -> updateSearch());
+
 		setFloatable(false);
 		setBackground(Theme.current().getBackgroundColor());
 
@@ -85,7 +91,6 @@ public class SearchBar extends JToolBar {
 		add(cb3);
 		add(cb2);
 		add(cb4);
-		add(cb5);
 		add(Box.createHorizontalStrut(10));
 		add(matches);
 
@@ -101,6 +106,21 @@ public class SearchBar extends JToolBar {
 		add(close);
 
 		setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
+				jtf1.requestFocus();
+				jtf1.requestFocusInWindow();
+			}
+
+			@Override public void componentHidden(ComponentEvent e) {
+				super.componentHidden(e);
+				SearchContext context = new SearchContext("");
+				context.setMarkAll(true);
+				SearchEngine.markAll(ra, context);
+			}
+		});
 	}
 
 	private void updateSearch() {
@@ -108,12 +128,11 @@ public class SearchBar extends JToolBar {
 		context.setMatchCase(cb3.isSelected());
 		context.setRegularExpression(cb2.isSelected());
 		context.setWholeWord(cb4.isSelected());
-		context.setSearchSelectionOnly(cb5.isSelected());
 		context.setSearchWrap(true);
 
 		SearchResult marked = SearchEngine.markAll(ra, context);
 
-		matches.setText(marked.getMarkedCount() + " results");
+		matches.setText(L10N.t("ide.search.results", marked.getMarkedCount()));
 		if (marked.getMarkedCount() > 0) {
 			matches.setForeground(Theme.current().getAltForegroundColor());
 		} else {
@@ -121,23 +140,8 @@ public class SearchBar extends JToolBar {
 		}
 	}
 
-	@Override public void setVisible(boolean is) {
-		super.setVisible(is);
-		if (is) {
-			jtf1.requestFocus();
-			jtf1.requestFocusInWindow();
-		} else {
-			SearchContext context = new SearchContext("");
-			context.setMarkAll(true);
-			SearchEngine.markAll(ra, context);
-		}
-	}
-
-	@Override public Component add(Component component) {
-		component.setForeground(new Color(0xE2E2E2));
-		if (component instanceof JComponent)
-			((JComponent) component).setOpaque(false);
-		return super.add(component);
+	public JTextField getSearchField() {
+		return jtf1;
 	}
 
 }

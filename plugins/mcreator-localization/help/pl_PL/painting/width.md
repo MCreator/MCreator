@@ -1,0 +1,1 @@
+Ten parametr ustala szerokość obrazu (w jednostce blokowej).

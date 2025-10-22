@@ -37,10 +37,10 @@
 package ${package}.init;
 
 <#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
-<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content && e.guiBoundTo != "<NONE>")>
+<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content)>
 
 <#if hasLivingEntities || entitiesWithInventory?size != 0>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${JavaModName}Entities {
 
@@ -51,13 +51,14 @@ public class ${JavaModName}Entities {
 			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC)
-						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
+						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(${entity.modelWidth}f, ${entity.modelHeight}f));
 		<#elseif entity.getModElement().getTypeString() == "livingentity">
 			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
 							<#if entity.immuneToFire>.fireImmune()</#if>
+							<#if entity.mobModelName == "Biped">.ridingOffset(-0.6f)</#if>
 							.sized(${entity.modelWidth}f, ${entity.modelHeight}f)
 						);
 			<#if entity.hasCustomProjectile()>
@@ -68,6 +69,9 @@ public class ${JavaModName}Entities {
 			</#if>
 		</#if>
 	</#list>
+
+	// Start of user code block custom entities
+	// End of user code block custom entities
 
 	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));

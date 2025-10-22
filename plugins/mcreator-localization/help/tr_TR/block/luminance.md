@@ -1,0 +1,1 @@
+Bu parametre bloğun ne kadar ışık yaydığını kontrol eder. 0 ile 15 arasında bir değerdir. 0 olarak ayarlanırsa, blok ışık yaymaz. 15 olarak ayarlanırsa, blok glowstonedaki ışık değeri kadar ışık yayar.

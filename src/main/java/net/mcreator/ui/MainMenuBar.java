@@ -35,14 +35,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class MainMenuBar extends JMenuBar {
+public abstract class MainMenuBar extends JMenuBar {
 
 	private final JMenu code = new JMenu(L10N.t("menubar.code"));
 	private final JMenu imageEditor = new JMenu(L10N.t("menubar.image"));
 
 	private final MCreator mcreator;
 
-	public MainMenuBar(MCreator mcreator) {
+	protected MainMenuBar(MCreator mcreator) {
 		this.mcreator = mcreator;
 
 		boolean macOSscreenMenuBar =
@@ -53,23 +53,23 @@ public class MainMenuBar extends JMenuBar {
 		if (!macOSscreenMenuBar) {
 			JMenu logo = new JMenu("MCreator");
 			logo.setMnemonic('M');
-			logo.add(mcreator.actionRegistry.mcreatorWebsite);
-			logo.add(mcreator.actionRegistry.mcreatorCommunity);
+			logo.add(mcreator.getActionRegistry().mcreatorWebsite);
+			logo.add(mcreator.getActionRegistry().mcreatorCommunity);
 			SocialButtons socialButtons = new SocialButtons();
 			socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
 			logo.add(socialButtons);
 			logo.addSeparator();
-			logo.add(mcreator.actionRegistry.donate);
+			logo.add(mcreator.getActionRegistry().donate);
 			logo.addSeparator();
-			logo.add(mcreator.actionRegistry.mcreatorPublish);
+			logo.add(mcreator.getActionRegistry().mcreatorPublish);
 			add(logo);
 		}
 
 		JMenu file = L10N.menu("menubar.file");
 		file.setMnemonic('F');
-		file.add(mcreator.actionRegistry.newWorkspace);
+		file.add(mcreator.getActionRegistry().newWorkspace);
 		file.addSeparator();
-		file.add(mcreator.actionRegistry.openWorkspace);
+		file.add(mcreator.getActionRegistry().openWorkspace);
 		if (mcreator.getApplication() != null) {
 			JMenu recentWorkspacesList = new JMenu(L10N.t("menubar.file.recent"));
 			int number = 0;
@@ -91,170 +91,101 @@ public class MainMenuBar extends JMenuBar {
 			file.add(recentWorkspacesList);
 		}
 		file.addSeparator();
-		file.add(mcreator.actionRegistry.importWorkspace);
-		file.add(mcreator.actionRegistry.exportWorkspaceToZIP);
-		file.add(mcreator.actionRegistry.exportWorkspaceToZIPWithRunDir);
+		file.add(mcreator.getActionRegistry().importWorkspace);
+		file.add(mcreator.getActionRegistry().exportWorkspaceToZIP);
+		file.add(mcreator.getActionRegistry().exportWorkspaceToZIPWithRunDir);
 		file.addSeparator();
-		file.add(mcreator.actionRegistry.closeWorkspace);
+		file.add(mcreator.getActionRegistry().closeWorkspace);
 		file.addSeparator();
-		file.add(mcreator.actionRegistry.preferences);
+		file.add(mcreator.getActionRegistry().preferences);
 		file.addSeparator();
-		file.add(mcreator.actionRegistry.exitMCreator);
+		file.add(mcreator.getActionRegistry().exitMCreator);
 		add(file);
 
 		code.setMnemonic('C');
-		code.add(mcreator.actionRegistry.saveCode);
-		code.add(mcreator.actionRegistry.reloadCode);
+		code.add(mcreator.getActionRegistry().saveCode);
+		code.add(mcreator.getActionRegistry().reloadCode);
 		code.addSeparator();
-		code.add(mcreator.actionRegistry.showFindBar);
-		code.add(mcreator.actionRegistry.showReplaceBar);
+		code.add(mcreator.getActionRegistry().showFindBar);
+		code.add(mcreator.getActionRegistry().showReplaceBar);
 		code.addSeparator();
-		code.add(mcreator.actionRegistry.reformatCodeAndImports);
-		code.add(mcreator.actionRegistry.reformatCodeOnly);
+		code.add(mcreator.getActionRegistry().reformatCodeAndImports);
+		code.add(mcreator.getActionRegistry().reformatCodeOnly);
 		add(code);
 
 		imageEditor.setMnemonic('I');
-		imageEditor.add(mcreator.actionRegistry.imageEditorUndo);
-		imageEditor.add(mcreator.actionRegistry.imageEditorRedo);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorUndo);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorRedo);
 		imageEditor.addSeparator();
-		imageEditor.add(mcreator.actionRegistry.imageEditorCopy);
-		imageEditor.add(mcreator.actionRegistry.imageEditorCopyAll);
-		imageEditor.add(mcreator.actionRegistry.imageEditorCut);
-		imageEditor.add(mcreator.actionRegistry.imageEditorPaste);
-		imageEditor.add(mcreator.actionRegistry.imageEditorDelete);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorCopy);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorCopyAll);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorCut);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorPaste);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorDelete);
 		imageEditor.addSeparator();
-		imageEditor.add(mcreator.actionRegistry.imageEditorSave);
-		imageEditor.add(mcreator.actionRegistry.imageEditorSaveAs);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorSave);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorSaveAs);
 		imageEditor.addSeparator();
-		imageEditor.add(mcreator.actionRegistry.imageEditorPencil);
-		imageEditor.add(mcreator.actionRegistry.imageEditorLine);
-		imageEditor.add(mcreator.actionRegistry.imageEditorShape);
-		imageEditor.add(mcreator.actionRegistry.imageEditorEraser);
-		imageEditor.add(mcreator.actionRegistry.imageEditorStamp);
-		imageEditor.add(mcreator.actionRegistry.imageEditorFloodFill);
-		imageEditor.add(mcreator.actionRegistry.imageEditorColorPicker);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorSwapColors);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorPencil);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorLine);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorShape);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorEraser);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorStamp);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorFloodFill);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorColorPicker);
 		imageEditor.addSeparator();
-		imageEditor.add(mcreator.actionRegistry.imageEditorColorize);
-		imageEditor.add(mcreator.actionRegistry.imageEditorDesaturate);
-		imageEditor.add(mcreator.actionRegistry.imageEditorHSVNoise);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorColorize);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorDesaturate);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorHSVNoise);
 		imageEditor.addSeparator();
-		imageEditor.add(mcreator.actionRegistry.imageEditorMoveLayer);
-		imageEditor.add(mcreator.actionRegistry.imageEditorSelectLayer);
-		imageEditor.add(mcreator.actionRegistry.imageEditorClearSelection);
-		imageEditor.add(mcreator.actionRegistry.imageEditorResizeLayer);
-		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorMoveLayer);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorSelectLayer);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorClearSelection);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeLayer);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeCanvas);
 		add(imageEditor);
 
-		JMenu workspace = L10N.menu("menubar.workspace");
-		workspace.setMnemonic('S');
-		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
-		workspace.addSeparator();
-		workspace.add(mcreator.actionRegistry.openWorkspaceFolder);
-		workspace.addSeparator();
-		workspace.add(mcreator.actionRegistry.workspaceSettings);
-		workspace.addSeparator();
-		workspace.add(mcreator.actionRegistry.exportToJAR);
-		add(workspace);
-
-		JMenu resources = L10N.menu("menubar.resources");
-		resources.setMnemonic('R');
-		resources.add(mcreator.actionRegistry.importBlockTexture);
-		resources.add(mcreator.actionRegistry.importItemTexture);
-		resources.add(mcreator.actionRegistry.importEntityTexture);
-		resources.add(mcreator.actionRegistry.importEffectTexture);
-		resources.add(mcreator.actionRegistry.importParticleTexture);
-		resources.add(mcreator.actionRegistry.importScreenTexture);
-		resources.add(mcreator.actionRegistry.importArmorTexture);
-		resources.add(mcreator.actionRegistry.importOtherTexture);
-		resources.addSeparator();
-		resources.add(mcreator.actionRegistry.importSound);
-		resources.addSeparator();
-		resources.add(mcreator.actionRegistry.importStructure);
-		resources.add(mcreator.actionRegistry.importStructureFromMinecraft);
-		resources.addSeparator();
-		resources.add(mcreator.actionRegistry.importJavaModel);
-		resources.add(mcreator.actionRegistry.importJSONModel);
-		resources.add(mcreator.actionRegistry.importOBJModel);
-		add(resources);
-
-		JMenu build = L10N.menu("menubar.build_and_run");
-		build.setMnemonic('B');
-		build.add(mcreator.actionRegistry.buildWorkspace);
-		build.add(mcreator.actionRegistry.buildGradleOnly);
-		build.addSeparator();
-		build.add(mcreator.actionRegistry.regenerateCode);
-		build.addSeparator();
-		build.add(mcreator.actionRegistry.reloadGradleProject);
-		build.add(mcreator.actionRegistry.clearAllGradleCaches);
-		build.addSeparator();
-		build.add(mcreator.actionRegistry.cancelGradleTaskAction);
-		build.addSeparator();
-		build.add(mcreator.actionRegistry.runGradleTask);
-		build.addSeparator();
-		build.add(mcreator.actionRegistry.runClient);
-		build.add(mcreator.actionRegistry.debugClient);
-		build.add(mcreator.actionRegistry.runServer);
-		add(build);
-
-		JMenu tools = L10N.menu("menubar.tools");
-		tools.setMnemonic('T');
-		tools.add(mcreator.actionRegistry.createMCItemTexture);
-		tools.add(mcreator.actionRegistry.createArmorTexture);
-		tools.add(mcreator.actionRegistry.createAnimatedTexture);
-		tools.addSeparator();
-		tools.add(mcreator.actionRegistry.openMaterialPackMaker);
-		tools.add(mcreator.actionRegistry.openOrePackMaker);
-		tools.add(mcreator.actionRegistry.openToolPackMaker);
-		tools.add(mcreator.actionRegistry.openArmorPackMaker);
-		tools.add(mcreator.actionRegistry.openWoodPackMaker);
-		tools.addSeparator();
-		tools.add(mcreator.actionRegistry.openJavaEditionFolder);
-		tools.add(mcreator.actionRegistry.openBedrockEditionFolder);
-		tools.addSeparator();
-		JMenu dataLists = L10N.menu("menubar.tools.data_lists");
-		dataLists.add(mcreator.actionRegistry.showEntityIDList);
-		dataLists.add(mcreator.actionRegistry.showItemBlockList);
-		dataLists.add(mcreator.actionRegistry.showParticleIDList);
-		dataLists.add(mcreator.actionRegistry.showSoundsList);
-		dataLists.add(mcreator.actionRegistry.showFuelBurnTimes);
-		dataLists.add(mcreator.actionRegistry.showVanillaLootTables);
-		tools.add(dataLists);
-		add(tools);
+		assembleMenuBar(mcreator);
 
 		JMenu window = L10N.menu("menubar.window");
-		window.add(mcreator.actionRegistry.showWorkspaceBrowser);
-		window.add(mcreator.actionRegistry.hideWorkspaceBrowser);
+		if (mcreator.hasProjectBrowser()) {
+			window.add(mcreator.getActionRegistry().showWorkspaceBrowser);
+			window.add(mcreator.getActionRegistry().hideWorkspaceBrowser);
+			window.addSeparator();
+		}
+		window.add(mcreator.getActionRegistry().closeCurrentTab);
+		window.add(mcreator.getActionRegistry().closeAllTabs);
 		window.addSeparator();
-		window.add(mcreator.actionRegistry.closeCurrentTab);
-		window.add(mcreator.actionRegistry.closeAllTabs);
-		window.addSeparator();
-		window.add(mcreator.actionRegistry.showWorkspaceTab);
-		window.add(mcreator.actionRegistry.showConsoleTab);
+		window.add(mcreator.getActionRegistry().showWorkspaceTab);
+		window.add(mcreator.getActionRegistry().showConsoleTab);
 		window.setMnemonic('W');
 		add(window);
 
 		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
-		help.add(mcreator.actionRegistry.help);
-		help.add(mcreator.actionRegistry.support);
-		help.add(mcreator.actionRegistry.knowledgeBase);
+		help.add(mcreator.getActionRegistry().help);
+		help.add(mcreator.getActionRegistry().support);
+		help.add(mcreator.getActionRegistry().knowledgeBase);
 		if (macOSscreenMenuBar) {
 			help.addSeparator();
-			help.add(mcreator.actionRegistry.mcreatorWebsite);
-			help.add(mcreator.actionRegistry.mcreatorCommunity);
-			help.add(mcreator.actionRegistry.mcreatorPublish);
+			help.add(mcreator.getActionRegistry().mcreatorWebsite);
+			help.add(mcreator.getActionRegistry().mcreatorCommunity);
+			help.add(mcreator.getActionRegistry().mcreatorPublish);
 		}
 		help.addSeparator();
-		help.add(mcreator.actionRegistry.showShortcuts);
+		help.add(mcreator.getActionRegistry().showShortcuts);
 		help.addSeparator();
-		help.add(mcreator.actionRegistry.donate);
+		help.add(mcreator.getActionRegistry().donate);
 		help.addSeparator();
-		help.add(mcreator.actionRegistry.checkForUpdates);
-		help.add(mcreator.actionRegistry.checkForPluginUpdates);
-		help.add(mcreator.actionRegistry.aboutMCreator);
+		help.add(mcreator.getActionRegistry().checkForUpdates);
+		help.add(mcreator.getActionRegistry().checkForPluginUpdates);
+		help.add(mcreator.getActionRegistry().aboutMCreator);
 		help.setMnemonic('H');
 		add(help);
 	}
+
+	protected abstract void assembleMenuBar(MCreator mcreator);
 
 	private void addHelpSearch(JMenu help) {
 		JTextField searchField = new JTextField(20) {
@@ -288,9 +219,9 @@ public class MainMenuBar extends JMenuBar {
 	}
 
 	public void refreshMenuBar() {
-		code.setVisible(mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+		code.setVisible(mcreator.getTabs().getCurrentTab() != null && mcreator.getTabs().getCurrentTab()
 				.getContent() instanceof CodeEditorView);
-		imageEditor.setVisible(mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+		imageEditor.setVisible(mcreator.getTabs().getCurrentTab() != null && mcreator.getTabs().getCurrentTab()
 				.getContent() instanceof ImageMakerView);
 	}
 

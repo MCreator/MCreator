@@ -27,36 +27,37 @@ public class Transliteration {
 	/**
 	 * This method transliterates string if required. If not, source String is returned. It uses Junidecode library, but strips failed transliterated characters away.
 	 *
-	 * @param source Soruce string
+	 * @param source Source string
 	 * @return Transliterated string or original if transliteration is not required
 	 */
 	@Nonnull public static String transliterateString(@Nonnull String source) {
 		boolean pureASCII = true;
-		char[] chars = source.toCharArray();
 
-		for (char c : chars)
+		char[] chars = source.toCharArray();
+		for (char c : chars) {
 			if (!isASCII(c)) {
 				pureASCII = false;
 				break;
 			}
+		}
 
-		if (pureASCII)
+		if (pureASCII) {
 			return source;
-		else {
-
+		} else {
 			String transliterated = Junidecode.unidecode(source);
 			char[] transliterated_chars = transliterated.toCharArray();
 			StringBuilder transliterated_stripped = new StringBuilder();
 
-			for (char element : transliterated_chars)
-				if (isASCII(element))
+			for (char element : transliterated_chars) {
+				if (isASCII(element)) {
 					transliterated_stripped.append(element);
+				}
+			}
 
 			transliterated = transliterated_stripped.toString();
 
 			return transliterated;
 		}
-
 	}
 
 	private static boolean isASCII(char c) {

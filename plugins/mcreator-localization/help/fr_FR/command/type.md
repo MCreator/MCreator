@@ -1,4 +1,4 @@
-Cette option vous permet de déterminer le type de la commande et où elle peut être utilisée.
+Cette option vous permet de déterminer le type de la commande et où/comment elle peut être utilisée.
 
 * **STANDARD**: La commande peut être utilisée partout. C'est le comportement commun/normal (par exemple `/give`).
 * **SINGLEPLAYER_ONLY**: La commande ne sera disponible que sur les mondes solo (par exemple `/publish`).

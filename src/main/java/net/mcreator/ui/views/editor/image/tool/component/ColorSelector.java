@@ -34,8 +34,6 @@ public class ColorSelector extends JPanel {
 	private final JButton foregroundColor = new JButton(generateTransparentPreview(foreground));
 	private final JButton backgroundColor = new JButton(generateTransparentPreview(background));
 
-	private static JDialog dialog = null;
-
 	public ColorSelector(MCreator f) {
 		super(null);
 
@@ -65,7 +63,7 @@ public class ColorSelector extends JPanel {
 
 		foregroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(foreground);
-			dialog = JColorChooser.createDialog(f,
+			JDialog dialog = JColorChooser.createDialog(f,
 					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
 					JColor.colorChooser, event -> {
 						Color c = JColor.colorChooser.getColor();
@@ -73,14 +71,13 @@ public class ColorSelector extends JPanel {
 							foreground = c;
 							updateColors();
 						}
-						dialog.setVisible(false);
-					}, event -> dialog.setVisible(false));
+					}, null);
 			dialog.setVisible(true);
 		});
 
 		backgroundColor.addActionListener(e -> {
 			JColor.colorChooser.setColor(background);
-			dialog = JColorChooser.createDialog(f,
+			JDialog dialog = JColorChooser.createDialog(f,
 					L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true,
 					JColor.colorChooser, event -> {
 						Color c = JColor.colorChooser.getColor();
@@ -88,8 +85,7 @@ public class ColorSelector extends JPanel {
 							background = c;
 							updateColors();
 						}
-						dialog.setVisible(false);
-					}, event -> dialog.setVisible(false));
+					}, null);
 			dialog.setVisible(true);
 		});
 
@@ -99,12 +95,7 @@ public class ColorSelector extends JPanel {
 			updateColors();
 		});
 
-		swap.addActionListener(e -> {
-			Color temp = foreground;
-			foreground = background;
-			background = temp;
-			updateColors();
-		});
+		swap.addActionListener(e -> swapColors());
 
 		updateColors();
 
@@ -154,6 +145,13 @@ public class ColorSelector extends JPanel {
 
 	public void setBackgroundColor(Color background) {
 		this.background = background;
+		updateColors();
+	}
+
+	public void swapColors() {
+		Color temp = foreground;
+		foreground = background;
+		background = temp;
 		updateColors();
 	}
 }

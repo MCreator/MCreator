@@ -1,0 +1,1 @@
+Ten parametr kontroluje czy użyć standardowej wysokości drzewa i danych bloku oraz czy użyć danych dostarczonych z pola poniżej.

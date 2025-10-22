@@ -38,66 +38,69 @@ package ${package}.client.renderer;
 <#assign model = "HumanoidModel">
 
 <#if data.mobModelName == "Chicken">
-	<#assign super = "super(context, new ChickenModel(context.bakeLayer(ModelLayers.CHICKEN)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.CHICKEN)">
 	<#assign model = "ChickenModel">
 <#elseif data.mobModelName == "Cod">
-	<#assign super = "super(context, new CodModel(context.bakeLayer(ModelLayers.COD)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.COD)">
 	<#assign model = "CodModel">
 <#elseif data.mobModelName == "Cow">
-	<#assign super = "super(context, new CowModel(context.bakeLayer(ModelLayers.COW)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.COW)">
 	<#assign model = "CowModel">
 <#elseif data.mobModelName == "Creeper">
-	<#assign super = "super(context, new CreeperModel(context.bakeLayer(ModelLayers.CREEPER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.CREEPER)">
 	<#assign model = "CreeperModel">
 <#elseif data.mobModelName == "Ghast">
-	<#assign super = "super(context, new GhastModel(context.bakeLayer(ModelLayers.GHAST)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.GHAST)">
 	<#assign model = "GhastModel">
 <#elseif data.mobModelName == "Ocelot">
-	<#assign super = "super(context, new OcelotModel(context.bakeLayer(ModelLayers.OCELOT)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.OCELOT)">
 	<#assign model = "OcelotModel">
 <#elseif data.mobModelName == "Pig">
-	<#assign super = "super(context, new PigModel(context.bakeLayer(ModelLayers.PIG)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PIG)">
 	<#assign model = "PigModel">
 <#elseif data.mobModelName == "Piglin">
-	<#assign super = "super(context, new PiglinModel(context.bakeLayer(ModelLayers.PIGLIN)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PIGLIN)">
 	<#assign model = "PiglinModel">
 <#elseif data.mobModelName == "Slime">
-	<#assign super = "super(context, new SlimeModel(context.bakeLayer(ModelLayers.SLIME)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SLIME)">
 	<#assign model = "SlimeModel">
 <#elseif data.mobModelName == "Salmon">
-	<#assign super = "super(context, new SalmonModel(context.bakeLayer(ModelLayers.SALMON)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SALMON)">
 	<#assign model = "SalmonModel">
 <#elseif data.mobModelName == "Spider">
-	<#assign super = "super(context, new SpiderModel(context.bakeLayer(ModelLayers.SPIDER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SPIDER)">
 	<#assign model = "SpiderModel">
 <#elseif data.mobModelName == "Villager">
-	<#assign super = "super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.VILLAGER)">
 	<#assign model = "VillagerModel">
 <#elseif data.mobModelName == "Silverfish">
-	<#assign super = "super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.SILVERFISH)">
 	<#assign model = "SilverfishModel">
 <#elseif data.mobModelName == "Witch">
-	<#assign super = "super(context, new WitchModel(context.bakeLayer(ModelLayers.WITCH)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.WITCH)">
 	<#assign model = "WitchModel">
 <#elseif !data.isBuiltInModel()>
-	<#assign super = "super(context, new ${data.mobModelName}(context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(${data.mobModelName}.LAYER_LOCATION)">
 	<#assign model = data.mobModelName>
 <#else>
-	<#assign super = "super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), " + data.modelShadowSize + "f);">
+	<#assign rootPart = "context.bakeLayer(ModelLayers.PLAYER)">
 	<#assign model = "HumanoidModel">
 	<#assign humanoid = true>
 </#if>
 
 <#assign model = model + "<" + name + "Entity>">
 
+<#compress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${model}> {
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
-		${super}
+		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
 		<#if humanoid>
 		this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
 				new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
+		<#elseif data.mobModelName == "Villager" || data.mobModelName == "Witch">
+		this.addLayer(new CrossedArmsItemLayer<>(this, context.getItemInHandRenderer()));
 		</#if>
 
 		<#list data.modelLayers as layer>
@@ -135,7 +138,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#list>
 	}
 
-	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
+	<#if data.mobModelName == "Villager" || data.breedable || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
 	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float f) {
 		<#if hasProcedure(data.visualScale)>
 			Level world = entity.level();
@@ -149,6 +152,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 		<#if data.mobModelName == "Villager">
 			poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+		</#if>
+		<#if data.breedable>
+			poseStack.scale(entity.getAgeScale(), entity.getAgeScale(), entity.getAgeScale());
+
 		</#if>
 	}
 	</#if>
@@ -181,4 +188,56 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	}
 	</#if>
 
+	<#if data.animations?has_content>
+	private static final class AnimatedModel extends ${model} {
+
+		private final ModelPart root;
+
+		private final HierarchicalModel animator = new HierarchicalModel<${name}Entity>() {
+			@Override public ModelPart root() {
+				return root;
+			}
+
+			@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+				<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
+				this.root().getAllParts().forEach(ModelPart::resetPose);
+				</#if>
+				<#list data.animations as animation>
+					<#if !animation.walking>
+						this.animate(entity.animationState${animation?index}, ${animation.animation}, ageInTicks, ${animation.speed}f);
+					<#else>
+						<#if hasProcedure(animation.condition)>
+						if (<@procedureCode animation.condition, {
+							"x": "entity.getX()",
+							"y": "entity.getY()",
+							"z": "entity.getZ()",
+							"entity": "entity",
+							"world": "entity.level()"
+						}, false/>)
+						</#if>
+						this.animateWalk(${animation.animation}, limbSwing, limbSwingAmount, ${animation.speed}f, ${animation.amplitude}f);
+					</#if>
+				</#list>
+			}
+		};
+
+		public AnimatedModel(ModelPart root) {
+			super(root);
+			this.root = root;
+		}
+
+		@Override public void setupAnim(${name}Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+			<#if humanoid>
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			<#else>
+			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			</#if>
+		}
+
+	}
+	</#if>
+
 }
+</#compress>

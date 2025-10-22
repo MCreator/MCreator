@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -30,10 +31,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, FocusListener {
 
@@ -46,6 +45,12 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 	public SearchableComboBox(T[] data) {
 		super(data);
 		entries.addAll(Arrays.asList(data));
+		init();
+	}
+
+	public SearchableComboBox(Collection<T> data) {
+		super(new Vector<>(data));
+		entries.addAll(data);
 		init();
 	}
 
@@ -120,7 +125,13 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			int size = model.getSize();
 			for (int i = 0; i < size; i++) {
 				T element = model.getElementAt(i);
-				if (element.toString().toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
+				String elementAsString;
+				if (element instanceof DataListEntry dle) {
+					elementAsString = dle.getReadableName();
+				} else {
+					elementAsString = element.toString();
+				}
+				if (elementAsString.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
 					entriesFiltered.add(element);
 				}
 			}

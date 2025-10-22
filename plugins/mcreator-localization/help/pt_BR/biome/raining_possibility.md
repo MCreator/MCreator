@@ -1,0 +1,1 @@
+Este parâmetro controla a possibilidade de chuva dentro do bioma.

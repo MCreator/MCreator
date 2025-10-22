@@ -1,0 +1,1 @@
+Jeśli ta opcja jest włączona, kolor mgły zmienia się w zależności od pory dnia.

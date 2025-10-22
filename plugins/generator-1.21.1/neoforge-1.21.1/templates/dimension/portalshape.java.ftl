@@ -40,9 +40,9 @@ public class ${name}PortalShape ${mcc.getClassBody("net.minecraft.world.level.po
         .replace("Optional<PortalShape>", "Optional<" + name + "PortalShape>")
         .replace("Predicate<PortalShape>", "Predicate<" + name + "PortalShape>")
         .replace("blockstate, 18);", "blockstate, 18);\nif (this.level instanceof ServerLevel) ((ServerLevel) this.level).getPoiManager().add(p_77725_, " + name + "Teleporter.poi);")
-        .replace("blockstate.is(Blocks.NETHER_PORTAL)", "blockstate.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
-        .replace("p_77718_.is(BlockTags.FIRE) || p_77718_.is(Blocks.NETHER_PORTAL)", "p_77718_.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
-        .replace("Blocks.NETHER_PORTAL.defaultBlockState()", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get().defaultBlockState()")
+        .replace("blockstate.is(Blocks.NETHER_PORTAL)", "blockstate.getBlock() == " + JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL.get()")
+        .replace("p_77718_.is(BlockTags.FIRE) || p_77718_.is(Blocks.NETHER_PORTAL)", "p_77718_.getBlock() == " + JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL.get()")
+        .replace("Blocks.NETHER_PORTAL.defaultBlockState()", JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL.get().defaultBlockState()")
         .replace("net.neoforged.neoforge.common.extensions.IBlockStateExtension::isPortalFrame;", "(state, level, pos) -> state.getBlock() == " + mappedBlockToBlock(data.portalFrame) + ";")}
 
 <#-- @formatter:on -->

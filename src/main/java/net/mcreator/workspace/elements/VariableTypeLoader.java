@@ -52,7 +52,7 @@ public class VariableTypeLoader {
 
 		StringBuilder variableBlocklyJSBuilder = new StringBuilder();
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("variables", Pattern.compile("^[^$].*\\.json$"));
 		for (String file : fileNames) {
 			String variableJSON = FileIO.readResourceToString(PluginLoader.INSTANCE, file);
 			VariableType variableType = gson.fromJson(variableJSON, VariableType.class);
@@ -86,6 +86,7 @@ public class VariableTypeLoader {
 			case "blockstate" -> BuiltInTypes.BLOCKSTATE = variableType;
 			case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
 			case "entity" -> BuiltInTypes.ENTITY = variableType;
+			case "damagesource" -> BuiltInTypes.DAMAGESOURCE = variableType;
 			}
 		}
 
@@ -132,5 +133,6 @@ public class VariableTypeLoader {
 		public static VariableType ITEMSTACK;
 		public static VariableType ACTIONRESULTTYPE;
 		public static VariableType ENTITY;
+		public static VariableType DAMAGESOURCE;
 	}
 }

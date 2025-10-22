@@ -49,6 +49,7 @@ public class Procedure extends GeneratableElement {
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
 	@BlocklyXML("procedures") public String procedurexml;
+	public boolean skipDependencyNullCheck;
 
 	private transient List<Dependency> dependencies = null;
 
@@ -66,7 +67,7 @@ public class Procedure extends GeneratableElement {
 		return dependencies;
 	}
 
-	public List<Dependency> reloadDependencies() {
+	private List<Dependency> reloadDependencies() {
 		dependencies = new ArrayList<>();
 		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
 			for (Object depobj : dependenciesList) {
@@ -112,7 +113,7 @@ public class Procedure extends GeneratableElement {
 			BlocklyToProcedure blocklyToJava = getBlocklyToProcedure(additionalData);
 
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTrigers();
+					.getExternalTriggers();
 			ExternalTrigger trigger = null;
 			for (ExternalTrigger externalTrigger : externalTriggers) {
 				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
@@ -132,6 +133,7 @@ public class Procedure extends GeneratableElement {
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 			additionalData.put("procedureblocks", blocklyToJava.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJava.getExtraTemplatesCode());
 
 			String triggerCode = "";
 			if (trigger != null) {

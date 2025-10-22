@@ -1,0 +1,3 @@
+Este gatilho aciona o procedimento quando um jogador clica com o botão direito nesta entidade.
+
+O procedimento deve retornar um resultado de ação do tipo SUCCESS/CONSUME se houve uma interação com a entidade, FAIL se a interação falhou e PASS se não houve interação. Se o procedimento não retornar nenhum valor, o tipo de resultado da ação será determinado se a entidade é montável, domesticável ou abre uma GUI.

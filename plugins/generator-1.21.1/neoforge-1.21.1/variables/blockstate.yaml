@@ -16,7 +16,7 @@ scopes:
     set: |
       <#include "mcitems.ftl">
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedBlockToBlockStateCode(value)};
-      ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
     read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
@@ -25,7 +25,7 @@ scopes:
     set: |
       <#include "mcitems.ftl">
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedBlockToBlockStateCode(value)};
-      ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
     read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
@@ -33,11 +33,9 @@ scopes:
     get: /*@BlockState*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${mappedBlockToBlockStateCode(value)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedBlockToBlockStateCode(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
     read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
@@ -45,8 +43,6 @@ scopes:
     get: /*@BlockState*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <#include "mcitems.ftl">
-      {
-        ${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);
-        _vars.${name} = ${mappedBlockToBlockStateCode(value)};
-        _vars.syncPlayerVariables(${entity});
-      }
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${mappedBlockToBlockStateCode(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>

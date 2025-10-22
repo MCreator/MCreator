@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 public class GeneratorStats {
 
-	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl");
+	private static final Pattern ftlFile = Pattern.compile(".*\\.ftl$");
 
 	private final Map<ModElementType<?>, CoverageStatus> modElementTypeCoverageInfo = new TreeMap<>(
 			Comparator.comparing(ModElementType::getRegistryName));
@@ -59,7 +59,7 @@ public class GeneratorStats {
 		this.procedureTriggers = new HashSet<>();
 
 		// determine supported mod element types
-		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type);
 			if (definition != null) {
 				if (definition.containsKey("field_inclusions") || definition.containsKey("field_exclusions")) {
@@ -123,6 +123,16 @@ public class GeneratorStats {
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
+		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
+		baseCoverageInfo.put("model_animations_java",
+				(sourceTasksJSON.contains("\"type\":\"JAVA_viatemplate") && sourceTasksJSON.contains(
+						"\"task\":\"copy_model_animations")) ? CoverageStatus.FULL : CoverageStatus.NONE);
+
+		baseCoverageInfo.put("vanilla_resources",
+				generatorConfiguration.getSpecificRoot("vanilla_resources_jar") != null ?
+						CoverageStatus.FULL :
+						CoverageStatus.NONE);
+
 		CoverageStatus texturesCoverage = CoverageStatus.NONE;
 		int supportedTextureTypes = 0;
 		for (TextureType textureType : TextureType.values()) {
@@ -183,7 +193,7 @@ public class GeneratorStats {
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTrigers().size()) * 100, 100));
+						.getExternalTriggers().size()) * 100, 100));
 	}
 
 	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
@@ -200,6 +210,12 @@ public class GeneratorStats {
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
+	}
+
+	public List<ModElementType<?>> getSupportedModElementTypes() {
+		return modElementTypeCoverageInfo.entrySet().stream().filter(e -> e.getValue() != CoverageStatus.NONE)
+				.map(Map.Entry::getKey).sorted(Comparator.comparing(ModElementType::getReadableName))
+				.collect(Collectors.toList());
 	}
 
 	public Map<String, Double> getCoverageInfo() {

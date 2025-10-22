@@ -41,9 +41,9 @@ public class JVillagerTradeEntry extends JPanel {
 	private final MCItemHolder price2;
 	private final MCItemHolder offer;
 
-	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
 
 	private final JComboBox<String> level = new JComboBox<>(
 			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });

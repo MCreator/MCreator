@@ -1,0 +1,1 @@
+Wywołuje procedurę po kliknięciu tego przycisku.

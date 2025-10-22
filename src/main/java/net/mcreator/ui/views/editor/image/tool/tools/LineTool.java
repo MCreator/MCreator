@@ -30,8 +30,8 @@ import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
-import java.awt.Shape;
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 
 public class LineTool extends AbstractModificationTool {
@@ -87,7 +87,7 @@ public class LineTool extends AbstractModificationTool {
 			g.setClip(previousShape);
 		g.dispose();
 
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		return true;
 	}
 }

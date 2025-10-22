@@ -1,0 +1,1 @@
+Az eljárás akkor kerül végrehajtásra, amikor egy játékos belép a dimenzióba.

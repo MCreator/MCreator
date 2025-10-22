@@ -1,0 +1,1 @@
+Ez a trigger akkor indítja el az eljárást, amikor a játékos ütközik ezzel az entitással.

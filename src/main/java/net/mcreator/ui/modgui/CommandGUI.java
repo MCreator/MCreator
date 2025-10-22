@@ -35,10 +35,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -47,12 +45,13 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
-	private final VTextField commandName = new VTextField(25);
+	private final VTextField commandName = new VTextField(25).requireValue("elementgui.command.warning.empty_string")
+			.enableRealtimeValidation();
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
@@ -100,7 +99,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
+					changeEvent -> new Thread(() -> regenerateArgs(changeEvent.getSource() instanceof BlocklyPanel),
+							"CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
@@ -109,7 +109,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
 		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
+						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -117,21 +117,19 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 				Theme.current().getForegroundColor()));
 		args.setOpaque(false);
 
-		commandName.setValidator(
-				new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
-		commandName.enableRealtimeValidation();
-
 		page1group.addValidationElement(commandName);
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
-				ComponentUtils.applyPadding(args, 10, true, true, true, true)));
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel), args)).validate(
+				page1group).lazyValidate(
+				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						message -> message.replace("Command", "Command arguments")));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
 		}
 	}
 
-	private synchronized void regenerateArgs() {
+	private synchronized void regenerateArgs(boolean jsEventTriggeredChange) {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
@@ -146,14 +144,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group,
-				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-						message -> message.replace("Command", "Command arguments")));
 	}
 
 	@Override public void openInEditingMode(Command command) {

@@ -23,29 +23,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.*;
+import net.mcreator.element.types.PotionEffect;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class PotionEffectCategoryConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(PotionEffectCategoryConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		PotionEffect potionEffect = (PotionEffect) input;
-		try {
-			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			if (definition.get("isBad").getAsBoolean()) {
-				potionEffect.mobEffectCategory = "HARMFUL";
-			} else if (definition.get("isBenefitical").getAsBoolean()) {
-				potionEffect.mobEffectCategory = "BENEFICIAL";
-			} else {
-				potionEffect.mobEffectCategory = "NEUTRAL";
-			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert potion effect category of: {}", potionEffect.getModElement().getName());
+		if (definition.get("isBad").getAsBoolean()) {
+			potionEffect.mobEffectCategory = "HARMFUL";
+		} else if (definition.get("isBenefitical").getAsBoolean()) {
+			potionEffect.mobEffectCategory = "BENEFICIAL";
+		} else {
+			potionEffect.mobEffectCategory = "NEUTRAL";
 		}
 		return potionEffect;
 	}
@@ -53,4 +46,5 @@ public class PotionEffectCategoryConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 66;
 	}
+
 }

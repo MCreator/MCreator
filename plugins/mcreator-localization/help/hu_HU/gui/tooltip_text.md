@@ -1,0 +1,1 @@
+A szöveg, amely megjelenik a tooltipben, amikor a játékos az e komponens által lefedett terület fölé viszi az egérmutatót.

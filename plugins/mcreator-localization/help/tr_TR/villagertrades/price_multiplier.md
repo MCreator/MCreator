@@ -1,0 +1,1 @@
+Oyuncu aynı öğeyi birden fazla kez takas ettiğinde fiyat artışını tanımlar.

@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy milyen fa típuson alapuljon az egyéni fa jellemző alakja.

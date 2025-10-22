@@ -1,0 +1,1 @@
+Używa wartości zwracanej wybranej procedury do określenia modelu, który zostanie wyświetlony. Wartość zwracana musi być bytem.

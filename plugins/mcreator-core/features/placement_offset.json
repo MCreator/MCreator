@@ -14,7 +14,7 @@
   "extensions": [
     "offset_placement_validator"
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "previousStatement": null,
   "nextStatement": "Placement",
   "colour": 130,

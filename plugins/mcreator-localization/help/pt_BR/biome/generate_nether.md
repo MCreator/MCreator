@@ -1,0 +1,1 @@
+Marque esta opção para fazer esse bioma aparecer na dimensão inferior.

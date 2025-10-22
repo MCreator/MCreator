@@ -1,0 +1,1 @@
+Ez az opcionális tulajdonság megváltoztatja a részecskék textúráját, amikor a blokk összetörik, egy entitás a blokkra érkezik, stb.

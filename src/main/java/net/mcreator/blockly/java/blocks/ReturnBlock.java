@@ -27,7 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
@@ -42,8 +42,8 @@ public class ReturnBlock implements IBlockGenerator {
 	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		String type = StringUtils.removeStart(block.getAttribute("type"), "return_");
-		VariableType returnType = VariableTypeLoader.INSTANCE.fromName(type);
+		String type = Strings.CS.removeStart(block.getAttribute("type"), "return_");
+		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
 		if (!master.getStatementInputsMatching(si -> true).isEmpty()) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
@@ -54,12 +54,18 @@ public class ReturnBlock implements IBlockGenerator {
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (master instanceof BlocklyToProcedure && value != null) {
 			if (((BlocklyToProcedure) master).getReturnType() != null) {
-				if (((BlocklyToProcedure) master).getReturnType() != returnType) {
+				if (((BlocklyToProcedure) master).getReturnType() != typeObject) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.retval.one_retval_block")));
 				}
 			} else {
-				((BlocklyToProcedure) master).setReturnType(returnType);
+				((BlocklyToProcedure) master).setReturnType(typeObject);
+			}
+
+			if (typeObject == null || !typeObject.isSupportedInWorkspace(master.getWorkspace())) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.variables.not_supported", type)));
+				return;
 			}
 
 			String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);

@@ -1,0 +1,1 @@
+Este parâmetro define o texto exibido pelo rótulo quando a interface é aberta. Você pode usar um procedimento com um valor de retorno string para textos mais complexos.

@@ -1,0 +1,1 @@
+Bu, blok oluşturulduğunda/dünyaya yerleştirildiğinde blok durumu özelliğinin varsayılan değeridir.

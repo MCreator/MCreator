@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy mennyi ideig tart a blokk kibányászása. Magasabb érték azt jelenti, hogy hosszabb ideig tart kibányászni ezt a blokkot.

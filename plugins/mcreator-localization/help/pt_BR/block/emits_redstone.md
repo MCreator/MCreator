@@ -1,0 +1,1 @@
+Se você marcar este parâmetro, este bloco poderá emitir energia de redstone.

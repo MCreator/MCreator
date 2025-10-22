@@ -37,7 +37,7 @@ package ${package}.item;
 
 <#compress>
 <#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
@@ -114,7 +114,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
 	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
-		event.modify(${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
 	}
 	</#if>
 
@@ -307,7 +307,7 @@ public class ${name}Item extends FishingRodItem {
 		</#if>
 	</#if>
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 

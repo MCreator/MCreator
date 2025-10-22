@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha Óceáni Monumentumokat szeretnél a biomodban.

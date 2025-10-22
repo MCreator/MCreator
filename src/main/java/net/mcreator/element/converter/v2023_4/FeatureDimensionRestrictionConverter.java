@@ -28,57 +28,49 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureDimensionRestrictionConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("FeatureDimensionRestrictionConverter");
-
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			Feature feature = (Feature) input;
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("restrictionDimensions")
-					!= null) {
-				JsonArray restrictionDimensions = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-						.get("restrictionDimensions").getAsJsonArray();
+		Feature feature = (Feature) input;
+		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("restrictionDimensions")
+				!= null) {
+			JsonArray restrictionDimensions = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+					.get("restrictionDimensions").getAsJsonArray();
 
-				List<BiomeEntry> restrictionBiomes = new ArrayList<>();
+			List<BiomeEntry> restrictionBiomes = new ArrayList<>();
 
-				// We are only able to directly convert this if there is only one dimension restriction
-				// otherwise we lift restriction, so it generates in all dimensions
-				if (restrictionDimensions.size() == 1) {
-					String restrictionDimension = restrictionDimensions.get(0).getAsString();
-					if (restrictionDimension.equals("Surface")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
-					} else if (restrictionDimension.equals("Nether")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
-					} else if (restrictionDimension.equals("End")) {
-						restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
-					} else if (restrictionDimension.startsWith("CUSTOM:")) {
-						ModElement modElement = workspace.getModElementByName(
-								restrictionDimension.replaceFirst("CUSTOM:", ""));
-						if (modElement != null) {
-							GeneratableElement generatableElement = modElement.getGeneratableElement();
-							if (generatableElement instanceof Dimension dimension) {
-								restrictionBiomes.addAll(dimension.biomesInDimension);
-							}
+			// We are only able to directly convert this if there is only one dimension restriction
+			// otherwise we lift restriction, so it generates in all dimensions
+			if (restrictionDimensions.size() == 1) {
+				String restrictionDimension = restrictionDimensions.get(0).getAsString();
+				if (restrictionDimension.equals("Surface")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
+				} else if (restrictionDimension.equals("Nether")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
+				} else if (restrictionDimension.equals("End")) {
+					restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
+				} else if (restrictionDimension.startsWith("CUSTOM:")) {
+					ModElement modElement = workspace.getModElementByName(
+							restrictionDimension.replaceFirst("CUSTOM:", ""));
+					if (modElement != null) {
+						GeneratableElement generatableElement = modElement.getGeneratableElement();
+						if (generatableElement instanceof Dimension dimension) {
+							restrictionBiomes.addAll(dimension.biomesInDimension);
 						}
 					}
 				}
-
-				// we only define our restriction if there are not already biome restrictions in place
-				if (feature.restrictionBiomes.isEmpty())
-					feature.restrictionBiomes = restrictionBiomes;
-			} else {
-				throw new NullPointerException("restrictionDimensions not defined");
 			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert dimension restriction to biome list", e);
+
+			// we only define our restriction if there are not already biome restrictions in place
+			if (feature.restrictionBiomes.isEmpty())
+				feature.restrictionBiomes = restrictionBiomes;
+		} else {
+			throw new NullPointerException("restrictionDimensions not defined");
 		}
 
 		return input;

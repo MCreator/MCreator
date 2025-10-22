@@ -1,1 +1,0 @@
-Ce paramètre contrôle si des lacs doivent être générés dans ce biome.

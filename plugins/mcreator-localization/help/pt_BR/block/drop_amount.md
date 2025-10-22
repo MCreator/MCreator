@@ -1,0 +1,1 @@
+Este parâmetro controla quantos itens ou blocos o bloco solta quando este bloco é quebrado.

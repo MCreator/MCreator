@@ -37,8 +37,8 @@ import java.util.Objects;
 
 public class JLootTablePool extends JEntriesList {
 
-	private final JMinMaxSpinner rolls = new JMinMaxSpinner(1, 1, 0, 64000, 1);
-	private final JMinMaxSpinner bonusrolls = new JMinMaxSpinner(1, 1, 0, 64000, 1);
+	private final JMinMaxSpinner rolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
+	private final JMinMaxSpinner bonusrolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
 	private final JCheckBox hasbonusrolls = L10N.checkbox("elementgui.loot_table.enable_pool_rolls");
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
@@ -59,11 +59,9 @@ public class JLootTablePool extends JEntriesList {
 		rolls.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Theme.current().getSecondAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-		rolls.setAllowEqualValues(true);
 		bonusrolls.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Theme.current().getSecondAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-		bonusrolls.setAllowEqualValues(true);
 		hasbonusrolls.setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -102,7 +100,7 @@ public class JLootTablePool extends JEntriesList {
 		entries.setOpaque(false);
 
 		add.addActionListener(e -> {
-			JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
+			JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList);
 			registerEntryUI(entry);
 		});
 
@@ -122,7 +120,7 @@ public class JLootTablePool extends JEntriesList {
 	}
 
 	public void addInitialEntry() {
-		JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList); // initial add
+		JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList); // initial add
 		registerEntryUI(entry);
 	}
 
@@ -147,7 +145,7 @@ public class JLootTablePool extends JEntriesList {
 
 		if (pool.entries != null) {
 			pool.entries.forEach(e -> {
-				JLootTableEntry entry = new JLootTableEntry(mcreator, entries, entryList);
+				JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList);
 				registerEntryUI(entry);
 				entry.setEntry(e);
 			});

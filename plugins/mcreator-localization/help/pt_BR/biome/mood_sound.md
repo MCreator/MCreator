@@ -1,0 +1,1 @@
+O som ambiente é o som usado para cavernas (por exemplo, cavernas ambientais)

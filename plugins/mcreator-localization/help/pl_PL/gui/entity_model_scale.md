@@ -1,0 +1,1 @@
+Określa rozmiar wyświetlanego modelu bytu.

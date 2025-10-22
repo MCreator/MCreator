@@ -1,0 +1,1 @@
+Blok bir patlama ile yok edildiğinde bir prosedürü tetikler.

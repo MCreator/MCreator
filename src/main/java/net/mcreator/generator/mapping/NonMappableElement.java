@@ -40,7 +40,7 @@ public class NonMappableElement extends MappableElement {
 		return getUnmappedValue();
 	}
 
-	@Override public boolean canProperlyMap() {
+	@Override public boolean isValidReference() {
 		return true;
 	}
 

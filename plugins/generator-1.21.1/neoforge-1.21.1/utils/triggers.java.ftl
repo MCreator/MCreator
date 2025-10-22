@@ -1,20 +1,29 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
-<#macro addSpecialInformation procedure="" isBlock=false>
+<#macro addSpecialInformation procedure="" translationKeyHeader="" isBlock=false>
 	<#if procedure?has_content && (hasProcedure(procedure) || !procedure.getFixedValue().isEmpty())>
 		@Override @OnlyIn(Dist.CLIENT) public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, context, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : Minecraft.getInstance().player;
-			list.add(Component.literal(<@procedureCode procedure, {
+			String hoverText = <@procedureCode procedure, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
 				"entity": "entity",
 				"world": "entity.level()",
 				"itemstack": "itemstack"
-			}, false/>));
+			}, false/>;
+			if (hoverText != null) {
+				for (String line : hoverText.split("\n")) {
+					list.add(Component.literal(line));
+				}
+			}
+		<#elseif translationKeyHeader?has_content>
+			<#list procedure.getFixedValue() as entry>
+				list.add(Component.translatable("${translationKeyHeader}.description_${entry?index}"));
+			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
@@ -26,8 +35,8 @@
 
 <#macro onEntitySwing procedure="">
 <#if hasProcedure(procedure)>
-@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
-	boolean retval = super.onEntitySwing(itemstack, entity);
+@Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity, InteractionHand hand) {
+	boolean retval = super.onEntitySwing(itemstack, entity, hand);
 	<@procedureCode procedure, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",
@@ -249,6 +258,23 @@
 </#if>
 </#macro>
 
+<#macro onItemEntityDestroyed procedure="">
+<#if hasProcedure(procedure)>
+@Override public void onDestroyed(ItemEntity entity, DamageSource damagesource) {
+	super.onDestroyed(entity, damagesource);
+	<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "entity.level()",
+		"entity": "entity",
+		"itemstack": "entity.getItem()",
+		"damagesource": "damagesource"
+	}/>
+}
+</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
@@ -386,6 +412,23 @@
 		"world": "world",
 		"entity": "entity",
 		"blockstate": "blockstate"
+	}/>
+}
+</#if>
+</#macro>
+
+<#macro onEntityFallsOn procedure="">
+<#if hasProcedure(data.onEntityFallsOn)>
+@Override public void fallOn(Level world, BlockState blockstate, BlockPos pos, Entity entity, float distance) {
+	super.fallOn(world, blockstate, pos, entity, distance);
+	<@procedureCode data.onEntityFallsOn, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "blockstate",
+		"distance": "distance"
 	}/>
 }
 </#if>

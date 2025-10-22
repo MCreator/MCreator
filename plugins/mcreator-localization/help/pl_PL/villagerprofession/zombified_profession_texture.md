@@ -1,0 +1,1 @@
+Tekstura wieśniaka—zombie wraz z profesją.

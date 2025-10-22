@@ -110,6 +110,9 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	public void moveMode() {
+		if (selected != null && selected.locked)
+			return;
+
 		owner.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		componentMoveMode = true;
 
@@ -351,6 +354,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					wysiwygEditor.editCurrentlySelectedComponent();
 				} else {
 					wysiwygEditor.list.setSelectedValue(component, true);
+					wysiwygEditor.list.requestFocus();
 				}
 			} else {
 				wysiwygEditor.list.clearSelection();
@@ -380,6 +384,13 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (componentDragMode) {
 			ox = ex + (showGrid ? 0 : dragOffsetX);
 			oy = ey + (showGrid ? 0 : dragOffsetY);
+		} else if (componentMoveMode) {
+			if (selected instanceof SizedComponent component && !positioningModeSettingWidth) {
+				positioningModeSettingWidth = true;
+				if (component.canChangeHeight())
+					positioningModeSettingHeight = true;
+			}
+			mouseMoved(e); // if in move mode, we consider dragging as moving the mouse
 		} else {
 			GUIComponent component = getGUIComponentAt(ex, ey);
 			if (component != null) {
@@ -448,11 +459,14 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		for (int i = 0; i < wysiwygEditor.components.size(); i++) {
 			GUIComponent component = wysiwygEditor.components.get(i);
 			if (component.equals(selected)) {
-				component.x = ox;
-				component.y = oy;
-				if (positioningModeSettingWidth && component instanceof net.mcreator.element.parts.gui.SizedComponent) {
-					((SizedComponent) component).width = ow;
-					((SizedComponent) component).height = oh;
+				if (!selected.locked) {
+					component.x = ox;
+					component.y = oy;
+					if (positioningModeSettingWidth
+							&& component instanceof net.mcreator.element.parts.gui.SizedComponent) {
+						((SizedComponent) component).width = ow;
+						((SizedComponent) component).height = oh;
+					}
 				}
 				break;
 			}

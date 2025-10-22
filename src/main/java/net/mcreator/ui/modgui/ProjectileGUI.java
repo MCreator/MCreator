@@ -34,11 +34,10 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -58,11 +57,14 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	private MCItemHolder projectileItem;
 	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableGravity = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JCheckBox igniteFire = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
 	private final JSpinner damage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
 	private final JSpinner knockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
+	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
+	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
@@ -83,7 +85,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	}
 
 	@Override protected void initGUI() {
-		projectileItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		projectileItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.projectile.error_projectile_needs_item");
 		onHitsBlock = new ProcedureSelector(this.withEntry("projectile/when_hits_block"), mcreator,
 				L10N.t("elementgui.projectile.event_hits_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
@@ -111,8 +114,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		damage.setOpaque(false);
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
+		disableGravity.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(11, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
@@ -126,6 +130,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model_texture"),
 				L10N.label("elementgui.projectile.model_texture")));
 		propertiesPanel.add(customModelTexture);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/bounding_box"),
+				L10N.label("elementgui.projectile.bounding_box")));
+		propertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2, modelWidth, modelHeight));
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
 				L10N.label("elementgui.projectile.action_sound")));
@@ -151,6 +159,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.ignite_fire")));
 		propertiesPanel.add(igniteFire);
 
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/disable_gravity"),
+				L10N.label("elementgui.projectile.disable_gravity")));
+		propertiesPanel.add(disableGravity);
+
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
 
@@ -171,27 +183,24 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
-
 		page1group.addValidationElement(projectileItem);
 		page1group.addValidationElement(customModelTexture);
 
-		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel)).validate(
+				page1group);
 		addPage(L10N.t("elementgui.common.page_triggers"), triggersPanels);
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onHitsBlock.refreshListKeepSelected();
-		onHitsPlayer.refreshListKeepSelected();
-		onHitsEntity.refreshListKeepSelected();
-		onFlyingTick.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onHitsBlock.refreshListKeepSelected(context);
+		onHitsPlayer.refreshListKeepSelected(context);
+		onHitsEntity.refreshListKeepSelected(context);
+		onFlyingTick.refreshListKeepSelected(context);
 
 		customModelTexture.reload();
 
@@ -204,12 +213,15 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	@Override protected void openInEditingMode(Projectile projectile) {
 		projectileItem.setBlock(projectile.projectileItem);
 		showParticles.setSelected(projectile.showParticles);
+		disableGravity.setSelected(projectile.disableGravity);
 		actionSound.setSound(projectile.actionSound);
 		power.setValue(projectile.power);
 		damage.setValue(projectile.damage);
 		knockback.setValue(projectile.knockback);
 		igniteFire.setSelected(projectile.igniteFire);
 		customModelTexture.setTextureFromTextureName(projectile.customModelTexture);
+		modelWidth.setValue(projectile.modelWidth);
+		modelHeight.setValue(projectile.modelHeight);
 		onHitsBlock.setSelectedProcedure(projectile.onHitsBlock);
 		onHitsEntity.setSelectedProcedure(projectile.onHitsEntity);
 		onHitsPlayer.setSelectedProcedure(projectile.onHitsPlayer);
@@ -224,12 +236,15 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		Projectile projectile = new Projectile(modElement);
 		projectile.projectileItem = projectileItem.getBlock();
 		projectile.showParticles = showParticles.isSelected();
+		projectile.disableGravity = disableGravity.isSelected();
 		projectile.actionSound = actionSound.getSound();
 		projectile.igniteFire = igniteFire.isSelected();
 		projectile.power = (double) power.getValue();
 		projectile.damage = (double) damage.getValue();
 		projectile.knockback = (int) knockback.getValue();
 		projectile.entityModel = (Objects.requireNonNull(model.getSelectedItem())).getReadableName();
+		projectile.modelWidth = (double) modelWidth.getValue();
+		projectile.modelHeight = (double) modelHeight.getValue();
 		projectile.customModelTexture = customModelTexture.getTextureName();
 		projectile.onHitsBlock = onHitsBlock.getSelectedProcedure();
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();

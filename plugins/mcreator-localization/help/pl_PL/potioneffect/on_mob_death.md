@@ -1,0 +1,1 @@
+Procedurę tę wykonuje się, gdy umrze z takim efektem.

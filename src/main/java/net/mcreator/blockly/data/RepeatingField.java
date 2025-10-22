@@ -23,4 +23,20 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nullable;
 
-public record RepeatingField(String name, @Nullable JsonObject field_definition) {}
+public record RepeatingField(String name, @Nullable JsonObject field_definition) {
+
+	public String getFieldType() {
+		if (field_definition != null && field_definition.has("type")) {
+			return field_definition.get("type").getAsString();
+		}
+		return null;
+	}
+
+	public String getDataList() {
+		if (field_definition != null && field_definition.has("datalist")) {
+			return field_definition.get("datalist").getAsString();
+		}
+		return null;
+	}
+
+}

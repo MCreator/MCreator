@@ -1,0 +1,1 @@
+Wywołuje procedurę z każdego ticku, kiedy interfejs jest otwarty.

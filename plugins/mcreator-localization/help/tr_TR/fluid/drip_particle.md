@@ -1,0 +1,1 @@
+Bu parametre, sıvının bir bloktan damlarken oluşturacağı parçacığı kontrol eder.

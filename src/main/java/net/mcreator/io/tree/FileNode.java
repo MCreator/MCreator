@@ -18,22 +18,34 @@
 
 package net.mcreator.io.tree;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileNode {
+public class FileNode<T> {
 
-	public final List<FileNode> childs;
-	public final List<FileNode> leafs;
+	public final List<FileNode<T>> childs;
+	public final List<FileNode<T>> leafs;
 	public final String data;
 	public final String incrementalPath;
 
+	@Nullable public final T object;
+
 	public FileNode(String nodeValue, String incrementalPath) {
+		this(nodeValue, incrementalPath, null);
+	}
+
+	public FileNode(String nodeValue, String incrementalPath, @Nullable T object) {
 		childs = new ArrayList<>();
 		leafs = new ArrayList<>();
 		data = nodeValue;
 		this.incrementalPath = incrementalPath;
+		this.object = object;
+	}
+
+	@Nullable public T getObject() {
+		return object;
 	}
 
 	public boolean isLeaf() {
@@ -48,30 +60,38 @@ public class FileNode {
 		return path;
 	}
 
-	public void addElement(String currentPath, String[] list) {
-		while (list[0] == null || list[0].isEmpty())
+	void addElement(String currentPath, String[] list, @Nullable T object) {
+		while (list.length > 0 && (list[0] == null || list[0].isEmpty()))
 			list = Arrays.copyOfRange(list, 1, list.length);
 
-		FileNode currentChild = new FileNode(list[0], currentPath + "/" + list[0]);
+		if (list.length == 0) { // No valid elements to process
+			return;
+		}
+
+		FileNode<T> currentChild = new FileNode<>(list[0], currentPath + "/" + list[0], object);
 		if (list.length == 1) {
 			leafs.add(currentChild);
 		} else {
 			int index = childs.indexOf(currentChild);
 			if (index == -1) {
 				childs.add(currentChild);
-				currentChild.addElement(currentChild.incrementalPath, Arrays.copyOfRange(list, 1, list.length));
+				currentChild.addElement(currentChild.incrementalPath, Arrays.copyOfRange(list, 1, list.length), object);
 			} else {
-				FileNode nextChild = childs.get(index);
-				nextChild.addElement(currentChild.incrementalPath, Arrays.copyOfRange(list, 1, list.length));
+				FileNode<T> nextChild = childs.get(index);
+				nextChild.addElement(currentChild.incrementalPath, Arrays.copyOfRange(list, 1, list.length), object);
 			}
 		}
 	}
 
 	@Override public boolean equals(Object obj) {
-		if (obj instanceof FileNode cmpObj) {
+		if (obj instanceof FileNode<?> cmpObj) {
 			return incrementalPath.equals(cmpObj.incrementalPath) && data.equals(cmpObj.data);
 		}
 		return false;
+	}
+
+	@Override public int hashCode() {
+		return (incrementalPath + "@" + data).hashCode();
 	}
 
 	@Override public String toString() {

@@ -1,0 +1,1 @@
+Ten parametr kontroluje czas wydobycia bloku. Im większa wartość, tym dłużej się go wydobywa.

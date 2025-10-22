@@ -1,1 +1,0 @@
-Ce paramètre contrôle combien de structure le jeu générera autour de la première structure générée. Utilisez cette option pour faire des forêts par exemple.

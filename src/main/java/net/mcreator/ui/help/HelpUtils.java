@@ -37,19 +37,19 @@ import java.awt.event.MouseEvent;
 
 public class HelpUtils {
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca) {
+	public static JComponent wrapWithHelpButton(IHelpContext context, Component ca) {
 		return wrapWithHelpButton(context, ca, null, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, int direction) {
+	public static JComponent wrapWithHelpButton(IHelpContext context, Component ca, int direction) {
 		return wrapWithHelpButton(context, ca, null, direction);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac) {
+	public static JComponent wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac) {
 		return wrapWithHelpButton(context, ca, ac, SwingConstants.RIGHT);
 	}
 
-	public static Component wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
+	public static JComponent wrapWithHelpButton(IHelpContext context, Component ca, @Nullable Color ac, int direction) {
 		JComponent lab = helpButton(context);
 
 		if (ac != null)

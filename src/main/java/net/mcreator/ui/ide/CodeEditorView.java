@@ -21,8 +21,8 @@ package net.mcreator.ui.ide;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.io.TrackingFileIO;
+import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -41,6 +41,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -79,7 +80,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class CodeEditorView extends ViewBase {
+public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
 
@@ -130,7 +131,7 @@ public class CodeEditorView extends ViewBase {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
 
-	public CodeEditorView(MCreator fa, String code, String fileName, File fileWorkingOn, boolean readOnly) {
+	public CodeEditorView(MCreator fa, String code, String fileName, @Nullable File fileWorkingOn, boolean readOnly) {
 		super(fa);
 
 		this.fileWorkingOn = fileWorkingOn;
@@ -143,12 +144,12 @@ public class CodeEditorView extends ViewBase {
 
 		setBackground(Theme.current().getBackgroundColor());
 
-		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
+		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, this.fileWorkingOn, fa.getWorkspaceFolder());
 
 		te.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent focusEvent) {
 				super.focusGained(focusEvent);
-				fileBreadCrumb.reloadPath(fileWorkingOn);
+				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
 				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 			}
 		});
@@ -265,7 +266,9 @@ public class CodeEditorView extends ViewBase {
 		JPanel topPan = new JPanel(new BorderLayout());
 		topPan.setOpaque(false);
 		topPan.add("Center", bars);
-		topPan.add("North", fileBreadCrumb);
+
+		if (fileWorkingOn != null)
+			topPan.add("North", fileBreadCrumb);
 
 		add("North", topPan);
 		add("Center", spne);
@@ -278,7 +281,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.buildWorkspace.doAction();
+							fa.getActionRegistry().buildWorkspace.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_build"));
@@ -303,7 +306,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.runClient.doAction();
+							fa.getActionRegistry().runClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_launch"));
@@ -316,7 +319,7 @@ public class CodeEditorView extends ViewBase {
 						@Override public void actionPerformed(ActionEvent actionEvent) {
 							disableJumpToMode();
 							saveCode();
-							fa.actionRegistry.debugClient.doAction();
+							fa.getActionRegistry().debugClient.doAction();
 							if (CodeEditorView.this.mouseEvent != null)
 								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
 										L10N.t("ide.tips.save_and_debug"));
@@ -340,7 +343,7 @@ public class CodeEditorView extends ViewBase {
 
 	private void setupCodeSupport(String fileName) {
 		if (fileName.endsWith(".java")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
 			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
@@ -363,6 +366,7 @@ public class CodeEditorView extends ViewBase {
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
 				method.setAccessible(true);
 				ac = (AutoCompletion) method.invoke(jls, te);
+				ac.setAutoCompleteSingleChoices(false);
 			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
 					 NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
@@ -391,7 +395,7 @@ public class CodeEditorView extends ViewBase {
 
 			te.addKeyListener(new KeyAdapter() {
 
-				private boolean completionInAction = false;
+				private volatile boolean completionInAction = false;
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
@@ -399,13 +403,24 @@ public class CodeEditorView extends ViewBase {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() && Character.isLetterOrDigit(
-							keyEvent.getKeyChar()) && jcp.getAlreadyEnteredText(te).length() > 1) {
+							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							// only smart autocomplete if the char we typed is a letter or digit
+							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// only smart autocomplete if we have at least one char already written
+							!jcp.getAlreadyEnteredText(te).isBlank()
+							// only smart autocomplete if we have more than one completion to choose from
+							// (so it is not applied automatically when we don't want to)
+							&& jcp.getCompletions(te).size() > 1) {
 						if (!completionInAction) {
 							new Thread(() -> {
 								if (ac != null) {
 									completionInAction = true;
-									ThreadUtil.runOnSwingThreadAndWait(() -> ac.doCompletion());
+									ThreadUtil.runOnSwingThreadAndWait(() -> {
+										try {
+											ac.doCompletion();
+										} catch (Throwable ignored) {
+										}
+									});
 									completionInAction = false;
 								}
 							}, "AutoComplete").start();
@@ -461,28 +476,31 @@ public class CodeEditorView extends ViewBase {
 				}
 			});
 		} else if (fileName.endsWith(".mcfunction")) {
-			SwingUtilities.invokeLater(() -> {
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
 				atmf.putMapping("text/mcfunction", MinecraftCommandsTokenMaker.class.getName());
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			SwingUtilities.invokeLater(() -> {
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				try {
 					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 				} catch (Exception ignored) {
 				}
 			});
 		} else if (fileName.endsWith(".xml")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
+			ThreadUtil.runOnSwingThreadAndWait(
+					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
 		} else if (fileName.endsWith(".md")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
+		} else if (fileName.endsWith(".vsh") || fileName.endsWith(".fsh")) {
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 
 			JavaScriptLanguageSupport javaScriptLanguageSupport = new JavaScriptLanguageSupport();
 
@@ -497,7 +515,7 @@ public class CodeEditorView extends ViewBase {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-			SwingUtilities.invokeLater(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
@@ -567,12 +585,15 @@ public class CodeEditorView extends ViewBase {
 			int pos = te.getCaretPosition();
 			String ncode = codeCleanup.reformatTheCodeAndOrganiseImports(mcreator.getWorkspace(), te.getText());
 			te.setText(ncode);
-			te.setCaretPosition(pos);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			int pos = te.getCaretPosition();
 			JsonElement json = JsonParser.parseString(te.getText());
-			te.setText(JSONWriter.gson.toJson(json));
-			te.setCaretPosition(pos);
+			String ncode = JSONWriter.gson.toJson(json);
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		}
 	}
 
@@ -666,9 +687,9 @@ public class CodeEditorView extends ViewBase {
 			}
 		});
 
-		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(fileWorkingOn);
+		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);
 		if (existing == null) {
-			mcreator.mcreatorTabs.addTab(fileTab);
+			mcreator.getTabs().addTab(fileTab);
 			return this;
 		}
 		return (ViewBase) existing.getContent();
@@ -688,7 +709,7 @@ public class CodeEditorView extends ViewBase {
 
 	public static boolean isFileSupported(String fileName) {
 		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg")
+						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
 				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
@@ -715,6 +736,17 @@ public class CodeEditorView extends ViewBase {
 
 	@Nullable public BreakpointHandler getBreakpointHandler() {
 		return breakpointHandler;
+	}
+
+	@Override public void search(@Nullable String searchTerm) {
+		sed.setVisible(true);
+		rep.setVisible(false);
+		disableJumpToMode();
+
+		sed.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			sed.getSearchField().setText(searchTerm);
 	}
 
 }

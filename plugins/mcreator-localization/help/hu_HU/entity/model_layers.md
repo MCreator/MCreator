@@ -1,0 +1,1 @@
+Az alábbi listában szereplő modellrétegek az entitás modelljére kerülnek alkalmazásra.

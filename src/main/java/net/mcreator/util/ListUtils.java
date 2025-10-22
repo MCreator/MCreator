@@ -24,15 +24,19 @@ public class ListUtils {
 
 	private static final Random random = new Random();
 
-	public static <T> List<T> merge(Collection<T> a, Collection<T> b) {
-		List<T> retval = new ArrayList<>(a);
-		retval.addAll(b);
+	@SafeVarargs public static <T> List<T> merge(Collection<T>... collections) {
+		List<T> retval = new ArrayList<>();
+		for (Collection<T> collection : collections) {
+			retval.addAll(collection);
+		}
 		return retval;
 	}
 
-	public static <T> Set<T> mergeNoDuplicates(Collection<T> a, Collection<T> b) {
-		Set<T> retval = new HashSet<>(a);
-		retval.addAll(b);
+	@SafeVarargs public static <T> Set<T> mergeNoDuplicates(Collection<T>... collections) {
+		Set<T> retval = new HashSet<>();
+		for (Collection<T> collection : collections) {
+			retval.addAll(collection);
+		}
 		return retval;
 	}
 

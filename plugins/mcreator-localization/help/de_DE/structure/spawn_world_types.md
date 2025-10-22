@@ -1,1 +1,0 @@
-Benutze dieses Feld, um festzulegen, wo das Spawnen stattfinden soll.

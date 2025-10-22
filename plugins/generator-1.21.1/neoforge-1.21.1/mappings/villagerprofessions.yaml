@@ -1,5 +1,4 @@
 _default: VillagerProfession.ARMORER
-_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNameVillagerProfessions.@REGISTRYNAME.get()"
 ARMORER: VillagerProfession.ARMORER
 BUTCHER: VillagerProfession.BUTCHER

@@ -1,1 +1,1 @@
-Az eredmény neve. Ha nem egy parent (root eredmény) akkor ez lesz az elérési út neve.
+Az előrehaladás neve. Ha nincs szülője (gyökér előrehaladás), akkor ez lesz az útvonal neve.

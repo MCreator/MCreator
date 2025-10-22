@@ -1,0 +1,1 @@
+Ten parametr definiuje priorytet nakładki. Nakładki z "Wysokim" będą renderowane powyżej nakładek z tym parametrem ustawionym na "Niski".

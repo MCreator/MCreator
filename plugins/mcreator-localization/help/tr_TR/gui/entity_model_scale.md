@@ -1,0 +1,1 @@
+Görüntülenen varlık modelinin boyutunu belirler.

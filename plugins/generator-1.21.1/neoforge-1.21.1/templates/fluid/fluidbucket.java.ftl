@@ -38,10 +38,12 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends BucketItem {
 
 	public ${name}Item() {
-		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
-			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.${data.rarity}));
+		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
+			new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
+			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+		);
 	}
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname + "_bucket"/>
 }
 <#-- @formatter:on -->

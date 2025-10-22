@@ -1,1 +1,0 @@
-Bu parametre, bu biyomda göllerin oluşturulup oluşturulmayacağını kontrol eder.

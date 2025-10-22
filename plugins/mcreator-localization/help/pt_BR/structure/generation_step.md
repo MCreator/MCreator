@@ -1,0 +1,1 @@
+Esta opção determina em que estágio da geração do mundo a estrutura deve ser adicionada.

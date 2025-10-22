@@ -1,0 +1,1 @@
+Jeśli ten parametr jest zaznaczony, ten byt będzie wrażliwy na wibracje, takie jak _Nadzorca_.

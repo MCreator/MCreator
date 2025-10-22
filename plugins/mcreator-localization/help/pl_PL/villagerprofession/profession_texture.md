@@ -1,0 +1,1 @@
+Tekstura Wieśniaka w danej profesji.

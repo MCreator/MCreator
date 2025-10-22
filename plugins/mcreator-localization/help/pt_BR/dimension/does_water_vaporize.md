@@ -1,0 +1,1 @@
+Este parâmetro desabilitará a água na dimensão. Quando a água é colocada em tal dimensão, ela irá desaparecer instantaneamente, então colocar a água não é possível.

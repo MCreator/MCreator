@@ -1,0 +1,1 @@
+Ten parametr kontroluje ile przedmiotów lub bloków zostanie upuszczonych, gdy ten blok jest uszkodzony.

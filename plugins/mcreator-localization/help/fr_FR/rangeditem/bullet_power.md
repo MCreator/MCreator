@@ -1,1 +1,0 @@
-Ce paramètre contrôle la vitesse de la balle (son énergie cinétique).

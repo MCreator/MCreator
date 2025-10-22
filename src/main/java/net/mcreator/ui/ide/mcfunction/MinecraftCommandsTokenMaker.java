@@ -1061,6 +1061,13 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	}
 
 	/**
+	 * Returns the current lexical state.
+	 */
+	public final int yystate() {
+		return zzLexicalState;
+	}
+
+	/**
 	 * Enters a new lexical state
 	 *
 	 * @param newState the new lexical state

@@ -1,0 +1,1 @@
+Aciona um procedimento quando este botão é clicado.

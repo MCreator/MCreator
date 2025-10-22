@@ -1,0 +1,1 @@
+Ez a blokk állapot tulajdonság alapértelmezett értéke, amikor a blokkot generálják/elhelyezik a világban.

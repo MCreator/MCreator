@@ -117,12 +117,18 @@ public class SplashScreen extends JWindow {
 
 	public static BaseMultiResolutionImage getSplashImage(boolean darken) {
 		Image splash2x = UIRES.getBuiltIn("splash").getImage();
-		Image splash1x = ImageUtils.resize(splash2x, splash2x.getWidth(null) / 2, splash2x.getHeight(null) / 2);
+		Image splash1x = ImageUtils.resizeAA(splash2x, splash2x.getWidth(null) / 2, splash2x.getHeight(null) / 2);
 		if (darken) {
 			splash1x = ImageUtils.darken(ImageUtils.toBufferedImage(splash1x));
 			splash2x = ImageUtils.darken(ImageUtils.toBufferedImage(splash2x));
 		}
 		return new BaseMultiResolutionImage(splash1x, splash2x);
+	}
+
+	@Override public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		super.paint(g2d);
 	}
 
 }

@@ -29,7 +29,6 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalizationUtils {
 
@@ -50,9 +49,9 @@ public class LocalizationUtils {
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
 
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
 			StringBuilder langFileContent = new StringBuilder();
-			ConcurrentHashMap<String, String> entries = entry.getValue();
+			LinkedHashMap<String, String> entries = entry.getValue();
 			for (Map.Entry<String, String> lang_entry : entries.entrySet()) {
 				langFileContent.append(lang_entry.getKey()).append("=").append(lang_entry.getValue()).append("\n");
 			}
@@ -72,8 +71,8 @@ public class LocalizationUtils {
 		generator.getLangFilesRoot().mkdirs();
 		FileIO.emptyDirectory(generator.getLangFilesRoot()); // remove old localizations
 
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
-			ConcurrentHashMap<String, String> entries = entry.getValue();
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
+			LinkedHashMap<String, String> entries = entry.getValue();
 			String fileName = GeneratorTokens.replaceTokens(workspace, rawName.replace("@langname", entry.getKey()));
 			FileIO.writeStringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(entries),
 					new File(generator.getLangFilesRoot(), fileName));
@@ -107,6 +106,7 @@ public class LocalizationUtils {
 						null;
 
 				if (fromlist instanceof Collection<?> listEntries) {
+					int i = 0;
 					for (Object entry : listEntries) {
 						String key = GeneratorTokens.replaceVariableTokens(entry,
 								GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
@@ -115,6 +115,7 @@ public class LocalizationUtils {
 												.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
 												.replace("@registryname", element.getModElement().getRegistryName())
 												.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
+												.replace("@item_index", Integer.toString(i++))
 												//@formatter:on
 								));
 						keysToEntries.put(key, new Tuple<>(map, entry));
@@ -138,27 +139,32 @@ public class LocalizationUtils {
 
 	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
-			String mapto = (String) template.get("mapto");
-			String value = (String) (mapto.contains("()") ?
-					entry.getClass().getMethod(mapto.replace("()", "").trim()).invoke(entry) :
-					entry.getClass().getField(mapto.trim()).get(entry));
-
-			String suffix = (String) template.get("suffix");
-			if (suffix != null)
-				value += suffix;
-
-			String prefix = (String) template.get("prefix");
-			if (prefix != null)
-				value = prefix + value;
-
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, template, entry)) {
 				// If localization key is skipped, we make sure to remove the localization entry
 				generator.getWorkspace().removeLocalizationEntryByKey(key);
 			} else {
+				// Only process value if we are adding it
+				String mapto = (String) template.get("mapto");
+				String value;
+				if (mapto == null) {
+					value = (String) entry;
+				} else {
+					Object rawValue = TemplateExpressionParser.getValueFrom(mapto, entry);
+					value = rawValue != null ? rawValue.toString() : "";
+				}
+
+				String suffix = (String) template.get("suffix");
+				if (suffix != null)
+					value += suffix;
+
+				String prefix = (String) template.get("prefix");
+				if (prefix != null)
+					value = prefix + value;
+
 				generator.getWorkspace().setLocalization(key, value);
 			}
-		} catch (ReflectiveOperationException e) {
-			generator.getLogger().error("Failed to parse values", e);
+		} catch (Throwable e) {
+			generator.getLogger().error("Failed to parse values for key {}", key, e);
 		}
 	}
 

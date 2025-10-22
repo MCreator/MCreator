@@ -1,0 +1,1 @@
+Ha a feltétel meg van adva, ez a sprite csak akkor jeleníthető meg, ha teljesül.

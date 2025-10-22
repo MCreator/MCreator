@@ -1,0 +1,1 @@
+Skriver ett meddelande i chatten när spelaren slutför framsteget.

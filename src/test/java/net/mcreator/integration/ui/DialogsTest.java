@@ -43,8 +43,6 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,15 +64,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		// we create a new workspace
-		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-		workspaceSettings.setModName("Test mod");
-		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
-
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-
-		mcreator = new MCreator(null, workspace);
+		mcreator = MCreator.create(null,
+				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, false, null));
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
@@ -91,9 +82,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
-						GeneratorFlavor.FORGE, true));
+		for (GeneratorConfiguration generatorConfiguration : Generator.GENERATOR_CACHE.values()) {
+			UITestUtil.waitUntilWindowIsOpen(mcreator,
+					() -> GeneratorSelector.getGeneratorSelector(mcreator, generatorConfiguration, null, true));
+		}
 	}
 
 	@Test public void testProgressDialog() throws Throwable {
@@ -145,15 +137,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> ArmorPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> MaterialPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> OrePackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> OrePackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> ToolPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> ToolPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> WoodPackMakerTool.getAction(mcreator.actionRegistry).doAction());
+				() -> WoodPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 	}
 
 	@Test public void testWYSIWYGDialogs() throws Throwable {
@@ -172,6 +164,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testAIConditionEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
+	}
+
+	@Test public void testAddBlockPropertyDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddBlockPropertyDialog.showCreateDialog(mcreator,
+				List.of(new PropertyData.LogicType("ENABLED"), new PropertyData.IntegerType("CUSTOM:test", 0, 7),
+						new PropertyData.StringType("CUSTOM:property", new String[] { "logic", "integer", "string" })),
+				List::of));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddBlockPropertyDialog.showImportDialog(mcreator,
+				List.of(new PropertyData.LogicType("ENABLED"), new PropertyData.IntegerType("CUSTOM:test", 0, 7),
+						new PropertyData.StringType("CUSTOM:property", new String[] { "logic", "integer", "string" })),
+				List::of));
+	}
+
+	@Test public void testAddEntityPropertyDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> AddEntityPropertyDialog.showDialog(mcreator, List.of(new PropertyData.LogicType("test"))));
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {
@@ -241,6 +249,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 			UITestUtil.waitUntilWindowIsOpen(mcreator,
 					() -> new TypedTextureSelectorDialog(mcreator, type).setVisible(true));
 		}
+	}
+
+	@Test public void testPlacementHelperDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PlacementHelperDialog(null, mcreator));
 	}
 
 }

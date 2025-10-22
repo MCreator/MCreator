@@ -1,0 +1,1 @@
+This procedure will be executed each tick when the item is inside the inventory of a player.

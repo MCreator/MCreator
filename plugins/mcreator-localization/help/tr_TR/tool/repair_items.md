@@ -1,0 +1,1 @@
+Aletin bir örs içinde tamir edilebileceği öğe(ler).

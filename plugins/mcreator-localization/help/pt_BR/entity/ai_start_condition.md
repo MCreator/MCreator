@@ -1,0 +1,1 @@
+Se especificado, a entidade começará a executar esta tarefa somente se passar nesta condição.

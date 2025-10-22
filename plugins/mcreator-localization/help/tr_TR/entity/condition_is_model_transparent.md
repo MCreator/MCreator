@@ -1,0 +1,1 @@
+Döndürülen değer "evet" olduğunda, varlık şeffaf olacaktır. Bir oyuncu seyirci modundayken, bu koşulu karşılar.

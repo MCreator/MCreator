@@ -1,0 +1,1 @@
+Ez a játékszabály alapértelmezett értéke. A játékszabálynak ez az értéke lesz, amíg valami a játékban (játékos vagy parancs) meg nem változtatja.

@@ -1,0 +1,1 @@
+This is a preview of the white pattern when it's applied on a black banner, with the front face on the left.

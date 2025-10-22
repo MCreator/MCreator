@@ -1,0 +1,1 @@
+Ha meg van adva, az entitás addig fogja végrehajtani ezt a feladatot, amíg teljesíti ezt a feltételt.

@@ -1,0 +1,1 @@
+Este parâmetro controla a rapidez com que o fogo se espalha para outros blocos.

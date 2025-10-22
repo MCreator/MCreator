@@ -1,0 +1,3 @@
+Ha további feltételeket szeretne hozzáadni a növény elhelyezéséhez, annak ellenére, hogy a blokkon kell lennie, adja meg itt a visszatérési értékkel rendelkező eljárását.
+
+MEGJEGYZÉS: Felülírja a növénytípus elhelyezési feltételét, és kiegészíti a „elhelyezhető” blokkok listáját ezzel a további feltétellel. Ha a „elhelyezhető” blokkok listája üres, akkor ez az eljárás szolgál fő elhelyezési/növekedési feltételként.

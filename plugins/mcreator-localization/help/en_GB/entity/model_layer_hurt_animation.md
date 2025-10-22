@@ -1,0 +1,1 @@
+Unless checked, the red overlay will be shown on this layer when the entity is hurt.

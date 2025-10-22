@@ -38,14 +38,14 @@ public class CanvasResize extends Change {
 	@Override public void apply() {
 		canvas.setWidth(afterwidth);
 		canvas.setHeight(afterheight);
-		canvas.getCanvasRenderer().recalculateBounds();
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().recalculateBounds();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 
 	@Override public void revert() {
 		canvas.setWidth(prevwidth);
 		canvas.setHeight(prevheight);
-		canvas.getCanvasRenderer().recalculateBounds();
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().recalculateBounds();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 	}
 }

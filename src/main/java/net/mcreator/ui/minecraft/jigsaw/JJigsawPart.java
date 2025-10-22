@@ -47,7 +47,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
 	private final MCItemListField ignoreBlocks;
 
-	public JJigsawPart(MCreator mcreator, JPanel parent, List<JJigsawPart> entryList) {
+	public JJigsawPart(MCreator mcreator, JJigsawPool listParent, JPanel parent, List<JJigsawPart> entryList) {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
@@ -91,6 +91,9 @@ public class JJigsawPart extends JPanel implements IValidable {
 			parent.remove(container);
 			parent.revalidate();
 			parent.repaint();
+
+			// A "hack" to notify parent list of entry removal since we have nested entry lists
+			listParent.registerEntryUI(null);
 		});
 
 		add("West", line);

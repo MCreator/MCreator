@@ -1,1 +1,0 @@
-Il blocco principale della dimensione come la pietra per l'Overworld

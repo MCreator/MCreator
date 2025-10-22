@@ -1,0 +1,3 @@
+Ez a trigger akkor indítja el az eljárást, amikor egy játékos jobb gombbal rákattint erre az entitásra.
+
+Az eljárásnak SUCCESS/CONSUME típusú műveleti eredményt kell visszaadnia, ha interakció történt az entitással, FAIL típust, ha az interakció sikertelen volt, és PASS típusút, ha nem történt interakció. Ha az eljárás nem ad vissza értéket, a műveleti eredmény típusát az határozza meg, hogy az entitás lovagolható-e, szelídíthető-e, vagy megnyit-e egy GUI-t.

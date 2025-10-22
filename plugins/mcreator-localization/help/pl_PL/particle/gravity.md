@@ -1,0 +1,1 @@
+Ten parametr określa prędkość spadania cząstek stałych. Wartości ujemne sprawią, że cząstki te latają do nieba.

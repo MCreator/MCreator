@@ -1,0 +1,1 @@
+Ha ez az opció engedélyezve van, a blokk csak akkor esik le, ha a megadott betakarító eszközzel törik meg.

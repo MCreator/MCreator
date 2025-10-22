@@ -1,1 +1,0 @@
-Legen Sie den Lichtwert fest, wenn Ihre Flüssigkeit. Wenn Sie den Wert auf 0 setzen, wird das Licht deaktiviert.

@@ -52,6 +52,6 @@ public class Consolidation extends MultiStateChange {
 	 */
 	private void updatePastedStates() {
 		canvas.floatingCheck(layer);
-		canvas.getLayerPanel().updateControls();
+		canvas.getImageMakerView().getLayerPanel().updateControls();
 	}
 }

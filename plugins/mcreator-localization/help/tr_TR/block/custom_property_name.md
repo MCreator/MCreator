@@ -1,0 +1,1 @@
+Bu parametre, bu özel blok özelliğinin adını belirtir.

@@ -1,0 +1,1 @@
+Wywołuje procedurę, gdy dany przedmiot jest wsadzany lub zabierany z tego miejsca

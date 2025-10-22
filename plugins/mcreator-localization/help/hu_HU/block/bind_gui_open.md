@@ -1,0 +1,1 @@
+Ha ez a paraméter be van jelölve, ez a blokk megnyitja a hozzárendelt GUI-t jobb kattintásra.

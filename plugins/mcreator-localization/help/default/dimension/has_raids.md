@@ -1,0 +1,1 @@
+If this option is enabled, players can trigger raids inside this dimension.

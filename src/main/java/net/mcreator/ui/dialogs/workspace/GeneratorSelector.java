@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -84,14 +85,21 @@ public class GeneratorSelector {
 
 			genStats.add(new JEmptyBox(15, 15));
 
-			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 5, 7, 2));
+			JPanel baseCoverageInfo = new JPanel(new GridLayout(-1, 4, 5, 2));
 
 			addStatusLabel(L10N.t(covpfx + "textures"), stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "sounds"), stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
-			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
-					baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
+						baseCoverageInfo);
+
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
-			addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
@@ -101,13 +109,24 @@ public class GeneratorSelector {
 				addStatusLabel(L10N.t(covpfx + "java_models"), stats.getBaseCoverageInfo().get("model_java"),
 						baseCoverageInfo);
 
-			addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
-					baseCoverageInfo);
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
+						baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
 					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
+				addStatusLabel(L10N.t(covpfx + "java_model_animations"),
+						stats.getBaseCoverageInfo().get("model_animations_java"), baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION)
+				addStatusLabel(L10N.t(covpfx + "vanilla_resources"),
+						stats.getBaseCoverageInfo().get("vanilla_resources"), baseCoverageInfo);
 
 			genStats.add(
 					PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.features"), baseCoverageInfo,
@@ -118,8 +137,10 @@ public class GeneratorSelector {
 			JPanel supportedModTypes = new JPanel(new GridLayout(-1, 5, 7, 2));
 			for (Map.Entry<ModElementType<?>, GeneratorStats.CoverageStatus> typeCoverageInfo : stats.getModElementTypeCoverageInfo()
 					.entrySet()) {
-				addStatusLabel(typeCoverageInfo.getKey().getReadableName(), typeCoverageInfo.getValue(),
-						supportedModTypes);
+				if (typeCoverageInfo.getKey().getCoveredFlavors().contains(generatorConfiguration.getGeneratorFlavor())
+						|| typeCoverageInfo.getValue() != GeneratorStats.CoverageStatus.NONE)
+					addStatusLabel(typeCoverageInfo.getKey().getReadableName(), typeCoverageInfo.getValue(),
+							supportedModTypes);
 			}
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.mod_element_types"),
 					supportedModTypes, 10, 10));
@@ -161,7 +182,9 @@ public class GeneratorSelector {
 		JScrollPane pane = new JScrollPane(statsPan);
 		pane.getVerticalScrollBar().setUnitIncrement(10);
 
-		mainPanel.add("Center", pane);
+		if (currentFlavor != GeneratorFlavor.RESOURCEPACK) {
+			mainPanel.add("Center", pane);
+		}
 
 		generator.addActionListener(e -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
@@ -203,6 +226,10 @@ public class GeneratorSelector {
 	}
 
 	private static void addStatsBar(String label, String registry, JPanel supportedElements, GeneratorStats stats) {
+		if ((stats.getCoverageInfo().get(registry) == null || stats.getCoverageInfo().get(registry).intValue() == 0)
+				&& !Launcher.version.isDevelopment())
+			return;
+
 		JProgressBar bar = new JProgressBar();
 		bar.setMaximum(100);
 		bar.setPreferredSize(new Dimension(0, 0));

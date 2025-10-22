@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "if_true",
+      "check": "BlockPredicate"
+    },
+    {
+      "type": "input_value",
+      "name": "then",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "inputsInline": true,
+  "output": "DiskRule",
+  "colour": "290",
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "group": "featureDisk",
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<value name=\"if_true\"><block type=\"block_predicate_is_air\"></block></value>",
+      "<value name=\"then\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
+    ],
+    "inputs": [
+      "if_true",
+      "then"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+This parameter controls the speed of the projectile (its kinetic energy).

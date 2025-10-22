@@ -1,0 +1,1 @@
+Estas são as árvores que podem crescer se as mudas estiverem em uma configuração de 2x2. Usadas por mega árvores.

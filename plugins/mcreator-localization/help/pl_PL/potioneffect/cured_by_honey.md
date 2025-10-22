@@ -1,0 +1,1 @@
+Jeżeli opcja jest wybrana, efekt będzie wyleczony po wypiciu butelki miodu.

@@ -1,0 +1,1 @@
+Jeśli opcja jest włączona, wszyscy gracze na świecie będą mieli ten atrybut i ustawią go jako domyślną wartość podczas dołączania do świata.

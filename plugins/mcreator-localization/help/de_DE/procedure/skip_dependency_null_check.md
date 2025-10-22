@@ -1,0 +1,3 @@
+Wenn diese Option aktiviert ist, wird die Prozedur auch durchgeführt, wenn eine der Abhängigkeiten ungültig ist. Gültigkeitsprüfungen sollten stattdessen händisch in die Prozedur eingebaut werden. Dies ist über den Gültigkeitsprüfenden Prozedur-Block im Tab "Fortgeschritten???" möglich.
+
+**Ungeprüfte Gültigkeitswerte können das Spiel abstürzen lassen**, daher sollte diese Option in den meisten Fällen deaktiviert sein.

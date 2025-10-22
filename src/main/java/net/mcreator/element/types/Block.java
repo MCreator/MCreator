@@ -20,36 +20,36 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox {
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -64,10 +64,14 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
+	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
+
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	public String blockBase;
+	public String blockSetType;
+	public MItemBlock pottedPlant;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -79,17 +83,26 @@ import java.util.stream.Collectors;
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
 
+	public List<PropertyDataWithValue<?>> customProperties;
+
 	public String name;
 	public StringListProcedure specialInformation;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
-	public List<TabEntry> creativeTabs;
+
+	public boolean hasBlockItem;
+	public int maxStackSize;
+	public String rarity;
+	public boolean immuneToFire;
+	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
+	public int xpAmountMin;
+	public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
@@ -97,7 +110,6 @@ import java.util.stream.Collectors;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public int lightOpacity;
-	public Material material;
 
 	public int tickRate;
 	public boolean tickRandomly;
@@ -106,11 +118,14 @@ import java.util.stream.Collectors;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
+	public String noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	public String offsetType;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
+	public MItemBlock strippingResult;
 
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 
@@ -142,8 +157,14 @@ import java.util.stream.Collectors;
 	public Procedure bonemealSuccessCondition;
 	public Procedure onBonemealSuccess;
 
+	public boolean sensitiveToVibration;
+	public List<GameEventEntry> vibrationalEvents;
+	public NumberProcedure vibrationSensitivityRadius;
+	public Procedure canReceiveVibrationCondition;
+	public Procedure onReceivedVibration;
+
 	public boolean hasInventory;
-	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -151,6 +172,8 @@ import java.util.stream.Collectors;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
 	public List<Integer> inventoryInSlotIDs;
+	public Procedure inventoryAutomationTakeCondition;
+	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
 	public int energyInitial;
@@ -176,6 +199,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOn;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
+	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
@@ -193,8 +217,14 @@ import java.util.stream.Collectors;
 	public Block(ModElement element) {
 		super(element);
 
+		this.hasBlockItem = true;
+		this.maxStackSize = 64;
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 
+		this.customProperties = new ArrayList<>();
+
+		this.blockSetType = "OAK";
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -203,6 +233,7 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.colorOnMap = "DEFAULT";
+		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
@@ -215,10 +246,14 @@ import java.util.stream.Collectors;
 		this.energyMaxReceive = 200;
 		this.energyMaxExtract = 200;
 		this.fluidCapacity = 8000;
+
+		this.vibrationalEvents = new ArrayList<>();
+
+		this.animations = new ArrayList<>();
 	}
 
 	public int renderType() {
-		if (blockBase != null && !blockBase.isEmpty())
+		if (blockBase != null && !blockBase.isEmpty() && !blockBase.equals("FlowerPot"))
 			return -1;
 		return renderType;
 	}
@@ -240,7 +275,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
-		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
+		return guiBoundTo != null && openGUIOnRightClick;
 	}
 
 	public boolean shouldScheduleTick() {
@@ -251,10 +286,15 @@ import java.util.stream.Collectors;
 		return disableOffset || offsetType.equals("NONE");
 	}
 
+	public boolean hasDrops() {
+		return dropAmount > 0 && (hasBlockItem || hasCustomDrop() || "FlowerPot".equals(blockBase));
+	}
+
 	@Override public boolean isFullCube() {
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
-				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase))
+				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
+				|| "FlowerPot".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -266,6 +306,8 @@ import java.util.stream.Collectors;
 			modelType = Model.Type.JSON;
 		else if (renderType == 3)
 			modelType = Model.Type.OBJ;
+		else if (renderType == 4)
+			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
@@ -285,31 +327,33 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		if (renderType() == 10) {
+		if ((hasBlockItem && itemTexture != null && !itemTexture.isEmpty()) || (renderType() == 4)) {
+			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
+		} else if (renderType() == 10) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
-		} else if (renderType() == 11 || renderType() == 110 || (blockBase != null && blockBase.equals("Leaves"))) {
+		} else if (renderType() == 11 || renderType() == 110 || "Leaves".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getMainTexture(), getMainTexture(),
 					getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Slab")) {
+		} else if ("Slab".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateSlabIcon(getTextureWithFallback(textureTop),
 					getTextureWithFallback(textureFront));
-		} else if (blockBase != null && blockBase.equals("TrapDoor")) {
+		} else if ("TrapDoor".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateTrapdoorIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Stairs")) {
+		} else if ("Stairs".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateStairsIcon(
 					getTextureWithFallback(textureTop), getTextureWithFallback(textureFront));
-		} else if (blockBase != null && blockBase.equals("Wall")) {
+		} else if ("Wall".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateWallIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Fence")) {
+		} else if ("Fence".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("FenceGate")) {
+		} else if ("FenceGate".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateFenceGateIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("EndRod")) {
+		} else if ("EndRod".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateEndRodIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("PressurePlate")) {
+		} else if ("PressurePlate".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Button")) {
+		} else if ("Button".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
@@ -322,11 +366,15 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return providedMCItems();
+		return hasBlockItem ? providedMCItems() : Collections.emptyList();
+	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
 	}
 
 	private Image getMainTexture() {
@@ -347,8 +395,16 @@ import java.util.stream.Collectors;
 		return transparencyType.toLowerCase(Locale.ENGLISH);
 	}
 
+	@Override public boolean hasCustomItemProperties() {
+		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
+		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
+
+		if (hasBlockItem) {
+			baseTypes.add(BaseType.ITEM);
+		}
 
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
@@ -361,6 +417,10 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
+	}
+
+	public Set<String> getVibrationalEvents() {
+		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
 	}
 
 	public TextureHolder textureTop() {
@@ -385,6 +445,15 @@ import java.util.stream.Collectors;
 
 	public TextureHolder getParticleTexture() {
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
+	}
+
+	public static class AnimationEntry {
+
+		public Animation animation;
+		public double speed;
+
+		public Procedure condition;
+
 	}
 
 }

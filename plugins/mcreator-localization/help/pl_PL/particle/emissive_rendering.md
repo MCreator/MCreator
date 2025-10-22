@@ -1,0 +1,1 @@
+Sprawdź, czy ta właściwość ma efekt świecący (podobny do cząsteczki płomienia) nałożony na cząstki stałe.

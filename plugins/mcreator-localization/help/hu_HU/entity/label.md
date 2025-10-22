@@ -1,0 +1,1 @@
+Ez lehetővé teszi a moboknak, hogy egy nevet állítsanak be, amely a fejük felett jelenik meg, hasonlóan ahhoz, ahogy a játékosok nevei vagy névtáblái megjelennek.

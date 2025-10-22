@@ -1,0 +1,1 @@
+Esta configuração permite que você gere portais em ruínas no seu bioma.

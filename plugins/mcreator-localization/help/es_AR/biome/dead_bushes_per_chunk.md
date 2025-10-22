@@ -1,1 +1,0 @@
-Este parámetro controla el número de Arbustos Muertos/Secos en un solo chunk del bioma

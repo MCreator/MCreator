@@ -1,0 +1,1 @@
+Este parâmetro controla a altura desta pintura (em unidades de bloco).

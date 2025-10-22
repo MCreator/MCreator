@@ -43,6 +43,8 @@ import java.util.Collections;
 
 public class TextureComboBox extends JPanel implements IValidable {
 
+	private final Texture prototype;
+
 	private final Texture empty;
 
 	private final MCreator mcreator;
@@ -71,7 +73,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 		this.defaultTextureName = defaultTextureName;
 
 		comboBox.setRenderer(new Renderer());
-		comboBox.setPrototypeDisplayValue(new Texture.Dummy(textureType, "XXXXXXXXXXXXXXXXXXXXXXXXX"));
+		comboBox.setPrototypeDisplayValue(prototype = new Texture.Dummy(textureType, "XXXXXXXXXXXXXXXXXXXXXXXXX"));
 		ComponentUtils.deriveFont(comboBox, 16);
 
 		this.empty = new Texture.Dummy(textureType, defaultTextureName);
@@ -167,7 +169,6 @@ public class TextureComboBox extends JPanel implements IValidable {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Texture> list, Texture value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-
 			if (isSelected) {
 				setBackground(list.getSelectionBackground());
 				setForeground(list.getSelectionForeground());
@@ -176,7 +177,10 @@ public class TextureComboBox extends JPanel implements IValidable {
 				setForeground(list.getForeground());
 			}
 
-			if (value != null) {
+			if (value == prototype) {
+				setText("");
+				setIcon(new EmptyIcon(30, 30));
+			} else if (value != null) {
 				setText(value.getTextureName());
 				ImageIcon imageIcon = value.getTextureIcon(mcreator.getWorkspace());
 				if (imageIcon != null) {

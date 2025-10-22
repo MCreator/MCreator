@@ -1,3 +1,3 @@
-Liste der zu generierenden Biome in dieser Dimension. Biome definieren alle Eigenschaften für Dimension Regionen wie Pflanzenarten, Bäume, Strukturen und Mob-Spawnungseigenschaften.
+Die Liste an Biomen die in dieser Dimension generiert werden. Die Biome bestimme alle Eigenschaften der Dimensionsregionen wie Pflanzentypen, Bäume, Strukuturen und Mob-Spawning-Eigenschaften.
 
-Die Dimension wird die Biome entsprechend den Biomigenschaften verteilen.
+Die Dimension wird die Biome gleichmäßig und entsprechend der Biom-Eigenschaften verteilen.

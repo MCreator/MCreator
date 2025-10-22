@@ -32,6 +32,8 @@ import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -167,6 +169,26 @@ public class MinecraftImageGenerator {
 		return bi;
 	}
 
+	public static BufferedImage generateSliderBackground(int width, int height) {
+		if (height < 5)
+			height = 5;
+		if (width < 5)
+			width = 5;
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) bi.getGraphics();
+
+		g.setColor(new Color(0x2c2c2c)); //filler color
+		g.fillRect(0, 0, width, height);
+
+		g.setColor(Color.black); //top border color
+		g.drawLine(0, 0, width - 1, 0); //top border
+		g.drawLine(0, 1, 0, height - 1); //left border
+		g.drawLine(width - 1, 0, width - 1, height - 1); //right border
+		g.drawLine(0, height - 1, width - 2, height - 1); //bottom border
+
+		return bi;
+	}
+
 	public static BufferedImage generateInventorySlots() {
 		int width = 176, height = 166;
 		int startx = 7;
@@ -198,6 +220,28 @@ public class MinecraftImageGenerator {
 		ImageIcon base = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_base"), baseColor, false);
 		ImageIcon dots = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_dots"), dotColor, true);
 		return ImageUtils.drawOver(base, dots);
+	}
+
+	public static ImageIcon generateItemWithCount(MCItem item, int count) {
+		Image baseImage = item.icon.getImage();
+
+		BufferedImage itemImage = new BufferedImage(baseImage.getWidth(null), baseImage.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = itemImage.createGraphics();
+		g.drawImage(baseImage, 0, 0, null);
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setFont(g.getFont().deriveFont(16f).deriveFont(Font.BOLD));
+
+		String text = String.valueOf(count);
+		FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, false);
+		int width = (int) (g.getFont().getStringBounds(text, frc).getWidth());
+
+		g.drawString(text, itemImage.getWidth() - width, itemImage.getHeight() - 2);
+
+		g.dispose();
+
+		return new ImageIcon(itemImage);
 	}
 
 	public static class Preview {
@@ -1397,6 +1441,55 @@ public class MinecraftImageGenerator {
 
 			graphics2D.dispose();
 			return icon;
+		}
+
+		/**
+		 * This method generates an element preview for banner patterns.
+		 *
+		 * @param texture The pattern texture
+		 * @return Returns generated image.
+		 */
+		public static BufferedImage generateBannerPatternPreviewPicture(Image texture) {
+			BufferedImage patternOverlay = new BufferedImage(48, 48, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = patternOverlay.createGraphics();
+			// Draw banner background
+			g2d.setColor(Color.gray);
+			g2d.fillRect(14, 0, 20, 2);
+			g2d.fillRect(23, 42, 2, 6);
+			g2d.setColor(Color.black);
+			g2d.fillRect(14, 2, 20, 40);
+			// Get white overlay
+			var patternFront = ImageUtils.crop(ImageUtils.toBufferedImage(ImageUtils.resize(texture, 64)),
+					new Rectangle(1, 1, 20, 40));
+			g2d.drawImage(patternFront, 14, 2, 20, 40, null);
+			g2d.dispose();
+			return patternOverlay;
+		}
+
+		public static Image generateBannerPatternPreview() {
+			BufferedImage image = new BufferedImage(210, 210, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			g.setColor(Color.white);
+			g.drawRect(5, 0, 99, 4); // TOP
+			g.drawRect(0, 5, 4, 199); // LEFT
+			g.drawRect(5, 5, 99, 199); // FRONT
+			g.drawRect(105, 5, 4, 199); // RIGHT
+			g.drawRect(110, 5, 99, 199); // BACK
+			g.drawRect(5, 205, 99, 4); // BOTTOM
+			return image;
+		}
+
+		public static Image generateShieldPatternPreview() {
+			BufferedImage image = new BufferedImage(130, 120, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			g.setColor(Color.white);
+			g.drawRect(5, 0, 59, 4); // TOP
+			g.drawRect(0, 5, 4, 109); // LEFT
+			g.drawRect(5, 5, 59, 109); // FRONT
+			g.drawRect(65, 5, 4, 109); // RIGHT
+			g.drawRect(70, 5, 59, 109); // BACK
+			g.drawRect(5, 115, 59, 4); // BOTTOM
+			return image;
 		}
 	}
 

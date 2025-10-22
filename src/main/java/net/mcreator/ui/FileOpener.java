@@ -31,13 +31,13 @@ public class FileOpener {
 
 	public static void openFile(MCreator mcreator, Object file) {
 		if (CodeEditorView.isFileSupported(file.toString())) {
-			if (file instanceof FileNode node)
+			if (file instanceof FileNode<?> node)
 				ProjectFileOpener.openCodeFileRO(mcreator, node);
 			else if (file instanceof File code)
 				ProjectFileOpener.openCodeFile(mcreator, code);
 		} else if (ImageMakerView.isFileSupported(file.toString())) {
 			ImageMakerView imageMakerView = new ImageMakerView(mcreator);
-			if (file instanceof FileNode node)
+			if (file instanceof FileNode<?> node)
 				imageMakerView.openInReadOnlyMode(node);
 			else if (file instanceof File pic)
 				imageMakerView.openInEditMode(pic);

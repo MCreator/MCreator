@@ -1,0 +1,1 @@
+Este parâmetro controla certos aspectos da dimensão em relação ao clima, função da bússola e geração de criaturas.

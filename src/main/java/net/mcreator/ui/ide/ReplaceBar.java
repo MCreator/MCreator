@@ -29,6 +29,8 @@ import org.fife.ui.rtextarea.SearchResult;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -37,22 +39,21 @@ public class ReplaceBar extends JPanel {
 	private final JTextField jtf1 = new JTextField(40);
 	private final JTextField jtf2 = new JTextField(40);
 
-	private final JCheckBox cb2 = new JCheckBox("Regex");
-	private final JCheckBox cb3 = new JCheckBox("Match Case");
-	private final JCheckBox cb4 = new JCheckBox("Words");
-	private final JCheckBox cb5 = new JCheckBox("Selection");
+	private final JCheckBox cb2 = L10N.checkbox("ide.search.regex");
+	private final JCheckBox cb3 = L10N.checkbox("ide.search.match_case");
+	private final JCheckBox cb4 = L10N.checkbox("ide.search.whole_words");
 
 	private final RTextArea ra;
+	private final SearchContext context = new SearchContext();
+	private final JLabel matches = new JLabel();
 
 	ReplaceBar(RTextArea ra) {
 		super(new BorderLayout(0, 1));
-
 		this.ra = ra;
 
 		jtf1.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 		jtf2.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
-		final JLabel matches = new JLabel();
 		matches.setForeground(Theme.current().getAltForegroundColor());
 
 		JToolBar top = new JToolBar();
@@ -68,22 +69,7 @@ public class ReplaceBar extends JPanel {
 		jtf1.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
 				super.keyReleased(keyEvent);
-				SearchContext context = new SearchContext();
-				context.setSearchFor(jtf1.getText());
-				context.setMatchCase(cb3.isSelected());
-				context.setRegularExpression(cb2.isSelected());
-				context.setWholeWord(cb4.isSelected());
-				context.setSearchSelectionOnly(cb5.isSelected());
-				context.setSearchWrap(true);
-
-				SearchResult marked = SearchEngine.markAll(ra, context);
-
-				matches.setText(marked.getMarkedCount() + " results");
-				if (marked.getMarkedCount() > 0) {
-					matches.setForeground(Theme.current().getAltForegroundColor());
-				} else {
-					matches.setForeground(new Color(239, 96, 96));
-				}
+				updateSearch();
 
 				if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
 					SearchEngine.find(ra, context);
@@ -92,6 +78,10 @@ public class ReplaceBar extends JPanel {
 				}
 			}
 		});
+
+		cb2.addActionListener(e -> updateSearch());
+		cb3.addActionListener(e -> updateSearch());
+		cb4.addActionListener(e -> updateSearch());
 
 		jtf2.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
@@ -105,24 +95,20 @@ public class ReplaceBar extends JPanel {
 		JButton replaceAll = L10N.button("action.replace_all");
 
 		replace.addActionListener(actionEvent -> {
-			SearchContext context = new SearchContext();
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());
 			context.setRegularExpression(cb2.isSelected());
 			context.setWholeWord(cb4.isSelected());
-			context.setSearchSelectionOnly(cb5.isSelected());
 			SearchEngine.replace(ra, context);
 		});
 
 		replaceAll.addActionListener(actionEvent -> {
-			SearchContext context = new SearchContext();
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());
 			context.setRegularExpression(cb2.isSelected());
 			context.setWholeWord(cb4.isSelected());
-			context.setSearchSelectionOnly(cb5.isSelected());
 			SearchEngine.replaceAll(ra, context);
 		});
 
@@ -139,20 +125,17 @@ public class ReplaceBar extends JPanel {
 		top.add(cb3);
 		top.add(cb2);
 		top.add(cb4);
-		top.add(cb5);
 		top.add(Box.createHorizontalStrut(10));
 		top.add(matches);
 		top.add(Box.createHorizontalGlue());
 
 		cb3.setOpaque(false);
 		cb2.setOpaque(false);
-		cb5.setOpaque(false);
 		cb4.setOpaque(false);
 
 		cb3.setForeground(new Color(0xE2E2E2));
 		cb2.setForeground(new Color(0xE2E2E2));
 		cb4.setForeground(new Color(0xE2E2E2));
-		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
@@ -169,18 +152,42 @@ public class ReplaceBar extends JPanel {
 		add("South", bottom);
 
 		setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
+				jtf1.requestFocus();
+				jtf1.requestFocusInWindow();
+			}
+
+			@Override public void componentHidden(ComponentEvent e) {
+				super.componentHidden(e);
+				SearchContext context = new SearchContext("");
+				context.setMarkAll(true);
+				SearchEngine.markAll(ra, context);
+			}
+		});
 	}
 
-	@Override public void setVisible(boolean is) {
-		super.setVisible(is);
-		if (is) {
-			jtf1.requestFocus();
-			jtf1.requestFocusInWindow();
+	private void updateSearch() {
+		context.setSearchFor(jtf1.getText());
+		context.setMatchCase(cb3.isSelected());
+		context.setRegularExpression(cb2.isSelected());
+		context.setWholeWord(cb4.isSelected());
+		context.setSearchWrap(true);
+
+		SearchResult marked = SearchEngine.markAll(ra, context);
+
+		matches.setText(L10N.t("ide.search.results", marked.getMarkedCount()));
+		if (marked.getMarkedCount() > 0) {
+			matches.setForeground(Theme.current().getAltForegroundColor());
 		} else {
-			SearchContext context = new SearchContext("");
-			context.setMarkAll(true);
-			SearchEngine.markAll(ra, context);
+			matches.setForeground(new Color(239, 96, 96));
 		}
+	}
+
+	public JTextField getSearchField() {
+		return jtf1;
 	}
 
 }

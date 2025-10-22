@@ -1,0 +1,1 @@
+Bunlar, bu özel blok özelliğinin sahip olabileceği değerlerdir.

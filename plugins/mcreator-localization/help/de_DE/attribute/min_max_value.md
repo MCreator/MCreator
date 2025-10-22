@@ -1,0 +1,1 @@
+Dieser Parameter setzt die Mindest- und Höchstwerte, die ein Attribut annehmen kann.

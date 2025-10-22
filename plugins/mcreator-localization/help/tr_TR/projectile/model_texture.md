@@ -1,0 +1,1 @@
+Bu, özel model kullanılıyorsa fıraltılabilen cismin modelinin dokusudur.

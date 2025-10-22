@@ -1,0 +1,1 @@
+Determina o tamanho do modelo de entidade exibido.

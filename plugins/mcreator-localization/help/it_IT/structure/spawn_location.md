@@ -1,1 +1,0 @@
-Quel parametro controlla dove la tua struttura sarà generata nel mondo.

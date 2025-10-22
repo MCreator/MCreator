@@ -1,1 +1,1 @@
-Si une condition est spécifiée, cette info-bulle pourra seulement être affiché dans le cas où la condition sera remplie.
+Si une condition est spécifiée, cette image ne sera affichée que si la condition est vraie.

@@ -1,0 +1,1 @@
+Define a velocidade de movimento do mob. A maioria dos mobs normais se movem na velocidade em torno de 0,25, enquanto os mais rápidos, como aranhas e lobos, se movem a 0,3.

@@ -32,8 +32,8 @@ import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.Transliteration;
 import net.mcreator.java.JavaConventions;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -41,7 +41,9 @@ import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.resources.TexturedModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,13 +51,13 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,8 +86,10 @@ public class ModelImportActions {
 
 				File file = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".java" });
 				if (file != null)
-					importJavaModel(actionRegistry.getMCreator(), file);
+					importJavaModel(actionRegistry.getMCreator(), actionRegistry.getMCreator().getWorkspace(),
+							FileIO.readFileToString(file));
 			});
+			setIcon(UIRES.get("16px.importjavamodel"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -94,42 +98,48 @@ public class ModelImportActions {
 		}
 	}
 
-	public static void importJavaModel(MCreator mcreator, File file) {
-		String origCode = FileIO.readFileToString(file);
-
-		if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
+	public static void importJavaModel(@Nullable MCreator mcreator, Workspace workspace, String origCode) {
+		if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 			origCode = origCode.replace("public class", "public static class")
 					.replace("RendererModel ", "ModelRenderer ").replace("RendererModel(", "ModelRenderer(")
 					.replace("ModelRenderer ;", "");
 		}
 
 		boolean compatibleModel = true;
-		for (String keyword : mcreator.getGeneratorConfiguration().getJavaModelRequirementKeyWords()) {
+		for (String keyword : workspace.getGeneratorConfiguration().getJavaModelRequirementKeyWords()) {
 			if (keyword.startsWith("~")) {
 				if (origCode.contains(keyword.substring(1))) {
 					compatibleModel = false;
+					LOG.warn("Incompatible model as it contains keyword {}", keyword.substring(1));
 					break;
 				}
 			} else if (!origCode.contains(keyword)) {
 				compatibleModel = false;
+				LOG.warn("Incompatible model as it does not contain keyword {}", keyword);
 				break;
 			}
 		}
 
 		if (!compatibleModel) {
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.message"),
-					L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.title"),
-					JOptionPane.ERROR_MESSAGE);
+			if (mcreator == null)
+				throw new RuntimeException("Incompatible model");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.message"),
+						L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.title"),
+						JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")
-				&& !mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.message"),
-					L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.title"),
-					JOptionPane.ERROR_MESSAGE);
+				&& !workspace.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
+			if (mcreator == null)
+				throw new RuntimeException("Geckolib model");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.message"),
+						L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.title"),
+						JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -154,11 +164,14 @@ public class ModelImportActions {
 				return;
 			}
 		} catch (Exception err) {
-			LOG.error("Failed to load Java model: {}", file, err);
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
-					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),
-					JOptionPane.ERROR_MESSAGE);
+			LOG.error("Failed to load Java model", err);
+			if (mcreator == null)
+				throw new RuntimeException("Failed to load model");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
+						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),
+						JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -172,34 +185,40 @@ public class ModelImportActions {
 		if (!classJavaSource.getName().startsWith("Model"))
 			classJavaSource.setName("Model" + classJavaSource.getName());
 
-		String finalModelCode = JavaModelAnimationEditorDialog.openAnimationEditorDialog(mcreator,
-				classJavaSource.toString());
+		String finalModelCode = mcreator != null ?
+				JavaModelAnimationEditorDialog.openAnimationEditorDialog(mcreator, classJavaSource.toString()) :
+				classJavaSource.toString();
 
 		if (finalModelCode == null)
 			finalModelCode = classJavaSource.toString();
 
-		if (new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java").exists()) {
-			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.message",
-							classJavaSource.getName()),
-					L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.title"),
-					JOptionPane.WARNING_MESSAGE);
+		if (new File(workspace.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java").exists()) {
+			if (mcreator == null)
+				throw new RuntimeException("Model already exists");
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.message",
+								classJavaSource.getName()),
+						L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.title"),
+						JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
-		if (mcreator.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
+		if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 			FileIO.writeStringToFile(finalModelCode.replace("setRotationAngles(f, f1, f2, f3, f4, f5);",
 							"setRotationAngles(f, f1, f2, f3, f4, f5, entity);"),
-					new File(mcreator.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
+					new File(workspace.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java"));
 		} else {
-			FileIO.writeStringToFile(finalModelCode, new File(mcreator.getFolderManager().getModelsDir(),
-					mcreator.getGeneratorConfiguration().getJavaModelsKey() + "/" + classJavaSource.getName()
+			FileIO.writeStringToFile(finalModelCode, new File(workspace.getFolderManager().getModelsDir(),
+					workspace.getGeneratorConfiguration().getJavaModelsKey() + "/" + classJavaSource.getName()
 							+ ".java"));
 		}
 
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		if (mcreator != null) {
+			mcreator.reloadWorkspaceTabContents();
+			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+		}
 	}
 
 	public static class JSON extends BasicAction {
@@ -209,6 +228,7 @@ public class ModelImportActions {
 				if (json != null)
 					importJSONModel(actionRegistry.getMCreator(), json);
 			});
+			setIcon(UIRES.get("16px.importjsonmodel"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -229,9 +249,9 @@ public class ModelImportActions {
 		if (!txs.isEmpty()) {
 			newTextureMapDialog(mcreator, txs, file, true);
 
-			mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-				((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			mcreator.reloadWorkspaceTabContents();
+			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 		}
 	}
 
@@ -249,6 +269,7 @@ public class ModelImportActions {
 						importOBJModel(actionRegistry.getMCreator(), obj, mtl);
 				}
 			});
+			setIcon(UIRES.get("16px.importobjmodel"));
 		}
 
 		@Override public boolean isEnabled() {
@@ -273,8 +294,7 @@ public class ModelImportActions {
 				return;
 		}
 
-		String modelName = Transliteration.transliterateString(obj.getName()).toLowerCase(Locale.ENGLISH).trim()
-				.replace(" ", "_").replace(":", "");
+		String modelName = RegistryNameFixer.fix(obj.getName());
 		File objFile = new File(mcreator.getFolderManager().getModelsDir(), modelName);
 		FileIO.copyFile(obj, objFile);
 		File mtlFile = new File(mcreator.getFolderManager().getModelsDir(),
@@ -296,9 +316,9 @@ public class ModelImportActions {
 			}
 		} catch (Exception ignore) {
 		}
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		mcreator.reloadWorkspaceTabContents();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 	}
 
 	private static void newTextureMapDialog(MCreator mcreator, HashSet<String> txs, File modelFile,
@@ -306,14 +326,12 @@ public class ModelImportActions {
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = new TextureMappingDialog(null).openMappingDialog(
 				mcreator, txs, supportMultiple);
 		if (textureMappingMap != null) {
+			String modelNameBase = RegistryNameFixer.fix(modelFile.getName());
 			String data = TexturedModel.getJSONForTextureMapping(textureMappingMap);
-			FileIO.writeStringToFile(data, new File(mcreator.getFolderManager().getModelsDir(),
-					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
-							.replace(":", "").replace(" ", "_") + ".textures"));
+			FileIO.writeStringToFile(data,
+					new File(mcreator.getFolderManager().getModelsDir(), modelNameBase + ".textures"));
 			// copy the actual model
-			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(),
-					Transliteration.transliterateString(modelFile.getName()).toLowerCase(Locale.ENGLISH).trim()
-							.replace(":", "").replace(" ", "_")));
+			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(), modelNameBase));
 		}
 	}
 

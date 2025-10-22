@@ -1,0 +1,1 @@
+Se esta opção for selecionada, o efeito desta poção será curado após consumir uma garrafa de mel.

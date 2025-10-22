@@ -1,0 +1,1 @@
+Bu parametrenin etkinleştirilmesi, oyuncunun yiyecek barı dolu olsa bile yiyeceği yemesini sağlar. (örn. Altın Elma)

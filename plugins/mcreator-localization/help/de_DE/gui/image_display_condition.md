@@ -1,1 +1,0 @@
-Wenn die Bedingung angegeben ist, kann dieses Bild nur dann angezeigt werden, wenn die Bedingung überwunden ist.

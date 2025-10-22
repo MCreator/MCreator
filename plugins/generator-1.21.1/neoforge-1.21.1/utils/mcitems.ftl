@@ -318,6 +318,9 @@
                             <#assign properties += [{"name": "axis", "value": "y"}] />
                         </#if>
                     </#if>
+                    <#list ge.customProperties as prop>
+                        <#assign properties += [{"name": prop.property().getName().replace("CUSTOM:", ""), "value": prop.value()}] />
+                    </#list>
                 </#if>
             </#if>
 

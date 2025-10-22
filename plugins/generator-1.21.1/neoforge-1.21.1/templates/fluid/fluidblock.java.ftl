@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#compress>
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
-		super(${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			BlockBehaviour.Properties.of()
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
@@ -49,6 +49,7 @@ public class ${name}Block extends LiquidBlock {
 			.strength(${data.resistance}f)
 			<#if data.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
 			<#if data.luminance != 0>.lightLevel(s -> ${data.luminance})</#if>
+			<#if data.ignitedByLava>.ignitedByLava()</#if>
 			.noCollission().noLootTable().liquid().pushReaction(PushReaction.DESTROY).sound(SoundType.EMPTY).replaceable()
 		);
 	}

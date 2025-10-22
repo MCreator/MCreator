@@ -28,11 +28,15 @@ global_templates:
 localizationkeys:
   - key: fluid.@modid.@registryname
     mapto: name
+  - key: fluid_type.@modid.@registryname
+    mapto: name
   - key: block.@modid.@registryname
     mapto: name
   - key: item.@modid.@registryname_bucket
     mapto: bucketName
     condition: generateBucket
+  - fromlist: data.getFixedSpecialInformation()
+    key: item.@modid.@registryname_bucket.description_@item_index
 
 tags:
   - tag: BLOCKS:minecraft:replaceable

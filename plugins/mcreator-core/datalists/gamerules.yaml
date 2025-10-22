@@ -2,6 +2,8 @@
   type: logic
 - COMMAND_BLOCK_OUTPUT:
   type: logic
+- DISABLE_PLAYER_MOVEMENT_CHECK:
+  type: logic
 - DISABLE_ELYTRA_MOVEMENT_CHECK:
   type: logic
 - DISABLE_RAIDS:
@@ -11,6 +13,8 @@
 - DO_ENTITY_DROPS:
   type: logic
 - DO_FIRE_TICK:
+  type: logic
+- ALLOWFIRETICKAWAYFROMPLAYERS:
   type: logic
 - DO_INSOMNIA:
   type: logic
@@ -100,3 +104,7 @@
   type: logic
 - SPAWN_CHUNK_RADIUS:
   type: number
+- TNT_EXPLODES:
+  type: logic
+- LOCATOR_BAR:
+  type: logic

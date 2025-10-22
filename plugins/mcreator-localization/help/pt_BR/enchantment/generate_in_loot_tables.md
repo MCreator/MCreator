@@ -1,0 +1,1 @@
+Marque esta opção se quiser que seu encantamento seja gerado em tabelas de saque.

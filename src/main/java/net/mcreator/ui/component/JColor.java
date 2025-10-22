@@ -20,6 +20,7 @@ package net.mcreator.ui.component;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 
@@ -44,8 +45,6 @@ public class JColor extends JPanel {
 
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
-
-	private JDialog dialog = null;
 
 	private final boolean allowNullColor;
 	private final boolean allowTransparency;
@@ -75,12 +74,12 @@ public class JColor extends JPanel {
 
 		edit.addActionListener(e -> {
 			colorChooser.setColor(getColor());
-			dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e2 -> {
-				Color color = colorChooser.getColor();
-				if (color != null)
-					setColor(color);
-				dialog.setVisible(false);
-			}, e2 -> dialog.setVisible(false));
+			JDialog dialog = JColorChooser.createDialog(window, L10N.t("elementgui.common.select_color"), true,
+					colorChooser, e2 -> {
+						Color color = colorChooser.getColor();
+						if (color != null)
+							setColor(color);
+					}, null);
 			dialog.setVisible(true);
 		});
 		remove.addActionListener(e -> setColor(null));
@@ -104,6 +103,11 @@ public class JColor extends JPanel {
 		}
 	}
 
+	public JColor withColorTextColumns(int width) {
+		colorText.setColumns(width);
+		return this;
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		colorText.setEnabled(enabled);
@@ -123,7 +127,7 @@ public class JColor extends JPanel {
 
 		if (currentColor == null) {
 			colorText.setOpaque(false);
-			colorText.setText("DEFAULT");
+			colorText.setText(L10N.t("elementgui.common.default_color"));
 			colorText.setForeground(Theme.current().getForegroundColor());
 		} else {
 			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));

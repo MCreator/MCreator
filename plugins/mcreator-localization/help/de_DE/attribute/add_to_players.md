@@ -1,0 +1,1 @@
+Wenn dies aktiv ist, haben alle Spieler in der Welt das Attribut und erhalten den Standardwert beim Betreten der Welt.

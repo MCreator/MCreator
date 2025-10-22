@@ -20,8 +20,6 @@ package net.mcreator.ui.modgui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.NewModElementDialog;
@@ -30,9 +28,7 @@ import net.mcreator.util.image.IconUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModTypeDropdown extends JPopupMenu {
 
@@ -40,10 +36,7 @@ public class ModTypeDropdown extends JPopupMenu {
 		setBorder(BorderFactory.createEmptyBorder());
 		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 
-		List<ModElementType<?>> types = ModElementTypeLoader.REGISTRY.stream()
-				.sorted(Comparator.comparing(ModElementType::getReadableName))
-				.filter(entry -> mcreator.getGeneratorStats().getModElementTypeCoverageInfo().get(entry)
-						!= GeneratorStats.CoverageStatus.NONE).collect(Collectors.toList());
+		List<ModElementType<?>> types = mcreator.getGeneratorStats().getSupportedModElementTypes();
 
 		if (types.size() > 14) {
 			List<ModElementType<?>> typestmp = new ArrayList<>(types);

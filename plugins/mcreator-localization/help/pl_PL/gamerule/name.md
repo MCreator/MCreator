@@ -1,0 +1,1 @@
+To jest nazwa zasady gry, która jest wyświetlana w poleceniach do modyfikowania/włączania zasad gry.

@@ -48,15 +48,14 @@ import com.google.common.base.Suppliers;
 
 	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 		MinecraftServer server = event.getServer();
-		Registry<DimensionType> dimensionTypeRegistry = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
 		Registry<LevelStem> levelStemTypeRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
 		Registry<Biome> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
 
 		for (LevelStem levelStem : levelStemTypeRegistry.stream().toList()) {
-			DimensionType dimensionType = levelStem.type().value();
+			Holder<DimensionType> dimensionType = levelStem.type();
 
 			<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.OVERWORLD)) {
+			if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
 				ChunkGenerator chunkGenerator = levelStem.generator();
 
 				// Inject biomes to biome source
@@ -111,52 +110,14 @@ import com.google.common.base.Suppliers;
 									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 				}
 
-				// Inject surface rules
 				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
-					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
-					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
-						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
-
-						<#list spawn_overworld_caves as biome>
-						addSurfaceRule(surfaceRules, 1, anySurfaceRule(
-							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-							${mappedBlockToBlockStateCode(biome.groundBlock)},
-							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						));
-						</#list>
-
-						<#list spawn_overworld as biome>
-						addSurfaceRule(surfaceRules, 1, preliminarySurfaceRule(
-							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-							${mappedBlockToBlockStateCode(biome.groundBlock)},
-							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						));
-						</#list>
-
-						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
-							noiseGeneratorSettings.noiseSettings(),
-							noiseGeneratorSettings.defaultBlock(),
-							noiseGeneratorSettings.defaultFluid(),
-							noiseGeneratorSettings.noiseRouter(),
-							SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
-							noiseGeneratorSettings.spawnTarget(),
-							noiseGeneratorSettings.seaLevel(),
-							noiseGeneratorSettings.disableMobGeneration(),
-							noiseGeneratorSettings.aquifersEnabled(),
-							noiseGeneratorSettings.oreVeinsEnabled(),
-							noiseGeneratorSettings.useLegacyRandomSource()
-						);
-						noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
-					}
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
 				}
 			}
 			</#if>
 
 			<#if spawn_nether?has_content>
-			if(dimensionType == dimensionTypeRegistry.getOrThrow(BuiltinDimensionTypes.NETHER)) {
+			if (dimensionType.is(BuiltinDimensionTypes.NETHER)) {
 				ChunkGenerator chunkGenerator = levelStem.generator();
 
 				// Inject biomes to biome source
@@ -196,42 +157,80 @@ import com.google.common.base.Suppliers;
 									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
 				}
 
-				// Inject surface rules
 				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					NoiseGeneratorSettings noiseGeneratorSettings = noiseGenerator.settings.value();
-					SurfaceRules.RuleSource currentRuleSource = noiseGeneratorSettings.surfaceRule();
-					if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
-						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
-
-						<#list spawn_nether as biome>
-						addSurfaceRule(surfaceRules, 2, anySurfaceRule(
-							ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-							${mappedBlockToBlockStateCode(biome.groundBlock)},
-							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						));
-						</#list>
-
-						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
-								noiseGeneratorSettings.noiseSettings(),
-								noiseGeneratorSettings.defaultBlock(),
-								noiseGeneratorSettings.defaultFluid(),
-								noiseGeneratorSettings.noiseRouter(),
-								SurfaceRules.sequence(surfaceRules.toArray(SurfaceRules.RuleSource[]::new)),
-								noiseGeneratorSettings.spawnTarget(),
-								noiseGeneratorSettings.seaLevel(),
-								noiseGeneratorSettings.disableMobGeneration(),
-								noiseGeneratorSettings.aquifersEnabled(),
-								noiseGeneratorSettings.oreVeinsEnabled(),
-								noiseGeneratorSettings.useLegacyRandomSource()
-						);
-						noiseGenerator.settings = new Holder.Direct<>(moddedNoiseGeneratorSettings);
-					}
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
 				}
 			}
 			</#if>
 		}
 	}
+
+	public static SurfaceRules.RuleSource adaptSurfaceRule(SurfaceRules.RuleSource currentRuleSource, Holder<DimensionType> dimensionType) {
+		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
+		if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) return injectOverworldSurfaceRules(currentRuleSource);
+		</#if>
+
+		<#if spawn_nether?has_content>
+		if (dimensionType.is(BuiltinDimensionTypes.NETHER)) return injectNetherSurfaceRules(currentRuleSource);
+		</#if>
+
+		return currentRuleSource;
+	}
+
+	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
+	private static SurfaceRules.RuleSource injectOverworldSurfaceRules(SurfaceRules.RuleSource currentRuleSource) {
+		List<SurfaceRules.RuleSource> customSurfaceRules = new ArrayList<>();
+
+		<#list spawn_overworld_caves as biome>
+		customSurfaceRules.add(anySurfaceRule(
+			ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
+			${mappedBlockToBlockStateCode(biome.groundBlock)},
+			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+		));
+		</#list>
+
+		<#list spawn_overworld as biome>
+		customSurfaceRules.add(preliminarySurfaceRule(
+			ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
+			${mappedBlockToBlockStateCode(biome.groundBlock)},
+			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+		));
+		</#list>
+
+		if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+			customSurfaceRules.addAll(sequenceRuleSource.sequence());
+			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
+		} else {
+			customSurfaceRules.add(currentRuleSource);
+			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
+		}
+	}
+	</#if>
+
+	<#if spawn_nether?has_content>
+	private static SurfaceRules.RuleSource injectNetherSurfaceRules(SurfaceRules.RuleSource currentRuleSource) {
+		List<SurfaceRules.RuleSource> customSurfaceRules = new ArrayList<>();
+
+		<#list spawn_nether as biome>
+		customSurfaceRules.add(anySurfaceRule(
+			ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
+			${mappedBlockToBlockStateCode(biome.groundBlock)},
+			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
+			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
+		));
+		</#list>
+
+		if (currentRuleSource instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+			customSurfaceRules.addAll(sequenceRuleSource.sequence());
+			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
+		} else {
+			customSurfaceRules.add(currentRuleSource);
+			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
+		}
+	}
+	</#if>
 
 	<#if spawn_overworld?has_content>
 	private static SurfaceRules.RuleSource preliminarySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
@@ -258,17 +257,21 @@ import com.google.common.base.Suppliers;
 	<#if spawn_nether?has_content || spawn_overworld_caves?has_content>
 	private static SurfaceRules.RuleSource anySurfaceRule(ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
 		return SurfaceRules.ifTrue(SurfaceRules.isBiome(biomeKey),
-			SurfaceRules.sequence(
-				SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
+			SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.aboveBottom(5), 0),
+				SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.belowTop(5), 0)),
 					SurfaceRules.sequence(
-						SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
-							SurfaceRules.state(groundBlock)
+						SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
+							SurfaceRules.sequence(
+								SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
+									SurfaceRules.state(groundBlock)
+								),
+								SurfaceRules.state(underwaterBlock)
+							)
 						),
-						SurfaceRules.state(underwaterBlock)
+						SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
+							SurfaceRules.state(undergroundBlock)
+						)
 					)
-				),
-				SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
-					SurfaceRules.state(undergroundBlock)
 				)
 			)
 		);
@@ -280,9 +283,8 @@ import com.google.common.base.Suppliers;
 			parameters.add(point);
 	}
 
-	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules, int index, SurfaceRules.RuleSource rule) {
-		if (!surfaceRules.contains(rule))
-			surfaceRules.add(index, rule);
+	public interface ${JavaModName}NoiseGeneratorSettings {
+		void set${modid}DimensionTypeReference(Holder<DimensionType> dimensionType);
 	}
 
 }

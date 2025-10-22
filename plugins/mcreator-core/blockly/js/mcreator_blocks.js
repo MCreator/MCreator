@@ -39,6 +39,38 @@ Blockly.Blocks['event_trigger'] = {
     }
 };
 
+Blockly.Blocks["event_number_parameter_set"] = {
+	init: function () {
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
+			.appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparameter');
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.set_to"))
+		this.appendValueInput('value')
+			.setCheck("Number");
+		this.setInputsInline(true);
+		this.setNextStatement(true);
+		this.setPreviousStatement(true);
+		this.setColour(90);
+	}
+}
+
+Blockly.Blocks["event_logic_parameter_set"] = {
+	init: function () {
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.event_logic_parameter_set.line1"))
+			.appendField(new FieldDataListSelector('eventparametersboolean'), 'eventparameter');
+		this.appendDummyInput()
+			.appendField(javabridge.t("blockly.block.set_to"))
+		this.appendValueInput('value')
+			.setCheck("Boolean");
+		this.setInputsInline(true);
+		this.setNextStatement(true);
+		this.setPreviousStatement(true);
+		this.setColour(90);
+	}
+}
+
 Blockly.Blocks['cancel_event'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.cancel_event.line1"));
@@ -269,6 +301,18 @@ Blockly.Blocks['logic_ternary_op'] = {
     }
 };
 
+Blockly.Blocks['logic_null_comparison'] = {
+    init: function () {
+        this.appendValueInput('value');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["\u2260", "!="], ["=", "=="]]), 'operation')
+            .appendField(javabridge.t("blockly.block.logic_null_comparison"));
+        this.setColour('%{BKY_LOGIC_HUE}');
+        this.setOutput(true, 'Boolean');
+        Blockly.Extensions.apply('null_comparison_exclude_primitive_types', this, false);
+    }
+};
+
 Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')
@@ -291,12 +335,40 @@ Blockly.Blocks['math_from_text'] = {
     }
 };
 
+Blockly.Blocks['text_index_of'] = {
+    init: function () {
+        this.appendValueInput('check').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.check"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_index_of.in"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_index_of.from"));
+        this.setInputsInline(true);
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks['text_contains'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_contains.in"));
         this.appendValueInput('contains').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_contains.check"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'Boolean');
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+Blockly.Blocks['text_matches'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_matches.in"));
+        this.appendValueInput('contains').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_matches.check"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
@@ -379,12 +451,39 @@ Blockly.Blocks['text_replace'] = {
     }
 };
 
+Blockly.Blocks['text_replace_regex'] = {
+    init: function () {
+        this.appendValueInput('what').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.replace"));
+        this.appendValueInput('with').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.with"));
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.replace_regex.of"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
 Blockly.Blocks['text_format_number'] = {
     init: function () {
         this.appendValueInput('number').setCheck('Number')
             .appendField(javabridge.t("blockly.block.text_format_number.format"));
         this.appendValueInput('format').setCheck('String')
             .appendField(javabridge.t("blockly.block.text_format_number.as"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['text_new_line'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.text_new_line"));
         this.setInputsInline(true);
         this.setPreviousStatement(false);
         this.setNextStatement(false);
@@ -574,6 +673,32 @@ registerSimpleMutatorContainer(
 registerSimpleMutatorInput(
     'blockstate_selector_mutator_input', 'blockly.block.blockstate_selector_mutator.input', 60, true);
 
+// Mutator blocks for column feature mixin
+registerSimpleMutatorContainer(
+    'feature_block_column_mutator_container', 'blockly.block.feature_block_column_mutator.container', '#888888');
+registerSimpleMutatorInput(
+    'feature_block_column_mutator_input', 'blockly.block.feature_block_column_mutator.input', '#888888');
+
+// Mutator blocks for disk feature mixin
+registerSimpleMutatorContainer(
+    'feature_disk_mutator_container', 'blockly.block.feature_disk_mutator.container', '#888888');
+registerSimpleMutatorInput('feature_disk_mutator_input', 'blockly.block.feature_disk_mutator.input', '#888888');
+
+// Mutator blocks for fixed placement mixin
+registerSimpleMutatorContainer(
+    'fixed_placement_mutator_container', 'blockly.block.placement_fixed_mutator.container', 130);
+registerSimpleMutatorInput(
+    'fixed_placement_mutator_input', 'blockly.block.placement_fixed_mutator.input', 130, true);
+
+// Mutator blocks for effect entry advancement trigger mixin
+registerSimpleMutatorContainer(
+	'player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container', 250);
+registerSimpleMutatorInput('player_effect_changed_mutator_input', 'blockly.block.player_effect_changed_mutator.input', 250);
+
+// Mutator blocks for enchantment entry advancement trigger mixin
+registerSimpleMutatorContainer('item_enchanted_mutator_container', 'blockly.block.item_enchanted_mutator.container', 290);
+registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_enchanted_mutator.input', 290);
+
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];
 
@@ -674,7 +799,8 @@ Blockly.defineBlocksWithJsonArray([
                     ["+", "ADD"],
                     ["-", "MINUS"],
                     ["*", "MULTIPLY"],
-                    ["/", "DIVIDE"],
+                    ["/", "DIVIDE_DOUBLE"],
+                    ["/ (programmer)", "DIVIDE"],
                     ["^", "POWER"],
                     ["MOD", "MOD"],
                     ["Bitwise AND", "BAND"],
@@ -782,7 +908,7 @@ Blockly.defineBlocksWithJsonArray([
             }
         ],
         "output": "Direction",
-        "colour": "20"
+        "colour": 20
     },
     {
         'type': 'controls_flow_statements',

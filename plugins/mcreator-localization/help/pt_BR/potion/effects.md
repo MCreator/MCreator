@@ -1,0 +1,1 @@
+Os efeitos de poção na lista abaixo serão aplicados às entidades afetadas pelo seu item de poção.

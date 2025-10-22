@@ -1,0 +1,1 @@
+Jest to tekstura modelu pocisku, jeśli używany jest model niestandardowy.

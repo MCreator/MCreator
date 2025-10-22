@@ -1,0 +1,1 @@
+Bu parametre, madde fırlatıldığında çalınan sesi kontrol eder.

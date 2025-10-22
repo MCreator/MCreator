@@ -1,0 +1,1 @@
+Koşul doğru çıkarsa, oyuncular bu yuvanın içindeki öğeleri alamazlar. Ancak, yine de herhangi bir kısıtlama olmaksızın eşya yerleştirebileceklerdir.

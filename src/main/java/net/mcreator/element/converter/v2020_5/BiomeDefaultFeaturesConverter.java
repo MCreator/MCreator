@@ -25,28 +25,21 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Biome;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BiomeDefaultFeaturesConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger(BiomeDefaultFeaturesConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Biome biome = (Biome) input;
 
-		try {
-			biome.defaultFeatures.add("Caves");
-			biome.defaultFeatures.add("MonsterRooms");
-			biome.defaultFeatures.add("Ores");
+		biome.defaultFeatures.add("Caves");
+		biome.defaultFeatures.add("MonsterRooms");
+		biome.defaultFeatures.add("Ores");
 
-			biome.foliageColor = biome.grassColor;
-			biome.waterFogColor = biome.waterColor;
+		biome.foliageColor = biome.grassColor;
+		biome.waterFogColor = biome.waterColor;
 
-			biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
-		} catch (Exception e) {
-			LOG.warn("Could not convert: {}", biome.getModElement().getName());
-		}
+		biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
 
 		return biome;
 	}
@@ -54,4 +47,5 @@ public class BiomeDefaultFeaturesConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 12;
 	}
+
 }

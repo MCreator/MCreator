@@ -1,4 +1,4 @@
-Questo parametro specifica il tipo di cappello definito dalla trama della professione selezionata, che controlla se l'abitante del villaggio indosserà ancora il cappello definito dal suo tipo dopo aver rivendicato questa professione:
+Questo parametro specifica il tipo di cappello definito dalla texture della professione selezionata, che controlla se il villico indosserà ancora il cappello definito dal suo tipo dopo aver rivendicato questa professione:
 * **Nessuno:** In tutti i casi;
 * **Parziale:** Nei casi in cui non copre l'intera testa del villico;
 * **Piena:** In nessun caso.
