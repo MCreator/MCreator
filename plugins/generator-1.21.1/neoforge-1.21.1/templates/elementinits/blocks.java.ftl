@@ -56,6 +56,9 @@ package ${package}.init;
 	</#if>
 </#list>
 
+<#assign chunks = blocks?chunk(3000)>
+<#assign has_chunks = chunks?size gt 1>
+
 <#compress>
 public class ${JavaModName}Blocks {
 
@@ -63,16 +66,14 @@ public class ${JavaModName}Blocks {
 
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
+            public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
-			public static DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
+			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
 
-	<#assign chunks = blocks?chunk(2500)>
-	<#assign chunks_num = chunks?size>
 	<#list chunks as sub_blocks>
-	public static void register<#if chunks_num == 1>(IEventBus modEventBus)<#else>${sub_blocks?index}()</#if> {
+	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {
 		<#list sub_blocks as block>
 			<#if block.getModElement().getTypeString() == "dimension">
         	    ${block.getModElement().getRegistryNameUpper()}_PORTAL =
@@ -82,14 +83,12 @@ public class ${JavaModName}Blocks {
 					REGISTRY.register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
 			</#if>
 		</#list>
-		<#if chunks_num == 1>REGISTRY.register(modEventBus);</#if>
 	}
 	</#list>
 
-	<#if chunks_num gt 1>
-	public static void register(IEventBus modEventBus) {
-		<#list 0..chunks_num-1 as i>register${i}();</#list>
-		REGISTRY.register(modEventBus);
+	<#if has_chunks>
+	static {
+		<#list 0..chunks?size-1 as i>register${i}();</#list>
 	}
 	</#if>
 
@@ -126,5 +125,4 @@ public class ${JavaModName}Blocks {
 
 }
 </#compress>
-
 <#-- @formatter:on -->
