@@ -56,13 +56,14 @@ package ${package}.init;
 	</#if>
 </#list>
 
-<#assign chunks = blocks?chunk(3000)>
+<#assign chunks = blocks?chunk(4000)>
 <#assign has_chunks = chunks?size gt 1>
 
 public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(${JavaModName}.MODID);
 
+	<#compress>
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
             public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
@@ -70,6 +71,7 @@ public class ${JavaModName}Blocks {
 			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
+	</#compress>
 
 	<#list chunks as sub_blocks>
 	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {

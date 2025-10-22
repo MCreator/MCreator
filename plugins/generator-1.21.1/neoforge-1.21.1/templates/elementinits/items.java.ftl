@@ -43,7 +43,7 @@ package ${package}.init;
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
-<#assign chunks = items?chunk(3000)>
+<#assign chunks = items?chunk(4000)>
 <#assign has_chunks = chunks?size gt 1>
 
 <#if itemsWithInventory?size != 0>
@@ -53,6 +53,7 @@ public class ${JavaModName}Items {
 
 	public static DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
 
+	<#compress>
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
 			<#if item.enableHelmet>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET;</#if>
@@ -67,6 +68,7 @@ public class ${JavaModName}Items {
 			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
+	</#compress>
 
 	<#list chunks as sub_items>
 	<#if has_chunks>public static void register${sub_items?index}()<#else>static</#if> {
