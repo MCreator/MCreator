@@ -69,7 +69,7 @@ public class ${JavaModName}Items {
 	</#list>
 
 	<#list chunks as sub_items>
-	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {
+	<#if has_chunks>public static void register${sub_items?index}()<#else>static</#if> {
 		<#list sub_items as item>
 			<#if item.getModElement().getTypeString() == "armor">
 				<#if item.enableHelmet>
