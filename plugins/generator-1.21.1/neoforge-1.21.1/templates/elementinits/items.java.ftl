@@ -43,6 +43,9 @@ package ${package}.init;
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
+<#assign chunks = items?chunk(3000)>
+<#assign has_chunks = chunks?size gt 1>
+
 <#if itemsWithInventory?size != 0>
 @EventBusSubscriber
 </#if>
@@ -52,23 +55,21 @@ public class ${JavaModName}Items {
 
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
-			<#if item.enableHelmet>public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET;</#if>
-			<#if item.enableBody>public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE;</#if>
-			<#if item.enableLeggings>public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS;</#if>
-			<#if item.enableBoots>public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS;</#if>
+			<#if item.enableHelmet>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET;</#if>
+			<#if item.enableBody>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE;</#if>
+			<#if item.enableLeggings>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS;</#if>
+			<#if item.enableBoots>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS;</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
-			public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG;
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG;
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-			public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET;
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET;
 		<#else>
-			public static DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()};
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
 
-	<#assign chunks = items?chunk(2500)>
-	<#assign chunks_num = chunks?size>
 	<#list chunks as sub_items>
-	public static void register<#if chunks_num == 1>(IEventBus modEventBus)<#else>${sub_items?index}()</#if> {
+	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {
 		<#list sub_items as item>
 			<#if item.getModElement().getTypeString() == "armor">
 				<#if item.enableHelmet>
@@ -115,14 +116,12 @@ public class ${JavaModName}Items {
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
 			</#if>
 		</#list>
-		<#if chunks_num == 1>REGISTRY.register(modEventBus);</#if>
 	}
 	</#list>
 
-	<#if chunks_num gt 1>
-	public static void register(IEventBus modEventBus) {
-		<#list 0..chunks_num-1 as i>register${i}();</#list>
-		REGISTRY.register(modEventBus);
+	<#if has_chunks>
+	static {
+		<#list 0..chunks?size-1 as i>register${i}();</#list>
 	}
 	</#if>
 
