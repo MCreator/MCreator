@@ -22,9 +22,11 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
@@ -87,11 +89,9 @@ public class MCItemHolder extends JButton implements IValidable {
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), mItemBlock.getUnmappedValue()).getImage(),
 					25)));
 			this.block = mItemBlock.getUnmappedValue();
-			this.setToolTipText(mItemBlock.getMappedValue());
 		} else {
 			setIcon(new EmptyIcon(25, 25));
 			block = "";
-			this.setToolTipText(null);
 		}
 		listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 		getValidationStatus();
@@ -196,6 +196,32 @@ public class MCItemHolder extends JButton implements IValidable {
 		repaint();
 	}
 
+	public MCItemHolder requireValue(String errorMessageKey) {
+		return requireValue(errorMessageKey, false);
+	}
+
+	public MCItemHolder requireValue(String errorMessageKey, boolean considerAirAsEmpty) {
+		MCItemHolderValidator validator = new MCItemHolderValidator(this).setEmptyMessage(L10N.t(errorMessageKey));
+		if (considerAirAsEmpty)
+			validator.considerAirAsEmpty();
+		this.setValidator(validator);
+		return this;
+	}
+
+	private void updateTooltipText() {
+		boolean hasValidationMessage = currentValidationResult != null &&
+				currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED;
+		if (!block.isEmpty()) {
+			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
+					"\n" + currentValidationResult.getMessage() :
+					""));
+		} else if (hasValidationMessage) {
+			this.setToolTipText(currentValidationResult.getMessage());
+		} else {
+			this.setToolTipText(null);
+		}
+	}
+
 	//validation code
 	private Validator validator = null;
 	private Validator.ValidationResult currentValidationResult = null;
@@ -207,6 +233,8 @@ public class MCItemHolder extends JButton implements IValidable {
 
 		//repaint as new validation status might have to be rendered
 		repaint();
+		// Update tooltip text as validation status might have changed
+		updateTooltipText();
 
 		return validationResult;
 	}

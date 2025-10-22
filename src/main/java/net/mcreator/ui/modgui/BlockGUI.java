@@ -1388,7 +1388,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					return Validator.ValidationResult.PASSED;
 				return super.validate();
 			}
-		});
+		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
 
 		page3group.addValidationElement(name);
 
