@@ -340,8 +340,9 @@ public class Generator implements IGenerator, Closeable {
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList() {
 		AtomicInteger templateID = new AtomicInteger();
 
-		List<GeneratorTemplate> files = new ArrayList<>(
-				processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(), templateID));
+		List<GeneratorTemplate> files = new ArrayList<>();
+
+		Map<String, Integer> typesReport = new HashMap<>();
 
 		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
@@ -359,6 +360,8 @@ public class Generator implements IGenerator, Closeable {
 						e -> e.addDataModelEntry(type.getPluralName(), filteredGeneratableElements));
 
 				files.addAll(globalTemplatesList);
+
+				typesReport.put(type.getPluralName(), filteredGeneratableElements.size());
 			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
 		}
 
@@ -383,8 +386,18 @@ public class Generator implements IGenerator, Closeable {
 						e -> e.addDataModelEntry(baseType.getPluralName(), baseTypeListMap.get(baseType)));
 
 				files.addAll(globalTemplatesList);
+
+				typesReport.put("base:" + baseType.getPluralName(), baseTypeListMap.get(baseType).size());
 			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
 		}
+
+		// Finally, add global base templates at the end
+		List<GeneratorTemplate> globalBaseTemplates = processTemplateDefinitionsToGeneratorTemplates(
+				generatorConfiguration.getBaseTemplates(), templateID);
+		for (GeneratorTemplate globalBaseTemplate : globalBaseTemplates) {
+			globalBaseTemplate.addDataModelEntry("types", typesReport);
+		}
+		files.addAll(globalBaseTemplates);
 
 		return files;
 	}
