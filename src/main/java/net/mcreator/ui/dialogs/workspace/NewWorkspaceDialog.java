@@ -343,8 +343,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			spigot.doClick();
 			break;
 		case PAPER:
-			paper
-					.doClick();
+			paper.doClick();
 			break;
 		case ADDON:
 			addon.doClick();
