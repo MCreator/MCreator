@@ -108,4 +108,5 @@ public class ${JavaModName}Blocks {
 	</#if>
 
 }
+
 <#-- @formatter:on -->
