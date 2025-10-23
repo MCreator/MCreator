@@ -52,7 +52,7 @@ package ${package}.init;
 </#if>
 public class ${JavaModName}Items {
 
-	public static DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
+	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
 
 	<#compress>
 	<#list items as item>
