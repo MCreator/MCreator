@@ -332,11 +332,6 @@ public class GradleConsole extends JPanel implements ISearchable {
 		execImpl(command, taskSpecificListener, null, null);
 	}
 
-	public void exec(String command, @Nullable ProgressListener progressListener,
-			@Nullable GradleTaskFinishedListener taskSpecificListener) {
-		execImpl(command, taskSpecificListener, progressListener, null);
-	}
-
 	public void exec(String command, @Nullable JVMDebugClient jvmDebugClient) {
 		execImpl(command, null, null, jvmDebugClient);
 	}

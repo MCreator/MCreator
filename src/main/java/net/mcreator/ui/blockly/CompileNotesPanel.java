@@ -73,7 +73,7 @@ public class CompileNotesPanel extends JPanel {
 	public void updateCompileNotes(List<BlocklyCompileNote> compileNotesArrayList) {
 		synchronized (compileNotes) {
 			compileNotes.clear();
-			compileNotesArrayList.forEach(compileNotes::addElement);
+			compileNotesArrayList.stream().sorted().forEach(compileNotes::addElement);
 		}
 		compileNotesLabel.setText(L10N.t("blockly.compile_notes", compileNotesArrayList.size()));
 		everUpdated = true;

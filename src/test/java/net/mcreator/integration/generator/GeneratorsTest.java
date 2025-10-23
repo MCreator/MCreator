@@ -33,6 +33,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
+import net.mcreator.ui.dialogs.tools.WoodPackMakerTool;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.TestUtil;
@@ -46,11 +48,13 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -99,6 +103,7 @@ import static org.junit.jupiter.api.Assertions.*;
 					List<DynamicTest> tests = new ArrayList<>();
 
 					AtomicReference<Workspace> workspace = new AtomicReference<>();
+					AtomicReference<MCreator> mcreator = new AtomicReference<>();
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Workspace setup", () -> {
 						// create temporary directory
@@ -111,15 +116,15 @@ import static org.junit.jupiter.api.Assertions.*;
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
 						CountDownLatch latch = new CountDownLatch(1);
-						MCreator.create(null, workspace.get()).getGradleConsole()
-								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
-									if (taskResult == GradleResultCode.STATUS_OK) {
-										workspace.get().getGenerator().reloadGradleCaches();
-									} else {
-										fail("Gradle MDK setup failed!");
-									}
-									latch.countDown();
-								});
+						mcreator.set(MCreator.create(null, workspace.get()));
+						mcreator.get().getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
+							if (taskResult == GradleResultCode.STATUS_OK) {
+								workspace.get().getGenerator().reloadGradleCaches();
+							} else {
+								fail("Gradle MDK setup failed!");
+							}
+							latch.countDown();
+						});
 						latch.await();
 
 						// Attach a blank file watcher to also test its operation
@@ -147,6 +152,17 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Fill workspace with sample tags after the elements the tags reference actually exist
 						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
 					}));
+					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
+							generatorConfiguration)) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
+							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
+								MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator.get(), workspace.get(),
+										"Material", "Dust based", Color.red, 1.234);
+							if (WoodPackMakerTool.isSupported(generatorConfiguration))
+								WoodPackMakerTool.addWoodPackToWorkspace(mcreator.get(), workspace.get(), "Wood",
+										Color.green, 0.123);
+						}));
+					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {

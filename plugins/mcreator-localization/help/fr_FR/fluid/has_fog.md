@@ -1,0 +1,1 @@
+Si cette option est activée, le fluide affichera un brouillard pendant que le joueur est submergé dans un fluide.

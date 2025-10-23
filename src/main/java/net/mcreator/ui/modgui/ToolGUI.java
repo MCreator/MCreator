@@ -45,8 +45,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -80,7 +78,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private ProcedureSelector additionalDropCondition;
 
-	private final VTextField name = new VTextField(30);
+	private final VTextField name = new VTextField(30).requireValue("elementgui.tool.needs_a_name")
+			.enableRealtimeValidation();
 
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
@@ -173,7 +172,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -234,6 +234,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
 				L10N.label("elementgui.tool.blocks_drop_tier")));
 		selp.add(blockDropsTier);
+		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		selp.add(new JEmptyBox());
 		selp.add(additionalDropCondition);
@@ -306,12 +307,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-
 		page1group.addValidationElement(texture);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.tool.needs_a_name")));
-		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
@@ -374,28 +370,30 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onBlockDestroyedWithTool.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		additionalDropCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onBlockDestroyedWithTool.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normalBlocking),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		additionalDropCondition.refreshListKeepSelected(context);
+
+		List<Model> itemModels = Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+				.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+				.collect(Collectors.toList());
+
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal), itemModels));
+		ComboBoxUtil.updateComboBoxContents(blockingModel,
+				ListUtils.merge(Collections.singletonList(normalBlocking), itemModels));
 	}
 
 	@Override public void openInEditingMode(Tool tool) {

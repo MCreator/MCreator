@@ -68,7 +68,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		}
 	}
 
-	@Override void deleteCurrentlySelected() {
+	@Override protected void deleteCurrentlySelected() {
 		List<SoundElement> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

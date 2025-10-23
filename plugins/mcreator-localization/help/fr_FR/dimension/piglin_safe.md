@@ -1,0 +1,1 @@
+Si cette option est activée, les piglings ne seront pas zombifiés à l'intérieur de cette dimension.

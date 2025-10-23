@@ -1,0 +1,1 @@
+C'est la valeur par défaut de la propriété d'état du bloc lorsque le bloc est généré/placé dans le monde.

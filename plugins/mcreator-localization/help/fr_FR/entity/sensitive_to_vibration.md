@@ -1,0 +1,1 @@
+Si ce paramètre est coché, ce bloc sera sensible aux vibrations comme le _Warden_.

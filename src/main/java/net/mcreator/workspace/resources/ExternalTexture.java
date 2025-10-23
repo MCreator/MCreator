@@ -150,7 +150,8 @@ public final class ExternalTexture extends Texture {
 			if (anyVanillaLoaded) {
 				CACHE.put(cacheId, textures);
 
-				LOG.debug("Loaded {} {} textures for workspace {} into cache", textures.size(), type, workspace);
+				LOG.debug("Loaded {} {} textures for workspace {} into cache", textures.size(), type.getID(),
+						workspace);
 			}
 		}
 

@@ -1,0 +1,1 @@
+Tato kondice určuje, zda brnění neutralizuje pigliny, jako zlatý brnění.

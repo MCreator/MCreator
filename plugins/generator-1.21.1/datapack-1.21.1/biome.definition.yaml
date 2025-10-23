@@ -47,33 +47,33 @@ tags:
   - tag: BIOMES:minecraft:has_structure/end_city
     condition: spawnEndCity
   - tag: BIOMES:minecraft:has_structure/village_desert
-    condition: "${data.villageType == 'desert'}"
+    condition: "villageType %= desert"
   - tag: BIOMES:minecraft:has_structure/village_plains
-    condition: "${data.villageType == 'plains'}"
+    condition: "villageType %= plains"
   - tag: BIOMES:minecraft:has_structure/village_savanna
-    condition: "${data.villageType == 'savanna'}"
+    condition: "villageType %= savanna"
   - tag: BIOMES:minecraft:has_structure/village_snowy
-    condition: "${data.villageType == 'snowy'}"
+    condition: "villageType %= snowy"
   - tag: BIOMES:minecraft:has_structure/village_taiga
-    condition: "${data.villageType == 'taiga'}"
+    condition: "villageType %= taiga"
   - tag: BIOMES:minecraft:has_structure/ocean_ruin_cold
-    condition: "${data.oceanRuinType == 'COLD'}"
+    condition: "oceanRuinType %= COLD"
   - tag: BIOMES:minecraft:has_structure/ocean_ruin_warm
-    condition: "${data.oceanRuinType == 'WARM'}"
+    condition: "oceanRuinType %= WARM"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_standard
-    condition: "${data.spawnRuinedPortal == 'STANDARD'}"
+    condition: "spawnRuinedPortal %= STANDARD"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_desert
-    condition: "${data.spawnRuinedPortal == 'DESERT'}"
+    condition: "spawnRuinedPortal %= DESERT"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_jungle
-    condition: "${data.spawnRuinedPortal == 'JUNGLE'}"
+    condition: "spawnRuinedPortal %= JUNGLE"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_swamp
-    condition: "${data.spawnRuinedPortal == 'SWAMP'}"
+    condition: "spawnRuinedPortal %= SWAMP"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_mountain
-    condition: "${data.spawnRuinedPortal == 'MOUNTAIN'}"
+    condition: "spawnRuinedPortal %= MOUNTAIN"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_ocean
-    condition: "${data.spawnRuinedPortal == 'OCEAN'}"
+    condition: "spawnRuinedPortal %= OCEAN"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
-    condition: "${data.spawnRuinedPortal == 'NETHER'}"
+    condition: "spawnRuinedPortal %= NETHER"
 
 field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
 

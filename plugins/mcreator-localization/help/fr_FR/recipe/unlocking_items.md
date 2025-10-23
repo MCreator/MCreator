@@ -1,0 +1,1 @@
+Quand un élément de cette liste est collecté, la recette sera déverrouillée dans le livre de recettes.

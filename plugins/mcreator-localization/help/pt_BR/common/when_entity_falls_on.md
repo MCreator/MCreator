@@ -1,0 +1,1 @@
+Aciona um procedimento _somente_ quando a entidade cai no bloco de qualquer altura arbitrária.

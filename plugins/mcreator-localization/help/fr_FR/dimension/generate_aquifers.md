@@ -1,0 +1,1 @@
+Si ce paramètre est activé, les aquifères (grands lacs d'eau/lave) seront générés dans cette dimension.

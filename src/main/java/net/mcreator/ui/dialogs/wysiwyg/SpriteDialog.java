@@ -27,6 +27,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -58,11 +59,14 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, (int) spritesCount.getValue() - 1, 1);
 		JSpinner spinner = new JSpinner(model);
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		NumberProcedureSelector spriteIndex = new NumberProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/sprite_index"), editor.mcreator, L10N.t("dialog.gui.sprite_index"),
 				ProcedureSelector.Side.CLIENT, false, spinner, 80,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		spriteIndex.refreshList();
+		spriteIndex.refreshList(context);
 
 		JPanel opts = new JPanel(new GridLayout(2, 2, 2, 2));
 
@@ -79,7 +83,7 @@ public class SpriteDialog extends AbstractWYSIWYGDialog<Sprite> {
 				L10N.t("dialog.gui.sprite_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		displayCondition.refreshList();
+		displayCondition.refreshList(context);
 
 		final int[] previousSpritesCount = { (int) spritesCount.getValue() };
 		spritesCount.addChangeListener(e -> {

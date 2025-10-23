@@ -43,7 +43,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -74,7 +73,8 @@ public class ToolPackMakerTool {
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"dialog.tools.tool_pack_base_item_validator");
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
@@ -82,7 +82,6 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
-		base.setValidator(new MCItemHolderValidator(base));
 		base.addBlockSelectedListener(e -> {
 			try {
 				if (base.getBlock() != null) {

@@ -1,0 +1,1 @@
+Si cette option est active, la couleur de brouillards change selon le moment de la journée.
