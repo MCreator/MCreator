@@ -1066,6 +1066,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bind_gui")));
 		props.add(guiBoundTo);
 
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
 				L10N.label("elementgui.block.bind_gui_open")));
 		props.add(openGUIOnRightClick);
@@ -1452,6 +1454,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private void refreshFieldsTileEntity() {
 		boolean hasInventorySelected = hasInventory.isSelected();
 
+		guiBoundTo.setEnabled(hasInventorySelected);
+		openGUIOnRightClick.setEnabled(hasInventorySelected);
 		inventorySize.setEnabled(hasInventorySelected);
 		inventoryAutomationTakeCondition.setEnabled(hasInventorySelected);
 		inventoryAutomationPlaceCondition.setEnabled(hasInventorySelected);
@@ -1474,8 +1478,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canReceiveVibrationCondition.setEnabled(hasInventorySelected);
 		onReceivedVibration.setEnabled(hasInventorySelected);
 
-		if (hasInventorySelected)
+		if (hasInventorySelected) {
 			refreshVibrationProperties();
+			refreshGUIProperties();
+		}
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1572,6 +1578,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyPerChunks.setEnabled(canSpawn);
 		restrictionBiomes.setEnabled(canSpawn);
 		blocksToReplace.setEnabled(canSpawn);
+	}
+
+	private void refreshGUIProperties() {
+		boolean canSpawn = !guiBoundTo.isEmpty() && hasInventory.isSelected();
+
+		openGUIOnRightClick.setEnabled(canSpawn);
 	}
 
 	@Override public void reloadDataLists() {
