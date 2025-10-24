@@ -1,0 +1,1 @@
+Ce paramètre contrôle les valeurs minimales et maximales de la valeur de l'attribut.

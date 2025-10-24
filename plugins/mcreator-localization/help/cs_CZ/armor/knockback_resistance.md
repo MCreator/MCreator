@@ -1,0 +1,1 @@
+Tento parametr určuje jak moc velká je odolnost proti odražení.

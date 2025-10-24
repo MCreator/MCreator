@@ -37,7 +37,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -51,7 +50,8 @@ import java.util.List;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
-	private final VTextField commandName = new VTextField(25);
+	private final VTextField commandName = new VTextField(25).requireValue("elementgui.command.warning.empty_string")
+			.enableRealtimeValidation();
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
@@ -109,17 +109,13 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
 		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
+						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
 				Theme.current().getForegroundColor()));
 		args.setOpaque(false);
-
-		commandName.setValidator(
-				new TextFieldValidator(commandName, L10N.t("elementgui.command.warning.empty_string")));
-		commandName.enableRealtimeValidation();
 
 		page1group.addValidationElement(commandName);
 

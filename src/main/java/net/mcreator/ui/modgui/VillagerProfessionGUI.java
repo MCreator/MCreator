@@ -36,7 +36,6 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -50,9 +49,11 @@ import java.net.URISyntaxException;
 
 public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 
-	private final VTextField displayName = new VTextField(30);
+	private final VTextField displayName = new VTextField(30).requireValue(
+			"elementgui.villager_profession.profession_needs_display_name").enableRealtimeValidation();
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-	private final SoundSelector actionSound = new SoundSelector(mcreator);
+	private final SoundSelector actionSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.common.error_sound_empty_null").enableRealTimeValidation();
 	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
 
 	private TextureComboBox professionTextureFile;
@@ -108,9 +109,6 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(professionTextureFile);
 		page1group.addValidationElement(zombifiedProfessionTextureFile);
 
-		displayName.setValidator(new TextFieldValidator(displayName,
-				L10N.t("elementgui.villager_profession.profession_needs_display_name")));
-		displayName.enableRealtimeValidation();
 		pointOfInterest.setValidator(
 				new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
 						() -> pointOfInterest.getBlock().getUnmappedValue(),
@@ -118,10 +116,9 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
 								.map(DataListEntry::getName).toList(),
-						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty()).setIsPresentOnList(
+						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty().setEmptyMessage(
+								L10N.t("elementgui.villager_profession.error_profession_needs_block"))).setIsPresentOnList(
 						this::isEditingMode));
-		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null")));
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(
 				page1group);

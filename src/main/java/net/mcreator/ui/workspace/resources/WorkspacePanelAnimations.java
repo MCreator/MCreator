@@ -72,7 +72,7 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/entity-model-animations"));
 	}
 
-	@Override void deleteCurrentlySelected() {
+	@Override protected void deleteCurrentlySelected() {
 		List<Animation> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

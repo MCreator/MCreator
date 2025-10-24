@@ -46,6 +46,11 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 		List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
 		locales.sort((a, b) -> {
+			if (a.equals(Locale.US))
+				return -1;
+			if (b.equals(Locale.US))
+				return 1;
+
 			int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
 			int sb = L10N.getUITextsLocaleSupport(b) + L10N.getHelpTipsSupport(b);
 			if (sa == sb)

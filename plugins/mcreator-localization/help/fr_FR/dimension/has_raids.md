@@ -1,0 +1,1 @@
+Si cette option est activée, les joueurs peuvent déclencher des raids à l'intérieur de cette dimension.

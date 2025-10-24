@@ -1,0 +1,1 @@
+This parameter controls if the item is a piglin currency, like gold ingot.

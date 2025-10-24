@@ -1,4 +1,4 @@
-En activant ce paramètre, cet item deviendra une arme de combat distance qui lui permettra de tirer des projectiles, comme les arcs ou les arbalètes.
+En activant ce paramètre, cet item deviendra un item de combat à distance lui permettant de tirer des projectiles, comme les arcs ou les arbalètes.
 
 Pour faire fonctionner les armes à distance, ajuster l'animation à celle de l'arc ou un objet similaire et assurez-vous d'avoir d'une durée non-nulle d'utilisation.
 

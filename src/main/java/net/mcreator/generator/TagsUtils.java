@@ -25,6 +25,7 @@ import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.annotation.Nullable;
@@ -163,6 +164,26 @@ public class TagsUtils {
 				// We add managed entries to the beginning of the list
 				generator.getWorkspace().getTagElements().get(tag).addFirst(entryManaged);
 			}
+		}
+	}
+
+	public static void removeTagsForModElement(Workspace workspace, ModElement modElement) {
+		String entryToCheck = NameMapper.MCREATOR_PREFIX + modElement.getName();
+		String entryToCheckManaged = TagElement.makeEntryManaged(entryToCheck);
+
+		List<TagElement> toRemove = new ArrayList<>();
+
+		for (Map.Entry<TagElement, ArrayList<String>> entry : workspace.getTagElements().entrySet()) {
+			entry.getValue().remove(entryToCheck);
+			entry.getValue().remove(entryToCheckManaged);
+
+			if (entry.getValue().isEmpty()) {
+				toRemove.add(entry.getKey());
+			}
+		}
+
+		for (TagElement tag : toRemove) {
+			workspace.removeTagElement(tag);
 		}
 	}
 

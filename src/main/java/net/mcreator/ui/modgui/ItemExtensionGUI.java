@@ -30,10 +30,10 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -45,7 +45,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
-	private final MCItemHolder item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+	private final MCItemHolder item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+			"elementgui.item_extension.error_extension_needs_item");
 
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector fuelSuccessCondition;
@@ -131,7 +132,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 		JPanel itemPanel = PanelUtils.join(HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/item"),
 				L10N.label("elementgui.item_extension.item")), PanelUtils.centerInPanel(item));
-		item.setValidator(new MCItemHolderValidator(item));
 		pageGroup.addValidationElement(item);
 
 		JPanel parameters = new JPanel();
@@ -151,10 +151,14 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		fuelPower.refreshListKeepSelected();
-		fuelSuccessCondition.refreshListKeepSelected();
-		dispenseSuccessCondition.refreshListKeepSelected();
-		dispenseResultItemstack.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		fuelPower.refreshListKeepSelected(context);
+		fuelSuccessCondition.refreshListKeepSelected(context);
+		dispenseSuccessCondition.refreshListKeepSelected(context);
+		dispenseResultItemstack.refreshListKeepSelected(context);
 	}
 
 	private void updateDispenseElements() {

@@ -24,6 +24,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -63,13 +64,16 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 		grid.add(L10N.label("dialog.gui.checkbox_text"));
 		grid.add(checkboxText);
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		ProcedureSelector isCheckedProcedure = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/checkbox_procedure_value"), editor.mcreator,
 				L10N.t("dialog.gui.checkbox_procedure_value"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.false"));
-		isCheckedProcedure.refreshList();
+		isCheckedProcedure.refreshList(context);
 
 		add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(grid), PanelUtils.join(isCheckedProcedure)));
 

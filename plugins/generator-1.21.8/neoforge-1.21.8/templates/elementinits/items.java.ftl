@@ -43,6 +43,7 @@ package ${package}.init;
 <#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
 	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
+<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
 
 <#if itemsWithInventory?size != 0>
 @EventBusSubscriber
@@ -135,7 +136,7 @@ public class ${JavaModName}Items {
 	}
 	</#if>
 
-	<#if itemsWithInventory?size != 0>
+	<#if itemsWithInventory?size != 0 || buckets?size != 0>
 	<#compress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
@@ -143,6 +144,13 @@ public class ${JavaModName}Items {
 				Capabilities.ItemHandler.ITEM,
 				(stack, context) -> new ${item.getModElement().getName()}InventoryCapability(stack),
 				${item.getModElement().getRegistryNameUpper()}.get()
+			);
+		</#list>
+		<#list buckets as item>
+			event.registerItem(
+				Capabilities.FluidHandler.ITEM,
+				(stack, context) -> new FluidBucketWrapper(stack),
+				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
 			);
 		</#list>
 	}

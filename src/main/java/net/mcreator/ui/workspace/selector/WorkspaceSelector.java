@@ -277,7 +277,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 										recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (m == JOptionPane.YES_OPTION) {
-							FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+							FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 							reloadRecents();
 						}
 					}
@@ -361,7 +361,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (m == 0) {
-					FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+					FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 					reloadRecents();
 				}
 			}
@@ -559,22 +559,22 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 
-			ImageIcon newsIcon;
-			if (news != null && news[3] != null && !news[3].isBlank()) {
-				newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60, null);
-			} else {
-				newsIcon = null;
-			}
+			if (news != null && PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+				String id = news[4];
 
-			SwingUtilities.invokeLater(() -> {
-				if (news != null && PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
-					String id = news[4];
+				// Do not show notification the first time
+				if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
+					PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
 
-					// Do not show notification the first time
-					if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
-						PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+				if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+					ImageIcon newsIcon;
+					if (news[3] != null && !news[3].isBlank()) {
+						newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60, null);
+					} else {
+						newsIcon = null;
+					}
 
-					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+					SwingUtilities.invokeLater(() -> {
 						String title = L10N.t("notification.news.title", news[0]);
 						String link = news[1];
 						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
@@ -585,9 +585,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 									PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
 								}), new NotificationsRenderer.ActionButton(L10N.t("notification.news.hide"),
 										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
-					}
+
+					});
 				}
-			});
+			}
 		});
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
