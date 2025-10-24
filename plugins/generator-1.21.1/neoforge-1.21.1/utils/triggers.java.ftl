@@ -424,6 +424,9 @@
 public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float distance) {
     <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)>
         <#if hasProcedure(data.fallDamageInduced)>
+        	int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
             float damage = (float) <@procedureOBJToNumberCode data.fallDamageInduced/>;
             super.fallOn(world, state, pos, entity, distance * damage);
         <#else>
