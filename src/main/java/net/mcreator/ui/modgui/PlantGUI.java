@@ -997,9 +997,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBonemealSuccess.refreshListKeepSelected(context);
 		onEntityFallsOn.refreshListKeepSelected(context);
 
-		blockBounciness.refreshListKeepSelected();
-		fallDamageInduced.refreshListKeepSelected();
-    specialInformation.refreshListKeepSelected(context);
+		blockBounciness.refreshListKeepSelected(context);
+		fallDamageInduced.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
 		placingCondition.refreshListKeepSelected(context);
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);

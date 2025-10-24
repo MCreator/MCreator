@@ -983,11 +983,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		advancedWithCondition.add(fallDamageInduced);
 		advancedWithCondition.add(placingCondition);
 		advancedWithCondition.setOpaque(false);
+
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/stripping_result"),
 				L10N.label("elementgui.block.stripping_result")));
 		advancedProperties.add(PanelUtils.centerInPanel(strippingResult));
-
-		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
 		isWaterloggable.setOpaque(false);
 		canRedstoneConnect.setOpaque(false);
@@ -1621,8 +1620,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		emittedRedstonePower.refreshListKeepSelected(context);
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);
-    blockBounciness.refreshListKeepSelected();
-		fallDamageInduced.refreshListKeepSelected();
+		blockBounciness.refreshListKeepSelected(context);
+		fallDamageInduced.refreshListKeepSelected(context);
 		placingCondition.refreshListKeepSelected(context);
 		additionalHarvestCondition.refreshListKeepSelected(context);
 		vibrationSensitivityRadius.refreshListKeepSelected(context);
