@@ -1,0 +1,1 @@
+Dies ist der Standardwert der Eigenschaft des Blockzustandes, wenn der Block in der Welt generiert/platziert wird.

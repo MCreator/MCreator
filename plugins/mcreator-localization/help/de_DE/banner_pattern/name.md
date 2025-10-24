@@ -1,0 +1,1 @@
+Dies ist der Name des Musters, der in Webstühlen und in der Beschreibung von Bannern und Schilden angezeigt wird.

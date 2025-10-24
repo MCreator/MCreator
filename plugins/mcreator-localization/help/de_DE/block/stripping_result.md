@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, wie sich dieser Block verändert, wenn er mit einer Axt entfernt wird.

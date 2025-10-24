@@ -1,0 +1,1 @@
+Dies ist die Menge an Erfahrungen, die von diesem Block fallen gelassen werden, wenn es von einem Spieler zerbrochen wird.

@@ -1,1 +1,1 @@
-Si une texture est sélectionnée, elle sera affichée sous forme de superposition pendant que le joueur est submergé.
+Si une texture est sélectionnée, elle sera affichée sous forme de recouvement d'interface pendant que le joueur est submergé.

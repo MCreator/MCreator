@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, kann dieser Block Feuer auffangen, wenn er nahe an Lava liegt.
