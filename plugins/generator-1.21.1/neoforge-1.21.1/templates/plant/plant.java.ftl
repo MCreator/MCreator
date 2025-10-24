@@ -230,13 +230,11 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		if (vec3.y < 0.0) {
 			double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
 			<#if hasProcedure(data.blockBounciness)>
-				float restitution = (float) <@procedureCode data.blockBounciness, {
-					"x": "entity.getX()",
-					"y": "entity.getY()",
-					"z": "entity.getZ()",
-					"entity": "entity",
-					"world": "entity.level()"
-				}/>
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
+				LevelAccessor world = entity.level();
+				float restitution = (float) <@procedureOBJToNumberCode data.blockBounciness/>;
 				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * restitution, vec3.z);
 			<#else>
 				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * ${data.blockBounciness.getFixedValue()}F, vec3.z);
