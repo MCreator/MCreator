@@ -255,8 +255,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
-				L10N.t("elementgui.common.event_on_entity_falls_on"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
+				L10N.t("elementgui.common.event_on_entity_falls_on"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onHitByProjectile = new ProcedureSelector(this.withEntry("block/on_hit_by_projectile"), mcreator,
 				L10N.t("elementgui.common.event_on_block_hit_by_projectile"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/direction:direction/blockstate:blockstate/hitX:number/hitY:number/hitZ:number"));
@@ -270,16 +270,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		blockBounciness = new NumberProcedureSelector(this.withEntry("common/bounciness"), mcreator,
-			L10N.t("elementgui.common.bounciness"), AbstractProcedureSelector.Side.BOTH,
-			new JSpinner(new SpinnerNumberModel(0.0, 0.0, Float.MAX_VALUE, 0.1)),
-			130, Dependency.fromString("entity:entity")
-		);
-		fallDamageInduced = new NumberProcedureSelector(this.withEntry("common/fall_damage_induced"), mcreator, 
-			L10N.t("elementgui.common.fall_damage_induced"), AbstractProcedureSelector.Side.BOTH,
-			new JSpinner(new SpinnerNumberModel(1.0, 0.0, Float.MAX_VALUE, 0.01)),
-			130, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate")
-		);
+				L10N.t("elementgui.common.bounciness"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(0.0, 0.0, Float.MAX_VALUE, 0.1)), 130,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		fallDamageInduced = new NumberProcedureSelector(this.withEntry("common/fall_damage_induced"), mcreator,
+				L10N.t("elementgui.common.fall_damage_induced"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(1.0, 0.0, Float.MAX_VALUE, 0.01)), 130,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
