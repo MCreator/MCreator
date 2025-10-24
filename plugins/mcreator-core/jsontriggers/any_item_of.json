@@ -1,0 +1,16 @@
+{
+  "mutator": "any_item_mutator",
+  "output": "MCItem",
+  "colour": "350",
+  "mcreator": {
+    "toolbox_id": "components",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "<value name=\"item0\"><block type=\"mcitem_all\"></block></value>",
+      "<value name=\"item1\"><block type=\"mcitem_all\"></block></value>"
+    ],
+    "repeating_inputs": [
+      "item"
+    ]
+  }
+}

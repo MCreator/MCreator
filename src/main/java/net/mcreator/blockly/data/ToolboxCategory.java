@@ -109,6 +109,9 @@ public class ToolboxCategory {
 		put("heightplacements", builtin("heightplacements", "190"));
 		put("blockpredicates", builtin("blockpredicates", "210"));
 
+		// toolbox_advancement.xml
+		put("components", builtin("components", "300"));
+
 		// toolbox_ai_builder.xml
 		put("aiadvanced", builtin("advanced", "250"));
 
