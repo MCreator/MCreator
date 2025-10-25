@@ -49,7 +49,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 	private final MCreator mcreator;
 
-	private final TextureType textureType;
+	private TextureType textureType;
 	private final boolean showEmpty;
 	private final String defaultTextureName;
 	private boolean addPNGExtension = true;
@@ -126,6 +126,11 @@ public class TextureComboBox extends JPanel implements IValidable {
 		if (selected == null || selected.equals(empty))
 			return defaultTextureName;
 		return selected.getTextureName() + (addPNGExtension ? ".png" : "");
+	}
+
+	public void changeTextureType(TextureType newType) {
+		this.textureType = newType;
+		this.reload();
 	}
 
 	public boolean hasTexture() {
