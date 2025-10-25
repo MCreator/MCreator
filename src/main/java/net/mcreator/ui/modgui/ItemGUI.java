@@ -675,10 +675,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	private void refreshGUIProperties() {
-		boolean canSpawn = !guiBoundTo.isEmpty();
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
 
-		inventorySize.setEnabled(canSpawn);
-		inventoryStackSize.setEnabled(canSpawn);
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
 	}
 
 	@Override public void reloadDataLists() {

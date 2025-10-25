@@ -1579,9 +1579,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	private void refreshGUIProperties() {
-		boolean canSpawn = !guiBoundTo.isEmpty();
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
 
-		openGUIOnRightClick.setEnabled(canSpawn);
+		openGUIOnRightClick.setEnabled(isGuiBoundToEmpty);
 	}
 
 	@Override public void reloadDataLists() {

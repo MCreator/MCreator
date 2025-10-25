@@ -998,10 +998,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	}
 
 	private void refreshGUIProperties() {
-		boolean canSpawn = !guiBoundTo.isEmpty();
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
 
-		inventorySize.setEnabled(canSpawn);
-		inventoryStackSize.setEnabled(canSpawn);
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
 	}
 
 	private void refreshSpawnProperties() {
