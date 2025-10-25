@@ -14,13 +14,13 @@ global_templates:
 
 tags:
   - tag: ENTITIES:minecraft:boat
-    condition: "${data.entityType == 'Boat'}"
+    condition: "entityType %= Boat"
   - tag: ENTITIES:c:boats
-    condition: "${data.entityType == 'ChestBoat'}"
+    condition: "entityType %= ChestBoat"
   - tag: ITEMS:minecraft:boats
-    condition: "${data.entityType == 'Boat'}"
+    condition: "entityType %= Boat"
   - tag: ITEMS:minecraft:chest_boats
-    condition: "${data.entityType == 'ChestBoat'}"
+    condition: "entityType %= ChestBoat"
 
 localizationkeys:
   - key: entity.@modid.@registryname
