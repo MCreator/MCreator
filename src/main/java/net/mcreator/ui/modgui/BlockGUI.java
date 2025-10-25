@@ -1454,8 +1454,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private void refreshFieldsTileEntity() {
 		boolean hasInventorySelected = hasInventory.isSelected();
 
-		guiBoundTo.setEnabled(hasInventorySelected);
-		openGUIOnRightClick.setEnabled(hasInventorySelected);
 		inventorySize.setEnabled(hasInventorySelected);
 		inventoryAutomationTakeCondition.setEnabled(hasInventorySelected);
 		inventoryAutomationPlaceCondition.setEnabled(hasInventorySelected);
