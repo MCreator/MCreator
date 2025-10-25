@@ -1476,10 +1476,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canReceiveVibrationCondition.setEnabled(hasInventorySelected);
 		onReceivedVibration.setEnabled(hasInventorySelected);
 
-		if (hasInventorySelected) {
+		if (hasInventorySelected)
 			refreshVibrationProperties();
-			refreshGUIProperties();
-		}
+
+		refreshGUIProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
