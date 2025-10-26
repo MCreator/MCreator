@@ -37,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -98,9 +99,9 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateArgs(changeEvent.getSource() instanceof BlocklyPanel),
-							"CommandRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
@@ -120,16 +121,15 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		page1group.addValidationElement(commandName);
 
 		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel), args)).validate(
-				page1group).lazyValidate(
-				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-						message -> message.replace("Command", "Command arguments")));
+				page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+				message -> message.replace("Command", "Command arguments")));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
 		}
 	}
 
-	private synchronized void regenerateArgs(boolean jsEventTriggeredChange) {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
@@ -137,7 +137,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 					new BlocklyBlockCodeGenerator(externalBlocks,
 							mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
@@ -146,6 +147,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		return compileNotesArrayList;
 	}
 
 	@Override public void openInEditingMode(Command command) {
