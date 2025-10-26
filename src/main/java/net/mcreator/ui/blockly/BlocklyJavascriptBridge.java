@@ -113,7 +113,8 @@ public final class BlocklyJavascriptBridge {
 						if (c != null) {
 							selected.set(String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
 						}
-					}, null);
+						JColor.disposeDialog();
+					}, event2 -> JColor.disposeDialog());
 			dialog.setVisible(true);
 			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY,
 					selected.get() != null ? selected.get() : null));

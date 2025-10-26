@@ -71,7 +71,8 @@ public class ColorSelector extends JPanel {
 							foreground = c;
 							updateColors();
 						}
-					}, null);
+						JColor.disposeDialog();
+					}, event2 -> JColor.disposeDialog());
 			dialog.setVisible(true);
 		});
 
@@ -85,7 +86,8 @@ public class ColorSelector extends JPanel {
 							background = c;
 							updateColors();
 						}
-					}, null);
+						JColor.disposeDialog();
+					}, event2 -> JColor.disposeDialog());
 			dialog.setVisible(true);
 		});
 

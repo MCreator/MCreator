@@ -79,7 +79,8 @@ public class JColor extends JPanel {
 						Color color = colorChooser.getColor();
 						if (color != null)
 							setColor(color);
-					}, null);
+						disposeDialog();
+					}, e3 -> disposeDialog());
 			dialog.setVisible(true);
 		});
 		remove.addActionListener(e -> setColor(null));
@@ -101,6 +102,10 @@ public class JColor extends JPanel {
 		} else {
 			setColor(Color.white);
 		}
+	}
+
+	public static void disposeDialog() {
+		((JDialog) colorChooser.getRootPane().getParent()).dispose();
 	}
 
 	public JColor withColorTextColumns(int width) {

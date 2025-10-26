@@ -64,7 +64,8 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 					Color c = JColor.colorChooser.getColor();
 					if (c != null)
 						newColor.set(c);
-				}, null);
+					JColor.disposeDialog();
+				}, event2 -> JColor.disposeDialog());
 		dialog.setVisible(true);
 		return newColor.get();
 	}
@@ -77,7 +78,8 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 					Color c = JColor.colorChooser.getColor();
 					if (c != null)
 						palette.getColors().set(colorID, c);
-				}, null);
+					JColor.disposeDialog();
+				}, event2 -> JColor.disposeDialog());
 		dialog.setVisible(true);
 	}
 
