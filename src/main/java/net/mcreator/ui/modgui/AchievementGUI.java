@@ -50,6 +50,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -212,9 +213,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateTrigger(changeEvent.getSource() instanceof BlocklyPanel),
-							"TriggerRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"TriggerRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -231,9 +232,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-		addPage(wrap, false).validate(page1group).lazyValidate(
-				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
+		addPage(wrap, false).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -241,7 +241,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		}
 	}
 
-	private synchronized void regenerateTrigger(boolean jsEventTriggeredChange) {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
 
@@ -251,7 +251,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJSONTrigger.getCompileNotes();
@@ -265,6 +266,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		return compileNotesArrayList;
 	}
 
 	@Override public void reloadDataLists() {
