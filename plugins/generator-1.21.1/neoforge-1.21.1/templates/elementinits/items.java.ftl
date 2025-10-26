@@ -43,6 +43,7 @@ package ${package}.init;
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
+<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
 
 <#if itemsWithInventory?size != 0>
 @EventBusSubscriber
@@ -105,7 +106,7 @@ public class ${JavaModName}Items {
 	// Start of user code block custom items
 	// End of user code block custom items
 
-	<#if itemsWithInventory?size != 0>
+	<#if itemsWithInventory?size != 0 || buckets?size != 0>
 	<#compress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
@@ -113,6 +114,13 @@ public class ${JavaModName}Items {
 				Capabilities.ItemHandler.ITEM,
 				(stack, context) -> new ${item.getModElement().getName()}InventoryCapability(stack),
 				${item.getModElement().getRegistryNameUpper()}.get()
+			);
+		</#list>
+		<#list buckets as item>
+			event.registerItem(
+				Capabilities.FluidHandler.ITEM,
+				(stack, context) -> new FluidBucketWrapper(stack),
+				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
 			);
 		</#list>
 	}

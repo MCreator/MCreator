@@ -1,0 +1,1 @@
+Die maximale Distanz, die dieser Block Vibrationen annehmen kann.

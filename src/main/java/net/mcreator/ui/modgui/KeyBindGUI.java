@@ -34,7 +34,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -53,7 +52,8 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	private final JComboBox<String> triggerKey = new JComboBox<>(
 			DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toArray(String[]::new));
 
-	private final VTextField keyBindingName = new VTextField(20);
+	private final VTextField keyBindingName = new VTextField(20).requireValue("elementgui.keybind.error_key_needs_name")
+			.enableRealtimeValidation();
 
 	private final VComboBox<String> keyBindingCategoryKey = new VComboBox<>(
 			new String[] { "misc", "movement", "multiplayer", "gameplay", "ui", "inventory", "creative" });
@@ -114,10 +114,6 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		merge.add("South", events);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(merge));
-
-		keyBindingName.setValidator(
-				new TextFieldValidator(keyBindingName, L10N.t("elementgui.keybind.error_key_needs_name")));
-		keyBindingName.enableRealtimeValidation();
 
 		keyBindingCategoryKey.setValidator(new RegistryNameValidator(keyBindingCategoryKey,
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));

@@ -1,0 +1,1 @@
+Déclenche une procédure lorsque le curseur est sélectionné et que le curseur se déplace.

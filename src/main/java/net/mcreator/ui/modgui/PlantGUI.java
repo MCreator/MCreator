@@ -48,8 +48,6 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -96,7 +94,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox isSolid = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isWaterloggable = L10N.checkbox("elementgui.common.enable");
 
-	private final VTextField name = new VTextField(18);
+	private final VTextField name = new VTextField(18).requireValue("elementgui.plant.error_plant_needs_name")
+			.enableRealtimeValidation();
 
 	private StringListProcedureSelector specialInformation;
 
@@ -290,7 +289,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue();
 		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		texture.setOpaque(false);
 		textureBottom.setOpaque(false);
@@ -813,11 +813,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
 
 		pane4.setOpaque(false);
-
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.plant.error_plant_needs_name")));
-		name.enableRealtimeValidation();
 
 		page3group.addValidationElement(name);
 

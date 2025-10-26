@@ -1,0 +1,1 @@
+Le entità qui selezionate avranno questo attributo presente e impostato sul suo valore predefinito quando vengono generate.

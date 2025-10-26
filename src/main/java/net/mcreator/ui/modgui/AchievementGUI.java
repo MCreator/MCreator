@@ -48,8 +48,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -68,8 +66,10 @@ import java.util.stream.Collectors;
 
 public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
 
-	private final VTextField achievementName = new VTextField(20);
-	private final VTextField achievementDescription = new VTextField(20);
+	private final VTextField achievementName = new VTextField(20).requireValue("elementgui.advancement.cant_be_empty")
+			.enableRealtimeValidation();
+	private final VTextField achievementDescription = new VTextField(20).requireValue(
+			"elementgui.advancement.must_have_description").enableRealtimeValidation();
 
 	private final DataListComboBox parentAchievement = new DataListComboBox(mcreator);
 
@@ -108,7 +108,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected void initGUI() {
-		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.advancement.error_advancement_needs_icon");
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
@@ -201,14 +202,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
-
-		achievementName.setValidator(
-				new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
-		achievementDescription.setValidator(
-				new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
-		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
-		achievementName.enableRealtimeValidation();
-		achievementDescription.enableRealtimeValidation();
 
 		page1group.addValidationElement(achievementIcon);
 		page1group.addValidationElement(achievementName);
