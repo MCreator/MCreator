@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -187,6 +188,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
+		if (this.getMCreator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.DATAPACK) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
+					L10N.t("blockly.warnings.features.data_packs_cannot_modify_biomes")));
+		}
 		if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
 			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.features.missing_placement")));
