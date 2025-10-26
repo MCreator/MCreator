@@ -29,11 +29,12 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 package ${package}.fluid.types;
 
 <#compress>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD) public class ${name}FluidType extends FluidType {
+@EventBusSubscriber public class ${name}FluidType extends FluidType {
 	public ${name}FluidType() {
 		super(FluidType.Properties.create()
 			<#if data.type == "WATER">
@@ -60,13 +61,17 @@ package ${package}.fluid.types;
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
-			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH));
+			.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
+		);
 	}
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
 		event.registerFluidType(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}"),
-				FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
+			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}");
+			private static final ResourceLocation FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
+			<#if data.textureRenderOverlay?has_content>
+			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = ResourceLocation.parse("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
+			</#if>
 
 				@Override public ResourceLocation getStillTexture() {
 					return STILL_TEXTURE;
@@ -75,6 +80,40 @@ package ${package}.fluid.types;
 				@Override public ResourceLocation getFlowingTexture() {
 					return FLOWING_TEXTURE;
 				}
+
+				<#if data.textureRenderOverlay?has_content>
+				@Override public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+					return RENDER_OVERLAY_TEXTURE;
+				}
+				</#if>
+
+				<#if data.hasFog>
+					<#if data.fogColor?has_content>
+					@Override public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+						return new Vector3f(${data.fogColor.getRed()/255}f, ${data.fogColor.getGreen()/255}f, ${data.fogColor.getBlue()/255}f);
+					}
+					</#if>
+
+					@Override public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+						Entity entity = camera.getEntity();
+						Level world = entity.level();
+						RenderSystem.setShaderFogShape(FogShape.SPHERE);
+						RenderSystem.setShaderFogStart(
+							<#if hasProcedure(data.fogStartDistance)>
+								(float) <@procedureOBJToNumberCode data.fogStartDistance/>
+							<#else>
+								${data.fogStartDistance.getFixedValue()}f
+							</#if>);
+						RenderSystem.setShaderFogEnd(
+							<#if hasProcedure(data.fogEndDistance)>
+								(float) <@procedureOBJToNumberCode data.fogEndDistance/>
+							<#elseif data.fogEndDistance.getFixedValue() gt 16>
+								Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
+							<#else>
+								${data.fogEndDistance.getFixedValue()}f
+							</#if>);
+					}
+				</#if>
 
 				<#if data.isFluidTinted()>
 				@Override public int getTintColor() {
@@ -120,6 +159,6 @@ package ${package}.fluid.types;
 					</#if> | 0xFF000000;
 				}
 				</#if>
-		}, ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get());
+		}, ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get());
 	}
 }</#compress>

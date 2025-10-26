@@ -1,0 +1,1 @@
+Il s'agit du nom du paterne, affiché dans les métiers à tisser et dans la description des bannières et des boucliers.

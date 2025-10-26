@@ -1,1 +1,1 @@
-Megmutatja az eredményt a jobb felső sarokban amikor a játékos eléri az eredményt.
+Mutasd az előrehaladást a képernyő jobb felső sarkában, amikor a játékos teljesíti az előrehaladást.

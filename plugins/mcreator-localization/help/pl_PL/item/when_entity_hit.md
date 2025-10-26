@@ -1,0 +1,1 @@
+Ta procedura jest wykonywana po uderzeniu żywego podmiotu (krowa, creeper, gracz itp.) przy użyciu tego przedmiotu.

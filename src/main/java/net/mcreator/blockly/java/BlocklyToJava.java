@@ -59,7 +59,7 @@ public class BlocklyToJava extends BlocklyToCode {
 
 		preInitialization();
 
-		if (sourceXML != null) {
+		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
 				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 						.parse(new InputSource(new StringReader(sourceXML)));
@@ -80,7 +80,6 @@ public class BlocklyToJava extends BlocklyToCode {
 
 				// we execute extra actions needed after blocks are placed
 				postBlocksPlacement(doc, start_block, base_blocks);
-
 			} catch (TemplateGeneratorException e) {
 				throw e;
 			} catch (Exception e) {
@@ -91,6 +90,11 @@ public class BlocklyToJava extends BlocklyToCode {
 		} else {
 			addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
+		}
+
+		if (this.getBlockCount() > 4000) {
+			addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.errors.too_many_blocks")));
 		}
 	}
 
@@ -127,13 +131,16 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new ProcedureRetvalBlock());
 
 		// add standard output blocks
-		blockGenerators.add(new BinaryOperationsBlock());
+		blockGenerators.add(new LogicBinaryOperationsBlock());
+		blockGenerators.add(new NumberBinaryOperationsBlock());
 		blockGenerators.add(new TextBinaryOperationsBlock());
 		blockGenerators.add(new LogicNegateBlock());
+		blockGenerators.add(new NullComparisonBlock());
 		blockGenerators.add(new BooleanBlock());
 		blockGenerators.add(new NumberBlock());
 		blockGenerators.add(new NumberConstantsBlock());
 		blockGenerators.add(new TextBlock());
+		blockGenerators.add(new TextNewLineBlock());
 		blockGenerators.add(new TextReplace());
 		blockGenerators.add(new TextReplaceRegex());
 		blockGenerators.add(new TextFormatNumber());
@@ -180,5 +187,6 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+		blockGenerators.add(new EventParameterSetBlock());
 	}
 }

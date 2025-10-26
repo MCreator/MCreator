@@ -1,1 +1,0 @@
-Tích hộp này để bật thanh tìm kiếm trên đỉnh tab để tìm kiếm bên trong tab sáng tạo này.

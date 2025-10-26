@@ -1,0 +1,1 @@
+Ten wyzwalacz uruchamia procedurę, gdy ten byt zabija inny byt.

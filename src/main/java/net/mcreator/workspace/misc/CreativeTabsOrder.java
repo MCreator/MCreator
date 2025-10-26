@@ -21,14 +21,17 @@ package net.mcreator.workspace.misc;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.Tab;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
-public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<String>> {
+public class CreativeTabsOrder extends LinkedHashMap<String, ArrayList<String>> {
 
 	public void addOrUpdateModElementTabs(GeneratableElement element) {
 		if (element instanceof ITabContainedElement tabElement) {
@@ -36,7 +39,7 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 			String meName = element.getModElement().getName();
 
 			// remove element from its prior tabs
-			for (Entry<String, ArrayList<String>> entry : this.entrySet()) {
+			for (Map.Entry<String, ArrayList<String>> entry : this.entrySet()) {
 				boolean found = false;
 				for (TabEntry tabEntry : tabEntries) {
 					if (entry.getKey().equals(tabEntry.getUnmappedValue())) {
@@ -59,7 +62,9 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 	}
 
 	public void removeModElementFromTabs(GeneratableElement element) {
-		if (element instanceof ITabContainedElement) {
+		if (element instanceof Tab) {
+			this.remove(new DataListEntry.Custom(element.getModElement()).getName());
+		} else if (element instanceof ITabContainedElement) {
 			for (ArrayList<String> tabContents : this.values())
 				tabContents.remove(element.getModElement().getName());
 		}

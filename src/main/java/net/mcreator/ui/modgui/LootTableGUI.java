@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -27,7 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
-import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.minecraft.loottable.LootTablePreview;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -48,7 +49,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter" });
+					"Barter", "Archaeology" });
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -75,9 +76,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		).setIsPresentOnList(this::isEditingMode));
 		//@formatter:on
 		name.enableRealtimeValidation();
-		name.addItem("blocks/stone");
-		name.addItem("entities/chicken");
-		name.addItem("gameplay/fishing");
+		name.setPreferredSize(new Dimension(350, 0));
 		name.setEditable(true);
 
 		if (isEditingMode()) {
@@ -91,26 +90,36 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
 				if (type.getSelectedItem() != null)
 					switch (type.getSelectedItem().toString()) {
-					case "Block":
-						name.getEditor().setItem("blocks/" + currNameNoType);
-						break;
-					case "Chest":
-						name.getEditor().setItem("chests/" + currNameNoType);
-						break;
-					case "Entity":
-					case "Gift":
-					case "Barter":
-					case "Advancement reward":
-						name.getEditor().setItem("entities/" + currNameNoType);
-						break;
-					default:
-						name.getEditor().setItem("gameplay/" + currNameNoType);
-						break;
+					case "Block" -> name.getEditor().setItem("blocks/" + currNameNoType);
+					case "Chest" -> name.getEditor().setItem("chests/" + currNameNoType);
+					case "Entity", "Gift", "Barter", "Advancement reward" ->
+							name.getEditor().setItem("entities/" + currNameNoType);
+					case "Archaeology" -> name.getEditor().setItem("archaeology/" + currNameNoType);
+					default -> name.getEditor().setItem("gameplay/" + currNameNoType);
 					}
+			});
+
+			for (ModElement me : mcreator.getWorkspace().getModElements()) {
+				if (me.getBaseTypesProvided().contains(BaseType.BLOCK)) {
+					name.addItem("blocks/" + me.getRegistryName());
+				} else if (me.getType() == ModElementType.LIVINGENTITY) {
+					name.addItem("entities/" + me.getRegistryName());
+				}
+			}
+
+			name.addActionListener(e -> {
+				String currName = name.getEditor().getItem().toString();
+				if (currName != null) {
+					if (currName.startsWith("blocks/")) {
+						type.setSelectedItem("Block");
+					} else if (currName.startsWith("entities/")) {
+						type.setSelectedItem("Entity");
+					}
+				}
 			});
 		}
 
-		JPanel northPanel = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel northPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/registry_name"),
@@ -125,10 +134,17 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
-		lootTablePools = new JLootTablePoolsList(mcreator, this);
+		LootTablePreview preview = new LootTablePreview(mcreator);
+		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
 
-		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
-		addPage(pane3, false);
+		ModElementChangedListener listener = () -> preview.generateLootTable(lootTablePools.getEntries());
+		listener.registerUI(lootTablePools);
+
+		pane3.add(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
+						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
+
+		addPage(pane3, false).validate(name);
 
 		// add first pool
 		if (!isEditingMode())
@@ -138,10 +154,6 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		lootTablePools.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(name);
 	}
 
 	@Override public void openInEditingMode(LootTable loottable) {

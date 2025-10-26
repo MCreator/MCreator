@@ -1,0 +1,1 @@
+This is the name of the pattern, shown in looms and in the description of banners and shields.

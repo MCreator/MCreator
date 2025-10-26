@@ -1,0 +1,1 @@
+Ten parametr kontroluje czy dana ciecz może być w wiadrze.

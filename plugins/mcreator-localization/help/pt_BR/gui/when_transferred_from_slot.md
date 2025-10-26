@@ -1,0 +1,1 @@
+Aciona um procedimento quando os itens neste slot são transferidos dele.

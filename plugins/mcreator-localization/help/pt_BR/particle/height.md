@@ -1,0 +1,1 @@
+Este parâmetro controla a altura desta partícula (em unidades de bloco).

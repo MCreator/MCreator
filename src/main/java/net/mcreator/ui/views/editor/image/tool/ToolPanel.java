@@ -135,9 +135,9 @@ public class ToolPanel extends JPanel {
 
 		versionManager.setRevisionListener(() -> {
 			undo.setEnabled(!versionManager.firstRevision());
-			frame.actionRegistry.imageEditorUndo.setEnabled(!versionManager.firstRevision());
+			frame.getActionRegistry().imageEditorUndo.setEnabled(!versionManager.firstRevision());
 			redo.setEnabled(!versionManager.lastRevision());
-			frame.actionRegistry.imageEditorRedo.setEnabled(!versionManager.lastRevision());
+			frame.getActionRegistry().imageEditorRedo.setEnabled(!versionManager.lastRevision());
 		});
 
 		toolGroups.add(general);
@@ -150,7 +150,11 @@ public class ToolPanel extends JPanel {
 			ToolGroup toolGroup) {
 		JButton toolButton = new JButton();
 		toolButton.setIcon(icon);
-		toolButton.setToolTipText(name);
+		if (description != null && !description.isEmpty()) {
+			toolButton.setToolTipText("<html>" + name + "<br><small>" + description);
+		} else {
+			toolButton.setToolTipText(name);
+		}
 		toolGroup.register(toolButton);
 		toolButton.addActionListener(actionListener);
 		return toolButton;
@@ -159,7 +163,12 @@ public class ToolPanel extends JPanel {
 	private JToggleButton register(AbstractTool tool, ToolGroup toolGroup) {
 		JToggleButton toolButton = new JToggleButton();
 		toolButton.setIcon(tool.getIcon());
-		toolButton.setToolTipText(tool.getName());
+		String description = tool.getDescription();
+		if (description != null && !description.isEmpty()) {
+			toolButton.setToolTipText("<html>" + tool.getName() + "<br><small>" + description);
+		} else {
+			toolButton.setToolTipText(tool.getName());
+		}
 		buttonGroup.add(toolButton);
 		toolGroup.register(toolButton);
 		toolProperties.add(tool.getPropertiesPanel(), tool.getName());

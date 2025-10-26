@@ -58,6 +58,13 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
 	private final Set<String> usedBlocks = new HashSet<>();
+	private final Set<String> usedTemplates = new LinkedHashSet<>(), generatedTemplates = new HashSet<>();
+
+	// These variables hold the current template for the head/tail of the currently processed block
+	private String headSection = "";
+	private String tailSection = "";
+
+	private int blockCount = 0;
 
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
@@ -83,6 +90,23 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final String getGeneratedCode() {
+		return code.toString();
+	}
+
+	public final String getExtraTemplatesCode() throws TemplateGeneratorException {
+		StringBuilder code = new StringBuilder();
+		if (templateGenerator != null) {
+			while (!usedTemplates.isEmpty()) {
+				for (String template : List.copyOf(usedTemplates)) {
+					generatedTemplates.add(template);
+					usedTemplates.remove(template);
+					Map<String, Object> dataModel = new HashMap<>();
+					dataModel.put("parent", parent);
+					dataModel.put("addTemplate", new ExtraTemplatesLinker(this));
+					code.append(templateGenerator.generateFromTemplate(template, dataModel));
+				}
+			}
+		}
 		return code.toString();
 	}
 
@@ -159,8 +183,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				.map(i -> (StatementInput) i).filter(predicate).collect(Collectors.toList());
 	}
 
+	public final void addTemplate(String template) {
+		if (!generatedTemplates.contains(template))
+			usedTemplates.add(template);
+	}
+
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
+			blockCount++;
+
 			String type = block.getAttribute("type");
 
 			if (block.getAttribute("disabled").equals("true")) { // Skip disabled blocks
@@ -171,7 +202,20 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				for (IBlockGenerator generator : blockGenerators) {
 					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
 							generator.getSupportedBlocks()).contains(type)) {
-						generator.generateBlock(this, block);
+						try {
+							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
+							// because the following block cannot be part of the current head/tail sections
+							if (!(generator instanceof IBlockGeneratorWithSections)) {
+								IBlockGeneratorWithSections.terminateSections(this);
+							}
+							generator.generateBlock(this, block);
+						} catch (TemplateGeneratorException e) {
+							throw e;
+						} catch (Exception e) {
+							// Any other exception that can occur during block generation
+							throw new TemplateGeneratorException(
+									"Uncaught exception while generating block of type: " + type, e);
+						}
 
 						usedBlocks.add(type);
 
@@ -188,9 +232,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				}
 			}
 		}
+
+		// Append the last tail at the end of the processing, and clear sections data in case the method will be called again
+		append(getTailSection());
+		clearSections();
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
+		blockCount++;
+
 		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
 		if (conditionBlocks.isEmpty())
 			return;
@@ -205,7 +255,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			for (IBlockGenerator generator : blockGenerators) {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
 						generator.getSupportedBlocks()).contains(type)) {
-					generator.generateBlock(this, block);
+					try {
+						generator.generateBlock(this, block);
+					} catch (TemplateGeneratorException e) {
+						throw e;
+					} catch (Exception e) {
+						// Any other exception that can occur during block generation
+						throw new TemplateGeneratorException(
+								"Uncaught exception while generating block of type: " + type, e);
+					}
 
 					usedBlocks.add(type);
 
@@ -235,6 +293,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public static String directProcessStatementBlock(BlocklyToCode master, Element element)
 			throws TemplateGeneratorException {
+		// first terminate any potential code sections as they in most cases don't work right nested in statements
+		IBlockGeneratorWithSections.terminateSections(master);
+
 		// we do a little hack to get the code of the input only
 		String originalMasterCode = master.getGeneratedCode();
 		master.clearCodeGeneratorBuffer(); // we clear all the existing code
@@ -299,6 +360,36 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	 */
 	public Collection<String> getUsedBlocks() {
 		return Collections.unmodifiableSet(usedBlocks);
+	}
+
+	public void setHeadSection(String headSection) {
+		this.headSection = headSection;
+	}
+
+	public void setTailSection(String tailSection) {
+		this.tailSection = tailSection;
+	}
+
+	public void clearSections() {
+		this.headSection = "";
+		this.tailSection = "";
+	}
+
+	public String getHeadSection() {
+		return headSection;
+	}
+
+	public String getTailSection() {
+		return tailSection;
+	}
+
+	/**
+	 * Returns the count of blocks currently processed from the block arrangement.
+	 *
+	 * @return The total number of blocks.
+	 */
+	public int getBlockCount() {
+		return blockCount;
 	}
 
 }

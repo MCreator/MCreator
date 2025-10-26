@@ -1,0 +1,1 @@
+Ustaw wartość gęstości w kg/m3.

@@ -1,0 +1,1 @@
+Ta właściwość określa, ile poziomu światła zmniejsza się podczas przechodzenia przez ten blok. Na przykład wartość 15 zablokuje całe światło, wartość 0 sprawi, że blok będzie przezroczysty dla światła.

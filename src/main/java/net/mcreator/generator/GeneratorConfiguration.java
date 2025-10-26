@@ -21,16 +21,16 @@ package net.mcreator.generator;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
-import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.AdaptiveYamlMergePolicy;
+import net.mcreator.util.yaml.YamlMerge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -77,16 +77,22 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
 
-		String config = FileIO.readResourceToString(PluginLoader.INSTANCE, "/" + generatorName + "/generator.yaml");
-
 		// load generator configuration
 		try {
-			generatorConfig = (Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config);
+			generatorConfig = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, generatorName + "/generator.yaml",
+					new AdaptiveYamlMergePolicy("name"));
 			generatorConfig = new ConcurrentHashMap<>(
 					generatorConfig); // make this map concurrent, cache can be reused by multiple instances
-		} catch (YamlEngineException e) {
-			LOG.fatal("[{}] Error: {}", generatorName, e.getMessage());
+		} catch (YamlEngineException | IOException e) {
+			LOG.error("[{}] Error: {}", generatorName, e.getMessage(), e);
+			throw new RuntimeException(e);
 		}
+
+		// do a quick validation to make sure we loaded full configuration
+		generatorConfig.get("name");
+		generatorConfig.get("source_root");
+		generatorConfig.get("res_root");
+		generatorConfig.get("status");
 
 		this.generatorFlavor = GeneratorFlavor.valueOf(this.generatorName.split("-")[0].toUpperCase(Locale.ENGLISH));
 

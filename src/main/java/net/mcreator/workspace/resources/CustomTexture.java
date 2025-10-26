@@ -76,7 +76,7 @@ public final class CustomTexture extends Texture {
 			customTextureFiles = new ArrayList<>();
 			List<File> armors = workspace.getFolderManager().getTexturesList(TextureType.ARMOR);
 			for (File texture : armors)
-				if (texture.getName().endsWith("_layer_1.png"))
+				if (texture.getName().endsWith("_layer_1.png") && !texture.getName().equals("_layer_1.png"))
 					customTextureFiles.add(texture);
 		} else {
 			customTextureFiles = workspace.getFolderManager().getTexturesList(type);

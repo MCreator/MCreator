@@ -1,1 +1,1 @@
-Afficher l'avancement en haut à droite de l'écran lorsque le joueur termine l'avancement.
+Affiche le progrès en haut à droite de l'écran quand le joueur réalise un progrès.

@@ -75,6 +75,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 
 		JScrollPane scrollPane = new JScrollPane(settingsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
 
 		propertiesPanel.add(lab, BorderLayout.NORTH);
 		propertiesPanel.add(scrollPane, BorderLayout.CENTER);

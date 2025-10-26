@@ -1,0 +1,1 @@
+Efekty mikstur z listy poniżej zostaną zastosowane do bytów dotkniętych twoją miksturą.

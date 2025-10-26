@@ -32,9 +32,11 @@ public enum GeneratorFlavor {
 	FORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	FABRIC(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	SPIGOT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	PAPER(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	QUILT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	NEOFORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	DATAPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
+	RESOURCEPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
 	ADDON(GamePlatform.BEDROCKEDITION, BaseLanguage.JSON),
 	UNKNOWN(null, null);
 	//@formatter:on
@@ -42,12 +44,13 @@ public enum GeneratorFlavor {
 	/**
 	 * Official flavors are flavors that MCreator supports in its core.
 	 */
-	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, ADDON, NEOFORGE);
+	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, RESOURCEPACK, ADDON,
+			NEOFORGE);
 
 	/**
 	 * Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.
 	 */
-	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(QUILT);
+	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(SPIGOT, PAPER);
 
 	private final BaseLanguage baseLanguage;
 

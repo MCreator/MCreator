@@ -1,0 +1,1 @@
+Esta propriedade opcional alterará a textura do balde no inventário, substituindo a gerada automaticamente.

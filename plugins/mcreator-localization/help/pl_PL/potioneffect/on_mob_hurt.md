@@ -1,0 +1,1 @@
+Procedura ta jest wykonywana za każdym razem, gdy potwory z takim efektem poniosą krzywdę.

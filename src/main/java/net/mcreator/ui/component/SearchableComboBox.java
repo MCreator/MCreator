@@ -31,10 +31,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, FocusListener {
 
@@ -47,6 +45,12 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 	public SearchableComboBox(T[] data) {
 		super(data);
 		entries.addAll(Arrays.asList(data));
+		init();
+	}
+
+	public SearchableComboBox(Collection<T> data) {
+		super(new Vector<>(data));
+		entries.addAll(data);
 		init();
 	}
 

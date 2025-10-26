@@ -35,22 +35,32 @@
 
 package ${package}.item;
 
+<#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
+
 <#compress>
-public class ${name}Item extends Item {
+<#if hasCustomJAVAModels>
+@EventBusSubscriber
+</#if>
+public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#if>Item {
+	<#if data.hasBannerPatterns()>
+	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
+	</#if>
 
 	public ${name}Item() {
-		super(new Item.Properties()
+		super(<#if data.hasBannerPatterns()>PROVIDED_PATTERNS, </#if>new Item.Properties()
 				<#if data.hasInventory()>
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
-				<#else>
+				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
+				<#if data.rarity != "COMMON">
 				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
 					.nutrition(${data.nutritionalValue})
@@ -66,12 +76,51 @@ public class ${name}Item extends Item {
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 					.build())
 				</#if>
+				<#if data.isMusicDisc>
+				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
+				</#if>
 		);
 	}
+
+	<#if hasCustomJAVAModels>
+	@SubscribeEvent public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		event.registerItem(new IClientItemExtensions() {
+			private ${name}ItemRenderer rendererInstance;
+
+			@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				if (rendererInstance == null)
+					rendererInstance = new ${name}ItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+				return rendererInstance;
+			}
+		}, ${JavaModName}Items.${REGISTRYNAME}.get());
+	}
+	</#if>
+
+	<#if data.hasBannerPatterns()> <#-- Workaround to allow both music disc and patterns info in description -->
+	@Override public MutableComponent getDisplayName() {
+		return Component.translatable(this.getDescriptionId() + ".patterns");
+	}
+	</#if>
+
+	<#if data.isPiglinCurrency>
+	@Override public boolean isPiglinCurrency(ItemStack stack) {
+		return true;
+	}
+	</#if>
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
+	}
+	</#if>
+
+	<#if !data.isFood && data.animation == "eat">
+	@Override public SoundEvent getEatingSound() {
+		return SoundEvents.EMPTY;
+	}
+	<#elseif !data.isFood && data.animation == "drink">
+	@Override public SoundEvent getDrinkingSound() {
+		return SoundEvents.EMPTY;
 	}
 	</#if>
 
@@ -136,7 +185,7 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<@addSpecialInformation data.specialInformation/>
+	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>
@@ -243,6 +292,8 @@ public class ${name}Item extends Item {
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
+
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
 		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 			<#if hasProcedure(data.onStoppedUsing)>
@@ -269,12 +320,25 @@ public class ${name}Item extends Item {
 		}
 	</#if>
 
-	<#if data.enableRanged && data.shootConstantly>
-		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
-			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-				<@arrowShootCode/>
-				entity.releaseUsingItem();
-			}
+	<#if hasProcedure(data.everyTickWhileUsing) || (data.enableRanged && data.shootConstantly)>
+		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int time) {
+			<#if hasProcedure(data.everyTickWhileUsing)>
+				<@procedureCode data.everyTickWhileUsing, {
+            		"x": "entity.getX()",
+            		"y": "entity.getY()",
+            		"z": "entity.getZ()",
+            		"world": "world",
+            		"entity": "entity",
+            		"itemstack": "itemstack",
+            		"time": "time"
+            	}/>
+            </#if>
+			<#if data.enableRanged && data.shootConstantly>
+				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+					<@arrowShootCode/>
+					entity.releaseUsingItem();
+				}
+			</#if>
 		}
 	</#if>
 

@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		mcreator = new MCreator(null,
+		mcreator = MCreator.create(null,
 				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, false, false, null));
 	}
 

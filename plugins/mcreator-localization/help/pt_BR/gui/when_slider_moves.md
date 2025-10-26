@@ -1,0 +1,1 @@
+Aciona um procedimento quando o controle deslizante é selecionado e o cursor se move.

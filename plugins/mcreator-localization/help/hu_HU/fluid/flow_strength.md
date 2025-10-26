@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy a folyadék áramlásakor mennyire tolja el az objektumokat. Negatív értékek esetén az objektumokat nem tolja el, hanem húzza. Ez a paraméter határozza meg, hogy a folyadék áramlásakor mennyire tolja el.

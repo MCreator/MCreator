@@ -1,0 +1,1 @@
+Quanto maior o número, mais longe a entidade atingida será empurrada pelo projétil.

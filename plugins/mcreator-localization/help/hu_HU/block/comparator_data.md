@@ -1,0 +1,1 @@
+Jelöld be ezt a paramétert, ha azt szeretnéd, hogy a blokk működjön komparátorokkal.

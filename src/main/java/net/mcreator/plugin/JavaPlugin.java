@@ -32,7 +32,7 @@ import java.util.concurrent.ThreadFactory;
  * <p>
  * A fully qualified name to this class name needs to be specified as "javaplugin" field in plugin.json file
  */
-public abstract class JavaPlugin {
+public abstract class JavaPlugin implements Comparable<JavaPlugin> {
 
 	protected final Plugin plugin;
 
@@ -77,6 +77,10 @@ public abstract class JavaPlugin {
 
 	ExecutorService getEventQueue() {
 		return eventQueue;
+	}
+
+	@Override public int compareTo(@Nonnull JavaPlugin o) {
+		return o.plugin.compareTo(plugin);
 	}
 
 }

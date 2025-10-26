@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg az enchantment típushoz illeszkedő slot típusokat.

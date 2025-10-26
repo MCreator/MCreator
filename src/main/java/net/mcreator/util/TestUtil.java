@@ -19,21 +19,25 @@
 
 package net.mcreator.util;
 
+import javax.annotation.Nullable;
+
 public class TestUtil {
 
-	private static boolean isTestingEnvironment = false;
+	@Nullable private static Runnable failureHandler = null;
 
-	public static void enterTestingMode() {
-		isTestingEnvironment = true;
+	public static void enterTestingMode(Runnable newFailureHandler) {
+		if (newFailureHandler == null)
+			throw new NullPointerException("Failure handler cannot be null");
+		failureHandler = newFailureHandler;
 	}
 
 	public static boolean isTestingEnvironment() {
-		return isTestingEnvironment;
+		return failureHandler != null;
 	}
 
 	public static void failIfTestingEnvironment() {
-		if (isTestingEnvironment) {
-			throw new RuntimeException();
+		if (failureHandler != null) {
+			failureHandler.run();
 		}
 	}
 

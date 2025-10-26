@@ -1,1 +1,0 @@
-Thuộc tính này sẽ xác định loại vật phẩm nào mà phù phép của bạn có thể được áp dụng (chỉ trong bàn phù phép).

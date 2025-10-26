@@ -1,0 +1,1 @@
+Ten parametr kontroluje blok użyty jako trzon twojego drzewa, jeśli wybrane zostały niestandardowe drzewa.

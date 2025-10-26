@@ -25,8 +25,8 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
-import java.awt.Shape;
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 public abstract class AbstractDrawingTool extends AbstractModificationTool {
@@ -90,7 +90,7 @@ public abstract class AbstractDrawingTool extends AbstractModificationTool {
 
 		graphics2D.dispose();
 
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		return true;
 	}
 

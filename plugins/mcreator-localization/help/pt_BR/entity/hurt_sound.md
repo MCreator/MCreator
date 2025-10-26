@@ -1,0 +1,1 @@
+O som tocado quando a entidade é ferida.

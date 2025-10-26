@@ -1,0 +1,1 @@
+Ez az eljárás akkor kerül végrehajtásra, amikor ezt a tárgyat elkészítik vagy megolvasztják.

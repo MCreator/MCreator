@@ -29,15 +29,20 @@ public class ShowReplaceAction extends BasicAction {
 
 	public ShowReplaceAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.replace_in_code"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				codeEditorView.sed.setVisible(false);
 				codeEditorView.rep.setVisible(true);
+				String selectedText = codeEditorView.te.getSelectedText();
+				if (selectedText != null && !selectedText.isEmpty())
+					codeEditorView.rep.getSearchField().setText(selectedText);
+				codeEditorView.rep.getSearchField().selectAll();
+				codeEditorView.rep.getSearchField().requestFocusInWindow();
 				codeEditorView.disableJumpToMode();
 			}
 		});
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(
-				tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
+		actionRegistry.getMCreator().getTabs()
+				.addTabShownListener(tab -> setEnabled(tab.getContent() instanceof CodeEditorView));
 	}
 
 }

@@ -1,0 +1,1 @@
+O procedimento será executado quando um jogador entrar na dimensão.

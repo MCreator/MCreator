@@ -6,12 +6,32 @@
       "check": "String"
     },
     {
+      "type": "field_color_selector",
+      "name": "color"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "bold",
+      "checked": false
+    },
+    {
+      "type": "field_checkbox",
+      "name": "italic",
+      "checked": false
+    },
+    {
+      "type": "field_checkbox",
+      "name": "underlined",
+      "checked": false
+    },
+    {
       "type": "field_image",
       "src": "./res/server.png",
       "width": 8,
       "height": 24
     }
   ],
+  "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
   "colour": 35,
@@ -22,6 +42,12 @@
     ],
     "inputs": [
       "text"
+    ],
+    "fields": [
+      "color",
+      "bold",
+      "italic",
+      "underlined"
     ],
     "dependencies": [
       {

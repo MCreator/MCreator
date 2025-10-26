@@ -40,7 +40,7 @@ public class ExternalTriggerLoader {
 
 		final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(resourceFolder, Pattern.compile("^[^$].*\\.json"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(resourceFolder, Pattern.compile("^[^$].*\\.json$"));
 		for (String externalTriggerName : fileNames) {
 			ExternalTrigger externalTrigger = gson.fromJson(
 					FileIO.readResourceToString(PluginLoader.INSTANCE, externalTriggerName), ExternalTrigger.class);
@@ -52,7 +52,7 @@ public class ExternalTriggerLoader {
 				Comparator.comparing(ExternalTrigger::getGroupEstimate).thenComparing(ExternalTrigger::getName));
 	}
 
-	public List<ExternalTrigger> getExternalTrigers() {
+	public List<ExternalTrigger> getExternalTriggers() {
 		return externalTriggers;
 	}
 

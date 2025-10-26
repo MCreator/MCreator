@@ -1,0 +1,1 @@
+A mob beépített páncélpontjainak száma. A zombik alapértelmezés szerint 2 páncélponttal rendelkeznek.

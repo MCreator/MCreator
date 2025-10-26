@@ -1,0 +1,1 @@
+Ogranicz blok do specyficznych cieczy, wybierz je:

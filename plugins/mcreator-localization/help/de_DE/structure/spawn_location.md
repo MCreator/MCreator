@@ -1,1 +1,0 @@
-Dieser Parameter bestimmt, wo Ihre Struktur in der Welt generiert wird.

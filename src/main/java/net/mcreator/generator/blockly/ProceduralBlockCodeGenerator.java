@@ -19,12 +19,12 @@
 package net.mcreator.generator.blockly;
 
 import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.IBlockGeneratorWithSections;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
 public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBlockCodeGenerator)
-		implements IBlockGenerator {
+		implements IBlockGeneratorWithSections {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		blocklyBlockCodeGenerator.generateBlock(master, block);
@@ -34,7 +34,4 @@ public record ProceduralBlockCodeGenerator(BlocklyBlockCodeGenerator blocklyBloc
 		return blocklyBlockCodeGenerator.getSupportedBlocks(getBlockType());
 	}
 
-	@Override public BlockType getBlockType() {
-		return BlockType.PROCEDURAL;
-	}
 }

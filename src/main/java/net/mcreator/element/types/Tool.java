@@ -25,10 +25,8 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -43,9 +41,10 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
 	@Nonnull public String toolType;
 
@@ -54,10 +53,11 @@ import java.util.*;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
+	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public double efficiency;
 	public double attackSpeed;
 	public int enchantability;
@@ -92,6 +92,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 
@@ -101,7 +102,15 @@ import java.util.*;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		if (hasGUITexture()) {
+			return ImageUtils.resizeAndCrop(guiTexture.getImage(TextureType.ITEM), 32);
+		} else {
+			return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+		}
+	}
+
+	public boolean hasGUITexture() {
+		return guiTexture != null && !guiTexture.isEmpty();
 	}
 
 	@Override public Model getItemModel() {
@@ -168,4 +177,13 @@ import java.util.*;
 	@Override public List<MCItem> getCreativeTabItems() {
 		return providedMCItems();
 	}
+
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
+	}
+
+	public List<String> getRepairItemsAsStringList() {
+		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
+	}
+
 }

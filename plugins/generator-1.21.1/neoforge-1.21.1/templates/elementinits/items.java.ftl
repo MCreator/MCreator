@@ -42,9 +42,10 @@ package ${package}.init;
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
+<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
 
 <#if itemsWithInventory?size != 0>
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
 
@@ -81,10 +82,14 @@ public class ${JavaModName}Items {
 		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
 			<#if item.isDoubleBlock()>
 				<#assign hasDoubleBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} = doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 			<#else>
 				<#assign hasBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} = block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
+				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 			</#if>
 		<#else>
 			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
@@ -95,7 +100,7 @@ public class ${JavaModName}Items {
 	// Start of user code block custom items
 	// End of user code block custom items
 
-	<#if itemsWithInventory?size != 0>
+	<#if itemsWithInventory?size != 0 || buckets?size != 0>
 	<#compress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
@@ -105,24 +110,39 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}.get()
 			);
 		</#list>
+		<#list buckets as item>
+			event.registerItem(
+				Capabilities.FluidHandler.ITEM,
+				(stack, context) -> new FluidBucketWrapper(stack),
+				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
+			);
+		</#list>
 	}
 	</#compress>
 	</#if>
 
 	<#if hasBlocks>
 	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
+		return block(block, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), properties));
 	}
 	</#if>
 
 	<#if hasDoubleBlocks>
 	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
+		return doubleBlock(block, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), properties));
 	}
 	</#if>
 
 	<#if hasItemsWithProperties>
-	@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ItemsClientSideHandler {
+	@EventBusSubscriber(Dist.CLIENT) public static class ItemsClientSideHandler {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 			event.enqueueWork(() -> {
 			<#compress>
@@ -157,4 +177,16 @@ public class ${JavaModName}Items {
 
 }
 
+<#macro blockItemProperties block>
+new Item.Properties()
+<#if block.maxStackSize != 64>
+	.stacksTo(${block.maxStackSize})
+</#if>
+<#if block.rarity != "COMMON">
+	.rarity(Rarity.${block.rarity})
+</#if>
+<#if block.immuneToFire>
+	.fireResistant()
+</#if>
+</#macro>
 <#-- @formatter:on -->

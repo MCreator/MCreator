@@ -25,6 +25,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -56,7 +57,7 @@ import java.util.List;
 
 	@ModElementReference public List<String> rewardLoot;
 	@ModElementReference public List<String> rewardRecipes;
-	@ModElementReference(defaultValues = "No function") public String rewardFunction;
+	@ModElementReference @Nullable public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
@@ -77,7 +78,7 @@ import java.util.List;
 
 	public boolean hasRewards() {
 		return rewardXP > 0 || (rewardLoot != null && !rewardLoot.isEmpty()) || (rewardRecipes != null
-				&& !rewardRecipes.isEmpty()) || (rewardFunction != null && !rewardFunction.equals("No function"));
+				&& !rewardRecipes.isEmpty()) || rewardFunction != null;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -98,7 +99,8 @@ import java.util.List;
 			BlocklyToJSONTrigger blocklyToJSONTrigger = new BlocklyToJSONTrigger(this.getModElement().getWorkspace(),
 					this.getModElement(), this.triggerxml, this.getModElement().getGenerator()
 					.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
 			if (triggerCode.isEmpty())
@@ -107,6 +109,7 @@ import java.util.List;
 
 			additionalData.put("triggercode", triggerCode);
 			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());
+			additionalData.put("extra_templates_code", blocklyToJSONTrigger.getExtraTemplatesCode());
 		};
 	}
 

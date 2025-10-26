@@ -38,6 +38,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ProcedureGUI;
 import net.mcreator.util.ColorUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,8 +52,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -66,7 +67,17 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private final JTextField search;
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
-		this(mcreator, blocklyEditorType, blocklyPanel, null);
+		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			boolean hasSearchBar) {
+		this(mcreator, blocklyEditorType, blocklyPanel, null, hasSearchBar);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			ProcedureGUI procedureGUI, JComponent... extraComponents) {
+		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
 	}
 
 	/**
@@ -77,9 +88,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param hasSearchBar      <p>If this toolbar will have a search bar.</p>
+	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI) {
+			ProcedureGUI procedureGUI, boolean hasSearchBar, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 
 		setBorder(null);
@@ -109,13 +122,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("blockly.search_procedure_blocks"), 8, 18);
+					g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
 				}
 			}
 		};
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
-		if (procedureGUI != null) {
+		if (hasSearchBar) {
 			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 			search.addFocusListener(new FocusAdapter() {
 				@Override public void focusLost(FocusEvent e) {
@@ -128,20 +141,26 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 			search.getDocument().addDocumentListener(new DocumentListener() {
 				@Override public void insertUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 
 				@Override public void removeUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 
 				@Override public void changedUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 			});
 
-			JComponent component = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-			component.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
+			JComponent searchWrapper = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
+			searchWrapper.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+			searchWrapper.setMaximumSize(
+					new Dimension(search.getPreferredSize().width + 1, search.getPreferredSize().height));
+			add(searchWrapper);
+		}
+
+		for (var component : extraComponents) {
 			add(component);
 		}
 
@@ -164,7 +183,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		});
-		normalizeButton4(export);
+		styleButton(export);
 		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
@@ -202,26 +221,26 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}, "Blockly-Template-Import").start();
 			}
 		});
-		normalizeButton4(import_);
+		styleButton(import_);
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
-	private void updateSearch() {
+	private void updateSearch(BlocklyEditorType blocklyEditorType) {
 		if (!search.getText().isEmpty()) {
 			String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				if (block.getName().toLowerCase(Locale.ENGLISH)
 						.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 					filtered.add(block);
 				}
 			}
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				for (String keyWord : keyWords) {
 					if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
 							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
@@ -243,7 +262,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				results.setBackground(Theme.current().getBackgroundColor());
 				results.setBorder(BorderFactory.createEmptyBorder());
 				results.putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
-				results.setMaximumVisibleRows(20);
+				results.setMaximumVisibleRows(16);
 
 				for (ToolboxBlock block : filtered) {
 					JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
@@ -276,10 +295,18 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	}
 
 	private String getHTMLForBlock(ToolboxBlock block) {
+		StringBuilder builder = new StringBuilder("<html>");
+
 		List<ToolboxCategory> categories = new ArrayList<>();
 		traverseCategories(categories, block.getToolboxCategory());
 
-		StringBuilder builder = new StringBuilder("<html>");
+		if (categories.isEmpty()) {
+			String category_raw = block.getToolboxCategoryRaw();
+			if (category_raw != null && !category_raw.isBlank()) {
+				categories.add(ToolboxCategory.tryGetBuiltin(category_raw));
+			}
+		}
+
 		for (int i = categories.size() - 1; i >= 0; i--) {
 			ToolboxCategory category = categories.get(i);
 			builder.append("<span style='background: #")
@@ -288,9 +315,15 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			if (i != 0)
 				builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
 		}
+
+		String name = block.getName();
+		name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
+		name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
+				""); // make sure to strip away potential reminders of %N parameters
+
 		builder.append("&nbsp;&nbsp;");
-		builder.append(block.getName()
-				.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+		builder.append(name.replaceAll("%\\d+?",
+				"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
 
 		return builder.toString();
 	}
@@ -303,12 +336,12 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 	}
 
-	private static void normalizeButton4(AbstractButton button) {
+	public static void styleButton(AbstractButton button) {
 		button.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(0, 0, 0, 0)),
 						BorderFactory.createCompoundBorder(
 								BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"), 1),
-								BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
+								BorderFactory.createMatteBorder(1, 3, 1, 5, new Color(0, 0, 0, 0)))));
 		ComponentUtils.deriveFont(button, 11);
 	}
 
@@ -317,6 +350,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				BorderFactory.createMatteBorder(1, 1, 1, 1, UIManager.getColor("Component.borderColor")),
 				BorderFactory.createEmptyBorder(1, 0, 1, 0)));
 		ComponentUtils.deriveFont(button, 11);
+	}
+
+	public JTextField getSearchField() {
+		return search;
 	}
 
 }

@@ -1,0 +1,1 @@
+Este parâmetro controla a cor da névoa de água dentro do bioma

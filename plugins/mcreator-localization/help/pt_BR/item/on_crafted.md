@@ -1,0 +1,1 @@
+Este procedimento é executado quando este item é fabricado ou fundido.

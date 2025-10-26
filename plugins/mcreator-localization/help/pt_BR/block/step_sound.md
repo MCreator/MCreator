@@ -1,0 +1,1 @@
+É assim que muitos itens nos espaços do inventário deste bloco podem ser empilhados.

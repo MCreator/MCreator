@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
@@ -80,7 +81,9 @@ import java.util.stream.Collectors;
 	 * @return The name of this property with the prefix
 	 */
 	@SuppressWarnings("unused") public final String getPrefixedName(String prefix) {
-		return !name.startsWith("CUSTOM:") ? name : "CUSTOM:" + prefix + name.substring(7);
+		return !name.startsWith(NameMapper.MCREATOR_PREFIX) ?
+				name :
+				NameMapper.MCREATOR_PREFIX + prefix + name.substring(7);
 	}
 
 	/**

@@ -1,0 +1,1 @@
+Med denna ruta märkt blir animationen inte en "action"-animation, utan en standard gånganimation bunden till funktionen som styr entitetens gång.

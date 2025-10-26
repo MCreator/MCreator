@@ -1,0 +1,1 @@
+Ez az eljárás akkor kerül végrehajtásra, amikor egy entitás elveszíti a bájital hatását.

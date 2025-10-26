@@ -1,0 +1,1 @@
+Este parâmetro especifica a velocidade de queda da partícula. Valores negativos farão esta partícula voar até o céu.

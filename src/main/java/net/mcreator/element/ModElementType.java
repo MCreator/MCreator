@@ -136,6 +136,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> ADVANCEMENT;
 	public static ModElementType<?> ARMOR;
 	public static ModElementType<?> ATTRIBUTE;
+	public static ModElementType<?> BANNERPATTERN;
 	public static ModElementType<?> BIOME;
 	public static ModElementType<?> BLOCK;
 	public static ModElementType<?> COMMAND;
@@ -153,7 +154,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> KEYBIND;
 	public static ModElementType<?> LIVINGENTITY;
 	public static ModElementType<?> LOOTTABLE;
-	public static ModElementType<?> MUSICDISC;
 	public static ModElementType<?> OVERLAY;
 	public static ModElementType<?> PAINTING;
 	public static ModElementType<?> PARTICLE;

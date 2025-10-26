@@ -50,14 +50,14 @@ public class DiscordClient implements Closeable {
 			DiscordEventHandlers handlers = new DiscordEventHandlers();
 			handlers.ready = (user) -> LOG.debug("Connected with {}", user.username);
 			handlers.disconnected = (errorCode, message) -> LOG.debug("Disconnected: {} - {}", errorCode, message);
-			handlers.errored = (errorCode, message) -> LOG.warn("{} - {}", errorCode, message);
+			handlers.errored = (errorCode, message) -> LOG.warn("Discord error: {} - {}", errorCode, message);
 			discordRpc.Discord_Initialize("712264497787568171", handlers, true, null);
 			timer.schedule(new TimerTask() {
 				@Override public void run() {
 					discordRpc.Discord_RunCallbacks();
 				}
 			}, 0, 5000);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			LOG.warn("Failed to init", e);
 		}
 	}

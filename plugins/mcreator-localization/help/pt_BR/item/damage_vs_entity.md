@@ -1,0 +1,1 @@
+Você pode ativar o dano de corpo a corpo para o seu item com este parâmetro e definir um valor de dano.

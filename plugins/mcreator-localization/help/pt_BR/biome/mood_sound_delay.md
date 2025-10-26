@@ -1,0 +1,1 @@
+Este valor define o tempo, em tiques, antes do som ser reproduzido (loop).

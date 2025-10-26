@@ -1,0 +1,1 @@
+Ezek azok az értékek, amelyeket ez az egyéni blokk tulajdonság felvehet.

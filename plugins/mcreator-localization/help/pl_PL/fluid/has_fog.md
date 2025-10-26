@@ -1,0 +1,1 @@
+Jeżeli opcja jest włączona, ciecz będzie pokazywać mgłę, podczas gdy gracz jest zanurzony.

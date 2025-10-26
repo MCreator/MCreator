@@ -30,7 +30,7 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 
 	public ReformatCodeAndImportsAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.reformat_and_imports"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
+			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
 					codeEditorView.disableJumpToMode();
@@ -42,7 +42,7 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 			}
 		});
 		setTooltip(L10N.t("action.ide.reformat_and_imports.tooltip"));
-		actionRegistry.getMCreator().mcreatorTabs.addTabShownListener(tab -> setEnabled(
+		actionRegistry.getMCreator().getTabs().addTabShownListener(tab -> setEnabled(
 				tab.getContent() instanceof CodeEditorView && !((CodeEditorView) tab.getContent()).readOnly));
 	}
 

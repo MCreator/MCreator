@@ -63,7 +63,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 						list.setSelectedIndex(index);
 					}
 
-					setVisible(false);
 					dispose();
 					if (itemSelectedListener != null)
 						itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -76,7 +75,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		JButton useSelectedButton = L10N.button("dialog.item_selector.use_selected");
 		useSelectedButton.addActionListener(e -> {
-			setVisible(false);
 			dispose();
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -100,7 +98,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 					MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), tag);
 					model.addElement(mcItem);
 					list.setSelectedValue(mcItem, true);
-					setVisible(false);
 					dispose();
 					if (itemSelectedListener != null)
 						itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -123,7 +120,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		cancelButton.addActionListener(event -> {
 			list.clearSelection();
-			setVisible(false);
+			dispose();
 		});
 
 		JComponent top;

@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -70,10 +69,10 @@ public class AddEntityPropertyDialog {
 				} else if ("String".equals(type.getSelectedItem())) {
 					entry.set(new PropertyDataWithValue<>(new PropertyData.StringType(property), null));
 				}
-				dialog.setVisible(false);
+				dialog.dispose();
 			}
 		});
-		cancel.addActionListener(e -> dialog.setVisible(false));
+		cancel.addActionListener(e -> dialog.dispose());
 
 		JComponent main = PanelUtils.gridElements(2, 2, 2, 2,
 				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,

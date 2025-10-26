@@ -1,0 +1,1 @@
+Zde zadáte informace o tom, jak splnit úkol.

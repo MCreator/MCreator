@@ -1,0 +1,42 @@
+{
+  "mutator": "fixed_placement_mutator",
+  "inputsInline": false,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "placements",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>"
+    ],
+    "repeating_fields": [
+      {
+        "name": "x",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_number",
+          "value": 0,
+          "precision": 1
+        }
+      },
+      {
+        "name": "y",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_number",
+          "value": 0,
+          "precision": 1
+        }
+      },
+      {
+        "name": "z",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_number",
+          "value": 0,
+          "precision": 1
+        }
+      }
+    ]
+  }
+}

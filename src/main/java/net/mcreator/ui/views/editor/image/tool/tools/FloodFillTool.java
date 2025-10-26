@@ -28,8 +28,8 @@ import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
-import java.awt.Shape;
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
@@ -164,8 +164,8 @@ public class FloodFillTool extends AbstractModificationTool {
 
 		for (int i = minX; i < maxX; i++) {
 			for (int j = minY; j < maxY; j++) {
-				if (toPaint(image.getRGB(i, j), overlay.getRGB(i, j), originalint)
-						&& selection.isInside(validArea, i, j)) {
+				if (toPaint(image.getRGB(i, j), overlay.getRGB(i, j), originalint) && selection.isInside(validArea, i,
+						j)) {
 					g2d.fillRect(i, j, 1, 1);
 				}
 			}

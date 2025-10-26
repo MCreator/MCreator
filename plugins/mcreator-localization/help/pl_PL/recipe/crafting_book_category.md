@@ -1,0 +1,1 @@
+Kategoria książki receptur definiuje zakładkę, pod którą receptura będzie wyświetlana w książce receptur.

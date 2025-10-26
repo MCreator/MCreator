@@ -1,0 +1,1 @@
+A mob által támadáskor az entitásoknak okozott kár mértéke.

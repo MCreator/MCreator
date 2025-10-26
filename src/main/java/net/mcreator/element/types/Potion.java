@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.Workspace;
@@ -52,6 +53,7 @@ import java.util.List;
 	public static class CustomEffectEntry {
 		public EffectEntry effect;
 		public int duration;
+		public boolean infinite;
 		public int amplifier;
 		public boolean ambient;
 		public boolean showParticles;
@@ -60,13 +62,18 @@ import java.util.List;
 			return amplifier;
 		}
 
+		public int getDuration() {
+			return infinite ? -1 : duration;
+		}
+
 		public boolean doesShowParticles() {
 			return showParticles;
 		}
 
 		public int getLiquidColor(Workspace workspace) {
-			if (effect.getUnmappedValue().contains("CUSTOM:")) {
-				ModElement modElement = workspace.getModElementByName(effect.getUnmappedValue().replace("CUSTOM:", ""));
+			if (effect.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
+				ModElement modElement = workspace.getModElementByName(
+						effect.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, ""));
 				if (modElement != null) {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof PotionEffect) {

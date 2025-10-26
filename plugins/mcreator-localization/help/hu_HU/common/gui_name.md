@@ -1,0 +1,1 @@
+A játékon belüli név a mod elem neve, amely a játékon belüli menükben, az eszközök leírásában és más helyeken jelenik meg, ahol a név vizuálisan megjelenik.

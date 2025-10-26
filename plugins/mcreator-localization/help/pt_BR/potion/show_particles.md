@@ -1,0 +1,1 @@
+Este parâmetro define se as partículas são mostradas perto do player.

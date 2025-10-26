@@ -1,0 +1,1 @@
+This is the amount of experience dropped by this block when it's broken by a player.

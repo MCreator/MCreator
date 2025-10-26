@@ -1,0 +1,1 @@
+Este parâmetro controla se a partícula é mostrada em todos os casos, mesmo se a exibição da partícula estiver definida como mínima nas configurações de vídeo.

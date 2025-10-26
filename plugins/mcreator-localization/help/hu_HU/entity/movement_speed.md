@@ -1,0 +1,1 @@
+Beállítja a mob mozgási sebességét. A legtöbb normál mob körülbelül 0,25 sebességgel mozog, míg a gyorsabbak, mint például a pókok és a farkasok, 0,3 sebességgel mozognak.

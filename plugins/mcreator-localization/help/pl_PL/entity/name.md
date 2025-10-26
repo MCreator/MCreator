@@ -1,0 +1,1 @@
+Nazwa moba jest używana w wiadomościach śmierci, jest wyświetlana w menu w grze i w innych miejscach, gdzie możliwe jest wyświetlanie nazw wizualnych.

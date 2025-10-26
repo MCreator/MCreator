@@ -37,7 +37,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -102,7 +101,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
-		separation_spacing.setAllowEqualValues(false);
 		terrainAdaptation.addActionListener(e -> {
 			int max = "none".equals(terrainAdaptation.getSelectedItem()) ? 128 : 116;
 			SpinnerNumberModel spinnerModel = (SpinnerNumberModel) maxDistanceFromCenter.getModel();
@@ -217,8 +215,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		});
 		page1group.addValidationElement(structureSelector);
 
-		addPage(L10N.t("elementgui.common.page_properties"), pane5);
-		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7, false);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5).validate(page1group);
+		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7, false).lazyValidate(jigsaw::getValidationResult);
 
 		updateEnabledFields();
 	}
@@ -235,12 +233,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 
 		jigsaw.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return jigsaw.getValidationResult();
-		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Structure structure) {

@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy az effektus környezeti effektusként kerül-e alkalmazásra.

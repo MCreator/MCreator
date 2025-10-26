@@ -1,0 +1,1 @@
+Enquanto o valor retornado for true, a entidade será transparente. Enquanto um jogador estiver no modo espectador, ele atende a esta condição.

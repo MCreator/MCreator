@@ -1,1 +1,0 @@
-Bu parametre, oyuncu bu boyutta yatakta uyumaya çalışırsa ne olacağını kontrol eder.

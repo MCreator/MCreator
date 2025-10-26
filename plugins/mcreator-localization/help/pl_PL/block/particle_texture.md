@@ -1,0 +1,1 @@
+Opcjonalna właściwość zmieni teksturę cząsteczek, gdy blok jest uszkodzony, byt wyląduje na bloku i tak dalej.

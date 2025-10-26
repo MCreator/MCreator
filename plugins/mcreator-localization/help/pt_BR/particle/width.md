@@ -1,0 +1,1 @@
+Este parâmetro controla a largura desta partícula (em unidades de bloco).

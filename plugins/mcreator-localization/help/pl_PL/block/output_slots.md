@@ -1,0 +1,1 @@
+Wyjściowe gniazda nie będą używane jako dane wejściowe do transmisji elementu lejowego.

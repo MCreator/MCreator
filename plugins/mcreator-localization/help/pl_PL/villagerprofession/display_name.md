@@ -1,0 +1,1 @@
+Wyświetl nazwę profesji wieśniaka. Będzie wyświetlana podczas handlu.

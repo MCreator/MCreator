@@ -1,0 +1,1 @@
+Podczas gdy pocisk lata, wybrana procedura zostanie wykonana przy każdym ticku.

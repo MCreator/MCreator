@@ -18,7 +18,6 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -26,14 +25,6 @@ import javax.annotation.Nullable;
 @SuppressWarnings("unused") public interface IEntityWithModel {
 
 	@Nullable Model getEntityModel();
-
-	default String getModelCode() {
-		Model model = getEntityModel();
-		if (model != null && model.getType() == Model.Type.JAVA) {
-			return FileIO.readFileToString(model.getFile());
-		}
-		return null;
-	}
 
 	default Model.Type getModelType() {
 		if (getEntityModel() == null)

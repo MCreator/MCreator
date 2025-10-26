@@ -1,0 +1,1 @@
+Az input slotok nem lesznek használva kimenetként/forrásként a hopper tárgy átvitelhez.

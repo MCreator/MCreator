@@ -1,1 +1,0 @@
-(guistate.containsKey("checkbox:${field$checkbox}") && ((Checkbox) guistate.get("checkbox:${field$checkbox}")).selected())

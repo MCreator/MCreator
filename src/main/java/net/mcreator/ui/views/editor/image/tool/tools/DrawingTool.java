@@ -107,7 +107,7 @@ public class DrawingTool extends AbstractDrawingTool {
 
 	@Override public void mouseExited(MouseEvent e) {
 		canvas.enablePreview(false);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		super.mouseExited(e);
 	}
 
@@ -118,7 +118,7 @@ public class DrawingTool extends AbstractDrawingTool {
 
 	@Override public void toolDisabled(ToolActivationEvent e) {
 		canvas.enablePreview(false);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		super.toolDisabled(e);
 	}
 

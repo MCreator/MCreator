@@ -1,1 +1,0 @@
-Je höher die Zahl, desto weiter wird der Treffer durch den Fernkampfgegenstand gedrückt.

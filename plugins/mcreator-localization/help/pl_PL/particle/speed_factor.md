@@ -1,0 +1,1 @@
+Ten parametr kontroluje ile parametru prędkości zewnętrznej jest brany pod uwagę w liczeniu podczas tworzenia cząstek. Po ustawieniu na 0, cząstki nie będą poruszać się i spadać, w przypadku grawitacja cząstek jest większa niż 0.

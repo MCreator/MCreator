@@ -1,6 +1,6 @@
-Jak często rzadkie zaklęcia mogą być zaklęte na tej zbroi. Im wyższa czarowność, tym lepsze zaklęcia otrzymasz podczas zaklęcia pancerza.
+Jak często rzadkie zaklęcia mogą być użyte na tej zbroi. Im wyższa podatność na zaklęcia, tym lepsze zaklęcia otrzymasz podczas zaklinania pancerza.
 
-Wartość vanilii:
+Wartości Vanilla:
 
 * Skórzana zbroja: 15
 * Kolczasta zbroja: 12

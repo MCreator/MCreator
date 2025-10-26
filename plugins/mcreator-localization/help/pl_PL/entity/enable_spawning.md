@@ -1,0 +1,1 @@
+Jeśli zaznaczone, byt pojawi się w świecie naturalnie poprzez proces pojawiania się mobów.

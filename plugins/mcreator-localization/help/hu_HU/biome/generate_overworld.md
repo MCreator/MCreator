@@ -1,0 +1,1 @@
+Ha csak egyéni dimenziókban szeretnéd használni ezt a biomot, kapcsold ki ezt az opciót.

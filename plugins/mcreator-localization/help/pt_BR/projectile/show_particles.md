@@ -1,0 +1,1 @@
+Marque este parâmetro se quiser que partículas sejam emitidas no ar.

@@ -95,6 +95,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 	private final JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+	private final JPopupMenu recentListPopupMenu;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -134,7 +135,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			if (file != null) {
 				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
 				if (workspaceDir != null) {
-					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
+					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
+							this);
 					if (workspaceFile != null)
 						workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 				}
@@ -240,7 +242,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
 		norecents.setForeground(Theme.current().getAltForegroundColor());
 
-		recentsList.setComponentPopupMenu(getRightClickMenu());
+		recentsList.setComponentPopupMenu(recentListPopupMenu = buildRightClickMenu());
 
 		recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -275,7 +277,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 										recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (m == JOptionPane.YES_OPTION) {
-							FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+							FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 							reloadRecents();
 						}
 					}
@@ -300,6 +302,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowActivated(WindowEvent e) {
+				super.windowActivated(e);
+				reloadRecents();
+				newWorkspace.requestFocusInWindow();
+			}
+		});
+
 		setSize(795, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -316,7 +326,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 	}
 
-	private JPopupMenu getRightClickMenu() {
+	public JPopupMenu getRecentListPopupMenu() {
+		return recentListPopupMenu;
+	}
+
+	private JPopupMenu buildRightClickMenu() {
 		JPopupMenu recentListMenu = new JPopupMenu();
 
 		JMenuItem openSelectedWorkspace = new JMenuItem(L10N.t("dialog.workspace_selector.open_workspace_selected"));
@@ -347,7 +361,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 								recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (m == 0) {
-					FileIO.deleteDir(recentsList.getSelectedValue().getPath().getParentFile());
+					FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
 					reloadRecents();
 				}
 			}
@@ -484,16 +498,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentPanel.revalidate();
 	}
 
-	@Override public void setVisible(boolean b) {
-		if (b)
-			reloadRecents();
-
-		super.setVisible(b);
-
-		if (b)
-			newWorkspace.requestFocusInWindow();
-	}
-
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 13);
@@ -543,8 +547,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			SwingUtilities.invokeLater(() -> {
 				if (news != null) {
 					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
-							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
-							news[0], 43));
+							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
+							+ StringUtils.abbreviateString(news[0], 43));
 					nov.addMouseListener(new MouseAdapter() {
 						@Override public void mouseClicked(MouseEvent en) {
 							DesktopUtils.browseSafe(news[1]);
@@ -555,22 +559,22 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 
-			ImageIcon newsIcon;
-			if (news != null && news[3] != null && !news[3].isBlank()) {
-				newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60, null);
-			} else {
-				newsIcon = null;
-			}
+			if (news != null && PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+				String id = news[4];
 
-			SwingUtilities.invokeLater(() -> {
-				if (news != null && PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
-					String id = news[4];
+				// Do not show notification the first time
+				if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
+					PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
 
-					// Do not show notification the first time
-					if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
-						PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+				if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+					ImageIcon newsIcon;
+					if (news[3] != null && !news[3].isBlank()) {
+						newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60, null);
+					} else {
+						newsIcon = null;
+					}
 
-					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+					SwingUtilities.invokeLater(() -> {
 						String title = L10N.t("notification.news.title", news[0]);
 						String link = news[1];
 						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
@@ -581,9 +585,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 									PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
 								}), new NotificationsRenderer.ActionButton(L10N.t("notification.news.hide"),
 										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
-					}
+
+					});
 				}
-			});
+			}
 		});
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
@@ -614,8 +619,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				});
 				if (motw != null) {
 					lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
-							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
-							motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
+							+ StringUtils.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
 					lab2.setIcon(imageIcon);
 				} else {
 					lab3.setText("");
@@ -630,7 +635,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-200);
+			((ImagePanel) soim).setOffsetY(-190);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

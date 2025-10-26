@@ -58,10 +58,12 @@ public class UITestUtil {
 		CountDownLatch latch = new CountDownLatch(1);
 		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
 			Set<BlocklyPanel> blocklyPanels = new HashSet<>();
-			panelHolder.addBlocklyChangedListener(blocklyPanel -> {
-				blocklyPanels.add(blocklyPanel);
-				if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
-					latch.countDown();
+			panelHolder.addBlocklyChangedListener((blocklyPanel, jsEventTriggeredChange) -> {
+				if (jsEventTriggeredChange) {
+					blocklyPanels.add(blocklyPanel);
+					if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
+						latch.countDown();
+				}
 			});
 		}
 

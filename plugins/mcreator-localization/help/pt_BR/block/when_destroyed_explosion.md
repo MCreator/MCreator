@@ -1,0 +1,1 @@
+Aciona um procedimento quando o bloco é destruído por uma explosão.

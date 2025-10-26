@@ -42,7 +42,7 @@ public class EntityAnimationsLoader {
 		LOG.debug("Loading entity animations");
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("templates.animations",
-				Pattern.compile("^[^$].*\\.json"));
+				Pattern.compile("^[^$].*\\.json$"));
 
 		// We add "No animation" directly as it does not contain animations
 		entityAnimations.put("No animation", new String[] {});

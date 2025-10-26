@@ -1,0 +1,1 @@
+Zaznacz ten parametr, jeśli chcesz, aby zniszczyć każdy blok za pomocą tego przedmiotu lub narzędzia, nawet skała macierzysta.

@@ -44,12 +44,12 @@ public class TextIndexOfBlock implements IBlockGenerator {
 					text = element;
 
 		if (text != null && check != null && from != null) {
-			master.append("(");
+			master.append("/*@int*/(");
 			master.processOutputBlock(text);
 			master.append(".indexOf(");
-			master.processOutputBlockWithoutParentheses(check);
+			master.processOutputBlock(check);
 			master.append(",");
-			master.processOutputBlockWithoutParentheses(from);
+			master.processOutputBlockToInt(from);
 			master.append("))");
 		} else {
 			master.addCompileNote(

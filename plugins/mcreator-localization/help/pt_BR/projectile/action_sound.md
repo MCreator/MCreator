@@ -1,0 +1,1 @@
+Este parâmetro controla o som reproduzido quando o projétil é disparado.

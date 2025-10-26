@@ -86,7 +86,6 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 	public void setCanvas(Canvas canvas) {
 		this.canvas = canvas;
-		canvas.setCanvasRenderer(this);
 	}
 
 	@Override public void repaint() {
@@ -174,7 +173,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 			}
 		}
 		double zoom = jZoomPane.getZoomport().getZoom();
-		Layer outline = canvas.selected();
+		Layer outline = canvas.getImageMakerView().getLayerPanel().selected();
 		if (outline != null) {
 			int x = (int) Math.round(outline.getX() * zoom);
 			int y = (int) Math.round(outline.getY() * zoom);

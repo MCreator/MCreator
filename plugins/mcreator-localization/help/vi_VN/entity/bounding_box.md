@@ -1,3 +1,0 @@
- Tham số này điều khiển kích cỡ hộp va chạm của mob của bạn với đơn vị là khối, cũng như là kích cỡ bóng râm của nó. Tùy chọn đầu tiên xác định chiều rộng và chiều sau, trong khi tùy chọn thứ hai xác định chiều cao. Tùy chọn cuối cùng xác định bán kính của bóng râm với đơn vị là khối.
-
- Bạn có thể biết thêm chi tiết là kích cỡ mô hình thực thể [tại đây](https://mcreator.net/wiki/entity-model-sizes).

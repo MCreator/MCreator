@@ -1,0 +1,1 @@
+Esta configuração permite que você gere Vilas do Minecraft no seu bioma.

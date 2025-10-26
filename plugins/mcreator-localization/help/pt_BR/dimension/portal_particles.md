@@ -1,0 +1,1 @@
+Este parâmetro seleciona a categoria de partícula emitida pelo portal quando o portal está ativo.

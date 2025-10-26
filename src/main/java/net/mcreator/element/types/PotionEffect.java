@@ -19,19 +19,26 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.AttributeEntry;
+import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
@@ -40,19 +47,22 @@ import java.io.File;
 	public String effectName;
 	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
 	public Color color;
+	@Nullable public Particle particle;
+	public Sound onAddedSound;
 	public boolean isInstant;
 	public String mobEffectCategory;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
-
-	public boolean isCuredByMilk;
-	public boolean isProtectedByTotem;
 	public boolean isCuredbyHoney;
+
+	@ModElementReference public List<AttributeModifierEntry> modifiers;
 
 	public Procedure onStarted;
 	public Procedure onActiveTick;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
+	public Procedure onMobHurt;
+	public Procedure onMobRemoved;
 
 	private PotionEffect() {
 		this(null);
@@ -62,8 +72,13 @@ import java.io.File;
 		super(element);
 
 		this.mobEffectCategory = "NEUTRAL";
-		this.isCuredByMilk = true;
-		this.isProtectedByTotem = true;
+		modifiers = new ArrayList<>();
+	}
+
+	public static class AttributeModifierEntry {
+		public AttributeEntry attribute;
+		public double amount;
+		public String operation;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -83,5 +98,9 @@ import java.io.File;
 
 	public boolean hasCustomRenderer() {
 		return !renderStatusInHUD || !renderStatusInInventory;
+	}
+
+	public boolean hasCustomParticle() {
+		return particle != null && !isInstant;
 	}
 }

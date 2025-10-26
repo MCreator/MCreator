@@ -1,1 +1,1 @@
-Biyomda çalınan ek sesler.
+Biyom larda çalınan ek sesler.

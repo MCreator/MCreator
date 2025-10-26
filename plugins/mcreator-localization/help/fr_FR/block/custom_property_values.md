@@ -1,0 +1,1 @@
+Ce sont les valeurs que cette propriété de bloc personnalisée peut avoir.

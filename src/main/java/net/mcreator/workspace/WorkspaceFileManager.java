@@ -45,7 +45,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class WorkspaceFileManager implements Closeable {
+public final class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 

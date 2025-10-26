@@ -18,20 +18,18 @@
 
 package net.mcreator.io.tree;
 
-public class FileTree {
-
-	public final FileNode root;
-
-	public FileTree(FileNode root) {
-		this.root = root;
-	}
+public record FileTree<T>(FileNode<T> root) {
 
 	public void addElement(String elementValue) {
+		addElement(elementValue, null);
+	}
+
+	public void addElement(String elementValue, T object) {
 		if (elementValue.endsWith("/")) // skip folders, we add them as part of file paths
 			return;
 
 		String[] list = elementValue.split("/");
-		root.addElement(root.incrementalPath, list);
+		root.addElement(root.incrementalPath, list, object);
 	}
 
 }

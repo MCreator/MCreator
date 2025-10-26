@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy milyen gyorsan terjed a tűz más blokkokra.

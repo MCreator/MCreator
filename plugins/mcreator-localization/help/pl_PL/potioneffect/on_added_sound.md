@@ -1,0 +1,1 @@
+Jeśli zostanie wybrany dźwięk, zostanie on odtworzony, gdy ten efekt mikstury zostanie dodany do bytu.

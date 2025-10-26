@@ -46,7 +46,7 @@
 
 package ${package};
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class ${name} {
 
 	public ${name}() {

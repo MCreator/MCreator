@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, ten model bytu może być wyświetlany tylko w przypadku, gdy warunek jest uznany.

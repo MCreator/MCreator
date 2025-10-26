@@ -1,0 +1,1 @@
+Gdy ten warunek jest spełniony, byt będzie w stanie bezterminowo oddychać rybami lub kałamarnicami.

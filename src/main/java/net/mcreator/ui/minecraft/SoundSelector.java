@@ -129,4 +129,14 @@ public class SoundSelector extends JPanel {
 		this.setSound(text);
 	}
 
+	public SoundSelector enableRealTimeValidation() {
+		this.tfe.enableRealtimeValidation();
+		return this;
+	}
+
+	public SoundSelector requireValue(String errorMessage) {
+		this.tfe.requireValue(errorMessage);
+		return this;
+	}
+
 }

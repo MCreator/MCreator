@@ -6,7 +6,6 @@
     "description": {
       "identifier": "${registryname}"
     },
-
     "components": {
       "minecraft:climate": {
         "downfall": ${data.rainingPossibility},
@@ -42,7 +41,6 @@
           [ "forest", ${data.treesPerChunk} ]
         ]
       },
-
       "animal": {},
       "monster": {},
       "overworld": {},

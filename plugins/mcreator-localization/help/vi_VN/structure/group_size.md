@@ -1,1 +1,0 @@
-Tham số này điều khiển số lượng kiến trúc trò chơi sẽ khởi tạo xung quanh kiến trúc được khởi tạo đầu tiên. Dùng tùy chọn này để tạo ra các khu rừng chẳng hạn.

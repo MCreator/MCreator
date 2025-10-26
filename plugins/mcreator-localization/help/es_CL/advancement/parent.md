@@ -1,3 +1,3 @@
-Este es el logro del cual se desprenderá tu logro.
+Este es el logro tras el cual aparecerá tu logro en la lista.
 
-Puedes usar "No parent: root" que creará una nueva rama (Nueva pestaña de logros).
+Si eliges “No parent: root”, se creará una nueva ruta (una nueva pestaña de logros).

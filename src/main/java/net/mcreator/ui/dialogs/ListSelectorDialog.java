@@ -50,17 +50,13 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
-					setVisible(false);
 					dispose();
 				}
 			}
 		});
 
 		JButton selectButton = L10N.button("dialog.item_selector.use_selected");
-		selectButton.addActionListener(e -> {
-			setVisible(false);
-			dispose();
-		});
+		selectButton.addActionListener(e -> dispose());
 
 		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 0));
 

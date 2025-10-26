@@ -1,0 +1,1 @@
+Se a condição for especificada, o jogador precisa passar por ela para viajar para esta dimensão.

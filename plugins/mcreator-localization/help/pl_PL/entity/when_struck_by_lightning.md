@@ -1,0 +1,1 @@
+Wyzwalacz ten uruchamia procedurę, gdy ten byt zostaje uderzony piorunem.

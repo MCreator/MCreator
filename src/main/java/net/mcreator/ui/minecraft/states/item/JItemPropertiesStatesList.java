@@ -39,15 +39,15 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
@@ -87,7 +87,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
 		addProperty.addActionListener(e -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
-					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidatior() {
+					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
 							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
 									((VTextField) component)::getText,
@@ -190,8 +190,16 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemStatesListEntry addStatesEntry(boolean initState) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, this::getPropertiesList,
-				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel)).setNumberMatchType(
-				JStateLabel.NumberMatchType.GREATER_OR_EQUAL);
+				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel)) {
+			@Override protected String renderPropertyValue(PropertyData<?> property, Object value) {
+				String valueText;
+				if (property.getClass() == PropertyData.LogicType.class)
+					valueText = value != null && (Boolean) value ? "1 (true)" : "0 (false)";
+				else
+					valueText = property.toString(value);
+				return property.getName().replace("CUSTOM:", "") + " " + numberMatchType.getSymbol() + " " + valueText;
+			}
+		}.setNumberMatchType(JStateLabel.NumberMatchType.GREATER_OR_EQUAL);
 		if (initState && !stateLabel.editState())
 			return null;
 

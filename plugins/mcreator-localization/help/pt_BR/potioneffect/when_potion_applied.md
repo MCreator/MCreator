@@ -1,0 +1,1 @@
+Este procedimento será executado quando o efeito da poção for aplicado a uma entidade. 

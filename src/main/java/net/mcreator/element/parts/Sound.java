@@ -33,7 +33,8 @@ public class Sound extends MappableElement {
 	}
 
 	@Override public String getMappedValue() {
-		return super.getMappedValue().replace("CUSTOM:", mapper.getWorkspace().getWorkspaceSettings().getModID() + ":");
+		return super.getMappedValue()
+				.replace(NameMapper.MCREATOR_PREFIX, mapper.getWorkspace().getWorkspaceSettings().getModID() + ":");
 	}
 
 }

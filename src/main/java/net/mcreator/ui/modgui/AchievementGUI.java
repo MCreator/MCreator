@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -44,18 +45,12 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.ModElementListField;
-import net.mcreator.ui.minecraft.TextureComboBox;
-import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -64,22 +59,24 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
 
-	private final VTextField achievementName = new VTextField(20);
-	private final VTextField achievementDescription = new VTextField(20);
+	private final VTextField achievementName = new VTextField(20).requireValue("elementgui.advancement.cant_be_empty")
+			.enableRealtimeValidation();
+	private final VTextField achievementDescription = new VTextField(20).requireValue(
+			"elementgui.advancement.must_have_description").enableRealtimeValidation();
 
 	private final DataListComboBox parentAchievement = new DataListComboBox(mcreator);
 
 	private MCItemHolder achievementIcon;
 
 	private final JComboBox<String> achievementType = new JComboBox<>(new String[] { "task", "goal", "challenge" });
-
-	private final JComboBox<String> rewardFunction = new JComboBox<>();
 
 	private TextureComboBox background;
 
@@ -90,6 +87,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
+	private SingleModElementSelector rewardFunction;
 	private ModElementListField rewardLoot;
 	private ModElementListField rewardRecipes;
 
@@ -111,13 +109,16 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected void initGUI() {
-		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.advancement.error_advancement_needs_icon");
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
 		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
+		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
+		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
@@ -203,14 +204,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
 
-		achievementName.setValidator(
-				new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
-		achievementDescription.setValidator(
-				new TextFieldValidator(achievementDescription, L10N.t("elementgui.advancement.must_have_description")));
-		achievementIcon.setValidator(new MCItemHolderValidator(achievementIcon));
-		achievementName.enableRealtimeValidation();
-		achievementDescription.enableRealtimeValidation();
-
 		page1group.addValidationElement(achievementIcon);
 		page1group.addValidationElement(achievementName);
 		page1group.addValidationElement(achievementDescription);
@@ -220,8 +213,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"TriggerRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -237,7 +231,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-		addPage(wrap, false);
+
+		addPage(wrap, false).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -245,16 +241,18 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		}
 	}
 
-	private synchronized void regenerateTrigger() {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {
 			blocklyToJSONTrigger = new BlocklyToJSONTrigger(mcreator.getWorkspace(), this.modElement,
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJSONTrigger.getCompileNotes();
@@ -266,25 +264,17 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		return compileNotesArrayList;
 	}
 
 	@Override public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(parentAchievement,
 				ElementUtil.loadAllAchievements(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(rewardFunction, ListUtils.merge(Collections.singleton("No function"),
-				mcreator.getWorkspace().getModElements().stream().filter(e -> e.getType() == ModElementType.FUNCTION)
-						.map(ModElement::getName).collect(Collectors.toList())), "No function");
-
 		background.reload();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(page1group,
-				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 	}
 
 	@Override public void openInEditingMode(Achievement achievement) {
@@ -297,7 +287,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		showPopup.setSelected(achievement.showPopup);
 		announceToChat.setSelected(achievement.announceToChat);
 		hideIfNotCompleted.setSelected(achievement.hideIfNotCompleted);
-		rewardFunction.setSelectedItem(achievement.rewardFunction);
+		rewardFunction.setEntry(achievement.rewardFunction);
 		background.setTextureFromTextureName(achievement.background);
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
@@ -317,7 +307,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.disableDisplay = disableDisplay.isSelected();
 		achievement.announceToChat = announceToChat.isSelected();
 		achievement.hideIfNotCompleted = hideIfNotCompleted.isSelected();
-		achievement.rewardFunction = (String) rewardFunction.getSelectedItem();
+		achievement.rewardFunction = rewardFunction.getEntry();
 		achievement.background = background.getTextureName();
 		achievement.rewardLoot = rewardLoot.getListElements().stream().map(NonMappableElement::getUnmappedValue)
 				.collect(Collectors.toList());

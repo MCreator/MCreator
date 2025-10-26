@@ -26,28 +26,21 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 public class ItemsCreativeTabsConverter implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger(ItemsCreativeTabsConverter.class);
-
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		try {
-			JsonObject tab = jsonElementInput.getAsJsonObject().getAsJsonObject("definition")
-					.getAsJsonObject(input instanceof Dimension ? "igniterTab" : "creativeTab");
-			if (tab != null && !tab.get("value").getAsString().equals("No creative tab entry")) {
-				Field specialInformationField = input.getClass().getDeclaredField("creativeTabs");
-				specialInformationField.setAccessible(true);
-				specialInformationField.set(input, List.of(new TabEntry(workspace, tab.get("value").getAsString())));
-			}
-		} catch (Exception e) {
-			LOG.warn("Failed to convert creative tabs for " + input.getModElement().getName(), e);
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws NoSuchFieldException, IllegalAccessException {
+		JsonObject tab = jsonElementInput.getAsJsonObject().getAsJsonObject("definition")
+				.getAsJsonObject(input instanceof Dimension ? "igniterTab" : "creativeTab");
+		if (tab != null && !tab.get("value").getAsString().equals("No creative tab entry")) {
+			Field specialInformationField = input.getClass().getDeclaredField("creativeTabs");
+			specialInformationField.setAccessible(true);
+			specialInformationField.set(input, List.of(new TabEntry(workspace, tab.get("value").getAsString())));
 		}
 
 		return input;

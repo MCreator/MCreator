@@ -1,0 +1,1 @@
+Ten parametr kontroluje przedmiot, który zostanie zastąpiony przy użyciu stołu rzemieślniczgo. Oznacza to, że przedmiot będzie częścią receptury, ale zostanie zastąpiony innym przedmiotem.

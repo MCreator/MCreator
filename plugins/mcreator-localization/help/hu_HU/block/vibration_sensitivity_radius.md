@@ -1,0 +1,1 @@
+A blokk által fogadható rezgések maximális távolsága.

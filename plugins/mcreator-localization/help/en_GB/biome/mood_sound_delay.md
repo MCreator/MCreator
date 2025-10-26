@@ -1,0 +1,1 @@
+This value defines the time, in ticks, before the sound is played (loop).

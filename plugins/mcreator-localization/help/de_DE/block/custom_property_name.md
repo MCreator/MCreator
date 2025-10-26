@@ -1,0 +1,1 @@
+Dieser Parameter gibt den Namen dieser benutzerdefinierten Blockeigenschaft an.

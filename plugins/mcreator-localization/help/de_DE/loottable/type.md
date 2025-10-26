@@ -1,1 +1,0 @@
-Dieser Parameter legt fest, welche Art der Beutetabelle du erstellst.

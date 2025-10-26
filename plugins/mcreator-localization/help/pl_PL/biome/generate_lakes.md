@@ -1,1 +1,0 @@
-Ten parametr kontroluje czy jeziora mają być generowane na tym biomie.

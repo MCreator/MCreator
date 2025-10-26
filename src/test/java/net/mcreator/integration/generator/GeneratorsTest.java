@@ -24,15 +24,17 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleDaemonUtils;
-import net.mcreator.gradle.GradleErrorCodes;
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
+import net.mcreator.ui.dialogs.tools.WoodPackMakerTool;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.TestUtil;
@@ -46,11 +48,13 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -68,7 +72,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: {}", rgenseed);
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		Set<String> fileNames;
+		if (System.getenv("MCREATOR_TEST_GENERATORS") != null) {
+			// comma separated to set, use stream oneliner
+			fileNames = Arrays.stream(System.getenv("MCREATOR_TEST_GENERATORS").split(","))
+					.map(generator -> generator + "/generator.yaml").collect(Collectors.toSet());
+		} else {
+			fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		}
 
 		// Sort generators, so they are tested in predictable order
 		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
@@ -92,6 +103,7 @@ import static org.junit.jupiter.api.Assertions.*;
 					List<DynamicTest> tests = new ArrayList<>();
 
 					AtomicReference<Workspace> workspace = new AtomicReference<>();
+					AtomicReference<MCreator> mcreator = new AtomicReference<>();
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Workspace setup", () -> {
 						// create temporary directory
@@ -103,19 +115,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 						WorkspaceGeneratorSetup.setupWorkspaceBase(workspace.get());
 
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
-
 						CountDownLatch latch = new CountDownLatch(1);
-						new MCreator(null, workspace.get()).getGradleConsole()
-								.exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
-									if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
-										workspace.get().getGenerator().reloadGradleCaches();
-									} else {
-										fail("Gradle MDK setup failed!");
-									}
-									latch.countDown();
-								});
+						mcreator.set(MCreator.create(null, workspace.get()));
+						mcreator.get().getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
+							if (taskResult == GradleResultCode.STATUS_OK) {
+								workspace.get().getGenerator().reloadGradleCaches();
+							} else {
+								fail("Gradle MDK setup failed!");
+							}
+							latch.countDown();
+						});
 						latch.await();
+
+						// Attach a blank file watcher to also test its operation
+						workspace.get().getGenerator().getFileWatcher()
+								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
+						workspace.get().getGenerator().getFileWatcher().addListener(changedFiles -> {
+						});
 					}));
 
 					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {
@@ -131,8 +147,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
 							() -> TestWorkspaceDataProvider.provideAndGenerateSampleElements(random, workspace.get())));
-					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
-							() -> GTModElements.runTest(LOG, generator, random, workspace.get())));
+					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation", () -> {
+						GTModElements.runTest(LOG, generator, random, workspace.get());
+						// Fill workspace with sample tags after the elements the tags reference actually exist
+						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
+					}));
+					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
+							generatorConfiguration)) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
+							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
+								MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator.get(), workspace.get(),
+										"Material", "Dust based", Color.red, 1.234);
+							if (WoodPackMakerTool.isSupported(generatorConfiguration))
+								WoodPackMakerTool.addWoodPackToWorkspace(mcreator.get(), workspace.get(), "Wood",
+										Color.green, 0.123);
+						}));
+					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {
@@ -141,6 +171,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
 								() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace.get())));
 					}
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.ADVANCEMENT) != GeneratorStats.CoverageStatus.NONE)
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing JSON trigger blocks",
+								() -> GTJSONTriggersBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.COMMAND) != GeneratorStats.CoverageStatus.NONE)
@@ -160,6 +195,10 @@ import static org.junit.jupiter.api.Assertions.*;
 					tests.add(DynamicTest.dynamicTest(
 							generator + " - Re-generating base to include generated mod elements",
 							() -> assertTrue(workspace.get().getGenerator().generateBase())));
+
+					// Verify JSON files
+					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
+							() -> verifyGeneratedJSON(workspace.get())));
 
 					if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage()
 							== GeneratorFlavor.BaseLanguage.JAVA) {
@@ -189,12 +228,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						}
 					}
 
-					// Verify JSON files
-					tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
-							() -> verifyGeneratedJSON(workspace.get())));
-
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
-						GradleDaemonUtils.stopAllDaemons(workspace.get());
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));

@@ -1,0 +1,1 @@
+A mob neve megjelenik a halálüzenetekben, a játékon belüli menükben és más helyeken, ahol a név vizuálisan megjelenik.

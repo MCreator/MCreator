@@ -28,11 +28,11 @@ public class WindowTitleHelper {
 	public static String getWindowTitle(MCreator mcreator) {
 		StringBuilder title = new StringBuilder(mcreator.getWorkspaceSettings().getModName());
 
-		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+		if (mcreator.getTabs().getCurrentTab() != null && mcreator.getTabs().getCurrentTab()
 				.getContent() instanceof ModElementGUI<?> modElementGUI) {
 			title.append(" - ").append(modElementGUI.getModElement().getName()).append(" (")
 					.append(modElementGUI.getModElement().getType().getReadableName()).append(")");
-		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+		} else if (mcreator.getTabs().getCurrentTab() != null && mcreator.getTabs().getCurrentTab()
 				.getContent() instanceof CodeEditorView codeEditorView) {
 			try {
 				title.append(" - ")
@@ -40,7 +40,7 @@ public class WindowTitleHelper {
 			} catch (Exception e) {
 				title.append(" - ").append(codeEditorView.fileWorkingOn.toPath());
 			}
-		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
+		} else if (mcreator.getTabs().getCurrentTab() != null && mcreator.getTabs().getCurrentTab()
 				.getContent() instanceof ImageMakerView imageMakerView && imageMakerView.getImageFile() != null) {
 			try {
 				title.append(" - ")

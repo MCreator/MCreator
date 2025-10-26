@@ -1,0 +1,1 @@
+Ezek az attribútum módosítók az entitásra vonatkoznak, amíg a hatás aktív.

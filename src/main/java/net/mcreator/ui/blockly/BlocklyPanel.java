@@ -26,6 +26,8 @@ import net.mcreator.ui.blockly.cef.CEFUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.cef.browser.CefBrowser;
@@ -39,6 +41,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.Closeable;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -51,7 +56,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	private final BlocklyJavascriptBridge bridge;
 
-	private final List<Runnable> runAfterLoaded = new ArrayList<>();
+	private final BlockingQueue<Runnable> runAfterLoaded = new LinkedBlockingQueue<>();
 
 	private boolean loaded = false;
 
@@ -59,6 +64,8 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	private final BlocklyEditorType type;
 
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
+
+	private javafx.beans.value.ChangeListener<? super Worker.State> listener = null;
 
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		super(new BorderLayout());
@@ -73,7 +80,35 @@ public class BlocklyPanel extends JPanel implements Closeable {
 				.createBrowser("data:text/html, " + FileIO.readResourceToString("/blockly/blockly.html"), false, true);
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
-				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))), cefBrowser);
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
+
+		ThreadUtil.runOnFxThread(() -> {
+			WebView browser = new WebView();
+			browser.setContextMenuEnabled(false);
+			Scene scene = new Scene(browser);
+			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
+			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
+			setScene(scene);
+
+			browser.getChildrenUnmodifiable().addListener(
+					(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
+							.forEach(bar -> bar.setVisible(false)));
+			webEngine = browser.getEngine();
+			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
+			webEngine.getLoadWorker().stateProperty().addListener(listener = (ov, oldState, newState) -> {
+				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
+					// load CSS from file to select proper style for OS
+					Element styleNode = webEngine.getDocument().createElement("style");
+					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
+
+					if (PluginLoader.INSTANCE.getResourceAsStream(
+							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
+						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
+					} else {
+						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+								"/themes/default_dark/styles/blockly.css");
+					}
 
 		Component component = cefBrowser.getUIComponent();
 		add("Center", component);
@@ -130,9 +165,38 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		changeListeners.add(listener);
 	}
 
-	public String getXML() {
+	private static boolean isValidBlocklyXML(@Nullable String xml) {
+		if (xml == null || xml.isBlank())
+			return false;
+		return xml.trim().startsWith("<xml xmlns=\"https://developers.google.com/blockly/xml\">");
+	}
+
+	@Nullable private String lastValidXML = null;
+
+	public synchronized String getXML() {
 		// TODO: we need to go back to async XML handling
-		return "";//loaded ? (String) executeJavaScriptSynchronously("workspaceToXML();") : "";
+		if (loaded) {
+			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
+
+			// XML can become invalid if e.g., WebKit runs out of memory and executeJavaScriptSynchronously times out
+			boolean valid = isValidBlocklyXML(newXml);
+
+			if (valid) {
+				lastValidXML = newXml;
+				return newXml;
+			} else if (lastValidXML != null) { // If the XML is not valid, return the last valid XML
+				if (webEngine != null) { // Log the error only if the BlocklyPanel was not closed yet
+					LOG.warn("Invalid Blockly XML detected, returning last valid XML");
+					TestUtil.failIfTestingEnvironment();
+				}
+				return lastValidXML;
+			} else {
+				LOG.error("Invalid Blockly XML detected and no last valid XML available");
+				TestUtil.failIfTestingEnvironment();
+			}
+		}
+
+		return "";
 	}
 
 	public void setXML(String xml) {
@@ -143,7 +207,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 				""".formatted(escapeXML(xml)));
 
 		ThreadUtil.runOnSwingThread(
-				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(xml))));
 	}
 
 	public void addBlocksFromXML(String xml) {

@@ -1,0 +1,1 @@
+Se esta opção estiver marcada, este bloco pode pegar fogo quando estiver perto de lava.

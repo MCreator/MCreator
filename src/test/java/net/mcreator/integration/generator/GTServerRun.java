@@ -66,7 +66,7 @@ public class GTServerRun {
 	}
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) throws Exception {
-		BuildLauncher buildLauncher = GradleUtils.getGradleTaskLauncher(
+		BuildLauncher buildLauncher = GradleUtils.getGradleTaskLauncher(workspace.getGeneratorConfiguration(),
 				GradleUtils.getGradleProjectConnection(workspace),
 				workspace.getGeneratorConfiguration().getGradleTaskFor("run_server"));
 

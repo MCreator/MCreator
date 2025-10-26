@@ -1,0 +1,1 @@
+Si ce paramètre est activé, les veines de cuivre et de fer génèreront dans cette dimension.

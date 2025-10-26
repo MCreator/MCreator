@@ -1,0 +1,1 @@
+Enquanto o projétil estiver voando, o procedimento selecionado será executado a cada tique.

@@ -1,0 +1,1 @@
+A quantidade de pontos de armadura embutidos que o mob tem. Zumbis por padrão têm 2 pontos de armadura.

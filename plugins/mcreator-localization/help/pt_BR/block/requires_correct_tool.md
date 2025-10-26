@@ -1,0 +1,1 @@
+Se esta opção estiver habilitada, o bloco cairá somente quando quebrado com a ferramenta de colheita especificada.

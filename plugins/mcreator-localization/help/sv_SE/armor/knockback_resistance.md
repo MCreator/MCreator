@@ -1,0 +1,1 @@
+Denna parameter styr rustningens resistens mot tillbakaknuffar.

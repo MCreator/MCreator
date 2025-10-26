@@ -1,0 +1,1 @@
+Ce paramètre contrôle si l'objet est une monnaie de Piglin, comme le lingot d'or.

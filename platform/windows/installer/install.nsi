@@ -125,7 +125,7 @@ Var keepUserData
 Var keepUserDataState
 
 Function un.ModifyUnConfirm
-    ${NSD_CreateCheckbox} 120u -25u 70% 20u "Keep settings and caches (useful when updating)"
+    ${NSD_CreateCheckbox} 120u -25u 70% 20u "Keep settings, recent workspaces list, and caches"
     Pop $keepUserData
     SetCtlColors $keepUserData "" ${MUI_BGCOLOR}
 

@@ -1,0 +1,1 @@
+Aciona um procedimento quando algo coloca o bloco (entidade/bloco) ao lado deste bloco.

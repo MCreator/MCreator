@@ -1,0 +1,1 @@
+Animacja, gdy przedmiot jest używany przez gracza.

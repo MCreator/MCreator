@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a lombozat (levelek) színét ebben a biomban.

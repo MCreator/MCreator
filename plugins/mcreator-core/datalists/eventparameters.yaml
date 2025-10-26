@@ -1,0 +1,32 @@
+# number
+- INCOMING_DAMAGE_AMOUNT:
+  readable_name: "Entity is attacked - Incoming damage amount"
+  type: number
+- FALL_DISTANCE:
+  readable_name: "Entity falls - Fall distance"
+  type: number
+- FALL_DAMAGE_MULTIPLIER:
+  readable_name: "Entity falls - Damage multiplier"
+  type: number
+- CRITICAL_DAMAGE_MULTIPLIER:
+  readable_name: "Player deals critical hit - Damage multiplier"
+  type: number
+- INVULNERABILITY_TICKS:
+  readable_name: "Entity is attacked - Invulnerability ticks"
+  type: number
+- DROPPED_EXPERIENCE:
+  readable_name: "Entity drops experience - Dropped experience number"
+  type: number
+# logic
+- DISABLE_SWEEP:
+  readable_name: "Player deals critical hit - Disable sweep"
+  type: logic
+- CRITICAL_HIT_RESULT:
+  readable_name: "Player deals critical hit - Is hit critical"
+  type: logic
+- GRIEF_RESULT:
+  readable_name: "Entity about to grief the world - Grief result"
+  type: logic
+- SHIELD_BLOCKED:
+  readable_name: "Entity blocks with shield - Shield block result"
+  type: logic

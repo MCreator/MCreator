@@ -33,14 +33,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WorkspaceFolderManager {
+public final class WorkspaceFolderManager {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Folder Manager");
 
 	private final File workspaceFolder;
 	private final Workspace workspace;
 
-	public WorkspaceFolderManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
+	WorkspaceFolderManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFolder = workspaceFile.getParentFile();
 		this.workspace = workspace;
 	}
@@ -183,12 +183,24 @@ public class WorkspaceFolderManager {
 		return retval;
 	}
 
+	@Nonnull public File getModsDir() {
+		File mods = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "mods_folder");
+		if (mods == null) { // if not specified, use default value
+			mods = new File(workspace.getWorkspaceFolder(), "run/mods");
+		}
+		return mods;
+	}
+
 	public File getModElementsDir() {
 		return new File(workspaceFolder, "elements/");
 	}
 
 	public File getModelsDir() {
 		return new File(workspaceFolder, "models/");
+	}
+
+	public File getModelAnimationsDir() {
+		return new File(workspaceFolder, "models/animations");
 	}
 
 	public File getWorkspaceCacheDir() {

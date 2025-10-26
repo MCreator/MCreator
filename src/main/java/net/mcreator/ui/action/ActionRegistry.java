@@ -130,6 +130,7 @@ public class ActionRegistry {
 	public final BasicAction importJavaModel;
 	public final BasicAction importJSONModel;
 	public final BasicAction importOBJModel;
+	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
 	public final BasicAction showWorkspaceBrowser;
@@ -164,6 +165,7 @@ public class ActionRegistry {
 	public final ImageEditorCutAction imageEditorCut;
 	public final ImageEditorPasteAction imageEditorPaste;
 	public final ImageEditorDeleteAction imageEditorDelete;
+	public final BasicAction imageEditorSwapColors;
 	public final BasicAction imageEditorPencil;
 	public final BasicAction imageEditorLine;
 	public final BasicAction imageEditorShape;
@@ -253,7 +255,7 @@ public class ActionRegistry {
 				TextureType.SCREEN).setIcon(UIRES.get("16px.importgui"));
 		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
 			TextureImportDialogs.importArmor(mcreator);
-			mcreator.mv.resourcesPan.workspacePanelTextures.reloadElements();
+			mcreator.reloadWorkspaceTabContents();
 		}, TextureType.ARMOR).setIcon(UIRES.get("16px.importarmor"));
 		this.importOtherTexture = new TextureImportAction(this, L10N.t("action.import_other_texture"),
 				TextureType.OTHER).setIcon(UIRES.get("16px.importtexture"));
@@ -261,26 +263,27 @@ public class ActionRegistry {
 		this.importStructure = new StructureImportActions.ImportStructure(this).setIcon(
 				UIRES.get("16px.importstructure"));
 		this.importStructureFromMinecraft = new StructureImportActions.ImportStructureFromMinecraft(this);
-		this.importJavaModel = new ModelImportActions.JAVA(this).setIcon(UIRES.get("16px.importjavamodel"));
-		this.importJSONModel = new ModelImportActions.JSON(this).setIcon(UIRES.get("16px.importjsonmodel"));
-		this.importOBJModel = new ModelImportActions.OBJ(this).setIcon(UIRES.get("16px.importobjmodel"));
+		this.importJavaModel = new ModelImportActions.JAVA(this);
+		this.importJSONModel = new ModelImportActions.JSON(this);
+		this.importOBJModel = new ModelImportActions.OBJ(this);
+		this.importJavaModelAnimation = new AnimationImportActions.JAVA(this);
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),
 				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreators().size() <= 1));
 		this.regenerateCode = new RegenerateCodeAction(this);
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
 		this.showConsoleTab = new BasicAction(this, L10N.t("action.show_console"),
-				e -> mcreator.mcreatorTabs.showTab(mcreator.consoleTab));
+				e -> mcreator.getTabs().showTab(mcreator.consoleTab));
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
-				e -> mcreator.mcreatorTabs.showTab(mcreator.workspaceTab));
+				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
-				e -> mcreator.mcreatorTabs.closeAllTabs());
+				e -> mcreator.getTabs().closeAllTabs());
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
-				e -> mcreator.mcreatorTabs.closeTab(mcreator.mcreatorTabs.getCurrentTab()));
+				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
 		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(280));
+				e -> mcreator.showProjectBrowser(true));
 		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(0));
+				e -> mcreator.showProjectBrowser(false));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);
@@ -317,6 +320,7 @@ public class ActionRegistry {
 		this.imageEditorDelete = new ImageEditorDeleteAction(this);
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
+		this.imageEditorSwapColors = new ImageEditorSwapColorsAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);
 		this.imageEditorLine = new LineToolAction(this);
 		this.imageEditorShape = new ShapeToolAction(this);

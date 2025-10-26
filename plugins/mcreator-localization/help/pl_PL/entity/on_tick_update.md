@@ -1,0 +1,1 @@
+Uruchamia procedurę, która oznacza każdy tick, któru liczy istnienie bytu w świecie.

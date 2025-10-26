@@ -1,0 +1,1 @@
+Se a condição for especificada, o jogador precisa passá-la para construir um portal para esta dimensão. A dependência Itemstack é o item usado para a ativação do portal.

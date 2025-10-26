@@ -1,0 +1,1 @@
+Válaszd ezt a beállítást, ha mocsári kunyhókat szeretnél a biomodban.

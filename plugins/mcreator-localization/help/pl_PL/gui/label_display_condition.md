@@ -1,0 +1,1 @@
+Jeśli warunek jest określony, ta etykieta może być wyświetlana tylko w przypadku, gdy warunek jest pozytywny.

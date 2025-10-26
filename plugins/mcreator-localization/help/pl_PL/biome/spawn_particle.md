@@ -1,0 +1,1 @@
+Ustaw ten parametr, aby włączyć generację cząstek otoczenia w biomie.

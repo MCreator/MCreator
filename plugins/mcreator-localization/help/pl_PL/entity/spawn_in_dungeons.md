@@ -1,0 +1,1 @@
+Jeżeli zaznaczone, lochy (struktury z spawnerem potworów) mogą zespawnować twojego moba w spawnerze.

@@ -24,9 +24,11 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -34,23 +36,31 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement {
+		implements IBlock, ITabContainedElement, ISpecialInfoHolder {
 
 	public String name;
 	public String bucketName;
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureStill;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureFlowing;
+
+	@TextureReference(TextureType.OTHER) public TextureHolder textureRenderOverlay;
+	public boolean hasFog;
+	public Color fogColor;
+	public NumberProcedure fogStartDistance;
+	public NumberProcedure fogEndDistance;
 
 	public String tintType;
 
@@ -70,7 +80,7 @@ import java.util.List;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
-	public List<TabEntry> creativeTabs;
+	@ModElementReference public List<TabEntry> creativeTabs;
 	public Sound emptySound;
 	public String rarity;
 	public StringListProcedure specialInformation;
@@ -80,6 +90,7 @@ import java.util.List;
 	public int lightOpacity;
 	public boolean emissiveRendering;
 	public int tickRate;
+	public boolean ignitedByLava;
 	public int flammability;
 	public int fireSpreadSpeed;
 	public String colorOnMap;
@@ -164,6 +175,10 @@ import java.util.List;
 		return retval;
 	}
 
+	@Override public StringListProcedure getSpecialInfoProcedure() {
+		return specialInformation;
+	}
+
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("bucket".equals(suffix)) {
 			// Use the custom bucket texture if present
@@ -175,4 +190,9 @@ import java.util.List;
 		}
 		return null;
 	}
+
+	public boolean hasCustomBucketTexture() {
+		return generateBucket && textureBucket != null && !textureBucket.isEmpty();
+	}
+
 }

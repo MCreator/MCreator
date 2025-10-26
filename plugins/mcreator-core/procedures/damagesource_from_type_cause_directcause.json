@@ -19,7 +19,7 @@
   ],
   "inputsInline": true,
   "output": "DamageSource",
-  "colour": "320",
+  "colour": 320,
   "mcreator": {
     "toolbox_id": "damagesources",
     "toolbox_init": [

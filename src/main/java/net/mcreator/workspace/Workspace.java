@@ -34,6 +34,8 @@ import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
+import net.mcreator.workspace.settings.user.WorkspaceUserSettingsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,9 +46,8 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -54,14 +55,16 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
+	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
+	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
+	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
+	private LinkedHashMap<TagElement, ArrayList<String>> tag_elements = new LinkedHashMap<>();
 	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
-	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
-		put("en_us", new ConcurrentHashMap<>());
+	private LinkedHashMap<String, LinkedHashMap<String, String>> language_map = new LinkedHashMap<>() {{
+		put("en_us", new LinkedHashMap<>());
 	}};
+
+	@Nullable private LinkedHashMap<String, Object> metadata = null;
 
 	protected FolderElement foldersRoot = FolderElement.ROOT;
 
@@ -71,6 +74,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	// transient fields
 	private transient boolean changed = false;
 	protected transient WorkspaceFileManager fileManager;
+	private transient WorkspaceUserSettingsManager userSettingsManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
@@ -124,7 +128,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return tag_elements;
 	}
 
-	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
+	public Map<String, LinkedHashMap<String, String>> getLanguageMap() {
 		return language_map;
 	}
 
@@ -156,12 +160,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void addLanguage(String language, ConcurrentHashMap<String, String> data) {
+	public void addLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.putIfAbsent(language, data);
 		markDirty();
 	}
 
-	public void updateLanguage(String language, ConcurrentHashMap<String, String> data) {
+	public void updateLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.put(language, data);
 		markDirty();
 	}
@@ -171,13 +175,13 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		language_map.get("en_us").put(key, value);
 
 		// add localization to others if existing if there is not existing definition present
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : language_map.entrySet())
 			entry.getValue().putIfAbsent(key, value);
 		markDirty();
 	}
 
 	public void removeLocalizationEntryByKey(String key) {
-		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : language_map.entrySet())
 			entry.getValue().remove(key);
 
 		markDirty();
@@ -263,6 +267,18 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
+	public void putMetadata(String key, @Nullable Object data) {
+		if (metadata == null)
+			metadata = new LinkedHashMap<>();
+		metadata.put(key, data);
+	}
+
+	@Nullable public Object getMetadata(String key) {
+		if (metadata == null)
+			return null;
+		return metadata.get(key);
+	}
+
 	public void setMCreatorVersion(long mcreatorVersion) {
 		this.mcreatorVersion = mcreatorVersion;
 		markDirty();
@@ -280,6 +296,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getFolderManager();
 	}
 
+	@Override public WorkspaceUserSettings getWorkspaceUserSettings() {
+		return userSettingsManager.getUserSettings();
+	}
+
 	@Override public Generator getGenerator() {
 		return generator;
 	}
@@ -293,6 +313,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		generator.close();
 		fileManager.close();
+		userSettingsManager.close();
 	}
 
 	@Override public boolean equals(Object o) {
@@ -376,6 +397,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
 	public void markFailingGradleDependencies() {
@@ -405,6 +427,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			try {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+				retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 			} catch (Exception e) {
 				throw new CorruptedWorkspaceFileException(e);
 			}
@@ -506,6 +529,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			GeneratorConfiguration generatorConfiguration) throws MissingGeneratorFeaturesException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
@@ -537,6 +561,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		workspaceFile.getParentFile().mkdirs();
 		retval.setMCreatorVersion(Launcher.version.versionlong);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 		retval.generator = new Generator(retval);
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
@@ -567,6 +592,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
+		this.metadata = other.metadata;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);

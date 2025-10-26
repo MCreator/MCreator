@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg ennek az egyéni blokk tulajdonságnak a nevét.

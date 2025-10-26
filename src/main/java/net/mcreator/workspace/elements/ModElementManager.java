@@ -27,7 +27,9 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -107,6 +110,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 			else
 				LOG.warn("Failed to remove element files for element {}", element);
 		}
+
+		// remove any potential references to this mod element in tags
+		TagsUtils.removeTagsForModElement(workspace, element);
 
 		// after we don't need the definition anymore, remove actual files
 		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
@@ -183,7 +189,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
-				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(), false,
+				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(),
 						new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
@@ -210,12 +216,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 					element.getModElement().getName() + ".png");
 			if (modImage != null) {
 				FileIO.writeImageToPNGFile(modImage, modImageFile);
+				Image image = new ImageIcon(modImage).getImage();
+				if (image != null)
+					image.flush();
 			} else if (modImageFile.isFile()) {
 				// If there is no preview image generated, we revert back to default one
 				modImageFile.delete();
 			}
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
+			TestUtil.failIfTestingEnvironment();
 		}
 	}
 

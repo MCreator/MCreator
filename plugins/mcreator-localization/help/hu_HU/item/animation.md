@@ -1,0 +1,1 @@
+Az animáció az a mozgás, amely akkor jelenik meg, amikor a játékos valamit csinál az adott tárgyal.

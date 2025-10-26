@@ -32,6 +32,7 @@ public class Attribute extends GeneratableElement {
 	public Double minValue;
 	public Double maxValue;
 	public Double defaultValue;
+	public String sentiment;
 	public boolean addToAllEntities;
 	public boolean addToPlayers;
 	@ModElementReference public List<EntityEntry> entities;
@@ -42,5 +43,7 @@ public class Attribute extends GeneratableElement {
 
 	public Attribute(ModElement element) {
 		super(element);
+
+		this.sentiment = "POSITIVE";
 	}
 }

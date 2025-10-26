@@ -36,14 +36,17 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.PlacementHelperDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -59,7 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
+public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder, ISearchable {
 
 	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
@@ -67,6 +70,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
+	private BlocklyEditorToolbar blocklyEditorToolbar;
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
@@ -127,8 +131,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"FeatureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Feature.XML_BASE);
 			}
@@ -136,9 +141,15 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
+
+		JButton featureHelperButton = L10N.button("elementgui.feature.generate_placement");
+		featureHelperButton.setIcon(UIRES.get("18px.add"));
+		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
+		BlocklyEditorToolbar.styleButton(featureHelperButton);
+
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
+				featureHelperButton);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
@@ -155,10 +166,12 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				featureProcedure));
 
 		page1.setOpaque(false);
-		addPage(page1);
+
+		addPage(page1).validate(restrictionBiomes)
+				.lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	private synchronized void regenerateFeature() {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
@@ -168,43 +181,45 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> {
-			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
-				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.features.missing_placement")));
-			} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
-					.equals("configured_feature_reference")) {
-				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.features.placement_required")));
-			}
+		if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.features.missing_placement")));
+		} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
+				.equals("configured_feature_reference")) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.features.placement_required")));
+		}
 
+		SwingUtilities.invokeLater(() -> {
 			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
-	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		return new AggregatedValidationResult(new ValidationGroup().addValidationElement(restrictionBiomes),
-				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
+		return compileNotesArrayList;
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		generateCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		generateCondition.refreshListKeepSelected(context);
 	}
 
 	private void refreshPlacementSettings(boolean updateCompileNotes) {
 		generationStep.setEnabled(!skipPlacement.isSelected());
 		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
 		if (updateCompileNotes)
-			regenerateFeature();
+			regenerateBlockAssemblies(false);
 	}
 
 	@Override protected void openInEditingMode(Feature feature) {
@@ -241,4 +256,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return false;
 	}
 
+	@Override public void search(@Nullable String searchTerm) {
+		blocklyEditorToolbar.getSearchField().requestFocusInWindow();
+
+		if (searchTerm != null)
+			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
 }

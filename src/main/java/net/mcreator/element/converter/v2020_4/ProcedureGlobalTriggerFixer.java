@@ -24,62 +24,59 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 
 public class ProcedureGlobalTriggerFixer implements IConverter {
 
-	private static final Logger LOG = LogManager.getLogger("ProcedureGlobalTriggerFixer");
-
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		Procedure procedure = (Procedure) input;
 
-		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(new InputSource(new StringReader(procedure.procedurexml)));
-			doc.getDocumentElement().normalize();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure.procedurexml)));
+		doc.getDocumentElement().normalize();
 
-			NodeList nodeList = doc.getElementsByTagName("field");
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Element element = (Element) nodeList.item(i);
-				String type = element.getAttribute("name");
-				if ("trigger".equals(type)) {
-					String orig = element.getTextContent();
-					if ("No additional trigger".equals(orig)) {
-						element.setTextContent("no_ext_trigger");
-					} else {
-						if (EXTERNAL_TRIGGERS_LEGACY_NAMEMAP.containsKey(orig)) {
-							element.setTextContent(EXTERNAL_TRIGGERS_LEGACY_NAMEMAP.get(orig));
-						}
+		NodeList nodeList = doc.getElementsByTagName("field");
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Element element = (Element) nodeList.item(i);
+			String type = element.getAttribute("name");
+			if ("trigger".equals(type)) {
+				String orig = element.getTextContent();
+				if ("No additional trigger".equals(orig)) {
+					element.setTextContent("no_ext_trigger");
+				} else {
+					if (EXTERNAL_TRIGGERS_LEGACY_NAMEMAP.containsKey(orig)) {
+						element.setTextContent(EXTERNAL_TRIGGERS_LEGACY_NAMEMAP.get(orig));
 					}
 				}
 			}
-
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			StringWriter writer = new StringWriter();
-			transformer.transform(new DOMSource(doc), new StreamResult(writer));
-
-			procedure.procedurexml = writer.getBuffer().toString();
-		} catch (Exception e) {
-			LOG.warn("Failed to fix entity dependency for procedure {}", input.getModElement().getName());
 		}
+
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		StringWriter writer = new StringWriter();
+		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+
+		procedure.procedurexml = writer.getBuffer().toString();
 
 		return procedure;
 	}

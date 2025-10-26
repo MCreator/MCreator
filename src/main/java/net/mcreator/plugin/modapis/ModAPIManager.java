@@ -18,18 +18,17 @@
 
 package net.mcreator.plugin.modapis;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.YamlMerge;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,16 +40,14 @@ public class ModAPIManager {
 	private static final Map<String, ModAPI> modApiList = new HashMap<>();
 
 	public static void initAPIs() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml"));
-
-		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml$"));
 
 		for (String apidefinition : fileNames) {
-			String config = FileIO.readResourceToString(PluginLoader.INSTANCE, apidefinition);
-
 			// load generator configuration
 			try {
-				Map<?, ?> apiconfiguration = (Map<?, ?>) yamlLoad.loadFromString(config);
+				Map<?, ?> apiconfiguration = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, apidefinition);
+				if (apiconfiguration.isEmpty())
+					continue;
 
 				ModAPI modAPI = new ModAPI(FilenameUtilsPatched.getBaseName(apidefinition),
 						apiconfiguration.get("name").toString(), new HashMap<>());
@@ -83,7 +80,7 @@ public class ModAPIManager {
 				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
 				LOG.debug("Loaded mod API definition: {}", FilenameUtilsPatched.getBaseName(apidefinition));
-			} catch (YamlEngineException e) {
+			} catch (YamlEngineException | IOException e) {
 				LOG.error("Failed to load mod API definition for: {}: {}", apidefinition, e.getMessage());
 			}
 		}

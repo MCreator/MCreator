@@ -25,8 +25,6 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Feature;
 import net.mcreator.util.BlocklyHelper;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,16 +40,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 public class HugeFungusFeatureConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("HugeFungusFeatureConverter");
 
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Feature feature = (Feature) input;
-		try {
-			feature.featurexml = fixXML(feature.featurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert feature {}", input.getModElement().getName());
-		}
+		feature.featurexml = fixXML(feature.featurexml);
 		return feature;
 	}
 

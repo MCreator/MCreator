@@ -1,0 +1,1 @@
+Jeśli opcja jest włączona, wszystkie obiekty na świecie, które mogą mieć atrybuty, będą miały ten atrybut i ustawione na jego domyślnej wartości podczas pojawiania.

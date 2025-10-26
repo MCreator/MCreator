@@ -1,0 +1,1 @@
+A quantidade de dano que o mob causa às entidades ao atacar.

@@ -1,0 +1,1 @@
+Modele narzędzi typu tarcze są używane podczas blokowania.

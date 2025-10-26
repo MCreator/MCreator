@@ -25,6 +25,5 @@
       "type": "number"
     }
   ],
-  "cancelable": "true",
-  "side": "server"
+  "cancelable": "true"
 }

@@ -28,8 +28,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.io.net.analytics.DeviceInfo;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
-import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
+import net.mcreator.io.net.api.MCreatorNetWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
@@ -61,8 +61,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -71,13 +72,13 @@ public final class MCreatorApplication {
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
-	public static final IWebAPI WEB_API = new D8WebAPI();
+	public static final IWebAPI WEB_API = new MCreatorNetWebAPI();
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
 	private static boolean applicationStarted = false;
 
-	private final List<MCreator> openMCreators = new ArrayList<>();
+	private final List<MCreator> openMCreators = new CopyOnWriteArrayList<>();
 
 	private WorkspaceSelector workspaceSelector;
 	private DeviceInfo deviceInfo;
@@ -182,10 +183,10 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(93, "Initiating user session");
 
 			deviceInfo = new DeviceInfo();
+			isInternet = MCreatorApplication.WEB_API.initAPI();
+
 			analytics = new GoogleAnalytics(deviceInfo);
 			analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
-
-			isInternet = MCreatorApplication.WEB_API.initAPI();
 
 			discordClient = new DiscordClient();
 
@@ -212,7 +213,7 @@ public final class MCreatorApplication {
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
 				// Make sure splash screen is closed on the swing thread before we continue
-				splashScreen.setVisible(false);
+				splashScreen.dispose();
 			});
 
 			SwingUtilities.invokeLater(() -> {
@@ -258,7 +259,7 @@ public final class MCreatorApplication {
 	}
 
 	/**
-	 * @param workspaceFile   File of the .mcreator workspace definition
+	 * @param workspaceFile File of the .mcreator workspace definition
 	 * @return MCreator if new instance, null if existing is open or open failed
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
@@ -285,7 +286,7 @@ public final class MCreatorApplication {
 				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
 
 				ThreadUtil.runOnSwingThreadAndWait(() -> {
-					MCreator mcreator = new MCreator(this, workspace);
+					MCreator mcreator = MCreator.create(this, workspace);
 					if (!this.openMCreators.contains(mcreator)) {
 						this.workspaceSelector.setVisible(false);
 						this.openMCreators.add(mcreator);
@@ -380,7 +381,7 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
-		// we close all windows and exit fx platform
+		// we dispose all windows and exit fx platform
 		try {
 			LOG.debug("Stopping AWT and FX threads");
 			Arrays.stream(Window.getWindows()).forEach(Window::dispose);

@@ -1,0 +1,1 @@
+Este parâmetro determina o quão longe uma inclinação pode estar para afetar a dispersão deste fluido. Em vez de se espalhar uniformemente, o fluido tentará alcançar a inclinação. Com valores mais baixos, o fluido normalmente cobrirá áreas maiores se o solo for irregular.

@@ -1,0 +1,1 @@
+Wydarzenia z gry, których wibracje ten blok może otrzymać.

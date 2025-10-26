@@ -10,7 +10,7 @@ by [donating](https://mcreator.net/donate).
 * Follow existing code style, naming conventions, and UI/UX philosophy as much as possible, texts in UI should be written "Everywhere like this" and not "Do Not Write Like This"
 * When adding features to code generators, make sure to cover all generators currently supported
 * Maintainers of this project do this for a hobby. There might be cases of slow responses, or even inability to review or merge PR due to its scope and our (time) inability to review it properly or assist with changes needed to make it acceptable for merge.
-* Be human, we are humans too, keep the community positive when colaborating with contributors and maintainers :)
+* Be human, we are humans too, keep the community positive when collaborating with contributors and maintainers :)
 
 # Pull request rules
 
@@ -45,5 +45,5 @@ Before we can use your code, you must sign the [MCreator CLA](https://cla-assist
 The CLA is necessary mainly because you own the copyright to your changes, even after your contribution 
 becomes part of our codebase, so we need your permission to use and distribute your code. We also need to be sure 
 of various other things—for instance that you'll tell us if you know that your code infringes on other people's patents. 
-You don't have to sign the CLA until after you've submitted your code for review and we approved it, but you must do it before
+You don't have to sign the CLA until after you've submitted your code for review, and we approved it, but you must do it before
  we can put your code into our codebase.

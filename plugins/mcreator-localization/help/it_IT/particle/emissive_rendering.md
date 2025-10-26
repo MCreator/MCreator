@@ -1,0 +1,1 @@
+Seleziona questa proprietà per abilitare l'effetto luminescente (in modo simile alla particella "fiamma").

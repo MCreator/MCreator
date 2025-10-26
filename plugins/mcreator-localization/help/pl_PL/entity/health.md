@@ -1,0 +1,1 @@
+Ten parametr ustala początkowe(i maksymalną bazę) zdrowia moba. 2 punkty zdrowia = 1 serce

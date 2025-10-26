@@ -20,7 +20,7 @@ package net.mcreator.minecraft;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.YamlUtil;
+import net.mcreator.util.yaml.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
@@ -40,7 +40,7 @@ public class DataListLoader {
 	private static final Map<String, LinkedHashMap<String, DataListEntry>> cache = new HashMap<>();
 
 	public static void preloadCache() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml$"));
 		for (String res : fileNames) {
 			String datalistname = res.split("datalists/")[1].replace(".yaml", "");
 			loadDataList(datalistname);

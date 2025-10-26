@@ -1,0 +1,1 @@
+Ta opcja kontroluje typ tej zmiennej jednostki. Obsługiwane typy to logiczne, liczby i ciągu.

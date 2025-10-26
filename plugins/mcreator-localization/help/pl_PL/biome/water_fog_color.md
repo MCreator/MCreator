@@ -1,0 +1,1 @@
+Ten parametr kontroluje kolor mgły wodnej wewnątrz biomu

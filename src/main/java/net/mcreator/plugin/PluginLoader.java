@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
@@ -81,11 +80,11 @@ public class PluginLoader extends URLClassLoader {
 	public PluginLoader() {
 		super(new URL[] {}, null);
 
-		this.plugins = new HashSet<>();
-		this.failedPlugins = new HashSet<>();
-		this.javaPlugins = new HashSet<>();
-		this.pluginUpdates = new HashSet<>();
-		this.pluginsModules = new HashSet<>();
+		this.plugins = new LinkedHashSet<>();
+		this.javaPlugins = new LinkedHashSet<>();
+		this.failedPlugins = new LinkedHashSet<>();
+		this.pluginUpdates = new LinkedHashSet<>();
+		this.pluginsModules = new LinkedHashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -164,6 +163,18 @@ public class PluginLoader extends URLClassLoader {
 						.setScanners(Scanners.Resources).setExpandSuperTypes(false));
 
 		checkForPluginUpdates();
+
+		// Sort regular plugin list
+		List<Plugin> sortedPlugins = new ArrayList<>(plugins);
+		Collections.sort(sortedPlugins);
+		plugins.clear();
+		plugins.addAll(sortedPlugins);
+
+		// Sort Java plugin list
+		List<JavaPlugin> sortedJavaPlugins = new ArrayList<>(javaPlugins);
+		Collections.sort(sortedJavaPlugins);
+		javaPlugins.clear();
+		javaPlugins.addAll(sortedJavaPlugins);
 	}
 
 	/**
@@ -196,14 +207,14 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	/**
-	 * @return <p> A {@link List} of all loaded plugins.</p>
+	 * @return <p> A {@link List} of all loaded plugins. Sorted by plugin weight.</p>
 	 */
 	public Collection<Plugin> getPlugins() {
 		return Collections.unmodifiableCollection(plugins);
 	}
 
 	/**
-	 * @return <p> A {@link List} of all loaded Java plugins.</p>
+	 * @return <p> A {@link List} of all loaded Java plugins. Sorted by plugin weight.</p>
 	 */
 	protected Collection<JavaPlugin> getJavaPlugins() {
 		return Collections.unmodifiableCollection(javaPlugins);
@@ -291,8 +302,8 @@ public class PluginLoader extends URLClassLoader {
 
 		if (!plugin.isCompatible()) {
 			LOG.warn("Plugin {} is not compatible with this MCreator version!", plugin.getID());
-			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV")
-					== null) { // We allow loading of incompatible plugins in dev
+			if (System.getenv("MCREATOR_PLUGINS_DEV")
+					== null) { // Only prevent the loading of incompatible plugins if MCREATOR_PLUGINS_DEV is not set
 				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
 				return null;
 			}

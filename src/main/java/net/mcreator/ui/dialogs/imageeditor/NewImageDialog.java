@@ -38,9 +38,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NewImageDialog extends MCreatorDialog {
+
 	private final String[] layerTypes = { L10N.t("dialog.imageeditor.transparency"),
-			L10N.t("dialog.imageeditor.color_layer_type"), L10N.t("dialog.imageeditor.template"),
-			L10N.t("dialog.imageeditor.no_layer") };
+			L10N.t("dialog.imageeditor.color_layer_type"), L10N.t("dialog.imageeditor.template") };
 
 	private ResourcePointer selection;
 
@@ -80,8 +80,8 @@ public class NewImageDialog extends MCreatorDialog {
 		templateSettings.add(PanelUtils.totalCenterInPanel(templateChooserButton));
 
 		//Constraints
-		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
-		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 0, 10000, 1));
+		JSpinner width = new JSpinner(new SpinnerNumberModel(16, 1, 10000, 1));
+		JSpinner height = new JSpinner(new SpinnerNumberModel(16, 1, 10000, 1));
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("action.common.create");
@@ -102,7 +102,7 @@ public class NewImageDialog extends MCreatorDialog {
 		templateChooserButton.addActionListener(event -> templateChooser.setVisible(true));
 
 		templateChooser.naprej.addActionListener(arg01 -> {
-			templateChooser.setVisible(false);
+			templateChooser.dispose();
 			selection = templateChooser.list.getSelectedValue();
 			ImageIcon icon = ImageMakerTexturesCache.CACHE.get(selection);
 			templateChooserButton.setIcon(new ImageIcon(ImageUtils.resize(icon.getImage(), 32)));
@@ -110,13 +110,10 @@ public class NewImageDialog extends MCreatorDialog {
 			height.setValue(icon.getIconHeight());
 		});
 
-		cancel.addActionListener(e -> setVisible(false));
+		cancel.addActionListener(e -> dispose());
 
 		ok.addActionListener(e -> {
 			switch (layerType.getSelectedIndex()) {
-			case 0:
-				imageMakerView.newImage(new Layer((int) width.getValue(), (int) height.getValue(), 0, 0, "Layer"));
-				break;
 			case 1:
 				imageMakerView.newImage(new Layer((int) width.getValue(), (int) height.getValue(), 0, 0, "Layer",
 						colorChoser.getColor()));
@@ -126,24 +123,21 @@ public class NewImageDialog extends MCreatorDialog {
 						ImageMakerTexturesCache.CACHE.get(selection).getImage()));
 				break;
 			default:
-				imageMakerView.newImage((int) width.getValue(), (int) height.getValue(), "Layer");
+				imageMakerView.newImage(new Layer((int) width.getValue(), (int) height.getValue(), 0, 0, "Layer"));
 				break;
 			}
 
-			setVisible(false);
+			dispose();
 			imageMakerView.showView();
 		});
 
 		properties.add(L10N.label("dialog.imageeditor.new_image_fill_with"));
 		properties.add(layerType);
 
-		specialSettings.add(
-				PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")),
-				layerTypes[0]);
-		specialSettings.add(colorSettings, layerTypes[1]);
-		specialSettings.add(templateSettings, layerTypes[2]);
-		specialSettings.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_no_layer")),
-				layerTypes[3]);
+		specialSettings.add(layerTypes[0],
+				PanelUtils.totalCenterInPanel(L10N.label("dialog.imageeditor.new_image_add_transparent_layer")));
+		specialSettings.add(layerTypes[1], colorSettings);
+		specialSettings.add(layerTypes[2], templateSettings);
 
 		constraints.add(L10N.label("dialog.imageeditor.width"));
 		constraints.add(width);
@@ -171,4 +165,5 @@ public class NewImageDialog extends MCreatorDialog {
 		setResizable(false);
 		setLocationRelativeTo(window);
 	}
+
 }

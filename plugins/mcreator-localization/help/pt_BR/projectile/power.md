@@ -1,0 +1,1 @@
+Este parâmetro controla a velocidade do projétil (sua energia cinética).

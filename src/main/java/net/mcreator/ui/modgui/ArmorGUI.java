@@ -52,12 +52,9 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -94,10 +91,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private TextureSelectionButton textureLeggings;
 	private TextureSelectionButton textureBoots;
 
-	private final VTextField helmetName = new VTextField();
-	private final VTextField bodyName = new VTextField();
-	private final VTextField leggingsName = new VTextField();
-	private final VTextField bootsName = new VTextField();
+	private final VTextField helmetName = new VTextField().requireValue("elementgui.armor.helmet_needs_name")
+			.enableRealtimeValidation();
+	private final VTextField bodyName = new VTextField().requireValue("elementgui.armor.chestplate_needs_name")
+			.enableRealtimeValidation();
+	private final VTextField leggingsName = new VTextField().requireValue("elementgui.armor.leggings_need_name")
+			.enableRealtimeValidation();
+	private final VTextField bootsName = new VTextField().requireValue("elementgui.armor.boots_need_name")
+			.enableRealtimeValidation();
 
 	private static final Model defaultModel = new Model.BuiltInModel("Default");
 	private final VComboBox<Model> helmetModel = new SearchableComboBox<>(new Model[] { defaultModel });
@@ -174,7 +175,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
 	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
 	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 0, 128000, 1));
+	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 1, 128000, 1));
 	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 1024, 0.1));
 	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
 
@@ -333,10 +334,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBody = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureLeggings = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
-		textureBoots = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		textureHelmet = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.helmet_needs_item_texture");
+		textureBody = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.chestplate_needs_item_texture");
+		textureLeggings = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.leggings_need_item_texture");
+		textureBoots = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.armor.boots_need_item_texture");
 
 		textureHelmet.setOpaque(false);
 		textureBody.setOpaque(false);
@@ -626,34 +635,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(clopa));
 
-		textureHelmet.setValidator(() -> {
-			if (enableHelmet.isSelected() && !textureHelmet.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureBody.setValidator(() -> {
-			if (enableBody.isSelected() && !textureBody.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureLeggings.setValidator(() -> {
-			if (enableLeggings.isSelected() && !textureLeggings.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
-		textureBoots.setValidator(() -> {
-			if (enableBoots.isSelected() && !textureBoots.hasTexture())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("elementgui.armor.need_texture"));
-			return Validator.ValidationResult.PASSED;
-		});
-
 		helmetModelListener = actionEvent -> {
 			Model model = helmetModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
@@ -748,24 +729,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 		bootsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 
-		bootsName.setValidator(
-				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
-						true));
-		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"),
-						enableBody, true));
-		leggingsName.setValidator(
-				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
-						enableLeggings, true));
-		helmetName.setValidator(
-				new ConditionalTextFieldValidator(helmetName, L10N.t("elementgui.armor.helmet_needs_name"),
-						enableHelmet, true));
-
-		bootsName.enableRealtimeValidation();
-		bodyName.enableRealtimeValidation();
-		leggingsName.enableRealtimeValidation();
-		helmetName.enableRealtimeValidation();
-
 		group1page.addValidationElement(textureHelmet);
 		group1page.addValidationElement(textureBody);
 		group1page.addValidationElement(textureLeggings);
@@ -778,8 +741,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		group2page.addValidationElement(armorTextureFile);
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(group1page);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5).validate(group2page);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
@@ -801,69 +764,52 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsModel.removeActionListener(leggingsModelListener);
 		bootsModel.removeActionListener(bootsModelListener);
 
-		helmetGlowCondition.refreshListKeepSelected();
-		bodyGlowCondition.refreshListKeepSelected();
-		leggingsGlowCondition.refreshListKeepSelected();
-		bootsGlowCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		helmetPiglinNeutral.refreshListKeepSelected();
-		bodyPiglinNeutral.refreshListKeepSelected();
-		leggingsPiglinNeutral.refreshListKeepSelected();
-		bootsPiglinNeutral.refreshListKeepSelected();
+		helmetGlowCondition.refreshListKeepSelected(context);
+		bodyGlowCondition.refreshListKeepSelected(context);
+		leggingsGlowCondition.refreshListKeepSelected(context);
+		bootsGlowCondition.refreshListKeepSelected(context);
 
-		onHelmetTick.refreshListKeepSelected();
-		onBodyTick.refreshListKeepSelected();
-		onLeggingsTick.refreshListKeepSelected();
-		onBootsTick.refreshListKeepSelected();
-		helmetSpecialInformation.refreshListKeepSelected();
-		bodySpecialInformation.refreshListKeepSelected();
-		leggingsSpecialInformation.refreshListKeepSelected();
-		bootsSpecialInformation.refreshListKeepSelected();
+		helmetPiglinNeutral.refreshListKeepSelected(context);
+		bodyPiglinNeutral.refreshListKeepSelected(context);
+		leggingsPiglinNeutral.refreshListKeepSelected(context);
+		bootsPiglinNeutral.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(helmetModel, ListUtils.merge(Collections.singleton(defaultModel),
+		onHelmetTick.refreshListKeepSelected(context);
+		onBodyTick.refreshListKeepSelected(context);
+		onLeggingsTick.refreshListKeepSelected(context);
+		onBootsTick.refreshListKeepSelected(context);
+		helmetSpecialInformation.refreshListKeepSelected(context);
+		bodySpecialInformation.refreshListKeepSelected(context);
+		leggingsSpecialInformation.refreshListKeepSelected(context);
+		bootsSpecialInformation.refreshListKeepSelected(context);
+
+		List<Model> armorModels = ListUtils.merge(Collections.singleton(defaultModel),
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()));
 
-		ComboBoxUtil.updateComboBoxContents(bodyModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(leggingsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(bootsModel, ListUtils.merge(Collections.singleton(defaultModel),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(helmetModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(bodyModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(leggingsModel, armorModels);
+		ComboBoxUtil.updateComboBoxContents(bootsModel, armorModels);
 
 		helmetModelTexture.reload();
 		bodyModelTexture.reload();
 		leggingsModelTexture.reload();
 		bootsModelTexture.reload();
 
-		ComboBoxUtil.updateComboBoxContents(helmetItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
+		List<Model> itemModels = ListUtils.merge(Arrays.asList(normal, tool),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+						.collect(Collectors.toList()));
 
-		ComboBoxUtil.updateComboBoxContents(bodyItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(leggingsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
-
-		ComboBoxUtil.updateComboBoxContents(bootsItemRenderType, ListUtils.merge(Arrays.asList(normal, tool),
-				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(helmetItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(bodyItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(leggingsItemRenderType, itemModels);
+		ComboBoxUtil.updateComboBoxContents(bootsItemRenderType, itemModels);
 
 		armorTextureFile.reload();
 
@@ -873,18 +819,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModel.addActionListener(bootsModelListener);
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(group2page);
-		else if (page == 0)
-			return new AggregatedValidationResult(group1page);
-		return new AggregatedValidationResult.PASS();
-	}
-
 	private void updateArmorTexturePreview() {
-		File[] armorTextures = mcreator.getFolderManager()
-				.getArmorTextureFilesForName(armorTextureFile.getTextureName());
-		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
+		String textureName = armorTextureFile.getTextureName();
+		File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(textureName);
+		if (!textureName.isBlank() && armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(
 					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(),
 							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));

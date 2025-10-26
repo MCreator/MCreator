@@ -39,7 +39,7 @@ public class BlockItemIcons {
 
 	public static void init() {
 		ImageIO.setUseCache(false); // we use custom image cache for this
-		Map<String, ImageIcon> tmp = PluginLoader.INSTANCE.getResources("datalists.icons", Pattern.compile(".*\\.png"))
+		Map<String, ImageIcon> tmp = PluginLoader.INSTANCE.getResources("datalists.icons", Pattern.compile(".*\\.png$"))
 				.parallelStream().collect(Collectors.toMap(
 						resource -> FilenameUtilsPatched.removeExtension(FilenameUtilsPatched.getName(resource)),
 						resource -> new ImageIcon(
@@ -81,11 +81,36 @@ public class BlockItemIcons {
 		put("Shears", 				"SHEARS");
 		put("Fishing rod",			"FISHING_ROD");
 
+		//Tool tiers
+		put("NONE", 				"BARRIER");
+		put("WOOD", 				"OAK_WOOD");
+		put("STONE", 				"STONE#0");
+		put("IRON", 				"IRON_INGOT");
+		put("GOLD", 				"GOLD_INGOT");
+		put("DIAMOND", 				"DIAMOND");
+		put("NETHERITE", 			"NETHERITE_INGOT");
+
 		//NewBlockGUI
 		put("pickaxe", 				"IRON_PICKAXE");
 		put("axe", 					"IRON_AXE");
 		put("shovel", 				"IRON_SHOVEL");
 		put("hoe",					"IRON_HOE");
+
+		// Block bases
+		put("Default basic block",	"STONE#0");
+		put("Stairs", 				"STONE_STAIRS");
+		put("Slab", 				"STONE_SLAB#3");
+		put("Fence", 				"OAK_FENCE");
+		put("Wall",					"COBBLESTONE_WALL#0");
+		put("Leaves", 				"LEAVES#0");
+		put("TrapDoor", 			"TRAPDOOR");
+		put("Pane", 				"GLASS_PANE");
+		put("Door",					"OAK_DOOR");
+		put("FenceGate", 			"OAK_FENCE_GATE");
+		put("EndRod",				"END_ROD");
+		put("PressurePlate",		"STONE_PRESSURE_PLATE");
+		put("Button", 				"STONE_BUTTON");
+		put("FlowerPot",			"POTTED_DANDELION");
 
 		// biome types
 		put("WARM", 				"GRASS");

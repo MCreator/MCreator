@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
 
-		mcreator = new MCreator(null,
+		mcreator = MCreator.create(null,
 				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random));
 	}
 
@@ -90,7 +90,8 @@ import static org.junit.jupiter.api.Assertions.*;
 	}
 
 	private void testModElementLoading(Random random) throws Exception {
-		for (ModElementType<?> modElementType : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
+		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
+				mcreator.getGeneratorConfiguration())) {
 			if (modElementType == ModElementType.CODE)
 				continue; // does not have regular handling so skip it
 

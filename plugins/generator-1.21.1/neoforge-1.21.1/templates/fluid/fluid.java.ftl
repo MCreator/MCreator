@@ -37,15 +37,15 @@ package ${package}.fluid;
 public abstract class ${name}Fluid extends BaseFlowingFluid {
 
 	public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
-		() -> ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get(),
-		() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
-		() -> ${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}.get())
+		() -> ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get(),
+		() -> ${JavaModName}Fluids.${REGISTRYNAME}.get(),
+		() -> ${JavaModName}Fluids.FLOWING_${REGISTRYNAME}.get())
 		.explosionResistance(${data.resistance}f)
 		<#if data.flowRate != 5>.tickRate(${data.flowRate})</#if>
 		<#if data.levelDecrease != 1>.levelDecreasePerBlock(${data.levelDecrease})</#if>
 		<#if data.slopeFindDistance != 4>.slopeFindDistance(${data.slopeFindDistance})</#if>
-		<#if data.generateBucket>.bucket(() -> ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_BUCKET.get())</#if>
-		.block(() -> (LiquidBlock) ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get());
+		<#if data.generateBucket>.bucket(() -> ${JavaModName}Items.${REGISTRYNAME}_BUCKET.get())</#if>
+		.block(() -> (LiquidBlock) ${JavaModName}Blocks.${REGISTRYNAME}.get());
 
 	private ${name}Fluid() {
 		super(PROPERTIES);

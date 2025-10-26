@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
@@ -180,6 +181,15 @@ public final class FileIO {
 		return dir.delete();
 	}
 
+	public static boolean moveToTrash(File dir) {
+		if (dir.isDirectory() && Desktop.isDesktopSupported() && Desktop.getDesktop()
+				.isSupported(Desktop.Action.MOVE_TO_TRASH)) {
+			return Desktop.getDesktop().moveToTrash(dir);
+		} else {
+			return deleteDir(dir);
+		}
+	}
+
 	public static void emptyDirectory(File directory, String... excludes) {
 		if (directory.isDirectory()) {
 			File[] files = directory.listFiles();
@@ -218,6 +228,18 @@ public final class FileIO {
 			return file.getCanonicalPath().startsWith(directory.getCanonicalPath());
 		} catch (Exception ignored) {
 			return file.getAbsolutePath().startsWith(directory.getAbsolutePath());
+		}
+	}
+
+	public static boolean isSameFile(File file1, File file2) {
+		try {
+			return Files.isSameFile(file1.toPath(), file2.toPath());
+		} catch (IOException e) {
+			try {
+				return file1.getCanonicalPath().equals(file2.getCanonicalPath());
+			} catch (IOException e2) {
+				return file1.getAbsolutePath().equals(file2.getAbsolutePath());
+			}
 		}
 	}
 

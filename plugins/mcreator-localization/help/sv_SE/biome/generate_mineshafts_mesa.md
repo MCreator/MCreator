@@ -1,0 +1,1 @@
+Klicka i denna ruta för att ha gruvschakt som finns i mesabiomer i din biom.
