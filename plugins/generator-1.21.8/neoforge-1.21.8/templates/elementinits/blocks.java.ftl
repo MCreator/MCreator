@@ -49,7 +49,7 @@ package ${package}.init;
 	</#if>
 </#list>
 
-<#assign chunks = blocks?chunk(4000)>
+<#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
 public class ${JavaModName}Blocks {

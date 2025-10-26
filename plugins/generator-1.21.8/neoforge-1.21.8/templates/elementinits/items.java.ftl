@@ -45,7 +45,7 @@ package ${package}.init;
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 <#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
 
-<#assign chunks = items?chunk(4000)>
+<#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
 <#if itemsWithInventory?size != 0>
