@@ -1,0 +1,1 @@
+Dies ist eine Vorschau auf das weiße Muster, wenn es auf einem schwarzen Banner mit der Vorderseite auf der linken Seite.

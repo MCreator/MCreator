@@ -1,1 +1,1 @@
-Dieser Parameter kontrolliert die Farbe des Wassers im Biom
+Dieser Parameter steuert die Farbe des Wassers im Biom
