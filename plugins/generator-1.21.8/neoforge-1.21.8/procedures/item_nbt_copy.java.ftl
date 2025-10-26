@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedMCItemToItemStackCode(input$b, 1)}.applyComponents(${mappedMCItemToItemStackCode(input$a, 1)}.getComponents<#if (field$ignoredefaults!"FALSE") == "TRUE">Patch</#if>());
+${mappedMCItemToItemStackCode(input$b, 1)}.applyComponents(${mappedMCItemToItemStackCode(input$a, 1)}.getComponents<#if field$ignoredefaults?lower_case?boolean>Patch</#if>());
