@@ -61,35 +61,19 @@ public class ColorSelector extends JPanel {
 		swap.setOpaque(false);
 		swap.setBorder(BorderFactory.createEmptyBorder());
 
-		foregroundColor.addActionListener(e -> {
-			JColor.colorChooser.setColor(foreground);
-			JDialog dialog = JColorChooser.createDialog(f,
-					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
-					JColor.colorChooser, event -> {
-						Color c = JColor.colorChooser.getColor();
-						if (c != null) {
+		foregroundColor.addActionListener(
+				e -> JColor.openDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"),
+						foreground, c -> {
 							foreground = c;
 							updateColors();
-						}
-						JColor.disposeDialog();
-					}, event2 -> JColor.disposeDialog());
-			dialog.setVisible(true);
-		});
+						}));
 
-		backgroundColor.addActionListener(e -> {
-			JColor.colorChooser.setColor(background);
-			JDialog dialog = JColorChooser.createDialog(f,
-					L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true,
-					JColor.colorChooser, event -> {
-						Color c = JColor.colorChooser.getColor();
-						if (c != null) {
+		backgroundColor.addActionListener(
+				e -> JColor.openDialog(f, L10N.t("dialog.image_maker.tools.component.colorselector_select_background"),
+						background, c -> {
 							background = c;
 							updateColors();
-						}
-						JColor.disposeDialog();
-					}, event2 -> JColor.disposeDialog());
-			dialog.setVisible(true);
-		});
+						}));
 
 		reset.addActionListener(e -> {
 			foreground = Color.BLACK;

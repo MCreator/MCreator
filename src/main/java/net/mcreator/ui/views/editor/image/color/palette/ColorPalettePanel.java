@@ -57,30 +57,16 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 	}
 
 	@Override public Color createNew(Color selected) {
-		JColor.colorChooser.setColor(toolPanel.getColorSelector().getForegroundColor());
 		AtomicReference<Color> newColor = new AtomicReference<>();
-		JDialog dialog = JColorChooser.createDialog(mcreator,
-				L10N.t("dialog.image_maker.palette.dialog.new_color.title"), true, JColor.colorChooser, event -> {
-					Color c = JColor.colorChooser.getColor();
-					if (c != null)
-						newColor.set(c);
-					JColor.disposeDialog();
-				}, event2 -> JColor.disposeDialog());
-		dialog.setVisible(true);
+		JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.new_color.title"),
+				toolPanel.getColorSelector().getForegroundColor(), newColor::set);
 		return newColor.get();
 	}
 
 	@Override protected void promptEdit(Color selected) {
 		int colorID = selectedIndex();
-		JColor.colorChooser.setColor(palette.getColors().get(colorID));
-		JDialog dialog = JColorChooser.createDialog(mcreator,
-				L10N.t("dialog.image_maker.palette.dialog.edit_color.title"), true, JColor.colorChooser, event -> {
-					Color c = JColor.colorChooser.getColor();
-					if (c != null)
-						palette.getColors().set(colorID, c);
-					JColor.disposeDialog();
-				}, event2 -> JColor.disposeDialog());
-		dialog.setVisible(true);
+		JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.edit_color.title"),
+				palette.getColors().get(colorID), c -> palette.getColors().set(colorID, c));
 	}
 
 	@Override protected String getItemName(Color selected) {
