@@ -121,7 +121,6 @@ public class TemplateGenerator {
 		try {
 			return templateGeneratorConfiguration.getConfiguration().getTemplate(templateName) != null;
 		} catch (IOException e) {
-			TestUtil.failIfTestingEnvironment();
 			return false;
 		}
 	}
