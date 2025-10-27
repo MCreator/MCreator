@@ -55,6 +55,7 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -105,9 +106,9 @@ public final class BlocklyJavascriptBridge {
 		SwingUtilities.invokeLater(() -> {
 			Color newColor = JColor.openDialog(mcreator,
 					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), Color.decode(color));
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, newColor != null ?
-					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()) :
-					null));
+			AtomicReference<String> colorString = new AtomicReference<>(newColor == null ? null :
+					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()));
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, colorString.get()));
 		});
 
 		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
