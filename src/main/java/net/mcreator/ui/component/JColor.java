@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 
 public class JColor extends JPanel {
 
-	public static final JColorChooser colorChooser = new JColorChooser();
+	private static final JColorChooser colorChooser = new JColorChooser();
 
 	private Color currentColor = Color.white;
 
