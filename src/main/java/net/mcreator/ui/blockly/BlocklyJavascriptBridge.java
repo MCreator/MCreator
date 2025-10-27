@@ -55,7 +55,6 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -104,12 +103,11 @@ public final class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public void openColorSelector(String color, JSObject callback) {
 		SwingUtilities.invokeLater(() -> {
-			AtomicReference<String> selected = new AtomicReference<>();
-			JColor.openDialog(mcreator, L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"),
-					Color.decode(color),
-					c -> selected.set(String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue())));
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY,
-					selected.get() != null ? selected.get() : null));
+			Color newColor = JColor.openDialog(mcreator,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), Color.decode(color));
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, newColor != null ?
+					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()) :
+					null));
 		});
 
 		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);

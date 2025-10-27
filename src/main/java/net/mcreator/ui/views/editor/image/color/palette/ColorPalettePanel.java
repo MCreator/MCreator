@@ -27,7 +27,6 @@ import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ColorPalettePanel extends ListEditPanel<Color> {
 	private final ToolPanel toolPanel;
@@ -57,16 +56,16 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 	}
 
 	@Override public Color createNew(Color selected) {
-		AtomicReference<Color> newColor = new AtomicReference<>();
-		JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.new_color.title"),
-				toolPanel.getColorSelector().getForegroundColor(), newColor::set);
-		return newColor.get();
+		return JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.new_color.title"),
+				toolPanel.getColorSelector().getForegroundColor());
 	}
 
 	@Override protected void promptEdit(Color selected) {
 		int colorID = selectedIndex();
-		JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.edit_color.title"),
-				palette.getColors().get(colorID), c -> palette.getColors().set(colorID, c));
+		Color newColor = JColor.openDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.edit_color.title"),
+				palette.getColors().get(colorID));
+		if (newColor != null)
+			palette.getColors().set(colorID, newColor);
 	}
 
 	@Override protected String getItemName(Color selected) {

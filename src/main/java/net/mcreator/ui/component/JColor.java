@@ -33,7 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class JColor extends JPanel {
 
@@ -73,8 +73,11 @@ public class JColor extends JPanel {
 		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 
-		edit.addActionListener(e -> openDialog(window, L10N.t("elementgui.common.select_color"), getColor(),
-				this::setColor));
+		edit.addActionListener(e -> {
+			Color newColor = openDialog(window, L10N.t("elementgui.common.select_color"), getColor());
+			if (newColor != null)
+				this.setColor(newColor);
+		});
 		remove.addActionListener(e -> setColor(null));
 
 		JPanel controls = PanelUtils.totalCenterInPanel(
@@ -96,15 +99,17 @@ public class JColor extends JPanel {
 		}
 	}
 
-	public static void openDialog(Window window, String dialogTitle, Color initColor, Consumer<Color> onColorSelected) {
+	public static Color openDialog(Window window, String dialogTitle, Color initColor) {
+		AtomicReference<Color> retval = new AtomicReference<>();
 		colorChooser.setColor(initColor);
 		JDialog dialog = JColorChooser.createDialog(window, dialogTitle, true, colorChooser, e -> {
 			Color color = colorChooser.getColor();
 			if (color != null)
-				onColorSelected.accept(color);
+				retval.set(color);
 			disposeDialog();
 		}, e2 -> disposeDialog());
 		dialog.setVisible(true);
+		return retval.get();
 	}
 
 	private static void disposeDialog() {
