@@ -66,6 +66,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			UIRES.get("16px.quilt"));
 	private final JToggleButton spigot = new JToggleButton(L10N.t("dialog.new_workspace.spigot.toggle"),
 			UIRES.get("16px.spigot"));
+	private final JToggleButton paper = new JToggleButton(L10N.t("dialog.new_workspace.paper.toggle"),
+			UIRES.get("16px.paper"));
 	private final JToggleButton datapack = new JToggleButton(L10N.t("dialog.new_workspace.datapack.toggle"),
 			UIRES.get("16px.datapack"));
 	private final JToggleButton resourcepack = new JToggleButton(L10N.t("dialog.new_workspace.resourcepack.toggle"),
@@ -81,6 +83,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
 		AbstractWorkspacePanel quiltWorkspacePanel = new QuiltWorkspacePanel(this);
 		AbstractWorkspacePanel spigotWorkspacePanel = new SpigotWorkspacePanel(this);
+		AbstractWorkspacePanel paperWorkspacePanel = new PaperWorkspacePanel(this);
 		AbstractWorkspacePanel datapackWorkspacePanel = new DatapackWorkspacePanel(this);
 		AbstractWorkspacePanel resourcepackWorkspacePanel = new ResourcepackWorkspacePanel(this);
 		AbstractWorkspacePanel addonWorkspacePanel = new AddonWorkspacePanel(this);
@@ -137,6 +140,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspacePanels.add("forge", forgeWorkspacePanel.getContainer());
 		workspacePanels.add("quilt", quiltWorkspacePanel.getContainer());
 		workspacePanels.add("spigot", spigotWorkspacePanel.getContainer());
+		workspacePanels.add("paper", paperWorkspacePanel.getContainer());
 		workspacePanels.add("datapack", datapackWorkspacePanel.getContainer());
 		workspacePanels.add("resourcepack", resourcepackWorkspacePanel.getContainer());
 		workspacePanels.add("addon", addonWorkspacePanel.getContainer());
@@ -194,6 +198,13 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			cardLayout.show(workspacePanels, "spigot");
 		});
 
+		styleButton(paper);
+		buttonGroup.add(paper);
+		paper.addActionListener(e -> {
+			current = paperWorkspacePanel;
+			cardLayout.show(workspacePanels, "paper");
+		});
+
 		styleButton(datapack);
 		buttonGroup.add(datapack);
 		datapack.addActionListener(e -> {
@@ -228,6 +239,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspaceType.add(addon);
 		workspaceType.add(separator("dialog.new_workspace.je_plugin"));
 		workspaceType.add(spigot);
+		workspaceType.add(paper);
 
 		if (Generator.GENERATOR_CACHE.values().stream()
 				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.FORGE)) {
@@ -252,6 +264,11 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		if (Generator.GENERATOR_CACHE.values().stream()
 				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.SPIGOT)) {
 			disableType(spigot);
+		}
+
+		if (Generator.GENERATOR_CACHE.values().stream()
+				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.PAPER)) {
+			disableType(paper);
 		}
 
 		if (Generator.GENERATOR_CACHE.values().stream()
@@ -324,6 +341,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			break;
 		case SPIGOT:
 			spigot.doClick();
+			break;
+		case PAPER:
+			paper.doClick();
 			break;
 		case ADDON:
 			addon.doClick();

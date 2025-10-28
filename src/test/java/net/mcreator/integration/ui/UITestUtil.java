@@ -47,16 +47,17 @@ public class UITestUtil {
 
 	public static ModElementGUI<?> openModElementGUIFor(MCreator mcreator, GeneratableElement generatableElement)
 			throws Exception {
+		// Store GeneratableElement to workspace so ModElementGUI can load GE from ME correctly
+		mcreator.getWorkspace().getModElementManager().storeModElement(generatableElement);
+
 		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
-				.getModElementGUI(mcreator, generatableElement.getModElement(), false);
-		modElementGUI.reloadDataLists();
+				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
 
-		Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
-		field.setAccessible(true);
-		field.set(modElementGUI, true);
-
-		CountDownLatch latch = new CountDownLatch(1);
+		// Verify that BlocklyPanels are fully loaded
 		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+			CountDownLatch latch = new CountDownLatch(1);
+
+			// Prepare a listener to detect if BlocklyPanel(s) are responding
 			Set<BlocklyPanel> blocklyPanels = new HashSet<>();
 			panelHolder.addBlocklyChangedListener((blocklyPanel, jsEventTriggeredChange) -> {
 				if (jsEventTriggeredChange) {
@@ -65,17 +66,13 @@ public class UITestUtil {
 						latch.countDown();
 				}
 			});
-		}
 
-		// Open GeneratableElement in editing mode
-		Method method = modElementGUI.getClass().getDeclaredMethod("openInEditingMode", GeneratableElement.class);
-		method.setAccessible(true);
-		method.invoke(modElementGUI, generatableElement);
-
-		// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load by waiting for all panels to report change
-		if (modElementGUI instanceof IBlocklyPanelHolder) {
+			// Give it time for panel to load and propagate the event
 			assertTrue(latch.await(5, TimeUnit.SECONDS));
 		}
+
+		// Reload data lists to test this functionality
+		modElementGUI.reloadDataLists();
 
 		return modElementGUI;
 	}

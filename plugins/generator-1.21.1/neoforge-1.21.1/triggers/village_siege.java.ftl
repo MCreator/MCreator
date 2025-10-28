@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onVillageSiege(VillageSiegeEvent event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getAttemptedSpawnPos().x",
 				"y": "event.getAttemptedSpawnPos().y",
@@ -10,6 +10,6 @@
 				"entity": "event.getPlayer()",
 				"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

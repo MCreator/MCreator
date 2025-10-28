@@ -20,12 +20,14 @@
 package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class BlocklyAggregatedValidationResult extends AggregatedValidationResult {
@@ -34,11 +36,7 @@ public class BlocklyAggregatedValidationResult extends AggregatedValidationResul
 
 	@Nullable private final Function<String, String> messageFormatter;
 
-	public BlocklyAggregatedValidationResult(List<BlocklyCompileNote> compileNotes) {
-		this(compileNotes, null);
-	}
-
-	public BlocklyAggregatedValidationResult(List<BlocklyCompileNote> compileNotes,
+	BlocklyAggregatedValidationResult(List<BlocklyCompileNote> compileNotes,
 			@Nullable Function<String, String> messageFormatter) {
 		this.compileNotes = compileNotes;
 		this.messageFormatter = messageFormatter;
@@ -47,6 +45,15 @@ public class BlocklyAggregatedValidationResult extends AggregatedValidationResul
 	@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
 		return compileNotes.stream().map(note -> new BlocklyValidationResult(note, messageFormatter))
 				.collect(Collectors.toList());
+	}
+
+	public static Supplier<AggregatedValidationResult> blocklyValidator(IBlocklyPanelHolder holder) {
+		return blocklyValidator(holder, null);
+	}
+
+	public static Supplier<AggregatedValidationResult> blocklyValidator(IBlocklyPanelHolder holder,
+			@Nullable Function<String, String> messageFormatter) {
+		return () -> new BlocklyAggregatedValidationResult(holder.regenerateBlockAssemblies(false), messageFormatter);
 	}
 
 }

@@ -33,7 +33,6 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -45,7 +44,8 @@ import java.net.URISyntaxException;
 
 public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.enchantment.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
 	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
@@ -150,9 +150,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		selp.add(canVillagerTrade);
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.enchantment.needs_name")));
-		name.enableRealtimeValidation();
 
 		supportedItems.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),

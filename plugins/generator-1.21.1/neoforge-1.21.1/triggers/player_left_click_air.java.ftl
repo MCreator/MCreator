@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber(Dist.CLIENT) public class ${name}Procedure {
 	@SubscribeEvent public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
@@ -9,7 +9,7 @@
 				"world": "event.getLevel()",
 				"entity": "event.getEntity()"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		PacketDistributor.sendToServer(new ${name}Message());
 		execute(${dependenciesCode});
 	}
@@ -32,7 +32,7 @@
 				context.enqueueWork(() -> {
 					if (!context.player().level().hasChunkAt(context.player().blockPosition()))
 						return;
-					<#assign dependenciesCode><#compress>
+					<#assign dependenciesCode>
 						<@procedureDependenciesCode dependencies, {
 							"x": "context.player().getX()",
 							"y": "context.player().getY()",
@@ -40,7 +40,7 @@
 							"world": "context.player().level()",
 							"entity": "context.player()"
 						}/>
-					</#compress></#assign>
+					</#assign>
 					execute(${dependenciesCode});
 				}).exceptionally(e -> {
 					context.connection().disconnect(Component.literal(e.getMessage()));

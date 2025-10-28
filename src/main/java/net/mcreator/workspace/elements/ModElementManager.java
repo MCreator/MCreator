@@ -189,7 +189,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
-				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(), false,
+				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(),
 						new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
