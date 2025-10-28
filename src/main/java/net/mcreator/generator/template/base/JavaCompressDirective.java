@@ -30,6 +30,17 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
+/**
+ * This directive captures the output generated inside its body (i.e., between its start-tag and end-tag)
+ * and reduces all unbroken white-space sequences to a single white-space character. The inserted character
+ * will be a line break if the replaced sequence contains line breaks, or a space otherwise. The very first
+ * and very last unbroken white-space sequences will be completely removed.
+ * <p>
+ * Compared to the built-in compress directive, this one does not compress inside double quotes (Java strings
+ * and multiline Java strings) to preserve the corect user string contents.
+ * <p>
+ * It is also slightly faster than the built-in compress directive.
+ */
 public class JavaCompressDirective implements TemplateDirectiveModel {
 
 	@Override public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
