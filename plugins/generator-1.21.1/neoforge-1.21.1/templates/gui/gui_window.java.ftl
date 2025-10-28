@@ -130,7 +130,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
-		<@javacompress>
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
@@ -144,7 +143,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity);
 			}
 		</#list>
-		</@javacompress>
 
 		<#if tooltips?has_content>
 		boolean customTooltipShown = false;

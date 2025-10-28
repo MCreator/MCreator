@@ -130,7 +130,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
-		<@javacompress>
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
@@ -148,7 +147,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				);
 			}
 		</#list>
-		</@javacompress>
 
 		<#if tooltips?has_content>
 		boolean customTooltipShown = false;
