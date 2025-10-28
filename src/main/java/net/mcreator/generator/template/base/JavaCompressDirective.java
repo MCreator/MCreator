@@ -37,7 +37,8 @@ import java.util.Map;
  * and very last unbroken white-space sequences will be completely removed.
  * <p>
  * Compared to the built-in compress directive, this one does not compress inside double quotes (Java strings
- * and multiline Java strings) to preserve the corect user string contents.
+ * and multiline Java strings, but currently not for quotes inside multiline strings) to preserve the correct
+ * user string contents.
  * <p>
  * It is also slightly faster than the built-in compress directive.
  */
