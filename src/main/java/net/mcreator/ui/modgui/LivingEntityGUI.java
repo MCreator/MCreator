@@ -309,10 +309,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			compileNotesArrayList.add(aiUnmodifiableCompileNote);
 		}
 
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
-		});
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 
 		return compileNotesArrayList;
 	}

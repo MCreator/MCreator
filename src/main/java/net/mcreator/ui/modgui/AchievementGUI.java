@@ -262,10 +262,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					L10N.t("elementgui.advancement.need_trigger")));
 		}
 
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
-		});
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 
 		return compileNotesArrayList;
 	}

@@ -205,8 +205,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 
 		return compileNotesArrayList;
 	}
