@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 	public boolean locked = false;
 	public transient UUID uuid;
 
-	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
+	public static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
 		put("tooltip", Tooltip.class); // weight -15
 		put("entitymodel", EntityModel.class); //weight -10
 		put("textfield", TextField.class); // weight 0
@@ -59,14 +59,14 @@ import java.util.stream.Collectors;
 		put("outputslot", OutputSlot.class); // weight 50
 	}};
 
-	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
+	public static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
 	GUIComponent() {
 		uuid = UUID.randomUUID();
 	}
 
-	GUIComponent(int x, int y) {
+	public GUIComponent(int x, int y) {
 		this();
 		this.x = x;
 		this.y = y;
