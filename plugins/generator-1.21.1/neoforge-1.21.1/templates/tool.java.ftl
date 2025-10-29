@@ -35,7 +35,7 @@
 
 package ${package}.item;
 
-<#compress>
+<@javacompress>
 <#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
 @EventBusSubscriber
 </#if>
@@ -273,7 +273,7 @@ public class ${name}Item extends FishingRodItem {
 	<@commonMethods/>
 }
 </#if>
-</#compress>
+</@javacompress>
 
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>

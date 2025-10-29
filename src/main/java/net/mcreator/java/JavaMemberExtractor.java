@@ -21,6 +21,10 @@ package net.mcreator.java;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+ Warning: currently this parser does not support multiline comments, if multiline
+ comment contains single quote, the following members are not extracted.
+ */
 class JavaMemberExtractor {
 
 	enum ParseState {

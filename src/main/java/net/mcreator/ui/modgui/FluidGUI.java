@@ -46,7 +46,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -71,7 +70,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private NumberProcedureSelector fogStartDistance;
 	private NumberProcedureSelector fogEndDistance;
 
-	private final VTextField name = new VTextField(18);
+	private final VTextField name = new VTextField(18).requireValue("elementgui.fluid.error_fluid_needs_name")
+			.enableRealtimeValidation();
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
 	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
@@ -89,7 +89,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
-	private final VTextField bucketName = new VTextField(18);
+	private final VTextField bucketName = new VTextField(18).requireValue("elementgui.fluid.error_bucket_needs_name")
+			.enableRealtimeValidation();
 	private TextureSelectionButton textureBucket;
 	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
@@ -459,13 +460,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
-		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
-
-		bucketName.setValidator(new TextFieldValidator(bucketName, L10N.t("elementgui.fluid.error_bucket_needs_name")));
-		bucketName.enableRealtimeValidation();
-
 		page1group.addValidationElement(bucketName);
 
 		addPage(L10N.t("elementgui.common.page_visual"), visualsPage).validate(texturesValidationGroup);

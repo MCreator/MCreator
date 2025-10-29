@@ -29,7 +29,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -43,8 +42,10 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
-	private final VTextField title = new VTextField(28);
-	private final VTextField author = new VTextField(28);
+	private final VTextField title = new VTextField(28).requireValue("elementgui.painting.painting_needs_title")
+			.enableRealtimeValidation();
+	private final VTextField author = new VTextField(28).requireValue("elementgui.painting.painting_needs_author")
+			.enableRealtimeValidation();
 
 	private TextureSelectionButton texture;
 
@@ -92,12 +93,6 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 		pane3.add("Center",
 				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 25, 25)));
-
-		title.setValidator(new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
-		title.enableRealtimeValidation();
-
-		author.setValidator(new TextFieldValidator(author, L10N.t("elementgui.painting.painting_needs_author")));
-		author.enableRealtimeValidation();
 
 		page1group.addValidationElement(texture);
 		page1group.addValidationElement(title);

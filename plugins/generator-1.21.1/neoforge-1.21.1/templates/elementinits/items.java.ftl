@@ -42,6 +42,10 @@ package ${package}.init;
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
+<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
+
+<#assign chunks = items?chunk(2500)>
+<#assign has_chunks = chunks?size gt 1>
 
 <#if itemsWithInventory?size != 0>
 @EventBusSubscriber
@@ -50,57 +54,85 @@ public class ${JavaModName}Items {
 
 	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
 
+	<@javacompress>
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
-			<#if item.enableHelmet>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
-			</#if>
-			<#if item.enableBody>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new);
-			</#if>
-			<#if item.enableLeggings>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", ${item.getModElement().getName()}Item.Leggings::new);
-			</#if>
-			<#if item.enableBoots>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", ${item.getModElement().getName()}Item.Boots::new);
-			</#if>
+			<#if item.enableHelmet>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET;</#if>
+			<#if item.enableBody>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE;</#if>
+			<#if item.enableLeggings>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS;</#if>
+			<#if item.enableBoots>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS;</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg", () -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
-						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
-		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG;
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
-		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
-			<#if item.isDoubleBlock()>
-				<#assign hasDoubleBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
-					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
-			<#else>
-				<#assign hasBlocks = true>
-				public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
-					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
-			</#if>
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET;
 		<#else>
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
+	</@javacompress>
+
+	<#list chunks as sub_items>
+	<#if has_chunks>public static void register${sub_items?index}()<#else>static</#if> {
+		<#list sub_items as item>
+			<#if item.getModElement().getTypeString() == "armor">
+				<#if item.enableHelmet>
+				${item.getModElement().getRegistryNameUpper()}_HELMET =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
+				</#if>
+				<#if item.enableBody>
+				${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new);
+				</#if>
+				<#if item.enableLeggings>
+				${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", ${item.getModElement().getName()}Item.Leggings::new);
+				</#if>
+				<#if item.enableBoots>
+				${item.getModElement().getRegistryNameUpper()}_BOOTS =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_boots", ${item.getModElement().getName()}Item.Boots::new);
+				</#if>
+			<#elseif item.getModElement().getTypeString() == "livingentity">
+				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
+						() -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
+						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
+			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
+				${item.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
+				${item.getModElement().getRegistryNameUpper()}_BUCKET =
+					REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
+			<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
+				<#if item.isDoubleBlock()>
+					<#assign hasDoubleBlocks = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#else>
+					<#assign hasBlocks = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				</#if>
+			<#else>
+				${item.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			</#if>
+		</#list>
+	}
+	</#list>
+
+	<#if has_chunks>
+	static {
+		<#list 0..chunks?size-1 as i>register${i}();</#list>
+	}
+	</#if>
 
 	// Start of user code block custom items
 	// End of user code block custom items
 
-	<#if itemsWithInventory?size != 0>
-	<#compress>
+	<#if itemsWithInventory?size != 0 || buckets?size != 0>
+	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
 			event.registerItem(
@@ -109,8 +141,15 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}.get()
 			);
 		</#list>
+		<#list buckets as item>
+			event.registerItem(
+				Capabilities.FluidHandler.ITEM,
+				(stack, context) -> new FluidBucketWrapper(stack),
+				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
+			);
+		</#list>
 	}
-	</#compress>
+	</@javacompress>
 	</#if>
 
 	<#if hasBlocks>
@@ -137,7 +176,7 @@ public class ${JavaModName}Items {
 	@EventBusSubscriber(Dist.CLIENT) public static class ItemsClientSideHandler {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 			event.enqueueWork(() -> {
-			<#compress>
+			<@javacompress>
 			<#list items as item>
 				<#if item.getModElement().getTypeString() == "item">
 					<#list item.customProperties.entrySet() as property>
@@ -161,7 +200,7 @@ public class ${JavaModName}Items {
 						ItemProperties.getProperty(new ItemStack(Items.SHIELD), ResourceLocation.parse("minecraft:blocking")));
 				</#if>
 			</#list>
-			</#compress>
+			</@javacompress>
 			});
 		}
 	}
