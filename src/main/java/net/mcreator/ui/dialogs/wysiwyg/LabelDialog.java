@@ -87,7 +87,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			cola.setColor(Color.white);
 		}
 
+		final JCheckBox hasShadow = L10N.checkbox("elementgui.common.enable");
+
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_shadow"), hasShadow));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
@@ -106,6 +109,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			labelText.setSelectedProcedure(label.text);
 			cola.setColor(label.color);
+			hasShadow.setSelected(label.hasShadow);
 			displayCondition.setSelectedProcedure(label.displayCondition);
 			anchor.setSelectedItem(label.anchorPoint);
 		}
@@ -125,7 +129,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
-				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
+				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(), hasShadow.isSelected(),
 						displayCondition.getSelectedProcedure());
 				if (!editor.isNotOverlayType)
 					component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
@@ -137,7 +141,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 				int idx = editor.components.indexOf(label);
 				editor.components.remove(label);
 				Label labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
-						displayCondition.getSelectedProcedure());
+						hasShadow.isSelected(), displayCondition.getSelectedProcedure());
 				if (!editor.isNotOverlayType)
 					labelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 				editor.components.add(idx, labelNew);

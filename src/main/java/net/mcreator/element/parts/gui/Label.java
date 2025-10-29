@@ -33,20 +33,22 @@ public class Label extends GUIComponent {
 
 	public StringProcedure text;
 	public Color color;
+	public boolean hasShadow;
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition) {
 		super(x, y);
 		this.text = text;
 		this.color = color;
+		this.hasShadow = hasShadow;
 		this.displayCondition = displayCondition;
 		this.name = name;
 	}
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition,
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition,
 			AnchorPoint anchorPoint) {
-		this(name, x, y, text, color, displayCondition);
+		this(name, x, y, text, color, hasShadow, displayCondition);
 		this.anchorPoint = anchorPoint;
 	}
 
@@ -81,6 +83,10 @@ public class Label extends GUIComponent {
 		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.getRenderText(), WYSIWYG.frc).getHeight()) - 1;
 		g.setColor(this.color);
 		g.drawString(this.getRenderText(), cx, cy + textheight);
+		if (hasShadow) {
+			g.setColor(g.getColor().darker());
+			g.drawString(this.getRenderText(), cx + 1, cy + textheight);
+		}
 
 		if (text.getName() != null) { // we have a procedure-based text
 			g.setColor(VariableTypeLoader.BuiltInTypes.STRING.getBlocklyColor());
