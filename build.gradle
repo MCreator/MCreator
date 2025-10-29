@@ -13,6 +13,7 @@ plugins {
 
 repositories {
     maven { url = "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
+    maven { url = "https://central.sonatype.com/repository/maven-snapshots/" } // TODO: tmp for FlatLAF snapshot
     flatDir { dirs 'lib' }
 }
 
@@ -135,14 +136,14 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.18.1' // needed by discord-rpc.jar
 
     implementation group: 'com.github.weisj', name: 'jsvg', version: '2.0.0'
-    implementation group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'no-natives'
-    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.6.2') {
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.7-SNAPSHOT', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.7-SNAPSHOT') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'windows-x86_64', ext: 'dll'
-    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'macos-x86_64', ext: 'dylib'
-    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'macos-arm64', ext: 'dylib'
-    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'linux-x86_64', ext: 'so'
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.7-SNAPSHOT', classifier: 'windows-x86_64', ext: 'dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.7-SNAPSHOT', classifier: 'macos-x86_64', ext: 'dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.7-SNAPSHOT', classifier: 'macos-arm64', ext: 'dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.7-SNAPSHOT', classifier: 'linux-x86_64', ext: 'so'
 
     // test dependencies
     testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '6.0.0')
