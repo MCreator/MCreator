@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class CefJarSchemeHandler implements CefResourceHandler {
+class CefJarSchemeHandler implements CefResourceHandler {
 
 	private static final Logger LOG = LogManager.getLogger(CefJarSchemeHandler.class);
 

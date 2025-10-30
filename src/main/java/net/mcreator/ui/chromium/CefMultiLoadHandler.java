@@ -28,7 +28,7 @@ import org.cef.network.CefRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CefMultiLoadHandler extends CefLoadHandlerAdapter {
+class CefMultiLoadHandler extends CefLoadHandlerAdapter {
 
 	private final List<CefLoadHandler> handlers = new ArrayList<>();
 

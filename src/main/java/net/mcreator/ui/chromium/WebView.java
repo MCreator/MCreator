@@ -57,7 +57,7 @@ public class WebView implements Closeable {
 		this.browser.getClient().addMessageRouter(router);
 
 		if (bridge != null) {
-			router.addHandler(new CefJavaCallHandler(this.browser, bridge), true);
+			router.addHandler(new CefJavaBridgeHandler(this.browser, bridge), true);
 		}
 
 		this.cefLoadHandler = new CefLoadHandlerAdapter() {

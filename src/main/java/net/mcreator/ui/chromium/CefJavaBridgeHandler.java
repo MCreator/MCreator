@@ -30,15 +30,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class CefJavaCallHandler extends CefMessageRouterHandlerAdapter {
+class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 
 	private static final String PREFIX = "javaCall:";
 
-	private static final Logger LOG = LogManager.getLogger(CefJavaCallHandler.class);
+	private static final Logger LOG = LogManager.getLogger(CefJavaBridgeHandler.class);
 
 	private final Object bridge;
 
-	public CefJavaCallHandler(CefBrowser browser, Object bridge) {
+	public CefJavaBridgeHandler(CefBrowser browser, Object bridge) {
 		this.bridge = bridge;
 
 		// Install javabridge
