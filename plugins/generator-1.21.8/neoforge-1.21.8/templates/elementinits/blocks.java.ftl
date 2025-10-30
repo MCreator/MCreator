@@ -80,7 +80,7 @@ package ${package}.init;
 				${block.getModElement().getRegistryNameUpper()} =
 					register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
 				<#if (block.getModElement().getTypeString() == "block") && (block.blockBase! == "Sign")>
-					public static final DeferredBlock<Block> WALL_${block.getModElement().getRegistryNameUpper()} =
+					WALL_${block.getModElement().getRegistryNameUpper()} =
 						register("wall_${block.getModElement().getRegistryName()}", Wall${block.getModElement().getName()}Block::new);
 				</#if>
 			</#if>
