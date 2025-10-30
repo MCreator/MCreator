@@ -18,41 +18,50 @@
 
 package net.mcreator.ui.blockly;
 
+import javafx.collections.ListChangeListener;
+import javafx.concurrent.Worker;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ui.BlocklyPanelRegisterJSObjects;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import netscape.javascript.JSObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.browser.CefBrowser;
-import org.cef.browser.CefFrame;
-import org.cef.handler.CefLoadHandlerAdapter;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.io.Closeable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.*;
 
-public class BlocklyPanel extends JPanel implements Closeable {
+public class BlocklyPanel extends JFXPanel implements Closeable {
 
-	private static final Logger LOG = LogManager.getLogger(BlocklyPanel.class);
+	private static final Logger LOG = LogManager.getLogger("Blockly");
 
+	@Nullable private WebEngine webEngine;
 
 	private final BlocklyJavascriptBridge bridge;
 
@@ -65,27 +74,71 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 
-	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
-		super(new BorderLayout());
-		setOpaque(true);
+	private javafx.beans.value.ChangeListener<? super Worker.State> listener = null;
 
+	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
 		this.type = type;
 
-		// TODO: handle PreferencesManager.PREFERENCES.blockly.transparentBackground.get() or always transparent if this works?
-
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
-				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))),
-				cefBrowser);
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		Component component = cefBrowser.getUIComponent();
-		add("Center", component);
+		ThreadUtil.runOnFxThread(() -> {
+			WebView browser = new WebView();
+			browser.setContextMenuEnabled(false);
+			Scene scene = new Scene(browser);
+			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
+			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
+			setScene(scene);
 
-		CefUtils.getMultiLoadHandler().addHandler(cefLoadHandler = new CefLoadHandlerAdapter() {
-			@Override public void onLoadEnd(CefBrowser cefBrowserEvent, CefFrame cefFrame, int i) {
-				if (cefBrowserEvent == BlocklyPanel.this.cefBrowser) {
+			browser.getChildrenUnmodifiable().addListener(
+					(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
+							.forEach(bar -> bar.setVisible(false)));
+			webEngine = browser.getEngine();
+			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
+			webEngine.getLoadWorker().stateProperty().addListener(listener = (ov, oldState, newState) -> {
+				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
+					// load CSS from file to select proper style for OS
+					Element styleNode = webEngine.getDocument().createElement("style");
+					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
+
+					if (PluginLoader.INSTANCE.getResourceAsStream(
+							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
+						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
+					} else {
+						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+								"/themes/default_dark/styles/blockly.css");
+					}
+
+					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()
+							&& OS.getOS() == OS.WINDOWS) {
+						makeComponentsTransparent(scene);
+						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
+					}
+
+					//remove font declaration if property set so
+					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
+						css = css.replace("font-family: sans-serif;", "");
+					}
+
+					Text styleContent = webEngine.getDocument().createTextNode(css);
+					styleNode.appendChild(styleContent);
+					webEngine.getDocument().getDocumentElement().getElementsByTagName("head").item(0)
+							.appendChild(styleNode);
+
+					// register JS bridge
+					JSObject window = (JSObject) webEngine.executeScript("window");
+					window.setMember("javabridge", bridge);
+					window.setMember("editorType", type.registryName());
+
+					// allow plugins to register additional JS objects
+					Map<String, Object> domWindowMembers = new HashMap<>();
+					MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
+					domWindowMembers.forEach(window::setMember);
+
 					// @formatter:off
-					cefBrowser.executeJavaScript("var MCR_BLOCKLY_PREF = { "
+					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
@@ -95,31 +148,45 @@ public class BlocklyPanel extends JPanel implements Closeable {
 							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 							+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
 							+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
-							+ " };", "", 0);
+							+ " };");
 					// @formatter:on
 
 					// Blockly core
-					cefBrowser.executeJavaScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"), "", 0);
-					cefBrowser.executeJavaScript(
-							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"), "", 0);
-					cefBrowser.executeJavaScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"), "", 0);
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
+					webEngine.executeScript(
+							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					// Blockly MCreator definitions
-					cefBrowser.executeJavaScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"), "", 0);
+					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
 					// Load JavaScript files from plugins
 					for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
-						cefBrowser.executeJavaScript(script, "", 0);
+						webEngine.executeScript(script);
 
 					//JS code generation for custom variables
-					cefBrowser.executeJavaScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS(), "", 0);
+					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
 
 					loaded = true;
-					runAfterLoaded.forEach(Runnable::run);
+					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
 				}
-			}
-
+			});
 		});
+	}
+
+	private void makeComponentsTransparent(Scene scene) {
+		setOpaque(false);
+		scene.setFill(Color.TRANSPARENT);
+
+		// Make the webpage transparent
+		try {
+			Method method = Class.forName("com.sun.javafx.webkit.Accessor").getMethod("getPageFor", WebEngine.class);
+			Object accessor = method.invoke(null, webEngine);
+			method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
+			method.invoke(accessor, 0);
+		} catch (Exception e) {
+			LOG.warn("Failed to set Blockly panel transparency", e);
+		}
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {
@@ -143,9 +210,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	public synchronized String getXML() {
 		if (loaded) {
-			// TODO: we need to go back to async XML handling
-			String newXml = "";
-			//@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
+			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 
 			// XML can become invalid if e.g., WebKit runs out of memory and executeJavaScriptSynchronously times out
 			boolean valid = isValidBlocklyXML(newXml);
@@ -154,6 +219,10 @@ public class BlocklyPanel extends JPanel implements Closeable {
 				lastValidXML = newXml;
 				return newXml;
 			} else if (lastValidXML != null) { // If the XML is not valid, return the last valid XML
+				if (webEngine != null) { // Log the error only if the BlocklyPanel was not closed yet
+					LOG.warn("Invalid Blockly XML detected, returning last valid XML");
+					TestUtil.failIfTestingEnvironment();
+				}
 				return lastValidXML;
 			} else {
 				LOG.error("Invalid Blockly XML detected and no last valid XML available");
@@ -165,7 +234,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	public void setXML(String xml) {
-		executeJavaScriptAsync("""
+		executeJavaScriptSynchronously("""
 				workspace.clear();
 				Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('%s'), workspace);
 				workspace.clearUndo();
@@ -179,36 +248,34 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		String cleanXML = escapeXML(cleanupXML(xml));
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
 		if (index == -1) { // The separator wasn't found
-			executeJavaScriptAsync(
+			executeJavaScriptSynchronously(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
 		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
-			executeJavaScriptAsync(
+			executeJavaScriptSynchronously(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
 							+ "</xml>'), workspace)");
-			executeJavaScriptAsync(
+			executeJavaScriptSynchronously(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
 							+ "'), workspace)");
 		}
 	}
 
 	public void addGlobalVariable(String name, String type) {
-		executeJavaScriptAsync("global_variables.push({name: '" + name + "', type: '" + type + "'})");
+		executeJavaScriptSynchronously("global_variables.push({name: '" + name + "', type: '" + type + "'})");
 	}
 
 	public void addLocalVariable(String name, String type) {
-		executeJavaScriptAsync("workspace.createVariable('" + name + "', '" + type + "', '" + name + "')");
+		executeJavaScriptSynchronously("workspace.createVariable('" + name + "', '" + type + "', '" + name + "')");
 	}
 
 	public void removeLocalVariable(String name) {
-		executeJavaScriptAsync("workspace.deleteVariableById('" + name + "')");
+		executeJavaScriptSynchronously("workspace.deleteVariableById('" + name + "')");
 	}
 
 	public List<VariableElement> getLocalVariablesList() {
+		String query = (String) executeJavaScriptSynchronously("getSerializedLocalVariables()");
 		List<VariableElement> retval = new ArrayList<>();
-
-		// TODO: handle this
-		/*String query = (String) executeJavaScriptSynchronously("getSerializedLocalVariables()");
 		if (query == null)
 			return retval;
 
@@ -223,15 +290,25 @@ public class BlocklyPanel extends JPanel implements Closeable {
 					retval.add(element);
 				}
 			}
-		}*/
-
+		}
 		return retval;
 	}
 
-	public void executeJavaScriptAsync(String javaScript) {
-		if (cefBrowser != null) {
-			cefBrowser.executeJavaScript(javaScript, "", 0);
+	@Nullable public Object executeJavaScriptSynchronously(String javaScript) {
+		try {
+			FutureTask<Object> query = new FutureTask<>(() -> {
+				if (webEngine != null)
+					return webEngine.executeScript(javaScript);
+				return null;
+			});
+			ThreadUtil.runOnFxThread(query);
+			return query.get();
+		} catch (InterruptedException | ExecutionException e) {
+			LOG.error("Synchronous JS execution failed", e);
+			LOG.error(javaScript);
+			TestUtil.failIfTestingEnvironment();
 		}
+		return null;
 	}
 
 	public MCreator getMCreator() {
@@ -258,10 +335,26 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	@Override public void close() {
-		if (cefBrowser != null) {
-			CefUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
-			cefBrowser.getClient().doClose(cefBrowser);
-			cefBrowser.close(true);
+		if (webEngine != null) {
+			// Ensure that the web engine is not closed during the initialization
+			addTaskToRunAfterLoaded(() -> ThreadUtil.runOnFxThread(() -> {
+				// Remove any potential stale references in listeners and event handlers
+				runAfterLoaded.clear();
+				changeListeners.clear();
+
+				// Remove the listener to prevent memory leaks
+				if (listener != null) {
+					webEngine.getLoadWorker().stateProperty().removeListener(listener);
+					listener = null;
+				}
+
+				// Free resources of the web engine (kill JS, load empty page)
+				webEngine.setJavaScriptEnabled(false);
+				webEngine.load("about:blank");
+
+				// Clear the web engine reference
+				webEngine = null;
+			}));
 		}
 	}
 
