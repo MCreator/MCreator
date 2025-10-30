@@ -22,7 +22,7 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.blockly.cef.CEFUtils;
+import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
@@ -33,7 +33,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
-import org.cef.handler.CefLoadHandler;
 import org.cef.handler.CefLoadHandlerAdapter;
 
 import javax.annotation.Nonnull;
@@ -54,8 +53,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	private static final Logger LOG = LogManager.getLogger(BlocklyPanel.class);
 
-	private final CefBrowser cefBrowser;
-	private final CefLoadHandler cefLoadHandler;
 
 	private final BlocklyJavascriptBridge bridge;
 
@@ -77,9 +74,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 		// TODO: handle PreferencesManager.PREFERENCES.blockly.transparentBackground.get() or always transparent if this works?
 
-		cefBrowser = CEFUtils.getCEFClient()
-				.createBrowser("data:text/html, " + FileIO.readResourceToString("/blockly/blockly.html"), false, true);
-
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))),
 				cefBrowser);
@@ -87,7 +81,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		Component component = cefBrowser.getUIComponent();
 		add("Center", component);
 
-		CEFUtils.getMultiLoadHandler().addHandler(cefLoadHandler = new CefLoadHandlerAdapter() {
+		CefUtils.getMultiLoadHandler().addHandler(cefLoadHandler = new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser cefBrowserEvent, CefFrame cefFrame, int i) {
 				if (cefBrowserEvent == BlocklyPanel.this.cefBrowser) {
 					// @formatter:off
@@ -265,7 +259,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	@Override public void close() {
 		if (cefBrowser != null) {
-			CEFUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
+			CefUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
 			cefBrowser.getClient().doClose(cefBrowser);
 			cefBrowser.close(true);
 		}

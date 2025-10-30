@@ -38,7 +38,7 @@ import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.blockly.cef.CEFUtils;
+import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -116,7 +116,7 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(25, "Loading interface components");
 
 			// preload CEF
-			CEFUtils.getCEFClient();
+			CefUtils.getCEFClient();
 
 			// preload help entries cache
 			HelpLoader.preloadCache();
@@ -390,7 +390,7 @@ public final class MCreatorApplication {
 		}
 
 		// Close CEF
-		CEFUtils.close();
+		CefUtils.close();
 
 		try {
 			PluginLoader.INSTANCE.close();

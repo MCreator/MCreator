@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2024, Pylo, opensource contributors
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.blockly.cef;
+package net.mcreator.ui.chromium;
 
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -33,9 +33,8 @@ import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
 
 import java.io.IOException;
-import java.nio.file.Files;
 
-public class CEFUtils {
+public class CefUtils {
 
 	private static final Logger LOG = LogManager.getLogger("CEF");
 
@@ -95,6 +94,8 @@ public class CEFUtils {
 
 		try {
 			cefApp = builder.build();
+			cefApp.registerSchemeHandlerFactory("jar", "",
+					(browser, frame, schemeName, request) -> new CefJarSchemeHandler());
 		} catch (IOException | UnsupportedPlatformException | InterruptedException | CefInitializationException e) {
 			throw new RuntimeException(e);
 		}
