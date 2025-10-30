@@ -45,7 +45,6 @@ class NativeFileDialogs {
 			fileChooser.setCurrentDirectory(prevDir);
 
 		if (filters != null) {
-			// TODO: does not work for TextureImportDialogs.importArmor !!!
 			for (ExtensionFilter filter : filters) {
 				fileChooser.resetChoosableFileFilters();
 				fileChooser.addChoosableFileFilter(new SystemFileChooser.FileNameExtensionFilter(filter.description(),
