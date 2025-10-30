@@ -284,9 +284,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			dependenciesArrayList.forEach(dependencies::addElement);
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 
 		return compileNotesArrayList;
 	}

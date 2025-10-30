@@ -39,7 +39,7 @@ package ${package}.client.gui;
 <#assign tooltips = data.getComponentsOfType("Tooltip")>
 <#assign sliders = data.getComponentsOfType("Slider")>
 
-<#compress>
+<@javacompress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 
 	private final Level world;
@@ -130,7 +130,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
-		<#compress>
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
@@ -148,7 +147,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				);
 			}
 		</#list>
-		</#compress>
 
 		<#if tooltips?has_content>
 		boolean customTooltipShown = false;
@@ -369,7 +367,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 
 <#macro buttonOnClick component>
 e -> {

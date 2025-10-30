@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 		modEventBus.addListener(this::registerNetworking);
 
-		<#compress>
+		<@javacompress>
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if types["base:blocks"]??>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
 		<#if types["base:blockentities"]??>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
@@ -40,7 +40,7 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
 		</#if>
 		<#if types["attributes"]??>${JavaModName}Attributes.REGISTRY.register(modEventBus);</#if>
-		</#compress>
+		</@javacompress>
 
 		// Start of user code block mod init
 		// End of user code block mod init

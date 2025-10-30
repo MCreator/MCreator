@@ -33,7 +33,7 @@
 
 package ${package}.client.fluid;
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber(Dist.CLIENT) public class ${name}FluidExtension {
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
@@ -136,4 +136,4 @@ package ${package}.client.fluid;
 		}, ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get());
 	}
 
-}</#compress>
+}</@javacompress>

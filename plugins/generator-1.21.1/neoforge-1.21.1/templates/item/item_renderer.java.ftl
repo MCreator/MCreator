@@ -33,7 +33,7 @@
 
 package ${package}.client.renderer.item;
 
-<#compress>
+<@javacompress>
 @OnlyIn(Dist.CLIENT) public class ${name}ItemRenderer extends BlockEntityWithoutLevelRenderer {
 
 	private final EntityModelSet entityModelSet;
@@ -169,5 +169,5 @@ package ${package}.client.renderer.item;
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

@@ -37,7 +37,7 @@ package ${package}.item;
 
 <#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
 
-<#compress>
+<@javacompress>
 <#if hasCustomJAVAModels>
 @EventBusSubscriber
 </#if>
@@ -410,5 +410,5 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 		</#if>
 	}
 </#macro>
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
