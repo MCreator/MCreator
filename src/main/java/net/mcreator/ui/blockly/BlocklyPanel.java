@@ -22,10 +22,7 @@ import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
@@ -53,7 +50,6 @@ import javax.annotation.Nullable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.io.Closeable;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -83,61 +79,52 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		ThreadUtil.runOnFxThread(() -> {
-			WebView browser = new WebView();
-			browser.setContextMenuEnabled(false);
-			Scene scene = new Scene(browser);
-			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
-			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
-			setScene(scene);
+		browser.getChildrenUnmodifiable().addListener(
+				(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
+						.forEach(bar -> bar.setVisible(false)));
+		webEngine = browser.getEngine();
+		webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
+		webEngine.getLoadWorker().stateProperty().addListener(listener = (ov, oldState, newState) -> {
+			if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
+				// load CSS from file to select proper style for OS
+				Element styleNode = webEngine.getDocument().createElement("style");
+				String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
 
-			browser.getChildrenUnmodifiable().addListener(
-					(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
-							.forEach(bar -> bar.setVisible(false)));
-			webEngine = browser.getEngine();
-			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
-			webEngine.getLoadWorker().stateProperty().addListener(listener = (ov, oldState, newState) -> {
-				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
-					// load CSS from file to select proper style for OS
-					Element styleNode = webEngine.getDocument().createElement("style");
-					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
+				if (PluginLoader.INSTANCE.getResourceAsStream(
+						"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
+					css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+							"/themes/" + Theme.current().getID() + "/styles/blockly.css");
+				} else {
+					css += FileIO.readResourceToString(PluginLoader.INSTANCE,
+							"/themes/default_dark/styles/blockly.css");
+				}
 
-					if (PluginLoader.INSTANCE.getResourceAsStream(
-							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
-						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
-					} else {
-						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-								"/themes/default_dark/styles/blockly.css");
-					}
+				if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get() && OS.getOS() == OS.WINDOWS) {
+					makeComponentsTransparent(scene);
+					css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
+				}
 
-					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()
-							&& OS.getOS() == OS.WINDOWS) {
-						makeComponentsTransparent(scene);
-						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
-					}
+				//remove font declaration if property set so
+				if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
+					css = css.replace("font-family: sans-serif;", "");
+				}
 
-					//remove font declaration if property set so
-					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
-						css = css.replace("font-family: sans-serif;", "");
-					}
+				Text styleContent = webEngine.getDocument().createTextNode(css);
+				styleNode.appendChild(styleContent);
+				webEngine.getDocument().getDocumentElement().getElementsByTagName("head").item(0)
+						.appendChild(styleNode);
 
-					Text styleContent = webEngine.getDocument().createTextNode(css);
-					styleNode.appendChild(styleContent);
-					webEngine.getDocument().getDocumentElement().getElementsByTagName("head").item(0)
-							.appendChild(styleNode);
+				// register JS bridge
+				JSObject window = (JSObject) webEngine.executeScript("window");
+				window.setMember("javabridge", bridge);
+				window.setMember("editorType", type.registryName());
 
-					// register JS bridge
-					JSObject window = (JSObject) webEngine.executeScript("window");
-					window.setMember("javabridge", bridge);
-					window.setMember("editorType", type.registryName());
+				// allow plugins to register additional JS objects
+				Map<String, Object> domWindowMembers = new HashMap<>();
+				MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
+				domWindowMembers.forEach(window::setMember);
 
-					// allow plugins to register additional JS objects
-					Map<String, Object> domWindowMembers = new HashMap<>();
-					MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
-					domWindowMembers.forEach(window::setMember);
-
-					// @formatter:off
+				// @formatter:off
 					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
@@ -151,42 +138,26 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 							+ " };");
 					// @formatter:on
 
-					// Blockly core
-					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
-					webEngine.executeScript(
-							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
-					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
+				// Blockly core
+				webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
+				webEngine.executeScript(
+						FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
+				webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
-					// Blockly MCreator definitions
-					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
+				// Blockly MCreator definitions
+				webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
-					// Load JavaScript files from plugins
-					for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
-						webEngine.executeScript(script);
+				// Load JavaScript files from plugins
+				for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
+					webEngine.executeScript(script);
 
-					//JS code generation for custom variables
-					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
+				//JS code generation for custom variables
+				webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
 
-					loaded = true;
-					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
-				}
-			});
+				loaded = true;
+				runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
+			}
 		});
-	}
-
-	private void makeComponentsTransparent(Scene scene) {
-		setOpaque(false);
-		scene.setFill(Color.TRANSPARENT);
-
-		// Make the webpage transparent
-		try {
-			Method method = Class.forName("com.sun.javafx.webkit.Accessor").getMethod("getPageFor", WebEngine.class);
-			Object accessor = method.invoke(null, webEngine);
-			method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
-			method.invoke(accessor, 0);
-		} catch (Exception e) {
-			LOG.warn("Failed to set Blockly panel transparency", e);
-		}
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {

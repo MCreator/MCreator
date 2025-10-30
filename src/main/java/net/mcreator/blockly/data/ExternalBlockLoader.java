@@ -216,6 +216,8 @@ public class ExternalBlockLoader {
 	}
 
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
+		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
+
 		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(
 				toolboxType.name().toLowerCase(Locale.ENGLISH));
 
@@ -238,9 +240,8 @@ public class ExternalBlockLoader {
 			toolbox_xml = toolbox_xml.replace("<custom-" + entry.getKey() + "/>", categoryBuilderFinal.toString());
 		}
 
-		pane.executeJavaScriptAsync(
-				"Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ");" + "workspace.updateToolbox('"
-						+ toolbox_xml.replace("\n", "").replace("\r", "") + "');");
+		pane.executeJavaScriptSynchronously(
+				"workspace.updateToolbox('" + toolbox_xml.replace("\n", "").replace("\r", "") + "')");
 	}
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {

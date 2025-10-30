@@ -29,7 +29,6 @@ import org.cef.handler.CefLoadHandler;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -50,15 +49,11 @@ public class WebView implements Closeable {
 
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
 
-	public WebView(String url, @Nullable Object bridge, boolean isTransparent) {
+	public WebView(String url, boolean isTransparent) {
 		this.browser = CefUtils.getCEFClient().createBrowser(url, false, isTransparent);
 		this.component = browser.getUIComponent();
 		this.router = CefMessageRouter.create();
 		this.browser.getClient().addMessageRouter(router);
-
-		if (bridge != null) {
-			router.addHandler(new CefJavaBridgeHandler(this.browser, bridge), true);
-		}
 
 		this.cefLoadHandler = new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
@@ -72,6 +67,10 @@ public class WebView implements Closeable {
 		CefUtils.getMultiLoadHandler().addHandler(cefLoadHandler);
 	}
 
+	public void addJavaScriptBridge(String name, Object bridge) {
+		router.addHandler(new CefJavaBridgeHandler(this.browser, bridge, name), true);
+	}
+
 	public synchronized String executeJavaScript(String jsExpr) {
 		CountDownLatch latch = new CountDownLatch(1);
 		AtomicReference<String> result = new AtomicReference<>();
@@ -80,8 +79,8 @@ public class WebView implements Closeable {
 			@Override
 			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
 					CefQueryCallback callback) {
-				if (request.startsWith("jsResult:")) {
-					result.set(request.substring("jsResult:".length()));
+				if (request.startsWith("@jsResult:")) {
+					result.set(request.substring("@jsResult:".length()));
 					callback.success("ok");
 					latch.countDown();
 					return true;
@@ -96,9 +95,9 @@ public class WebView implements Closeable {
 					(function() {
 					    try {
 					        const res = %s;
-					        window.cefQuery({ request: "jsResult:" + res });
+					        window.cefQuery({ request: "@jsResult:" + res });
 					    } catch (e) {
-					        window.cefQuery({ request: "jsResult:ERROR:" + e });
+					        window.cefQuery({ request: "@jsResult:ERROR:" + e });
 					    }
 					})();
 					""".formatted(jsExpr);
@@ -115,7 +114,7 @@ public class WebView implements Closeable {
 		return result.get();
 	}
 
-	public void addCSSToPage(String css) {
+	public void addCSSToDOM(String css) {
 		browser.executeJavaScript("""
 				(function() {
 				    var style = document.createElement('style');
@@ -124,6 +123,14 @@ public class WebView implements Closeable {
 				    document.head.appendChild(style);
 				})();
 				""".formatted(css), "", 0);
+	}
+
+	public void addStringConstantToDOM(String name, String value) {
+		browser.executeJavaScript("""
+				(function() {
+				    window['%s'] = '%s';
+				})();
+				""".formatted(name, value), "", 0);
 	}
 
 	public CefBrowser getBrowser() {
@@ -139,12 +146,10 @@ public class WebView implements Closeable {
 	}
 
 	@Override public void close() {
-		if (browser != null) {
-			CefUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
-			router.dispose();
-			browser.getClient().doClose(browser);
-			browser.close(true);
-		}
+		CefUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
+		router.dispose();
+		browser.getClient().doClose(browser);
+		browser.close(true);
 	}
 
 	public interface PageLoadListener {

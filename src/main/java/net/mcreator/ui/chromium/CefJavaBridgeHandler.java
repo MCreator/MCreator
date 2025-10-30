@@ -32,20 +32,31 @@ import java.util.Arrays;
 
 class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 
-	private static final String PREFIX = "javaCall:";
-
 	private static final Logger LOG = LogManager.getLogger(CefJavaBridgeHandler.class);
 
 	private final Object bridge;
 
-	public CefJavaBridgeHandler(CefBrowser browser, Object bridge) {
+	private final String prefix;
+
+	/**
+	 * Installs a JavaScript bridge into the provided CefBrowser instance. This enables communication
+	 * between the JavaScript code running in the browser and the provided Java object.
+	 *
+	 * @param browser The {@link CefBrowser} instance where the JavaScript bridge will be injected.
+	 * @param bridge  The Java object that serves as the backend for the JavaScript bridge, allowing
+	 *                methods to be proxied and called from JavaScript.
+	 * @param name    The name of the bridge, which will be used as the global object in JavaScript.
+	 *                Use only alphanumeric characters and underscores.
+	 */
+	public CefJavaBridgeHandler(CefBrowser browser, Object bridge, String name) {
 		this.bridge = bridge;
+		this.prefix = name + ":";
 
 		// Install javabridge
 		String wrapperJs = """
 				(function() {
-				    if (window.javabridge) return;
-				    window.javabridge = new Proxy({}, {
+				    if (window.%s) return;
+				    window.%s = new Proxy({}, {
 				        get: function(_, methodName) {
 				            return function(...args) {
 				                let callback = null;
@@ -62,18 +73,18 @@ class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 				        }
 				    });
 				})();
-				""".formatted(PREFIX);
+				""".formatted(name, name, prefix);
 		browser.executeJavaScript(wrapperJs, browser.getURL(), 0);
 	}
 
 	@Override
 	public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
 			CefQueryCallback callback) {
-		if (!request.startsWith(PREFIX)) {
+		if (!request.startsWith(prefix)) {
 			return false;
 		}
 
-		String payload = request.substring(PREFIX.length());
+		String payload = request.substring(prefix.length());
 		String[] parts = payload.split(":", -1);
 		if (parts.length < 1) {
 			callback.failure(400, "No method specified");

@@ -24,6 +24,7 @@ import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefApp;
@@ -109,25 +110,30 @@ public class CefUtils {
 
 		cefClient.addDisplayHandler(new CefDisplayHandlerAdapter() {
 			@Override
-			public boolean onConsoleMessage(CefBrowser cefBrowser, CefSettings.LogSeverity logSeverity, String s,
-					String s1, int i) {
+			public boolean onConsoleMessage(CefBrowser cefBrowser, CefSettings.LogSeverity logSeverity, String message,
+					String url, int line) {
 				switch (logSeverity) {
 				case LOGSEVERITY_VERBOSE:
-					LOG.trace("{} ({})", s, i);
+					LOG.trace("{} ({})", message, line);
 					break;
 				case LOGSEVERITY_WARNING:
-					LOG.warn("{} ({})", s, i);
+					LOG.warn("{} ({})", message, line);
 					break;
 				case LOGSEVERITY_ERROR:
-					LOG.error("{} ({})", s, i);
+					LOG.error("{} ({})", message, line);
 					break;
 				case LOGSEVERITY_FATAL:
-					LOG.fatal("{} ({})", s, i);
+					LOG.fatal("{} ({})", message, line);
 					break;
 				default:
-					LOG.info("{} ({})", s, i);
+					LOG.info("{} ({})", message, line);
 					break;
 				}
+
+				if (message.contains("Error")) {
+					TestUtil.failIfTestingEnvironment();
+				}
+
 				return true;
 			}
 		});
