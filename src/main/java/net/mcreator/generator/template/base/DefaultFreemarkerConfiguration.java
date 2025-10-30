@@ -18,7 +18,7 @@
 
 package net.mcreator.generator.template.base;
 
-import freemarker.cache.SoftCacheStorage;
+import freemarker.cache.StrongCacheStorage;
 import freemarker.core.JSONCFormat;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
@@ -40,7 +40,7 @@ public class DefaultFreemarkerConfiguration extends Configuration {
 		setBooleanFormat("c");
 		setCFormat(JSONCFormat.INSTANCE);
 		setTemplateUpdateDelayMilliseconds(Integer.MAX_VALUE);
-		setCacheStorage(new SoftCacheStorage());
+		setCacheStorage(new StrongCacheStorage());
 		setLocale(Locale.ENGLISH);
 		setLogTemplateExceptions(false);
 

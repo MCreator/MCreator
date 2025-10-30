@@ -44,7 +44,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends
 	<#if var_extends_class??>
 		${var_extends_class}
@@ -767,5 +767,5 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 	</#list>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.world.features;
 
-<#compress>
 public class StructureFeature extends Feature<StructureFeatureConfiguration> {
 	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(Registries.FEATURE, ${JavaModName}.MODID);
 	public static final DeferredHolder<Feature<?>, StructureFeature> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
@@ -56,5 +55,4 @@ public class StructureFeature extends Feature<StructureFeatureConfiguration> {
 		return true;
 	}
 }
-</#compress>
 <#-- @formatter:on -->

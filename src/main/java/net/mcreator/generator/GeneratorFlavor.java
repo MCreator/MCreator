@@ -32,6 +32,7 @@ public enum GeneratorFlavor {
 	FORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	FABRIC(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	SPIGOT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
+	PAPER(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	QUILT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	NEOFORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	DATAPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
@@ -49,7 +50,7 @@ public enum GeneratorFlavor {
 	/**
 	 * Special flavors are flavors that are not full modding APIs, and therefore we assume no covered METs by default.
 	 */
-	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(SPIGOT);
+	public static final List<GeneratorFlavor> SPECIAL_FLAVORS = List.of(SPIGOT, PAPER);
 
 	private final BaseLanguage baseLanguage;
 

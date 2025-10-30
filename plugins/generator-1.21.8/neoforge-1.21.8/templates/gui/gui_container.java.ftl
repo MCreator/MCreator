@@ -38,7 +38,7 @@ package ${package}.world.inventory;
 
 import ${package}.${JavaModName};
 
-<#compress>
+<@javacompress>
 <#if hasProcedure(data.onTick) || hasProcedure(data.onOpen)>
 @EventBusSubscriber
 </#if>
@@ -332,5 +332,5 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

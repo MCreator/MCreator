@@ -18,33 +18,31 @@
 </#macro>
 
 <#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode enablePitch=false>
-	<#compress>
-		<#if rotationMode == 0>
-		return <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
+	<#if rotationMode == 0>
+	return <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
+	<#else>
+	return <#if !noOffset>(</#if>
+		<#if rotationMode != 5>
+			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
+			switch (state.getValue(FACING)) {
+				default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
+				case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
+				case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
+				case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
+				<#if rotationMode == 2 || rotationMode == 4>
+					case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
+					case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
+				</#if>
+			}
 		<#else>
-		return <#if !noOffset>(</#if>
-			<#if rotationMode != 5>
-				<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
-				switch (state.getValue(FACING)) {
-					default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
-					case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
-					case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
-					case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
-					<#if rotationMode == 2 || rotationMode == 4>
-						case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
-						case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
-					</#if>
-				}
-			<#else>
-				switch (state.getValue(AXIS)) {
-					case X -> <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
-					case Y -> <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
-					case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
-				}
-			</#if>
-			<#if !noOffset>).move(offset.x, offset.y, offset.z)</#if>;
+			switch (state.getValue(AXIS)) {
+				case X -> <@makeBoundingBox positiveBoxes negativeBoxes "x"/>;
+				case Y -> <@makeBoundingBox positiveBoxes negativeBoxes "y"/>;
+				case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
+			}
 		</#if>
-	</#compress>
+		<#if !noOffset>).move(offset.x, offset.y, offset.z)</#if>;
+	</#if>
 </#macro>
 
 <#macro makeCuboid box facing pitchType>

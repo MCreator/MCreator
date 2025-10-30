@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.item.inventory;
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber public class ${name}InventoryCapability extends ComponentItemHandler {
 
 	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
@@ -61,6 +61,6 @@ package ${package}.item.inventory;
 	}
 
 }
-</#compress>
+</@javacompress>
 
 <#-- @formatter:on -->
