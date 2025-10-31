@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.blockly;
 
-import javafx.application.Platform;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
@@ -29,6 +28,7 @@ import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.chromium.CefJavaBridgeHandler;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
@@ -41,11 +41,11 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cef.callback.CefQueryCallback;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,8 +65,6 @@ public final class BlocklyJavascriptBridge {
 
 	private final Runnable blocklyEvent;
 	private final MCreator mcreator;
-
-	private final Object NESTED_LOOP_KEY = new Object();
 
 	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
@@ -102,39 +100,30 @@ public final class BlocklyJavascriptBridge {
 		}
 	}
 
-	@SuppressWarnings("unused") public void openColorSelector(String color, JSObject callback) {
+	@SuppressWarnings("unused") public void openColorSelector(String color, CefQueryCallback callback) {
 		SwingUtilities.invokeLater(() -> {
 			Color newColor = JColor.openDialog(mcreator,
 					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), Color.decode(color));
-			AtomicReference<String> colorString = new AtomicReference<>(newColor == null ? null :
+			AtomicReference<String> colorString = new AtomicReference<>(newColor == null ?
+					null :
 					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()));
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, colorString.get()));
+			callback.success(CefJavaBridgeHandler.gson.toJson(colorString.get()));
 		});
-
-		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
-		callback.call("callback", retval);
 	}
 
-	@SuppressWarnings("unused") public void openMCItemSelector(String type, JSObject callback) {
+	@SuppressWarnings("unused") public void openMCItemSelector(String type, CefQueryCallback callback) {
 		SwingUtilities.invokeLater(() -> {
 			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
 					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems);
-			Platform.runLater(
-					() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, selected != null ? selected.getName() : null));
+			callback.success(CefJavaBridgeHandler.gson.toJson(selected != null ? selected.getName() : null));
 		});
-
-		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
-		callback.call("callback", retval);
 	}
 
-	@SuppressWarnings("unused") public void openAIConditionEditor(String data, JSObject callback) {
+	@SuppressWarnings("unused") public void openAIConditionEditor(String data, CefQueryCallback callback) {
 		SwingUtilities.invokeLater(() -> {
 			List<String> retval = AIConditionEditor.open(mcreator, data.split(","));
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, StringUtils.join(retval, ',')));
+			callback.success(CefJavaBridgeHandler.gson.toJson(StringUtils.join(retval, ',')));
 		});
-
-		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
-		callback.call("callback", retval);
 	}
 
 	/**
@@ -145,18 +134,14 @@ public final class BlocklyJavascriptBridge {
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		SwingUtilities.invokeLater(() -> {
-			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-			DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
-					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
-			if (selected != null) {
-				retval[0] = selected.getName();
-				retval[1] = selected.getReadableName();
-			}
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
-		});
-
-		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
+		if (selected != null) {
+			retval[0] = selected.getName();
+			retval[1] = selected.getReadableName();
+		}
+		return retval;
 	}
 
 	/**
@@ -167,18 +152,14 @@ public final class BlocklyJavascriptBridge {
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		SwingUtilities.invokeLater(() -> {
-			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider,
-					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
-			if (selected != null) {
-				retval[0] = selected;
-				retval[1] = selected;
-				Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
-			}
-		});
-
-		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+		String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
+		if (selected != null) {
+			retval[0] = selected;
+			retval[1] = selected;
+		}
+		return retval;
 	}
 
 	/**
@@ -190,95 +171,99 @@ public final class BlocklyJavascriptBridge {
 	 * @param callback             The Javascript object that passes the {"value", "readable name"} pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
-			@Nullable String customEntryProviders, JSObject callback) {
-		String[] retval = switch (type) {
-			case "entity" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"entity");
-			case "spawnableEntity" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), "entity");
-			case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
-			case "entitydata_logic" -> openStringEntrySelector(
-					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
-			case "entitydata_integer" -> openStringEntrySelector(
-					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
-			case "entitydata_string" -> openStringEntrySelector(
-					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.StringType.class).toArray(String[]::new), "entity_data");
-			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
-			case "biome" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"biome");
-			case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
-					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-							.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new), "dimensions");
-			case "dimensionCustomWithPortal" -> openStringEntrySelector(
-					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-							.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
-							.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-							.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new),
-					"dimensions");
-			case "fluid" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"fluids");
-			case "gamerulesboolean" -> openDataListEntrySelector(
-					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), "gamerules");
-			case "gamerulesnumber" -> openDataListEntrySelector(
-					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), "gamerules");
-			case "eventparametersnumber" -> openDataListEntrySelector(
-					w -> DataListLoader.loadDataList("eventparameters").stream()
-							.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
-			case "eventparametersboolean" -> openDataListEntrySelector(
-					w -> DataListLoader.loadDataList("eventparameters").stream()
-							.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-							.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
-			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
-			case "structure" ->
-					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
-							"structures");
-			case "procedure" -> openStringEntrySelector(
-					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-							.map(ModElement::getName).toArray(String[]::new), "procedure");
-			case "arrowProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-					"projectiles");
-			case "configuredfeature" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList(), "configured_features");
-			case "global_triggers" -> {
-				String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
-						.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
-							setReadableName(entry.getValue());
-						}}).toList(), "global_trigger");
-				// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
-				if (selectedEntry[0].isEmpty()) {
-					selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
+			@Nullable String customEntryProviders, CefQueryCallback callback) {
+		SwingUtilities.invokeLater(() -> {
+			String[] retval = switch (type) {
+				case "entity" -> openDataListEntrySelector(
+						w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+						"entity");
+				case "spawnableEntity" -> openDataListEntrySelector(
+						w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+								.toList(), "entity");
+				case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
+				case "entitydata_logic" -> openStringEntrySelector(
+						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+								PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
+				case "entitydata_integer" -> openStringEntrySelector(
+						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+								PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
+				case "entitydata_string" -> openStringEntrySelector(
+						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+								PropertyData.StringType.class).toArray(String[]::new), "entity_data");
+				case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
+				case "biome" -> openDataListEntrySelector(
+						w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+						"biome");
+				case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
+						w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+								.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new),
+						"dimensions");
+				case "dimensionCustomWithPortal" -> openStringEntrySelector(
+						w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+								.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
+								.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
+								.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName())
+								.toArray(String[]::new), "dimensions");
+				case "fluid" -> openDataListEntrySelector(
+						w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+						"fluids");
+				case "gamerulesboolean" -> openDataListEntrySelector(
+						w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+								.toList(), "gamerules");
+				case "gamerulesnumber" -> openDataListEntrySelector(
+						w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+								.toList(), "gamerules");
+				case "eventparametersnumber" -> openDataListEntrySelector(
+						w -> DataListLoader.loadDataList("eventparameters").stream()
+								.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+								.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
+				case "eventparametersboolean" -> openDataListEntrySelector(
+						w -> DataListLoader.loadDataList("eventparameters").stream()
+								.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+								.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
+				case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+				case "structure" ->
+						openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
+								"structures");
+				case "procedure" -> openStringEntrySelector(
+						w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+								.map(ModElement::getName).toArray(String[]::new), "procedure");
+				case "arrowProjectile" -> openDataListEntrySelector(
+						w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+								.toList(), "projectiles");
+				case "configuredfeature" -> openDataListEntrySelector(
+						w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+								.toList(), "configured_features");
+				case "global_triggers" -> {
+					String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
+							.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
+								setReadableName(entry.getValue());
+							}}).toList(), "global_trigger");
+					// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
+					if (selectedEntry[0].isEmpty()) {
+						selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
+					}
+					yield selectedEntry;
 				}
-				yield selectedEntry;
-			}
-			default -> {
-				if (type.startsWith("procedure_retval_")) {
-					var variableType = VariableTypeLoader.INSTANCE.fromName(
-							Strings.CS.removeStart(type, "procedure_retval_"));
-					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
+				default -> {
+					if (type.startsWith("procedure_retval_")) {
+						var variableType = VariableTypeLoader.INSTANCE.fromName(
+								Strings.CS.removeStart(type, "procedure_retval_"));
+						yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
+								"procedure");
+					}
+
+					if (!DataListLoader.loadDataList(type).isEmpty()) {
+						yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, typeFilter,
+								StringUtils.split(customEntryProviders, ',')), type);
+					}
+
+					yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 				}
+			};
 
-				if (!DataListLoader.loadDataList(type).isEmpty()) {
-					yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, typeFilter,
-							StringUtils.split(customEntryProviders, ',')), type);
-				}
-
-				yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-			}
-		};
-
-		callback.call("callback", retval[0], retval[1]);
+			callback.success(CefJavaBridgeHandler.gson.toJson(retval));
+		});
 	}
 
 	private final Map<String, String> ext_triggers = new LinkedHashMap<>() {{

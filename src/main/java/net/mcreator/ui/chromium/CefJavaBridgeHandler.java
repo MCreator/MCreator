@@ -37,7 +37,7 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 
 	private static final Logger LOG = LogManager.getLogger(CefJavaBridgeHandler.class);
 
-	private static final Gson gson = new GsonBuilder().create();
+	public static final Gson gson = new GsonBuilder().create();
 
 	private final WebView webView;
 
@@ -65,26 +65,33 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 
 		// Install JavaScript bridge
 		String wrapperJs = """
-                (function() {
-                    if (window.%s) return;
-                    window.%s = new Proxy({}, {
-                        get: function(_, methodName) {
-                            return function(...args) {
-                                let callback = null;
-                                if (args.length && typeof args[args.length - 1] === 'function') {
-                                    callback = args.pop();
-                                }
-                                const request = '%s' + methodName + ':' + JSON.stringify(args);
-                                window.cefQuery({
-                                    request: request,
-                                    onSuccess: function(response) { if (callback) callback(response); },
-                                    onFailure: function(code, msg) { console.error('Java call to ' + methodName + ' failed:', code, msg); if (callback) callback(null); }
-                                });
-                            };
-                        }
-                    });
-                })();
-                """.formatted(name, name, prefix);
+				(function() {
+				    if (window.%s) return;
+				    window.%s = new Proxy({}, {
+				        get: function(_, methodName) {
+				            return function(...args) {
+				                let callback = null;
+				                if (args.length && typeof args[args.length - 1] === 'object' && typeof args[args.length - 1].callback === 'function') {
+				                    callback = args[args.length - 1].callback;
+				                    args.pop();
+				                }
+				                window.cefQuery({
+				                    request: '%s' + methodName + ':' + JSON.stringify(args),
+									onSuccess: function(response) {
+									    if (!callback) return;
+									    try {
+									        const data = JSON.parse(response);
+									        callback.apply(null, Array.isArray(data) ? data : [data]);
+									    } catch (e) {
+									        callback(response);
+									    }
+									}
+				                });
+				            };
+				        }
+				    });
+				})();
+				""".formatted(name, name, prefix);
 		webView.executeScript(wrapperJs, false);
 	}
 
@@ -108,18 +115,16 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 		String methodName = payload.substring(0, colonIndex);
 		String argsJson = payload.substring(colonIndex + 1);
 
-		String[] args;
+		Object[] args;
 		try {
-			args = gson.fromJson(argsJson, String[].class);
+			args = gson.fromJson(argsJson, Object[].class);
 		} catch (JsonSyntaxException e) {
-			LOG.error("Invalid JSON arguments: {}", e.getMessage(), e);
-			callback.failure(400, "Invalid JSON arguments: " + e.getMessage());
-			return true;
+			LOG.error("Invalid JSON arguments: {} for method: {}", e.getMessage(), methodName, e);
+			return false;
 		}
 
 		// Find a matching method
-		Method targetMethod = Arrays.stream(bridge.getClass().getMethods())
-				.filter(m -> m.getName().equals(methodName))
+		Method targetMethod = Arrays.stream(bridge.getClass().getMethods()).filter(m -> m.getName().equals(methodName))
 				.filter(m -> {
 					Class<?>[] params = m.getParameterTypes();
 					return params.length == args.length || (params.length == args.length + 1
@@ -127,14 +132,13 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 				}).findFirst().orElse(null);
 
 		if (targetMethod == null) {
-			callback.failure(404, "Method not found or wrong number of parameters: " + methodName);
-			return true;
+			LOG.error("Method not found or wrong number of parameters: {}", methodName);
+			return false;
 		}
 
 		try {
 			Class<?>[] paramTypes = targetMethod.getParameterTypes();
 			Object[] callArgs;
-
 			if (paramTypes.length == args.length) {
 				callArgs = args;
 			} else {
@@ -143,15 +147,13 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 			}
 
 			Object result = targetMethod.invoke(bridge, callArgs);
-
-			// Only call callback if the method didn't handle it itself
-			if (result != null && !(paramTypes.length > 0
-					&& paramTypes[paramTypes.length - 1] == CefQueryCallback.class)) {
-				webView.runOnCallbackThread(() -> callback.success(result.toString()));
+			if (result != null) {
+				String jsonResult = (result instanceof String) ? (String) result : gson.toJson(result);
+				webView.runOnCallbackThread(() -> callback.success(jsonResult));
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			LOG.error("Error invoking method: {}", e.getMessage(), e);
-			callback.failure(500, "Error invoking method: " + e.getMessage());
+			return false;
 		}
 
 		return true;
