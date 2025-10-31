@@ -31,7 +31,7 @@ public class ItemOpenBoundGUIConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) throws Exception {
 		Item item = (Item) input;
-		item.openGUIOnRightClick = new LogicProcedure("", item.hasInventory());
+		item.openGUIOnRightClick = new LogicProcedure(null, item.hasInventory());
 		return item;
 	}
 
