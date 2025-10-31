@@ -58,6 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -199,7 +200,8 @@ public class ConverterRegistry {
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter(),
-			new NoGUISelectedConverter()
+			new NoGUISelectedConverter(),
+			new ItemOpenBoundGUIConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
