@@ -25,7 +25,6 @@ import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefQueryCallback;
-import org.cef.handler.CefLoadHandler;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
@@ -44,11 +43,8 @@ public class WebView extends JPanel implements Closeable {
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
 	private final CefBrowser browser;
-
-	private final CefLoadHandler cefLoadHandler;
-
+	private final CefLoadHandlerAdapter cefLoadHandler;
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
-
 	private final List<CefMessageRouterHandlerAdapter> associatedMessageHandlers = new ArrayList<>();
 
 	private static final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
@@ -61,11 +57,13 @@ public class WebView extends JPanel implements Closeable {
 	public WebView(String url, boolean isTransparent) {
 		this.browser = CefUtils.getCefClient().createBrowser(url, false, isTransparent);
 
+		// Register persistent JS handler once
+		CefUtils.getCefMessageRouter().addHandler(executeScriptHandler, false);
+
 		this.cefLoadHandler = new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
 				if (browser != WebView.this.browser)
 					return; // load handler is global
-
 				runOnCallbackThread(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
 			}
 		};
@@ -88,55 +86,55 @@ public class WebView extends JPanel implements Closeable {
 		executeScript(javaScript, false);
 	}
 
+	// Helpers for executeScript
+	private CountDownLatch executeScriptLatch;
+	private final AtomicReference<String> executeScriptResult = new AtomicReference<>();
+	private final CefMessageRouterHandlerAdapter executeScriptHandler = new CefMessageRouterHandlerAdapter() {
+		@Override
+		public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
+				CefQueryCallback callback) {
+			if (browser != WebView.this.browser)
+				return false; // message router sends callback to all adapters
+
+			if (request.startsWith("@jsResult:")) {
+				executeScriptResult.set(request.substring("@jsResult:".length()));
+				callback.success("ok");
+				if (executeScriptLatch != null)
+					executeScriptLatch.countDown();
+				return true;
+			}
+			return false;
+		}
+	};
+
 	public synchronized String executeScript(String javaScript, boolean requestRetval) {
-		CountDownLatch latch = new CountDownLatch(1);
-		AtomicReference<String> result = new AtomicReference<>();
+		executeScriptLatch = new CountDownLatch(1);
+		executeScriptResult.set(null);
 
-		CefMessageRouterHandlerAdapter handler = new CefMessageRouterHandlerAdapter() {
-			@Override
-			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
-					CefQueryCallback callback) {
-				if (browser != WebView.this.browser)
-					return false; // message router sends callback to all adapters
-
-				if (request.startsWith("@jsResult:")) {
-					result.set(request.substring("@jsResult:".length()));
-					callback.success("ok");
-					latch.countDown();
-					return true;
-				}
-				return false;
-			}
-		};
-
-		try {
-			CefUtils.getCefMessageRouter().addHandler(handler, false);
-
-			String script;
-			if (requestRetval) {
-				script = """
-						(function() {
-						    const res = %s;
-						    window.cefQuery({ request: "@jsResult:" + res });
-						})();
-						""".formatted(javaScript);
-			} else {
-				script = """
-						%s
-						window.cefQuery({ request: "@jsResult:" });
-						""".formatted(javaScript);
-			}
-
-			browser.executeJavaScript(script, "[WebView injected]", 0);
-
-			latch.await(); // block until callback
-		} catch (InterruptedException e) {
-			LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
-		} finally {
-			CefUtils.getCefMessageRouter().removeHandler(handler);
+		String script;
+		if (requestRetval) {
+			script = """
+					(function() {
+					    const res = %s;
+					    window.cefQuery({ request: "@jsResult:" + res });
+					})();
+					""".formatted(javaScript);
+		} else {
+			script = """
+					%s
+					window.cefQuery({ request: "@jsResult:" });
+					""".formatted(javaScript);
 		}
 
-		return result.get();
+		browser.executeJavaScript(script, "[WebView injected]", 0);
+
+		try {
+			executeScriptLatch.await();
+		} catch (InterruptedException e) {
+			LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+		}
+
+		return executeScriptResult.get();
 	}
 
 	public void addCSSToDOM(String css) {
@@ -175,6 +173,7 @@ public class WebView extends JPanel implements Closeable {
 		for (CefMessageRouterHandlerAdapter handler : associatedMessageHandlers) {
 			CefUtils.getCefMessageRouter().removeHandler(handler);
 		}
+		CefUtils.getCefMessageRouter().removeHandler(executeScriptHandler);
 		browser.close(true);
 	}
 

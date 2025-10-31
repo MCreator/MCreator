@@ -60,6 +60,8 @@ public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 		this.prefix = name + ":";
 
 		// TODO: sync methods with retun value String or String[] are not supported yet
+		// so they can be called as var name = javabridge.getName(), for example, without await or callback
+		// make sure to consider JCEF threading so busy wait does not block callback
 
 		// Install JavaScript bridge
 		String wrapperJs = """
