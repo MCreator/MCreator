@@ -511,7 +511,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		stackSizeProperties.add(inventoryStackSize);
 
-		inventoryProperties.add(PanelUtils.northAndCenterElement(guiProperties, stackSizeProperties));
+		inventoryProperties.add(PanelUtils.northAndCenterElement(guiProperties, stackSizeProperties, 2, 2));
 
 		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
 		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
