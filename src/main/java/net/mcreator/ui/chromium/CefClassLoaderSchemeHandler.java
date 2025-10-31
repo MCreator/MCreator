@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.chromium;
 
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.callback.CefCallback;
@@ -32,17 +33,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-class CefJarSchemeHandler implements CefResourceHandler {
+class CefClassLoaderSchemeHandler implements CefResourceHandler {
 
-	private static final Logger LOG = LogManager.getLogger(CefJarSchemeHandler.class);
+	private static final Logger LOG = LogManager.getLogger(CefClassLoaderSchemeHandler.class);
 
 	private InputStream inputStream;
 	private String contentType;
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
 		try {
-			String url = request.getURL(); // e.g. jar://index.html
-			String path = url.replaceFirst("^jar://", "/"); // convert to resource path
+			String url = request.getURL(); // e.g. classloader://index.html
+			String path = url.replaceFirst("^classloader://", "/").replace("[LANG]", L10N.getBlocklyLangName());
 			URL resourceUrl = getClass().getResource(path);
 
 			if (resourceUrl == null) {
@@ -99,6 +100,7 @@ class CefJarSchemeHandler implements CefResourceHandler {
 			case "jpeg" -> "image/jpeg";
 			case "css" -> "text/css";
 			case "js" -> "text/javascript";
+			case "html" -> "text/html";
 			default -> "text/plain";
 		};
 	}

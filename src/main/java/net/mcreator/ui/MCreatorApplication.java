@@ -116,7 +116,7 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(25, "Loading interface components");
 
 			// preload CEF
-			CefUtils.getCEFClient();
+			CefUtils.getCefClient();
 
 			// preload help entries cache
 			HelpLoader.preloadCache();

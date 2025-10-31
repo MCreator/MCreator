@@ -19,59 +19,76 @@
 
 package net.mcreator.ui.chromium;
 
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
-import org.cef.browser.CefMessageRouter;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefLoadHandler;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class WebView implements Closeable {
+public class WebView extends JPanel implements Closeable {
 
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
 	private final CefBrowser browser;
-	private final CefMessageRouter router;
-
-	private final Component component;
 
 	private final CefLoadHandler cefLoadHandler;
 
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
 
+	private final List<CefMessageRouterHandlerAdapter> associatedMessageHandlers = new ArrayList<>();
+
+	private static final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("WebView-Callback-Thread");
+		thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+		return thread;
+	});
+
 	public WebView(String url, boolean isTransparent) {
-		this.browser = CefUtils.getCEFClient().createBrowser(url, false, isTransparent);
-		this.component = browser.getUIComponent();
-		this.router = CefMessageRouter.create();
-		this.browser.getClient().addMessageRouter(router);
+		this.browser = CefUtils.getCefClient().createBrowser(url, false, isTransparent);
 
 		this.cefLoadHandler = new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
-				if (browser == WebView.this.browser) {
-					for (PageLoadListener listener : pageLoadListeners) {
-						listener.pageLoaded();
-					}
-				}
+				if (browser != WebView.this.browser)
+					return; // load handler is global
+
+				runOnCallbackThread(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
 			}
 		};
 		CefUtils.getMultiLoadHandler().addHandler(cefLoadHandler);
+
+		Component cefComponent = browser.getUIComponent();
+		cefComponent.setBackground(Theme.current().getBackgroundColor());
+		setOpaque(false);
+		setLayout(new BorderLayout());
+		add(cefComponent, BorderLayout.CENTER);
 	}
 
 	public void addJavaScriptBridge(String name, Object bridge) {
-		router.addHandler(new CefJavaBridgeHandler(this.browser, bridge, name), true);
+		CefMessageRouterHandlerAdapter handler = new CefJavaBridgeHandler(this, bridge, name);
+		associatedMessageHandlers.add(handler);
+		CefUtils.getCefMessageRouter().addHandler(handler, false);
 	}
 
-	public synchronized String executeJavaScript(String jsExpr) {
+	public synchronized void executeScript(String javaScript) {
+		executeScript(javaScript, false);
+	}
+
+	public synchronized String executeScript(String javaScript, boolean requestRetval) {
 		CountDownLatch latch = new CountDownLatch(1);
 		AtomicReference<String> result = new AtomicReference<>();
 
@@ -79,6 +96,9 @@ public class WebView implements Closeable {
 			@Override
 			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
 					CefQueryCallback callback) {
+				if (browser != WebView.this.browser)
+					return false; // message router sends callback to all adapters
+
 				if (request.startsWith("@jsResult:")) {
 					result.set(request.substring("@jsResult:".length()));
 					callback.success("ok");
@@ -90,65 +110,71 @@ public class WebView implements Closeable {
 		};
 
 		try {
-			router.addHandler(handler, false);
-			String script = """
-					(function() {
-					    try {
-					        const res = %s;
-					        window.cefQuery({ request: "@jsResult:" + res });
-					    } catch (e) {
-					        window.cefQuery({ request: "@jsResult:ERROR:" + e });
-					    }
-					})();
-					""".formatted(jsExpr);
+			CefUtils.getCefMessageRouter().addHandler(handler, false);
 
-			browser.executeJavaScript(script, "", 0);
+			String script;
+			if (requestRetval) {
+				script = """
+						(function() {
+						    const res = %s;
+						    window.cefQuery({ request: "@jsResult:" + res });
+						})();
+						""".formatted(javaScript);
+			} else {
+				script = """
+						%s
+						window.cefQuery({ request: "@jsResult:" });
+						""".formatted(javaScript);
+			}
+
+			browser.executeJavaScript(script, "[WebView injected]", 0);
 
 			latch.await(); // block until callback
 		} catch (InterruptedException e) {
-			LOG.warn("Interrupted while waiting for JavaScript evaluation", e);
+			LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
 		} finally {
-			router.removeHandler(handler);
+			CefUtils.getCefMessageRouter().removeHandler(handler);
 		}
 
 		return result.get();
 	}
 
 	public void addCSSToDOM(String css) {
-		browser.executeJavaScript("""
+		// Escape backslashes, single quotes, and newlines for JS string
+		String jsSafeCss = css.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "");
+
+		// can be safely run async
+		executeScript("""
 				(function() {
 				    var style = document.createElement('style');
 				    style.type = 'text/css';
 				    style.innerHTML = '%s';
 				    document.head.appendChild(style);
 				})();
-				""".formatted(css), "", 0);
+				""".formatted(jsSafeCss), false);
 	}
 
 	public void addStringConstantToDOM(String name, String value) {
-		browser.executeJavaScript("""
-				(function() {
-				    window['%s'] = '%s';
-				})();
-				""".formatted(name, value), "", 0);
+		executeScript("window['%s'] = '%s';".formatted(name, value), false);
 	}
 
-	public CefBrowser getBrowser() {
+	CefBrowser getBrowser() {
 		return browser;
-	}
-
-	public Component getComponent() {
-		return component;
 	}
 
 	public void addLoadListener(PageLoadListener listener) {
 		pageLoadListeners.add(listener);
 	}
 
+	void runOnCallbackThread(Runnable runnable) {
+		callbackExecutor.execute(runnable);
+	}
+
 	@Override public void close() {
 		CefUtils.getMultiLoadHandler().removeHandler(cefLoadHandler);
-		router.dispose();
-		browser.getClient().doClose(browser);
+		for (CefMessageRouterHandlerAdapter handler : associatedMessageHandlers) {
+			CefUtils.getCefMessageRouter().removeHandler(handler);
+		}
 		browser.close(true);
 	}
 

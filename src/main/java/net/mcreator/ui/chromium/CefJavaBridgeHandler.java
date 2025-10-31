@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.chromium;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
@@ -30,72 +33,91 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
+public class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 
 	private static final Logger LOG = LogManager.getLogger(CefJavaBridgeHandler.class);
 
-	private final Object bridge;
+	private static final Gson gson = new GsonBuilder().create();
 
+	private final WebView webView;
+
+	private final Object bridge;
 	private final String prefix;
 
 	/**
 	 * Installs a JavaScript bridge into the provided CefBrowser instance. This enables communication
 	 * between the JavaScript code running in the browser and the provided Java object.
 	 *
-	 * @param browser The {@link CefBrowser} instance where the JavaScript bridge will be injected.
+	 * @param webView The {@link WebView} instance where the JavaScript bridge will be injected.
 	 * @param bridge  The Java object that serves as the backend for the JavaScript bridge, allowing
 	 *                methods to be proxied and called from JavaScript.
 	 * @param name    The name of the bridge, which will be used as the global object in JavaScript.
 	 *                Use only alphanumeric characters and underscores.
 	 */
-	public CefJavaBridgeHandler(CefBrowser browser, Object bridge, String name) {
+	public CefJavaBridgeHandler(WebView webView, Object bridge, String name) {
+		this.webView = webView;
 		this.bridge = bridge;
 		this.prefix = name + ":";
 
-		// Install javabridge
+		// TODO: sync methods with retun value String or String[] are not supported yet
+
+		// Install JavaScript bridge
 		String wrapperJs = """
-				(function() {
-				    if (window.%s) return;
-				    window.%s = new Proxy({}, {
-				        get: function(_, methodName) {
-				            return function(...args) {
-				                let callback = null;
-				                if (args.length && typeof args[args.length - 1] === 'function') {
-				                    callback = args.pop();
-				                }
-				                const request = '%s' + methodName + ':' + args.map(a => a.toString()).join(':');
-				                window.cefQuery({
-				                    request: request,
-				                    onSuccess: function(response) { if (callback) callback(response); },
-				                    onFailure: function(code, msg) { console.error('Java call failed:', code, msg); if (callback) callback(null); }
-				                });
-				            };
-				        }
-				    });
-				})();
-				""".formatted(name, name, prefix);
-		browser.executeJavaScript(wrapperJs, browser.getURL(), 0);
+                (function() {
+                    if (window.%s) return;
+                    window.%s = new Proxy({}, {
+                        get: function(_, methodName) {
+                            return function(...args) {
+                                let callback = null;
+                                if (args.length && typeof args[args.length - 1] === 'function') {
+                                    callback = args.pop();
+                                }
+                                const request = '%s' + methodName + ':' + JSON.stringify(args);
+                                window.cefQuery({
+                                    request: request,
+                                    onSuccess: function(response) { if (callback) callback(response); },
+                                    onFailure: function(code, msg) { console.error('Java call to ' + methodName + ' failed:', code, msg); if (callback) callback(null); }
+                                });
+                            };
+                        }
+                    });
+                })();
+                """.formatted(name, name, prefix);
+		webView.executeScript(wrapperJs, false);
 	}
 
 	@Override
 	public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
 			CefQueryCallback callback) {
+		if (browser != webView.getBrowser())
+			return false; // message router sends callback to all adapters
+
 		if (!request.startsWith(prefix)) {
 			return false;
 		}
 
 		String payload = request.substring(prefix.length());
-		String[] parts = payload.split(":", -1);
-		if (parts.length < 1) {
-			callback.failure(400, "No method specified");
+		int colonIndex = payload.indexOf(':');
+		if (colonIndex < 0) {
+			callback.failure(400, "No method or arguments specified");
 			return true;
 		}
 
-		String methodName = parts[0];
-		String[] args = Arrays.copyOfRange(parts, 1, parts.length);
+		String methodName = payload.substring(0, colonIndex);
+		String argsJson = payload.substring(colonIndex + 1);
+
+		String[] args;
+		try {
+			args = gson.fromJson(argsJson, String[].class);
+		} catch (JsonSyntaxException e) {
+			LOG.error("Invalid JSON arguments: {}", e.getMessage(), e);
+			callback.failure(400, "Invalid JSON arguments: " + e.getMessage());
+			return true;
+		}
 
 		// Find a matching method
-		Method targetMethod = Arrays.stream(bridge.getClass().getMethods()).filter(m -> m.getName().equals(methodName))
+		Method targetMethod = Arrays.stream(bridge.getClass().getMethods())
+				.filter(m -> m.getName().equals(methodName))
 				.filter(m -> {
 					Class<?>[] params = m.getParameterTypes();
 					return params.length == args.length || (params.length == args.length + 1
@@ -123,10 +145,10 @@ class CefJavaBridgeHandler extends CefMessageRouterHandlerAdapter {
 			// Only call callback if the method didn't handle it itself
 			if (result != null && !(paramTypes.length > 0
 					&& paramTypes[paramTypes.length - 1] == CefQueryCallback.class)) {
-				callback.success(result.toString());
+				webView.runOnCallbackThread(() -> callback.success(result.toString()));
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			LOG.error("Error invoking method: {}", e.getMessage());
+			LOG.error("Error invoking method: {}", e.getMessage(), e);
 			callback.failure(500, "Error invoking method: " + e.getMessage());
 		}
 

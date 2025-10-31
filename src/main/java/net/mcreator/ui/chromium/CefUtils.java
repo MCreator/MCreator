@@ -23,6 +23,7 @@ import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
+import net.mcreator.Launcher;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
@@ -31,8 +32,19 @@ import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
+import org.cef.browser.CefMessageRouter;
+import org.cef.callback.CefContextMenuParams;
+import org.cef.callback.CefMenuModel;
+import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandlerAdapter;
+import org.cef.handler.CefFocusHandlerAdapter;
+import org.cef.handler.CefRequestHandlerAdapter;
+import org.cef.misc.BoolRef;
+import org.cef.network.CefRequest;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 public class CefUtils {
@@ -41,10 +53,11 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 	private static CefClient cefClient = null;
+	private static CefMessageRouter cefMessageRouter = null;
 
 	private static final CefMultiLoadHandler cefMultiLoadHandler = new CefMultiLoadHandler();
 
-	private static CefApp getCEFApp() {
+	private static CefApp getCefApp() {
 		if (cefApp == null) {
 			cefApp = createApp();
 		}
@@ -53,6 +66,10 @@ public class CefUtils {
 	}
 
 	public static void close() {
+		if (cefMessageRouter != null) {
+			cefMessageRouter.dispose();
+			cefMessageRouter = null;
+		}
 		if (cefClient != null) {
 			cefClient.dispose();
 			cefClient = null;
@@ -63,16 +80,26 @@ public class CefUtils {
 		}
 	}
 
-	public static CefClient getCEFClient() {
+	public static CefClient getCefClient() {
 		if (cefClient == null) {
 			cefClient = createClient();
+			getCefMessageRouter(); // also preload CEF message router
 			cefClient.addLoadHandler(cefMultiLoadHandler);
 		}
 
 		return cefClient;
 	}
 
-	public static CefMultiLoadHandler getMultiLoadHandler() {
+	public static CefMessageRouter getCefMessageRouter() {
+		if (cefMessageRouter == null) {
+			cefMessageRouter = CefMessageRouter.create();
+			getCefClient().addMessageRouter(cefMessageRouter);
+		}
+
+		return cefMessageRouter;
+	}
+
+	static CefMultiLoadHandler getMultiLoadHandler() {
 		return cefMultiLoadHandler;
 	}
 
@@ -81,7 +108,10 @@ public class CefUtils {
 
 		builder.setInstallDir(UserFolderManager.getFileFromUserFolder("/cef/"));
 		builder.setProgressHandler((enumProgress, v) -> LOG.info("Loading CEF: {} ({})", enumProgress, v));
+		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(0, 0, 0, 0);
+		builder.getCefSettings().windowless_rendering_enabled = false;
 		builder.getCefSettings().persist_session_cookies = false;
+		builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
 		builder.getCefSettings().root_cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString();
 		builder.getCefSettings().cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString();
 
@@ -91,12 +121,15 @@ public class CefUtils {
 					LOG.error("CEF app terminated");
 				}
 			}
+
+			@Override public void onContextInitialized() {
+				cefApp.registerSchemeHandlerFactory("classloader", "",
+						(browser, frame, schemeName, request) -> new CefClassLoaderSchemeHandler());
+			}
 		});
 
 		try {
 			cefApp = builder.build();
-			cefApp.registerSchemeHandlerFactory("jar", "",
-					(browser, frame, schemeName, request) -> new CefJarSchemeHandler());
 		} catch (IOException | UnsupportedPlatformException | InterruptedException | CefInitializationException e) {
 			throw new RuntimeException(e);
 		}
@@ -104,30 +137,23 @@ public class CefUtils {
 	}
 
 	private static CefClient createClient() {
-		CefApp cefApp = getCEFApp();
+		CefApp cefApp = getCefApp();
 
 		CefClient cefClient = cefApp.createClient();
 
+		// Logging handling
 		cefClient.addDisplayHandler(new CefDisplayHandlerAdapter() {
 			@Override
 			public boolean onConsoleMessage(CefBrowser cefBrowser, CefSettings.LogSeverity logSeverity, String message,
-					String url, int line) {
+					String sourceUrl, int line) {
+				String logMsg = String.format("%s (source: %s, line: %d)", message, sourceUrl, line);
+
 				switch (logSeverity) {
-				case LOGSEVERITY_VERBOSE:
-					LOG.trace("{} ({})", message, line);
-					break;
-				case LOGSEVERITY_WARNING:
-					LOG.warn("{} ({})", message, line);
-					break;
-				case LOGSEVERITY_ERROR:
-					LOG.error("{} ({})", message, line);
-					break;
-				case LOGSEVERITY_FATAL:
-					LOG.fatal("{} ({})", message, line);
-					break;
-				default:
-					LOG.info("{} ({})", message, line);
-					break;
+				case LOGSEVERITY_VERBOSE -> LOG.trace(logMsg);
+				case LOGSEVERITY_WARNING -> LOG.warn(logMsg);
+				case LOGSEVERITY_ERROR -> LOG.error(logMsg);
+				case LOGSEVERITY_FATAL -> LOG.fatal(logMsg);
+				default -> LOG.info(logMsg);
 				}
 
 				if (message.contains("Error")) {
@@ -135,6 +161,63 @@ public class CefUtils {
 				}
 
 				return true;
+			}
+		});
+
+		// Disable context menu
+		cefClient.addContextMenuHandler(new CefContextMenuHandler() {
+			@Override
+			public void onBeforeContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams params,
+					CefMenuModel model) {
+				model.clear();
+			}
+
+			@Override
+			public boolean onContextMenuCommand(CefBrowser browser, CefFrame frame, CefContextMenuParams params,
+					int commandId, int eventFlags) {
+				return false;
+			}
+
+			@Override public void onContextMenuDismissed(CefBrowser browser, CefFrame frame) {
+			}
+		});
+
+		// Pass keyboard events from a native CEF component to Swing components using CefSwingKeyboardBridge + handle dev tools
+		cefClient.addKeyboardHandler(new CefSwingKeyboardBridge() {
+			@Override
+			public boolean onPreKeyEvent(CefBrowser browser, CefKeyEvent event, BoolRef is_keyboard_shortcut) {
+				return false;
+			}
+
+			@Override public boolean onAfterKeyEvent(CefBrowser browser, CefKeyEvent event) {
+				if (event.windows_key_code == 123 /*F12*/ && Launcher.version.isDevelopment()
+						&& event.type == CefKeyEvent.EventType.KEYEVENT_KEYUP) {
+					browser.openDevTools();
+					return true;
+				}
+
+				return false;
+			}
+		});
+
+		// Disable access to the internet
+		cefClient.addRequestHandler(new CefRequestHandlerAdapter() {
+			@Override
+			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
+					boolean isRedirect) {
+				String url = request.getURL();
+				return url.startsWith("http://") || url.startsWith("https://"); // return true to block the request
+			}
+		});
+
+		// Prevent client from owning the focus so other text fields around the CEF component work
+		cefClient.addFocusHandler(new CefFocusHandlerAdapter() {
+			@Override public void onGotFocus(CefBrowser browser) {
+				SwingUtilities.invokeLater(() -> {
+					browser.setFocus(false);
+					KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+					browser.setFocus(false);
+				});
 			}
 		});
 
