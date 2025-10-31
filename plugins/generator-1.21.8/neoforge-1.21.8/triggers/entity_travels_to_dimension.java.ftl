@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntity().getX()",
 				"y": "event.getEntity().getY()",
@@ -11,6 +11,6 @@
 				"entity": "event.getEntity()",
 				"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

@@ -140,11 +140,11 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 			whenSliderMoves.setSelectedProcedure(slider.whenSliderMoves);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (sliderMachineName.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				String sliderName = sliderMachineName.getText();
 				if (!sliderName.isEmpty()) {
 					if (slider == null) {

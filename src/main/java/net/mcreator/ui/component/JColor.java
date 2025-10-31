@@ -33,10 +33,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class JColor extends JPanel {
 
-	public static final JColorChooser colorChooser = new JColorChooser();
+	private static final JColorChooser colorChooser = new JColorChooser();
 
 	private Color currentColor = Color.white;
 
@@ -73,14 +74,9 @@ public class JColor extends JPanel {
 		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 
 		edit.addActionListener(e -> {
-			colorChooser.setColor(getColor());
-			JDialog dialog = JColorChooser.createDialog(window, L10N.t("elementgui.common.select_color"), true,
-					colorChooser, e2 -> {
-						Color color = colorChooser.getColor();
-						if (color != null)
-							setColor(color);
-					}, null);
-			dialog.setVisible(true);
+			Color newColor = openDialog(window, L10N.t("elementgui.common.select_color"), getColor());
+			if (newColor != null)
+				this.setColor(newColor);
 		});
 		remove.addActionListener(e -> setColor(null));
 
@@ -101,6 +97,23 @@ public class JColor extends JPanel {
 		} else {
 			setColor(Color.white);
 		}
+	}
+
+	public static Color openDialog(Window window, String dialogTitle, Color initColor) {
+		AtomicReference<Color> retval = new AtomicReference<>();
+		colorChooser.setColor(initColor);
+		JDialog dialog = JColorChooser.createDialog(window, dialogTitle, true, colorChooser, e -> {
+			Color color = colorChooser.getColor();
+			if (color != null)
+				retval.set(color);
+			disposeDialog();
+		}, e2 -> disposeDialog());
+		dialog.setVisible(true);
+		return retval.get();
+	}
+
+	private static void disposeDialog() {
+		((JDialog) colorChooser.getRootPane().getParent()).dispose();
 	}
 
 	public JColor withColorTextColumns(int width) {
