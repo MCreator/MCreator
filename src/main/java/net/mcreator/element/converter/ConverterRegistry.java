@@ -58,7 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
-import net.mcreator.element.converter.v2025_3.ItemOpenBoundGUIConverter;
+import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 
 import java.util.HashMap;
 import java.util.List;
