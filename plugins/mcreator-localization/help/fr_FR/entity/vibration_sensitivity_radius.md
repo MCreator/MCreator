@@ -1,1 +1,1 @@
-La distance maximale où bloc pourras recevoir des vibrations.
+La distance maximale où l'entité pourras recevoir des vibrations.
