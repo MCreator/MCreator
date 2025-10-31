@@ -115,6 +115,11 @@ public class GTJSONTriggersBlocks {
 							<value name="enchantment0">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
+				default -> {
+					LOG.warn("[{}] Skipping JSON trigger block of unrecognized type: {}", generatorName,
+							triggerBlock.getMachineName());
+					continue;
+				}
 				}
 			}
 
