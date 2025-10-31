@@ -1,0 +1,1 @@
+Pelaaja saa joitakin esineitä tässä kentässä määritellystä valitusta saalistaulukosta, kun edistyminen on suoritettu.
