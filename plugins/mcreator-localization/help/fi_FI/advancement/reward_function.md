@@ -1,0 +1,1 @@
+Voit valita funktion, joka suoritetaan, kun pelaaja suorittaa edistymisen tällä parametrilla.
