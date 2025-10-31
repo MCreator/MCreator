@@ -35,7 +35,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -58,22 +57,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class ToolPackMakerTool {
+public class ToolPackMakerTool extends AbstractPackMakerTool {
 
-	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.tool_pack_title"), true);
-		dialog.setLayout(new BorderLayout(10, 10));
+	private final VTextField name = new VTextField(25);
+	private final JColor color;
+	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
+	private final MCItemHolder base;
 
-		dialog.setIconImage(UIRES.get("16px.toolpack").getImage());
-
-		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.tool_pack_info")));
+	private ToolPackMakerTool(MCreator mcreator) {
+		super(mcreator, "tool_pack", UIRES.get("16px.toolpack").getImage());
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
-		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator, false, false);
-		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+		color = new JColor(mcreator, false, false);
+		base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
 				"dialog.tools.tool_pack_base_item_validator");
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
@@ -109,28 +106,24 @@ public class ToolPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.tool_pack_name_validator")));
 
-		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.tool_pack_create");
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.dispose());
-		dialog.add("South", PanelUtils.join(ok, cancel));
+		this.add("Center", PanelUtils.centerInPanel(props));
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
-					&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
-						color.getColor(), (Double) power.getValue());
-				mcreator.reloadWorkspaceTabContents();
-				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.dispose();
-			}
-		});
+		this.setSize(600, 290);
+		this.setLocationRelativeTo(mcreator);
+		this.setVisible(true);
+	}
 
-		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 290);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+	@Override protected void onOkButtonPressed(MCreator mcreator) {
+		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+				&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
+					color.getColor(), (Double) power.getValue());
+			mcreator.reloadWorkspaceTabContents();
+			this.setCursor(Cursor.getDefaultCursor());
+			this.dispose();
+		}
+
 	}
 
 	static void addToolPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
@@ -327,7 +320,7 @@ public class ToolPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"),
-				e -> open(actionRegistry.getMCreator())) {
+				e -> new ToolPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)

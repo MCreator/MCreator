@@ -36,7 +36,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -58,22 +57,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class WoodPackMakerTool {
+public class WoodPackMakerTool extends AbstractPackMakerTool {
 
-	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.wood_pack_title"), true);
-		dialog.setLayout(new BorderLayout(10, 10));
+	private final VTextField name = new VTextField(25);
+	private final JColor color;
+	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 
-		dialog.setIconImage(UIRES.get("16px.woodpack").getImage());
-
-		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.wood_pack_info")));
+	private WoodPackMakerTool(MCreator mcreator) {
+		super(mcreator, "wood_pack", UIRES.get("16px.woodpack").getImage());
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
-		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator, false, false);
-		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-
+		color = new JColor(mcreator, false, false);
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.wood_pack_name"));
@@ -88,27 +83,22 @@ public class WoodPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.wood_pack_name_validator")));
 
-		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.wood_pack_create");
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.dispose());
-		dialog.add("South", PanelUtils.join(ok, cancel));
+		this.add("Center", PanelUtils.centerInPanel(props));
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
-						(Double) power.getValue());
-				mcreator.reloadWorkspaceTabContents();
-				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.dispose();
-			}
-		});
+		this.setSize(600, 260);
+		this.setLocationRelativeTo(mcreator);
+		this.setVisible(true);
+	}
 
-		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 260);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+	@Override protected void onOkButtonPressed(MCreator mcreator) {
+		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
+					(Double) power.getValue());
+			mcreator.reloadWorkspaceTabContents();
+			this.setCursor(Cursor.getDefaultCursor());
+			this.dispose();
+		}
 	}
 
 	public static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
@@ -668,7 +658,7 @@ public class WoodPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.wood"),
-				e -> open(actionRegistry.getMCreator())) {
+				e -> new WoodPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}

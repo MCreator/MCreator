@@ -33,7 +33,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -56,23 +55,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class OrePackMakerTool {
+public class OrePackMakerTool extends AbstractPackMakerTool {
 
-	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.ore_pack_title"), true);
+	private final VTextField name = new VTextField(25);
+	private final JColor color;
+	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
-		dialog.setIconImage(UIRES.get("16px.orepack").getImage());
-
-		dialog.setLayout(new BorderLayout(10, 10));
-
-		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.ore_pack_info")));
-
+	private OrePackMakerTool(MCreator mcreator) {
+		super(mcreator, "ore_pack", UIRES.get("16px.orepack").getImage());
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
-		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator, false, false);
-		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
+		color = new JColor(mcreator, false, false);
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
@@ -92,28 +86,23 @@ public class OrePackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.ore_pack_name_validator")));
 
-		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.ore_pack_create");
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.dispose());
-		dialog.add("South", PanelUtils.join(ok, cancel));
+		this.add("Center", PanelUtils.centerInPanel(props));
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
-						(Double) power.getValue());
-				mcreator.reloadWorkspaceTabContents();
-				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.dispose();
-			}
-		});
+		this.setSize(600, 280);
+		this.setLocationRelativeTo(mcreator);
+		this.setVisible(true);
+	}
 
-		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 280);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+	@Override protected void onOkButtonPressed(MCreator mcreator) {
+		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+					(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
+					(Double) power.getValue());
+			mcreator.reloadWorkspaceTabContents();
+			this.setCursor(Cursor.getDefaultCursor());
+			this.dispose();
+		}
 	}
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
@@ -279,7 +268,7 @@ public class OrePackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.ore"),
-				e -> open(actionRegistry.getMCreator())) {
+				e -> new OrePackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
