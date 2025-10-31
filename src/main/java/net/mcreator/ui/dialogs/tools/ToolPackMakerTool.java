@@ -128,7 +128,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 
 	static void addToolPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
 			Color color, double factor) {
-		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Pickaxe", name + "Axe", name + "Sword",
+		if (!checkIfNamesAvailable(workspace, name + "Pickaxe", name + "Axe", name + "Sword",
 				name + "Shovel", name + "Hoe", name + "PickaxeRecipe", name + "AxeRecipe", name + "SwordRecipe",
 				name + "ShovelRecipe", name + "HoeRecipe"))
 			return;
@@ -253,7 +253,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
 		pickaxeRecipe.unlockingItems.add(base);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, pickaxeRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, pickaxeRecipe);
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -265,7 +265,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
 		axeRecipe.unlockingItems.add(base);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, axeRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -275,7 +275,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
 		swordRecipe.unlockingItems.add(base);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, swordRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -285,7 +285,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
 		shovelRecipe.unlockingItems.add(base);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, shovelRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, shovelRecipe);
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -296,7 +296,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
 		hoeRecipe.unlockingItems.add(base);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, hoeRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, hoeRecipe);
 	}
 
 	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool,
@@ -315,7 +315,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		tool.damageVsEntity = (double) Math.round(4.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
 		tool.attackSpeed = (double) Math.round(3.0f * factor);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(mcreator.getWorkspace(), folder, tool);
+		addGeneratableElementToWorkspace(mcreator.getWorkspace(), folder, tool);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

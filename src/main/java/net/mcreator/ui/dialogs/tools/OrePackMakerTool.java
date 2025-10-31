@@ -116,7 +116,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			oreItemName = name + "Ingot";
 		}
 
-		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
+		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
 				name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting"))
 			return null;
 
@@ -171,7 +171,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreItem.name = name;
 		oreItem.texture = new TextureHolder(workspace, gemTextureName);
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
+		addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -204,7 +204,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			oreBlock.dropAmount = 3;
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlock);
+		addGeneratableElementToWorkspace(workspace, folder, oreBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -226,7 +226,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
 		oreBlockBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
+		addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -242,7 +242,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + oreItemName));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
 
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -251,7 +251,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
 		blockToItemRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Block"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
@@ -261,7 +261,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
 		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
 
 		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 	}
