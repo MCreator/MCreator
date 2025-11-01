@@ -26,8 +26,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
+import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
+import org.cef.handler.CefJSDialogHandler;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
+import org.cef.misc.BoolRef;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -58,10 +61,6 @@ public class CefJavaBridgeHandler {
 		this.bridge = bridge;
 		this.prefix = name + ":";
 
-		// TODO: sync methods with retun value String or String[] are not supported yet
-		// so they can be called as var name = javabridge.getName(), for example, without await or callback
-		// make sure to consider JCEF threading so busy wait does not block callback
-
 		// Install JavaScript bridge
 		String wrapperJs = """
 				(function() {
@@ -74,26 +73,28 @@ public class CefJavaBridgeHandler {
 				                    callback = args[args.length - 1].callback;
 				                    args.pop();
 				                }
-				                window.cefQuery({
-				                    request: '%s' + methodName + ':' + JSON.stringify(args),
-									onSuccess: function(response) {
-									    if (!callback) return;
-									    try {
-									        const data = JSON.parse(response);
-									        callback.apply(null, Array.isArray(data) ? data : [data]);
-									    } catch (e) {
-									        callback(response);
-									    }
-									}
-				                });
+				                if (callback) {
+				                    window.cefQuery({
+				                        request: '%s' + methodName + ':' + JSON.stringify(args),
+										onSuccess: function(response) {
+										    const data = JSON.parse(response);
+										    callback.apply(null, Array.isArray(data) ? data : [data]);
+										}
+				                    });
+				                    return;
+				                } else {
+									let result = prompt('%s' + methodName + ':' + JSON.stringify(args));
+				                    try { return JSON.parse(result); } catch(e) { return result; }
+								}
 				            };
 				        }
 				    });
 				})();
-				""".formatted(name, name, prefix);
+				""".formatted(name, name, prefix, prefix);
 
 		webView.executeScript(wrapperJs, false);
 
+		// Async calls via message router
 		webView.getRouter().addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
 			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
@@ -108,6 +109,31 @@ public class CefJavaBridgeHandler {
 				return true;
 			}
 		}, false);
+
+		// Blocking calls via JS dialogs (hacky, but the only way to suspend CEF IPC and wait for Java to provide value in a sync manner)
+		webView.getBrowser().getClient().addJSDialogHandler(new CefJSDialogHandler() {
+			@Override
+			public boolean onJSDialog(CefBrowser browser, String origin_url, JSDialogType dialog_type,
+					String message_text, String default_prompt_text, CefJSDialogCallback callback,
+					BoolRef suppress_message) {
+				if (!message_text.startsWith(prefix))
+					return false;
+
+				String result = invokeBridge(message_text, null);
+				callback.Continue(true, result != null ? result : "");
+				return true;
+			}
+
+			@Override
+			public boolean onBeforeUnloadDialog(CefBrowser browser, String message_text, boolean is_reload,
+					CefJSDialogCallback callback) {
+				return false;
+			}
+
+			@Override public void onResetDialogState(CefBrowser browser) {}
+
+			@Override public void onDialogClosed(CefBrowser browser) {}
+		});
 	}
 
 	@Nullable private String invokeBridge(String request, @Nullable Consumer<Object> callback) {
