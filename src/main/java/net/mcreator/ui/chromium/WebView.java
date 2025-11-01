@@ -67,6 +67,7 @@ public class WebView extends JPanel implements Closeable {
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, false, false);
+		this.browser.createImmediately();
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -93,7 +94,6 @@ public class WebView extends JPanel implements Closeable {
 
 		Component cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
-		setOpaque(false);
 		setLayout(new BorderLayout());
 		add(cefComponent, BorderLayout.CENTER);
 	}
