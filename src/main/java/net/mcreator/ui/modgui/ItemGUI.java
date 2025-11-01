@@ -478,6 +478,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		inventoryProperties.add(guiBoundTo);
 
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		refreshGUIProperties();
+
 		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
 		inventoryProperties.add(inventorySize);
@@ -671,6 +674,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
@@ -770,6 +780,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
+		refreshGUIProperties();
 
 		Model model = item.getItemModel();
 		if (model != null)

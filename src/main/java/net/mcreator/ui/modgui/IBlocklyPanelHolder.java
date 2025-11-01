@@ -19,14 +19,18 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IBlocklyPanelHolder {
 
 	Set<BlocklyPanel> getBlocklyPanels();
+
+	List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange);
 
 	default BlocklyPanel getSpecificBlocklyPanel(BlocklyEditorType type) {
 		for (BlocklyPanel panel : getBlocklyPanels()) {

@@ -61,6 +61,7 @@ import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Model;
@@ -288,7 +289,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private synchronized void regenerateAITasks(boolean jsEventTriggeredChange) {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 
@@ -297,19 +298,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.AI_TASK,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem()))
-			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
+		if (unmodifiableAIBases != null && unmodifiableAIBases.contains(aiBase.getSelectedItem())) {
+			compileNotesArrayList.clear();
+			compileNotesArrayList.add(aiUnmodifiableCompileNote);
+		}
 
-		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
-		});
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
+
+		return compileNotesArrayList;
 	}
 
 	@Override protected void initGUI() {
@@ -768,7 +772,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> {
 			if (editorReady)
-				regenerateAITasks(false);
+				regenerateBlockAssemblies(false);
 		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
@@ -800,9 +804,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateAITasks(changeEvent.getSource() instanceof BlocklyPanel),
-							"AITasksRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
@@ -922,6 +926,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.bind_to_gui")));
 		props.add(guiBoundTo);
 
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		refreshGUIProperties();
+
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
 				L10N.label("elementgui.living_entity.inventory_size")));
 		props.add(inventorySize);
@@ -978,7 +985,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_vibration"), vibrationPane);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3).lazyValidate(
-				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+				BlocklyAggregatedValidationResult.blocklyValidator(this,
 						compileNote -> "Living entity AI builder: " + compileNote));
 		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5).validate(restrictionBiomes);
 
@@ -992,6 +999,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		enableOrDisableFields();
 
 		editorReady = true;
+	}
+
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
 	}
 
 	private void refreshSpawnProperties() {
@@ -1104,6 +1118,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		refreshEggProperties();
 		refreshSpawnProperties();
+		refreshGUIProperties();
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {

@@ -1,0 +1,1 @@
+Tämä on se, kuinka paljon kokemusta pelaaja saa suoritettuaan edistymisen.

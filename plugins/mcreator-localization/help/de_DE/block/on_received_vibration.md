@@ -1,0 +1,1 @@
+Diese Prozedur bestimmt, was passiert, wenn eine Vibration empfangen wird.

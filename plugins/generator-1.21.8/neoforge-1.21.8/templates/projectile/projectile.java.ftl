@@ -34,7 +34,7 @@
 
 package ${package}.entity;
 
-<#compress>
+<@javacompress>
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
@@ -263,6 +263,6 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 }
-</#compress>
+</@javacompress>
 
 <#-- @formatter:on -->

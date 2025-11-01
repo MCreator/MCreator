@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -116,7 +117,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyChangedListeners.add(listener);
 	}
 
-	private synchronized void regenerateProcedure(boolean jsEventTriggeredChange) {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE));
 		BlocklyToProcedure blocklyToJava;
@@ -126,12 +127,86 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
-		dependenciesArrayList = blocklyToJava.getDependencies();
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
+		// Check that no local variable has the same name as one of the dependencies
+		dependenciesArrayList = blocklyToJava.getDependencies();
+		for (var dependency : dependenciesArrayList) {
+			for (int i = 0; i < localVars.getSize(); i++) {
+				if (dependency.getName().equals(localVars.get(i).getName())) {
+					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
+					break; // We found a match, there's no need to check the other variables
+				}
+			}
+		}
+
+		// Check if new dependencies were added
+		boolean hasNewDependenciesAdded = false;
+		if (isEditingMode() && dependenciesBeforeEdit == null) {
+			dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
+		} else if (dependenciesBeforeEdit != null) {
+			// we go through new dependency list and check if old one contains all of them
+			for (Dependency dependency : dependenciesArrayList) {
+				if (!dependenciesBeforeEdit.contains(dependency)) {
+					hasNewDependenciesAdded = true;
+					break;
+				}
+			}
+		}
+
+		// Warn user if dependency null check skip is disabled
+		if (skipDependencyNullCheck.isSelected()) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("elementgui.procedure.null_dependency_crash_warning")));
+		}
+
+		// Handle compile notes related to external trigger if present
+		if (blocklyToJava.getExternalTrigger() != null) {
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
+					.getExternalTriggers();
+
+			for (ExternalTrigger externalTrigger : externalTriggers) {
+				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
+					trigger = externalTrigger;
+					break;
+				}
+			}
+
+			if (trigger != null) {
+				if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
+					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("elementgui.procedure.global_trigger_unsupported")));
+				}
+
+				if (trigger.required_apis != null) {
+					for (String required_api : trigger.required_apis) {
+						if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
+							compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+									L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
+						}
+					}
+				}
+
+				// Check if trigger is tick based
+				if (trigger.getID().endsWith("_ticks")) {
+					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
+							L10N.t("elementgui.procedure.global_trigger_tick_based", trigger.getName())));
+				}
+			} else {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("elementgui.procedure.global_trigger_does_not_exist")));
+			}
+		} else {
+			trigger = null;
+		}
+
+		// Handle UI-related stuff below, do not modify compileNotesArrayList here!
+		boolean finalHasNewDependenciesAdded = hasNewDependenciesAdded;
 		SwingUtilities.invokeLater(() -> {
 			dependencies.clear();
 			dependenciesExtTrigger.clear();
@@ -145,31 +220,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			hasResultTriggerLabel.setIcon(null);
 			sideTriggerLabel.setIcon(null);
 
-			// Check that no local variable has the same name as one of the dependencies
-			for (var dependency : dependenciesArrayList) {
-				for (int i = 0; i < localVars.getSize(); i++) {
-					if (dependency.getName().equals(localVars.get(i).getName())) {
-						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
-						break; // We found a match, there's no need to check the other variables
-					}
-				}
-			}
-
-			if (isEditingMode() && dependenciesBeforeEdit == null) {
-				dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
-			} else if (dependenciesBeforeEdit != null) {
-				boolean hasNewDependenciesAdded = false;
-				// we go through new dependency list and check if old one contains all of them
-				for (Dependency dependency : dependenciesArrayList) {
-					if (!dependenciesBeforeEdit.contains(dependency)) {
-						hasNewDependenciesAdded = true;
-						break;
-					}
-				}
-				if (hasNewDependenciesAdded) {
-					depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_added"));
-				}
+			if (finalHasNewDependenciesAdded) {
+				depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_added"));
 			}
 
 			if (blocklyToJava.getReturnType() != null) {
@@ -182,16 +234,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			hasDependencyErrors = false;
 			if (blocklyToJava.getExternalTrigger() != null) {
-				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTriggers();
-
-				for (ExternalTrigger externalTrigger : externalTriggers) {
-					if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
-						trigger = externalTrigger;
-						break;
-					}
-				}
-
 				if (trigger != null) {
 					triggerDepsPan.setVisible(true);
 
@@ -232,46 +274,21 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						sideTriggerLabel.setText(L10N.t("elementgui.procedure.server_side_trigger"));
 						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
-
-					if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
-						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-								L10N.t("elementgui.procedure.global_trigger_unsupported")));
-					}
-
-					if (trigger.required_apis != null) {
-						for (String required_api : trigger.required_apis) {
-							if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
-								compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-										L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
-							}
-						}
-					}
-
-					// Check if trigger is tick based
-					if (trigger.getID().endsWith("_ticks")) {
-						compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
-								L10N.t("elementgui.procedure.global_trigger_tick_based", trigger.getName())));
-					}
 				} else {
-					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("elementgui.procedure.global_trigger_does_not_exist")));
 					triggerDepsPan.setVisible(false);
 				}
 			} else {
 				triggerDepsPan.setVisible(false);
 			}
 
-			if (skipDependencyNullCheck.isSelected()) {
-				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("elementgui.procedure.null_dependency_crash_warning")));
-			}
-
 			dependenciesArrayList.forEach(dependencies::addElement);
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
+
+		return compileNotesArrayList;
 	}
 
 	static class DependenciesListRenderer extends JLabel implements ListCellRenderer<Dependency> {
@@ -575,14 +592,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateProcedure(changeEvent.getSource() instanceof BlocklyPanel),
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
 		});
 
-		skipDependencyNullCheck.addActionListener(e -> regenerateProcedure(false));
+		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));
 
 		pane5.add("Center", blocklyPanel);
 
@@ -600,8 +617,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
 			else
-				return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
-		});
+				return new AggregatedValidationResult.PASS();
+		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {
