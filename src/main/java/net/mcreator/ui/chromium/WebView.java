@@ -181,4 +181,9 @@ public class WebView extends JPanel implements Closeable {
 		void pageLoaded();
 	}
 
+	public static void preload() {
+		LOG.debug("Preloading CEF");
+		new WebView("about:blank", true).close();
+	}
+
 }
