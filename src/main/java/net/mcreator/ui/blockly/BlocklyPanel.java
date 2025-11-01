@@ -77,9 +77,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		// TODO: check if transparent background works on all platforms and is fast, if yes, make it default
-		webView = new WebView("classloader://blockly/blockly.html",
-				PreferencesManager.PREFERENCES.blockly.transparentBackground.get());
+		webView = new WebView("classloader://blockly/blockly.html");
 
 		add("Center", webView);
 
@@ -92,10 +90,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 						"/themes/" + Theme.current().getID() + "/styles/blockly.css");
 			} else {
 				additionalCSS += FileIO.readResourceToString(PluginLoader.INSTANCE, "/themes/default_dark/styles/blockly.css");
-			}
-
-			if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()) {
-				additionalCSS += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
 			}
 
 			webView.addCSSToDOM(additionalCSS);

@@ -25,6 +25,7 @@ import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 import net.mcreator.Launcher;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -71,8 +72,16 @@ public class CefUtils {
 		CefAppBuilder builder = new CefAppBuilder();
 
 		builder.setInstallDir(UserFolderManager.getFileFromUserFolder("/cef/"));
-		builder.setProgressHandler((enumProgress, v) -> LOG.info("Loading CEF: {} ({})", enumProgress, v));
-		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(0, 0, 0, 0);
+		builder.setProgressHandler((enumProgress, v) -> {
+			if (v >= 0) {
+				LOG.info("Loading CEF: {} ({})", enumProgress, v);
+			} else {
+				LOG.info("Loading CEF: {}", enumProgress);
+			}
+		});
+		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(
+				Theme.current().getBackgroundColor().getAlpha(), Theme.current().getBackgroundColor().getRed(),
+				Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
 		builder.getCefSettings().windowless_rendering_enabled = false;
 		builder.getCefSettings().persist_session_cookies = false;
 		builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;

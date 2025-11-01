@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.chromium;
 
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
@@ -61,11 +62,11 @@ public class WebView extends JPanel implements Closeable {
 		return thread;
 	});
 
-	public WebView(String url, boolean isTransparent) {
+	public WebView(String url) {
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
-		this.browser = this.client.createBrowser(url, false, isTransparent);
+		this.browser = this.client.createBrowser(url, false, false);
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -91,6 +92,7 @@ public class WebView extends JPanel implements Closeable {
 		});
 
 		Component cefComponent = browser.getUIComponent();
+		cefComponent.setBackground(Theme.current().getBackgroundColor());
 		setOpaque(false);
 		setLayout(new BorderLayout());
 		add(cefComponent, BorderLayout.CENTER);
@@ -185,7 +187,7 @@ public class WebView extends JPanel implements Closeable {
 
 	public static void preload() {
 		LOG.debug("Preloading CEF WebView");
-		new WebView("about:blank", true).close();
+		new WebView("about:blank").close();
 	}
 
 }
