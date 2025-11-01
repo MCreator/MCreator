@@ -30,7 +30,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.Workspace;
@@ -71,6 +70,8 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.material_pack_name_validator")));
 
+		validableElements.addValidationElement(name);
+
 		this.add("Center", PanelUtils.centerInPanel(props));
 
 		this.setSize(600, 300);
@@ -78,16 +79,9 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		this.setVisible(true);
 	}
 
-	@Override protected void onOkButtonPressed(MCreator mcreator) {
-		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-					(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
-					(Double) power.getValue());
-			mcreator.reloadWorkspaceTabContents();
-			this.setCursor(Cursor.getDefaultCursor());
-			this.dispose();
-		}
+	@Override protected void generatePack(MCreator mcreator) {
+		addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
 	public static void addMaterialPackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,

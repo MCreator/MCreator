@@ -37,7 +37,6 @@ import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -86,6 +85,8 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.ore_pack_name_validator")));
 
+		validableElements.addValidationElement(name);
+
 		this.add("Center", PanelUtils.centerInPanel(props));
 
 		this.setSize(600, 280);
@@ -93,16 +94,9 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		this.setVisible(true);
 	}
 
-	@Override protected void onOkButtonPressed(MCreator mcreator) {
-		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-					(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
-					(Double) power.getValue());
-			mcreator.reloadWorkspaceTabContents();
-			this.setCursor(Cursor.getDefaultCursor());
-			this.dispose();
-		}
+	@Override protected void generatePack(MCreator mcreator) {
+		addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,

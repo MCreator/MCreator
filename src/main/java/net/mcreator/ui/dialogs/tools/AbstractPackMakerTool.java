@@ -26,6 +26,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -36,6 +37,8 @@ import java.util.ArrayList;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
+	protected ValidationGroup validableElements = new ValidationGroup();
+
 	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
 		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
 		this.setLayout(new BorderLayout(10, 10));
@@ -43,7 +46,15 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		this.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools." + localizationKey + "_info")));
 
 		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
-		ok.addActionListener(e -> onOkButtonPressed(mcreator));
+		ok.addActionListener(e -> {
+			if (validableElements.validateIsErrorFree()) {
+				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+				generatePack(mcreator);
+				mcreator.reloadWorkspaceTabContents();
+				this.setCursor(Cursor.getDefaultCursor());
+				this.dispose();
+			}
+		});
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		cancel.addActionListener(e -> this.dispose());
 		this.add("South", PanelUtils.join(ok, cancel));
@@ -51,7 +62,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		this.getRootPane().setDefaultButton(ok);
 	}
 
-	protected abstract void onOkButtonPressed(MCreator mcreator);
+	protected abstract void generatePack(MCreator mcreator);
 
 	public static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		for (String name : names) {

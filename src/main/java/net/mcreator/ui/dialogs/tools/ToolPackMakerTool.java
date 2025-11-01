@@ -40,7 +40,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -106,6 +105,9 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.tool_pack_name_validator")));
 
+		validableElements.addValidationElement(name);
+		validableElements.addValidationElement(base);
+
 		this.add("Center", PanelUtils.centerInPanel(props));
 
 		this.setSize(600, 290);
@@ -113,17 +115,9 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		this.setVisible(true);
 	}
 
-	@Override protected void onOkButtonPressed(MCreator mcreator) {
-		if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
-				&& base.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
-					color.getColor(), (Double) power.getValue());
-			mcreator.reloadWorkspaceTabContents();
-			this.setCursor(Cursor.getDefaultCursor());
-			this.dispose();
-		}
-
+	@Override protected void generatePack(MCreator mcreator) {
+		addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(), color.getColor(),
+				(Double) power.getValue());
 	}
 
 	static void addToolPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
