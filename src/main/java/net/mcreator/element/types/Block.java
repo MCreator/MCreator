@@ -76,8 +76,6 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public NumberProcedure blockBounciness;
-	public NumberProcedure fallDamageInduced;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;
@@ -94,6 +92,9 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
+
+	public NumberProcedure blockBounciness;
+	public NumberProcedure fallDamageInduced;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;

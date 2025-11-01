@@ -513,22 +513,19 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			boundingBoxList.setEnabled(false);
 		}
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
-		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel selp2 = new JPanel(new GridLayout(5, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 		selp2.setOpaque(false);
-
-		JPanel fallProperties = new JPanel(new GridLayout(2, 2, 0, 2));
-		fallProperties.setOpaque(false);
 
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
@@ -603,12 +600,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.creative_pick_item")));
 		selp2.add(PanelUtils.join(FlowLayout.LEFT, creativePickItem));
 
-		selp2.setLayout(new BoxLayout(selp2, BoxLayout.Y_AXIS));
-
-		fallProperties.add(blockBounciness);
-		fallProperties.add(fallDamageInduced);
-
-		selp2.add(fallProperties);
+		selp.add(blockBounciness);
+		selp.add(fallDamageInduced);
 
 		ButtonGroup bg2 = new ButtonGroup();
 		bg2.add(defaultSoundType);

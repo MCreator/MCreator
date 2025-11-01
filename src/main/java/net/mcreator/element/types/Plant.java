@@ -54,8 +54,6 @@ import java.util.stream.Collectors;
 
 	public String tintType;
 	public boolean isItemTinted;
-	public NumberProcedure blockBounciness;
-	public NumberProcedure fallDamageInduced;
 
 	public String plantType;
 
@@ -83,6 +81,9 @@ import java.util.stream.Collectors;
 	public boolean unbreakable;
 	public boolean isSolid;
 	public boolean isWaterloggable;
+
+	public NumberProcedure blockBounciness;
+	public NumberProcedure fallDamageInduced;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
