@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.chromium;
 
-import net.mcreator.Launcher;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefKeyboardHandler;
 import org.cef.misc.EventFlags;
@@ -40,20 +39,18 @@ public abstract class CefSwingKeyboardBridge implements CefKeyboardHandler {
 		if (event.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN) {
 			int keyCode = event.windows_key_code;
 			int modifiers = 0;
-			if ((event.modifiers & EventFlags.EVENTFLAG_CONTROL_DOWN) != 0) modifiers |= InputEvent.CTRL_DOWN_MASK;
-			if ((event.modifiers & EventFlags.EVENTFLAG_SHIFT_DOWN) != 0) modifiers |= InputEvent.SHIFT_DOWN_MASK;
-			if ((event.modifiers & EventFlags.EVENTFLAG_ALT_DOWN) != 0) modifiers |= InputEvent.ALT_DOWN_MASK;
-			if ((event.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0) modifiers |= InputEvent.META_DOWN_MASK;
+			if ((event.modifiers & EventFlags.EVENTFLAG_CONTROL_DOWN) != 0)
+				modifiers |= InputEvent.CTRL_DOWN_MASK;
+			if ((event.modifiers & EventFlags.EVENTFLAG_SHIFT_DOWN) != 0)
+				modifiers |= InputEvent.SHIFT_DOWN_MASK;
+			if ((event.modifiers & EventFlags.EVENTFLAG_ALT_DOWN) != 0)
+				modifiers |= InputEvent.ALT_DOWN_MASK;
+			if ((event.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0)
+				modifiers |= InputEvent.META_DOWN_MASK;
 
 			// Create a synthetic AWT KeyEvent
-			KeyEvent awtEvent = new KeyEvent(
-					browser.getUIComponent(),
-					KeyEvent.KEY_PRESSED,
-					System.currentTimeMillis(),
-					modifiers,
-					keyCode,
-					KeyEvent.CHAR_UNDEFINED
-			);
+			KeyEvent awtEvent = new KeyEvent(browser.getUIComponent(), KeyEvent.KEY_PRESSED, System.currentTimeMillis(),
+					modifiers, keyCode, KeyEvent.CHAR_UNDEFINED);
 
 			// Post it to Swing's event queue
 			EventQueue.invokeLater(() -> Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(awtEvent));

@@ -28,7 +28,6 @@ import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.chromium.CefJavaBridgeHandler;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.dialogs.AIConditionEditor;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
@@ -45,7 +44,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.callback.CefQueryCallback;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -100,29 +99,29 @@ public final class BlocklyJavascriptBridge {
 		}
 	}
 
-	@SuppressWarnings("unused") public void openColorSelector(String color, CefQueryCallback callback) {
+	@SuppressWarnings("unused") public void openColorSelector(String color, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			Color newColor = JColor.openDialog(mcreator,
 					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), Color.decode(color));
 			AtomicReference<String> colorString = new AtomicReference<>(newColor == null ?
 					null :
 					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()));
-			callback.success(CefJavaBridgeHandler.gson.toJson(colorString.get()));
+			callback.accept(colorString.get());
 		});
 	}
 
-	@SuppressWarnings("unused") public void openMCItemSelector(String type, CefQueryCallback callback) {
+	@SuppressWarnings("unused") public void openMCItemSelector(String type, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
 					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems);
-			callback.success(CefJavaBridgeHandler.gson.toJson(selected != null ? selected.getName() : null));
+			callback.accept(selected == null ? null : selected.getName());
 		});
 	}
 
-	@SuppressWarnings("unused") public void openAIConditionEditor(String data, CefQueryCallback callback) {
+	@SuppressWarnings("unused") public void openAIConditionEditor(String data, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			List<String> retval = AIConditionEditor.open(mcreator, data.split(","));
-			callback.success(CefJavaBridgeHandler.gson.toJson(StringUtils.join(retval, ',')));
+			callback.accept(StringUtils.join(retval, ','));
 		});
 	}
 
@@ -171,7 +170,7 @@ public final class BlocklyJavascriptBridge {
 	 * @param callback             The Javascript object that passes the {"value", "readable name"} pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
-			@Nullable String customEntryProviders, CefQueryCallback callback) {
+			@Nullable String customEntryProviders, Consumer<String[]> callback) {
 		SwingUtilities.invokeLater(() -> {
 			String[] retval = switch (type) {
 				case "entity" -> openDataListEntrySelector(
@@ -262,7 +261,7 @@ public final class BlocklyJavascriptBridge {
 				}
 			};
 
-			callback.success(CefJavaBridgeHandler.gson.toJson(retval));
+			callback.accept(retval);
 		});
 	}
 

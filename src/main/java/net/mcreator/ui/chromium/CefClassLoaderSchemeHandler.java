@@ -22,6 +22,8 @@ package net.mcreator.ui.chromium;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
 import org.cef.callback.CefCallback;
 import org.cef.handler.CefResourceHandler;
 import org.cef.misc.IntRef;
@@ -39,6 +41,10 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 
 	private InputStream inputStream;
 	private String contentType;
+
+	@SuppressWarnings("unused")
+	public CefClassLoaderSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
+	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
 		try {

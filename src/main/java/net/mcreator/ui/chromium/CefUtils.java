@@ -33,7 +33,6 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
-import org.cef.browser.CefMessageRouter;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
 import org.cef.handler.CefContextMenuHandler;
@@ -52,10 +51,6 @@ public class CefUtils {
 	private static final Logger LOG = LogManager.getLogger("CEF");
 
 	private static CefApp cefApp = null;
-	private static CefClient cefClient = null;
-	private static CefMessageRouter cefMessageRouter = null;
-
-	private static final CefMultiLoadHandler cefMultiLoadHandler = new CefMultiLoadHandler();
 
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
@@ -66,41 +61,10 @@ public class CefUtils {
 	}
 
 	public static void close() {
-		if (cefMessageRouter != null) {
-			cefMessageRouter.dispose();
-			cefMessageRouter = null;
-		}
-		if (cefClient != null) {
-			cefClient.dispose();
-			cefClient = null;
-		}
 		if (cefApp != null) {
 			cefApp.dispose();
 			cefApp = null;
 		}
-	}
-
-	public static CefClient getCefClient() {
-		if (cefClient == null) {
-			cefClient = createClient();
-			getCefMessageRouter(); // also preload CEF message router
-			cefClient.addLoadHandler(cefMultiLoadHandler);
-		}
-
-		return cefClient;
-	}
-
-	public static CefMessageRouter getCefMessageRouter() {
-		if (cefMessageRouter == null) {
-			cefMessageRouter = CefMessageRouter.create();
-			getCefClient().addMessageRouter(cefMessageRouter);
-		}
-
-		return cefMessageRouter;
-	}
-
-	static CefMultiLoadHandler getMultiLoadHandler() {
-		return cefMultiLoadHandler;
 	}
 
 	private static CefApp createApp() {
@@ -123,8 +87,7 @@ public class CefUtils {
 			}
 
 			@Override public void onContextInitialized() {
-				cefApp.registerSchemeHandlerFactory("classloader", "",
-						(browser, frame, schemeName, request) -> new CefClassLoaderSchemeHandler());
+				cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
 			}
 		});
 
@@ -136,10 +99,8 @@ public class CefUtils {
 		return cefApp;
 	}
 
-	private static CefClient createClient() {
-		CefApp cefApp = getCefApp();
-
-		CefClient cefClient = cefApp.createClient();
+	public static CefClient createClient() {
+		CefClient cefClient = getCefApp().createClient();
 
 		// Logging handling
 		cefClient.addDisplayHandler(new CefDisplayHandlerAdapter() {
