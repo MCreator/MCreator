@@ -1,4 +1,4 @@
-Determines Bounciness of a block (like a slimeblock)
+Determines Bounciness of a block (like a slimeblock).
 Must have collision/ be solid to be bouncy
 
  Default value of 0 disables bounciness
