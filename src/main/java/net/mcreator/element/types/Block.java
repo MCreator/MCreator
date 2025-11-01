@@ -24,6 +24,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
@@ -91,6 +92,9 @@ import java.util.stream.Collectors;
 	public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
+
+	public NumberProcedure blockBounciness;
+	public NumberProcedure fallDamageInduced;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
