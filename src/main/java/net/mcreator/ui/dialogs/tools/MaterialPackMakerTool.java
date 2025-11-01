@@ -112,4 +112,5 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 			}
 		}.setIcon(UIRES.get("16px.materialpack"));
 	}
+
 }
