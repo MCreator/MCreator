@@ -63,7 +63,7 @@ public class GTJSONTriggersBlocks {
 
 			// Set selectors to some value
 
-			testXML = testXML.replace("",
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
 					"<block type=\"any_item_in\"><mutation inputs=\"2\"></mutation><value name=\"item0\"><block type=\"mcitem_all\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
