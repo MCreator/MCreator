@@ -97,9 +97,11 @@ public class ${JavaModName}Items {
 						() -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
 			<#elseif item.getModElement().getTypeString() == "specialentity">
-			public static final DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}",
-					() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>, ${JavaModName}BoatTypes.${item.getModElement().getRegistryNameUpper()}_TYPE.getValue(), new Item.Properties().stacksTo(1)));
+				${item.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${item.getModElement().getRegistryName()}",
+						() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>,
+						${JavaModName}BoatTypes.${item.getModElement().getRegistryNameUpper()}_TYPE.getValue(),
+						new Item.Properties().stacksTo(1)));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
