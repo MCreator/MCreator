@@ -64,15 +64,15 @@ configurations {
     linux64
 
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        runtimeOnly.extendsFrom win64
+        implementation.extendsFrom win64
     } else if (Os.isFamily(Os.FAMILY_MAC)) {
         if (System.getProperty("os.arch").contains("aarch64")) {
-            runtimeOnly.extendsFrom macAarch64
+            implementation.extendsFrom macAarch64
         } else {
-            runtimeOnly.extendsFrom macX64
+            implementation.extendsFrom macX64
         }
     } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-        runtimeOnly.extendsFrom linux64
+        implementation.extendsFrom linux64
     }
 }
 
@@ -145,12 +145,18 @@ dependencies {
     linux64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'linux-x86_64', ext: 'so'
 
     // TODO: determine if it may make more sense to use JBR with JCEF bundled instead
-    implementation group: 'me.friwi', name: 'jcefmaven', version: '135.0.20'
-    implementation group: 'me.friwi', name: 'jcef-api', version: 'jcef-1770317+cef-132.3.1+g144febe+chromium-132.0.6834.83'
-    win64 group: 'me.friwi', name: 'jcef-natives-windows-amd64', version: 'jcef-1770317+cef-132.3.1+g144febe+chromium-132.0.6834.83'
-    macX64 group: 'me.friwi', name: 'jcef-natives-macos-amd64', version: 'jcef-1770317+cef-132.3.1+g144febe+chromium-132.0.6834.83'
-    macAarch64 group: 'me.friwi', name: 'jcef-natives-macos-arm64', version: 'jcef-1770317+cef-132.3.1+g144febe+chromium-132.0.6834.83'
-    linux64 group: 'me.friwi', name: 'jcef-natives-linux-amd64', version: 'jcef-1770317+cef-132.3.1+g144febe+chromium-132.0.6834.83'
+    implementation(group: 'me.friwi', name: 'jcefmaven', version: '135.0.20') {
+        dep -> {
+            // Only needed for OSR rendering which we don't use
+            dep.exclude group: 'me.friwi', module: 'jogl-all'
+            dep.exclude group: 'me.friwi', module: 'gluegen-rt'
+            // TODO: we may also be able to exclude GSON and commons-compress here if we bundle directly
+        }
+    }
+    win64 group: 'me.friwi', name: 'jcef-natives-windows-amd64', version: 'jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85'
+    macX64 group: 'me.friwi', name: 'jcef-natives-macos-amd64', version: 'jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85'
+    macAarch64 group: 'me.friwi', name: 'jcef-natives-macos-arm64', version: 'jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85'
+    linux64 group: 'me.friwi', name: 'jcef-natives-linux-amd64', version: 'jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85'
 
     // test dependencies
     testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '6.0.0')

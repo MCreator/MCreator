@@ -71,6 +71,11 @@ public class CefUtils {
 	private static CefApp createApp() {
 		CefAppBuilder builder = new CefAppBuilder();
 
+		// TODO: maybe we want to disable auto-download and instead extract natives in build folder of Gradle
+		// and point there for install directory and call setSkipInstallation, then for distribution include
+		// those natives in lib/jcef, for example and here detect if running build or distribution to decide
+		// which folder to use
+
 		builder.setInstallDir(UserFolderManager.getFileFromUserFolder("/cef/"));
 		builder.setProgressHandler((enumProgress, v) -> {
 			if (v >= 0) {
