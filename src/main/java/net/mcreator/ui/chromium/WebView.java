@@ -67,7 +67,6 @@ public class WebView extends JPanel implements Closeable {
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, false, false);
-		this.browser.createImmediately();
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -99,8 +98,8 @@ public class WebView extends JPanel implements Closeable {
 			}
 		}
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
-		setLayout(new BorderLayout());
-		add(cefComponent, BorderLayout.CENTER);
+		setLayout(new GridLayout(1, 1));
+		add(cefComponent);
 	}
 
 	public void addJavaScriptBridge(String name, Object bridge) {
