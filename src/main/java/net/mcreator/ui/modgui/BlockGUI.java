@@ -271,6 +271,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
+	private final CardLayout blockBaseCardLayout = new CardLayout();
+	private final JPanel blockBasePropertiesPanel = new JPanel(blockBaseCardLayout);
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
@@ -279,8 +281,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			//@formatter:on
 	);
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
-	private JComponent blockSetTypePanel;
-	private JComponent flowerPotPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -437,8 +437,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
-			blockSetTypePanel.setVisible(false);
-			flowerPotPanel.setVisible(false);
+			blockBasePropertiesPanel.setVisible(false);
 			// Re-enable block item if user switches from flower pot to any other block base option
 			if (!isEditingMode() && !hasBlockItem.isSelected()) {
 				hasBlockItem.setSelected(true);
@@ -481,21 +480,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				case "TrapDoor" -> {
 					isBonemealable.setEnabled(false);
 					isBonemealable.setSelected(false);
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Fence" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Door" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
@@ -503,7 +502,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "PressurePlate", "Button" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
@@ -512,7 +511,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "FlowerPot" -> {
-					flowerPotPanel.setVisible(true);
+					showBlockBaseCard("flowerPot");
 					renderType.setEnabled(true);
 					if (!isEditingMode()) {
 						renderType.setSelectedItem(pottedPlantModel);
@@ -573,20 +572,25 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
+		blockBasePropertiesPanel.setOpaque(false);
+
+		// Card for block bases with block set type
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
+						L10N.label("elementgui.block.block_set_type")), blockSetType), "blockSetType");
+
+		// Card for flower pots
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+						HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
+								L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)),
+				"flowerPot");
+
 		txblock4.add(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
 				blockBase));
 
-		txblock4.add(blockSetTypePanel = PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
-						L10N.label("elementgui.block.block_set_type")), blockSetType));
+		txblock4.add(blockBasePropertiesPanel);
 
-		txblock4.add(flowerPotPanel = PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
-						L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)));
-
-		blockSetTypePanel.setVisible(false);
-		flowerPotPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -1449,6 +1453,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (isWaterloggable.isSelected())
 			props.add("waterlogged");
 		return props;
+	}
+
+	private void showBlockBaseCard(String card) {
+		blockBasePropertiesPanel.setVisible(true);
+		blockBaseCardLayout.show(blockBasePropertiesPanel, card);
+
+		for (Component comp : blockBasePropertiesPanel.getComponents()) {
+			if (comp.isVisible()) {
+				blockBasePropertiesPanel.setPreferredSize(comp.getPreferredSize());
+			}
+		}
 	}
 
 	private void refreshFieldsTileEntity() {
