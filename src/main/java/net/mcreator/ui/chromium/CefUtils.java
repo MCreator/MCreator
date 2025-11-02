@@ -80,7 +80,7 @@ public class CefUtils {
 			}
 		});
 		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(
-				Theme.current().getBackgroundColor().getAlpha(), Theme.current().getBackgroundColor().getRed(),
+				255, Theme.current().getBackgroundColor().getRed(),
 				Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
 		builder.getCefSettings().windowless_rendering_enabled = false;
 		builder.getCefSettings().persist_session_cookies = false;

@@ -93,6 +93,11 @@ public class WebView extends JPanel implements Closeable {
 		});
 
 		Component cefComponent = browser.getUIComponent();
+		if (cefComponent instanceof Container container) {
+			for (Component child : container.getComponents()) {
+				child.setBackground(Theme.current().getBackgroundColor());
+			}
+		}
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
 		setLayout(new BorderLayout());
 		add(cefComponent, BorderLayout.CENTER);
