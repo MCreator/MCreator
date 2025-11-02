@@ -527,11 +527,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
-				default -> {
+				case null, default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate")
-								|| selectedBlockBase.equals("EndRod")) {
+						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
+								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
 						}
 					}
@@ -1821,7 +1821,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.rarity = rarity.getSelectedItem();
 		block.immuneToFire = immuneToFire.isSelected();
 		block.creativeTabs = creativeTabs.getListElements();
-		block.destroyTool = (String) destroyTool.getSelectedItem();
+		block.destroyTool = (String) Objects.requireNonNull(destroyTool.getSelectedItem());
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
