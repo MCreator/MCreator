@@ -1,4 +1,4 @@
-Ici vous pouvez spécifier des animations que cette entité de bloc peut jouer et les conditions pour quand des animations se produisent.
+Ici vous pouvez spécifier des animations que cette item peut jouer et les conditions pour quand des animations sont réunis.
 
 **Assurez-vous que les animations que les partie/os du modèle que vous référencer existent dans le fichier du modèle. Sinon, le modèle peut échouer à charger ou le jeu peut planter.**
 
