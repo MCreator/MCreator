@@ -36,10 +36,7 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
-import org.cef.handler.CefContextMenuHandler;
-import org.cef.handler.CefDisplayHandlerAdapter;
-import org.cef.handler.CefFocusHandlerAdapter;
-import org.cef.handler.CefRequestHandlerAdapter;
+import org.cef.handler.*;
 import org.cef.misc.BoolRef;
 import org.cef.network.CefRequest;
 
@@ -68,6 +65,10 @@ public class CefUtils {
 		}
 	}
 
+	public static boolean useOSR() {
+		return true;
+	}
+
 	private static CefApp createApp() {
 		CefAppBuilder builder = new CefAppBuilder();
 
@@ -84,10 +85,10 @@ public class CefUtils {
 				LOG.info("Loading CEF: {}", enumProgress);
 			}
 		});
-		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(
-				255, Theme.current().getBackgroundColor().getRed(),
-				Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
-		builder.getCefSettings().windowless_rendering_enabled = false;
+		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(255,
+				Theme.current().getBackgroundColor().getRed(), Theme.current().getBackgroundColor().getGreen(),
+				Theme.current().getBackgroundColor().getBlue());
+		builder.getCefSettings().windowless_rendering_enabled = useOSR();
 		builder.getCefSettings().persist_session_cookies = false;
 		builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
 		builder.getCefSettings().root_cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString();
@@ -165,7 +166,8 @@ public class CefUtils {
 			}
 
 			@Override public boolean onAfterKeyEvent(CefBrowser browser, CefKeyEvent event) {
-				if (event.windows_key_code == 123 /*F12*/ && Launcher.version.isDevelopment()
+				// Activate dev tools on F12 press if dev version of MCreator
+				if (event.windows_key_code == 123 && Launcher.version.isDevelopment()
 						&& event.type == CefKeyEvent.EventType.KEYEVENT_KEYUP) {
 					browser.openDevTools();
 					return true;
@@ -189,9 +191,12 @@ public class CefUtils {
 		cefClient.addFocusHandler(new CefFocusHandlerAdapter() {
 			@Override public void onGotFocus(CefBrowser browser) {
 				SwingUtilities.invokeLater(() -> {
-					browser.setFocus(false);
-					KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-					browser.setFocus(false);
+					try {
+						browser.setFocus(false);
+						KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+						browser.setFocus(false);
+					} catch (Exception ignored) {
+					}
 				});
 			}
 		});

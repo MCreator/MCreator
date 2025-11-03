@@ -55,10 +55,10 @@ public class WebView extends JPanel implements Closeable {
 	private CountDownLatch executeScriptLatch;
 	private final AtomicReference<String> executeScriptResult = new AtomicReference<>();
 
-	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
+	private static final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
-		thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
 		return thread;
 	});
 
@@ -66,7 +66,8 @@ public class WebView extends JPanel implements Closeable {
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
-		this.browser = this.client.createBrowser(url, false, false);
+		this.browser = this.client.createBrowser(url, CefUtils.useOSR(), false);
+		this.browser.setCloseAllowed(); // workaround for https://github.com/chromiumembedded/java-cef/issues/364
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -87,7 +88,7 @@ public class WebView extends JPanel implements Closeable {
 
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
-				runOnCallbackThread(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
+				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
 			}
 		});
 
@@ -173,10 +174,6 @@ public class WebView extends JPanel implements Closeable {
 
 	public void addLoadListener(PageLoadListener listener) {
 		pageLoadListeners.add(listener);
-	}
-
-	void runOnCallbackThread(Runnable runnable) {
-		callbackExecutor.execute(runnable);
 	}
 
 	@Override public void close() {

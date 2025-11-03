@@ -147,7 +147,7 @@ dependencies {
     // TODO: determine if it may make more sense to use JBR with JCEF bundled instead
     implementation(group: 'me.friwi', name: 'jcefmaven', version: '135.0.20') {
         dep -> {
-            // Only needed for OSR rendering which we don't use
+            // Only needed for OSR rendering which we don't use right now
             dep.exclude group: 'me.friwi', module: 'jogl-all'
             dep.exclude group: 'me.friwi', module: 'gluegen-rt'
             // TODO: we may also be able to exclude GSON and commons-compress here if we bundle directly

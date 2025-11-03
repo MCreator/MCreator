@@ -104,7 +104,7 @@ public class CefJavaBridgeHandler {
 
 				String result = invokeBridge(request, object -> callback.success(gson.toJson(object)));
 				if (result != null)
-					webView.runOnCallbackThread(() -> callback.success(result));
+					callback.success(result);
 
 				return true;
 			}
