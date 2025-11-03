@@ -84,6 +84,12 @@ class DeclarationChecker {
 					DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
 							singleImport.getName(), compilationUnit.getPackageName(), jarManager);
 					return inClassPositionCaretFix(position, clickedWord);
+				} else if (singleImport.isWildcard()) { // if it is wildcard import, check if that package contains this class
+					String packageName = singleImport.getName().substring(0, singleImport.getName().lastIndexOf('.'));
+					DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
+							packageName + "." + clickedWord, compilationUnit.getPackageName(), jarManager);
+					if (position != null)
+						return inClassPositionCaretFix(position, clickedWord);
 				}
 			}
 		}
