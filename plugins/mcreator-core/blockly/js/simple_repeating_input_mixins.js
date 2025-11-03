@@ -308,7 +308,8 @@ Blockly.Extensions.registerMutator('item_enchanted_mutator', simpleRepeatingInpu
 Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin(
         'any_item_mutator_container', 'any_item_mutator_input', 'item',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('MCItem').setAlign(Blockly.Input.Align.RIGHT)
-                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
-        }),
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldMCItemSelector(), 'item' + index);
+        }, false, ['item']),
     undefined, ['any_item_mutator_input']);

@@ -1,3 +1,2 @@
-<#list input_list$item as item>
-	${item}<#sep>,
-</#list>
+<#include "mcitems.ftl">
+<#list field_list$item as item>"${mappedMCItemToRegistryName(w.itemBlock(item))}"<#sep>,</#list>

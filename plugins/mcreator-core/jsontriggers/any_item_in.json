@@ -5,12 +5,16 @@
   "mcreator": {
     "toolbox_id": "components",
     "toolbox_init": [
-      "<mutation inputs=\"2\"></mutation>",
-      "<value name=\"item0\"><block type=\"mcitem_all\"></block></value>",
-      "<value name=\"item1\"><block type=\"mcitem_all\"></block></value>"
+      "<mutation inputs=\"2\"></mutation>"
     ],
-    "repeating_inputs": [
-      "item"
+    "repeating_fields": [
+      {
+        "name": "item",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_mcitem_selector"
+        }
+      }
     ]
   }
 }
