@@ -34,7 +34,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
-import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -565,14 +564,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 
-		JPanel txblock4 = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
-		txblock4.setOpaque(false);
-		txblock4.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-
 		blockBasePropertiesPanel.setOpaque(false);
+		blockBasePropertiesPanel.setVisible(false);
 
 		// Card for block bases with block set type
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
@@ -585,11 +578,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 								L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)),
 				"flowerPot");
 
-		txblock4.add(PanelUtils.gridElements(1, 2, 2, 2,
+		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase));
+				blockBase), blockBasePropertiesPanel);
 
-		txblock4.add(blockBasePropertiesPanel);
+		blockBasePanel.setOpaque(false);
+		blockBasePanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
 		plantsGrowOn.setOpaque(false);
 
@@ -705,7 +702,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isItemTinted.setOpaque(false);
 
-		topnbot.add("South", txblock4);
+		topnbot.add("South", blockBasePanel);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
