@@ -91,8 +91,8 @@ public class CefUtils {
 		builder.getCefSettings().windowless_rendering_enabled = useOSR();
 		builder.getCefSettings().persist_session_cookies = false;
 		builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
-		builder.getCefSettings().root_cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString();
-		builder.getCefSettings().cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString();
+		builder.getCefSettings().root_cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString(); // required
+		builder.getCefSettings().cache_path = null; // in memory cache
 
 		builder.setAppHandler(new MavenCefAppHandlerAdapter() {
 			@Override public void stateHasChanged(CefApp.CefAppState state) {
