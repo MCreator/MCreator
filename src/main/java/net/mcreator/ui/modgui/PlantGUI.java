@@ -790,7 +790,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events.add(onEntityWalksOn);
 		events.add(onHitByProjectile);
 		events.add(onEntityFallsOn);
-
 		events.add(new JEmptyBox());
 		events.add(new JEmptyBox());
 		events.add(new JEmptyBox());
