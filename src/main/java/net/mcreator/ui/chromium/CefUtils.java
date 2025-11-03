@@ -66,7 +66,7 @@ public class CefUtils {
 	}
 
 	public static boolean useOSR() {
-		return true;
+		return false;
 	}
 
 	private static CefApp createApp() {
