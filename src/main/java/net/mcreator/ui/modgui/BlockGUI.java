@@ -580,7 +580,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase), blockBasePropertiesPanel);
+				blockBase), blockBasePropertiesPanel, 0, 2);
 
 		blockBasePanel.setOpaque(false);
 		blockBasePanel.setBorder(BorderFactory.createTitledBorder(
