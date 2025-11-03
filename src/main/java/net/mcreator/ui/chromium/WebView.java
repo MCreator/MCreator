@@ -32,6 +32,9 @@ import org.cef.handler.CefMessageRouterHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import java.awt.event.HierarchyEvent;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,8 @@ public class WebView extends JPanel implements Closeable {
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
 
+	private final Component cefComponent;
+
 	// Helper for page load listeners
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
 
@@ -63,11 +68,15 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
+		setLayout(new BorderLayout());
+		setOpaque(false);
+
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR(), false);
 		this.browser.setCloseAllowed(); // workaround for https://github.com/chromiumembedded/java-cef/issues/364
+		this.browser.createImmediately(); // needed so tests that don't render also work
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -89,18 +98,41 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
 				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
+
+				SwingUtilities.invokeLater(() -> add(cefComponent, BorderLayout.CENTER));
 			}
 		});
 
-		Component cefComponent = browser.getUIComponent();
+		this.cefComponent = browser.getUIComponent();
 		if (cefComponent instanceof Container container) {
 			for (Component child : container.getComponents()) {
 				child.setBackground(Theme.current().getBackgroundColor());
 			}
 		}
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
-		setLayout(new GridLayout(1, 1));
-		add(cefComponent);
+
+		addHierarchyListener(e -> {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
+				forceCefScaleDetectAndResize();
+			}
+		});
+
+		addContainerListener(new ContainerAdapter() {
+			@Override public void componentAdded(ContainerEvent e) {
+				super.componentAdded(e);
+				forceCefScaleDetectAndResize();
+			}
+		});
+	}
+
+	private void forceCefScaleDetectAndResize() {
+		// This hack is only needed for WR rendering, not for OSR - workaround for https://github.com/chromiumembedded/java-cef/issues/438
+		if (!CefUtils.useOSR()) {
+			// First, call the paint method to update scaleFactor_ in CefBrowserWr
+			cefComponent.paint(cefComponent.getGraphics());
+			// After new scaleFactor_ is known, call setBounds to invoke wasResized of CefBrowser
+			cefComponent.setBounds(cefComponent.getBounds());
+		}
 	}
 
 	public void addJavaScriptBridge(String name, Object bridge) {
