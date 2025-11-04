@@ -96,7 +96,7 @@ import net.minecraft.client.model.Model;
 
 		<#if data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody>
 		event.registerItem(new IClientItemExtensions() {
-			private ${data.bodyModelName} model = null
+			private ${data.bodyModelName} model = null;
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				if (model == null)
 					model = new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION));
