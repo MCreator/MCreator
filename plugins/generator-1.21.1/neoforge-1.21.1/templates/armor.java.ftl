@@ -94,10 +94,11 @@ import net.minecraft.client.model.Model;
 		<#if data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+				${data.bodyModelName} model = new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION));
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-					"body", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.bodyModelPart},
-					"left_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartL},
-					"right_arm", new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION)).${data.armsModelPartR},
+					"body", model.${data.bodyModelPart},
+					"left_arm", model.${data.armsModelPartL},
+					"right_arm", model.${data.armsModelPartR},
 					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -114,9 +115,10 @@ import net.minecraft.client.model.Model;
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+				${data.leggingsModelName} model = new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION));
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-					"left_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartL},
-					"right_leg", new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION)).${data.leggingsModelPartR},
+					"left_leg", model.${data.leggingsModelPartL},
+					"right_leg", model.${data.leggingsModelPartR},
 					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -134,9 +136,10 @@ import net.minecraft.client.model.Model;
 		<#if data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots>
 		event.registerItem(new IClientItemExtensions() {
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
+				${data.bootsModelName} model = new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION));
 				HumanoidModel armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-					"left_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartL},
-					"right_leg", new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION)).${data.bootsModelPartR},
+					"left_leg", model.${data.bootsModelPartL},
+					"right_leg", model.${data.bootsModelPartR},
 					"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 					"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
