@@ -128,10 +128,12 @@ public class WebView extends JPanel implements Closeable {
 	private void forceCefScaleDetectAndResize() {
 		// This hack is only needed for WR rendering, not for OSR - workaround for https://github.com/chromiumembedded/java-cef/issues/438
 		if (!CefUtils.useOSR()) {
-			// First, call the paint method to update scaleFactor_ in CefBrowserWr
-			cefComponent.paint(cefComponent.getGraphics());
-			// After new scaleFactor_ is known, call setBounds to invoke wasResized of CefBrowser
-			cefComponent.setBounds(cefComponent.getBounds());
+			SwingUtilities.invokeLater(() -> {
+				// First, call the paint method to update scaleFactor_ in CefBrowserWr
+				cefComponent.paint(cefComponent.getGraphics());
+				// After new scaleFactor_ is known, call setBounds to invoke wasResized of CefBrowser
+				cefComponent.setBounds(cefComponent.getBounds());
+			});
 		}
 	}
 
