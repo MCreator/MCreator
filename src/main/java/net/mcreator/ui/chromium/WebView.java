@@ -60,7 +60,7 @@ public class WebView extends JPanel implements Closeable {
 	private CountDownLatch executeScriptLatch;
 	private final AtomicReference<String> executeScriptResult = new AtomicReference<>();
 
-	private static final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
+	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
 		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
