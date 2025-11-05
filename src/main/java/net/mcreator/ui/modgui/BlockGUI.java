@@ -282,6 +282,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private JComponent blockSetTypePanel;
 	private JComponent flowerPotPanel;
+	private JComponent hasFallingLeavesPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -439,7 +440,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
-			hasFallingLeaves.setVisible(false);
+			hasFallingLeavesPanel.setVisible(false);
 			flowerPotPanel.setVisible(false);
 			// Re-enable block item if user switches from flower pot to any other block base option
 			if (!isEditingMode() && !hasBlockItem.isSelected()) {
@@ -471,7 +472,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				case "Leaves" -> {
 					transparencyType.setEnabled(false);
-					hasFallingLeaves.setVisible(true);
+					hasFallingLeavesPanel.setVisible(true);
 					hasFallingLeaves.setEnabled(true);
 					transparencyType.setSelectedItem("SOLID");
 
@@ -585,11 +586,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType));
 
+		txblock4.add(hasFallingLeavesPanel = PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/has_falling_leaves"),
+						L10N.label("elementgui.block.has_falling_leaves")), hasFallingLeaves));
+
 		txblock4.add(flowerPotPanel = PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
 						L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)));
 
 		blockSetTypePanel.setVisible(false);
+		hasFallingLeavesPanel.setVisible(false);
 		flowerPotPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
@@ -643,7 +649,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(blockSetType, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
-		JPanel visualRenderingSettings = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel visualRenderingSettings = new JPanel(new GridLayout(7, 2, 0, 2));
 		visualRenderingSettings.setOpaque(false);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
@@ -653,10 +659,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
 				L10N.label("elementgui.block.transparency_type")));
 		visualRenderingSettings.add(transparencyType);
-
-		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_falling_leaves"),
-				L10N.label("elementgui.block.has_falling_leaves")));
-		visualRenderingSettings.add(hasFallingLeaves);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
