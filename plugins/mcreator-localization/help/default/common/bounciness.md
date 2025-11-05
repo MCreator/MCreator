@@ -1,8 +1,9 @@
-Determines Bounciness of a block (like a slimeblock).
-Must have collision/ be solid to be bouncy
+Determines the bounciness of a block (like vanilla Slime Block).
+The block must have collisions enabled and be solid for bounciness to work.
 
--Default value of 0 disables bounciness
--1 replicates vanilla slime_blocks
--0.66 replicates vanilla beds
+* Default value of 0 disables bounciness
+* 1 replicates vanilla Slime Block
+* 0.66 replicates vanilla Beds
 
-note: this option alone does not prevent fall damage
+Note: this option does not prevent fall damage, so while bouncing, damage will still be applied.
+Use fall damage induced parameter to reduce fall damage if needed.
