@@ -291,6 +291,13 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if (data.hasFallingLeaves) && data.blockBase == "Leaves">
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+		// disables the fallingLeaves particles
+	}
+    </#if>
+
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		<#if data.isBoundingBoxEmpty()>

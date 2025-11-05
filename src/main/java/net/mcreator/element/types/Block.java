@@ -76,6 +76,8 @@ import java.util.stream.Collectors;
 	public String tintType;
 	public boolean isItemTinted;
 
+	public boolean hasFallingLeaves;
+
 	public boolean hasTransparency;
 	public boolean connectedSides;
 	public String transparencyType;

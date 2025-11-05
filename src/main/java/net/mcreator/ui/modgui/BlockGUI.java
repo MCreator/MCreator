@@ -136,6 +136,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
 					"Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hasFallingLeaves = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox connectedSides = L10N.checkbox("elementgui.common.enable");
@@ -438,6 +439,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockSetTypePanel.setVisible(false);
+			hasFallingLeaves.setVisible(false);
 			flowerPotPanel.setVisible(false);
 			// Re-enable block item if user switches from flower pot to any other block base option
 			if (!isEditingMode() && !hasBlockItem.isSelected()) {
@@ -469,6 +471,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				case "Leaves" -> {
 					transparencyType.setEnabled(false);
+					hasFallingLeaves.setVisible(true);
+					hasFallingLeaves.setEnabled(true);
 					transparencyType.setSelectedItem("SOLID");
 
 					if (!isEditingMode()) {
@@ -639,7 +643,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.deriveFont(blockSetType, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 
-		JPanel visualRenderingSettings = new JPanel(new GridLayout(7, 2, 0, 2));
+		JPanel visualRenderingSettings = new JPanel(new GridLayout(8, 2, 0, 2));
 		visualRenderingSettings.setOpaque(false);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_transparency"),
@@ -649,6 +653,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/transparency_type"),
 				L10N.label("elementgui.block.transparency_type")));
 		visualRenderingSettings.add(transparencyType);
+
+		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_falling_leaves"),
+				L10N.label("elementgui.block.has_falling_leaves")));
+		visualRenderingSettings.add(hasFallingLeaves);
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/connected_sides"),
 				L10N.label("elementgui.block.connected_sides")));
@@ -1643,6 +1651,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockStates.setProperties(block.customProperties);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
+		hasFallingLeaves.setSelected(block.hasFallingLeaves);
 		connectedSides.setSelected(block.connectedSides);
 		displayFluidOverlay.setSelected(block.displayFluidOverlay);
 		hasEnergyStorage.setSelected(block.hasEnergyStorage);
@@ -1800,6 +1809,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		Block block = new Block(modElement);
 		block.name = name.getText();
 		block.hasTransparency = hasTransparency.isSelected();
+		block.hasFallingLeaves = hasFallingLeaves.isSelected();
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
