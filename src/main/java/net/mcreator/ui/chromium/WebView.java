@@ -20,6 +20,7 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
@@ -77,7 +78,8 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
 				false);
-		this.browser.createImmediately(); // needed so tests that don't render also work
+		if (TestUtil.isTestingEnvironment())
+			this.browser.createImmediately(); // needed so tests that don't render also work
 
 		// Register persistent JS handler once
 		// message router sends callback to all adapters
@@ -99,8 +101,6 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
 				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
-
-				SwingUtilities.invokeLater(() -> add(cefComponent, BorderLayout.CENTER));
 			}
 		});
 
@@ -110,7 +110,6 @@ public class WebView extends JPanel implements Closeable {
 		addHierarchyListener(e -> {
 			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
 				forceCefScaleDetectAndResize();
-				repaint();
 			}
 		});
 
@@ -118,9 +117,10 @@ public class WebView extends JPanel implements Closeable {
 			@Override public void componentAdded(ContainerEvent e) {
 				super.componentAdded(e);
 				forceCefScaleDetectAndResize();
-				repaint();
 			}
 		});
+
+		add(cefComponent, BorderLayout.CENTER);
 	}
 
 	private void forceCefScaleDetectAndResize() {

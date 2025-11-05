@@ -30,6 +30,10 @@ import java.awt.event.KeyEvent;
 public abstract class CefSwingKeyboardBridge implements CefKeyboardHandler {
 
 	@Override public boolean onKeyEvent(CefBrowser browser, CefKeyEvent event) {
+		if (CefUtils.useOSR()) {
+			return onAfterKeyEvent(browser, event);
+		}
+
 		// Only need to forward when no Swing component is in focus
 		if (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() != null) {
 			return onAfterKeyEvent(browser, event);

@@ -50,7 +50,7 @@ public class CefUtils {
 	private static CefApp cefApp = null;
 
 	public static boolean useOSR() {
-		return false;
+		return true;
 	}
 
 	private static CefApp getCefApp() {
@@ -177,19 +177,19 @@ public class CefUtils {
 			}
 		});
 
-		// Prevent client from owning the focus so other text fields around the CEF component work
-		cefClient.addFocusHandler(new CefFocusHandlerAdapter() {
-			@Override public void onGotFocus(CefBrowser browser) {
-				SwingUtilities.invokeLater(() -> {
-					try {
-						browser.setFocus(false);
-						KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-						browser.setFocus(false);
-					} catch (Exception ignored) {
-					}
-				});
-			}
-		});
+		// Prevent client from owning the focus so other text fields around the CEF component work for non-OSR rendering
+		if (!CefUtils.useOSR()) {
+			cefClient.addFocusHandler(new CefFocusHandlerAdapter() {
+				@Override public void onGotFocus(CefBrowser browser) {
+					SwingUtilities.invokeLater(() -> {
+						try {
+							browser.setFocus(false);
+						} catch (Exception ignored) {
+						}
+					});
+				}
+			});
+		}
 
 		return cefClient;
 	}
