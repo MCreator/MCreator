@@ -19,10 +19,7 @@
 
 package net.mcreator.ui.chromium;
 
-import me.friwi.jcefmaven.CefAppBuilder;
-import me.friwi.jcefmaven.CefInitializationException;
-import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
-import me.friwi.jcefmaven.UnsupportedPlatformException;
+import com.jetbrains.cef.JCefAppConfig;
 import net.mcreator.Launcher;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.laf.themes.Theme;
@@ -36,13 +33,15 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
+import org.cef.callback.CefRunContextMenuCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
 import org.cef.network.CefRequest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class CefUtils {
 
@@ -50,9 +49,42 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 
+	public static boolean useOSR() {
+		return false;
+	}
+
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
-			cefApp = createApp();
+			JCefAppConfig config = JCefAppConfig.getInstance();
+			List<String> appArgs = config.getAppArgsAsList();
+
+			CefSettings settings = config.getCefSettings();
+			settings.no_sandbox = true;
+			settings.cache_path = UserFolderManager.getFileFromUserFolder("/cef/").toString();
+			settings.background_color = settings.new ColorType(255, Theme.current().getBackgroundColor().getRed(),
+					Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
+			settings.windowless_rendering_enabled = useOSR();
+			settings.persist_session_cookies = false;
+			settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
+
+			String[] args = appArgs.toArray(new String[0]);
+			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
+				@Override public void onContextInitialized() {
+					cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
+				}
+			});
+
+			CefApp.startup(args);
+
+			cefApp = CefApp.getInstance(settings);
+
+			CountDownLatch latch = new CountDownLatch(1);
+			cefApp.onInitialization(s -> latch.countDown());
+
+			try {
+				latch.await();
+			} catch (InterruptedException ignored) {
+			}
 		}
 
 		return cefApp;
@@ -63,55 +95,6 @@ public class CefUtils {
 			cefApp.dispose();
 			cefApp = null;
 		}
-	}
-
-	public static boolean useOSR() {
-		return false;
-	}
-
-	private static CefApp createApp() {
-		CefAppBuilder builder = new CefAppBuilder();
-
-		// TODO: maybe we want to disable auto-download and instead extract natives in build folder of Gradle
-		// and point there for install directory and call setSkipInstallation, then for distribution include
-		// those natives in lib/jcef, for example and here detect if running build or distribution to decide
-		// which folder to use
-
-		builder.setInstallDir(UserFolderManager.getFileFromUserFolder("/cef/"));
-		builder.setProgressHandler((enumProgress, v) -> {
-			if (v >= 0) {
-				LOG.info("Loading CEF: {} ({})", enumProgress, v);
-			} else {
-				LOG.info("Loading CEF: {}", enumProgress);
-			}
-		});
-		builder.getCefSettings().background_color = builder.getCefSettings().new ColorType(255,
-				Theme.current().getBackgroundColor().getRed(), Theme.current().getBackgroundColor().getGreen(),
-				Theme.current().getBackgroundColor().getBlue());
-		builder.getCefSettings().windowless_rendering_enabled = useOSR();
-		builder.getCefSettings().persist_session_cookies = false;
-		builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
-		builder.getCefSettings().root_cache_path = UserFolderManager.getFileFromUserFolder("/cef/cache/").toString(); // required
-		builder.getCefSettings().cache_path = null; // in memory cache
-
-		builder.setAppHandler(new MavenCefAppHandlerAdapter() {
-			@Override public void stateHasChanged(CefApp.CefAppState state) {
-				if (state == CefApp.CefAppState.TERMINATED) {
-					LOG.error("CEF app terminated");
-				}
-			}
-
-			@Override public void onContextInitialized() {
-				cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
-			}
-		});
-
-		try {
-			cefApp = builder.build();
-		} catch (IOException | UnsupportedPlatformException | InterruptedException | CefInitializationException e) {
-			throw new RuntimeException(e);
-		}
-		return cefApp;
 	}
 
 	public static CefClient createClient() {
@@ -146,6 +129,13 @@ public class CefUtils {
 			public void onBeforeContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams params,
 					CefMenuModel model) {
 				model.clear();
+			}
+
+			@Override
+			public boolean runContextMenu(CefBrowser cefBrowser, CefFrame cefFrame,
+					CefContextMenuParams cefContextMenuParams, CefMenuModel cefMenuModel,
+					CefRunContextMenuCallback cefRunContextMenuCallback) {
+				return false;
 			}
 
 			@Override

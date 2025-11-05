@@ -26,6 +26,7 @@ import org.cef.CefClient;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.browser.CefMessageRouter;
+import org.cef.browser.CefRendering;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
@@ -74,8 +75,8 @@ public class WebView extends JPanel implements Closeable {
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
-		this.browser = this.client.createBrowser(url, CefUtils.useOSR(), false);
-		this.browser.setCloseAllowed(); // workaround for https://github.com/chromiumembedded/java-cef/issues/364
+		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
+				false);
 		this.browser.createImmediately(); // needed so tests that don't render also work
 
 		// Register persistent JS handler once
@@ -104,16 +105,12 @@ public class WebView extends JPanel implements Closeable {
 		});
 
 		this.cefComponent = browser.getUIComponent();
-		if (cefComponent instanceof Container container) {
-			for (Component child : container.getComponents()) {
-				child.setBackground(Theme.current().getBackgroundColor());
-			}
-		}
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
 
 		addHierarchyListener(e -> {
 			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
 				forceCefScaleDetectAndResize();
+				repaint();
 			}
 		});
 
@@ -121,6 +118,7 @@ public class WebView extends JPanel implements Closeable {
 			@Override public void componentAdded(ContainerEvent e) {
 				super.componentAdded(e);
 				forceCefScaleDetectAndResize();
+				repaint();
 			}
 		});
 	}
