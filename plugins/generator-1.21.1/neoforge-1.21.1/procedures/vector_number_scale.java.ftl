@@ -1,1 +1,1 @@
-(${input$vector}.${field$vector_opcodes}${input$scaleValue}))
+(${input$vector}.scale(${field$vector_opcodes}${input$scaleValue}))
