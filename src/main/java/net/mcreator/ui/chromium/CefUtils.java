@@ -20,7 +20,6 @@
 package net.mcreator.ui.chromium;
 
 import com.jetbrains.cef.JCefAppConfig;
-import net.mcreator.Launcher;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
@@ -29,17 +28,18 @@ import org.apache.logging.log4j.Logger;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
+import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
 import org.cef.callback.CefRunContextMenuCallback;
-import org.cef.handler.*;
-import org.cef.misc.BoolRef;
+import org.cef.handler.CefAppHandlerAdapter;
+import org.cef.handler.CefContextMenuHandler;
+import org.cef.handler.CefDisplayHandlerAdapter;
+import org.cef.handler.CefRequestHandlerAdapter;
 import org.cef.network.CefRequest;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -50,7 +50,7 @@ public class CefUtils {
 	private static CefApp cefApp = null;
 
 	public static boolean useOSR() {
-		return true;
+		return OS.isLinux();
 	}
 
 	private static CefApp getCefApp() {
@@ -148,25 +148,6 @@ public class CefUtils {
 			}
 		});
 
-		// Pass keyboard events from a native CEF component to Swing components using CefSwingKeyboardBridge + handle dev tools
-		cefClient.addKeyboardHandler(new CefSwingKeyboardBridge() {
-			@Override
-			public boolean onPreKeyEvent(CefBrowser browser, CefKeyEvent event, BoolRef is_keyboard_shortcut) {
-				return false;
-			}
-
-			@Override public boolean onAfterKeyEvent(CefBrowser browser, CefKeyEvent event) {
-				// Activate dev tools on F12 press if dev version of MCreator
-				if (event.windows_key_code == 123 && Launcher.version.isDevelopment()
-						&& event.type == CefKeyEvent.EventType.KEYEVENT_KEYUP) {
-					browser.openDevTools();
-					return true;
-				}
-
-				return false;
-			}
-		});
-
 		// Disable access to the internet
 		cefClient.addRequestHandler(new CefRequestHandlerAdapter() {
 			@Override
@@ -176,20 +157,6 @@ public class CefUtils {
 				return url.startsWith("http://") || url.startsWith("https://"); // return true to block the request
 			}
 		});
-
-		// Prevent client from owning the focus so other text fields around the CEF component work for non-OSR rendering
-		if (!CefUtils.useOSR()) {
-			cefClient.addFocusHandler(new CefFocusHandlerAdapter() {
-				@Override public void onGotFocus(CefBrowser browser) {
-					SwingUtilities.invokeLater(() -> {
-						try {
-							browser.setFocus(false);
-						} catch (Exception ignored) {
-						}
-					});
-				}
-			});
-		}
 
 		return cefClient;
 	}

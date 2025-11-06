@@ -19,24 +19,30 @@
 
 package net.mcreator.ui.chromium;
 
+import net.mcreator.Launcher;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
+import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.browser.CefMessageRouter;
 import org.cef.browser.CefRendering;
 import org.cef.callback.CefQueryCallback;
+import org.cef.handler.CefFocusHandlerAdapter;
+import org.cef.handler.CefKeyboardHandlerAdapter;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
+import org.jboss.forge.roaster._shade.org.eclipse.core.runtime.Platform;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
-import java.awt.event.HierarchyEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +87,6 @@ public class WebView extends JPanel implements Closeable {
 		if (TestUtil.isTestingEnvironment())
 			this.browser.createImmediately(); // needed so tests that don't render also work
 
-		// Register persistent JS handler once
-		// message router sends callback to all adapters
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
 			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
@@ -98,6 +102,57 @@ public class WebView extends JPanel implements Closeable {
 			}
 		}, true);
 
+		// Pass key events to swing when appropriate
+		this.client.addKeyboardHandler(new CefKeyboardHandlerAdapter() {
+			@Override public boolean onKeyEvent(CefBrowser browser, CefKeyEvent cefKeyEvent) {
+				// Activate dev tools on F12 press if dev version of MCreator
+				if (cefKeyEvent.windows_key_code == 123 && Launcher.version.isDevelopment()
+						&& cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_KEYUP) {
+					browser.openDevTools();
+					return true;
+				}
+
+				if (CefUtils.useOSR())
+					return false;
+
+				Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				boolean consume = focusOwner != browser.getUIComponent();
+				if (consume && Platform.OS.isMac() && CefEventUtils.isUpDownKeyEvent(cefKeyEvent))
+					return true; // consume
+
+				Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+				if (focusedWindow == null) {
+					return true; // consume
+				}
+				try {
+					KeyEvent javaKeyEvent = CefEventUtils.convertCefKeyEvent(cefKeyEvent, focusedWindow);
+					Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(javaKeyEvent);
+				} catch (IllegalArgumentException e) {
+					LOG.error("Failed to convert CEF key event: {} due to: {}", cefKeyEvent, e);
+				}
+
+				return consume;
+			}
+		});
+
+		// Focus fixes
+		this.client.addFocusHandler(new CefFocusHandlerAdapter() {
+			@Override public boolean onSetFocus(CefBrowser browser, FocusSource source) {
+				if (CefUtils.useOSR()) {
+					return false;
+				}
+
+				if (!browser.getUIComponent().hasFocus()) {
+					if (OS.isLinux()) {
+						browser.getUIComponent().requestFocus();
+					} else {
+						browser.getUIComponent().requestFocusInWindow();
+					}
+				}
+				return false;
+			}
+		});
+
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
 				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
@@ -106,33 +161,64 @@ public class WebView extends JPanel implements Closeable {
 
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
-
-		addHierarchyListener(e -> {
-			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
-				forceCefScaleDetectAndResize();
-			}
-		});
-
-		addContainerListener(new ContainerAdapter() {
-			@Override public void componentAdded(ContainerEvent e) {
-				super.componentAdded(e);
-				forceCefScaleDetectAndResize();
-			}
-		});
-
 		add(cefComponent, BorderLayout.CENTER);
-	}
 
-	private void forceCefScaleDetectAndResize() {
-		// This hack is only needed for WR rendering, not for OSR - workaround for https://github.com/chromiumembedded/java-cef/issues/438
-		if (!CefUtils.useOSR()) {
-			SwingUtilities.invokeLater(() -> {
-				// First, call the paint method to update scaleFactor_ in CefBrowserWr
-				cefComponent.paint(cefComponent.getGraphics());
-				// After new scaleFactor_ is known, call setBounds to invoke wasResized of CefBrowser
-				cefComponent.setBounds(cefComponent.getBounds());
+		if (OS.isWindows()) {
+			this.cefComponent.addMouseListener(new MouseAdapter() {
+				@Override public void mousePressed(MouseEvent e) {
+					if (cefComponent.isFocusable()) {
+						browser.setFocus(true);
+					}
+				}
 			});
 		}
+
+		setFocusCycleRoot(true);
+		setFocusTraversalPolicyProvider(true);
+		setFocusTraversalPolicy(new FocusTraversalPolicy() {
+			@Override public Component getComponentAfter(Container container, Component component) {
+				return cefComponent;
+			}
+
+			@Override public Component getComponentBefore(Container container, Component component) {
+				return cefComponent;
+			}
+
+			@Override public Component getFirstComponent(Container container) {
+				return cefComponent;
+			}
+
+			@Override public Component getLastComponent(Container container) {
+				return cefComponent;
+			}
+
+			@Override public Component getDefaultComponent(Container container) {
+				return cefComponent;
+			}
+		});
+
+		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+	}
+
+	@Override public void removeNotify() {
+		if (OS.isWindows()) {
+			if (browser.getUIComponent().hasFocus()) {
+				browser.setFocus(false);
+			}
+		}
+		super.removeNotify();
+	}
+
+	@Override protected void processFocusEvent(FocusEvent e) {
+		super.processFocusEvent(e);
+		if (e.getID() == FocusEvent.FOCUS_GAINED) {
+			cefComponent.requestFocusInWindow();
+		}
+	}
+
+	@Override public Dimension getPreferredSize() {
+		Dimension size = super.getPreferredSize();
+		return size.width > 0 && size.height > 0 ? size : new Dimension(800, 600);
 	}
 
 	public void addJavaScriptBridge(String name, Object bridge) {
