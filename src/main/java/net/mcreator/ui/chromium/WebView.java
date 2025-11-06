@@ -35,14 +35,10 @@ import org.cef.handler.CefFocusHandlerAdapter;
 import org.cef.handler.CefKeyboardHandlerAdapter;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
-import org.jboss.forge.roaster._shade.org.eclipse.core.runtime.Platform;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +113,36 @@ public class WebView extends JPanel implements Closeable {
 
 				Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 				boolean consume = focusOwner != browser.getUIComponent();
-				if (consume && Platform.OS.isMac() && CefEventUtils.isUpDownKeyEvent(cefKeyEvent))
+				if (consume && OS.isMacintosh() && CefEventUtils.isUpDownKeyEvent(cefKeyEvent))
 					return true; // consume
+
+				if (cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN && cefKeyEvent.is_system_key) {
+					// CMD+[key] is not working on a Mac.
+					// This switch statement delegates the common keyboard shortcuts to the browser
+					switch (cefKeyEvent.unmodified_character) {
+					case 'a':
+						browser.getFocusedFrame().selectAll();
+						break;
+					case 'c':
+						browser.getFocusedFrame().copy();
+						break;
+					case 'v':
+						browser.getFocusedFrame().paste();
+						break;
+					case 'x':
+						browser.getFocusedFrame().cut();
+						break;
+					case 'z':
+						browser.getFocusedFrame().undo();
+						break;
+					case 'Z':
+						browser.getFocusedFrame().redo();
+						break;
+					default:
+						return false;
+					}
+					return true;
+				}
 
 				Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
 				if (focusedWindow == null) {
@@ -198,6 +222,29 @@ public class WebView extends JPanel implements Closeable {
 		});
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+
+		addHierarchyListener(e -> {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+				forceCefScaleDetectAndResize();
+			}
+		});
+
+		addContainerListener(new ContainerAdapter() {
+			@Override public void componentAdded(ContainerEvent e) {
+				super.componentAdded(e);
+				forceCefScaleDetectAndResize();
+			}
+		});
+	}
+
+	private void forceCefScaleDetectAndResize() {
+		// This hack is only needed for WR rendering, not for OSR - workaround for https://github.com/chromiumembedded/java-cef/issues/438
+		if (!CefUtils.useOSR()) {
+			// First, call the paint method to update scaleFactor_ in CefBrowserWr
+			cefComponent.paint(cefComponent.getGraphics());
+			// After new scaleFactor_ is known, call setBounds to invoke wasResized of CefBrowser
+			cefComponent.setBounds(cefComponent.getBounds());
+		}
 	}
 
 	@Override public void removeNotify() {
