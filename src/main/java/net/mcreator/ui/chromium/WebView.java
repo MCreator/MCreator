@@ -38,7 +38,10 @@ import org.cef.handler.CefMessageRouterHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +164,21 @@ public class WebView extends JPanel implements Closeable {
 
 		// Focus fixes
 		this.client.addFocusHandler(new CefFocusHandlerAdapter() {
+			boolean firstShow = true;
+
 			@Override public boolean onSetFocus(CefBrowser browser, FocusSource source) {
+				Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				boolean componentFocused = focusOwner == WebView.this || focusOwner == WebView.this.cefComponent;
+				boolean focusOnNavigation = firstShow || componentFocused;
+				firstShow = false;
+
+				if (source == FocusSource.FOCUS_SOURCE_NAVIGATION && !focusOnNavigation) {
+					if (OS.isWindows()) {
+						browser.setFocus(false);
+					}
+					return true; // suppress focusing the browser on navigation events
+				}
+
 				if (CefUtils.useOSR()) {
 					return false;
 				}
