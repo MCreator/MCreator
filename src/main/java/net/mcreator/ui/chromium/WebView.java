@@ -212,16 +212,6 @@ public class WebView extends JPanel implements Closeable {
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
 
-		if (OS.isWindows()) {
-			this.cefComponent.addMouseListener(new MouseAdapter() {
-				@Override public void mousePressed(MouseEvent e) {
-					if (cefComponent.isFocusable()) {
-						browser.setFocus(true);
-					}
-				}
-			});
-		}
-
 		setFocusCycleRoot(true);
 		setFocusTraversalPolicyProvider(true);
 		setFocusTraversalPolicy(new FocusTraversalPolicy() {

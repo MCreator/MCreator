@@ -50,7 +50,7 @@ public class CefUtils {
 	private static CefApp cefApp = null;
 
 	public static boolean useOSR() {
-		return OS.isLinux();
+		return OS.isLinux(); // TODO: OSR may also work on Linux, we just need to test
 	}
 
 	private static CefApp getCefApp() {
