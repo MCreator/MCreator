@@ -82,17 +82,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		add("Center", webView);
 
 		webView.addLoadListener(() -> {
-			String additionalCSS = "";
-
-			if (PluginLoader.INSTANCE.getResourceAsStream("themes/" + Theme.current().getID() + "/styles/blockly.css")
-					!= null) {
-				additionalCSS += FileIO.readResourceToString(PluginLoader.INSTANCE,
-						"/themes/" + Theme.current().getID() + "/styles/blockly.css");
-			} else {
-				additionalCSS += FileIO.readResourceToString(PluginLoader.INSTANCE, "/themes/default_dark/styles/blockly.css");
-			}
-
-			webView.addCSSToDOM(additionalCSS);
 			webView.addStringConstantToDOM("editorType", type.registryName());
 			webView.addJavaScriptBridge("javabridge", bridge);
 

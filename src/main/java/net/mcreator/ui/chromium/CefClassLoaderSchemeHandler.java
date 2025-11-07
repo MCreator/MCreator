@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.chromium;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
@@ -33,7 +35,6 @@ import org.cef.network.CefResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 class CefClassLoaderSchemeHandler implements CefResourceHandler {
 
@@ -42,28 +43,42 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	private InputStream inputStream;
 	private String contentType;
 
+	private static final String blocklyThemeID;
+
+	static {
+		String _blocklyThemeID = Theme.current().getID();
+		if (PluginLoader.INSTANCE.getResourceAsStream(
+				String.format("themes/%s/styles/blockly.css", Theme.current().getID())) == null) {
+			_blocklyThemeID = "default_dark"; // fallback to the default dark theme
+		}
+		blocklyThemeID = _blocklyThemeID;
+	}
+
 	@SuppressWarnings("unused")
 	public CefClassLoaderSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
-		try {
-			String url = request.getURL(); // e.g. classloader://index.html
-			String path = url.replaceFirst("^classloader://", "/").replace("[LANG]", L10N.getBlocklyLangName());
-			URL resourceUrl = getClass().getResource(path);
+		String path = request.getURL().replaceFirst("^classloader://", "/")
+				//@formatter:off
+				.replace("[LANG]", L10N.getBlocklyLangName())
+				.replace("[BLOCKLY_THEME_ID]", blocklyThemeID)
+				//@formatter:on
+				;
 
-			if (resourceUrl == null) {
+		inputStream = getClass().getResourceAsStream(path);
+		if (inputStream == null) {
+			// if resource not found, try to load it from the plugins
+			inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+			if (inputStream == null) {
+				LOG.warn("Resource not found: {}", path);
 				return false; // resource not found
 			}
-
-			inputStream = resourceUrl.openStream();
-			contentType = detectMimeType(path);
-			callback.Continue();
-			return true;
-		} catch (IOException e) {
-			LOG.warn("Error opening resource: {}", e.getMessage());
-			return false;
 		}
+
+		contentType = detectMimeType(path);
+		callback.Continue();
+		return true;
 	}
 
 	@Override public void getResponseHeaders(CefResponse response, IntRef responseLength, StringRef redirectUrl) {
@@ -107,6 +122,7 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 			case "css" -> "text/css";
 			case "js" -> "text/javascript";
 			case "html" -> "text/html";
+			case "cur" -> "image/x-icon";
 			default -> "text/plain";
 		};
 	}
