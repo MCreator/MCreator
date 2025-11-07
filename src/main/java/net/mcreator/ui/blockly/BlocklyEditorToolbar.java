@@ -267,14 +267,16 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				for (ToolboxBlock block : filtered) {
 					JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
 					menuItem.addActionListener(ev -> {
-						if (block.getToolboxXML() != null) {
-							blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
-						} else {
-							blocklyPanel.addBlocksFromXML(
-									"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
-						}
-						blocklyPanel.requestFocus();
 						results.setVisible(false);
+
+						new Thread(() -> {
+							if (block.getToolboxXML() != null) {
+								blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+							} else {
+								blocklyPanel.addBlocksFromXML(
+										"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+							}
+						}, "Blockly-Blocks-Adder").start();
 					});
 
 					results.add(menuItem);
