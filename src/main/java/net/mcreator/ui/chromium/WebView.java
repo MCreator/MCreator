@@ -38,10 +38,7 @@ import org.cef.handler.CefMessageRouterHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +72,12 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
+		this(url, false);
+	}
+
+	private WebView(String url, boolean forcePreload) {
+		setLayout(new BorderLayout());
+		setOpaque(false);
 		setLayout(new BorderLayout());
 		setOpaque(false);
 
@@ -83,7 +86,13 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
 				false);
-		if (TestUtil.isTestingEnvironment())
+		/*
+		 * Immediately create the browser if:
+		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
+		 * - on Windows, it reduces loading flickering
+		 * - on tests, brwoser is never shown so we need to preload it so it actually loads content
+		 */
+		if (forcePreload || OS.isWindows() || TestUtil.isTestingEnvironment())
 			this.browser.createImmediately(); // needed so tests that don't render also work
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
@@ -202,7 +211,6 @@ public class WebView extends JPanel implements Closeable {
 
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
-		add(cefComponent, BorderLayout.CENTER);
 
 		if (OS.isWindows()) {
 			this.cefComponent.addMouseListener(new MouseAdapter() {
@@ -238,6 +246,23 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
+		addHierarchyListener(e -> {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+				if (isShowing()) {
+					add(cefComponent, BorderLayout.CENTER);
+
+					// request focus when shown
+					cefComponent.requestFocusInWindow();
+					browser.setFocus(true);
+				} else { // editor hidden
+					browser.setFocus(false);
+					KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+
+					removeAll();
+				}
+			}
+		});
+
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 	}
 
@@ -255,11 +280,6 @@ public class WebView extends JPanel implements Closeable {
 		if (e.getID() == FocusEvent.FOCUS_GAINED) {
 			cefComponent.requestFocusInWindow();
 		}
-	}
-
-	@Override public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
-		return size.width > 0 && size.height > 0 ? size : new Dimension(800, 600);
 	}
 
 	public void addJavaScriptBridge(String name, Object bridge) {
@@ -347,7 +367,13 @@ public class WebView extends JPanel implements Closeable {
 
 	public static void preload() {
 		LOG.debug("Preloading CEF WebView");
-		new WebView("about:blank").close();
+		CountDownLatch latch = new CountDownLatch(1);
+		WebView preloader = new WebView("about:blank", true);
+		try (preloader) {
+			preloader.addLoadListener(latch::countDown);
+			latch.await();
+		} catch (InterruptedException ignored) {
+		}
 	}
 
 }
