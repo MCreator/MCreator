@@ -246,22 +246,22 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
-		addHierarchyListener(e -> {
-			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-				if (isShowing()) {
-					add(cefComponent, BorderLayout.CENTER);
-
-					// request focus when shown
-					cefComponent.requestFocusInWindow();
-					browser.setFocus(true);
-				} else { // editor hidden
-					browser.setFocus(false);
-					KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-
-					removeAll();
+		if (!OS.isMacintosh()) {
+			// On non MacOS systems, we can directly add the component
+			add(cefComponent, BorderLayout.CENTER);
+		} else {
+			// On MacOS systems, we need to add the component only when the webview is shown
+			// so when other webview can take over focus when they are showing instead of this one
+			addHierarchyListener(e -> {
+				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+					if (isShowing()) {
+						add(cefComponent, BorderLayout.CENTER);
+					} else { // editor hidden
+						removeAll();
+					}
 				}
-			}
-		});
+			});
+		}
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 	}
