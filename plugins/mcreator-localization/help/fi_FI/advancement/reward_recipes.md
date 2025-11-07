@@ -1,0 +1,1 @@
+Avattava reseptilukot, kun pelaaja on suorittanut etenemisen.
