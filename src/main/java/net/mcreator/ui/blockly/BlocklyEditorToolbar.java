@@ -172,15 +172,18 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		export.addActionListener(event -> {
 			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
 			if (exp != null) {
-				try {
-					ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
-				} catch (Exception e) {
-					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.title"),
-							JOptionPane.WARNING_MESSAGE);
-				}
+				new Thread(() -> {
+					try {
+						ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
+					} catch (Exception e) {
+						LOG.error(e.getMessage(), e);
+						JOptionPane.showMessageDialog(mcreator,
+								L10N.t("blockly.templates." + blocklyEditorType.registryName()
+										+ ".export_failed.message"),
+								L10N.t("blockly.templates." + blocklyEditorType.registryName()
+										+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
+					}
+				}, "Blockly-Blocks-Exporter").start();
 			}
 		});
 		styleButton(export);
