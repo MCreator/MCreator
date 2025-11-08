@@ -2,7 +2,7 @@
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onEntityAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() != null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 				<@procedureDependenciesCode dependencies, {
 					"x": "event.getEntity().getX()",
 					"y": "event.getEntity().getY()",
@@ -15,7 +15,7 @@
 					"immediatesourceentity": "event.getSource().getDirectEntity()",
 					"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

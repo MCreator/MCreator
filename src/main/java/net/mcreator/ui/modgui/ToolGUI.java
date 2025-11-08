@@ -45,7 +45,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -79,7 +78,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private ProcedureSelector additionalDropCondition;
 
-	private final VTextField name = new VTextField(30);
+	private final VTextField name = new VTextField(30).requireValue("elementgui.tool.needs_a_name")
+			.enableRealtimeValidation();
 
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
@@ -308,9 +308,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
 		page1group.addValidationElement(texture);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.tool.needs_a_name")));
-		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);

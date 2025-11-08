@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBlockMultiPlace(BlockEvent.EntityMultiPlaceEvent event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
@@ -15,6 +15,6 @@
 				"placedagainst": "event.getPlacedAgainst()",
 				"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

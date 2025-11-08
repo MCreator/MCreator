@@ -38,7 +38,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 <#assign interfaces = []>
 <#if data.hasTileEntity>
 	<#assign interfaces += ["EntityBlock"]>
@@ -429,7 +429,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		</#if>
 	</#if>
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
 
 <#function getPlantClass plantType>

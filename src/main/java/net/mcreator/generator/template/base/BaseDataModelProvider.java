@@ -48,6 +48,7 @@ public class BaseDataModelProvider {
 		providedData.put("opt", new ProcedureCodeOptimizer());
 		providedData.put("JavaConventions", new JavaConventions());
 		providedData.put("StringUtils", new StringUtils());
+		providedData.put("javacompress", new JavaCompressDirective());
 
 		// Data that does not change for the current generator (BaseDataModelProvider is generator specific)
 		providedData.put("generator", new GeneratorWrapper(generator));

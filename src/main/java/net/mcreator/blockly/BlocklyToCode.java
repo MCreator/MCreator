@@ -64,6 +64,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	private String headSection = "";
 	private String tailSection = "";
 
+	private int blockCount = 0;
+
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
 	 * @param editorType         <p>Blockly editor type</p>
@@ -188,6 +190,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
 		for (Element block : blocks) {
+			blockCount++;
+
 			String type = block.getAttribute("type");
 
 			if (block.getAttribute("disabled").equals("true")) { // Skip disabled blocks
@@ -235,6 +239,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
+		blockCount++;
+
 		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
 		if (conditionBlocks.isEmpty())
 			return;
@@ -375,6 +381,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public String getTailSection() {
 		return tailSection;
+	}
+
+	/**
+	 * Returns the count of blocks currently processed from the block arrangement.
+	 *
+	 * @return The total number of blocks.
+	 */
+	public int getBlockCount() {
+		return blockCount;
 	}
 
 }

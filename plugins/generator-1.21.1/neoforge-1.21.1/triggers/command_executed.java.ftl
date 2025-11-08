@@ -3,7 +3,7 @@
 	@SubscribeEvent public static void onCommand(CommandEvent event) {
 		Entity entity = event.getParseResults().getContext().getSource().getEntity();
 		if (entity != null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 				<@procedureDependenciesCode dependencies, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
@@ -14,7 +14,7 @@
 					"arguments": "event.getParseResults().getContext().build(event.getParseResults().getReader().getString())",
 					"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

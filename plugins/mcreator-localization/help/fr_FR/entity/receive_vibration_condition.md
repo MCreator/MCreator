@@ -1,1 +1,1 @@
-Cette condition spécifie si le bloc doit recevoir ou non les vibrations détectées.
+Cette condition spécifie si l'entité doit recevoir ou non les vibrations détectées.

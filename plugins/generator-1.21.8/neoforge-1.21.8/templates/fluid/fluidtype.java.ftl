@@ -33,7 +33,7 @@
 
 package ${package}.fluid.types;
 
-<#compress>
+<@javacompress>
 public class ${name}FluidType extends FluidType {
 
 	public ${name}FluidType() {
@@ -66,4 +66,4 @@ public class ${name}FluidType extends FluidType {
 		);
 	}
 
-}</#compress>
+}</@javacompress>

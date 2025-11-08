@@ -33,7 +33,7 @@
 
 package ${package}.fluid.types;
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber public class ${name}FluidType extends FluidType {
 	public ${name}FluidType() {
 		super(FluidType.Properties.create()
@@ -161,4 +161,4 @@ package ${package}.fluid.types;
 				</#if>
 		}, ${JavaModName}FluidTypes.${REGISTRYNAME}_TYPE.get());
 	}
-}</#compress>
+}</@javacompress>

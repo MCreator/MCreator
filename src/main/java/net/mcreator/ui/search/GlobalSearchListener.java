@@ -49,27 +49,37 @@ public class GlobalSearchListener {
 				private static long lastShiftReleaseTime = 0;
 				private static final int DOUBLE_SHIFT_THRESHOLD_MS = 400;
 
+				private static long lastNonShiftKeyTime = 0;
+				private static final int IDLE_BEFORE_TRIGGER_MS = 500;
+
 				@Override public boolean dispatchKeyEvent(KeyEvent e) {
 					// if multiple releases of Shift are detected in a short time, trigger the search
-					if (e.getKeyCode() == KeyEvent.VK_SHIFT && e.getID() == KeyEvent.KEY_RELEASED) {
+					if (e.getID() == KeyEvent.KEY_RELEASED) {
 						long currentTime = System.currentTimeMillis();
-						if (currentTime - lastShiftReleaseTime < DOUBLE_SHIFT_THRESHOLD_MS) {
-							// This is the second Shift "click" — trigger your action
-							Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager()
-									.getFocusedWindow();
-							if (focusedWindow != null && searchWindows.containsKey(focusedWindow)) {
-								Supplier<JComponent> searchWindowSupplier = searchWindows.get(focusedWindow);
-								if (searchWindowSupplier != null) {
-									JComponent currentTab = searchWindowSupplier.get();
-									if (currentTab instanceof ISearchable searchable) {
-										searchable.search(null);
-										return true;
+
+						if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+							if (currentTime - lastShiftReleaseTime < DOUBLE_SHIFT_THRESHOLD_MS
+									&& currentTime - lastNonShiftKeyTime > IDLE_BEFORE_TRIGGER_MS) {
+								// This is the second Shift "click" — trigger your action
+								Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager()
+										.getFocusedWindow();
+								if (focusedWindow != null && searchWindows.containsKey(focusedWindow)) {
+									Supplier<JComponent> searchWindowSupplier = searchWindows.get(focusedWindow);
+									if (searchWindowSupplier != null) {
+										JComponent currentTab = searchWindowSupplier.get();
+										if (currentTab instanceof ISearchable searchable) {
+											searchable.search(null);
+											return true;
+										}
 									}
 								}
 							}
+							lastShiftReleaseTime = currentTime;
+						} else { // not a Shift key
+							lastNonShiftKeyTime = currentTime;
 						}
-						lastShiftReleaseTime = currentTime;
 					}
+
 					return false;
 				}
 			});

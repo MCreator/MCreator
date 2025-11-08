@@ -1107,14 +1107,14 @@ import java.util.regex.Pattern;
 		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
 				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
-				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
+				.getGlobalTemplatesListForModElementType(mu.getType(), new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
 		for (BaseType baseType : mu.getBaseTypesProvided()) {
 			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-							.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
+							.getBaseTypeDefinition(baseType), new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)

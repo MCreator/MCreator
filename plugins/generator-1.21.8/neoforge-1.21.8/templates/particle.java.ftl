@@ -33,7 +33,7 @@
 
 package ${package}.client.particle;
 
-<#compress>
+<@javacompress>
 public class ${name}Particle extends TextureSheetParticle {
 
 	public static ${name}ParticleProvider provider(SpriteSet spriteSet) {
@@ -135,5 +135,5 @@ public class ${name}Particle extends TextureSheetParticle {
 	}
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
