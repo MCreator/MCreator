@@ -40,6 +40,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Closeable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -116,7 +117,12 @@ public class WebView extends JPanel implements Closeable {
 				// Activate dev tools on F12 press if dev version of MCreator
 				if (cefKeyEvent.windows_key_code == 123 && Launcher.version.isDevelopment()
 						&& cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_KEYUP) {
-					browser.openDevTools();
+					try {
+						Method method = browser.getClass().getMethod("openDevTools");
+						method.setAccessible(true);
+						method.invoke(browser);
+					} catch (Exception ignored) {
+					}
 					return true;
 				}
 
