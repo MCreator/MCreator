@@ -1,0 +1,12 @@
+{
+  "args0": [],
+  "inputsInline": true,
+  "previousStatement": null,
+  "colour": 150,
+  "mcreator": {
+    "toolbox_id": "utility",
+    "warnings": [
+      "utility_adv_trigger"
+    ]
+  }
+}
