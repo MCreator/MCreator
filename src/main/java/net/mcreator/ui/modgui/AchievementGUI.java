@@ -220,12 +220,12 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		});
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 240));
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER, blocklyPanel, false);
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER,
+				blocklyPanel, false);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
 
-		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						blocklyEditorToolbar, blocklyPanel),
-				compileNotesPanel);
+		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(
+				PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel), compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -236,7 +236,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger)).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger)).validate(
+				page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
 				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
