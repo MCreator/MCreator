@@ -59,7 +59,7 @@ public class ${JavaModName}BlockEntities {
 	}
 
 	<#if blockentitiesWithInventory?size != 0>
-	<#compress>
+	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list blockentitiesWithInventory as blockentity>
 			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), SidedInvWrapper::new);
@@ -71,7 +71,7 @@ public class ${JavaModName}BlockEntities {
 			</#if>
 		</#list>
 	}
-	</#compress>
+	</@javacompress>
 	</#if>
 
 }

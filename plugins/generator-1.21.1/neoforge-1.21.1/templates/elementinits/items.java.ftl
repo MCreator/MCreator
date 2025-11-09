@@ -54,7 +54,7 @@ public class ${JavaModName}Items {
 
 	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(${JavaModName}.MODID);
 
-	<#compress>
+	<@javacompress>
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
 			<#if item.enableHelmet>public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET;</#if>
@@ -69,7 +69,7 @@ public class ${JavaModName}Items {
 			public static <#if !has_chunks>final</#if> DeferredItem<Item> ${item.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
-	</#compress>
+	</@javacompress>
 
 	<#list chunks as sub_items>
 	<#if has_chunks>public static void register${sub_items?index}()<#else>static</#if> {
@@ -132,7 +132,7 @@ public class ${JavaModName}Items {
 	// End of user code block custom items
 
 	<#if itemsWithInventory?size != 0 || buckets?size != 0>
-	<#compress>
+	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
 			event.registerItem(
@@ -149,7 +149,7 @@ public class ${JavaModName}Items {
 			);
 		</#list>
 	}
-	</#compress>
+	</@javacompress>
 	</#if>
 
 	<#if hasBlocks>
@@ -176,7 +176,7 @@ public class ${JavaModName}Items {
 	@EventBusSubscriber(Dist.CLIENT) public static class ItemsClientSideHandler {
 		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 			event.enqueueWork(() -> {
-			<#compress>
+			<@javacompress>
 			<#list items as item>
 				<#if item.getModElement().getTypeString() == "item">
 					<#list item.customProperties.entrySet() as property>
@@ -200,7 +200,7 @@ public class ${JavaModName}Items {
 						ItemProperties.getProperty(new ItemStack(Items.SHIELD), ResourceLocation.parse("minecraft:blocking")));
 				</#if>
 			</#list>
-			</#compress>
+			</@javacompress>
 			});
 		}
 	}

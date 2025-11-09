@@ -56,7 +56,7 @@ public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(${JavaModName}.MODID);
 
-	<#compress>
+	<@javacompress>
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
             public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
@@ -64,7 +64,7 @@ public class ${JavaModName}Blocks {
 			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
-	</#compress>
+	</@javacompress>
 
 	<#list chunks as sub_blocks>
 	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {

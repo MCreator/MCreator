@@ -49,7 +49,7 @@ public class ${JavaModName}GameRules {
 
 	@SubscribeEvent
 	public static void registerGameRules(FMLCommonSetupEvent event) {
-	<#compress>
+	<@javacompress>
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 		 ${gamerule.getModElement().getRegistryNameUpper()} =
@@ -61,7 +61,7 @@ public class ${JavaModName}GameRules {
 				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
-	</#compress>
+	</@javacompress>
 	}
 
 }
