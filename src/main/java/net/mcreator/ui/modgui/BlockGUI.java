@@ -110,7 +110,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final VTextField name = new VTextField(19);
+	private final VTextField name = new VTextField(19).requireValue("elementgui.block.error_block_must_have_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
@@ -1065,6 +1066,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bind_gui")));
 		props.add(guiBoundTo);
 
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
 				L10N.label("elementgui.block.bind_gui_open")));
 		props.add(openGUIOnRightClick);
@@ -1381,16 +1384,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return model != null && model.getType() == Model.Type.JAVA;
 		}));
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
-		name.enableRealtimeValidation();
-
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
 				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
 					return Validator.ValidationResult.PASSED;
 				return super.validate();
 			}
-		});
+		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
 
 		page3group.addValidationElement(name);
 
@@ -1478,6 +1478,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		if (hasInventorySelected)
 			refreshVibrationProperties();
+
+		refreshGUIProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1574,6 +1576,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyPerChunks.setEnabled(canSpawn);
 		restrictionBiomes.setEnabled(canSpawn);
 		blocksToReplace.setEnabled(canSpawn);
+	}
+
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		openGUIOnRightClick.setEnabled(isGuiBoundToEmpty);
 	}
 
 	@Override public void reloadDataLists() {

@@ -64,7 +64,7 @@ package ${package}.client.renderer.block;
 	</#if>
 
 	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight) {
-		<#compress>
+		<@javacompress>
 		<#if data.animations?has_content>
 		updateRenderState(blockEntity);
 		</#if>
@@ -107,7 +107,7 @@ package ${package}.client.renderer.block;
 		model.setupBlockEntityAnim(blockEntity, blockEntity.getLevel().getGameTime() + partialTick);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
-		</#compress>
+		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

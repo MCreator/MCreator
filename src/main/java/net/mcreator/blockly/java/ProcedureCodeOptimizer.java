@@ -23,6 +23,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 
+/*
+ Warning: currently this parser does not support multiline comments, if multiline
+ comment contains single quote, the following members are not extracted.
+ */
 public class ProcedureCodeOptimizer {
 	enum ParseState {
 		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, AFTER_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE

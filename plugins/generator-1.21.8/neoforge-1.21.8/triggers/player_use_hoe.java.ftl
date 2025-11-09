@@ -2,7 +2,7 @@
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onUseHoe(BlockEvent.BlockToolModificationEvent event) {
 		if (!event.isSimulated() && event.getItemAbility() == ItemAbilities.HOE_TILL && event.getPlayer() != null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 				<@procedureDependenciesCode dependencies, {
 					"x": "event.getContext().getClickedPos().getX()",
 					"y": "event.getContext().getClickedPos().getY()",
@@ -12,7 +12,7 @@
 					"blockstate": "event.getContext().getLevel().getBlockState(event.getContext().getClickedPos())",
 					"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

@@ -118,7 +118,7 @@ public class WorkspaceUtils {
 		}
 
 		List<File> toBePreserved = new ArrayList<>();
-		List<GeneratorTemplate> templates = workspace.getGenerator().getModBaseGeneratorTemplatesList(false);
+		List<GeneratorTemplate> templates = workspace.getGenerator().getModBaseGeneratorTemplatesList();
 		for (GeneratorTemplate template : templates) {
 			if (template.getFile().isFile()) {
 				GeneratorFile generatorFile = template.toGeneratorFile(FileIO.readFileToString(template.getFile()));
@@ -172,7 +172,7 @@ public class WorkspaceUtils {
 				modElementFiles.forEach(File::delete);
 		}
 
-		List<GeneratorTemplate> templates = workspace.getGenerator().getModBaseGeneratorTemplatesList(false);
+		List<GeneratorTemplate> templates = workspace.getGenerator().getModBaseGeneratorTemplatesList();
 		for (GeneratorTemplate template : templates) {
 			if (template.getFile().isFile()) {
 				GeneratorFile generatorFile = template.toGeneratorFile(FileIO.readFileToString(template.getFile()));

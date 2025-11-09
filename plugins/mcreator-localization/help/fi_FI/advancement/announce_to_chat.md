@@ -1,0 +1,1 @@
+Kirjoittaa viestin pikakeskustelussa, kun pelaaja suorittaa edistyksen loppuun.

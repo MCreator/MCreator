@@ -24,6 +24,7 @@ import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
@@ -66,7 +67,7 @@ import java.util.stream.Collectors;
 		uuid = UUID.randomUUID();
 	}
 
-	GUIComponent(int x, int y) {
+	public GUIComponent(int x, int y) {
 		this();
 		this.x = x;
 		this.y = y;
@@ -134,6 +135,12 @@ import java.util.stream.Collectors;
 
 	@Override public String toString() {
 		return getName();
+	}
+
+	public static void registerCustomComponent(Class<? extends GUIComponent> type) {
+		String id = StringUtils.camelToSnake(type.getSimpleName()).toLowerCase();
+		typeMappings.put(id, type);
+		typeMappingsReverse.put(type, id);
 	}
 
 	public static class GSONAdapter implements JsonSerializer<GUIComponent>, JsonDeserializer<GUIComponent> {

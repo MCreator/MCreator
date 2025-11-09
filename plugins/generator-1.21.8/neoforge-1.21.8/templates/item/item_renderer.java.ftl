@@ -51,7 +51,7 @@ package ${package}.client.renderer.item;
 	</#if>
 </#list>
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber(Dist.CLIENT) public class ${name}ItemRenderer implements SpecialModelRenderer<ItemStack> {
 
 	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
@@ -179,5 +179,5 @@ package ${package}.client.renderer.item;
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
