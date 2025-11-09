@@ -27,12 +27,15 @@ import java.awt.*;
 
 public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Model> {
 
+	public ModelComboBoxRenderer() {
+		setOpaque(true);
+		setHorizontalTextPosition(SwingConstants.RIGHT);
+		setHorizontalAlignment(SwingConstants.LEFT);
+	}
+
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Model> list, Model value, int index,
 			boolean isSelected, boolean cellHasFocus) {
-
-		setOpaque(true);
-
 		if (isSelected) {
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
@@ -56,9 +59,6 @@ public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Mo
 			setIcon(UIRES.get("model.small_builtin"));
 		else
 			setIcon(new EmptyIcon(32, 32));
-
-		setHorizontalTextPosition(SwingConstants.RIGHT);
-		setHorizontalAlignment(SwingConstants.LEFT);
 
 		return this;
 	}
