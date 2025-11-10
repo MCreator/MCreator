@@ -155,7 +155,7 @@ public class Generator implements IGenerator, Closeable {
 
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList().stream().map(generatorTemplate -> {
 			try {
 				String code = templateGenerator.generateBaseFromTemplate(
 						(String) generatorTemplate.getTemplateDefinition().get("template"),
@@ -273,7 +273,7 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		if (performFSTasks) {
-			// remove outdated files from mod element files list (used to know what files belong to the ME for removal on regeneration)
+			// remove outdated files from mod element files list
 			element.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
 
 			// generate files as old files were deleted
@@ -324,29 +324,25 @@ public class Generator implements IGenerator, Closeable {
 			return;
 		}
 
-		for (GeneratorTemplate template : getModElementGeneratorTemplatesList(generatableElement)) {
-			if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
-				TrackingFileIO.deleteFile(this, template.getFile());
-		}
-
-		// delete other workspace links to this ME below
+		// remove files linked with this mod element
+		generatableElement.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
 
 		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
 
-		// delete tag elements associated with the mod element from the workspace
+		// delete managed tag entries/elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
 
 		// delete tab sorting info associated with the mod element from the workspace
 		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
 	}
 
-	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
+	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList() {
 		AtomicInteger templateID = new AtomicInteger();
 
-		List<GeneratorTemplate> files = new ArrayList<>(
-				processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
-						performFSTasks, templateID));
+		List<GeneratorTemplate> files = new ArrayList<>();
+
+		Map<String, Integer> typesReport = new HashMap<>();
 
 		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
@@ -354,8 +350,7 @@ public class Generator implements IGenerator, Closeable {
 
 		// Add mod element type specific global files (eg. registries for mod elements)
 		for (ModElementType<?> type : generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()) {
-			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, performFSTasks,
-					templateID);
+			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, templateID);
 
 			List<GeneratableElement> filteredGeneratableElements = generatableElements.parallelStream()
 					.filter(e -> e.getModElement().getType() == type).toList();
@@ -365,11 +360,9 @@ public class Generator implements IGenerator, Closeable {
 						e -> e.addDataModelEntry(type.getPluralName(), filteredGeneratableElements));
 
 				files.addAll(globalTemplatesList);
-			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
-				for (GeneratorTemplate template : globalTemplatesList) {
-					TrackingFileIO.deleteFile(this, template.getFile());
-				}
-			}
+
+				typesReport.put(type.getPluralName(), filteredGeneratableElements.size());
+			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
 		}
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
@@ -386,47 +379,49 @@ public class Generator implements IGenerator, Closeable {
 
 		for (BaseType baseType : BaseType.values()) {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForDefinition(
-					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), performFSTasks,
-					templateID);
+					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), templateID);
 
-			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
-				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
-					for (GeneratorTemplate template : globalTemplatesList) {
-						TrackingFileIO.deleteFile(this, template.getFile());
-					}
-				}
-			} else {
+			if (baseTypeListMap.containsKey(baseType) && !baseTypeListMap.get(baseType).isEmpty()) {
 				globalTemplatesList.forEach(
 						e -> e.addDataModelEntry(baseType.getPluralName(), baseTypeListMap.get(baseType)));
 
 				files.addAll(globalTemplatesList);
-			}
+
+				typesReport.put("base:" + baseType.getPluralName(), baseTypeListMap.get(baseType).size());
+			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
 		}
+
+		// Finally, add global base templates at the end
+		List<GeneratorTemplate> globalBaseTemplates = processTemplateDefinitionsToGeneratorTemplates(
+				generatorConfiguration.getBaseTemplates(), templateID);
+		for (GeneratorTemplate globalBaseTemplate : globalBaseTemplates) {
+			globalBaseTemplate.addDataModelEntry("types", typesReport);
+		}
+		files.addAll(globalBaseTemplates);
 
 		return files;
 	}
 
 	public List<GeneratorTemplate> getGlobalTemplatesListForModElementType(ModElementType<?> type,
-			boolean performFSTasks, AtomicInteger templateID) {
+			AtomicInteger templateID) {
 		return getGlobalTemplatesListForDefinition(
-				generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type), performFSTasks,
-				templateID);
+				generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type), templateID);
 	}
 
-	public List<GeneratorTemplate> getGlobalTemplatesListForDefinition(@Nullable Map<?, ?> map, boolean performFSTasks,
+	public List<GeneratorTemplate> getGlobalTemplatesListForDefinition(@Nullable Map<?, ?> map,
 			AtomicInteger templateID) {
 		if (map == null)
 			return new ArrayList<>();
 
 		List<?> templates = (List<?>) map.get("global_templates");
 		if (templates != null)
-			return processTemplateDefinitionsToGeneratorTemplates(templates, performFSTasks, templateID);
+			return processTemplateDefinitionsToGeneratorTemplates(templates, templateID);
 
 		return new ArrayList<>();
 	}
 
 	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates,
-			boolean performFSTasks, AtomicInteger templateID) {
+			AtomicInteger templateID) {
 		Set<GeneratorTemplate> files = new HashSet<>();
 		for (Object template : templates) {
 			File file = new File(GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name")));
@@ -439,11 +434,7 @@ public class Generator implements IGenerator, Closeable {
 					(Map<?, ?>) template);
 
 			if (generatorTemplate.shouldBeSkippedBasedOnCondition(this, workspace.getWorkspaceInfo())) {
-				// if template is skipped, we delete its potential file if performFSTasks and file was not previously generated
-				// this prevents deletion of files that were previously generated by another passing condition for the same file
-				if (!files.contains(generatorTemplate) && performFSTasks) {
-					TrackingFileIO.deleteFile(this, generatorTemplate.getFile());
-				}
+				// No need to delete elements here as previous stale files will be removed by used files metadata systems
 				continue;
 			}
 

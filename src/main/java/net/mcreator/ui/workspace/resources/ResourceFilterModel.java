@@ -106,7 +106,7 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 		return super.removeElement(a);
 	}
 
-	void refilter() {
+	protected void refilter() {
 		filterItems.clear();
 		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item -> refilterItemsFilter.apply(item,
 				workspacePanel.getSearchTerm().toLowerCase(Locale.ENGLISH))).toList());

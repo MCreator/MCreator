@@ -19,10 +19,12 @@
 package net.mcreator.ui.validation.component;
 
 import net.mcreator.ui.component.util.ThreadUtil;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.IconUtils;
 
@@ -92,7 +94,7 @@ public class VTextField extends JTextField implements IValidable {
 			g.fillRect(1, 1, getWidth() - 1, 13);
 			g.setFont(getFont().deriveFont(10.0f));
 			g.setColor(Theme.current().getForegroundColor());
-			String message = "This input field is validated";
+			String message = L10N.t("validators.input_field_is_validated");
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
 			if (currentValidationResult != null && currentValidationResult.getMessage() != null
@@ -126,13 +128,19 @@ public class VTextField extends JTextField implements IValidable {
 		}
 	}
 
-	public void enableRealtimeValidation() {
+	public VTextField enableRealtimeValidation() {
 		addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				super.keyReleased(e);
 				getValidationStatus();
 			}
 		});
+		return this;
+	}
+
+	public VTextField requireValue(String errorMessageKey) {
+		this.setValidator(new TextFieldValidator(this, L10N.t(errorMessageKey)));
+		return this;
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {

@@ -26,6 +26,7 @@ import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -108,10 +109,13 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		grid.add(L10N.label("dialog.gui.slider_suffix"));
 		grid.add(sliderSuffix);
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		ProcedureSelector whenSliderMoves = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slider_moves"),
 				editor.mcreator, L10N.t("dialog.gui.when_slider_moves"), ProcedureSelector.Side.CLIENT, false,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/value:number"));
-		whenSliderMoves.refreshList();
+		whenSliderMoves.refreshList(context);
 
 		add("Center",
 				PanelUtils.northAndCenterElement(PanelUtils.join(grid), PanelUtils.centerInPanel(whenSliderMoves), 5,
@@ -136,11 +140,11 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 			whenSliderMoves.setSelectedProcedure(slider.whenSliderMoves);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (sliderMachineName.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				String sliderName = sliderMachineName.getText();
 				if (!sliderName.isEmpty()) {
 					if (slider == null) {

@@ -66,7 +66,7 @@ package ${package}.client.renderer.block;
 	}
 
 	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight, Vec3 cameraPos) {
-		<#compress>
+		<@javacompress>
 		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
@@ -107,7 +107,7 @@ package ${package}.client.renderer.block;
 		model.setupBlockEntityAnim(blockEntity, renderState);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
-		</#compress>
+		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

@@ -41,7 +41,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
@@ -206,13 +206,16 @@ public class ${name}Block extends
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0.01f, <@blockProperties/>);
+				super(0f, <@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
 				super(BlockSetType.${data.blockSetType}, <#if data.blockSetType == "OAK">30<#else>20</#if>, <@blockProperties/>);
 			<#elseif data.blockBase == "FenceGate">
 				super(WoodType.OAK, <@blockProperties/>);
+			<#elseif data.blockBase == "FlowerPot">
+				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
+				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
@@ -479,11 +482,20 @@ public class ${name}Block extends
 	}
 	</#if>
 
+	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
+	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+		if (ItemAbilities.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
+			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
+		}
+		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
+	}
+	</#if>
+
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
 	@Override public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData, Player entity) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
-	<#elseif !data.hasBlockItem>
+	<#elseif !data.hasBlockItem && (data.blockBase! != "FlowerPot")>
 	@Override public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData, Player entity) {
 		return ItemStack.EMPTY;
 	}
@@ -564,6 +576,8 @@ public class ${name}Block extends
 	<@onEntityCollides data.onEntityCollides/>
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
+
+	<@onEntityFallsOn data.onEntityFallsOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
 
@@ -726,5 +740,5 @@ public class ${name}Block extends
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

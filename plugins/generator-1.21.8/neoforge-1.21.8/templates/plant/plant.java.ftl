@@ -38,7 +38,7 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
+<@javacompress>
 <#assign interfaces = []>
 <#if data.hasTileEntity>
 	<#assign interfaces += ["EntityBlock"]>
@@ -181,6 +181,15 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return ${data.fireSpreadSpeed};
+	}
+	</#if>
+
+	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
+	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+		if (ItemAbilities.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
+			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
+		}
+		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
 	}
 	</#if>
 
@@ -339,6 +348,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
+	<@onEntityFallsOn data.onEntityFallsOn/>
+
 	<@onHitByProjectile data.onHitByProjectile/>
 
 	<#if data.isBonemealable && data.plantType != "sapling">
@@ -405,7 +416,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
 
 <#function getPlantClass plantType>

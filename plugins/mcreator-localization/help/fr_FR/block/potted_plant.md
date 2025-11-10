@@ -1,0 +1,1 @@
+Ce paramètre contrôle quel bloc se trouve dans le pot de fleurs.

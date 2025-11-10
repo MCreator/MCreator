@@ -39,7 +39,7 @@ package ${package}.client.gui;
 <#assign tooltips = data.getComponentsOfType("Tooltip")>
 <#assign sliders = data.getComponentsOfType("Slider")>
 
-<#compress>
+<@javacompress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.ScreenAccessor {
 
 	private final Level world;
@@ -91,7 +91,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		}
 		</#if>
 
-		<#-- updateMenuState is not implemented for checkboxes, as there is no procedure block to set checkbox state currently -->
+		<#if checkboxes?has_content>
+		if (elementType == 1 && elementState instanceof Boolean logicState) {
+			<#list checkboxes as component>
+				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
+					if (${component.getName()}.selected() != logicState) ${component.getName()}.onPress();
+				}
+			</#list>
+		}
+		</#if>
 
 		<#if sliders?has_content>
 		if (elementType == 2 && elementState instanceof Number n) {
@@ -122,7 +130,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
-		<#compress>
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
@@ -140,7 +147,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				);
 			}
 		</#list>
-		</#compress>
 
 		<#if tooltips?has_content>
 		boolean customTooltipShown = false;
@@ -361,7 +367,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 
 <#macro buttonOnClick component>
 e -> {

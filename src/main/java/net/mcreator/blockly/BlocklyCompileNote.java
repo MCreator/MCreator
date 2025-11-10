@@ -18,14 +18,28 @@
 
 package net.mcreator.blockly;
 
-public record BlocklyCompileNote(Type type, String message) {
+public record BlocklyCompileNote(Type type, String message) implements Comparable<BlocklyCompileNote> {
 
 	@Override public String toString() {
 		return type.name() + ": " + message;
 	}
 
+	@Override public int compareTo(BlocklyCompileNote o) {
+		if (this.type() == o.type()) {
+			return 0;
+		} else {
+			return this.type().priority > o.type().priority ? -1 : 1;
+		}
+	}
+
 	public enum Type {
-		INFO, WARNING, ERROR
+		INFO(0), WARNING(1), ERROR(2);
+
+		private final int priority;
+
+		Type(int priority) {
+			this.priority = priority;
+		}
 	}
 
 }

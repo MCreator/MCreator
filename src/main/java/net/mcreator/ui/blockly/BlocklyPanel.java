@@ -55,9 +55,7 @@ import javax.swing.event.ChangeListener;
 import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 public class BlocklyPanel extends JFXPanel implements Closeable {
 
@@ -67,7 +65,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	private final BlocklyJavascriptBridge bridge;
 
-	private final List<Runnable> runAfterLoaded = new ArrayList<>();
+	private final BlockingQueue<Runnable> runAfterLoaded = new LinkedBlockingQueue<>();
 
 	private boolean loaded = false;
 
@@ -210,7 +208,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	@Nullable private String lastValidXML = null;
 
-	public String getXML() {
+	public synchronized String getXML() {
 		if (loaded) {
 			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 

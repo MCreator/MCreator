@@ -43,7 +43,7 @@ public class BlocklySection extends PreferencesSection {
 	BlocklySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Geras", "Thrasos"));
+		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Thrasos", "Geras", "Zelos"));
 		colorSaturation = addEntry(new IntegerEntry("colorSaturation", 45, 30, 100));
 		colorValue = addEntry(new IntegerEntry("colorValue", 65, 30, 100));
 		useSmartSort = addEntry(new BooleanEntry("useSmartSort", true));

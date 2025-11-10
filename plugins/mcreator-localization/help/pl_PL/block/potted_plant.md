@@ -1,0 +1,1 @@
+Ten parametr kontroluje jaki blok jest w środku doniczki.

@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
@@ -303,8 +302,8 @@ public class PluginLoader extends URLClassLoader {
 
 		if (!plugin.isCompatible()) {
 			LOG.warn("Plugin {} is not compatible with this MCreator version!", plugin.getID());
-			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV")
-					== null) { // We allow loading of incompatible plugins in dev
+			if (System.getenv("MCREATOR_PLUGINS_DEV")
+					== null) { // Only prevent the loading of incompatible plugins if MCREATOR_PLUGINS_DEV is not set
 				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
 				return null;
 			}

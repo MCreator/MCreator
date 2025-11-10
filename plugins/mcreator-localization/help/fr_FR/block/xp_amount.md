@@ -1,0 +1,1 @@
+C'est la quantité d'expérience lâchée par ce bloc quand il est cassé par un joueur.

@@ -46,11 +46,20 @@ public class ResourcePackTreeCellRenderer extends DefaultTreeCellRenderer {
 					// workaround for empty directories because they appear as leafs in the setIcon above
 					a.setIcon(UIRES.get("laf.directory"));
 				}
-				if (entry.type() == ResourcePackStructure.EntryType.VANILLA_OVERRIDE) {
-					a.setText("<html><b>" + a.getText() + "</b> [o]");
-				} else if (entry.type() == ResourcePackStructure.EntryType.CUSTOM) {
-					a.setText("<html><b> " + a.getText() + "</b> [c]");
+
+				if (entry.type() == ResourcePackStructure.EntryType.VANILLA_OVERRIDE
+						|| entry.type() == ResourcePackStructure.EntryType.CUSTOM) {
+					a.setFont(a.getFont().deriveFont(Font.BOLD));
+				} else {
+					a.setFont(a.getFont().deriveFont(Font.PLAIN));
 				}
+
+				if (entry.type() == ResourcePackStructure.EntryType.VANILLA_OVERRIDE) {
+					a.setText(a.getText() + " [o]");
+				} else if (entry.type() == ResourcePackStructure.EntryType.CUSTOM) {
+					a.setText(a.getText() + " [c]");
+				}
+
 				if (!sel) {
 					if (entry.type() == ResourcePackStructure.EntryType.VANILLA) {
 						a.setForeground(Theme.current().getAltForegroundColor());

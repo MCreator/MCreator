@@ -1,0 +1,1 @@
+Diese Bedingung gibt an, ob der Block die erkannte Vibration erhalten soll oder nicht.

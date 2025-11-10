@@ -104,19 +104,11 @@ public final class BlocklyJavascriptBridge {
 
 	@SuppressWarnings("unused") public void openColorSelector(String color, JSObject callback) {
 		SwingUtilities.invokeLater(() -> {
-			AtomicReference<String> selected = new AtomicReference<>();
-			JColor.colorChooser.setColor(Color.decode(color));
-			JDialog dialog = JColorChooser.createDialog(mcreator,
-					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
-					JColor.colorChooser, event -> {
-						Color c = JColor.colorChooser.getColor();
-						if (c != null) {
-							selected.set(String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue()));
-						}
-					}, null);
-			dialog.setVisible(true);
-			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY,
-					selected.get() != null ? selected.get() : null));
+			Color newColor = JColor.openDialog(mcreator,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), Color.decode(color));
+			AtomicReference<String> colorString = new AtomicReference<>(newColor == null ? null :
+					String.format("#%02x%02x%02x", newColor.getRed(), newColor.getGreen(), newColor.getBlue()));
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, colorString.get()));
 		});
 
 		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
@@ -227,7 +219,8 @@ public final class BlocklyJavascriptBridge {
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
 							.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-							.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new), "dimensions");
+							.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new),
+					"dimensions");
 			case "fluid" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"fluids");

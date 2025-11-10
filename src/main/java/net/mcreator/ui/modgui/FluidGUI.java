@@ -46,8 +46,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -72,7 +70,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private NumberProcedureSelector fogStartDistance;
 	private NumberProcedureSelector fogEndDistance;
 
-	private final VTextField name = new VTextField(18);
+	private final VTextField name = new VTextField(18).requireValue("elementgui.fluid.error_fluid_needs_name")
+			.enableRealtimeValidation();
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
 	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
@@ -90,7 +89,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
-	private final VTextField bucketName = new VTextField(18);
+	private final VTextField bucketName = new VTextField(18).requireValue("elementgui.fluid.error_bucket_needs_name")
+			.enableRealtimeValidation();
 	private TextureSelectionButton textureBucket;
 	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
@@ -184,9 +184,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel mainTextures = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		mainTextures.setOpaque(false);
 
-		textureStill = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureStill = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.fluid.error_fluid_needs_still_texture");
 		textureStill.setOpaque(false);
-		textureFlowing = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureFlowing = new TextureSelectionButton(
+				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+				"elementgui.fluid.error_fluid_needs_flowing_texture");
 		textureFlowing.setOpaque(false);
 
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
@@ -276,6 +280,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/spawn_drip_particles"),
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
+
+		spawnParticles.addActionListener(e -> refreshDripSettings());
+		refreshDripSettings();
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
 				L10N.label("elementgui.fluid.drip_particle")));
@@ -450,19 +457,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		textureStill.setValidator(new TextureSelectionButtonValidator(textureStill));
-		textureFlowing.setValidator(new TextureSelectionButtonValidator(textureFlowing));
-
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.fluid.error_fluid_needs_name")));
-		name.enableRealtimeValidation();
 		page1group.addValidationElement(name);
-
-		bucketName.setValidator(new TextFieldValidator(bucketName, L10N.t("elementgui.fluid.error_bucket_needs_name")));
-		bucketName.enableRealtimeValidation();
-
 		page1group.addValidationElement(bucketName);
 
 		addPage(L10N.t("elementgui.common.page_visual"), visualsPage).validate(texturesValidationGroup);
@@ -478,25 +476,35 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	}
 
 	private void refreshFogSettings() {
-		fogColor.setEnabled(hasFog.isSelected());
-		fogStartDistance.setEnabled(hasFog.isSelected());
-		fogEndDistance.setEnabled(hasFog.isSelected());
+		boolean hasFogSelected = hasFog.isSelected();
+
+		fogColor.setEnabled(hasFogSelected);
+		fogStartDistance.setEnabled(hasFogSelected);
+		fogEndDistance.setEnabled(hasFogSelected);
+	}
+
+	private void refreshDripSettings() {
+		dripParticle.setEnabled(spawnParticles.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourChanges.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		flowCondition.refreshListKeepSelected();
-		beforeReplacingBlock.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
 
-		fogStartDistance.refreshListKeepSelected();
-		fogEndDistance.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourChanges.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		flowCondition.refreshListKeepSelected(context);
+		beforeReplacingBlock.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+
+		fogStartDistance.refreshListKeepSelected(context);
+		fogEndDistance.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
@@ -557,6 +565,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		specialInformation.setEnabled(generateBucket.isSelected());
 
 		refreshFogSettings();
+		refreshDripSettings();
 	}
 
 	@Override public Fluid getElementFromGUI() {

@@ -225,13 +225,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel pager = new JPanel();
 			pager.setOpaque(false);
 			pager.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-			pager.addMouseWheelListener(e -> {
-				if (e.getWheelRotation() > 0)
-					split.next();
-				else
-					split.back();
-				pagers.get(split.getPage()).setSelected(true);
-			});
 
 			pager.add(back);
 			pager.add(new JLabel(UIRES.get("separator")));
@@ -526,17 +519,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void showErrorsMessage(AggregatedValidationResult validationResult) {
 		StringBuilder stringBuilder = new StringBuilder(L10N.t("elementgui.errors.heading"));
 		stringBuilder.append("<ul>");
-		int count = 0;
-		for (String error : validationResult.getValidationProblemMessages()) {
-			stringBuilder.append("<li>").append(error).append("</li>");
-			count++;
-			if (count > 5) {
-				stringBuilder.append("<li>").append("+ ")
-						.append(validationResult.getValidationProblemMessages().size() - count).append(" more")
-						.append("</li>");
-				break;
-			}
-
+		List<String> messages = validationResult.getValidationProblemMessages();
+		for (int i = 0; i < Math.min(messages.size(), 5); i++) {
+			stringBuilder.append("<li>").append(messages.get(i)).append("</li>");
+		}
+		if (messages.size() == 6) {
+			stringBuilder.append("<li>").append(messages.get(5)).append("</li>");
+		} else if (messages.size() > 6) {
+			stringBuilder.append("<li>").append(L10N.t("elementgui.errors.more", messages.size() - 5)).append("</li>");
 		}
 		stringBuilder.append("</ul>");
 		stringBuilder.append(L10N.t("elementgui.errors.note"));

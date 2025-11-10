@@ -1,0 +1,1 @@
+Se abilitato, tutte le entità nel mondo che possono avere attributi avranno questo attributo presente e impostato sul suo valore predefinito quando vengono generate.

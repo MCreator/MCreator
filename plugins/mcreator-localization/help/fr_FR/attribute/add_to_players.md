@@ -1,0 +1,1 @@
+Si activé, tous les joueurs dans le monde auront cet attribut présent qui sera défini à la valeur par défaut quand rejoindront le monde.

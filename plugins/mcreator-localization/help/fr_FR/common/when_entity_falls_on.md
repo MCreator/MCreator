@@ -1,0 +1,1 @@
+Déclenche une procédure _uniquement_ lorsque l'entité tombe sur le bloc depuis n'importe quelle hauteur.

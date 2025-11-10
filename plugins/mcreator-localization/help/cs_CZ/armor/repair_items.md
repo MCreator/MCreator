@@ -1,0 +1,1 @@
+Tento parametr určuje, jaký předmět může být použit na opravu brnění.

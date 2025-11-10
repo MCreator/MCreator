@@ -420,8 +420,11 @@ public class BlocklyBlockCodeGenerator {
 		// add custom warnings if present
 		if (toolboxBlock.getWarnings() != null) {
 			for (String warning : toolboxBlock.getWarnings()) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warning." + warning, type)));
+				String message = L10N.t("blockly.warning." + warning, type);
+				// Do not add the same warning multiple times
+				if (master.getCompileNotes().stream().noneMatch(note -> note.message().equals(message))) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, message));
+				}
 			}
 		}
 
@@ -450,7 +453,13 @@ public class BlocklyBlockCodeGenerator {
 				dataModel.putAll(additionalData);
 			}
 
+			IBlockGeneratorWithSections.Sections sections = IBlockGeneratorWithSections.addSectionsToDataModel(
+					dataModel);
 			String code = templateGenerator.generateFromTemplate(type + "." + templateExtension + ".ftl", dataModel);
+			// only apply previous tail and current head if the procedure block is procedural
+			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
+				IBlockGeneratorWithSections.handleSections(master, sections);
+			}
 			master.append(code);
 		}
 

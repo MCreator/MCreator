@@ -35,7 +35,7 @@
 
 package ${package}.item;
 
-<#compress>
+<@javacompress>
 <#if data.hasCustomEatResultItem()>
 @EventBusSubscriber
 </#if>
@@ -113,6 +113,12 @@ public class ${name}Item extends Item {
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(),
 				builder -> builder.set(DataComponents.USE_REMAINDER, new UseRemainder(${mappedMCItemToItemStackCode(data.eatResultItem, 1)})));
+	}
+	</#if>
+
+	<#if data.isPiglinCurrency>
+	@Override public boolean isPiglinCurrency(ItemStack stack) {
+		return true;
 	}
 	</#if>
 
@@ -403,5 +409,5 @@ public class ${name}Item extends Item {
 		</#if>
 	}
 </#macro>
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
