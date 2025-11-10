@@ -40,14 +40,7 @@ public class FlipVerticalTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		flipImage(layer.getRaster());
-		return true;
-	}
-
-	@Override public void mouseDragged(MouseEvent e) {
-	}
-
-	public void flipImage(BufferedImage image) {
+		BufferedImage image = layer.getRaster();
 		Graphics2D g2d = image.createGraphics();
 		Selection selection = canvas.getSelection();
 		// Skip pixels outside the selection
@@ -67,5 +60,9 @@ public class FlipVerticalTool extends AbstractModificationTool {
 		g2d.clearRect(minX, minY, width, height);
 		g2d.drawImage(mirrored, minX, minY, width, height, null);
 		g2d.dispose();
+		return true;
+	}
+
+	@Override public void mouseDragged(MouseEvent e) {
 	}
 }
