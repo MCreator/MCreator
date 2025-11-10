@@ -96,7 +96,7 @@ import com.google.common.base.Suppliers;
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
 							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
 							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.span(0.2f, 0.9f),
+							Climate.Parameter.span(${biome.genDepth.min}f, ${biome.genDepth.max}f),
 							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
 							0 <#-- offset -->
 						),
