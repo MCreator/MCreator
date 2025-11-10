@@ -27,7 +27,6 @@ import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
@@ -41,7 +40,6 @@ public class FlipHorizontalTool extends AbstractModificationTool {
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		BufferedImage image = layer.getRaster();
-		Graphics2D g2d = image.createGraphics();
 		Selection selection = canvas.getSelection();
 		// Skip pixels outside the selection
 		int minX = selection.hasSurface() ? selection.getLeft() : image.getMinX();
@@ -50,16 +48,14 @@ public class FlipHorizontalTool extends AbstractModificationTool {
 		int maxY = selection.hasSurface() ? selection.getBottom() : image.getHeight();
 		int width = maxX - minX, height = maxY - minY;
 
-		BufferedImage mirrored = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		for (int i = 0; i < width; i++) {
+		int temp;
+		for (int i = 0; i < width / 2; i++) {
 			for (int j = 0; j < height; j++) {
-				mirrored.setRGB(i, j, image.getRGB(maxX - i - 1, minY + j));
+				temp = image.getRGB(maxX - i - 1, minY + j);
+				image.setRGB(maxX - i - 1, minY + j, image.getRGB(minX + i, minY + j));
+				image.setRGB(minX + i, minY + j, temp);
 			}
 		}
-		g2d.setBackground(new Color(0, 0, 0, 0));
-		g2d.clearRect(minX, minY, width, height);
-		g2d.drawImage(mirrored, minX, minY, width, height, null);
-		g2d.dispose();
 		return true;
 	}
 
