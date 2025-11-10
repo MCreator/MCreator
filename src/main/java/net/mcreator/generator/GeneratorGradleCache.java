@@ -25,6 +25,7 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ public class GeneratorGradleCache {
 
 	@Nullable transient ProjectJarManager projectJarManager;
 
+	@Nullable private final File javaHome;
 	private final List<ClasspathEntry> classpath;
 	private final Map<String, List<String>> importTree;
 
@@ -39,10 +41,11 @@ public class GeneratorGradleCache {
 		projectJarManager = new ProjectJarManager(generator);
 		this.classpath = projectJarManager.getClasspath();
 		this.importTree = ImportTreeBuilder.generateImportTree(this.projectJarManager);
+		this.javaHome = projectJarManager.getJavaHome();
 	}
 
 	void reinitAfterGSON(Generator generator) throws GradleCacheImportFailedException {
-		projectJarManager = new ProjectJarManager(generator, classpath);
+		projectJarManager = new ProjectJarManager(generator, classpath, javaHome);
 	}
 
 	public Map<String, List<String>> getImportTree() {
