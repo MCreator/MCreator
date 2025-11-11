@@ -37,7 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
-import net.mcreator.ui.validation.CompoundValidator;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
