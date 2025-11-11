@@ -32,7 +32,7 @@ public class CompoundValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		ValidationResult result = new ValidationResult(ValidationResultType.PASSED, "");
+		ValidationResult result = ValidationResult.PASSED;
 
 		for (Validator validator : validators) {
 			ValidationResult tmpResult = validator.validate();
