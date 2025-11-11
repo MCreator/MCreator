@@ -58,6 +58,6 @@ public class ItemListFieldSingleTagValidator implements Validator {
 			}
 		}
 
-		return new ValidationResult(ValidationResultType.PASSED, "");
+		return ValidationResult.PASSED;
 	}
 }

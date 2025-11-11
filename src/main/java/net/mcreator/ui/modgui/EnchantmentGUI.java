@@ -28,7 +28,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.validation.CompoundValidator;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;

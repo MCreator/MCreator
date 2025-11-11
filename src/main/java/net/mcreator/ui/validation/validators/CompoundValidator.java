@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.validation;
+package net.mcreator.ui.validation.validators;
+
+import net.mcreator.ui.validation.Validator;
 
 import java.util.List;
 
@@ -30,17 +32,14 @@ public class CompoundValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		ValidationResult result = new ValidationResult(ValidationResultType.PASSED, "");
+		ValidationResult result = ValidationResult.PASSED;
 
 		for (Validator validator : validators) {
 			ValidationResult tmpResult = validator.validate();
-			if (result.getValidationResultType() == ValidationResultType.PASSED && (
-					tmpResult.getValidationResultType() == ValidationResultType.ERROR
-							|| tmpResult.getValidationResultType() == ValidationResultType.WARNING))
-				result = tmpResult;
-			else if (result.getValidationResultType() == ValidationResultType.WARNING
-					&& tmpResult.getValidationResultType() == ValidationResultType.ERROR)
-				result = tmpResult;
+			if (tmpResult.getValidationResultType() == ValidationResultType.ERROR)
+				return tmpResult; // Return as soon as we find an error
+			else if (tmpResult.getValidationResultType() == ValidationResultType.WARNING)
+				result = tmpResult; // Do not return yet, there might still be errors
 		}
 
 		return result;

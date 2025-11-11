@@ -39,7 +39,7 @@ public class ItemListFieldValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (!holder.getListElements().isEmpty())
-			return new ValidationResult(ValidationResultType.PASSED, "");
+			return ValidationResult.PASSED;
 		else
 			return new ValidationResult(answer, emptyMessage);
 	}

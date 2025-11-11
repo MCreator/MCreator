@@ -53,7 +53,7 @@ public class ConditionalItemListFieldValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (!holder.getListElements().isEmpty() || conditionElement.get() != validateTextWhenBooleanIs)
-			return new ValidationResult(ValidationResultType.PASSED, "");
+			return ValidationResult.PASSED;
 		else
 			return new ValidationResult(answer, emptyMessage);
 	}
