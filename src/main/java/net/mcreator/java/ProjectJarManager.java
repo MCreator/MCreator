@@ -212,7 +212,7 @@ public class ProjectJarManager extends JarManager {
 				"jmods/java.base.jmod");
 		if (classesArchive == null) {
 			throw new GradleCacheImportFailedException(
-					new FileNotFoundException("Failed to load default JRE JAR info"));
+					new FileNotFoundException("Failed to find SDK base library"));
 		}
 
 		final LibraryInfo info;
