@@ -192,7 +192,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 				if (slock.isSelected() && fraction > 0.99)
 					slock.setSelected(false);
-				// only turn of scroll lock if scrolled more than 85% above bottom and we have at least 2000 of scroll entries
+				// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
 				else if (!slock.isSelected() && fraction < 0.85 && maxValue > 2000)
 					slock.setSelected(true);
 			}
@@ -953,5 +953,6 @@ public class GradleConsole extends JPanel implements ISearchable {
 		if (searchTerm != null)
 			searchBar.getSearchField().setText(searchTerm);
 	}
+
 
 }
