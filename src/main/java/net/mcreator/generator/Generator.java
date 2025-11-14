@@ -643,7 +643,7 @@ public class Generator implements IGenerator, Closeable {
 
 	@Nullable public ProjectJarManager getProjectJarManager() {
 		if (generatorGradleCache != null)
-			return generatorGradleCache.projectJarManager;
+			return generatorGradleCache.getProjectJarManager();
 		else
 			return null;
 	}
