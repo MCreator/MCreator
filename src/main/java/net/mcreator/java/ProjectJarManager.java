@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
+import net.mcreator.gradle.GradleToolchainUtil;
 import net.mcreator.gradle.GradleUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
@@ -36,9 +38,7 @@ import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.ExternalDependency;
-import org.gradle.tooling.model.eclipse.EclipseJavaSourceSettings;
 import org.gradle.tooling.model.eclipse.EclipseProject;
-import org.gradle.tooling.model.idea.IdeaProject;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -46,14 +46,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ProjectJarManager extends JarManager {
 
-	private static final Logger LOG = LogManager.getLogger("Jar Manager");
+	private static final Logger LOG = LogManager.getLogger(ProjectJarManager.class);
 
 	private final List<GeneratorGradleCache.ClasspathEntry> classpath;
 	@Nullable private final File javaHome;
+
+	private JavaReleaseInfo javaReleaseInfo = JavaReleaseInfo.DEFAULT;
 
 	public ProjectJarManager(Generator generator) {
 		List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
@@ -69,7 +70,12 @@ public class ProjectJarManager extends JarManager {
 
 				processProjectClassPath(generator, project, classPathEntries);
 
-				assumedJavaHome = findJavaHome(project);
+				// Only look up JDK toolchain JAVA_HOME for Java-based projects
+				if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+						== GeneratorFlavor.BaseLanguage.JAVA) {
+					assumedJavaHome = GradleToolchainUtil.getToolchainJavaHome(generator.getGeneratorConfiguration(),
+							projectConnection, project);
+				}
 			} catch (BuildException ignored) {
 			}
 		}
@@ -116,6 +122,10 @@ public class ProjectJarManager extends JarManager {
 		return javaHome;
 	}
 
+	@Nullable public JavaReleaseInfo getJavaReleaseInfo() {
+		return javaHome == null ? null : javaReleaseInfo;
+	}
+
 	private void processProjectClassPath(Generator generator, EclipseProject project,
 			List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
 		LOG.debug("Processing classpath for project {}", project.getName());
@@ -147,26 +157,6 @@ public class ProjectJarManager extends JarManager {
 		for (EclipseProject childProject : project.getChildren()) {
 			processProjectClassPath(generator, childProject, classPathEntries);
 		}
-	}
-
-	@Nullable private File findJavaHome(EclipseProject project) {
-		EclipseJavaSourceSettings javaSourceSettings = project.getJavaSourceSettings();
-		if (javaSourceSettings != null) {
-			File javaHome = javaSourceSettings.getJdk().getJavaHome();
-			if (javaHome != null) {
-				return javaHome;
-			}
-		}
-
-		// If we did not find one, try child projects
-		for (EclipseProject childProject : project.getChildren()) {
-			File javaHome = findJavaHome(childProject);
-			if (javaHome != null) {
-				return javaHome;
-			}
-		}
-
-		return null;
 	}
 
 	private void loadExternalDependency(Workspace workspace, GeneratorGradleCache.ClasspathEntry classpathEntry)
@@ -206,13 +196,14 @@ public class ProjectJarManager extends JarManager {
 			return; // we only require JVM info for Java-based projects
 		}
 
-		LOG.debug("Loading JVM library info for {}", javaHome);
+		javaReleaseInfo = JavaReleaseInfo.fromJavaHome(javaHome);
+
+		LOG.debug("Loading JVM {} info from {}", javaReleaseInfo, javaHome);
 
 		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar",
 				"jmods/java.base.jmod");
 		if (classesArchive == null) {
-			throw new GradleCacheImportFailedException(
-					new FileNotFoundException("Failed to find SDK base library"));
+			throw new GradleCacheImportFailedException(new FileNotFoundException("Failed to find SDK base library"));
 		}
 
 		final LibraryInfo info;

@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class GeneratorGradleCache {
 
-	@Nullable transient ProjectJarManager projectJarManager;
+	@Nullable private transient ProjectJarManager projectJarManager;
 
 	@Nullable private final File javaHome;
 	private final List<ClasspathEntry> classpath;
@@ -46,6 +46,10 @@ public class GeneratorGradleCache {
 
 	void reinitAfterGSON(Generator generator) throws GradleCacheImportFailedException {
 		projectJarManager = new ProjectJarManager(generator, classpath, javaHome);
+	}
+
+	@Nullable ProjectJarManager getProjectJarManager() {
+		return projectJarManager;
 	}
 
 	public Map<String, List<String>> getImportTree() {
