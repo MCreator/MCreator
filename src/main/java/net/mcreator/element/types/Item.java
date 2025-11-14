@@ -80,6 +80,7 @@ import java.util.*;
 	public LogicProcedure glowCondition;
 
 	@Nullable @ModElementReference public String guiBoundTo;
+	public LogicProcedure openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
 
