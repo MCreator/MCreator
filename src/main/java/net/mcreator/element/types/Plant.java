@@ -24,6 +24,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
@@ -80,6 +81,9 @@ import java.util.stream.Collectors;
 	public boolean unbreakable;
 	public boolean isSolid;
 	public boolean isWaterloggable;
+
+	public NumberProcedure blockBounciness;
+	public NumberProcedure fallDamageInduced;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
