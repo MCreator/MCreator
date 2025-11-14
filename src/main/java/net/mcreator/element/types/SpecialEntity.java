@@ -55,11 +55,8 @@ public class SpecialEntity extends GeneratableElement implements ICommonType, IT
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 
-
 	public SpecialEntity(ModElement element) {
 		super(element);
-
-		this.creativeTabs = new ArrayList<>();
 	}
 
 	@Override public void finalizeModElementGeneration() {
