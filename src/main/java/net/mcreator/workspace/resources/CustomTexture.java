@@ -40,7 +40,7 @@ public final class CustomTexture extends Texture {
 
 	CustomTexture(TextureType textureType, File texture) {
 		super(textureType, textureType == TextureType.ARMOR ?
-				(FilenameUtils.removeExtension(texture.getName()).replace("_layer_1" , "").replace("_layer_2" , "")) :
+				(FilenameUtils.removeExtension(texture.getName()).replace("_layer_1", "").replace("_layer_2", "")) :
 				FilenameUtils.removeExtension(texture.getName()));
 
 		this.textureFile = texture;
