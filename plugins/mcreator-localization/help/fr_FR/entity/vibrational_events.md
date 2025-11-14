@@ -1,0 +1,1 @@
+Événements du jeu dont les vibrations peuvent être reçues par cette entité.

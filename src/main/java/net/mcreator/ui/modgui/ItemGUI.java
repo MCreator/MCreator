@@ -48,8 +48,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -76,7 +74,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private StringListProcedureSelector specialInformation;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
+			.enableRealtimeValidation();
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("COMMON", "elementgui.common.rarity_common"),
@@ -163,8 +162,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	// Music disc parameters
 	private final JCheckBox isMusicDisc = L10N.checkbox("elementgui.common.enable");
-	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator);
-	private final VTextField musicDiscDescription = new VTextField(20);
+	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator).requireValue(
+			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
+	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
+			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
@@ -266,7 +267,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -476,6 +478,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		inventoryProperties.add(guiBoundTo);
 
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		refreshGUIProperties();
+
 		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
 		inventoryProperties.add(inventorySize);
@@ -574,20 +579,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-
 		page1group.addValidationElement(texture);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
-		name.enableRealtimeValidation();
-
-		musicDiscDescription.setValidator(new TextFieldValidator(musicDiscDescription,
-				L10N.t("elementgui.item.musicdisc.error_disc_needs_description")));
-		musicDiscDescription.enableRealtimeValidation();
-
-		musicDiscMusic.getVTextField().setValidator(new TextFieldValidator(musicDiscMusic.getVTextField(),
-				L10N.t("elementgui.item.musicdisc.error_needs_sound")));
-		musicDiscMusic.getVTextField().enableRealtimeValidation();
 
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
@@ -682,24 +674,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		onDroppedByPlayer.refreshListKeepSelected();
-		onFinishUsingItem.refreshListKeepSelected();
-		everyTickWhileUsing.refreshListKeepSelected();
-		onItemEntityDestroyed.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
-		rangedUseCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onStoppedUsing.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onFinishUsingItem.refreshListKeepSelected(context);
+		everyTickWhileUsing.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		onRangedItemUsed.refreshListKeepSelected(context);
+		rangedUseCondition.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
@@ -777,6 +780,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
+		refreshGUIProperties();
 
 		Model model = item.getItemModel();
 		if (model != null)

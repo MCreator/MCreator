@@ -1,3 +1,3 @@
-Ten parametr umożliwia graczowi wsiadanie na dany byt.
+Ten parametr umożliwia graczowi zamontowanie się na tym bycie.
 
-Możesz również włączyć kontrolery opcjonalne.
+Można również włączyć opcjonalne elementy sterujące.

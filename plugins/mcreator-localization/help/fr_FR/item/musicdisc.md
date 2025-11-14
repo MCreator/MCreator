@@ -1,0 +1,2 @@
+Lorsque ce paramètre est activé, cet élément peut être utilisé dans une boite de musique et joue le morceau
+sélectionné lorsqu'il est inséré dans le jukebox. Le fichier son doit être au format **mono** OGG Vorbis.

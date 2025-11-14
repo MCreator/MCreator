@@ -315,24 +315,29 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		}
 	}
 
-	public static Comparator<ModElement> getComparator(Workspace workspace, List<ModElement> originalOrder) {
+	public static Comparator<ModElement> getComparator(Workspace workspace, List<?> originalOrder) {
+		WorkspaceUserSettings settings = workspace.getWorkspaceUserSettings();
+
+		final Map<Object, Integer> indexMap = new HashMap<>();
+		for (int i = 0; i < originalOrder.size(); i++)
+			indexMap.put(originalOrder.get(i), i);
+
 		return (a, b) -> {
-			if (workspace.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
-				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+			if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
+				if (settings.workspacePanelSortAscending)
 					return a.getName().compareToIgnoreCase(b.getName());
 				else
 					return b.getName().compareToIgnoreCase(a.getName());
-			} else if (workspace.getWorkspaceUserSettings().workspacePanelSortType
-					== WorkspaceUserSettings.SortType.TYPE) {
-				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+			} else if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.TYPE) {
+				if (settings.workspacePanelSortAscending)
 					return a.getType().getReadableName().compareTo(b.getType().getReadableName());
 				else
 					return b.getType().getReadableName().compareTo(a.getType().getReadableName());
 			} else {
-				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
-					return originalOrder.indexOf(a) - originalOrder.indexOf(b);
+				if (settings.workspacePanelSortAscending)
+					return indexMap.get(a) - indexMap.get(b);
 				else
-					return originalOrder.indexOf(b) - originalOrder.indexOf(a);
+					return indexMap.get(b) - indexMap.get(a);
 			}
 		};
 	}

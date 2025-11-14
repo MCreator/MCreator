@@ -11,7 +11,8 @@ class FieldResourceLocation extends Blockly.FieldTextInput {
 
         const pathPattern = /^[a-z0-9_\-\.\/]+$/;
         const namespacedPattern = /^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/;
-        const pattern = this.allowNamespace_ ? namespacedPattern : pathPattern;
+        // Allow namespaced values as initial values, as allowNamespace_ isn't assigned yet
+        const pattern = (this.allowNamespace_ ?? true) ? namespacedPattern : pathPattern;
 
         if (!pattern.test(newValue)) {
             return null;

@@ -87,7 +87,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 	}
 
 	@Override public void reloadDataLists() {
-		condition.refreshListKeepSelected();
+		condition.refreshListKeepSelected(null);
 
 		ComboBoxUtil.updateComboBoxContents(animation, ElementUtil.loadAnimations(mcreator.getWorkspace()));
 	}

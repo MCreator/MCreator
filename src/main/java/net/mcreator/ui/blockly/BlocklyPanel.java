@@ -208,7 +208,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 
 	@Nullable private String lastValidXML = null;
 
-	public String getXML() {
+	public synchronized String getXML() {
 		if (loaded) {
 			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 

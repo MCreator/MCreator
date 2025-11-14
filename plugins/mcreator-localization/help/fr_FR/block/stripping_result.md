@@ -1,0 +1,1 @@
+Ce paramètre contrôle en quoi ce bloc se transforme lorsqu'il est écorché avec une hache.

@@ -67,7 +67,17 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private final JTextField search;
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
-		this(mcreator, blocklyEditorType, blocklyPanel, null);
+		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			boolean hasSearchBar) {
+		this(mcreator, blocklyEditorType, blocklyPanel, null, hasSearchBar);
+	}
+
+	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
+			ProcedureGUI procedureGUI, JComponent... extraComponents) {
+		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
 	}
 
 	/**
@@ -78,10 +88,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
 	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
 	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param hasSearchBar      <p>If this toolbar will have a search bar.</p>
 	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, JComponent... extraComponents) {
+			ProcedureGUI procedureGUI, boolean hasSearchBar, JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 
 		setBorder(null);
@@ -111,13 +122,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
-					g.drawString(L10N.t("blockly.search_procedure_blocks"), 8, 18);
+					g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
 				}
 			}
 		};
 		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
-		if (procedureGUI != null) {
+		if (hasSearchBar) {
 			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 			search.addFocusListener(new FocusAdapter() {
 				@Override public void focusLost(FocusEvent e) {
@@ -130,15 +141,15 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 			search.getDocument().addDocumentListener(new DocumentListener() {
 				@Override public void insertUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 
 				@Override public void removeUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 
 				@Override public void changedUpdate(DocumentEvent e) {
-					updateSearch();
+					updateSearch(blocklyEditorType);
 				}
 			});
 
@@ -214,22 +225,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
-	private void updateSearch() {
+	private void updateSearch(BlocklyEditorType blocklyEditorType) {
 		if (!search.getText().isEmpty()) {
 			String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				if (block.getName().toLowerCase(Locale.ENGLISH)
 						.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 					filtered.add(block);
 				}
 			}
 
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-					.getDefinedBlocks().values()) {
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
+					.values()) {
 				for (String keyWord : keyWords) {
 					if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
 							block.getToolboxCategory() != null && block.getToolboxCategory().getName()

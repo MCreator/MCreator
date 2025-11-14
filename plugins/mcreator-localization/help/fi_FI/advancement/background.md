@@ -1,0 +1,1 @@
+Jos etenemisesi on uuden polun ensimmäisenä, voit valita etenemisvälilehden taustan tällä vaihtoehdolla.

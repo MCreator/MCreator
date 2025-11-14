@@ -1,1 +1,1 @@
-Questo parametro abilita colori personalizzati per il tuo bioma.
+Questo parametro abilita i colori personalizzati per il tuo bioma.

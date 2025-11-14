@@ -34,10 +34,10 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -85,7 +85,8 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	}
 
 	@Override protected void initGUI() {
-		projectileItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		projectileItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.projectile.error_projectile_needs_item");
 		onHitsBlock = new ProcedureSelector(this.withEntry("projectile/when_hits_block"), mcreator,
 				L10N.t("elementgui.projectile.event_hits_block"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
@@ -182,8 +183,6 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
-
 		page1group.addValidationElement(projectileItem);
 		page1group.addValidationElement(customModelTexture);
 
@@ -194,10 +193,14 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onHitsBlock.refreshListKeepSelected();
-		onHitsPlayer.refreshListKeepSelected();
-		onHitsEntity.refreshListKeepSelected();
-		onFlyingTick.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onHitsBlock.refreshListKeepSelected(context);
+		onHitsPlayer.refreshListKeepSelected(context);
+		onHitsEntity.refreshListKeepSelected(context);
+		onFlyingTick.refreshListKeepSelected(context);
 
 		customModelTexture.reload();
 

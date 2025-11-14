@@ -1,0 +1,1 @@
+Si activé, toutes les entités dans le monde qui peuvent avoir des attributs auront cet attribut présent et défini à sa valeur par défaut quand apparaîtront.

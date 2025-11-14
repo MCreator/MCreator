@@ -1,0 +1,1 @@
+Cette procédure détermine ce qui se passe lorsqu'une vibration est reçue.
