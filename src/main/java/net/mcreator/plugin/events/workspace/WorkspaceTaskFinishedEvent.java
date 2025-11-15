@@ -23,7 +23,11 @@ import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.MCreator;
 
-public class WorkspaceBuildFinishedEvent extends MCREvent {
+/**
+ * <p>This is a class grouping different {@link MCREvent} related to Gradle tasks that are triggered once a task is finished.
+ * This main event/class is triggered when MCreator completes a task, meaning it is executed after the result of the task is known.</p>
+ */
+public class WorkspaceTaskFinishedEvent extends MCREvent {
 
 	private final MCreator mcreator;
 	private final GradleResultCode gradleStatus;
@@ -34,7 +38,7 @@ public class WorkspaceBuildFinishedEvent extends MCREvent {
 	 *
 	 * @param gradleStatus The result obtained after trying to build the workspace
 	 */
-	public WorkspaceBuildFinishedEvent(MCreator mcreator, GradleResultCode gradleStatus) {
+	public WorkspaceTaskFinishedEvent(MCreator mcreator, GradleResultCode gradleStatus) {
 		this.mcreator = mcreator;
 		this.gradleStatus = gradleStatus;
 	}
@@ -47,20 +51,23 @@ public class WorkspaceBuildFinishedEvent extends MCREvent {
 		return gradleStatus;
 	}
 
-	public static class BuildError extends WorkspaceBuildFinishedEvent {
+	/**
+	 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+	 */
+	public static class TaskError extends WorkspaceTaskFinishedEvent {
 
 		private final String out;
 
 		private final String err;
 
 		/**
-		 * <p>This event is only triggered when the build task fails due to any type of error. The {@link WorkspaceBuildFinishedEvent} is called right after this event.</p>
+		 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
 		 *
 		 * @param gradleStatus The result obtained after trying to build the workspace
 		 * @param out          String containing data from out stream
 		 * @param err          String containing data from err stream
 		 */
-		public BuildError(MCreator mcreator, GradleResultCode gradleStatus, String out, String err) {
+		public TaskError(MCreator mcreator, GradleResultCode gradleStatus, String out, String err) {
 			super(mcreator, gradleStatus);
 			this.out = out;
 			this.err = err;
@@ -75,12 +82,15 @@ public class WorkspaceBuildFinishedEvent extends MCREvent {
 		}
 	}
 
-	public static class BuildSuccessful extends WorkspaceBuildFinishedEvent {
+	/**
+	 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+	 */
+	public static class TaskSuccessful extends WorkspaceTaskFinishedEvent {
 
 		/**
-		 * <p>This event is only triggered when the build task succeed. The {@link WorkspaceBuildFinishedEvent} is called right after this event.</p>
+		 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
 		 */
-		public BuildSuccessful(MCreator mcreator) {
+		public TaskSuccessful(MCreator mcreator) {
 			super(mcreator, GradleResultCode.STATUS_OK);
 		}
 	}
