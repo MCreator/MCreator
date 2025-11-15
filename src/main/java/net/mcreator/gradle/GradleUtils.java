@@ -25,7 +25,6 @@ import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.*;
@@ -105,20 +104,8 @@ public class GradleUtils {
 				LOG.error("Java home override from preferences is not valid!");
 		}
 
-		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
-		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile())
-			return FilenameUtils.normalize(new File("./jdk/").getAbsolutePath());
-
 		// otherwise, we try to set JAVA_HOME to the same Java as MCreator is launched with
-		String current_java_home = System.getProperty("java.home");
-		if (current_java_home != null && current_java_home.contains("jdk")) // only set it if it is jdk, not jre
-			return current_java_home;
-
-		LOG.error("Failed to find any bundled JDKs, using system's default if it exists");
-
-		// if we can not get a better match, use system default JAVA_HOME variable
-		// THIS ONE CAN BE null!!!, so handle this with care where used
-		return System.getenv("JAVA_HOME");
+		return System.getProperty("java.home");
 	}
 
 	public static void updateMCreatorBuildFile(Workspace workspace) {

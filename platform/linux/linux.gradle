@@ -50,7 +50,7 @@ tasks.register('tarLinux64', Tar.class) {
 }
 
 tasks.register('exportLinux') {
-    group 'export'
+    group = 'export'
     dependsOn tarLinux64
 
     doLast {

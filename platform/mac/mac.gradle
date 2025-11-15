@@ -107,7 +107,7 @@ tasks.register('exportMacAarch64', Copy.class) {
 }
 
 tasks.register('exportMac') {
-    group 'export'
+    group = 'export'
 
     dependsOn exportMacX64
     dependsOn exportMacAarch64

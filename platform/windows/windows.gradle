@@ -95,7 +95,7 @@ tasks.register('buildInstallerWin64', Exec.class) {
 }
 
 tasks.register('exportWindows') {
-    group 'export'
+    group = 'export'
 
     dependsOn exportWindowsZip
 

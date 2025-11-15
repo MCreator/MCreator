@@ -19,4 +19,5 @@ jobs:
           java-version: '21.0.8+9.0.LTS'
           distribution: 'temurin'
       - name: Generate and submit dependency graph
+        if: github.repository == 'MCreator/MCreator'
         uses: gradle/actions/dependency-submission@v4
