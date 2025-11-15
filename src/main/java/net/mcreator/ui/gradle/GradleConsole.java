@@ -694,7 +694,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 					if (resultcode == GradleResultCode.STATUS_OK)
 						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
-					MCREvent.event(new WorkspaceBuildFinishedEvent.BuildError(ref, searchBar, resultcode, taskOut.toString(), taskErr.toString()));
+					MCREvent.event(new WorkspaceBuildFinishedEvent.BuildError(ref, resultcode, taskOut.toString(), taskErr.toString()));
 
 					taskComplete(resultcode);
 				});
