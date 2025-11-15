@@ -1,0 +1,1 @@
+This parameter controls if the selected custom java model supports translucency in its rendering.
