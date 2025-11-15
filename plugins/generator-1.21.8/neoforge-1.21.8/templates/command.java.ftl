@@ -33,7 +33,7 @@
 
 package ${package}.command;
 
-@EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
+@EventBusSubscriber<#if data.type == "CLIENTSIDE">(Dist.CLIENT)</#if>
 public class ${name}Command {
 
 	<#if data.type == "CLIENTSIDE">
