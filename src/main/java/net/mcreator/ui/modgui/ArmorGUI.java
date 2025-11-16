@@ -383,16 +383,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
 		helmetSubPanel.add(PanelUtils.gridElements(1, 2, 2, 2, helmetModel, helmetModelPart));
 
+		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
+				L10N.label("elementgui.armor.model_translucency")));
+		helmetSubPanel.add(helmetTranslucency);
+
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		helmetSubPanel.add(helmetModelTexture);
 
 		helmetSubPanel.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
-
-		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
-				L10N.label("elementgui.armor.model_translucency")));
-		helmetSubPanel.add(helmetTranslucency);
 
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
@@ -440,16 +440,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_arm_left"), armsModelPartL, 5, 5),
 				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_arm_right"), armsModelPartR, 5, 5)));
 
+		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
+				L10N.label("elementgui.armor.model_translucency")));
+		bodySubPanel.add(bodyTranslucency);
+
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bodySubPanel.add(bodyModelTexture);
 
 		bodySubPanel.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
-
-		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
-				L10N.label("elementgui.armor.model_translucency")));
-		bodySubPanel.add(bodyTranslucency);
 
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
@@ -491,16 +491,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_leg_right"), leggingsModelPartR, 5,
 						5)));
 
+		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
+				L10N.label("elementgui.armor.model_translucency")));
+		leggingsSubPanel.add(leggingsTranslucency);
+
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		leggingsSubPanel.add(leggingsModelTexture);
 
 		leggingsSubPanel.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
-
-		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
-				L10N.label("elementgui.armor.model_translucency")));
-		leggingsSubPanel.add(leggingsTranslucency);
 
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
@@ -542,16 +542,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_boot_right"), bootsModelPartR, 5,
 						5)));
 
+		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
+				L10N.label("elementgui.armor.model_translucency")));
+		bootsSubPanel.add(bootsTranslucency);
+
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bootsSubPanel.add(bootsModelTexture);
 
 		bootsSubPanel.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
-
-		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/model_translucency"),
-				L10N.label("elementgui.armor.model_translucency")));
-		bootsSubPanel.add(bootsTranslucency);
 
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
