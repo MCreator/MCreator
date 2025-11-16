@@ -38,6 +38,7 @@ package ${package}.item;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
+<@javacompress>
 @EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
 
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
@@ -325,4 +326,5 @@ import net.minecraft.client.model.Model;
 	</#if>
 
 }
+</@javacompress>
 <#-- @formatter:on -->
