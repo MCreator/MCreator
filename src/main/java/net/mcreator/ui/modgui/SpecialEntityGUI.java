@@ -77,6 +77,7 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	}
 
 	@Override protected void initGUI() {
+		entityTexture.setAddPNGExtension(false);
 		itemTexture.setOpaque(false);
 
 		JPanel properties = new JPanel(new GridLayout(5, 2, 5, 2));
