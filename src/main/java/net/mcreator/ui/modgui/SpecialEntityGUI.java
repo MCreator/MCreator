@@ -35,8 +35,6 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -59,12 +57,14 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat")
 			//@formatter:on
 	);
-	private final VTextField name = new VTextField(28);
+	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")
+			.enableRealtimeValidation();
 
 	private final TextureComboBox entityTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 			"elementgui.living_entity.error_entity_model_needs_texture");
 	private final TextureSelectionButton itemTexture = new TextureSelectionButton(
-			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
+			"elementgui.special_entity.error_entity_needs_item_texture");
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
@@ -108,10 +108,6 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.common.error_entity_needs_name")));
-		name.enableRealtimeValidation();
-		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture));
 
 		page1group.addValidationElement(entityTexture);
 		page1group.addValidationElement(itemTexture);
