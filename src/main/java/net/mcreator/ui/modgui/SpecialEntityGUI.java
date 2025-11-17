@@ -20,17 +20,18 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.SpecialEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TabListField;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -60,8 +61,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	);
 	private final VTextField name = new VTextField(28);
 
-	private TextureSelectionButton entityTexture;
-	private TextureSelectionButton itemTexture;
+	private final TextureComboBox entityTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
+			"elementgui.living_entity.error_entity_model_needs_texture");
+	private final TextureSelectionButton itemTexture = new TextureSelectionButton(
+			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
@@ -74,13 +77,9 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	}
 
 	@Override protected void initGUI() {
-		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		itemTexture.setOpaque(false);
 
-		entityTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ENTITY));
-		entityTexture.setOpaque(false);
-
-		JPanel properties = new JPanel(new GridLayout(4, 2, 5, 2));
+		JPanel properties = new JPanel(new GridLayout(5, 2, 5, 2));
 		properties.setOpaque(false);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_type"),
@@ -90,6 +89,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		properties.add(name);
+
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_texture"),
+				L10N.label("elementgui.special_entity.entity_texture")));
+		properties.add(entityTexture);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/item_texture"),
 				L10N.label("elementgui.special_entity.item_texture")));
@@ -106,25 +109,15 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 				L10N.t("elementgui.common.properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 
-		JPanel entityTexturesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		entityTexturesPanel.setOpaque(false);
-
-		entityTexturesPanel.add(ComponentUtils.squareAndBorder(
-				HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_texture"), entityTexture),
-				L10N.t("elementgui.special_entity.entity_texture")));
-
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.common.error_entity_needs_name")));
 		name.enableRealtimeValidation();
-		entityTexture.setValidator(new TextureSelectionButtonValidator(entityTexture));
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture));
 
 		page1group.addValidationElement(entityTexture);
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(entityTexturesPanel, PanelUtils.pullElementUp(properties), 25,
-						25))).validate(page1group);
+		addPage(PanelUtils.totalCenterInPanel(properties)).validate(page1group);
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
@@ -137,19 +130,24 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		}
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+		entityTexture.reload();
+	}
+
 	@Override protected void openInEditingMode(SpecialEntity entity) {
 		entityType.setSelectedItem(entity.entityType);
 		name.setText(entity.name);
+		entityTexture.setTextureFromTextureName(entity.entityTexture.getRawTextureName());
 		itemTexture.setTexture(entity.itemTexture);
 		creativeTabs.setListElements(entity.creativeTabs);
-		entityTexture.setTexture(entity.entityTexture);
 	}
 
 	@Override public SpecialEntity getElementFromGUI() {
 		SpecialEntity entity = new SpecialEntity(modElement);
 		entity.entityType = (String) entityType.getSelectedItem();
 		entity.name = name.getText();
-		entity.entityTexture = entityTexture.getTextureHolder();
+		entity.entityTexture = new TextureHolder(mcreator.getWorkspace(), entityTexture.getTextureName());
 		entity.itemTexture = itemTexture.getTextureHolder();
 		entity.creativeTabs = creativeTabs.getListElements();
 		return entity;
