@@ -6,5 +6,5 @@ leur tireur pour éviter les collisions initiales en raison de leur taille. Si l
 entreront en collision avec l'entité la plus proche dans tous les cas, ce qui signifie que la tirer par exemple avec une commande pourrait
 les faire entrer en collision avec l'expéditeur de la commande.
 
-Les très grandes tailles de la boîte englobante de projectile peuvent également faire entrer le projectile en collision avec les blocs
-très souvent et peuvent les empêcher d'aller loin en raison de collisions en avance.
+Les très grandes tailles de boîte de collision de projectile peuvent également faire entrer le projectile en collision avec les blocs
+très souvent et peuvent les empêcher d'aller loin en raison de collisions précoce.
