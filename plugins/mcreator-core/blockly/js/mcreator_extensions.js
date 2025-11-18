@@ -210,6 +210,39 @@ function checkIfWithin(block, predicate) {
     return null;
 }
 
+// Mutator to disable the "With random XZ" blocks if they already appear in the placement
+Blockly.Extensions.registerMixin('disable_repeated_random_xz',
+    {
+        onchange: function (e) {
+            // Don't change state if it's at the start of a drag and it's not a move or create event
+            if (!this.workspace.isDragging || this.workspace.isDragging()
+                    || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
+                return;
+            }
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
+            }));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placement_in_square.warning_repeated'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+
+function checkIfAfter(block, predicate) {
+    while (block) {
+        if (predicate(block.type)) {
+            return block;
+        }
+        block = block.getPreviousBlock();
+    }
+    return null;
+}
+
 // Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
 Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
     {
