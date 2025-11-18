@@ -254,12 +254,12 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
 
             const enabled = !isRepeated && isWithinRange;
             if (enabled) {
-            	this.setWarningText(null);
+                this.setWarningText(null);
             } else if (isRepeated) {
-            	this.setWarningText(javabridge.t('blockly.block.placement_in_square.warning_repeated') +
-            			(isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
+                this.setWarningText(javabridge.t('blockly.block.placement_in_square.warning_repeated') +
+                        (isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
             } else {
-            	this.setWarningText(javabridge.t('blockly.extension.placement_count_on_every_layer.count'));
+                this.setWarningText(javabridge.t('blockly.extension.placement_count_on_every_layer.count'));
             }
 
             if (!this.isInFlyout) {
