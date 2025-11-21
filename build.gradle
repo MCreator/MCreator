@@ -239,7 +239,7 @@ ospackage {
 Includes bundled Java Runtime Environment (JDK) for mod development.
 
 Features:
- - Mod generator for Minecraft 1.12 through latest versions
+ - Mod generator for Minecraft 1.12+ through latest versions
  - MCreator Language (MCL) for custom procedures
  - Gradle integration for Forge/Fabric mods
  - Real-time code preview and testing'''
