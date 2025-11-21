@@ -1,0 +1,16 @@
+#!/bin/sh
+# MCreator Launcher Wrapper for Package Installations
+
+MCREATOR_HOME="/opt/mcreator"
+
+cd "$MCREATOR_HOME" || exit 1
+
+export JAVA_HOME="$MCREATOR_HOME/jdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+exec "$JAVA_HOME/bin/java" \
+    -Xmx2G \
+    -Dfile.encoding=UTF-8 \
+    --add-opens=java.base/java.lang=ALL-UNNAMED \
+    -cp "$MCREATOR_HOME/lib/*:$MCREATOR_HOME/*" \
+    net.mcreator.Launcher "$@"

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=MCreator
+GenericName=Minecraft Mod Development
+Comment=Create Minecraft mods without coding
+Exec=/usr/bin/mcreator %F
+Icon=mcreator
+Type=Application
+Categories=Development;IDE;Java;
+Keywords=minecraft;mod;development;java;forge;fabric;
+Terminal=false
+StartupNotify=true
+StartupWMClass=net-mcreator-ui-MCreatorApplication
+MimeType=application/x-mcreator-workspace;

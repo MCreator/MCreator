@@ -203,3 +203,166 @@ tasks.register('runMCreator', JavaExec.class) {
 
 apply from: 'platform/setup.gradle'
 apply from: 'platform/export.gradle'
+
+// ============================================================
+// LINUX PACKAGE GENERATION (.deb and .rpm)
+// ============================================================
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-ospackage-plugin:12.1.1'
+    }
+}
+
+apply plugin: 'com.netflix.nebula.ospackage'
+
+import com.netflix.nebula.ospackage.Deb
+import com.netflix.nebula.ospackage.Rpm
+
+ospackage {
+    packageName = 'mcreator'
+    version = project.version.toString()
+    release = '1'
+    arch = 'x86_64'
+    os = 'LINUX'
+    type = 'binary'
+    
+    maintainer = 'MCreator Team <support@mcreator.net>'
+    vendor = 'Pylo'
+    url = 'https://mcreator.net'
+    summary = 'Minecraft Mod Development Tool'
+    packageDescription = '''MCreator is a complete IDE for creating Minecraft Java Edition mods.
+Includes bundled Java Runtime Environment (JDK) for mod development.
+
+Features:
+ - Mod generator for Minecraft 1.12 through latest versions
+ - MCreator Language (MCL) for custom procedures
+ - Gradle integration for Forge/Fabric mods
+ - Real-time code preview and testing'''
+    
+    into '/opt/mcreator'
+    
+    preInstall '''#!/bin/sh
+mkdir -p /opt/mcreator
+'''
+    
+    postInstall '''#!/bin/sh
+set -e
+update-desktop-database /usr/share/applications 2>/dev/null || true
+gtk-update-icon-cache /usr/share/icons/hicolor 2>/dev/null || true
+echo "MCreator installed successfully. Run: mcreator"
+'''
+    
+    preUninstall '''#!/bin/sh
+set -e
+echo "Removing MCreator..."
+'''
+}
+
+task buildDeb(type: Deb) {
+    description = 'Builds Debian package (.deb) for Ubuntu/Debian'
+    group = 'distribution'
+    
+    dependsOn 'exportLinux64'
+    
+    recommends('openjdk-11-jre | openjdk-17-jre | default-jre')
+    recommends('libgtk-3-0')
+    suggests('git', 'gradle')
+    
+    from("$buildDir/export/linux64") {
+        into '/opt/mcreator'
+        exclude 'mcreator.sh'
+        fileMode = 0644
+        dirMode = 0755
+    }
+    
+    from("$buildDir/export/linux64/jdk/bin") {
+        into '/opt/mcreator/jdk/bin'
+        fileMode = 0755
+    }
+    
+    from("$buildDir/export/linux64/lib") {
+        into '/opt/mcreator/lib'
+        include '**/*.so'
+        fileMode = 0755
+    }
+    
+    link('/usr/bin/mcreator', '/opt/mcreator/bin/mcreator-launcher')
+    
+    from('platform/linux') {
+        include 'mcreator-launcher'
+        into '/opt/mcreator/bin'
+        fileMode = 0755
+    }
+    
+    from('platform/linux') {
+        include 'mcreator.desktop'
+        into '/usr/share/applications'
+        fileMode = 0644
+    }
+    
+    from("$buildDir/export/linux64") {
+        include 'icon.png'
+        into '/usr/share/icons/hicolor/256x256/apps'
+        rename { 'mcreator.png' }
+        fileMode = 0644
+    }
+}
+
+task buildRpm(type: Rpm) {
+    description = 'Builds RPM package (.rpm) for Fedora/RHEL/Nobara'
+    group = 'distribution'
+    
+    dependsOn 'exportLinux64'
+    
+    from("$buildDir/export/linux64") {
+        into '/opt/mcreator'
+        exclude 'mcreator.sh'
+        fileMode = 0644
+        dirMode = 0755
+    }
+    
+    from("$buildDir/export/linux64/jdk/bin") {
+        into '/opt/mcreator/jdk/bin'
+        fileMode = 0755
+    }
+    
+    from("$buildDir/export/linux64/lib") {
+        into '/opt/mcreator/lib'
+        include '**/*.so'
+        fileMode = 0755
+    }
+    
+    link('/usr/bin/mcreator', '/opt/mcreator/bin/mcreator-launcher')
+    
+    from('platform/linux') {
+        include 'mcreator-launcher'
+        into '/opt/mcreator/bin'
+        fileMode = 0755
+    }
+    
+    from('platform/linux') {
+        include 'mcreator.desktop'
+        into '/usr/share/applications'
+        fileMode = 0644
+    }
+    
+    from("$buildDir/export/linux64") {
+        include 'icon.png'
+        into '/usr/share/icons/hicolor/256x256/apps'
+        rename { 'mcreator.png' }
+        fileMode = 0644
+    }
+}
+
+build.finalizedBy buildDeb, buildRpm
+
+task buildLinuxPackages {
+    description = 'Builds all Linux distribution packages (.tar.gz, .deb, .rpm)'
+    group = 'distribution'
+    dependsOn 'exportLinux64', 'buildDeb', 'buildRpm'
+}
