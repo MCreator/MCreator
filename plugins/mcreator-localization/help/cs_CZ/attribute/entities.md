@@ -1,0 +1,1 @@
+Zde vybrané entity budou mít tento atribut přítomen a nastaven na výchozí hodnotu při zjevení.
