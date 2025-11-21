@@ -208,17 +208,10 @@ apply from: 'platform/export.gradle'
 // LINUX PACKAGE GENERATION (.deb and .rpm)
 // ============================================================
 
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.netflix.nebula:gradle-ospackage-plugin:12.1.1'
-    }
+plugins {
+    // existing plugins (java, application, etc)
+    id "com.netflix.nebula.ospackage" version "12.1.1"
 }
-
-apply plugin: 'com.netflix.nebula.ospackage'
 
 import com.netflix.nebula.ospackage.Deb
 import com.netflix.nebula.ospackage.Rpm
