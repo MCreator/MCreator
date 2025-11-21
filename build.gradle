@@ -205,7 +205,7 @@ tasks.register('runMCreator', JavaExec.class) {
 apply from: 'platform/setup.gradle'
 apply from: 'platform/export.gradle'
 
-
+// Linux installers
 ospackage {
     packageName = 'mcreator'
     version = project.version.toString()
@@ -252,9 +252,10 @@ tasks.named('buildDeb') {
     
     dependsOn 'exportLinux64'
     
-    recommends('openjdk-11-jre | openjdk-17-jre | default-jre')
-    recommends('libgtk-3-0')
-    suggests('git', 'gradle')
+    requires('openjdk-11-jre | openjdk-17-jre | default-jre')
+    requires('libgtk-3-0')
+    suggests('git')
+    suggests('gradle')
     
     from("$buildDir/export/linux64") {
         into '/opt/mcreator'
@@ -301,6 +302,8 @@ tasks.named('buildRpm') {
     group = 'distribution'
     
     dependsOn 'exportLinux64'
+    
+    requires('java-11-openjdk')
     
     from("$buildDir/export/linux64") {
         into '/opt/mcreator'
@@ -349,4 +352,3 @@ task buildLinuxPackages {
     group = 'distribution'
     dependsOn 'exportLinux64', 'buildDeb', 'buildRpm'
 }
-
