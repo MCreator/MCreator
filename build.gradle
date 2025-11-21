@@ -206,13 +206,6 @@ apply from: 'platform/setup.gradle'
 apply from: 'platform/export.gradle'
 
 
-// ============================================================
-// LINUX PACKAGE GENERATION (.deb and .rpm)
-// ============================================================
-
-import com.netflix.nebula.ospackage.Deb
-import com.netflix.nebula.ospackage.Rpm
-
 ospackage {
     packageName = 'mcreator'
     version = project.version.toString()
@@ -253,7 +246,7 @@ echo "Removing MCreator..."
 '''
 }
 
-task buildDeb(type: Deb) {  // ← CHANGED: removed .class
+tasks.named('buildDeb') {
     description = 'Builds Debian package (.deb) for Ubuntu/Debian'
     group = 'distribution'
     
@@ -303,7 +296,7 @@ task buildDeb(type: Deb) {  // ← CHANGED: removed .class
     }
 }
 
-task buildRpm(type: Rpm) {  // ← CHANGED: removed .class
+tasks.named('buildRpm') {
     description = 'Builds RPM package (.rpm) for Fedora/RHEL/Nobara'
     group = 'distribution'
     
