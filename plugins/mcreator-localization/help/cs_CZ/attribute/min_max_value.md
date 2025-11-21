@@ -1,0 +1,1 @@
+Tento parametr udává maximální a minimální hodnotu, kterou atribut může mít.
