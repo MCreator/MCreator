@@ -104,7 +104,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final SoundSelector stepSound = new SoundSelector(mcreator);
 	private final SoundSelector raidCelebrationSound = new SoundSelector(mcreator);
 
-	private final VTextField mobName = new VTextField().requireValue("elementgui.living_entity.error_entity_needs_name")
+	private final VTextField mobName = new VTextField().requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
 	private final JSpinner attackStrength = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));

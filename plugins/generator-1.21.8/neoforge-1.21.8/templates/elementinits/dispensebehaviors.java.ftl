@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -30,29 +30,18 @@
 
 <#-- @formatter:off -->
 
-/*
- *    MCreator note: This file will be REGENERATED on each build.
- */
-
 package ${package}.init;
 
-@EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}EntityRenderers {
+<#compress>
+@EventBusSubscriber public class ${JavaModName}DispenseBehaviors {
 
-	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		<#list entities as entity>
-			<#if entity.getModElement().getTypeString() == "projectile">
-				<#if entity.isCustomModel()>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
-				<#else>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
-				</#if>
-			<#elseif entity.getModElement().getTypeString() == "livingentity">
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
-				<#if entity.hasCustomProjectile()>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
-				</#if>
-			</#if>
-		</#list>
+	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
+			<#list specialentities as entity>
+				DispenserBlock.registerBehavior(${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get(),
+						new BoatDispenseItemBehavior(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get()));
+			</#list>
+		});
 	}
-}
-<#-- @formatter:on -->
+
+}</#compress>
