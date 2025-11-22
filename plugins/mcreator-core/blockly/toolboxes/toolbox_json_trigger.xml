@@ -1,0 +1,9 @@
+<xml id="toolbox">
+    <custom-other/>
+    <sep/>
+    <category name="${t:blockly.category.components}" colour="300">
+        <block type="mcitem_allblocks"/>
+        <block type="mcitem_all"/>
+        <custom-components/>
+    </category>
+</xml>
