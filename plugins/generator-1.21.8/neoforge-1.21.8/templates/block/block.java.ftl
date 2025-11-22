@@ -42,16 +42,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends
-	<#if var_extends_class??>
-		${var_extends_class}
-	<#elseif data.hasGravity>
-		FallingBlock
-	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")?replace("Sign", "StandingSign")}Block
-	<#else>
-		Block
-	</#if>
+public class ${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -750,3 +741,14 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#function getBlockClass blockBase="">
+	<#if var_extends_class??><#return var_extends_class>
+	<#elseif data.hasGravity><#return "FallingBlock">
+	<#elseif blockBase == "Stairs"><#return "StairBlock">
+	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
+	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
+	<#else><#return blockBase + "Block">
+	</#if>
+</#function>
