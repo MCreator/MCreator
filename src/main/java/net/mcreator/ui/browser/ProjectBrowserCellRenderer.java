@@ -73,7 +73,7 @@ class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 				a.setIcon(UIRES.get("16px.classro"));
 			else if (fileNode.data.startsWith("Gradle: "))
 				a.setIcon(UIRES.get("16px.ext"));
-			else if (fileNode.data.startsWith("Java "))
+			else if (fileNode.data.startsWith("<") && fileNode.data.endsWith(">"))
 				a.setIcon(UIRES.get("16px.directory"));
 			else
 				a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
