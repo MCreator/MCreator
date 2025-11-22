@@ -132,6 +132,8 @@ public class ToolPanel extends JPanel {
 		register(new SelectionTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), constraints);
+		register(new FlipHorizontalTool(canvas, cs, versionManager), constraints);
+		register(new FlipVerticalTool(canvas, cs, versionManager), constraints);
 
 		versionManager.setRevisionListener(() -> {
 			undo.setEnabled(!versionManager.firstRevision());
