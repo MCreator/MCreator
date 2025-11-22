@@ -45,7 +45,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class ${name}Block extends ${getBlockClass(data.blockBase)}
+public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
