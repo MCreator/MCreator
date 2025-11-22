@@ -1,0 +1,51 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 1,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 64,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "mutator": "item_enchanted_mutator",
+  "inputsInline": false,
+  "output": "ItemCondition",
+  "colour": 325,
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "group": "items",
+    "toolbox_id": "conditions",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ],
+    "fields": [
+      "min",
+      "max"
+    ],
+    "repeating_inputs": [
+      "enchantment"
+    ]
+  }
+}
