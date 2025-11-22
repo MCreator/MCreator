@@ -17,5 +17,9 @@ public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lco
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z
 </#if>
 
+<#if w.hasElementsOfType("armor")>
+public-f net.minecraft.client.model.Model renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+</#if>
+
 # Start of user code block custom ATs
 # End of user code block custom ATs

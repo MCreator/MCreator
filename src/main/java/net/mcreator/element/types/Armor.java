@@ -106,6 +106,11 @@ import java.util.stream.Collectors;
 	public int bootsItemRenderType;
 	public String bootsItemCustomModelName;
 
+	public boolean helmetTranslucency;
+	public boolean bodyTranslucency;
+	public boolean leggingsTranslucency;
+	public boolean bootsTranslucency;
+
 	public boolean helmetImmuneToFire;
 	public boolean bodyImmuneToFire;
 	public boolean leggingsImmuneToFire;
