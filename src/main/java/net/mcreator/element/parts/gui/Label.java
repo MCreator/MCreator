@@ -33,20 +33,22 @@ public class Label extends GUIComponent {
 
 	public StringProcedure text;
 	public Color color;
+	public boolean hasShadow;
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition) {
 		super(x, y);
 		this.text = text;
 		this.color = color;
+		this.hasShadow = hasShadow;
 		this.displayCondition = displayCondition;
 		this.name = name;
 	}
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition,
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition,
 			AnchorPoint anchorPoint) {
-		this(name, x, y, text, color, displayCondition);
+		this(name, x, y, text, color, hasShadow, displayCondition);
 		this.anchorPoint = anchorPoint;
 	}
 
@@ -79,6 +81,12 @@ public class Label extends GUIComponent {
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
 		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.getRenderText(), WYSIWYG.frc).getHeight()) - 1;
+
+		if (hasShadow) { // we start by the shadow, so it's below the real text
+			g.setColor(this.color.darker());
+			g.drawString(this.getRenderText(), cx + 1, cy + textheight + 1);
+		}
+
 		g.setColor(this.color);
 		g.drawString(this.getRenderText(), cx, cy + textheight);
 
