@@ -1772,7 +1772,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
 		pottedPlant.setBlock(block.pottedPlant);
-		signEntityTexture.setTextureFromTextureName(block.signEntityTexture.getRawTextureName());
+		signEntityTexture.setTextureFromTextureName(
+				block.signEntityTexture == null ? null : block.signEntityTexture.getRawTextureName());
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
