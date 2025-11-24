@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -72,6 +73,8 @@ import java.util.stream.Collectors;
 	public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
+	public Particle leavesParticleType;
+	public double leavesParticleChance;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -225,6 +228,7 @@ import java.util.stream.Collectors;
 		this.customProperties = new ArrayList<>();
 
 		this.blockSetType = "OAK";
+		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -421,6 +425,11 @@ import java.util.stream.Collectors;
 
 	public Set<String> getVibrationalEvents() {
 		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+	}
+
+	public int getLeavesParticleColor() {
+		return ImageUtils.getAverageColor(ImageUtils.toBufferedImage(texture.getImage(TextureType.BLOCK))).brighter()
+				.brighter().getRGB();
 	}
 
 	public TextureHolder textureTop() {

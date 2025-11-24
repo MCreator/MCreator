@@ -199,7 +199,10 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0f, <@blockProperties/>);
+				super(${data.leavesParticleChance}f,
+						<#if data.leavesParticleType??>${data.leavesParticleType},
+						<#elseif data.tintType == "No tint">ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, ${data.getLeavesParticleColor()}),
+						</#if><@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -740,7 +743,12 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	<#if data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
-	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#elseif blockBase == "Leaves">
+		<#if data.leavesParticleType?? || (data.tintType == "No tint")>
+			<#return "UntintedParticleLeavesBlock">
+		<#else>
+			<#return "TintedParticleLeavesBlock">
+		</#if>
 	<#else><#return blockBase + "Block">
 	</#if>
 </#function>
