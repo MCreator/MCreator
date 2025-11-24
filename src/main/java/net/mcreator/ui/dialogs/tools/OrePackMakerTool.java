@@ -26,14 +26,12 @@ import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -41,7 +39,6 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -49,7 +46,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -120,19 +116,16 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// first we generate ore texture
-		ImageIcon ore = ImageUtils.drawOver(
-				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/noise5.png")),
-				ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/ore10.png")), color, true));
+		ImageIcon ore = ImageUtils.drawOver(getCachedTexture("noise5"),
+				ImageUtils.colorize(getCachedTexture("ore10"), color, true));
 		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(oreTextureName), TextureType.BLOCK));
 
 		// next, ore block texture
-		ImageIcon oreBlockIc = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-				"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-						Arrays.asList("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
-								"oreblock7", "oreblock8")) + ".png")), color, true);
+		ImageIcon oreBlockIc = ImageUtils.colorize(
+				getCachedTexture("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
+						"oreblock7", "oreblock8"), color, true);
 		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()), mcreator.getFolderManager()
 				.getTextureFile(RegistryNameFixer.fix(oreBlockTextureName), TextureType.BLOCK));
@@ -141,20 +134,14 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		ImageIcon gem;
 		String gemTextureName;
 		if (type.equals("Gem based")) {
-			gem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-					"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-							Arrays.asList("gem4", "gem6", "gem7", "gem9", "gem13")) + ".png")), color, true);
+			gem = ImageUtils.colorize(getCachedTexture("gem4", "gem6", "gem7", "gem9", "gem13"), color, true);
 			gemTextureName = (name + "_gem").toLowerCase(Locale.ENGLISH);
 		} else if (type.equals("Dust based")) {
-			gem = ImageUtils.drawOver(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-							new ResourcePointer("templates/textures/texturemaker/dust_base.png")), color, true),
-					ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-							new ResourcePointer("templates/textures/texturemaker/dust_sprinkles.png")), color, true));
+			gem = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("dust_base"), color, true),
+					ImageUtils.colorize(getCachedTexture("dust_sprinkles"), color, true));
 			gemTextureName = (name + "_dust").toLowerCase(Locale.ENGLISH);
 		} else {
-			gem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-					"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-							Arrays.asList("ingot_dark", "ingot_bright")) + ".png")), color, true);
+			gem = ImageUtils.colorize(getCachedTexture("ingot_dark", "ingot_bright"), color, true);
 			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),

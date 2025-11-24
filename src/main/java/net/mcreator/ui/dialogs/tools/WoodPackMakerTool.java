@@ -28,7 +28,6 @@ import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -36,14 +35,12 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -52,7 +49,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -120,50 +116,41 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// first we generate wood texture
-		ImageIcon wood = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-								Arrays.asList("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5")) + ".png")),
-				color, true);
+		ImageIcon wood = ImageUtils.colorize(
+				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), color, true);
 		String woodTextureName = registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
 				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
 
 		//then we generate the missing log texture
-		ImageIcon log = ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/log_top.png")),
-				color, true);
+		ImageIcon log = ImageUtils.colorize(getCachedTexture("log_top"), color, true);
 		String logTextureName = registryName + "_log_top";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
 				mcreator.getFolderManager().getTextureFile(logTextureName, TextureType.BLOCK));
 
 		// then we generate the stripped log side texture
-		ImageIcon strippedLogSide = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/stripped_log_side.png")), strippedColor, true);
+		ImageIcon strippedLogSide = ImageUtils.colorize(getCachedTexture("stripped_log_side"), strippedColor, true);
 		String strippedLogSideTextureName = "stripped_" + registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogSide.getImage()),
 				mcreator.getFolderManager().getTextureFile(strippedLogSideTextureName, TextureType.BLOCK));
 
 		// then we generate the stripped log top texture
-		ImageIcon strippedLogTop = ImageUtils.drawOver(log, ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/stripped_log_top_outside.png")), strippedColor,
-				true));
+		ImageIcon strippedLogTop = ImageUtils.drawOver(log,
+				ImageUtils.colorize(getCachedTexture("stripped_log_top_outside"), strippedColor, true));
 		String strippedLogTopTextureName = "stripped_" + registryName + "_log_top";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogTop.getImage()),
 				mcreator.getFolderManager().getTextureFile(strippedLogTopTextureName, TextureType.BLOCK));
 
 		//then we generate the planks texture
-		ImageIcon planks = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-				"templates/textures/texturemaker/" + ListUtils.getRandomItem(Arrays.asList("planks_0", "planks_1"))
-						+ ".png")), color, true);
+		ImageIcon planks = ImageUtils.colorize(getCachedTexture("planks_0", "planks_1"), color, true);
 		String planksTextureName = registryName + "_planks";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
 				mcreator.getFolderManager().getTextureFile(planksTextureName, TextureType.BLOCK));
 
 		//then we generate the leaves texture
-		ImageIcon leaves = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-				"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-						Arrays.asList("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
-								"leaves_new1", "leaves_new2", "leaves2")) + ".png")), color, true);
+		ImageIcon leaves = ImageUtils.colorize(
+				getCachedTexture("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5", "leaves_new1",
+						"leaves_new2", "leaves2"), color, true);
 		String leavesTextureName = registryName + "_leaves";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
 				mcreator.getFolderManager().getTextureFile(leavesTextureName, TextureType.BLOCK));
@@ -171,31 +158,24 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		// Generate door and trapdoor textures (matching textures have the same suffix)
 		int doorSuffix = new Random().nextInt(2) + 1;
 
-		ImageIcon doorBottom = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/door_bottom_" + doorSuffix + ".png")), color,
-				true);
-		doorBottom = ImageUtils.drawOver(doorBottom, ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/door_hinges_bottom.png")));
+		ImageIcon doorBottom = ImageUtils.colorize(getCachedTexture("door_bottom_" + doorSuffix), color, true);
+		doorBottom = ImageUtils.drawOver(doorBottom, getCachedTexture("door_hinges_bottom"));
 		String doorBottomTextureName = registryName + "_door_bottom";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorBottom.getImage()),
 				mcreator.getFolderManager().getTextureFile(doorBottomTextureName, TextureType.BLOCK));
 
-		ImageIcon doorTop = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/door_top_" + doorSuffix + ".png")), color, true);
-		doorTop = ImageUtils.drawOver(doorTop, ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/door_hinges_top.png")));
+		ImageIcon doorTop = ImageUtils.colorize(getCachedTexture("door_top_" + doorSuffix), color, true);
+		doorTop = ImageUtils.drawOver(doorTop, getCachedTexture("door_hinges_top"));
 		String doorTopTextureName = registryName + "_door_top";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorTop.getImage()),
 				mcreator.getFolderManager().getTextureFile(doorTopTextureName, TextureType.BLOCK));
 
-		ImageIcon doorItem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/door_item_" + doorSuffix + ".png")), color, true);
+		ImageIcon doorItem = ImageUtils.colorize(getCachedTexture("door_item_" + doorSuffix), color, true);
 		String doorItemTextureName = registryName + "_door_item";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorItem.getImage()),
 				mcreator.getFolderManager().getTextureFile(doorItemTextureName, TextureType.ITEM));
 
-		ImageIcon trapdoor = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/trapdoor_" + doorSuffix + ".png")), color, true);
+		ImageIcon trapdoor = ImageUtils.colorize(getCachedTexture("trapdoor_" + doorSuffix), color, true);
 		String trapdoorTextureName = registryName + "_trapdoor";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
 				mcreator.getFolderManager().getTextureFile(trapdoorTextureName, TextureType.BLOCK));

@@ -27,7 +27,6 @@ import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -35,7 +34,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -133,48 +131,37 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// first we generate pickaxe texture
-		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/tool_pickaxe.png")), color, true));
+		ImageIcon pickaxe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
+				ImageUtils.colorize(getCachedTexture("tool_pickaxe"), color, true));
 		String pickaxeTextureName = (name + "_pickaxe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()), mcreator.getFolderManager()
 				.getTextureFile(RegistryNameFixer.fix(pickaxeTextureName), TextureType.ITEM));
 
 		// then we generate axe texture
-		ImageIcon axe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/tool_axe.png")),
-				color, true));
+		ImageIcon axe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
+				ImageUtils.colorize(getCachedTexture("tool_axe"), color, true));
 		String axeTextureName = (name + "_axe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(axeTextureName), TextureType.ITEM));
 
 		// then we generate sword texture
-		ImageIcon sword = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/tool_sword.png")), color, true));
+		ImageIcon sword = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
+				ImageUtils.colorize(getCachedTexture("tool_sword"), color, true));
 		String swordTextureName = (name + "_sword").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(swordTextureName), TextureType.ITEM));
 
 		// then we generate sword texture
-		ImageIcon shovel = ImageUtils.drawOver(ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
-								new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")),
-						ImageMakerTexturesCache.CACHE.get(
-								new ResourcePointer("templates/textures/texturemaker/tool_shovel_grip.png"))),
-				ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/tool_shovel_top.png")), color, true));
+		ImageIcon shovel = ImageUtils.drawOver(
+				ImageUtils.drawOver(getCachedTexture("tool_base_stick"), getCachedTexture("tool_shovel_grip")),
+				ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
 		String shovelTextureName = (name + "_shovel").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(shovelTextureName), TextureType.ITEM));
 
 		// then we generate hoe texture
-		ImageIcon hoe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
-				new ResourcePointer("templates/textures/texturemaker/tool_base_stick.png")), ImageUtils.colorize(
-				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/tool_hoe.png")),
-				color, true));
+		ImageIcon hoe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
+				ImageUtils.colorize(getCachedTexture("tool_hoe"), color, true));
 		String hoeTextureName = (name + "_hoe").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(hoeTextureName), TextureType.ITEM));
