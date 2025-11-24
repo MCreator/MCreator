@@ -122,7 +122,7 @@ dependencies {
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation "org.gradle:gradle-tooling-api:9.2.0"
+    implementation "org.gradle:gradle-tooling-api:9.2.1"
     implementation "net.java.balloontip:balloontip:1.2.4.1"
     implementation "com.atlassian.commonmark:commonmark:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
