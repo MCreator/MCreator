@@ -168,7 +168,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 				mcreator.getFolderManager().getTextureFile(hoeTextureName, TextureType.ITEM));
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
+		// We use element GUIs to get the default values for the elements
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = readableName + " Pickaxe";
@@ -179,7 +179,6 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 		pickaxeTool.attackSpeed = (double) Math.round(1.2f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = readableName + " Axe";
@@ -191,7 +190,6 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 		axeTool.attackSpeed = (double) Math.round(0.9f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = readableName + " Sword";
@@ -203,7 +201,6 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 		swordTool.attackSpeed = (double) Math.round(1.6f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = readableName + " Shovel";
@@ -215,7 +212,6 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		shovelTool.damageVsEntity = (double) Math.round(4.5f * factor);
 		shovelTool.attackSpeed = (double) Math.round(1.0f * factor);
 
-		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = readableName + " Hoe";

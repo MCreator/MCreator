@@ -180,7 +180,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
 				mcreator.getFolderManager().getTextureFile(trapdoorTextureName, TextureType.BLOCK));
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
+		// We use element GUIs to get the default values for the elements
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		logBlock.name = readableName + " Log";
@@ -204,7 +204,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, logBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		woodBlock.name = readableName + " Wood";
@@ -223,7 +222,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, woodBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block strippedLogBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		strippedLogBlock.name = "Stripped " + readableName + " Log";
@@ -247,7 +245,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedLogBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, strippedLogBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block strippedWoodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		strippedWoodBlock.name = "Stripped " + readableName + " Wood";
@@ -274,7 +271,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		workspace.getGenerator().generateElement(woodBlock);
 		workspace.getModElementManager().storeModElement(woodBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block planksBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
 		planksBlock.name = readableName + " Planks";
@@ -292,7 +288,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, planksBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block leavesBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
 		leavesBlock.name = readableName + " Leaves";
@@ -310,7 +305,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.reactionToPushing = "DESTROY";
 		addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block stairsBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false).getElementFromGUI();
 		stairsBlock.name = readableName + " Stairs";
@@ -330,7 +324,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, stairsBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block slabBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false).getElementFromGUI();
 		slabBlock.name = readableName + " Slab";
@@ -350,7 +343,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, slabBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceBlock.name = readableName + " Fence";
@@ -368,7 +360,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, fenceBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block fenceGateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceGateBlock.name = readableName + " Fence Gate";
@@ -422,7 +413,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(workspace, folder, trapdoorBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block pressurePlateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false).getElementFromGUI();
 		pressurePlateBlock.name = readableName + " Pressure Plate";
@@ -440,7 +430,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateBlock.reactionToPushing = "DESTROY";
 		addGeneratableElementToWorkspace(workspace, folder, pressurePlateBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block buttonBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
 		buttonBlock.name = readableName + " Button";
@@ -473,7 +462,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				"TAG:mod:" + registryName + "_logs");
 		addTagEntries(workspace, TagType.ITEMS, "minecraft:planks", planksEntry);
 
-		//Recipes
+		// Recipes
 		Recipe woodRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		woodRecipe.craftingBookCategory = "BUILDING";

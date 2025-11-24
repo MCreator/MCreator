@@ -154,7 +154,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
 		addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
+		// We use element GUIs to get the default values for the elements
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = readableName + " Ore";
@@ -187,7 +187,6 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		addGeneratableElementToWorkspace(workspace, folder, oreBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlockBlock.name = "Block of " + readableName;
