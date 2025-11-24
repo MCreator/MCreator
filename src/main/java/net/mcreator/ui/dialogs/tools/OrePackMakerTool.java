@@ -39,6 +39,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -47,7 +48,6 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class OrePackMakerTool extends AbstractPackMakerTool {
@@ -97,18 +97,18 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
-		String oreItemName;
-		if (type.equals("Dust based")) {
-			oreItemName = name + "Dust";
-		} else if (type.equals("Gem based")) {
-			oreItemName = name;
-		} else {
-			oreItemName = name + "Ingot";
-		}
+		String oreItemName = switch (type) {
+			case "Dust based" -> name + "Dust";
+			case "Gem based" -> name;
+			default -> name + "Ingot";
+		};
 
 		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
 				name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting"))
 			return null;
+
+		String registryName = RegistryNameFixer.fromCamelCase(name);
+		String readableName = StringUtils.machineToReadableName(name);
 
 		// select folder the mod pack should be in
 		FolderElement folder = mcreator instanceof ModMaker modMaker ?
@@ -118,38 +118,38 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		// first we generate ore texture
 		ImageIcon ore = ImageUtils.drawOver(getCachedTexture("noise5"),
 				ImageUtils.colorize(getCachedTexture("ore10"), color, true));
-		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
+		String oreTextureName = registryName + "_ore";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(oreTextureName), TextureType.BLOCK));
+				mcreator.getFolderManager().getTextureFile(oreTextureName, TextureType.BLOCK));
 
 		// next, ore block texture
 		ImageIcon oreBlockIc = ImageUtils.colorize(
 				getCachedTexture("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
 						"oreblock7", "oreblock8"), color, true);
-		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
+		String oreBlockTextureName = registryName + "_ore_block";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()), mcreator.getFolderManager()
-				.getTextureFile(RegistryNameFixer.fix(oreBlockTextureName), TextureType.BLOCK));
+				.getTextureFile(oreBlockTextureName, TextureType.BLOCK));
 
 		// next, gem texture
 		ImageIcon gem;
 		String gemTextureName;
 		if (type.equals("Gem based")) {
 			gem = ImageUtils.colorize(getCachedTexture("gem4", "gem6", "gem7", "gem9", "gem13"), color, true);
-			gemTextureName = (name + "_gem").toLowerCase(Locale.ENGLISH);
+			gemTextureName = registryName;
 		} else if (type.equals("Dust based")) {
 			gem = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("dust_base"), color, true),
 					ImageUtils.colorize(getCachedTexture("dust_sprinkles"), color, true));
-			gemTextureName = (name + "_dust").toLowerCase(Locale.ENGLISH);
+			gemTextureName = registryName + "_dust";
 		} else {
 			gem = ImageUtils.colorize(getCachedTexture("ingot_dark", "ingot_bright"), color, true);
-			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
+			gemTextureName = registryName + "_ingot";
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(gemTextureName), TextureType.ITEM));
+				mcreator.getFolderManager().getTextureFile(gemTextureName, TextureType.ITEM));
 
 		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
-		oreItem.name = name;
+		oreItem.name = readableName;
 		oreItem.texture = new TextureHolder(workspace, gemTextureName);
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
 		addGeneratableElementToWorkspace(workspace, folder, oreItem);
@@ -157,7 +157,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
-		oreBlock.name = name + " Ore";
+		oreBlock.name = readableName + " Ore";
 		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
@@ -190,7 +190,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
-		oreBlockBlock.name = "Block of " + name;
+		oreBlockBlock.name = "Block of " + readableName;
 		oreBlockBlock.customModelName = "Single texture";
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;

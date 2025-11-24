@@ -121,6 +121,8 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
 			return;
 
+		String readableName = StringUtils.machineToReadableName(name);
+
 		// select folder the mod pack should be in
 		FolderElement folder = mcreator instanceof ModMaker modMaker ?
 				modMaker.getWorkspacePanel().currentFolder :
@@ -132,10 +134,10 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		// generate armor item
 		Armor armor = (Armor) ModElementType.ARMOR.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Armor", ModElementType.ARMOR), false).getElementFromGUI();
-		armor.helmetName = name + " Helmet";
-		armor.bodyName = name + " Chestplate";
-		armor.leggingsName = name + " Leggings";
-		armor.bootsName = name + " Boots";
+		armor.helmetName = readableName + " Helmet";
+		armor.bodyName = readableName + " Chestplate";
+		armor.leggingsName = readableName + " Leggings";
+		armor.bootsName = readableName + " Boots";
 		armor.textureHelmet = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_head");
 		armor.textureBody = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_body");
 		armor.textureLeggings = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_leggings");
