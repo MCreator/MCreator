@@ -66,7 +66,7 @@ public class ${name}Particle extends TextureSheetParticle {
 		this.setSize(${data.width}f, ${data.height}f);
 
 		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
-		this.quadSize *= ${data.scale.getFixedValue()}f;
+		this.quadSize <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
@@ -107,7 +107,7 @@ public class ${name}Particle extends TextureSheetParticle {
 	<#if hasProcedure(data.scale)>
 	@Override public float getQuadSize(float scale) {
 		Level world = this.level;
-		return super.getQuadSize(scale) * (float) <@procedureOBJToConditionCode data.scale/>;
+		return <#if data.fixedScale>0.15f<#else>super.getQuadSize(scale)</#if> * (float) <@procedureOBJToConditionCode data.scale/>;
 	}
 	</#if>
 
