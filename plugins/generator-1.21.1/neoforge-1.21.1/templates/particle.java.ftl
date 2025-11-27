@@ -65,7 +65,7 @@ package ${package}.client.particle;
 
 		this.setSize(${data.width}f, ${data.height}f);
 
-		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
+		<#if (data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)) || data.fixedScale>
 		this.quadSize <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
