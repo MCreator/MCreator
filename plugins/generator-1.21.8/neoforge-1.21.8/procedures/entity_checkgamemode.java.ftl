@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player plr${cbi} && plr${cbi}.gameMode() == GameType.${generator.map(field$gamemode, "gamemodes")})
+(${input$entity} instanceof Player _plr${cbi} && _plr${cbi}.gameMode() == GameType.${generator.map(field$gamemode, "gamemodes")})
