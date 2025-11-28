@@ -38,8 +38,9 @@ public class NumberFromTextBlock implements IBlockGenerator {
 				num = element;
 		}
 		if (num != null) {
+			master.addTemplate("utils/double_from_text.java.ftl");
 			master.append(
-					"new Object() {double convert(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) { } return 0; }}.convert(");
+					"doubleFromText(");
 			master.processOutputBlockWithoutParentheses(num);
 			master.append(")");
 		} else {
