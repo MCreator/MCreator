@@ -58,7 +58,7 @@ public class PreferencesManager {
 	public static PreferencesData PREFERENCES;
 
 	/**
-	 * <p>Init the system and load MCreator's preferences, so entries used inside the launcher can be get.</p>
+	 * <p>Init the system and load MCreator's preferences, so entries used inside the launcher can be obtained.</p>
 	 */
 	public static void init() {
 		PREFERENCES = new PreferencesData();
@@ -82,7 +82,7 @@ public class PreferencesManager {
 	}
 
 	/**
-	 * <p>Load all preferences registered under the provided {@param identifier}.</p>
+	 * <p>Load all preferences registered under the provided {@code identifier}.</p>
 	 *
 	 * @param identifier <p> The identifier used to get the preference file to load</p>
 	 */
@@ -185,6 +185,16 @@ public class PreferencesManager {
 		entries.forEach(PreferencesEntry::reset);
 	}
 
+	/**
+	 * <p>This method is a method used by the preferences system in order to register each {@link PreferencesEntry} added by a {@link PreferencesSection}.
+	 * It checks if the provided {@code identifier} already exists inside the system and then, proceed to either add the provided {@link PreferencesEntry} with {@code entry} to the existing {@code identifier}'s list of entries or create a new list linked tto this specific {@code identifier}.
+	 * This is the method allowing to add a {@link PreferencesEntry} to the loading and saving processes. However, the system already has the capacity to automatically register all {@link PreferencesEntry}, so this method should not be called somewhere else.</p>
+	 *
+	 * <p>For Java plugins: See {@link PreferencesSection#addEntry(PreferencesEntry)} and {@link PreferencesSection#addPluginEntry(String, PreferencesEntry)} to add custom entries.</p>
+	 *
+	 * @param identifier A unique {@link String} acting like a mod's id for this system.
+	 * @param entry The {@link PreferencesEntry} added via a {@link PreferencesSection}
+	 */
 	static <T, S extends PreferencesEntry<T>> void register(String identifier, S entry) {
 		if (PREFERENCES_REGISTRY.containsKey(identifier)) {
 			PREFERENCES_REGISTRY.get(identifier).add(entry);

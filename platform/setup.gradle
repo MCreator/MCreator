@@ -31,7 +31,7 @@ tasks.register('downloadJDKWin64') {
 }
 
 tasks.register('downloadJDKLinux64') {
-    group 'setup'
+    group = 'setup'
     doLast {
         if (!file('jdk/jdk21_linux_64/bin/java').exists()) {
             mkdir 'jdk/jdk21_linux_64'
@@ -51,7 +51,7 @@ tasks.register('downloadJDKLinux64') {
 }
 
 tasks.register('downloadJDKMacX64') {
-    group 'setup'
+    group = 'setup'
     doLast {
         if (!file('jdk/jdk21_mac_x64/').exists()) {
             mkdir 'jdk/jdk21_mac_x64'
@@ -71,7 +71,7 @@ tasks.register('downloadJDKMacX64') {
 }
 
 tasks.register('downloadJDKMacAarch64') {
-    group 'setup'
+    group = 'setup'
     doLast {
         if (!file('jdk/jdk21_mac_aarch64/').exists()) {
             mkdir 'jdk/jdk21_mac_aarch64'
@@ -92,7 +92,7 @@ tasks.register('downloadJDKMacAarch64') {
 
 // export environment setup task
 tasks.register('downloadNSIS') {
-    group 'setup'
+    group = 'setup'
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             if (!file('build/tools/nsis/').exists()) {
@@ -118,7 +118,7 @@ tasks.register('downloadNSIS') {
 }
 
 tasks.register('downloadMKISOFS') {
-    group 'setup'
+    group = 'setup'
     doLast {
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             if (!file('build/tools/mkisofs/').exists()) {
