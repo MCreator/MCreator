@@ -114,15 +114,15 @@ dependencies {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation "com.github.sps.junidecode:junidecode:0.3"
-    implementation "org.jboss.forge.roaster:roaster-api:2.30.1.Final"
-    implementation "org.jboss.forge.roaster:roaster-jdt:2.30.1.Final"
+    implementation "org.jboss.forge.roaster:roaster-api:2.30.3.Final"
+    implementation "org.jboss.forge.roaster:roaster-jdt:2.30.3.Final"
     implementation "org.snakeyaml:snakeyaml-engine:3.0.1"
     implementation "org.reflections:reflections:0.10.2"
     implementation "com.google.guava:guava:33.5.0-jre"
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation "org.gradle:gradle-tooling-api:9.2.0"
+    implementation "org.gradle:gradle-tooling-api:9.2.1"
     implementation "net.java.balloontip:balloontip:1.2.4.1"
     implementation "com.atlassian.commonmark:commonmark:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
