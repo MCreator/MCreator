@@ -44,7 +44,7 @@ public class NumberFromTextBlock implements IBlockGenerator {
 				master.processOutputBlockWithoutParentheses(num);
 				master.append(")");
 			} else {
-				master.append("new Object() { double convert(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) {} return 0; }}.convert(");
+				master.append("new Object() {double convert(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) { } return 0; }}.convert(");
 				master.processOutputBlockWithoutParentheses(num);
 				master.append(")");
 			}
