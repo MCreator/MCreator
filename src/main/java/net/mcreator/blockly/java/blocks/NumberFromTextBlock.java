@@ -38,13 +38,13 @@ public class NumberFromTextBlock implements IBlockGenerator {
 				num = element;
 		}
 		if (num != null) {
-			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("utils/_double_from_text.java.ftl")) {
-				master.addTemplate("utils/_double_from_text.java.ftl");
-				master.append("doubleFromText(");
+			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("utils/_parse_double.java.ftl")) {
+				master.addTemplate("utils/_parse_double.java.ftl");
+				master.append("parseDouble(");
 				master.processOutputBlockWithoutParentheses(num);
 				master.append(")");
 			} else {
-				master.append("new Object() { double doubleFromText(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) {} return 0; }}.doubleFromText(");
+				master.append("new Object() { double convert(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) {} return 0; }}.convert(");
 				master.processOutputBlockWithoutParentheses(num);
 				master.append(")");
 			}
