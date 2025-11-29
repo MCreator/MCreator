@@ -106,7 +106,7 @@ package ${package}.client.screens;
                 </#if>
                 event.getGuiGraphics().drawString(Minecraft.getInstance().font,
                     <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                    <@calculatePosition component/>, ${component.color.getRGB()}, false);
+                    <@calculatePosition component/>, ${component.color.getRGB()}, ${component.hasShadow});
             </#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>
