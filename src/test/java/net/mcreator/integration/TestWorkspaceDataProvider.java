@@ -556,6 +556,7 @@ public class TestWorkspaceDataProvider {
 			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
 			biome.genErosion = new Biome.ClimatePoint(0.4, 1.4);
 			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
+			biome.genDepth = new Biome.ClimatePoint(0.3, 1.2);
 
 			biome.rainingPossibility = 1.1;
 			biome.temperature = 2.1;
