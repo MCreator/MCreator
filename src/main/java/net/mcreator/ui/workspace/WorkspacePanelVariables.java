@@ -104,7 +104,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 								}
 							}
 							if (!scopeSupported) { // if the new type doesn't support the current scope, set it to the first supported one
-								elements.setValueAt(supportedScopes[0], row, 2);
+								super.setValueAt(supportedScopes[0], row, 2);
 							}
 
 							// Handle 3rd column - initial value
