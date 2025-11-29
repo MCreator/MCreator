@@ -1,0 +1,1 @@
+If checked, this parameter ensures that the particle will not display any size variation when spawned.
