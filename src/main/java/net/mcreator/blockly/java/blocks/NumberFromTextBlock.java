@@ -38,11 +38,16 @@ public class NumberFromTextBlock implements IBlockGenerator {
 				num = element;
 		}
 		if (num != null) {
-			master.addTemplate("utils/double_from_text.java.ftl");
-			master.append(
-					"doubleFromText(");
-			master.processOutputBlockWithoutParentheses(num);
-			master.append(")");
+			if (master.getTemplateGenerator().hasTemplate("utils/_double.from_text.java.ftl")) {
+				master.addTemplate("utils/_double_from_text.java.ftl");
+				master.append("doubleFromText(");
+				master.processOutputBlockWithoutParentheses(num);
+				master.append(")");
+			} else {
+				master.append("new Object() { double doubleFromText(String s) { try { return Double.parseDouble(s.trim()); } catch (Exception e) {} return 0; }}.doubleFromText(");
+				master.processOutputBlockWithoutParentheses(num);
+				master.append(")");
+			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.empty_text_to_number")));
