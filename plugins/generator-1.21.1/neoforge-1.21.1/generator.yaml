@@ -90,6 +90,7 @@ base_templates:
     name: "@RESROOT/META-INF/enumextensions.json"
     condition_any:
       - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
