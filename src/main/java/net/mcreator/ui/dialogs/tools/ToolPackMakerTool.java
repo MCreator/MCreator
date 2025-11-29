@@ -153,7 +153,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
 				mcreator.getFolderManager().getTextureFile(swordTextureName, TextureType.ITEM));
 
-		// then we generate sword texture
+		// then we generate shovel texture
 		ImageIcon shovel = ImageUtils.drawOver(
 				ImageUtils.drawOver(getCachedTexture("tool_base_stick"), getCachedTexture("tool_shovel_grip")),
 				ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
