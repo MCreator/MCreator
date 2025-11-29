@@ -27,29 +27,36 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox {
+
+	private static final Logger LOG = LogManager.getLogger(Block.class);
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -72,6 +79,7 @@ import java.util.stream.Collectors;
 	public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
+	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -252,6 +260,19 @@ import java.util.stream.Collectors;
 		this.animations = new ArrayList<>();
 	}
 
+	@Override public void finalizeModElementGeneration() {
+		if (isSign()) {
+			try {
+				File entityTextureLocation = new File(
+						getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+						"entity/signs/" + getModElement().getRegistryName() + ".png");
+				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
+			} catch (Exception e) {
+				LOG.error("Failed to sign texture", e);
+			}
+		}
+	}
+
 	public int renderType() {
 		if (blockBase != null && !blockBase.isEmpty() && !blockBase.equals("FlowerPot"))
 			return -1;
@@ -272,6 +293,10 @@ import java.util.stream.Collectors;
 
 	@Override public boolean isDoubleBlock() {
 		return "Door".equals(blockBase);
+	}
+
+	public boolean isSign() {
+		return "Sign".equals(blockBase);
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
@@ -355,6 +380,8 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
 		} else if ("Button".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
+		} else if (blockBase != null && blockBase.equals("Sign")) {
+			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
@@ -366,11 +393,24 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+		ArrayList<MCItem> retval = new ArrayList<>();
+		retval.add(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+
+		if (isSign()) // Provide sign wall block
+			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block_without_item", "Wall sign"));
+
+		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if (isSign() && "wall".equals(suffix)) {
+			return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
+		}
+		return null;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return hasBlockItem ? providedMCItems() : Collections.emptyList();
+		return hasBlockItem ? List.of(new MCItem.Custom(this.getModElement(), null, "block")) : Collections.emptyList();
 	}
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
