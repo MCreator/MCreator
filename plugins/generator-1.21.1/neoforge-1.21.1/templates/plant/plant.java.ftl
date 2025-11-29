@@ -215,6 +215,34 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 	}
 	</#if>
 
+	<#if data.blockBounciness?? && (hasProcedure(data.blockBounciness) || data.blockBounciness.getFixedValue() > 0)>
+	@Override
+	public void updateEntityAfterFallOn(BlockGetter block, Entity entity) {
+		if (entity.isSuppressingBounce()) {
+			super.updateEntityAfterFallOn(block, entity);
+		} else {
+			this.bounceUp(entity);
+		}
+	}
+
+	private void bounceUp(Entity entity) {
+		Vec3 vec3 = entity.getDeltaMovement();
+		if (vec3.y < 0.0) {
+			double d0 = entity instanceof LivingEntity ? 1.0 : 1.0;
+			<#if hasProcedure(data.blockBounciness)>
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
+				LevelAccessor world = entity.level();
+				float restitution = (float) <@procedureOBJToNumberCode data.blockBounciness/>;
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * restitution, vec3.z);
+			<#else>
+				entity.setDeltaMovement(vec3.x, -vec3.y * d0 * ${data.blockBounciness.getFixedValue()}F, vec3.z);
+			</#if>
+		}
+	}
+	</#if>
+	
 	<#if (data.canBePlacedOn?size > 0) || hasProcedure(data.placingCondition)>
 		<#if data.plantType != "growapable">
 		@Override public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {

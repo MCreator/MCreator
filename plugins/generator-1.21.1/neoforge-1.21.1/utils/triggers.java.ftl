@@ -418,18 +418,35 @@
 </#macro>
 
 <#macro onEntityFallsOn procedure="">
-<#if hasProcedure(data.onEntityFallsOn)>
-@Override public void fallOn(Level world, BlockState blockstate, BlockPos pos, Entity entity, float distance) {
-	super.fallOn(world, blockstate, pos, entity, distance);
-	<@procedureCode data.onEntityFallsOn, {
-		"x": "pos.getX()",
-		"y": "pos.getY()",
-		"z": "pos.getZ()",
-		"world": "world",
-		"entity": "entity",
-		"blockstate": "blockstate",
-		"distance": "distance"
-	}/>
+<#if (data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1))
+   || hasProcedure(data.onEntityFallsOn)>
+@Override
+public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float distance) {
+    <#if data.fallDamageInduced?? && (hasProcedure(data.fallDamageInduced) || data.fallDamageInduced.getFixedValue() != 1)>
+        <#if hasProcedure(data.fallDamageInduced)>
+        	int x = pos.getX();
+            int y = pos.getY();
+            int z = pos.getZ();
+            float damage = (float) <@procedureOBJToNumberCode data.fallDamageInduced/>;
+            super.fallOn(world, state, pos, entity, distance * damage);
+        <#else>
+            super.fallOn(world, state, pos, entity, distance * ${data.fallDamageInduced.getFixedValue()}F);
+        </#if>
+    <#else>
+        super.fallOn(world, state, pos, entity, distance);
+    </#if>
+
+    <#if hasProcedure(data.onEntityFallsOn)>
+        <@procedureCode data.onEntityFallsOn, {
+            "x": "pos.getX()",
+            "y": "pos.getY()",
+            "z": "pos.getZ()",
+            "world": "world",
+            "entity": "entity",
+            "blockstate": "state",
+            "distance": "distance"
+        }/>
+    </#if>
 }
 </#if>
 </#macro>
