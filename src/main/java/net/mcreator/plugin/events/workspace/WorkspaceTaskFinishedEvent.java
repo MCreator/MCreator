@@ -24,8 +24,7 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.MCreator;
 
 /**
- * <p>This is a class grouping different {@link MCREvent} related to Gradle tasks that are triggered once a task is finished.
- * This main event/class is triggered when MCreator completes a task, meaning it is executed after the result of the task is known.</p>
+ * <p>This is a class grouping different {@link MCREvent} related to Gradle tasks that are triggered once a task is finished.</p>
  */
 public class WorkspaceTaskFinishedEvent extends MCREvent {
 
@@ -33,10 +32,7 @@ public class WorkspaceTaskFinishedEvent extends MCREvent {
 	private final GradleResultCode gradleStatus;
 
 	/**
-	 * <p>MCreator triggers this event when it completes the task, meaning it is executed after the result of the build task is known.
-	 * The build can either be successful or not.</p>
-	 *
-	 * @param gradleStatus The result obtained after trying to build the workspace
+	 * <p>This constructor alone does nothing. It is used to group all related events. MCreator only trigger sub-events.</p>
 	 */
 	public WorkspaceTaskFinishedEvent(MCreator mcreator, GradleResultCode gradleStatus) {
 		this.mcreator = mcreator;
@@ -52,7 +48,23 @@ public class WorkspaceTaskFinishedEvent extends MCREvent {
 	}
 
 	/**
-	 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+	 * <p>MCreator triggers this event when it completes a task, meaning it is executed after the result of the task is known.
+	 * The result can either be successful or not.</p>
+	 */
+	public static class TaskCompleted extends WorkspaceTaskFinishedEvent {
+
+		/**
+		 * <p>This event is triggered after MCreator completes the task. When this event is called, we already know the result of the code.</p>
+		 *
+		 * @param gradleStatus The result obtained after trying to build the workspace
+		 */
+		public TaskCompleted(MCreator mcreator, GradleResultCode gradleStatus) {
+			super(mcreator, gradleStatus);
+		}
+	}
+
+	/**
+	 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent.TaskCompleted} is called right after this event.</p>
 	 */
 	public static class TaskError extends WorkspaceTaskFinishedEvent {
 
@@ -61,7 +73,7 @@ public class WorkspaceTaskFinishedEvent extends MCREvent {
 		private final String err;
 
 		/**
-		 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+		 * <p>This event is only triggered when the task fails due to any type of error. The {@link WorkspaceTaskFinishedEvent.TaskCompleted} is called right after this event.</p>
 		 *
 		 * @param gradleStatus The result obtained after trying to build the workspace
 		 * @param out          String containing data from out stream
@@ -83,12 +95,12 @@ public class WorkspaceTaskFinishedEvent extends MCREvent {
 	}
 
 	/**
-	 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+	 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent.TaskCompleted} is called right after this event.</p>
 	 */
 	public static class TaskSuccessful extends WorkspaceTaskFinishedEvent {
 
 		/**
-		 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent} is called right after this event.</p>
+		 * <p>This event is only triggered when the task succeed. The {@link WorkspaceTaskFinishedEvent.TaskCompleted} is called right after this event.</p>
 		 */
 		public TaskSuccessful(MCreator mcreator) {
 			super(mcreator, GradleResultCode.STATUS_OK);

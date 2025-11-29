@@ -748,7 +748,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 						Color.gray);
 				append(" ");
 
-				MCREvent.event(new WorkspaceTaskFinishedEvent(ref, mcreatorGradleStatus));
+				MCREvent.event(new WorkspaceTaskFinishedEvent.TaskCompleted(ref, mcreatorGradleStatus));
 
 				if (debugClient != null) {
 					ref.getDebugPanel().stopDebug();
