@@ -176,6 +176,8 @@ public class ActionRegistry {
 	public final BasicAction imageEditorColorize;
 	public final BasicAction imageEditorDesaturate;
 	public final BasicAction imageEditorHSVNoise;
+	public final BasicAction imageEditorFlipHorizontal;
+	public final BasicAction imageEditorFlipVertical;
 	public final BasicAction imageEditorMoveLayer;
 	public final BasicAction imageEditorSelectLayer;
 	public final ImageEditorClearSelectionAction imageEditorClearSelection;
@@ -331,6 +333,8 @@ public class ActionRegistry {
 		this.imageEditorColorize = new ColorizeToolAction(this);
 		this.imageEditorDesaturate = new DesaturateToolAction(this);
 		this.imageEditorHSVNoise = new HSVNoiseToolAction(this);
+		this.imageEditorFlipHorizontal = new FlipHorizontalToolAction(this);
+		this.imageEditorFlipVertical = new FlipVerticalToolAction(this);
 		this.imageEditorMoveLayer = new MoveToolAction(this);
 		this.imageEditorSelectLayer = new SelectionToolAction(this);
 		this.imageEditorClearSelection = new ImageEditorClearSelectionAction(this);

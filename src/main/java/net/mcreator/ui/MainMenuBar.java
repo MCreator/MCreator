@@ -144,6 +144,8 @@ public abstract class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.getActionRegistry().imageEditorClearSelection);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeLayer);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeCanvas);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorFlipHorizontal);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorFlipVertical);
 		add(imageEditor);
 
 		assembleMenuBar(mcreator);
