@@ -1,1 +1,1 @@
-${input$entity}.fallDistance = ${opt.toFloat(input$height)};
+${input$entity}.fallDistance = ${input$height};
