@@ -22,7 +22,6 @@ package net.mcreator.integration.ui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.BlocklyValidationResult;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -30,8 +29,6 @@ import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,7 +82,7 @@ public class UITestUtil {
 		for (Validator.ValidationResult result : validationResult.getGroupedValidationResults()) {
 			if (result.getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
-					if (result instanceof BlocklyValidationResult) {
+					if (result.isBlocklyResult()) {
 						// skip Blockly validation in case it is marked that initial XML in the editor is not valid
 						// and skipInitialXMLValidationIfAllowed flag is set to true
 						if (skipInitialXMLValidationIfAllowed && !panelHolder.isInitialXMLValid())

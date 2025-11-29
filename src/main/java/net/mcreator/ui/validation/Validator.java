@@ -43,10 +43,16 @@ public interface Validator {
 
 		private final ValidationResultType validationResultType;
 		private final String message;
+		private final boolean isBlocklyResult;
 
 		public ValidationResult(ValidationResultType validationResultType, String message) {
+			this(validationResultType, message, false);
+		}
+
+		public ValidationResult(ValidationResultType validationResultType, String message, boolean isBlocklyResult) {
 			this.validationResultType = validationResultType;
 			this.message = message;
+			this.isBlocklyResult = isBlocklyResult;
 		}
 
 		public ValidationResultType getValidationResultType() {
@@ -55,6 +61,10 @@ public interface Validator {
 
 		public String getMessage() {
 			return message;
+		}
+
+		public boolean isBlocklyResult() {
+			return isBlocklyResult;
 		}
 	}
 

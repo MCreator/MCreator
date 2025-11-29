@@ -159,9 +159,8 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 	@Override public Validator.ValidationResult getValidationStatus() {
 		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
-		if (validator != null && validationResult != null && (
-				validationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-						|| validationResult.getValidationResultType() == Validator.ValidationResultType.WARNING)) {
+		if (validator != null && validationResult != null
+				&& validationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
 			setBorder(BorderFactory.createLineBorder(validationResult.getValidationResultType().getColor(), 1));
 		} else {
 			setBorder(BorderFactory.createEmptyBorder());

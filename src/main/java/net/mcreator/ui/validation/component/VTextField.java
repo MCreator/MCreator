@@ -119,8 +119,7 @@ public class VTextField extends JTextField implements IValidable {
 				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			}
 
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
 				Color old = g.getColor();
 				g.setColor(ColorUtils.applyAlpha(old, 40));
 				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
