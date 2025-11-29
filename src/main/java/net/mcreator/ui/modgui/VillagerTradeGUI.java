@@ -49,7 +49,7 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
 
 		pane.add(villagerTradeProfessions);
-		addPage(pane, false);
+		addPage(pane, false).lazyValidate(villagerTradeProfessions::getValidationResult);
 
 		// Add first pool
 		if (!isEditingMode()) {
