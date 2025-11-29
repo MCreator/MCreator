@@ -1488,9 +1488,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.supportedSlots = getRandomItem(random,
-					new String[] { "any", "mainhand", "offhand", "hand", "feet", "legs", "chest", "head", "armor",
-							"body" });
+			enchantment.supportedSlots = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
 			enchantment.weight = 42;
 			enchantment.anvilCost = 32;
 			enchantment.maxLevel = 45;
