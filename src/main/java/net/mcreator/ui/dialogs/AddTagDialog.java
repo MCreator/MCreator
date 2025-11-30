@@ -24,7 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.workspace.elements.TagElement;
@@ -62,7 +62,7 @@ public class AddTagDialog {
 				L10N.label("dialog.item_selector.enter_tag_name." + tagType.name().toLowerCase(Locale.ENGLISH)), wrap,
 				5, 5), L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION && tagName.getSelectedItem() != null) {
-			if (tagName.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
+			if (tagName.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				if (!tagName.getSelectedItem().contains(":")) {
 					return "minecraft:" + tagName.getSelectedItem();
 				} else {
