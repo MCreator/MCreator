@@ -69,6 +69,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
 	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
 	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genDepth = new JMinMaxSpinner(0.2, 0.9, 0.0, 1.5, 0.0001).allowEqualValues();
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
@@ -305,7 +306,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
 
-		JPanel spawnproperties = new JPanel(new GridLayout(13, 2, 25, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(14, 2, 25, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -354,6 +355,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
 				L10N.label("elementgui.biome.generate_overworld_caves")));
 		spawnproperties.add(spawnInCaves);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_depth"),
+				L10N.label("elementgui.biome.gen_depth")));
+		spawnproperties.add(genDepth);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
 				L10N.label("elementgui.biome.generate_nether")));
@@ -726,6 +731,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		genErosion.setMaxValue(biome.genErosion.max);
 		genWeirdness.setMinValue(biome.genWeirdness.min);
 		genWeirdness.setMaxValue(biome.genWeirdness.max);
+		genDepth.setMinValue(biome.genDepth.min);
+		genDepth.setMaxValue(biome.genDepth.max);
 
 		updateBiomeTreesForm();
 		updateParticleParameters();
@@ -800,6 +807,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				genContinentalness.getMaxValue());
 		biome.genErosion = new Biome.ClimatePoint(genErosion.getMinValue(), genErosion.getMaxValue());
 		biome.genWeirdness = new Biome.ClimatePoint(genWeirdness.getMinValue(), genWeirdness.getMaxValue());
+		biome.genDepth = new Biome.ClimatePoint(genDepth.getMinValue(), genDepth.getMaxValue());
 
 		return biome;
 	}
