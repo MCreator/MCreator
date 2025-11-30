@@ -51,6 +51,16 @@ public class MinecraftFolderUtils {
 		if (OS.getOS() != OS.WINDOWS)
 			return null;
 
+		// we first check for the new launcher's folder
+		String appData = System.getenv("APPDATA");
+		if (appData == null)
+			return null;
+
+		File newLauncherFolder = new File(appData, "Minecraft Bedrock/Users/Shared/games/com.mojang/");
+		if (newLauncherFolder.exists() && newLauncherFolder.isDirectory())
+			return newLauncherFolder;
+
+		// Then, if the user doesn't have the new launcher, we try the old one
 		String localAppData = System.getenv("LOCALAPPDATA");
 		if (localAppData == null)
 			return null;
