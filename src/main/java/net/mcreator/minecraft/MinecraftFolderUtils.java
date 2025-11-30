@@ -51,7 +51,7 @@ public class MinecraftFolderUtils {
 			String localappdata = System.getenv("LOCALAPPDATA");
 			if (localappdata != null) {
 				File candidate = new File(
-						localappdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang/");
+						localappdata + "/Packages/" + BedrockUtils.APP_ID + "/LocalState/games/com.mojang/");
 				if (candidate.isDirectory())
 					return candidate;
 			}
@@ -60,7 +60,7 @@ public class MinecraftFolderUtils {
 			String appdata = System.getenv("APPDATA");
 			if (appdata != null) {
 				File candidate = new File(
-						appdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang/");
+						appdata + "/Packages/" + BedrockUtils.APP_ID + "/LocalState/games/com.mojang/");
 				if (candidate.isDirectory())
 					return candidate;
 			}
