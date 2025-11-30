@@ -27,8 +27,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
-import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -71,16 +72,14 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	@Override protected void initGUI() {
 		JPanel visualsPanel = new JPanel(new BorderLayout(10, 10));
 		visualsPanel.setOpaque(false);
-		JPanel propertiesPanel= new JPanel(new BorderLayout(10, 10));
+		JPanel propertiesPanel = new JPanel(new BorderLayout(10, 10));
 		propertiesPanel.setOpaque(false);
-		JPanel foodPanel = new JPanel(new BorderLayout(10, 10));
-		foodPanel.setOpaque(false);
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel visualProperties = new JPanel(new GridLayout( 1, 2, 5, 5));
+		JPanel visualProperties = new JPanel(new GridLayout(1, 2, 5, 5));
 		visualProperties.setOpaque(false);
 
 		visualProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_glowing"),
@@ -88,9 +87,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		visualProperties.add(isGlowing);
 		isGlowing.setOpaque(false);
 
-		visualsPanel.add("Center", ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")));
+		visualsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), visualProperties)));
 
 		JPanel basicProperties = new JPanel(new GridLayout(5, 2, 65, 5));
+		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -114,52 +115,60 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.use_duration")));
 		basicProperties.add(useDuration);
 
-		JPanel foodProperties = new JPanel(new GridLayout(6, 2, 2, 2));
+		basicProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.basic_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
+		JPanel foodProperties = new JPanel(new GridLayout(5, 2, 65, 5));
 		foodProperties.setOpaque(false);
-
-		isFood.setOpaque(false);
-		isMeat.setOpaque(false);
-		isAlwaysEdible.setOpaque(false);
-		nutritionalValue.setOpaque(false);
-		saturation.setOpaque(false);
-
-		isFood.addActionListener(e -> {
-			updateFoodPanel();
-			if (!isEditingMode()) {
-				useDuration.setValue(32);
-			}
-		});
 
 		updateFoodPanel();
 
 		foodProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
 		foodProperties.add(isFood);
+		isFood.addActionListener(e -> {
+			updateFoodPanel();
+			if (!isEditingMode()) {
+				useDuration.setValue(32);
+			}
+		});
+		isFood.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
 				L10N.label("elementgui.item.nutritional_value")));
 		foodProperties.add(nutritionalValue);
+		nutritionalValue.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
 				L10N.label("elementgui.item.saturation")));
 		foodProperties.add(saturation);
+		saturation.setOpaque(false);
 
 		foodProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"), L10N.label("elementgui.item.is_meat")));
 		foodProperties.add(isMeat);
+		isMeat.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
 		foodProperties.add(isAlwaysEdible);
+		isAlwaysEdible.setOpaque(false);
 
-		foodPanel.add("Center", PanelUtils.totalCenterInPanel(foodProperties));
-		foodPanel.setOpaque(false);
+		foodProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(basicProperties),
+						PanelUtils.pullElementUp(foodProperties))));
 
 		page1group.addValidationElement(texture);
 
 		addPage(L10N.t("elementgui.common.page_visual"), visualsPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(name);
-		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 	}
 
 	private void updateFoodPanel() {
