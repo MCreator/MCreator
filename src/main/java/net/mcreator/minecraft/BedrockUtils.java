@@ -42,6 +42,7 @@ public class BedrockUtils {
 	public static void reinstallAddon(MCreator mcreator, Workspace workspace) {
 		if (OS.getOS() == OS.WINDOWS) {
 			File bedrockDir = MinecraftFolderUtils.getBedrockEditionFolder();
+			LOG.debug("Reinstalling addon to Bedrock Edition folder: {}", bedrockDir);
 
 			File bpdev = new File(bedrockDir, "development_behavior_packs");
 			File rpdev = new File(bedrockDir, "development_resource_packs");

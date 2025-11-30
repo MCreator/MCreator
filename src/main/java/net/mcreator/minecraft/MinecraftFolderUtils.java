@@ -26,8 +26,6 @@ import java.io.File;
 
 public class MinecraftFolderUtils {
 
-	private static final Logger LOG = LogManager.getLogger(MinecraftFolderUtils.class);
-
 	public static File getJavaEditionFolder() {
 		if (OS.getOS() == OS.WINDOWS) {
 			String appdata = System.getenv("APPDATA");
@@ -71,7 +69,6 @@ public class MinecraftFolderUtils {
 
 			File worldFolder = new File(pkg, "LocalState/games/com.mojang");
 			if (worldFolder.isDirectory() && new File(worldFolder, "minecraftpe").isDirectory()) {
-				LOG.debug("Found Bedrock Edition world folder: {}", worldFolder);
 				return worldFolder;
 			}
 		}
