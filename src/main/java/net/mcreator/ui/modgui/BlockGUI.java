@@ -1772,8 +1772,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
 		pottedPlant.setBlock(block.pottedPlant);
-		signEntityTexture.setTextureFromTextureName(
-				block.signEntityTexture == null ? null : block.signEntityTexture.getRawTextureName());
+		signEntityTexture.setTexture(block.signEntityTexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1995,7 +1994,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
 		block.pottedPlant = pottedPlant.getBlock();
-		block.signEntityTexture = new TextureHolder(mcreator.getWorkspace(), signEntityTexture.getTextureName());
+		block.signEntityTexture = signEntityTexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
