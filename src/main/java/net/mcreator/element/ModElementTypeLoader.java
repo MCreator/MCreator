@@ -30,6 +30,7 @@ import java.util.List;
 
 import static net.mcreator.generator.GeneratorFlavor.BaseLanguage.JAVA;
 import static net.mcreator.generator.GeneratorFlavor.DATAPACK;
+import static net.mcreator.generator.GeneratorFlavor.GamePlatform.BEDROCKEDITION;
 import static net.mcreator.generator.GeneratorFlavor.GamePlatform.JAVAEDITION;
 
 public class ModElementTypeLoader {
@@ -73,6 +74,9 @@ public class ModElementTypeLoader {
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', ToolGUI::new, Tool.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.VILLAGERPROFESSION = register(new ModElementType<>("villagerprofession", null, VillagerProfessionGUI::new, VillagerProfession.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, VillagerTradeGUI::new, VillagerTrade.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
+
+		// Bedrock specific METs
+		ModElementType.BEITEM = register(new ModElementType<>("beitem", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 
 		// Unregistered type used to mask legacy removed mod element types
 		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (mc, me, e) -> null, GeneratableElement.Unknown.class);
