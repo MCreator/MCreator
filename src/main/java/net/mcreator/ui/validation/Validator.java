@@ -37,34 +37,12 @@ public interface Validator {
 		}
 	}
 
-	class ValidationResult {
+	record ValidationResult(ValidationResultType type, String message, boolean isBlocklyResult) {
 
 		public static final ValidationResult PASSED = new ValidationResult(ValidationResultType.PASSED, "");
 
-		private final ValidationResultType validationResultType;
-		private final String message;
-		private final boolean isBlocklyResult;
-
 		public ValidationResult(ValidationResultType validationResultType, String message) {
 			this(validationResultType, message, false);
-		}
-
-		public ValidationResult(ValidationResultType validationResultType, String message, boolean isBlocklyResult) {
-			this.validationResultType = validationResultType;
-			this.message = message;
-			this.isBlocklyResult = isBlocklyResult;
-		}
-
-		public ValidationResultType type() {
-			return validationResultType;
-		}
-
-		public String message() {
-			return message;
-		}
-
-		public boolean isBlocklyResult() {
-			return isBlocklyResult;
 		}
 	}
 
