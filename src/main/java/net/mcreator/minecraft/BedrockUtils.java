@@ -35,10 +35,9 @@ import java.io.File;
 
 public class BedrockUtils {
 
-	private static final Logger LOG = LogManager.getLogger("Bedrock Utils");
+	private static final Logger LOG = LogManager.getLogger(BedrockUtils.class);
 
 	public static final String MC_PROCESS = "Minecraft.Windows.exe";
-	public static final String APP_ID = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
 	public static void reinstallAddon(MCreator mcreator, Workspace workspace) {
 		if (OS.getOS() == OS.WINDOWS) {
@@ -112,7 +111,7 @@ public class BedrockUtils {
 				new File(bpdev, workspace.getWorkspaceSettings().getModID()));
 		FileIO.copyDirectory(workspace.getGenerator().getResourceRoot(),
 				new File(rpdev, workspace.getWorkspaceSettings().getModID()));
-		new ProcessBuilder("explorer.exe", "shell:AppsFolder\\" + APP_ID + "!App").start();
+		Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", "start", "minecraft://" });
 	}
 
 	private static boolean detectAndDeletePack(File bpacksdir, String uuid) {
