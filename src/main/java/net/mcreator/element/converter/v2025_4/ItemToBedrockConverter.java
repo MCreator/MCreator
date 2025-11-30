@@ -1,0 +1,74 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.element.converter.v2025_4;
+
+import com.google.gson.JsonElement;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.types.BEItem;
+import net.mcreator.element.types.Item;
+import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
+
+public class ItemToBedrockConverter implements IConverter {
+
+	@Override
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
+		Item item = (Item) input;
+
+		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			BEItem beitem = new BEItem(new ModElement(workspace, item.getModElement().getName(), ModElementType.BEITEM));
+
+			beitem.texture = item.texture;
+			beitem.name = item.name;
+			beitem.stackSize = item.stackSize;
+			beitem.useDuration = item.useDuration;
+			beitem.damageCount = item.damageCount;
+			beitem.enableMeleeDamage = item.enableMeleeDamage;
+			beitem.damageVsEntity = item.damageVsEntity;
+			beitem.isGlowing = item.glowCondition.getFixedValue();
+			beitem.isFood = item.isFood;
+			beitem.nutritionalValue = item.nutritionalValue;
+			beitem.saturation = item.saturation;
+			beitem.isMeat = item.isMeat;
+			beitem.isAlwaysEdible = item.isAlwaysEdible;
+
+			workspace.removeModElement(item.getModElement());
+			workspace.getModElementManager().invalidateCache();
+
+			workspace.getModElementManager().storeModElementPicture(beitem);
+			workspace.addModElement(beitem.getModElement());
+			workspace.getGenerator().generateElement(beitem);
+			workspace.getModElementManager().storeModElement(beitem);
+
+			return beitem;
+
+		}
+
+		return item;
+	}
+
+	@Override public int getVersionConvertingTo() {
+		return 81;
+	}
+}
