@@ -19,7 +19,7 @@
 package net.mcreator.ui.action.impl.gradle;
 
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.WorkspaceBuildStartedEvent;
+import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;

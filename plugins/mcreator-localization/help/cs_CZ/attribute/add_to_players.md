@@ -1,0 +1,1 @@
+Je-li povoleno, všichni hráči na světě budou mít tento atribut přítomen a nastaven na výchozí hodnotu při připojení.

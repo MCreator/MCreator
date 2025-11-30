@@ -24,7 +24,6 @@ import com.google.gson.Strictness;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.FileIO;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,7 +107,7 @@ public class TexturedModel extends Model {
 	}
 
 	@Override public String toString() {
-		return L10N.t("workspace.3dmodel.description", readableName, textureMapping.name);
+		return readableName + " - " + textureMapping.name;
 	}
 
 	@Override @Nonnull public String getReadableName() {
@@ -133,16 +132,10 @@ public class TexturedModel extends Model {
 
 	private record TextureMappings(Map<String, TextureMapping> mappings) {}
 
-	public static final class TextureMapping {
-
-		// key: texture id, value: texture resource location
-		private final Map<String, TextureHolder> map;
-		private final String name;
-
-		public TextureMapping(String name, Map<String, TextureHolder> textureMap) {
-			this.map = textureMap;
-			this.name = name;
-		}
+	/**
+	 * @param map key: texture id, value: texture resource location
+	 */
+	public record TextureMapping(String name, Map<String, TextureHolder> map) {
 
 		public Map<String, TextureHolder> getTextureMap() {
 			return map;
