@@ -75,6 +75,7 @@ import java.util.*;
 
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
+	public double attackSpeed;
 
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
