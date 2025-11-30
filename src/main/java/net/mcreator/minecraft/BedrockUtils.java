@@ -68,7 +68,8 @@ public class BedrockUtils {
 					if (addonFile.isFile()) {
 						try {
 							// stop running MC if any
-							if (WindowsProcessUtil.isProcessRunning(MC_PROCESS)) {
+							String processCandidate;
+							if ((processCandidate = WindowsProcessUtil.getProcessNameIfExists(MC_PROCESS)) != null) {
 								String[] options = new String[] { L10N.t("dialog.bedrock.options.close_reload"),
 										L10N.t("dialog.bedrock.options.close_reload_always"),
 										L10N.t("dialog.bedrock.options.cancel") };
@@ -84,7 +85,7 @@ public class BedrockUtils {
 										PreferencesManager.savePreferences();
 									}
 
-									WindowsProcessUtil.killProcess(MC_PROCESS);
+									WindowsProcessUtil.killProcess(processCandidate);
 									loadPackAndRun(bpdev, rpdev, workspace);
 								}
 							} else {
