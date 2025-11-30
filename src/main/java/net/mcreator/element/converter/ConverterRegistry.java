@@ -59,11 +59,10 @@ import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
+import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
+import net.mcreator.generator.GeneratorFlavor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConverterRegistry {
 
@@ -201,7 +200,8 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new ItemOpenBoundGUIConverter()
+			new ItemOpenBoundGUIConverter(),
+			new ItemToBedrockConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -233,6 +233,10 @@ public class ConverterRegistry {
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
 		put("tag", new TagModElementConverter());
 		put("musicdisc", new MusicDiscToItemConverter());
+	}};
+
+	public static final Set<String> addonsOldMETs = new HashSet<>() {{
+		add(ModElementType.ITEM.getRegistryName());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

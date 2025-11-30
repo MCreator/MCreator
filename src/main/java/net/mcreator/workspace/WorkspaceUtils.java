@@ -23,6 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFile;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.io.FileIO;
@@ -71,6 +72,8 @@ public class WorkspaceUtils {
 		Set<String> generatorSupportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()
 				.stream().map(ModElementType::getRegistryName).collect(Collectors.toSet());
 		generatorSupportedMETs.addAll(ConverterRegistry.getConvertibleModElementTypes());
+		if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.ADDON)
+			generatorSupportedMETs.addAll(ConverterRegistry.addonsOldMETs);
 		Set<String> missingMETs = workspaceRequiredMETs.stream().filter(e -> !generatorSupportedMETs.contains(e))
 				.collect(Collectors.toSet());
 		if (!missingMETs.isEmpty())
