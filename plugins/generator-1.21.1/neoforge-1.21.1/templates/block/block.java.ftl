@@ -44,15 +44,8 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
-public class ${name}Block extends
-	<#if data.hasGravity>
-		FallingBlock
-	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
-	<#else>
-		Block
-	</#if>
+<@javacompress>
+public class ${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -759,5 +752,13 @@ public class ${name}Block extends
 	</#list>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
+
+<#function getBlockClass blockBase="">
+	<#if data.hasGravity><#return "FallingBlock">
+	<#elseif blockBase == "Stairs"><#return "StairBlock">
+	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
+	<#else><#return blockBase + "Block">
+	</#if>
+</#function>

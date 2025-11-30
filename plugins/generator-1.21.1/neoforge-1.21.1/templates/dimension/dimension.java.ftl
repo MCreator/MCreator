@@ -34,7 +34,7 @@
 
 package ${package}.world.dimension;
 
-<#compress>
+<@javacompress>
 
 <#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 @EventBusSubscriber
@@ -96,4 +96,4 @@ public class ${name}Dimension {
     </#if>
 
 }
-</#compress>
+</@javacompress>

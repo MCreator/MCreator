@@ -26,14 +26,14 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.validation.CompoundValidator;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -45,13 +45,13 @@ import java.net.URISyntaxException;
 
 public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.enchantment.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
 	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
 
-	private final JComboBox<String> supportedSlots = new JComboBox<>(
-			new String[] { "any", "mainhand", "offhand", "hand", "feet", "legs", "chest", "head", "armor", "body" });
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
 
 	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(4, 1, 255, 1));
 
@@ -151,9 +151,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.enchantment.needs_name")));
-		name.enableRealtimeValidation();
-
 		supportedItems.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
 				new ItemListFieldSingleTagValidator(supportedItems)));
@@ -190,7 +187,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	@Override public Enchantment getElementFromGUI() {
 		Enchantment enchantment = new Enchantment(modElement);
 		enchantment.name = name.getText();
-		enchantment.supportedSlots = (String) supportedSlots.getSelectedItem();
+		enchantment.supportedSlots = supportedSlots.getSelectedItem().toString();
 		enchantment.weight = (int) weight.getValue();
 		enchantment.anvilCost = (int) anvilCost.getValue();
 		enchantment.maxLevel = (int) maxLevel.getValue();

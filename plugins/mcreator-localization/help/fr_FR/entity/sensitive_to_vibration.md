@@ -1,0 +1,1 @@
+Si ce paramètre est coché, cette entité sera sensible aux vibrations comme le _Warden_.

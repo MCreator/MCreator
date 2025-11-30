@@ -48,7 +48,7 @@ import net.neoforged.bus.api.Event;
 	</#list>
 </#if>
 
-<#compress>
+<@javacompress>
 
 <#if trigger_code?has_content>
 ${trigger_code}
@@ -91,6 +91,6 @@ public class ${name}Procedure {
 
 }
 
-</#compress>
+</@javacompress>
 
 <#-- @formatter:on -->

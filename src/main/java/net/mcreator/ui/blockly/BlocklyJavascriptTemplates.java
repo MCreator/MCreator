@@ -206,9 +206,10 @@ public class BlocklyJavascriptTemplates {
 
 	private static String getBlockText(String key, VariableType variableType) {
 		// If the specific key is missing, fall back to the generic variant
-		return L10N.t("blockly.block." + key + "_" + variableType.getName()) != null ?
+		String translatedText = L10N.t("blockly.block." + key + "_" + variableType.getName()) != null ?
 				L10N.t("blockly.block." + key + "_" + variableType.getName()) :
 				L10N.t("blockly.block." + key);
+		return translatedText.strip().replaceAll("\\r\\n|\\r|\\n", "");
 	}
 
 }

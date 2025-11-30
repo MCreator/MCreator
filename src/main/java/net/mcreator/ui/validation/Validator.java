@@ -39,31 +39,32 @@ public interface Validator {
 
 	class ValidationResult {
 
-		public static final ValidationResult PASSED = new Validator.ValidationResult(
-				Validator.ValidationResultType.PASSED, "");
+		public static final ValidationResult PASSED = new ValidationResult(ValidationResultType.PASSED, "");
 
-		private ValidationResultType validationResultType;
-		private String message = "";
+		private final ValidationResultType validationResultType;
+		private final String message;
+		private final boolean isBlocklyResult;
 
 		public ValidationResult(ValidationResultType validationResultType, String message) {
-			this.setValidationResultType(validationResultType);
-			this.setMessage(message);
+			this(validationResultType, message, false);
+		}
+
+		public ValidationResult(ValidationResultType validationResultType, String message, boolean isBlocklyResult) {
+			this.validationResultType = validationResultType;
+			this.message = message;
+			this.isBlocklyResult = isBlocklyResult;
 		}
 
 		public ValidationResultType getValidationResultType() {
 			return validationResultType;
 		}
 
-		void setValidationResultType(ValidationResultType validationResultType) {
-			this.validationResultType = validationResultType;
-		}
-
 		public String getMessage() {
 			return message;
 		}
 
-		public void setMessage(String message) {
-			this.message = message;
+		public boolean isBlocklyResult() {
+			return isBlocklyResult;
 		}
 	}
 

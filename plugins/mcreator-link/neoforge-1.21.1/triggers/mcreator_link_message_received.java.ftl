@@ -1,11 +1,11 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onMCreatorLinkMessageReceived(LinkCustomMessageReceivedEvent event){
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"message": "new String(event.getData())",
 				"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

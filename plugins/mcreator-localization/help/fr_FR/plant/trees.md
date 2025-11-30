@@ -1,0 +1,1 @@
+Ce sont les arbres qui peuvent pousser à partir d'une pousse dans des conditions standard.

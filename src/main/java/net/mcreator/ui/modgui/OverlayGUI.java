@@ -23,6 +23,7 @@ import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.ModElement;
@@ -71,7 +72,9 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 
 		editor.overlayBaseTexture.reload();
 
-		displayCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+		displayCondition.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(Overlay overlay) {

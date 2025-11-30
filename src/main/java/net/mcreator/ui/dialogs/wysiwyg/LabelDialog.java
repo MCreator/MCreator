@@ -27,6 +27,7 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -54,17 +55,20 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			}
 		});
 
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				editor.mcreator.getWorkspace());
+
 		StringProcedureSelector labelText = new StringProcedureSelector(IHelpContext.NONE.withEntry("gui/label_text"),
 				editor.mcreator, L10N.t("elementgui.common.value"), ProcedureSelector.Side.BOTH, false, textField, 200,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		labelText.refreshList();
+		labelText.refreshList(context);
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/label_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.label_event_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		displayCondition.refreshList();
+		displayCondition.refreshList(context);
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));

@@ -2,7 +2,7 @@
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onBucketFill(PlayerInteractEvent.RightClickItem event) {
 		if (event.getItemStack().getItem() == Items.BUCKET) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 				<@procedureDependenciesCode dependencies, {
 					"x": "event.getEntity().getX()",
 					"y": "event.getEntity().getY()",
@@ -12,7 +12,7 @@
 					"entity": "event.getEntity()",
 					"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

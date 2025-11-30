@@ -1,0 +1,1 @@
+Si cette liste n'est pas vide, cet objet peut être utilisé dans un métier à tisser pour fabriquer les modèles de bannière sélectionnés.

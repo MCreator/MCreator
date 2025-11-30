@@ -33,11 +33,10 @@ import net.mcreator.ui.minecraft.SingleParticleEntryField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -50,7 +49,8 @@ import java.net.URISyntaxException;
 
 public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
-	private final VTextField effectName = new VTextField(20);
+	private final VTextField effectName = new VTextField(20).requireValue(
+			"elementgui.potioneffect.error_effect_needs_display_name").enableRealtimeValidation();
 	private final JColor color = new JColor(mcreator, false, false);
 	private SingleParticleEntryField particle;
 	private final SoundSelector onAddedSound = new SoundSelector(mcreator);
@@ -120,7 +120,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		renderStatusInHUD.setOpaque(false);
 		isCuredbyHoney.setOpaque(false);
 
-		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT));
+		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT)).requireValue();
 		icon.setOpaque(false);
 
 		particle = new SingleParticleEntryField(mcreator);
@@ -191,12 +191,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		icon.setValidator(new TextureSelectionButtonValidator(icon));
-		effectName.setValidator(
-				new TextFieldValidator(effectName, L10N.t("elementgui.potioneffect.error_effect_needs_display_name")));
-		effectName.enableRealtimeValidation();
 		page1group.addValidationElement(effectName);
-
 		page1group.addValidationElement(icon);
 
 		if (!isEditingMode()) {
@@ -216,12 +211,15 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		modifierList.reloadDataLists();
 
-		onStarted.refreshListKeepSelected();
-		onActiveTick.refreshListKeepSelected();
-		onExpired.refreshListKeepSelected();
-		activeTickCondition.refreshListKeepSelected();
-		onMobHurt.refreshListKeepSelected();
-		onMobRemoved.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onStarted.refreshListKeepSelected(context);
+		onActiveTick.refreshListKeepSelected(context);
+		onExpired.refreshListKeepSelected(context);
+		activeTickCondition.refreshListKeepSelected(context);
+		onMobHurt.refreshListKeepSelected(context);
+		onMobRemoved.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(PotionEffect potion) {

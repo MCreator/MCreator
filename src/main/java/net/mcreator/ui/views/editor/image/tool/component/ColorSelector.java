@@ -62,31 +62,21 @@ public class ColorSelector extends JPanel {
 		swap.setBorder(BorderFactory.createEmptyBorder());
 
 		foregroundColor.addActionListener(e -> {
-			JColor.colorChooser.setColor(foreground);
-			JDialog dialog = JColorChooser.createDialog(f,
-					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), true,
-					JColor.colorChooser, event -> {
-						Color c = JColor.colorChooser.getColor();
-						if (c != null) {
-							foreground = c;
-							updateColors();
-						}
-					}, null);
-			dialog.setVisible(true);
+			Color newColor = JColor.openDialog(f,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_foreground"), foreground);
+			if (newColor != null) {
+				foreground = newColor;
+				updateColors();
+			}
 		});
 
 		backgroundColor.addActionListener(e -> {
-			JColor.colorChooser.setColor(background);
-			JDialog dialog = JColorChooser.createDialog(f,
-					L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), true,
-					JColor.colorChooser, event -> {
-						Color c = JColor.colorChooser.getColor();
-						if (c != null) {
-							background = c;
-							updateColors();
-						}
-					}, null);
-			dialog.setVisible(true);
+			Color newColor = JColor.openDialog(f,
+					L10N.t("dialog.image_maker.tools.component.colorselector_select_background"), background);
+			if (newColor != null) {
+				background = newColor;
+				updateColors();
+			}
 		});
 
 		reset.addActionListener(e -> {

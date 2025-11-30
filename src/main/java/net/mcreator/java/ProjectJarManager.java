@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,9 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
+import net.mcreator.gradle.GradleToolchainUtil;
 import net.mcreator.gradle.GradleUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,52 +40,25 @@ import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.ExternalDependency;
 import org.gradle.tooling.model.eclipse.EclipseProject;
 
+import javax.annotation.Nullable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectJarManager extends JarManager {
 
-	private static final Logger LOG = LogManager.getLogger("Jar Manager");
+	private static final Logger LOG = LogManager.getLogger(ProjectJarManager.class);
 
 	private final List<GeneratorGradleCache.ClasspathEntry> classpath;
+	@Nullable private final File javaHome;
+
+	private JavaReleaseInfo javaReleaseInfo = JavaReleaseInfo.DEFAULT;
 
 	public ProjectJarManager(Generator generator) {
-		if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-				== GeneratorFlavor.BaseLanguage.JAVA)
-			try {
-				addClassFileSource(getJVMLibraryInfo());
-			} catch (IOException e) {
-				LOG.warn("Failed to load JVM to JAR manager", e);
-			}
-
-		this.classpath = loadClassPathJARs(generator);
-	}
-
-	public ProjectJarManager(Generator generator, List<GeneratorGradleCache.ClasspathEntry> classPathEntries)
-			throws GradleCacheImportFailedException {
-		if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-				== GeneratorFlavor.BaseLanguage.JAVA)
-			try {
-				addClassFileSource(getJVMLibraryInfo());
-			} catch (IOException e) {
-				LOG.warn("Failed to load JVM to JAR manager", e);
-			}
-
-		for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
-			loadExternalDependency(generator.getWorkspace(), classpathEntry);
-		}
-
-		this.classpath = classPathEntries;
-	}
-
-	public List<GeneratorGradleCache.ClasspathEntry> getClasspath() {
-		return classpath;
-	}
-
-	private List<GeneratorGradleCache.ClasspathEntry> loadClassPathJARs(Generator generator) {
 		List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
+		File assumedJavaHome = null;
 
 		ProjectConnection projectConnection = GradleUtils.getGradleProjectConnection(generator.getWorkspace());
 		if (projectConnection != null) {
@@ -93,19 +69,61 @@ public class ProjectJarManager extends JarManager {
 				EclipseProject project = modelBuilder.get();
 
 				processProjectClassPath(generator, project, classPathEntries);
-			} catch (BuildException ignored) {
-			}
 
-			// After we have collected all classpath entries, load them in the JAR manager
-			for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
-				try {
-					loadExternalDependency(generator.getWorkspace(), classpathEntry);
-				} catch (GradleCacheImportFailedException ignored) {
+				// Only look up JDK toolchain JAVA_HOME for Java-based projects
+				if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+						== GeneratorFlavor.BaseLanguage.JAVA) {
+					assumedJavaHome = GradleToolchainUtil.getToolchainJavaHome(generator.getGeneratorConfiguration(),
+							projectConnection, project);
 				}
+			} catch (BuildException ignored) {
 			}
 		}
 
-		return classPathEntries;
+		this.classpath = classPathEntries;
+		this.javaHome = assumedJavaHome;
+
+		// First, try to load JVM library info
+		try {
+			tryLoadJVMLibraryInfo(generator);
+		} catch (GradleCacheImportFailedException e) {
+			TestUtil.failIfTestingEnvironment();
+			LOG.error("Failed to load JVM library info", e);
+		}
+
+		// After we have collected all classpath entries, load them in the JAR manager
+		for (GeneratorGradleCache.ClasspathEntry classpathEntry : this.classpath) {
+			try {
+				loadExternalDependency(generator.getWorkspace(), classpathEntry);
+			} catch (GradleCacheImportFailedException ignored) {
+			}
+		}
+	}
+
+	public ProjectJarManager(Generator generator, List<GeneratorGradleCache.ClasspathEntry> classPathEntries,
+			@Nullable File javaHome) throws GradleCacheImportFailedException {
+		this.classpath = classPathEntries;
+		this.javaHome = javaHome;
+
+		// First, try to load JVM library info
+		tryLoadJVMLibraryInfo(generator);
+
+		// Then, load all the classpath entries
+		for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
+			loadExternalDependency(generator.getWorkspace(), classpathEntry);
+		}
+	}
+
+	public List<GeneratorGradleCache.ClasspathEntry> getClasspath() {
+		return classpath;
+	}
+
+	@Nullable public File getJavaHome() {
+		return javaHome;
+	}
+
+	@Nullable public JavaReleaseInfo getJavaReleaseInfo() {
+		return javaHome == null ? null : javaReleaseInfo;
 	}
 
 	private void processProjectClassPath(Generator generator, EclipseProject project,
@@ -160,6 +178,7 @@ public class ProjectJarManager extends JarManager {
 				libraryInfo.setSourceLocation(new DirSourceLocation(srcString));
 			}
 		}
+
 		try {
 			addClassFileSource(libraryInfo);
 		} catch (IOException e) {
@@ -168,14 +187,23 @@ public class ProjectJarManager extends JarManager {
 		}
 	}
 
-	private static LibraryInfo getJVMLibraryInfo() {
-		File jreHome = new File(System.getProperty("java.home"));
+	private void tryLoadJVMLibraryInfo(Generator generator) throws GradleCacheImportFailedException {
+		if (javaHome == null) {
+			if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+					== GeneratorFlavor.BaseLanguage.JAVA) {
+				throw new GradleCacheImportFailedException(new IOException("JVM library info is null"));
+			}
+			return; // we only require JVM info for Java-based projects
+		}
 
-		final File classesArchive = findExistingPath(jreHome, "lib/rt.jar", "../Classes/classes.jar",
+		javaReleaseInfo = JavaReleaseInfo.fromJavaHome(javaHome);
+
+		LOG.debug("Loading JVM {} info from {}", javaReleaseInfo, javaHome);
+
+		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar",
 				"jmods/java.base.jmod");
 		if (classesArchive == null) {
-			LOG.warn("Failed to load default JRE JAR info");
-			return null;
+			throw new GradleCacheImportFailedException(new FileNotFoundException("Failed to find SDK base library"));
 		}
 
 		final LibraryInfo info;
@@ -186,13 +214,19 @@ public class ProjectJarManager extends JarManager {
 			info = new JarLibraryInfo(classesArchive);
 		}
 
-		final File sourcesArchive = findExistingPath(jreHome, "lib/src.zip", "lib/src.jar", "src.zip", "../src.zip",
+		final File sourcesArchive = findExistingPath(javaHome, "lib/src.zip", "lib/src.jar", "src.zip", "../src.zip",
 				"src.jar", "../src.jar");
 		if (sourcesArchive != null) {
 			info.setSourceLocation(new ZipSourceLocation(sourcesArchive));
+		} else {
+			LOG.warn("Failed to load sources for {}", classesArchive);
 		}
 
-		return info;
+		try {
+			addClassFileSource(info);
+		} catch (IOException e) {
+			throw new GradleCacheImportFailedException(e);
+		}
 	}
 
 	private static File findExistingPath(final File baseDir, String... paths) {

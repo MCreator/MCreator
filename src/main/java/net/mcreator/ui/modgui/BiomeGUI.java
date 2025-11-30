@@ -43,8 +43,6 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -58,7 +56,8 @@ import java.util.Arrays;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 
@@ -70,6 +69,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
 	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
 	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genDepth = new JMinMaxSpinner(0.2, 0.9, 0.0, 1.5, 0.0001).allowEqualValues();
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
@@ -148,12 +148,16 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	}
 
 	@Override protected void initGUI() {
-		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		groundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_biome_needs_ground_block");
+		undergroundBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_biome_needs_underground_block");
 		underwaterBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeVines = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
-		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_tree_needs_stem_block");
+		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_tree_needs_branch_block");
 		treeFruits = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
 		if (!isEditingMode()) {
@@ -302,7 +306,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
 
-		JPanel spawnproperties = new JPanel(new GridLayout(13, 2, 25, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(14, 2, 25, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -351,6 +355,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld_caves"),
 				L10N.label("elementgui.biome.generate_overworld_caves")));
 		spawnproperties.add(spawnInCaves);
+
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_depth"),
+				L10N.label("elementgui.biome.gen_depth")));
+		spawnproperties.add(genDepth);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
 				L10N.label("elementgui.biome.generate_nether")));
@@ -546,12 +554,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		page3group.addValidationElement(treeStem);
 		page3group.addValidationElement(treeBranch);
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.biome.needs_name")));
-		groundBlock.setValidator(new MCItemHolderValidator(groundBlock));
-		undergroundBlock.setValidator(new MCItemHolderValidator(undergroundBlock));
-		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
-		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
-
 		addPage(L10N.t("elementgui.biome.general_properties"), pane4).validate(page1group);
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5).validate(page2group);
 		addPage(L10N.t("elementgui.biome.features"), pane3).validate(page3group);
@@ -729,6 +731,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		genErosion.setMaxValue(biome.genErosion.max);
 		genWeirdness.setMinValue(biome.genWeirdness.min);
 		genWeirdness.setMaxValue(biome.genWeirdness.max);
+		genDepth.setMinValue(biome.genDepth.min);
+		genDepth.setMaxValue(biome.genDepth.max);
 
 		updateBiomeTreesForm();
 		updateParticleParameters();
@@ -803,6 +807,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				genContinentalness.getMaxValue());
 		biome.genErosion = new Biome.ClimatePoint(genErosion.getMinValue(), genErosion.getMaxValue());
 		biome.genWeirdness = new Biome.ClimatePoint(genWeirdness.getMinValue(), genWeirdness.getMaxValue());
+		biome.genDepth = new Biome.ClimatePoint(genDepth.getMinValue(), genDepth.getMaxValue());
 
 		return biome;
 	}

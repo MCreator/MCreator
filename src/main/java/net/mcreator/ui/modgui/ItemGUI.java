@@ -48,8 +48,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -76,7 +74,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private StringListProcedureSelector specialInformation;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
+			.enableRealtimeValidation();
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("COMMON", "elementgui.common.rarity_common"),
@@ -139,6 +138,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private SingleModElementSelector guiBoundTo;
+	private LogicProcedureSelector openGUIOnRightClick;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
@@ -163,8 +163,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	// Music disc parameters
 	private final JCheckBox isMusicDisc = L10N.checkbox("elementgui.common.enable");
-	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator);
-	private final VTextField musicDiscDescription = new VTextField(20);
+	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator).requireValue(
+			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
+	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
+			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
@@ -230,6 +232,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedUseCondition = new ProcedureSelector(this.withEntry("item/ranged_use_condition"), mcreator,
 				L10N.t("elementgui.item.can_use_ranged"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		openGUIOnRightClick = new LogicProcedureSelector(this.withEntry("item/bind_gui_open"), mcreator,
+				L10N.t("elementgui.item.bind_gui_open"), ProcedureSelector.Side.SERVER,
+				L10N.checkbox("elementgui.common.enable"), 100,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
@@ -266,7 +272,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -465,24 +472,46 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 35, 2));
+		JPanel inventoryProperties = new JPanel(new BorderLayout());
 		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 		inventoryProperties.setOpaque(false);
 
-		inventoryProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
-		inventoryProperties.add(guiBoundTo);
+		JPanel guiProperties = new JPanel(new GridLayout(2, 1, 35, 2));
+		guiProperties.setOpaque(false);
 
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
+        JPanel boundGuiPanel = new JPanel(new GridLayout(1, 2, 35, 2));
+        boundGuiPanel.setOpaque(false);
+
+        boundGuiPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"),
+                L10N.label("elementgui.item.bind_gui")));
+        boundGuiPanel.add(guiBoundTo);
+
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		refreshGUIProperties();
+
+        guiProperties.add(boundGuiPanel);
+
+        JPanel openGuiPanel = new JPanel(new BorderLayout());
+        openGuiPanel.setOpaque(false);
+        openGuiPanel.add("Center", openGUIOnRightClick);
+
+        guiProperties.add(openGuiPanel);
+
+		JPanel stackSizeProperties = new JPanel(new GridLayout(2, 2, 35, 2));
+		stackSizeProperties.setOpaque(false);
+
+		stackSizeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
-		inventoryProperties.add(inventorySize);
+		stackSizeProperties.add(inventorySize);
 
-		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
+		stackSizeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
-		inventoryProperties.add(inventoryStackSize);
+		stackSizeProperties.add(inventoryStackSize);
+
+		inventoryProperties.add(PanelUtils.northAndCenterElement(guiProperties, stackSizeProperties, 2, 2));
 
 		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
 		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
@@ -574,20 +603,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-
 		page1group.addValidationElement(texture);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
-		name.enableRealtimeValidation();
-
-		musicDiscDescription.setValidator(new TextFieldValidator(musicDiscDescription,
-				L10N.t("elementgui.item.musicdisc.error_disc_needs_description")));
-		musicDiscDescription.enableRealtimeValidation();
-
-		musicDiscMusic.getVTextField().setValidator(new TextFieldValidator(musicDiscMusic.getVTextField(),
-				L10N.t("elementgui.item.musicdisc.error_needs_sound")));
-		musicDiscMusic.getVTextField().enableRealtimeValidation();
 
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
@@ -682,24 +698,37 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		openGUIOnRightClick.setEnabled(isGuiBoundToEmpty);
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		onDroppedByPlayer.refreshListKeepSelected();
-		onFinishUsingItem.refreshListKeepSelected();
-		everyTickWhileUsing.refreshListKeepSelected();
-		onItemEntityDestroyed.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
-		rangedUseCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onStoppedUsing.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onFinishUsingItem.refreshListKeepSelected(context);
+		everyTickWhileUsing.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		onRangedItemUsed.refreshListKeepSelected(context);
+		rangedUseCondition.refreshListKeepSelected(context);
+		openGUIOnRightClick.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
@@ -744,6 +773,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setEntry(item.guiBoundTo);
+		openGUIOnRightClick.setSelectedProcedure(item.openGUIOnRightClick);
 		inventorySize.setValue(item.inventorySize);
 		inventoryStackSize.setValue(item.inventoryStackSize);
 		isFood.setSelected(item.isFood);
@@ -777,6 +807,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
+		refreshGUIProperties();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -818,6 +849,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
 		item.guiBoundTo = guiBoundTo.getEntry();
+		item.openGUIOnRightClick = openGUIOnRightClick.getSelectedProcedure();
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();

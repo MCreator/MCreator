@@ -152,7 +152,8 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Fill workspace with sample tags after the elements the tags reference actually exist
 						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
 					}));
-					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(generatorConfiguration)) {
+					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
+							generatorConfiguration)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
 							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
 								MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator.get(), workspace.get(),

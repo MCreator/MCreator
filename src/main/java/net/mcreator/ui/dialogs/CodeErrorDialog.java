@@ -63,7 +63,7 @@ public class CodeErrorDialog {
 
 		Set<ModElement> problematicMods = new HashSet<>();
 
-		List<File> moddefinitionfiles = mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+		List<File> moddefinitionfiles = mcreator.getGenerator().getModBaseGeneratorTemplatesList().stream()
 				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 		boolean moddefinitionfileerrors = false;
 

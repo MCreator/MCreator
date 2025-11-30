@@ -33,7 +33,10 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.Strings;
 import org.w3c.dom.Element;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class SetVariableBlock implements IBlockGeneratorWithSections {
 	private final String[] names;
@@ -135,8 +138,7 @@ public class SetVariableBlock implements IBlockGeneratorWithSections {
 					if (entitycode != null)
 						dataModel.put("entity", entitycode);
 
-					Sections sections = IBlockGeneratorWithSections.addSectionsToDataModel(
-							dataModel);
+					Sections sections = IBlockGeneratorWithSections.addSectionsToDataModel(dataModel);
 					String code = master.getTemplateGenerator()
 							.generateFromString(setterTemplate.toString(), dataModel);
 					IBlockGeneratorWithSections.handleSections(master, sections);

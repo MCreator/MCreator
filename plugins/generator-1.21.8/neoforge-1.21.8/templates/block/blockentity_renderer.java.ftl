@@ -66,7 +66,7 @@ package ${package}.client.renderer.block;
 	}
 
 	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight, Vec3 cameraPos) {
-		<#compress>
+		<@javacompress>
 		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
@@ -107,7 +107,7 @@ package ${package}.client.renderer.block;
 		model.setupBlockEntityAnim(blockEntity, renderState);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
-		</#compress>
+		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -123,8 +123,18 @@ package ${package}.client.renderer.block;
 		public CustomHierarchicalModel(ModelPart root) {
 			super(root);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			this.keyframeAnimation${animation?index} = safeBake(${animation.animation});
 			</#list>
+		}
+
+		<#-- ideally we would not do this, but many users use animations that animate parts
+			 that don't exist in their model and then complain the game is crashing -->
+		private KeyframeAnimation safeBake(AnimationDefinition source) {
+			try {
+				return source.bake(root);
+			} catch (IllegalArgumentException e) {
+				return new AnimationDefinition(0, false, Map.of()).bake(root);
+			}
 		}
 
 		public void setupBlockEntityAnim(${name}BlockEntity blockEntity, LivingEntityRenderState state) {

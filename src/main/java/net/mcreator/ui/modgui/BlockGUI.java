@@ -34,7 +34,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
-import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -110,7 +109,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final VTextField name = new VTextField(19);
+	private final VTextField name = new VTextField(19).requireValue("elementgui.block.error_block_must_have_name")
+			.enableRealtimeValidation();
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
@@ -270,6 +270,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
+	private final CardLayout blockBaseCardLayout = new CardLayout();
+	private final JPanel blockBasePropertiesPanel = new JPanel(blockBaseCardLayout);
 	private final JComboBox<String> blockSetType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
@@ -278,8 +280,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			//@formatter:on
 	);
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
-	private JComponent blockSetTypePanel;
-	private JComponent flowerPotPanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -297,6 +297,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override protected void initGUI() {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
+		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
@@ -344,8 +345,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.event_on_entity_walks_on"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate"));
 		onEntityFallsOn = new ProcedureSelector(this.withEntry("common/when_entity_falls_on"), mcreator,
-				L10N.t("elementgui.common.event_on_entity_falls_on"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
+				L10N.t("elementgui.common.event_on_entity_falls_on"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/blockstate:blockstate/distance:number"));
 		onBlockPlayedBy = new ProcedureSelector(this.withEntry("block/when_block_placed_by"), mcreator,
 				L10N.t("elementgui.common.event_on_block_placed_by"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/blockstate:blockstate"));
@@ -435,8 +436,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			transparencyType.setEnabled(true);
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
-			blockSetTypePanel.setVisible(false);
-			flowerPotPanel.setVisible(false);
+			blockBasePropertiesPanel.setVisible(false);
 			// Re-enable block item if user switches from flower pot to any other block base option
 			if (!isEditingMode() && !hasBlockItem.isSelected()) {
 				hasBlockItem.setSelected(true);
@@ -479,21 +479,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 				case "TrapDoor" -> {
 					isBonemealable.setEnabled(false);
 					isBonemealable.setSelected(false);
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Fence" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Door" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
@@ -501,7 +501,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "PressurePlate", "Button" -> {
-					blockSetTypePanel.setVisible(true);
+					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
@@ -510,7 +510,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				case "FlowerPot" -> {
-					flowerPotPanel.setVisible(true);
+					showBlockBaseCard("flowerPot");
 					renderType.setEnabled(true);
 					if (!isEditingMode()) {
 						renderType.setSelectedItem(pottedPlantModel);
@@ -525,11 +525,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
-				default -> {
+				case null, default -> {
 					if (!isEditingMode()) {
 						lightOpacity.setValue(0);
-						if (selectedBlockBase.equals("Wall") || selectedBlockBase.equals("FenceGate")
-								|| selectedBlockBase.equals("EndRod")) {
+						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
+								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
 						}
 					}
@@ -564,27 +564,30 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
 
-		JPanel txblock4 = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
-		txblock4.setOpaque(false);
-		txblock4.setBorder(BorderFactory.createTitledBorder(
+		blockBasePropertiesPanel.setOpaque(false);
+		blockBasePropertiesPanel.setVisible(false);
+
+		// Card for block bases with block set type
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
+						L10N.label("elementgui.block.block_set_type")), blockSetType), "blockSetType");
+
+		// Card for flower pots
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+						HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
+								L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)),
+				"flowerPot");
+
+		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
+				blockBase), blockBasePropertiesPanel, 0, 2);
+
+		blockBasePanel.setOpaque(false);
+		blockBasePanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_base_panel"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		txblock4.add(PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
-				blockBase));
-
-		txblock4.add(blockSetTypePanel = PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
-						L10N.label("elementgui.block.block_set_type")), blockSetType));
-
-		txblock4.add(flowerPotPanel = PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/potted_plant"),
-						L10N.label("elementgui.block.potted_plant")), PanelUtils.centerInPanel(pottedPlant)));
-
-		blockSetTypePanel.setVisible(false);
-		flowerPotPanel.setVisible(false);
 		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
@@ -699,7 +702,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isItemTinted.setOpaque(false);
 
-		topnbot.add("South", txblock4);
+		topnbot.add("South", blockBasePanel);
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
@@ -871,6 +874,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
 				L10N.label("elementgui.block.vanilla_tool_tier")));
 		selp3.add(vanillaToolTier);
+		vanillaToolTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
@@ -1062,6 +1066,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui"),
 				L10N.label("elementgui.block.bind_gui")));
 		props.add(guiBoundTo);
+
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
 				L10N.label("elementgui.block.bind_gui_open")));
@@ -1379,16 +1385,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return model != null && model.getType() == Model.Type.JAVA;
 		}));
 
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.block.error_block_must_have_name")));
-		name.enableRealtimeValidation();
-
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
 				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
 					return Validator.ValidationResult.PASSED;
 				return super.validate();
 			}
-		});
+		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
 
 		page3group.addValidationElement(name);
 
@@ -1449,6 +1452,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		return props;
 	}
 
+	private void showBlockBaseCard(String card) {
+		blockBasePropertiesPanel.setVisible(true);
+		blockBaseCardLayout.show(blockBasePropertiesPanel, card);
+
+		for (Component comp : blockBasePropertiesPanel.getComponents()) {
+			if (comp.isVisible()) {
+				blockBasePropertiesPanel.setPreferredSize(comp.getPreferredSize());
+			}
+		}
+	}
+
 	private void refreshFieldsTileEntity() {
 		boolean hasInventorySelected = hasInventory.isSelected();
 
@@ -1476,6 +1490,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		if (hasInventorySelected)
 			refreshVibrationProperties();
+
+		refreshGUIProperties();
 	}
 
 	private void refreshRedstoneEmitted() {
@@ -1574,37 +1590,47 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blocksToReplace.setEnabled(canSpawn);
 	}
 
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		openGUIOnRightClick.setEnabled(isGuiBoundToEmpty);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onBlockAdded.refreshListKeepSelected();
-		onNeighbourBlockChanges.refreshListKeepSelected();
-		onEntityCollides.refreshListKeepSelected();
-		onTickUpdate.refreshListKeepSelected();
-		onRandomUpdateEvent.refreshListKeepSelected();
-		onDestroyedByPlayer.refreshListKeepSelected();
-		onDestroyedByExplosion.refreshListKeepSelected();
-		onStartToDestroy.refreshListKeepSelected();
-		onEntityWalksOn.refreshListKeepSelected();
-		onBlockPlayedBy.refreshListKeepSelected();
-		onRightClicked.refreshListKeepSelected();
-		onRedstoneOn.refreshListKeepSelected();
-		onRedstoneOff.refreshListKeepSelected();
-		onHitByProjectile.refreshListKeepSelected();
-		onBonemealSuccess.refreshListKeepSelected();
-		onReceivedVibration.refreshListKeepSelected();
-		onEntityFallsOn.refreshListKeepSelected();
 
-		specialInformation.refreshListKeepSelected();
-		emittedRedstonePower.refreshListKeepSelected();
-		isBonemealTargetCondition.refreshListKeepSelected();
-		bonemealSuccessCondition.refreshListKeepSelected();
-		placingCondition.refreshListKeepSelected();
-		additionalHarvestCondition.refreshListKeepSelected();
-		vibrationSensitivityRadius.refreshListKeepSelected();
-		canReceiveVibrationCondition.refreshListKeepSelected();
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
 
-		inventoryAutomationTakeCondition.refreshListKeepSelected();
-		inventoryAutomationPlaceCondition.refreshListKeepSelected();
+		onBlockAdded.refreshListKeepSelected(context);
+		onNeighbourBlockChanges.refreshListKeepSelected(context);
+		onEntityCollides.refreshListKeepSelected(context);
+		onTickUpdate.refreshListKeepSelected(context);
+		onRandomUpdateEvent.refreshListKeepSelected(context);
+		onDestroyedByPlayer.refreshListKeepSelected(context);
+		onDestroyedByExplosion.refreshListKeepSelected(context);
+		onStartToDestroy.refreshListKeepSelected(context);
+		onEntityWalksOn.refreshListKeepSelected(context);
+		onBlockPlayedBy.refreshListKeepSelected(context);
+		onRightClicked.refreshListKeepSelected(context);
+		onRedstoneOn.refreshListKeepSelected(context);
+		onRedstoneOff.refreshListKeepSelected(context);
+		onHitByProjectile.refreshListKeepSelected(context);
+		onBonemealSuccess.refreshListKeepSelected(context);
+		onReceivedVibration.refreshListKeepSelected(context);
+		onEntityFallsOn.refreshListKeepSelected(context);
+
+		specialInformation.refreshListKeepSelected(context);
+		emittedRedstonePower.refreshListKeepSelected(context);
+		isBonemealTargetCondition.refreshListKeepSelected(context);
+		bonemealSuccessCondition.refreshListKeepSelected(context);
+		placingCondition.refreshListKeepSelected(context);
+		additionalHarvestCondition.refreshListKeepSelected(context);
+		vibrationSensitivityRadius.refreshListKeepSelected(context);
+		canReceiveVibrationCondition.refreshListKeepSelected(context);
+
+		inventoryAutomationTakeCondition.refreshListKeepSelected(context);
+		inventoryAutomationPlaceCondition.refreshListKeepSelected(context);
 
 		animations.reloadDataLists();
 
@@ -1807,7 +1833,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.rarity = rarity.getSelectedItem();
 		block.immuneToFire = immuneToFire.isSelected();
 		block.creativeTabs = creativeTabs.getListElements();
-		block.destroyTool = (String) destroyTool.getSelectedItem();
+		block.destroyTool = (String) Objects.requireNonNull(destroyTool.getSelectedItem());
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();

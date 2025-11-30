@@ -1,0 +1,1 @@
+La distance maximale où l'entité pourras recevoir des vibrations.
