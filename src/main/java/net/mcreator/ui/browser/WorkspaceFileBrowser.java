@@ -271,11 +271,13 @@ public class WorkspaceFileBrowser extends JPanel {
 				== GeneratorFlavor.BaseLanguage.JAVA)
 			loadExtSources(root);
 
-		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
-				&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-			FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
-			JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
-			root.add(minecraft);
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			File folder = MinecraftFolderUtils.getBedrockEditionFolder();
+			if (folder != null) {
+				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
+				JFileTree.addNodes(minecraft, folder, true);
+				root.add(minecraft);
+			}
 		}
 
 		mods.setRoot(root);
