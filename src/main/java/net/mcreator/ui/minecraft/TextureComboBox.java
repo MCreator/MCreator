@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -121,11 +122,21 @@ public class TextureComboBox extends JPanel implements IValidable {
 		}
 	}
 
+	public void setTexture(@Nullable TextureHolder textureHolder) {
+		if (textureHolder != null) {
+			setTextureFromTextureName(textureHolder.getRawTextureName());
+		}
+	}
+
 	public String getTextureName() {
 		Texture selected = comboBox.getSelectedItem();
 		if (selected == null || selected.equals(empty))
 			return defaultTextureName;
 		return selected.getTextureName() + (addPNGExtension ? ".png" : "");
+	}
+
+	public TextureHolder getTextureHolder() {
+		return new TextureHolder(mcreator.getWorkspace(), getTextureName());
 	}
 
 	public boolean hasTexture() {

@@ -28,34 +28,20 @@ tasks.register('exportLinux64', Copy.class) {
 tasks.register('tarLinux64', Tar.class) {
     dependsOn exportLinux64
 
-    into('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")) {
-        from('build/export/linux64/') { exclude "mcreator.sh", "jdk/bin*" }
-        from('build/export/linux64/mcreator.sh') {
-            filePermissions {
-                user {
-                    read = true; write = true; execute = true
-                }
-                group {
-                    read = true; execute = true
-                }
-                other {
-                    read = true; execute = true
-                }
-            }
+    def execPermissions = {
+        filePermissions {
+            user { read = true; write = true; execute = true }
+            group { read = true; execute = true }
+            other { read = true; execute = true }
         }
-        from('build/export/linux64/jdk/bin/') {
-            filePermissions {
-                user {
-                    read = true; write = true; execute = true
-                }
-                group {
-                    read = true; execute = true
-                }
-                other {
-                    read = true; execute = true
-                }
-            }
-        } into 'jdk/bin/'
+    }
+
+    into('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")) {
+        from('build/export/linux64/') { exclude "mcreator.sh", "jdk/bin*", "jdk/lib/jspawnhelper", "jdk/lib/jexec" }
+        from('build/export/linux64/mcreator.sh', execPermissions)
+        from('build/export/linux64/jdk/bin/', execPermissions) into 'jdk/bin/'
+        from('build/export/linux64/jdk/lib/jspawnhelper', execPermissions) into 'jdk/lib/'
+        from('build/export/linux64/jdk/lib/jexec', execPermissions) into 'jdk/lib/'
     }
 
     destinationDirectory = file('build/export/')
@@ -64,7 +50,7 @@ tasks.register('tarLinux64', Tar.class) {
 }
 
 tasks.register('exportLinux') {
-    group 'export'
+    group = 'export'
     dependsOn tarLinux64
 
     doLast {

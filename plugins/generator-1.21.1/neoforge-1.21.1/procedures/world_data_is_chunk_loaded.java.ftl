@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-(world.hasChunkAt(${toBlockPos(input$x,input$y,input$z)}))
+(world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(${opt.removeParentheses(input$x)}), SectionPos.blockToSectionCoord(${opt.removeParentheses(input$z)})))

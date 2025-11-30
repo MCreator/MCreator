@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,47 @@ package net.mcreator.ui.dialogs.tools;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.TagElement;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
-public class PackMakerToolUtils {
+public abstract class AbstractPackMakerTool extends MCreatorDialog {
+
+	protected ValidationGroup validableElements = new ValidationGroup();
+
+	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
+		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
+		this.setLayout(new BorderLayout(10, 10));
+		this.setIconImage(icon);
+		this.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools." + localizationKey + "_info")));
+
+		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
+		ok.addActionListener(e -> {
+			if (validableElements.validateIsErrorFree()) {
+				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+				generatePack(mcreator);
+				mcreator.reloadWorkspaceTabContents();
+				this.setCursor(Cursor.getDefaultCursor());
+				this.dispose();
+			}
+		});
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> this.dispose());
+		this.add("South", PanelUtils.join(ok, cancel));
+
+		this.getRootPane().setDefaultButton(ok);
+	}
+
+	protected abstract void generatePack(MCreator mcreator);
 
 	public static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		for (String name : names) {
@@ -68,5 +102,4 @@ public class PackMakerToolUtils {
 			}
 		}
 	}
-
 }

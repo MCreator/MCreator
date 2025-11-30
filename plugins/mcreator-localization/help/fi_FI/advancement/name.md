@@ -1,0 +1,1 @@
+Edistymisen nimi. Jos sillä ei ole päätasoa (juuritason edistyminen), se on polun nimi.
