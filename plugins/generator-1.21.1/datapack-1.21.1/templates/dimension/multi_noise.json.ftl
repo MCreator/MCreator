@@ -66,7 +66,7 @@
                 "continentalness": [${ge.genContinentalness.min}, ${ge.genContinentalness.max}],
                 "weirdness": [${ge.genWeirdness.min}, ${ge.genWeirdness.max}],
                 "erosion": [${ge.genErosion.min}, ${ge.genErosion.max}],
-                "depth": [0.2, 0.9],
+                "depth": [${ge.genDepth.min}, ${ge.genDepth.max}],
                 "offset": 0
             }
 		  <#else>
