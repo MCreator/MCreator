@@ -192,14 +192,14 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		super.paint(g);
 
 		if (currentValidationResult != null) {
-			g.setColor(currentValidationResult.getValidationResultType().getColor());
-			switch (currentValidationResult.getValidationResultType()) {
+			g.setColor(currentValidationResult.type().getColor());
+			switch (currentValidationResult.type()) {
 			case WARNING -> WARNING_ICON.paintIcon(this, g, 0, 0);
 			case ERROR -> ERROR_ICON.paintIcon(this, g, 0, 0);
 			case PASSED -> OK_ICON.paintIcon(this, g, 0, 0);
 			}
 
-			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
+			if (currentValidationResult.type() != Validator.ValidationResultType.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}

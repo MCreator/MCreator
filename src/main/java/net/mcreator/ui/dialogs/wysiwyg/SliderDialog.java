@@ -142,7 +142,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (sliderMachineName.getValidationStatus().getValidationResultType()
+			if (sliderMachineName.getValidationStatus().type()
 					!= Validator.ValidationResultType.ERROR) {
 				dispose();
 				String sliderName = sliderMachineName.getText();

@@ -81,7 +81,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (nameField.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				dispose();
 				String text = nameField.getText();
 				if (!text.isEmpty()) {

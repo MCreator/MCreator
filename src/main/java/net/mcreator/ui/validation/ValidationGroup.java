@@ -38,16 +38,16 @@ public class ValidationGroup {
 
 	public final boolean validateIsErrorFree() {
 		return getGroupedValidationResults().stream()
-				.noneMatch(e -> e.getValidationResultType() == Validator.ValidationResultType.ERROR);
+				.noneMatch(e -> e.type() == Validator.ValidationResultType.ERROR);
 	}
 
 	public final List<String> getValidationProblemMessages() {
-		return getGroupedValidationResults().stream().map(Validator.ValidationResult::getMessage).toList();
+		return getGroupedValidationResults().stream().map(Validator.ValidationResult::message).toList();
 	}
 
 	public List<Validator.ValidationResult> getGroupedValidationResults() {
 		return validationElements.stream().map(IValidable::getValidationStatus)
-				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED).toList();
+				.filter(e -> e.type() != Validator.ValidationResultType.PASSED).toList();
 	}
 
 }

@@ -35,9 +35,9 @@ public class VButton extends JButton implements IValidable {
 		super.paintComponent(g);
 
 		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			if (currentValidationResult.type() == Validator.ValidationResultType.WARNING) {
 				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			} else if (currentValidationResult.type() == Validator.ValidationResultType.ERROR) {
 				g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
 			}
 		}

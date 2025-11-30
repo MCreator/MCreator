@@ -195,13 +195,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		super.paint(g);
 
 		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.setColor(currentValidationResult.getValidationResultType().getColor());
+			if (currentValidationResult.type() == Validator.ValidationResultType.WARNING) {
+				g.setColor(currentValidationResult.type().getColor());
 				g.drawRect(0, 0, getWidth(), getHeight());
 
 				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.setColor(currentValidationResult.getValidationResultType().getColor());
+			} else if (currentValidationResult.type() == Validator.ValidationResultType.ERROR) {
+				g.setColor(currentValidationResult.type().getColor());
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
 				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 11, 11, null);

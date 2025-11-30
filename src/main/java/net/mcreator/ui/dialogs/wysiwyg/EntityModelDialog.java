@@ -118,7 +118,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		cancel.addActionListener(e -> dispose());
 		ok.addActionListener(e -> {
-			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (entityModel.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				dispose();
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),

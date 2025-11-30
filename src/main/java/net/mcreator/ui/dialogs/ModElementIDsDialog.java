@@ -77,7 +77,7 @@ public class ModElementIDsDialog {
 
 			// check if registry name has been changed
 			if (!registryName.getText().equals(modElement.getRegistryName())) {
-				if (registryName.getValidationStatus().getValidationResultType()
+				if (registryName.getValidationStatus().type()
 						== Validator.ValidationResultType.ERROR) { // if invalid registry name
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.modelement_id.invalid_registry_name"),
 							L10N.t("dialog.modelement_id.invalid_registry_name_title"), JOptionPane.ERROR_MESSAGE);

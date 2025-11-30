@@ -179,7 +179,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private List<PropertyData<?>> getPropertiesList() {
 		List<PropertyData<?>> props = new ArrayList<>();
 		for (JItemPropertiesListEntry entry : propertiesList) {
-			if (entry.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.PASSED)
+			if (entry.getValidationStatus().type() != Validator.ValidationResultType.PASSED)
 				return null; // indicates that some property names are not defined correctly
 
 			props.add(entry.toPropertyData());

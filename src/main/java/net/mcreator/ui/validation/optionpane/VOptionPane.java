@@ -100,11 +100,11 @@ public class VOptionPane {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
 		if (option == JOptionPane.OK_OPTION) {
-			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (textField.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
 				JOptionPane.showMessageDialog(frame,
-						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().message(),
 						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
 				return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
 			}

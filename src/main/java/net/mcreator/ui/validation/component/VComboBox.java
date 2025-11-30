@@ -60,7 +60,7 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		if (validator != null && validationResult != null) {
-			setBorder(BorderFactory.createLineBorder(validationResult.getValidationResultType().getColor(), 1));
+			setBorder(BorderFactory.createLineBorder(validationResult.type().getColor(), 1));
 		}
 
 		return validationResult;

@@ -144,7 +144,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
-							return name.getValidationStatus().getValidationResultType()
+							return name.getValidationStatus().type()
 									!= Validator.ValidationResultType.ERROR && super.stopCellEditing();
 						}
 					};

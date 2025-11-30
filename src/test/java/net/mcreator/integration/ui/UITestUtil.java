@@ -80,7 +80,7 @@ public class UITestUtil {
 
 		boolean hasErrors = false;
 		for (Validator.ValidationResult result : validationResult.getGroupedValidationResults()) {
-			if (result.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			if (result.type() == Validator.ValidationResultType.ERROR) {
 				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
 					if (result.isBlocklyResult()) {
 						// skip Blockly validation in case it is marked that initial XML in the editor is not valid

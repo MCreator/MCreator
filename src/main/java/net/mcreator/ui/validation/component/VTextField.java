@@ -97,9 +97,9 @@ public class VTextField extends JTextField implements IValidable {
 			String message = L10N.t("validators.input_field_is_validated");
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
-			if (currentValidationResult != null && currentValidationResult.getMessage() != null
-					&& !currentValidationResult.getMessage().isEmpty())
-				message = currentValidationResult.getMessage();
+			if (currentValidationResult != null && currentValidationResult.message() != null
+					&& !currentValidationResult.message().isEmpty())
+				message = currentValidationResult.message();
 			g.drawString(message, 4, 11);
 		}
 
@@ -109,17 +109,17 @@ public class VTextField extends JTextField implements IValidable {
 		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
 
 		if (currentValidationResult != null) {
-			g.setColor(currentValidationResult.getValidationResultType().getColor());
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			g.setColor(currentValidationResult.type().getColor());
+			if (currentValidationResult.type() == Validator.ValidationResultType.WARNING) {
 				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			} else if (currentValidationResult.type() == Validator.ValidationResultType.ERROR) {
 				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
+			} else if (currentValidationResult.type() == Validator.ValidationResultType.PASSED
 					&& showPassed) {
 				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			}
 
-			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
+			if (currentValidationResult.type() != Validator.ValidationResultType.PASSED) {
 				Color old = g.getColor();
 				g.setColor(ColorUtils.applyAlpha(old, 40));
 				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);

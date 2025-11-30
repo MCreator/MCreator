@@ -36,9 +36,9 @@ public class CompoundValidator implements Validator {
 
 		for (Validator validator : validators) {
 			ValidationResult tmpResult = validator.validate();
-			if (tmpResult.getValidationResultType() == ValidationResultType.ERROR)
+			if (tmpResult.type() == ValidationResultType.ERROR)
 				return tmpResult; // Return as soon as we find an error
-			else if (tmpResult.getValidationResultType() == ValidationResultType.WARNING)
+			else if (tmpResult.type() == ValidationResultType.WARNING)
 				result = tmpResult; // Do not return yet, there might still be errors
 		}
 

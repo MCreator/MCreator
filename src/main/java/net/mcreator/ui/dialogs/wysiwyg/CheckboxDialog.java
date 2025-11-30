@@ -92,7 +92,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (nameField.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				dispose();
 				String checkBoxName = nameField.getText();
 				if (!checkBoxName.isEmpty()) {

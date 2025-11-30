@@ -55,11 +55,11 @@ public interface Validator {
 			this.isBlocklyResult = isBlocklyResult;
 		}
 
-		public ValidationResultType getValidationResultType() {
+		public ValidationResultType type() {
 			return validationResultType;
 		}
 
-		public String getMessage() {
+		public String message() {
 			return message;
 		}
 

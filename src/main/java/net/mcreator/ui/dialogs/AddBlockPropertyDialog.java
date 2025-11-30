@@ -80,7 +80,7 @@ public class AddBlockPropertyDialog {
 
 		AtomicReference<PropertyDataWithValue<?>> result = new AtomicReference<>(null);
 		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (name.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				String propertyName = "CUSTOM:" + name.getText();
 				if ("Logic".equals(type.getSelectedItem())) {
 					result.set(new PropertyDataWithValue<>(new PropertyData.LogicType(propertyName), null));

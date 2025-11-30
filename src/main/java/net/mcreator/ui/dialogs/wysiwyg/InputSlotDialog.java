@@ -158,7 +158,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 		cancel.addActionListener(event -> dispose());
 		ok.addActionListener(event -> {
-			if (slotID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (slotID.getValidationStatus().type() != Validator.ValidationResultType.ERROR) {
 				dispose();
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 

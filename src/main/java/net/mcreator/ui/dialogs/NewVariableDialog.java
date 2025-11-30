@@ -86,7 +86,7 @@ public class NewVariableDialog {
 		int option = JOptionPane.showConfirmDialog(mcreator, inp, L10N.t("dialog.variables.new_title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
-			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
+			if (textField.getValidationStatus().type() != Validator.ValidationResultType.ERROR
 					&& type.getSelectedItem() != null) {
 				VariableType variable = VariableTypeLoader.INSTANCE.fromName(
 						((VariableType) type.getSelectedItem()).getName());

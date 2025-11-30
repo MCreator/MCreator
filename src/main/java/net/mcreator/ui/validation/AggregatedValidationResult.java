@@ -48,7 +48,7 @@ public class AggregatedValidationResult extends ValidationGroup {
 		List<Validator.ValidationResult> retval = new ArrayList<>();
 
 		validationElements.stream().map(IValidable::getValidationStatus)
-				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED).forEach(retval::add);
+				.filter(e -> e.type() != Validator.ValidationResultType.PASSED).forEach(retval::add);
 
 		validationGroups.stream().filter((e) -> !e.validateIsErrorFree())
 				.forEach((e) -> retval.addAll(e.getGroupedValidationResults()));

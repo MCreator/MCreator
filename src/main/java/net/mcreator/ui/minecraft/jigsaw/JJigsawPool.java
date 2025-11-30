@@ -73,7 +73,7 @@ public class JJigsawPool extends JEntriesList {
 			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 				ComboBoxUtil.updateComboBoxContents(fallbackPool,
 						poolList.stream().filter(p -> !p.poolName.getText().isBlank())
-								.filter(p -> p.poolName.getValidationStatus().getValidationResultType()
+								.filter(p -> p.poolName.getValidationStatus().type()
 										== Validator.ValidationResultType.PASSED)
 								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID()
 										+ ":" + jigsawPools.getModElement().getRegistryName() + "_"

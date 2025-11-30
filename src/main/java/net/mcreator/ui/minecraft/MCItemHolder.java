@@ -156,8 +156,8 @@ public class MCItemHolder extends JButton implements IValidable {
 	@Override public void paintComponent(Graphics g) {
 
 		if (showValidation && validator != null && currentValidationResult != null
-				&& currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED)
-			g.setColor(currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR ?
+				&& currentValidationResult.type() != Validator.ValidationResultType.PASSED)
+			g.setColor(currentValidationResult.type() == Validator.ValidationResultType.ERROR ?
 					err :
 					warn);
 		else
@@ -179,9 +179,9 @@ public class MCItemHolder extends JButton implements IValidable {
 			}
 
 			if (validator != null && currentValidationResult != null) {
-				if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				if (currentValidationResult.type() == Validator.ValidationResultType.WARNING) {
 					g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-				} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+				} else if (currentValidationResult.type() == Validator.ValidationResultType.ERROR) {
 					g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
 				}
 			}
@@ -209,13 +209,13 @@ public class MCItemHolder extends JButton implements IValidable {
 
 	private void updateTooltipText() {
 		boolean hasValidationMessage = currentValidationResult != null &&
-				currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED;
+				currentValidationResult.type() != Validator.ValidationResultType.PASSED;
 		if (!block.isEmpty()) {
 			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
-					"\n" + currentValidationResult.getMessage() :
+					"\n" + currentValidationResult.message() :
 					""));
 		} else if (hasValidationMessage) {
-			this.setToolTipText(currentValidationResult.getMessage());
+			this.setToolTipText(currentValidationResult.message());
 		} else {
 			this.setToolTipText(null);
 		}

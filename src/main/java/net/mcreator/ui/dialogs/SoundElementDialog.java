@@ -92,7 +92,7 @@ public class SoundElementDialog {
 				element != null ? "Save changes" : "Add sound");
 
 		if (option == 0) {
-			if (soundName.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			if (soundName.getValidationStatus().type() == Validator.ValidationResultType.ERROR) {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
 						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
