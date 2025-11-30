@@ -49,6 +49,7 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
+import net.mcreator.ui.modgui.BEItemGUI;
 import net.mcreator.ui.modgui.BlockGUI;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
@@ -1695,6 +1696,21 @@ public class TestWorkspaceDataProvider {
 				attribute.addToAllEntities = true;
 			}
 			return attribute;
+		} else if (ModElementType.BEITEM.equals(modElement.getType())) {
+			BEItem beitem = new BEItem(modElement);
+			beitem.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			beitem.name = modElement.getName();
+			beitem.stackSize = 52;
+			beitem.useDuration = 8;
+			beitem.damageCount = 4;
+			beitem.enableMeleeDamage = !_true;
+			beitem.damageVsEntity = 6.53;
+			beitem.isFood = _true;
+			beitem.nutritionalValue = 5;
+			beitem.saturation = 0.82;
+			beitem.isMeat = _true;
+			beitem.isAlwaysEdible = _true;
+			return beitem;
 		}
 		return null;
 	}
