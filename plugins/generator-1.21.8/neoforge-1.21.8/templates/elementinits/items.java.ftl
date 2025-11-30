@@ -48,7 +48,7 @@ package ${package}.init;
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
-<#if itemsWithInventory?size != 0>
+<#if itemsWithInventory?size != 0 || buckets?size != 0>
 @EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
