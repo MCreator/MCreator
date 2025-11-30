@@ -1,0 +1,12 @@
+_default: any
+any: any
+mainhand: mainhand
+offhand: offhand
+hand: hand
+feet: feet
+legs: legs
+chest: chest
+head: head
+armor: armor
+body: body
+saddle: saddle

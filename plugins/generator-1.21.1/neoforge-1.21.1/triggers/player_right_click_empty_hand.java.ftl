@@ -32,8 +32,10 @@
 		public static void handleData(final ${name}Message message, final IPayloadContext context) {
 			if (context.flow() == PacketFlow.SERVERBOUND) {
 				context.enqueueWork(() -> {
-					if (!context.player().level().hasChunkAt(context.player().blockPosition()))
-						return;
+					if (!context.player().level().getChunkSource().hasChunk(
+						SectionPos.blockToSectionCoord(context.player().getX()),
+						SectionPos.blockToSectionCoord(context.player().getZ())
+					)) return;
 					<#assign dependenciesCode>
 						<@procedureDependenciesCode dependencies, {
 							"x": "context.player().getX()",

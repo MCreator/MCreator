@@ -155,9 +155,8 @@ public class MCItemHolder extends JButton implements IValidable {
 
 	@Override public void paintComponent(Graphics g) {
 
-		if (showValidation && validator != null && currentValidationResult != null && (
-				currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-						|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING))
+		if (showValidation && validator != null && currentValidationResult != null
+				&& currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED)
 			g.setColor(currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR ?
 					err :
 					warn);

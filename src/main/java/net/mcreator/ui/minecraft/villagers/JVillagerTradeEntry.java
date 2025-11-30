@@ -30,6 +30,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +77,7 @@ public class JVillagerTradeEntry extends JPanel {
 		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price1"),
 				L10N.label("elementgui.villager_trade.price1")));
 		line1.add(price1);
+		price1.setValidator(new MCItemHolderValidator(price1).considerAirAsEmpty());
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countPrice1);
 
@@ -91,6 +94,7 @@ public class JVillagerTradeEntry extends JPanel {
 		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"),
 				L10N.label("elementgui.villager_trade.sale")));
 		line1.add(offer);
+		offer.setValidator(new MCItemHolderValidator(offer).considerAirAsEmpty());
 		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
 		line1.add(countOffer);
 
@@ -127,11 +131,6 @@ public class JVillagerTradeEntry extends JPanel {
 	}
 
 	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
-		if (!price1.containsItem())
-			return null;
-		if (!offer.containsItem())
-			return null;
-
 		VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
 		entry.price1 = price1.getBlock();
 		entry.countPrice1 = (int) countPrice1.getValue();
@@ -157,5 +156,9 @@ public class JVillagerTradeEntry extends JPanel {
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(price1, offer);
 	}
 }

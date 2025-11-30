@@ -65,21 +65,23 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 					procedureXml = ProcedureTemplateIO.importBlocklyXML((File) template.identifier);
 
 				modTypeButton.addActionListener(actionEvent -> {
-					if (procedureGUI != null) {
-						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
-						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+					new Thread(() -> {
+						if (procedureGUI != null) {
+							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
-						for (VariableElement localVariable : localVariables) {
-							if (existingLocalVariables.contains(localVariable))
-								continue; // skip if variable with this name already exists
+							for (VariableElement localVariable : localVariables) {
+								if (existingLocalVariables.contains(localVariable))
+									continue; // skip if variable with this name already exists
 
-							blocklyPanel.addLocalVariable(localVariable.getName(),
-									localVariable.getType().getBlocklyVariableType());
-							procedureGUI.localVars.addElement(localVariable);
+								blocklyPanel.addLocalVariable(localVariable.getName(),
+										localVariable.getType().getBlocklyVariableType());
+								procedureGUI.localVars.addElement(localVariable);
+							}
 						}
-					}
 
-					blocklyPanel.addBlocksFromXML(procedureXml);
+						blocklyPanel.addBlocksFromXML(procedureXml);
+					}, "Blockly-Template-Placer").start();
 				});
 
 				modTypeButton.setOpaque(true);

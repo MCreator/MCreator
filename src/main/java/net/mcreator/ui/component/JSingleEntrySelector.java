@@ -199,8 +199,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 			case PASSED -> OK_ICON.paintIcon(this, g, 0, 0);
 			}
 
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
