@@ -623,7 +623,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(rangedPanel, meleePanel)), 10, 10)));
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(rangedPanel, meleePanel)), 5, 5)));
 
 		page1group.addValidationElement(texture);
 
