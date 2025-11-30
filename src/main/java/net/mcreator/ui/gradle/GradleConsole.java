@@ -28,6 +28,8 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.java.monitoring.JMXMonitorClient;
 import net.mcreator.java.monitoring.JMXMonitorEventListener;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceTaskFinishedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
@@ -607,6 +609,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
 
 					succeed();
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskSuccessful(ref));
 					taskComplete(GradleResultCode.STATUS_OK);
 				});
 			}
@@ -714,6 +717,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 					if (resultcode == GradleResultCode.STATUS_OK)
 						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(), taskErr.toString()));
+
 					taskComplete(resultcode);
 				});
 			}
@@ -742,6 +747,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 				appendPlainText("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
 						Color.gray);
 				append(" ");
+
+				MCREvent.event(new WorkspaceTaskFinishedEvent.TaskCompleted(ref, mcreatorGradleStatus));
 
 				if (debugClient != null) {
 					ref.getDebugPanel().stopDebug();
