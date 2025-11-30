@@ -33,7 +33,7 @@
 
 package ${package}.fluid;
 
-<#compress>
+<@javacompress>
 public abstract class ${name}Fluid extends BaseFlowingFluid {
 
 	public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
@@ -108,5 +108,5 @@ public abstract class ${name}Fluid extends BaseFlowingFluid {
 		}
 	}
 
-}</#compress>
+}</@javacompress>
 <#-- @formatter:on -->

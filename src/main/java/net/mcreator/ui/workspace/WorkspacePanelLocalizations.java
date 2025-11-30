@@ -39,7 +39,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -115,31 +118,17 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		sorters = new ArrayList<>();
 
 		for (var entry : workspacePanel.getMCreator().getWorkspace().getLanguageMap().entrySet()) {
-			LinkedHashMap<String, String> entries = entry.getValue();
+			String[][] data = entry.getValue().entrySet().stream().map(e -> new String[] { e.getKey(), e.getValue() })
+					.toArray(String[][]::new);
 
-			JTable elements = new JTable(new DefaultTableModel(
+			JTable elements = new JTable(new DefaultTableModel(data,
 					new Object[] { L10N.t("workspace.localization.column_key"),
 							"Localized text for " + entry.getKey() + (entry.getKey().equals("en_us") ?
 									" - values in en_us might get overwritten!" :
-									" - mappings can be edited here") }, 0));
+									" - mappings can be edited here") }));
 
-			final Font textFont = new Font("Sans-Serif", Font.PLAIN, 13);
-			elements.setFont(textFont);
-			elements.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-				@Override
-				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-						boolean hasFocus, int row, int column) {
-					var c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-					c.setFont(textFont);
-					return c;
-				}
-			});
 			elements.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()) {
 				final JComponent component = new JTextField();
-
-				{
-					component.setFont(textFont);
-				}
 
 				@Override
 				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
@@ -154,7 +143,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
-			sorter.toggleSortOrder(0);
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 
@@ -166,16 +154,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			elements.setGridColor(Theme.current().getAltBackgroundColor());
 			elements.setRowHeight(22);
 			elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
 
 			JTableHeader header = elements.getTableHeader();
 			header.setBackground(Theme.current().getInterfaceAccentColor());
 			header.setForeground(Theme.current().getBackgroundColor());
-
-			DefaultTableModel model = (DefaultTableModel) elements.getModel();
-			for (Map.Entry<String, String> langs : entries.entrySet()) {
-				model.addRow(new String[] { langs.getKey(), langs.getValue() });
-			}
 
 			// save values on table edit, do it in another thread
 			// we add the listener after the values are inserted
@@ -415,8 +397,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public void refilterElements() {
-		for (TableRowSorter<TableModel> sorter : sorters)
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+		var filter = RowFilter.regexFilter(workspacePanel.getSearchTerm());
+		for (TableRowSorter<TableModel> sorter : sorters) {
+			sorter.setRowFilter(filter);
+		}
 	}
 
 }

@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber(Dist.CLIENT) public class ${name}Procedure {
 	@SubscribeEvent public static void onRightClick(PlayerInteractEvent.RightClickEmpty event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
@@ -9,7 +9,7 @@
 				"world": "event.getLevel()",
 				"entity": "event.getEntity()"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
 		if (event.getHand() != InteractionHand.MAIN_HAND) return;
 		PacketDistributor.sendToServer(new ${name}Message());
@@ -32,9 +32,11 @@
 		public static void handleData(final ${name}Message message, final IPayloadContext context) {
 			if (context.flow() == PacketFlow.SERVERBOUND) {
 				context.enqueueWork(() -> {
-					if (!context.player().level().hasChunkAt(context.player().blockPosition()))
-						return;
-					<#assign dependenciesCode><#compress>
+					if (!context.player().level().getChunkSource().hasChunk(
+						SectionPos.blockToSectionCoord(context.player().getX()),
+						SectionPos.blockToSectionCoord(context.player().getZ())
+					)) return;
+					<#assign dependenciesCode>
 						<@procedureDependenciesCode dependencies, {
 							"x": "context.player().getX()",
 							"y": "context.player().getY()",
@@ -42,7 +44,7 @@
 							"world": "context.player().level()",
 							"entity": "context.player()"
 						}/>
-					</#compress></#assign>
+					</#assign>
 					execute(${dependenciesCode});
 				}).exceptionally(e -> {
 					context.connection().disconnect(Component.literal(e.getMessage()));

@@ -58,7 +58,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		});
 	}
 
-	@Override void deleteCurrentlySelected() {
+	@Override protected void deleteCurrentlySelected() {
 		List<File> elements = elementList.getSelectedValuesList();
 		elements.forEach(File::delete);
 	}

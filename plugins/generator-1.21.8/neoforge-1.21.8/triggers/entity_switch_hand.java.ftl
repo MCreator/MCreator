@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void whenEntitySwitchHand(LivingSwapItemsEvent.Hands event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntity().getX()",
 				"y": "event.getEntity().getY()",
@@ -12,6 +12,6 @@
 				"newoffhanditem": "event.getItemSwappedToOffHand()",
 				"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

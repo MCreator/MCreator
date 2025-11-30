@@ -22,6 +22,7 @@ package net.mcreator.ui.minecraft.entityanimations;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Animation;
 import net.mcreator.element.types.LivingEntity;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -54,7 +55,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 		super(parent, entryList);
 		this.mcreator = mcreator;
 
-		line.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		line.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 		condition = new ProcedureSelector(gui.withEntry("animations/condition_animation"), mcreator,
 				L10N.t("elementgui.animations.animation_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -62,6 +63,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		animation = new DataListComboBox(mcreator);
+		animation.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("animations/animation"),
 				L10N.label("elementgui.animations.animation")));
@@ -82,12 +84,12 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 		amplitude.setEnabled(walking.isSelected());
 		walking.addActionListener(e -> amplitude.setEnabled(walking.isSelected()));
 
-		speed.setPreferredSize(new Dimension(100, 36));
-		amplitude.setPreferredSize(new Dimension(100, 36));
+		speed.setPreferredSize(new Dimension(55, 36));
+		amplitude.setPreferredSize(new Dimension(55, 36));
 	}
 
 	@Override public void reloadDataLists() {
-		condition.refreshListKeepSelected();
+		condition.refreshListKeepSelected(null);
 
 		ComboBoxUtil.updateComboBoxContents(animation, ElementUtil.loadAnimations(mcreator.getWorkspace()));
 	}

@@ -18,25 +18,27 @@ import org.apache.logging.log4j.Logger;
 
 		modEventBus.addListener(this::registerNetworking);
 
+		<@javacompress>
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:blocks"]??>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:blockentities"]??>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:items"]??>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:entities"]??>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:features"]??>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("potioneffect")>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
-		<#if w.hasElementsOfType("fluid")>
+		<#if types["potions"]??>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
+		<#if types["potioneffects"]??>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>
+		<#if types["guis"]??>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
+		<#if types["particles"]??>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
+		<#if types["villagerprofessions"]??>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
+		<#if types["fluids"]??>
 			${JavaModName}Fluids.REGISTRY.register(modEventBus);
 			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
 		</#if>
-		<#if w.hasElementsOfType("attribute")>${JavaModName}Attributes.REGISTRY.register(modEventBus);</#if>
+		<#if types["attributes"]??>${JavaModName}Attributes.REGISTRY.register(modEventBus);</#if>
+		</@javacompress>
 
 		// Start of user code block mod init
 		// End of user code block mod init

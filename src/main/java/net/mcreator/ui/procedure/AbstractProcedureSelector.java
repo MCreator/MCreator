@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -83,51 +84,38 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		edit.setEnabled(enabled && getSelectedProcedure() != null);
 	}
 
-	public final void refreshList() {
+	public final void refreshList(@Nullable ReloadContext context) {
+		if (context == null)
+			context = ReloadContext.create(mcreator.getWorkspace());
+
 		depsMap.clear();
 		procedures.removeAllItems();
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		//noinspection FuseStreamOperations
-		List<ModElement> procedureElements = mcreator.getWorkspace().getModElements().stream()
-				.filter(mod -> mod.getType() == ModElementType.PROCEDURE).collect(Collectors.toList());
-		procedureElements.sort(ModElement.getComparator(mcreator.getWorkspace(), procedureElements));
-		procedureElements.forEach(mod -> {
-			List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-			if (dependenciesList != null) {
-				List<Dependency> realdepsList = new ArrayList<>();
+		Set<Dependency> providedSet = new HashSet<>(Arrays.asList(providedDependencies));
 
-				boolean missing = false;
-				for (Object depobj : dependenciesList) {
-					Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
-					realdepsList.add(dependency);
-					if (!Arrays.asList(providedDependencies).contains(dependency))
-						missing = true;
-				}
+		for (Map.Entry<ModElement, ReloadContext.ContexData> entry : context.data.entrySet()) {
+			ModElement mod = entry.getKey();
+			ReloadContext.ContexData data = entry.getValue();
 
-				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
-						null;
+			boolean missing = data.dependencies().stream().anyMatch(d -> !providedSet.contains(d));
 
-				boolean correctReturnType = true;
-				if (returnType != null) {
-					if (returnTypeCurrent != returnType)
-						correctReturnType = false;
-				}
+			VariableType returnTypeCurrent = data.returnType();
 
-				if (!missing)
-					depsMap.put(mod.getName(), realdepsList);
+			boolean correctReturnType = returnType == null || returnTypeCurrent == returnType;
 
-				if (correctReturnType || (returnTypeCurrent == null && returnTypeOptional))
-					procedures.addItem(new ProcedureEntry(mod.getName(), returnTypeCurrent, !missing));
-			}
-		});
+			if (!missing)
+				depsMap.put(mod.getName(), data.dependencies());
+
+			if (correctReturnType || (returnTypeCurrent == null && returnTypeOptional))
+				procedures.addItem(new ProcedureEntry(mod.getName(), returnTypeCurrent, !missing));
+		}
 	}
 
-	public void refreshListKeepSelected() {
+	public void refreshListKeepSelected(@Nullable ReloadContext context) {
 		Procedure selected = getSelectedProcedure();
-		refreshList();
+		refreshList(context);
 		setSelectedProcedure(selected);
 		updateDepsList(false);
 	}
@@ -246,6 +234,41 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	public enum Side {
 		BOTH, CLIENT, SERVER
+	}
+
+	public static class ReloadContext {
+
+		private final Map<ModElement, ContexData> data = new HashMap<>();
+
+		public static ReloadContext create(Workspace workspace) {
+			ReloadContext context = new ReloadContext();
+
+			//noinspection FuseStreamOperations
+			List<ModElement> procedureElements = workspace.getModElements().stream()
+					.filter(mod -> mod.getType() == ModElementType.PROCEDURE).collect(Collectors.toList());
+			procedureElements.sort(ModElement.getComparator(workspace, procedureElements));
+			for (ModElement mod : procedureElements) {
+				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
+				if (dependenciesList != null) {
+					List<Dependency> realdepsList = new ArrayList<>();
+					for (Object depobj : dependenciesList) {
+						Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(),
+								Dependency.class);
+						realdepsList.add(dependency);
+					}
+
+					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
+							null;
+
+					context.data.put(mod, new ContexData(realdepsList, returnTypeCurrent));
+				}
+			}
+			return context;
+		}
+
+		record ContexData(List<Dependency> dependencies, @Nullable VariableType returnType) {}
+
 	}
 
 }

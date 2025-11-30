@@ -51,7 +51,7 @@ package ${package}.client.renderer.item;
 	</#if>
 </#list>
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber(Dist.CLIENT) public class ${name}ItemRenderer implements SpecialModelRenderer<ItemStack> {
 
 	@SubscribeEvent public static void registerItemRenderers(RegisterSpecialModelRendererEvent event) {
@@ -163,8 +163,18 @@ package ${package}.client.renderer.item;
 		public AnimatedModel(ModelPart root) {
 			super(root);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			this.keyframeAnimation${animation?index} = safeBake(${animation.animation});
 			</#list>
+		}
+
+		<#-- ideally we would not do this, but many users use animations that animate parts
+			 that don't exist in their model and then complain the game is crashing -->
+		private KeyframeAnimation safeBake(AnimationDefinition source) {
+			try {
+				return source.bake(root);
+			} catch (IllegalArgumentException e) {
+				return new AnimationDefinition(0, false, Map.of()).bake(root);
+			}
 		}
 
 		public void setupItemStackAnim(${name}ItemRenderer renderer, ItemStack itemstack, LivingEntityRenderState state) {
@@ -179,5 +189,5 @@ package ${package}.client.renderer.item;
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

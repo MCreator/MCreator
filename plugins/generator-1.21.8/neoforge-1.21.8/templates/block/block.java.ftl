@@ -41,15 +41,8 @@ package ${package}.block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-<#compress>
-public class ${name}Block extends
-	<#if data.hasGravity>
-		FallingBlock
-	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")}Block
-	<#else>
-		Block
-	</#if>
+<@javacompress>
+public class ${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -206,7 +199,7 @@ public class ${name}Block extends
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0.01f, <@blockProperties/>);
+				super(0f, <@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -740,5 +733,14 @@ public class ${name}Block extends
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
+
+<#function getBlockClass blockBase="">
+	<#if data.hasGravity><#return "FallingBlock">
+	<#elseif blockBase == "Stairs"><#return "StairBlock">
+	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
+	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#else><#return blockBase + "Block">
+	</#if>
+</#function>

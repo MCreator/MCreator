@@ -110,7 +110,7 @@ package ${package}.client.renderer;
 	<#assign stateForAnimations = "EntityRenderState">
 </#if>
 
-<#compress>
+<@javacompress>
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${renderState}, ${model}> {
 
 	<#-- This entity reference is shared for all entities as renderer only has one instance.
@@ -135,7 +135,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		this.addLayer(new RenderLayer<>(this) {
 			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
 
-			<#compress>
+			<@javacompress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, ${renderState} state, float headYaw, float headPitch) {
 				<#if hasProcedure(layer.condition)>
 				Level world = entity.level();
@@ -158,7 +158,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 				<#if hasProcedure(layer.condition)>}</#if>
 			}
-			</#compress>
+			</@javacompress>
 		});
 		</#list>
 	}
@@ -243,8 +243,18 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		public AnimatedModel(ModelPart root) {
 			super(root);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			this.keyframeAnimation${animation?index} = safeBake(${animation.animation});
 			</#list>
+		}
+
+		<#-- ideally we would not do this, but many users use animations that animate parts
+		     that don't exist in their model and then complain the game is crashing -->
+		private KeyframeAnimation safeBake(AnimationDefinition source) {
+			try {
+				return source.bake(root);
+			} catch (IllegalArgumentException e) {
+				return new AnimationDefinition(0, false, Map.of()).bake(root);
+			}
 		}
 
 		public void setEntity(${name}Entity entity) {
@@ -273,7 +283,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
 }
-</#compress>
+</@javacompress>
 
 <#macro setupAnim>
 	<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->

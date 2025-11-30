@@ -29,6 +29,7 @@ import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -188,7 +189,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
 		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
-				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(), false,
+				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(),
 						new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
@@ -224,6 +225,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 			}
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
+			TestUtil.failIfTestingEnvironment();
 		}
 	}
 

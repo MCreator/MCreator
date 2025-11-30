@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -42,9 +43,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -129,9 +132,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateFeature(changeEvent.getSource() instanceof BlocklyPanel),
-							"FeatureRegenerate").start());
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"FeatureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Feature.XML_BASE);
 			}
@@ -145,8 +148,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
-				blocklyPanel, null, featureHelperButton);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
+				featureHelperButton);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
@@ -166,10 +169,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		page1.setOpaque(false);
 
 		addPage(page1).validate(restrictionBiomes)
-				.lazyValidate(() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
+				.lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	private synchronized void regenerateFeature(boolean jsEventTriggeredChange) {
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
@@ -179,38 +182,50 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
-			return;
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> {
-			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
-				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.features.missing_placement")));
-			} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
-					.equals("configured_feature_reference")) {
-				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.features.placement_required")));
-			}
+		if (this.getMCreator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.DATAPACK) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
+					L10N.t("blockly.warnings.features.data_packs_cannot_modify_biomes")));
+		}
+		if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.features.missing_placement")));
+		} else if (skipPlacement.isSelected() && blocklyToFeature.getFeatureType()
+				.equals("configured_feature_reference")) {
+			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.features.placement_required")));
+		}
 
+		SwingUtilities.invokeLater(() -> {
 			generateCondition.setEnabled(!blocklyToFeature.getFeatureType().equals("configured_feature_reference"));
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
 		});
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
+
+		return compileNotesArrayList;
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		generateCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		generateCondition.refreshListKeepSelected(context);
 	}
 
 	private void refreshPlacementSettings(boolean updateCompileNotes) {
 		generationStep.setEnabled(!skipPlacement.isSelected());
 		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
 		if (updateCompileNotes)
-			regenerateFeature(false);
+			regenerateBlockAssemblies(false);
 	}
 
 	@Override protected void openInEditingMode(Feature feature) {

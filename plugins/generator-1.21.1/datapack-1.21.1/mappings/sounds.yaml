@@ -1548,6 +1548,48 @@ item.wolf_armor.damage: item.wolf_armor.damage
 item.wolf_armor.repair: item.wolf_armor.repair
 entity.wolf.shake: entity.wolf.shake
 entity.wolf.step: entity.wolf.step
+entity.wolf.ambient: entity.wolf.ambient
+entity.wolf.death: entity.wolf.death
+entity.wolf.growl: entity.wolf.growl
+entity.wolf.hurt: entity.wolf.hurt
+entity.wolf.pant: entity.wolf.pant
+entity.wolf.whine: entity.wolf.whine
+entity.wolf_puglin.ambient: entity.wolf.ambient # fallback
+entity.wolf_puglin.death: entity.wolf.death # fallback
+entity.wolf_puglin.growl: entity.wolf.growl # fallback
+entity.wolf_puglin.hurt: entity.wolf.hurt # fallback
+entity.wolf_puglin.pant: entity.wolf.pant # fallback
+entity.wolf_puglin.whine: entity.wolf.whine # fallback
+entity.wolf_sad.ambient: entity.wolf.ambient # fallback
+entity.wolf_sad.death: entity.wolf.death # fallback
+entity.wolf_sad.growl: entity.wolf.growl # fallback
+entity.wolf_sad.hurt: entity.wolf.hurt # fallback
+entity.wolf_sad.pant: entity.wolf.pant # fallback
+entity.wolf_sad.whine: entity.wolf.whine # fallback
+entity.wolf_angry.ambient: entity.wolf.ambient # fallback
+entity.wolf_angry.death: entity.wolf.death # fallback
+entity.wolf_angry.growl: entity.wolf.growl # fallback
+entity.wolf_angry.hurt: entity.wolf.hurt # fallback
+entity.wolf_angry.pant: entity.wolf.pant # fallback
+entity.wolf_angry.whine: entity.wolf.whine # fallback
+entity.wolf_grumpy.ambient: entity.wolf.ambient # fallback
+entity.wolf_grumpy.death: entity.wolf.death # fallback
+entity.wolf_grumpy.growl: entity.wolf.growl # fallback
+entity.wolf_grumpy.hurt: entity.wolf.hurt # fallback
+entity.wolf_grumpy.pant: entity.wolf.pant # fallback
+entity.wolf_grumpy.whine: entity.wolf.whine # fallback
+entity.wolf_big.ambient: entity.wolf.ambient # fallback
+entity.wolf_big.death: entity.wolf.death # fallback
+entity.wolf_big.growl: entity.wolf.growl # fallback
+entity.wolf_big.hurt: entity.wolf.hurt # fallback
+entity.wolf_big.pant: entity.wolf.pant # fallback
+entity.wolf_big.whine: entity.wolf.whine # fallback
+entity.wolf_cute.ambient: entity.wolf.ambient # fallback
+entity.wolf_cute.death: entity.wolf.death # fallback
+entity.wolf_cute.growl: entity.wolf.growl # fallback
+entity.wolf_cute.hurt: entity.wolf.hurt # fallback
+entity.wolf_cute.pant: entity.wolf.pant # fallback
+entity.wolf_cute.whine: entity.wolf.whine # fallback
 block.wooden_door.close: block.wooden_door.close
 block.wooden_door.open: block.wooden_door.open
 block.wooden_trapdoor.close: block.wooden_trapdoor.close

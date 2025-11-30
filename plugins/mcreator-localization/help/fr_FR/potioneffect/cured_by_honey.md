@@ -1,0 +1,1 @@
+Si cette option est sélectionnée, cet effet de potion sera soigné après avoir consommé une bouteille de miel.

@@ -35,17 +35,10 @@ public class TextTrimBlock implements IBlockGenerator {
 
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			String elementcode = BlocklyToCode.directProcessOutputBlock(master, element);
 			if (master.getTemplateGenerator() != null) {
-				if (master.getTemplateGenerator().hasTemplate("_trim.java.ftl")) {
-					Map<String, Object> dataModel = new HashMap<>();
-					dataModel.put("value", elementcode);
-					master.append(master.getTemplateGenerator().generateFromTemplate("_trim.java.ftl", dataModel));
-				} else {
-					master.append("(");
-					master.processOutputBlockWithoutParentheses(element);
-					master.append(").strip()");
-				}
+				master.append("(");
+				master.processOutputBlockWithoutParentheses(element);
+				master.append(").strip()");
 			}
 		} else {
 			master.append("\"\"");

@@ -91,6 +91,23 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
 							VariableType type = VariableTypeLoader.INSTANCE.fromName((String) getValueAt(row, column));
+
+							// Handle 2nd column - variable scope
+							VariableType.Scope currentScope = (VariableType.Scope) getValueAt(row, 2);
+							VariableType.Scope[] supportedScopes = type.getSupportedScopesWithoutLocal(
+									workspacePanel.getMCreator().getGeneratorConfiguration());
+							boolean scopeSupported = false;
+							for (VariableType.Scope supportedScope : supportedScopes) {
+								if (supportedScope.equals(currentScope)) {
+									scopeSupported = true;
+									break;
+								}
+							}
+							if (!scopeSupported) { // if the new type doesn't support the current scope, set it to the first supported one
+								super.setValueAt(supportedScopes[0], row, 2);
+							}
+
+							// Handle 3rd column - initial value
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
