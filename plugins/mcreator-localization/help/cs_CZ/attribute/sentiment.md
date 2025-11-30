@@ -1,0 +1,1 @@
+Tento parametr určuje, zda by měl být atribut brán jako pozitivní, negativní nebo neutrální. Toto také ovlivňuje barvu modifikátorů atributu tohoto atributu.
