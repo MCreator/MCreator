@@ -72,6 +72,7 @@ import java.util.List;
 	public ClimatePoint genContinentalness;
 	public ClimatePoint genErosion;
 	public ClimatePoint genWeirdness;
+	public ClimatePoint genDepth;
 
 	public int treesPerChunk;
 	public String vanillaTreeType;
@@ -129,6 +130,7 @@ import java.util.List;
 		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
+		genDepth = new ClimatePoint(0.2, 0.9);
 	}
 
 	public boolean hasTrees() {

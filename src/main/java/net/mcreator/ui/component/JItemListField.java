@@ -415,8 +415,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				OK_ICON.paintIcon(this, g, 0, 0);
 			}
 
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
