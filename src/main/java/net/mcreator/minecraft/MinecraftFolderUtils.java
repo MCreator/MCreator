@@ -19,6 +19,8 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.io.OS;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -46,23 +48,38 @@ public class MinecraftFolderUtils {
 	}
 
 	public static File getBedrockEditionFolder() {
-		if (OS.getOS() == OS.WINDOWS) {
-			// try to check localappdata first
-			String localappdata = System.getenv("LOCALAPPDATA");
-			if (localappdata != null) {
-				File candidate = new File(
-						localappdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang/");
-				if (candidate.isDirectory())
-					return candidate;
-			}
+		if (OS.getOS() != OS.WINDOWS)
+			return null;
 
-			// then appdata first
-			String appdata = System.getenv("APPDATA");
-			if (appdata != null) {
-				File candidate = new File(
-						appdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang/");
-				if (candidate.isDirectory())
-					return candidate;
+		// we first check for the new launcher's folder
+		String appData = System.getenv("APPDATA");
+		if (appData == null)
+			return null;
+
+		File newLauncherFolder = new File(appData, "Minecraft Bedrock/Users/Shared/games/com.mojang/");
+		if (newLauncherFolder.exists() && newLauncherFolder.isDirectory())
+			return newLauncherFolder;
+
+		// Then, if the user doesn't have the new launcher, we try the old one
+		String localAppData = System.getenv("LOCALAPPDATA");
+		if (localAppData == null)
+			return null;
+
+		File packagesDir = new File(localAppData, "Packages");
+		if (!packagesDir.isDirectory())
+			return null;
+
+		File[] candidates = packagesDir.listFiles();
+		if (candidates == null)
+			return null;
+
+		for (File pkg : candidates) {
+			if (!pkg.isDirectory())
+				continue;
+
+			File worldFolder = new File(pkg, "LocalState/games/com.mojang");
+			if (worldFolder.isDirectory() && new File(worldFolder, "minecraftpe").isDirectory()) {
+				return worldFolder;
 			}
 		}
 

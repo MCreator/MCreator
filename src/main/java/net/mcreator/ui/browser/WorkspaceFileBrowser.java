@@ -25,6 +25,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.java.JavaReleaseInfo;
+import net.mcreator.java.ProjectJarManager;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
@@ -269,11 +271,13 @@ public class WorkspaceFileBrowser extends JPanel {
 				== GeneratorFlavor.BaseLanguage.JAVA)
 			loadExtSources(root);
 
-		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
-				&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-			FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
-			JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
-			root.add(minecraft);
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			File folder = MinecraftFolderUtils.getBedrockEditionFolder();
+			if (folder != null) {
+				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
+				JFileTree.addNodes(minecraft, folder, true);
+				root.add(minecraft);
+			}
 		}
 
 		mods.setRoot(root);
@@ -403,10 +407,18 @@ public class WorkspaceFileBrowser extends JPanel {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt") || libName.equals("java.base"))
-						libName = "Java " + System.getProperty("java.version") + " SDK";
-					else
+					if (libName.equals("rt") || libName.equals("java.base")) {
+						libName = "<" + JavaReleaseInfo.DEFAULT + ">";
+						ProjectJarManager projectJarManager = mcreator.getGenerator().getProjectJarManager();
+						if (projectJarManager != null) {
+							JavaReleaseInfo releaseInfo = projectJarManager.getJavaReleaseInfo();
+							if (releaseInfo != null) {
+								libName = "<Java SDK " + releaseInfo.version() + ">";
+							}
+						}
+					} else {
 						libName = "Gradle: " + libName;
+					}
 
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
@@ -419,7 +431,7 @@ public class WorkspaceFileBrowser extends JPanel {
 						}
 					}
 
-					// If source file is not found, add the library file itself
+					// If a source file is not found, add the library file itself
 					FileTree<Void> lib = new FileTree<>(new FileNode<>(libName, libraryFile.getAbsolutePath() + ":%:"));
 					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
 					JFileTree.addFileNodeToFilterTreeNode(extDeps, lib.root());
