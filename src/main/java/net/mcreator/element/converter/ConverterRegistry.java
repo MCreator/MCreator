@@ -202,8 +202,7 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new ItemOpenBoundGUIConverter(),
-			new ItemAttackSpeedConverter()
+			new ItemOpenBoundGUIConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),

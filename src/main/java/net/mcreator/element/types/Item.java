@@ -146,6 +146,8 @@ import java.util.*;
 		this.providedBannerPatterns = new ArrayList<>();
 
 		this.animations = new ArrayList<>();
+
+		this.attackSpeed = 1.6;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
