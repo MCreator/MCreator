@@ -44,7 +44,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SpecialEntity extends GeneratableElement implements ICommonType, ITabContainedElement, IMCItemProvider {
+@SuppressWarnings("unused") public class SpecialEntity extends GeneratableElement
+		implements ICommonType, ITabContainedElement, IMCItemProvider {
 
 	private static final Logger LOG = LogManager.getLogger(SpecialEntity.class);
 
@@ -54,6 +55,10 @@ public class SpecialEntity extends GeneratableElement implements ICommonType, IT
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+
+	private SpecialEntity() {
+		this(null);
+	}
 
 	public SpecialEntity(ModElement element) {
 		super(element);
