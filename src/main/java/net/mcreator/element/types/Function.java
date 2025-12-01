@@ -21,9 +21,13 @@ package net.mcreator.element.types;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-public class Function extends NamespacedGeneratableElement {
+@SuppressWarnings("unused") public class Function extends NamespacedGeneratableElement {
 
 	public String code;
+
+	private Function() {
+		this(null);
+	}
 
 	public Function(ModElement element) {
 		super(element);
