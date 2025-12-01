@@ -106,8 +106,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.generator.Generator)" class="member-name-link">ProjectJarManager</a><wbr>(<a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.generator.Generator,java.util.List)" class="member-name-link">ProjectJarManager</a><wbr>(<a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;&nbsp;classPathEntries)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.generator.Generator,java.util.List,java.io.File)" class="member-name-link">ProjectJarManager</a><wbr>(<a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;&nbsp;classPathEntries,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;javaHome)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
@@ -125,6 +126,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClasspath()" class="member-name-link">getClasspath</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getJavaHome()" class="member-name-link">getJavaHome</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JavaReleaseInfo.html" title="class in net.mcreator.java">JavaReleaseInfo</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getJavaReleaseInfo()" class="member-name-link">getJavaReleaseInfo</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -153,10 +160,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.generator.Generator,java.util.List)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.generator.Generator,java.util.List,java.io.File)">
 <h3>ProjectJarManager</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProjectJarManager</span><wbr><span class="parameters">(<a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;&nbsp;classPathEntries)</span>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;&nbsp;classPathEntries,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;javaHome)</span>
                   throws <span class="exceptions"><a href="../gradle/GradleCacheImportFailedException.html" title="class in net.mcreator.gradle">GradleCacheImportFailedException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>
@@ -176,6 +185,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getClasspath()">
 <h3>getClasspath</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../generator/GeneratorGradleCache.ClasspathEntry.html" title="class in net.mcreator.generator">GeneratorGradleCache.ClasspathEntry</a>&gt;</span>&nbsp;<span class="element-name">getClasspath</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getJavaHome()">
+<h3>getJavaHome</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getJavaHome</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getJavaReleaseInfo()">
+<h3>getJavaReleaseInfo</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JavaReleaseInfo.html" title="class in net.mcreator.java">JavaReleaseInfo</a></span>&nbsp;<span class="element-name">getJavaReleaseInfo</span>()</div>
 </section>
 </li>
 </ul>

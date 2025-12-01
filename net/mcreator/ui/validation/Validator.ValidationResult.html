@@ -89,10 +89,6 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../blockly/BlocklyValidationResult.html" title="class in net.mcreator.ui.blockly">BlocklyValidationResult</a></code></dd>
-</dl>
-<dl class="notes">
 <dt>Enclosing interface:</dt>
 <dd><code><a href="Validator.html" title="interface in net.mcreator.ui.validation">Validator</a></code></dd>
 </dl>
@@ -128,6 +124,10 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.Validator.ValidationResultType,java.lang.String)" class="member-name-link">ValidationResult</a><wbr>(<a href="Validator.ValidationResultType.html" title="enum class in net.mcreator.ui.validation">Validator.ValidationResultType</a>&nbsp;validationResultType,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.validation.Validator.ValidationResultType,java.lang.String,boolean)" class="member-name-link">ValidationResult</a><wbr>(<a href="Validator.ValidationResultType.html" title="enum class in net.mcreator.ui.validation">Validator.ValidationResultType</a>&nbsp;validationResultType,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message,
+ boolean&nbsp;isBlocklyResult)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -148,6 +148,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Validator.ValidationResultType.html" title="enum class in net.mcreator.ui.validation">Validator.ValidationResultType</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationResultType()" class="member-name-link">getValidationResultType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBlocklyResult()" class="member-name-link">isBlocklyResult</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -186,6 +189,14 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.validation.Validator.ValidationResultType,java.lang.String,boolean)">
+<h3>ValidationResult</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ValidationResult</span><wbr><span class="parameters">(<a href="Validator.ValidationResultType.html" title="enum class in net.mcreator.ui.validation">Validator.ValidationResultType</a>&nbsp;validationResultType,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message,
+ boolean&nbsp;isBlocklyResult)</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -204,6 +215,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMessage()">
 <h3>getMessage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMessage</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isBlocklyResult()">
+<h3>isBlocklyResult</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBlocklyResult</span>()</div>
 </section>
 </li>
 </ul>
