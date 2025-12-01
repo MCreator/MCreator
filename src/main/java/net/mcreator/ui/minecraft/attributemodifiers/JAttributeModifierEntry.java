@@ -51,16 +51,16 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/attribute"),
-				L10N.label("elementgui.potioneffect.attribute")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/attribute"),
+				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/amount"),
-				L10N.label("elementgui.potioneffect.amount")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
+				L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
 		line.add(amount);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/operation"),
-				L10N.label("elementgui.potioneffect.operation")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/operation"),
+				L10N.label("elementgui.common.attribute_modifier.operation")));
 		line.add(operation);
 
 	}
