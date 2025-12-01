@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
-import net.mcreator.element.types.PotionEffect;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 public class JAttributeModifierList
-		extends JSimpleEntriesList<JAttributeModifierEntry, PotionEffect.AttributeModifierEntry> {
+		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
 	public JAttributeModifierList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
