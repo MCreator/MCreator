@@ -27,6 +27,7 @@ import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -50,7 +51,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class ArmorPackMakerTool extends AbstractPackMakerTool {
 
@@ -121,26 +121,29 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
 			return;
 
+		String registryName = RegistryNameFixer.fromCamelCase(name);
+		String readableName = StringUtils.machineToReadableName(name);
+
 		// select folder the mod pack should be in
 		FolderElement folder = mcreator instanceof ModMaker modMaker ?
 				modMaker.getWorkspacePanel().currentFolder :
 				null;
 
 		// generate armor textures
-		ArmorImageMakerView.generateArmorImages(workspace, name.toLowerCase(Locale.ENGLISH), "Standard", color, true);
+		ArmorImageMakerView.generateArmorImages(workspace, registryName, "Standard", color, true);
 
 		// generate armor item
 		Armor armor = (Armor) ModElementType.ARMOR.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Armor", ModElementType.ARMOR), false).getElementFromGUI();
-		armor.helmetName = name + " Helmet";
-		armor.bodyName = name + " Chestplate";
-		armor.leggingsName = name + " Leggings";
-		armor.bootsName = name + " Boots";
-		armor.textureHelmet = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_head");
-		armor.textureBody = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_body");
-		armor.textureLeggings = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_leggings");
-		armor.textureBoots = new TextureHolder(workspace, name.toLowerCase(Locale.ENGLISH) + "_boots");
-		armor.armorTextureFile = name.toLowerCase(Locale.ENGLISH);
+		armor.helmetName = readableName + " Helmet";
+		armor.bodyName = readableName + " Chestplate";
+		armor.leggingsName = readableName + " Leggings";
+		armor.bootsName = readableName + " Boots";
+		armor.textureHelmet = new TextureHolder(workspace, registryName + "_head");
+		armor.textureBody = new TextureHolder(workspace, registryName + "_body");
+		armor.textureLeggings = new TextureHolder(workspace, registryName + "_leggings");
+		armor.textureBoots = new TextureHolder(workspace, registryName + "_boots");
+		armor.armorTextureFile = registryName;
 		armor.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
