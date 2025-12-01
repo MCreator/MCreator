@@ -135,8 +135,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final ValidationGroup page5group = new ValidationGroup();
 
 	private final JCheckBox enableMeleeDamage = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
+	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
+	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1.2, 0, 128000, 0.1));
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
