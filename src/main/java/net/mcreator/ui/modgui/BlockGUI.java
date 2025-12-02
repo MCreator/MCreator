@@ -47,7 +47,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
-import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
+import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -239,7 +239,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock, pottedPlantModel });
 
-	private JBlockPropertiesStatesList blockStates;
+	private JBlockStatePropertiesList blockStates;
 	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
 			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
@@ -419,7 +419,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
+		blockStates = new JBlockStatePropertiesList(mcreator, this, this::nonUserProvidedProperties);
 		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		animations = new JBlockEntityAnimationList(mcreator, this);
