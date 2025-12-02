@@ -109,11 +109,10 @@ public class TextureComboBox extends JPanel implements IValidable {
 	public TextureComboBox requireValue(String errorTranslationKey, Supplier<Boolean> validationCondition) {
 		comboBox.setValidator(() -> {
 			if (!validationCondition.get())
-				return Validator.ValidationResult.PASSED;
+				return ValidationResult.PASSED;
 			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t(errorTranslationKey));
-			return Validator.ValidationResult.PASSED;
+				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
+			return ValidationResult.PASSED;
 		});
 		return this;
 	}
