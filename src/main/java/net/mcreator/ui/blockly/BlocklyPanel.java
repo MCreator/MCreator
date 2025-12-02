@@ -143,8 +143,11 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
 							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
+							+ "'maxTrashcanSize' : " + PreferencesManager.PREFERENCES.blockly.maxTrashcanSize.get() + ","
+							+ "'rtlEditor' : " + PreferencesManager.PREFERENCES.blockly.rtlEditor.get() + ","
 							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
 							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
+							+ "'startScale' : " + PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0 + ","
 							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 							+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
 							+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
