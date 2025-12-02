@@ -34,8 +34,7 @@ public class BlocklySection extends PreferencesSection {
 	public final BooleanEntry enableComments;
 	public final BooleanEntry enableCollapse;
 	public final BooleanEntry enableTrashcan;
-	public final IntegerEntry maxTrashcanSize;
-	public final BooleanEntry rtlEditor;
+	public final IntegerEntry maxTrashContents;
 	public final IntegerEntry maxScale;
 	public final IntegerEntry minScale;
 	public final IntegerEntry startScale;
@@ -54,8 +53,7 @@ public class BlocklySection extends PreferencesSection {
 		enableComments = addEntry(new BooleanEntry("enableComments", true));
 		enableCollapse = addEntry(new BooleanEntry("enableCollapse", true));
 		enableTrashcan = addEntry(new BooleanEntry("enableTrashcan", true));
-		maxTrashcanSize = addEntry(new IntegerEntry("maxTrashcanSize", 32, 1, 100));
-		rtlEditor = addEntry(new BooleanEntry("rtlEditor", false));
+		maxTrashContents = addEntry(new IntegerEntry("maxTrashContents", 32, 1, 100));
 		maxScale = addEntry(new IntegerEntry("maxScale", 100, 95, 200));
 		minScale = addEntry(new IntegerEntry("minScale", 40, 20, 95));
 		startScale = addEntry(new IntegerEntry("startScale", 95, 20, 200));
