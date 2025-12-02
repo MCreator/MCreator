@@ -27,7 +27,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.WorkspaceFolderManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -130,21 +130,20 @@ public abstract class AbstractWorkspacePanel {
 
 			if (selectedFile.getAbsolutePath()
 					.equals(WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath())) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("dialog.file.error_save_inside_workspace_root_message"));
 			} else if (selectedFile.isDirectory() && selectedFile.list() != null
 					&& Objects.requireNonNull(selectedFile.list()).length > 0) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("dialog.file.error_save_inside_folder_not_empty_message"));
 			} else if (!workspaceFolder.getText().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("dialog.new_workspace.letters_valid"));
+				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("dialog.new_workspace.letters_valid"));
 			} else if (selectedFile.getName().contains(" ") || selectedFile.getName().contains(":")
 					|| selectedFile.getName().contains("\\") || selectedFile.getName().contains("/")
 					|| selectedFile.getName().contains("|") || selectedFile.getName().contains("\"")
 					|| selectedFile.getName().contains("?") || selectedFile.getName().contains("*")
 					|| selectedFile.getName().contains(">")) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("dialog.new_workspace.valid_characters"));
 			} else if (!selectedFile.getParentFile().isDirectory()) {
 				try {
@@ -153,16 +152,16 @@ public abstract class AbstractWorkspacePanel {
 						throw new IOException();
 					}
 				} catch (IOException e) {
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("dialog.file.error_directory_doesnt_exist"));
 				}
 			} else if (!Files.isWritable(selectedFile.getParentFile().toPath()) || !Files.isReadable(
 					selectedFile.getParentFile().toPath())) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("dialog.new_workspace.file_permission_problem"));
 			}
 
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 
 		workspaceDialogPanel.setFlavorFilter(generatorFlavor);

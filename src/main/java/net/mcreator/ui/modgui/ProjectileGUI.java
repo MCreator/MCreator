@@ -37,7 +37,7 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -178,9 +178,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
 				if (!customModelTexture.hasTexture())
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("elementgui.projectile.error_custom_model_needs_texture"));
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 
 		page1group.addValidationElement(projectileItem);

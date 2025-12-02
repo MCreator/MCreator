@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +19,28 @@
 
 package net.mcreator.ui.validation;
 
-public interface Validator {
+import java.awt.*;
 
-	default ValidationResult validateIfEnabled(IValidable validable) {
-		if (!validable.isEnabled())
-			return ValidationResult.PASSED;
+public record ValidationResult(Type type, String message, boolean isBlocklyResult) {
 
-		return this.validate();
+	public static final ValidationResult PASSED = new ValidationResult(Type.PASSED, "");
+
+	public ValidationResult(Type type, String message) {
+		this(type, message, false);
 	}
 
-	ValidationResult validate();
+	public enum Type {
 
+		PASSED(new Color(0x93c54b)), WARNING(new Color(0xf0c948)), ERROR(new Color(0xc43b39));
+
+		private final Color color;
+
+		Type(Color color) {
+			this.color = color;
+		}
+
+		public Color getColor() {
+			return color;
+		}
+	}
 }

@@ -31,6 +31,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -58,9 +59,9 @@ public class JJigsawPart extends JPanel implements IValidable {
 
 		structureSelector.setValidator(() -> {
 			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("elementgui.structuregen.error_select_structure_spawn"));
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 		ComponentUtils.deriveFont(structureSelector, 16);
 		reloadDataLists();
@@ -134,7 +135,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		ignoreBlocks.setListElements(part.ignoredBlocks);
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
+	@Override public ValidationResult getValidationStatus() {
 		return structureSelector.getValidationStatus();
 	}
 
