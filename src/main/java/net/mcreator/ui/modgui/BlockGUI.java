@@ -54,7 +54,7 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -1421,7 +1421,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
 				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
-					return Validator.ValidationResult.PASSED;
+					return ValidationResult.PASSED;
 				return super.validate();
 			}
 		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));

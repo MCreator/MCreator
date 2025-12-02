@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class Painting extends GeneratableElement {
+@SuppressWarnings("unused") public class Painting extends GeneratableElement {
 
 	private static final Logger LOG = LogManager.getLogger(Painting.class);
 
@@ -40,6 +40,10 @@ public class Painting extends GeneratableElement {
 	public int height;
 	public String title;
 	public String author;
+
+	private Painting() {
+		this(null);
+	}
 
 	public Painting(ModElement element) {
 		super(element);

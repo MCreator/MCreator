@@ -37,7 +37,7 @@ import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -179,7 +179,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private List<PropertyData<?>> getPropertiesList() {
 		List<PropertyData<?>> props = new ArrayList<>();
 		for (JItemPropertiesListEntry entry : propertiesList) {
-			if (entry.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.PASSED)
+			if (entry.getValidationStatus().type() != ValidationResult.Type.PASSED)
 				return null; // indicates that some property names are not defined correctly
 
 			props.add(entry.toPropertyData());

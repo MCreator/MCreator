@@ -54,7 +54,7 @@ public class TextureImportDialogs {
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 		if (n >= 0) {
-			return saveTextures(mcreator, options[n], new File[] { file }).get(0);
+			return saveTextures(mcreator, options[n], new File[] { file }).getFirst();
 		}
 		return null;
 	}
@@ -76,19 +76,31 @@ public class TextureImportDialogs {
 
 		p1.addActionListener(event -> {
 			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 1 texture files", "*_layer_1.png"));
+					new FileChooser.ExtensionFilter("Armor layer 1 texture files (*_layer_1.png)", "*.png"));
 			if (f1a != null && f1a.length > 0) {
-				f1.set(f1a[0]);
-				p1.setText(FilenameUtilsPatched.removeExtension(f1.get().getName()));
+				String name = f1a[0].getName().toLowerCase(Locale.ENGLISH);
+				if (name.endsWith("_layer_1.png") && !name.equals("_layer_1.png")) {
+					f1.set(f1a[0]);
+					p1.setText(FilenameUtilsPatched.removeExtension(name));
+				} else {
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.textures_import.armor_name_error"),
+							L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
 		p2.addActionListener(event -> {
 			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 2 texture files", "*_layer_2.png"));
+					new FileChooser.ExtensionFilter("Armor layer 2 texture files (*_layer_2.png)", "*.png"));
 			if (f2a != null && f2a.length > 0) {
-				f2.set(f2a[0]);
-				p2.setText(FilenameUtilsPatched.removeExtension(f2.get().getName()));
+				String name = f2a[0].getName().toLowerCase(Locale.ENGLISH);
+				if (name.endsWith("_layer_2.png") && !name.equals("_layer_2.png")) {
+					f2.set(f2a[0]);
+					p2.setText(FilenameUtilsPatched.removeExtension(name));
+				} else {
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.textures_import.armor_name_error"),
+							L10N.t("dialog.textures_import.error_texture_import_title"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 

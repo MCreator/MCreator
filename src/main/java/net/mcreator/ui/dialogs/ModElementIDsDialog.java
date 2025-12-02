@@ -24,7 +24,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -77,8 +77,8 @@ public class ModElementIDsDialog {
 
 			// check if registry name has been changed
 			if (!registryName.getText().equals(modElement.getRegistryName())) {
-				if (registryName.getValidationStatus().getValidationResultType()
-						== Validator.ValidationResultType.ERROR) { // if invalid registry name
+				if (registryName.getValidationStatus().type()
+						== ValidationResult.Type.ERROR) { // if invalid registry name
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.modelement_id.invalid_registry_name"),
 							L10N.t("dialog.modelement_id.invalid_registry_name_title"), JOptionPane.ERROR_MESSAGE);
 					return null;

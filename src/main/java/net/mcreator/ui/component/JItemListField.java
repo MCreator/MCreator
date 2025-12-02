@@ -32,6 +32,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -68,7 +69,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 
 	private final DefaultListModel<T> elementsListModel = new DefaultListModel<>();
 
@@ -321,11 +322,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	protected List<T> getExternalElementsToAdd() {
 		String element = VOptionPane.showInputDialog(mcreator, L10N.t("itemlistfield.addexternal.message"),
 				L10N.t("itemlistfield.addexternal.title"), null, new OptionPaneValidator() {
-					@Override public Validator.ValidationResult validate(JComponent component) {
+					@Override public ValidationResult validate(JComponent component) {
 						String text = ((VTextField) component).getText();
 						if (!text.contains(":") || text.startsWith("minecraft:") || text.startsWith("mod:")
 								|| text.startsWith(mcreator.getWorkspaceSettings().getModID() + ":")) {
-							return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+							return new ValidationResult(ValidationResult.Type.ERROR,
 									L10N.t("itemlistfield.addexternal.entry.error"));
 						}
 						return new ResourceLocationValidator<>(L10N.t("itemlistfield.addexternal.entry"),
@@ -406,23 +407,23 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
-			g.setColor(currentValidationResult.getValidationResultType().getColor());
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			g.setColor(currentValidationResult.type().getColor());
+			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
 				WARNING_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
 				ERROR_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED) {
+			} else if (currentValidationResult.type() == ValidationResult.Type.PASSED) {
 				OK_ICON.paintIcon(this, g, 0, 0);
 			}
 
-			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
+			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 

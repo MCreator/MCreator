@@ -22,7 +22,7 @@ package net.mcreator.ui.blockly;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -42,8 +42,8 @@ public class BlocklyAggregatedValidationResult extends AggregatedValidationResul
 		this.messageFormatter = messageFormatter;
 	}
 
-	@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
-		return compileNotes.stream().map(note -> new Validator.ValidationResult(note.getValidationResultType(),
+	@Override public List<ValidationResult> getGroupedValidationResults() {
+		return compileNotes.stream().map(note -> new ValidationResult(note.getValidationResultType(),
 						messageFormatter != null ? messageFormatter.apply(note.message()) : note.message(), true))
 				.collect(Collectors.toList());
 	}

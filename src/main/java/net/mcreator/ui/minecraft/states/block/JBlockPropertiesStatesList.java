@@ -32,7 +32,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -123,10 +123,10 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 		propertiesCap.setValue(cappedPropertyCombinations);
 
 		if (cappedPropertyCombinations < MAX_PROPERTY_COMBINATIONS * 0.5) {
-			propertiesCap.setForeground(Validator.ValidationResultType.PASSED.getColor());
+			propertiesCap.setForeground(ValidationResult.Type.PASSED.getColor());
 		} else { // blend color between warn and error
-			Color warn = Validator.ValidationResultType.WARNING.getColor();
-			Color error = Validator.ValidationResultType.ERROR.getColor();
+			Color warn = ValidationResult.Type.WARNING.getColor();
+			Color error = ValidationResult.Type.ERROR.getColor();
 			float blend = (cappedPropertyCombinations - MAX_PROPERTY_COMBINATIONS * 0.5f) / (MAX_PROPERTY_COMBINATIONS
 					* 0.5f);
 			propertiesCap.setForeground(new Color((int) (warn.getRed() + blend * (error.getRed() - warn.getRed())),
@@ -201,7 +201,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 			if (nonUserProvidedProperties.get()
 					.contains(BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Validator.ValidationResultType.ERROR.getColor(), 1),
+						BorderFactory.createLineBorder(ValidationResult.Type.ERROR.getColor(), 1),
 						BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 				validationResult = new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.block.custom_properties.error_overrides_provided"));
