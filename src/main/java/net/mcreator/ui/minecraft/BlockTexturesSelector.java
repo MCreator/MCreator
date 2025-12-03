@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.workspace.resources.TextureType;
 
@@ -162,7 +163,7 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		return textureBack.getTextureHolder();
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
+	@Override public ValidationResult getValidationStatus() {
 		return texture.getValidationStatus();
 	}
 
@@ -171,6 +172,17 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 
 	@Override public Validator getValidator() {
 		return texture.getValidator();
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		texture.setEnabled(enabled);
+		textureTop.setEnabled(enabled);
+		textureLeft.setEnabled(enabled);
+		textureFront.setEnabled(enabled);
+		textureRight.setEnabled(enabled);
+		textureBack.setEnabled(enabled);
 	}
 
 	public enum TextureFormat {

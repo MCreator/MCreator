@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -422,19 +423,19 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
-						@Override public Validator.ValidationResult validate(JComponent component) {
+						@Override public ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
 								if (variableName.equals(nameinrow))
-									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+									return new ValidationResult(ValidationResult.Type.ERROR,
 											L10N.t("common.name_already_exists"));
 							}
 							for (Dependency dependency : dependenciesArrayList) {
 								String nameinrow = dependency.getName();
 								if (variableName.equals(nameinrow))
-									return new ValidationResult(ValidationResultType.ERROR,
+									return new ValidationResult(ValidationResult.Type.ERROR,
 											L10N.t("elementgui.procedure.name_already_exists_dep"));
 							}
 							return validator.validate();

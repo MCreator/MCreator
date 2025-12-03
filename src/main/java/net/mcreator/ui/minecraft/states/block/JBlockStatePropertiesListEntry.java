@@ -37,7 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class JBlockPropertiesListEntry extends JPanel {
+public class JBlockStatePropertiesListEntry extends JPanel {
 
 	private final MCreator mcreator;
 	private PropertyData<?> data;
@@ -49,8 +49,8 @@ public class JBlockPropertiesListEntry extends JPanel {
 	private final JPanel defaultValuePane = new JPanel(new BorderLayout(0, 0));
 	private JComponent defaultValue;
 
-	public JBlockPropertiesListEntry(JBlockPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
-			List<JBlockPropertiesListEntry> propertiesList) {
+	public JBlockStatePropertiesListEntry(JBlockStatePropertiesList listPanel, IHelpContext gui, JPanel propertyEntries,
+			List<JBlockStatePropertiesListEntry> propertiesList) {
 		super(new BorderLayout(20, 5));
 		this.mcreator = listPanel.getMCreator();
 

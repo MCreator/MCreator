@@ -25,7 +25,7 @@ import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.workspace.elements.ModElement;
 
-public class ItemExtension extends GeneratableElement {
+@SuppressWarnings("unused") public class ItemExtension extends GeneratableElement {
 
 	public MItemBlock item;
 
@@ -38,6 +38,10 @@ public class ItemExtension extends GeneratableElement {
 	public Procedure dispenseResultItemstack;
 
 	public double compostLayerChance;
+
+	private ItemExtension() {
+		this(null);
+	}
 
 	public ItemExtension(ModElement element) {
 		super(element);
