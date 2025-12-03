@@ -92,7 +92,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			}
 		});
 
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
 
 	@Override public void reloadDataLists() {
