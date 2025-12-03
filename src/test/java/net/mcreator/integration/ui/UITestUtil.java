@@ -25,7 +25,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,8 +79,8 @@ public class UITestUtil {
 		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
 
 		boolean hasErrors = false;
-		for (Validator.ValidationResult result : validationResult.getGroupedValidationResults()) {
-			if (result.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+		for (ValidationResult result : validationResult.getGroupedValidationResults()) {
+			if (result.type() == ValidationResult.Type.ERROR) {
 				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
 					if (result.isBlocklyResult()) {
 						// skip Blockly validation in case it is marked that initial XML in the editor is not valid

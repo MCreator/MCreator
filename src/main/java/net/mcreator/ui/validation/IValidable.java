@@ -20,7 +20,7 @@ package net.mcreator.ui.validation;
 
 public interface IValidable {
 
-	Validator.ValidationResult getValidationStatus();
+	ValidationResult getValidationStatus();
 
 	void setValidator(Validator validator);
 

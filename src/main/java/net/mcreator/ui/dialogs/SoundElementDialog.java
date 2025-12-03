@@ -24,7 +24,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.FileListField;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -92,7 +92,7 @@ public class SoundElementDialog {
 				element != null ? "Save changes" : "Add sound");
 
 		if (option == 0) {
-			if (soundName.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
 						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
 				return element;

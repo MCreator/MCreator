@@ -38,7 +38,8 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Collections;
 
-public class Projectile extends GeneratableElement implements IEntityWithModel, ICommonType {
+@SuppressWarnings("unused") public class Projectile extends GeneratableElement
+		implements IEntityWithModel, ICommonType {
 
 	public MItemBlock projectileItem;
 	public boolean showParticles;
