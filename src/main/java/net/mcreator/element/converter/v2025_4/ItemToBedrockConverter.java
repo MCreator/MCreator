@@ -43,15 +43,14 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.name = item.name;
 			beitem.stackSize = item.stackSize;
 			beitem.useDuration = item.useDuration;
-			beitem.damageCount = item.damageCount;
+			beitem.maxDurability = item.damageCount;
 			beitem.enableMeleeDamage = item.enableMeleeDamage;
 			beitem.damageVsEntity = item.damageVsEntity;
-			beitem.isGlowing = item.glowCondition.getFixedValue();
+			beitem.hasGlint = item.glowCondition.getFixedValue();
 			beitem.isFood = item.isFood;
-			beitem.nutritionalValue = item.nutritionalValue;
-			beitem.saturation = item.saturation;
-			beitem.isMeat = item.isMeat;
-			beitem.isAlwaysEdible = item.isAlwaysEdible;
+			beitem.foodNutritionalValue = item.nutritionalValue;
+			beitem.foodSaturation = item.saturation;
+			beitem.foodCanAlwaysEat = item.isAlwaysEdible;
 
 			workspace.removeModElement(item.getModElement());
 			workspace.getModElementManager().invalidateCache();

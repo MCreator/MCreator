@@ -38,22 +38,20 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	public String name;
 	public int stackSize;
-	public int useDuration;
-	public int damageCount;
+	public double useDuration;
+	public int maxDurability;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
-	public boolean isGlowing;
+	public boolean hasGlint;
 
 	// Food
 	public boolean isFood;
-	public int nutritionalValue;
-	public double saturation;
-	public boolean isMeat;
-	public boolean isAlwaysEdible;
+	public int foodNutritionalValue;
+	public double foodSaturation;
+	public boolean foodCanAlwaysEat;
 
 	public BEItem(ModElement element) {
 		super(element);
-		this.saturation = 0.3f;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

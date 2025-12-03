@@ -60,6 +60,7 @@ import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
+import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
 
@@ -234,9 +235,6 @@ public class ConverterRegistry {
 		put("musicdisc", new MusicDiscToItemConverter());
 	}};
 
-	public static final Set<String> addonsOldMETs = new HashSet<>() {{
-		add(ModElementType.ITEM.getRegistryName());
-	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
@@ -246,8 +244,22 @@ public class ConverterRegistry {
 		return converters_legacy.get(modElementType);
 	}
 
-	public static Set<String> getConvertibleModElementTypes() {
-		return converters_legacy.keySet();
+	/**
+	 * <p>Here we add all the ModElementTypes previously used by the Bedrock Generator.
+	 * This way, we can apply the converter to those mod elements without blocking the opening of the workspace.</p>
+	 */
+	private static final Set<ModElementType<?>> ADDONS_OLD_METS = new HashSet<>() {{
+		add(ModElementType.ITEM);
+	}};
+
+	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
+		Set<String> convertibleMETs = new HashSet<>(converters_legacy.keySet());
+
+		if (generatorFlavor == GeneratorFlavor.ADDON) {
+			ADDONS_OLD_METS.stream().map(ModElementType::getRegistryName).forEach(convertibleMETs::add);
+		}
+
+		return convertibleMETs;
 	}
 
 }

@@ -71,9 +71,7 @@ public class WorkspaceUtils {
 				.collect(Collectors.toSet());
 		Set<String> generatorSupportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()
 				.stream().map(ModElementType::getRegistryName).collect(Collectors.toSet());
-		generatorSupportedMETs.addAll(ConverterRegistry.getConvertibleModElementTypes());
-		if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.ADDON)
-			generatorSupportedMETs.addAll(ConverterRegistry.addonsOldMETs);
+		generatorSupportedMETs.addAll(ConverterRegistry.getConvertibleModElementTypes(generatorConfiguration.getGeneratorFlavor()));
 		Set<String> missingMETs = workspaceRequiredMETs.stream().filter(e -> !generatorSupportedMETs.contains(e))
 				.collect(Collectors.toSet());
 		if (!missingMETs.isEmpty())

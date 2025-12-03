@@ -23,6 +23,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
+import net.mcreator.ui.modgui.bedrock.BEItemGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;

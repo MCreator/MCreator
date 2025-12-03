@@ -1703,14 +1703,13 @@ public class TestWorkspaceDataProvider {
 			beitem.name = modElement.getName();
 			beitem.stackSize = 52;
 			beitem.useDuration = 8;
-			beitem.damageCount = 4;
+			beitem.maxDurability = 4;
 			beitem.enableMeleeDamage = !_true;
 			beitem.damageVsEntity = 6.53;
 			beitem.isFood = _true;
-			beitem.nutritionalValue = 5;
-			beitem.saturation = 0.82;
-			beitem.isMeat = _true;
-			beitem.isAlwaysEdible = _true;
+			beitem.foodNutritionalValue = 5;
+			beitem.foodSaturation = 0.82;
+			beitem.foodCanAlwaysEat = _true;
 			return beitem;
 		}
 		return null;
