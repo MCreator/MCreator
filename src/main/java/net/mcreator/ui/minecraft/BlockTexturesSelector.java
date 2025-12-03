@@ -174,6 +174,17 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		return texture.getValidator();
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		texture.setEnabled(enabled);
+		textureTop.setEnabled(enabled);
+		textureLeft.setEnabled(enabled);
+		textureFront.setEnabled(enabled);
+		textureRight.setEnabled(enabled);
+		textureBack.setEnabled(enabled);
+	}
+
 	public enum TextureFormat {
 		ALL, SINGLE_TEXTURE, TOP_BOTTOM, TOP_BOTTOM_SIDES, GRASS
 	}
