@@ -14,8 +14,8 @@
       "minecraft:max_stack_size": ${data.stackSize},
       "minecraft:durability": {
         "max_durability": ${data.maxDurability}
-      },
-      <#if data.isFood>
+      }
+      <#if data.isFood>,
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration}
       },
