@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.element.types.BEItem;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -117,7 +117,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.basic_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				L10N.t("elementgui.common.page_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 
 		JPanel foodProperties = new JPanel(new GridLayout(5, 2, 65, 5));

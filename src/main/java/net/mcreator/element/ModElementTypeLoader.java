@@ -20,6 +20,7 @@
 package net.mcreator.element;
 
 import net.mcreator.element.types.*;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
 
@@ -75,8 +76,8 @@ public class ModElementTypeLoader {
 		ModElementType.VILLAGERPROFESSION = register(new ModElementType<>("villagerprofession", null, VillagerProfessionGUI::new, VillagerProfession.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, VillagerTradeGUI::new, VillagerTrade.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 
-		// Bedrock specific METs
-		ModElementType.BEITEM = register(new ModElementType<>("beitem", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
+		// Bedrock-specific METs
+		ModElementType.BEITEM = register(new ModElementType<>("beitem", "item", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 
 		// Unregistered type used to mask legacy removed mod element types
 		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (mc, me, e) -> null, GeneratableElement.Unknown.class);

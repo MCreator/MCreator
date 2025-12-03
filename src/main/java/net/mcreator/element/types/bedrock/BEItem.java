@@ -17,10 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types;
+package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -29,12 +28,9 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
-import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
 

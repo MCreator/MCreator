@@ -178,7 +178,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> VILLAGERPROFESSION;
 	public static ModElementType<?> VILLAGERTRADE;
 
-	// Bedrock specific METS
+	// Bedrock-specific METS
 	public static ModElementType<?> BEITEM;
 
 	public static ModElementType<?> UNKNOWN;
