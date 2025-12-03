@@ -49,6 +49,7 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
+import net.mcreator.ui.minecraft.states.block.JBlockStatesListEntry;
 import net.mcreator.ui.modgui.BlockGUI;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
@@ -2187,6 +2188,37 @@ public class TestWorkspaceDataProvider {
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
 		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
 				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
+		block.states = new ArrayList<>();
+		if (!emptyLists) {
+			int size2 = random.nextInt(4) + 1;
+			for (int i = 0; i < size2; i++) {
+				StateMap stateMap = new StateMap();
+
+				for (PropertyDataWithValue<?> property : block.customProperties) {
+					if (random.nextBoolean()) {
+						if (property.property() instanceof PropertyData.IntegerType) {
+							stateMap.put(property.property(), random.nextInt(1, 10));
+						} else if (property.property() instanceof PropertyData.LogicType) {
+							stateMap.put(property.property(), random.nextBoolean());
+						}
+					}
+				}
+
+				Block.StateEntry stateEntry = new Block.StateEntry();
+				stateEntry.setWorkspace(modElement.getWorkspace());
+				stateEntry.customModelName = "Normal";
+				stateEntry.texture = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureTop = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureBack = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureLeft = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureFront = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureRight = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.renderType = 10;
+				stateEntry.stateMap = stateMap;
+
+				block.states.add(stateEntry);
+			}
+		}
 		return block;
 	}
 
