@@ -40,7 +40,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
-	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01));
+	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
 
