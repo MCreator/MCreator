@@ -36,8 +36,11 @@ import java.util.Set;
 public class JAttributeModifierList
 		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
-	public JAttributeModifierList(MCreator mcreator, IHelpContext gui) {
+	boolean isPotionEffectList;
+
+	public JAttributeModifierList(MCreator mcreator, IHelpContext gui, boolean isPotionEffectList) {
 		super(mcreator, gui);
+		this.isPotionEffectList = isPotionEffectList;
 
 		add.setText(L10N.t("elementgui.common.attribute_modifier.add_modifier_entry"));
 
@@ -50,17 +53,20 @@ public class JAttributeModifierList
 	@Override
 	protected JAttributeModifierEntry newEntry(JPanel parent, List<JAttributeModifierEntry> entryList,
 			boolean userAction) {
-		return new JAttributeModifierEntry(mcreator, gui, parent, entryList);
+		return new JAttributeModifierEntry(mcreator, gui, parent, entryList, isPotionEffectList);
 	}
 
 	public AggregatedValidationResult getValidationResult() {
-		Set<AttributeEntry> usedAttributes = new HashSet<>();
-		for (var entry : entryList) {
-			if (usedAttributes.contains(entry.getEntry().attribute)) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.common.attribute_modifier.error_attributes_must_be_unique"));
+		// Prevent duplicate attribute types only for potion effects
+		if (isPotionEffectList) {
+			Set<AttributeEntry> usedAttributes = new HashSet<>();
+			for (var entry : entryList) {
+				if (usedAttributes.contains(entry.getEntry().attribute)) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.common.attribute_modifier.error_attributes_must_be_unique"));
+				}
+				usedAttributes.add(entry.getEntry().attribute);
 			}
-			usedAttributes.add(entry.getEntry().attribute);
 		}
 		return new AggregatedValidationResult.PASS();
 	}
