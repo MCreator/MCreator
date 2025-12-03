@@ -235,7 +235,6 @@ public class ConverterRegistry {
 		put("musicdisc", new MusicDiscToItemConverter());
 	}};
 
-
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
 		return converters.get(modElementType);
 	}
