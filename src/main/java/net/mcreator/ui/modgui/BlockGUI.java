@@ -1485,14 +1485,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	 * @return List of supported custom properties and non-user-provided properties for use with block states
 	 */
 	private List<PropertyData<?>> propertiesForBlockBases() {
-		List<PropertyData<?>> properties = new ArrayList<>();
-		for (PropertyDataWithValue<?> customProperty : statePropertiesList.getProperties()) {
-			// Currently, we only support logic and integer properties
-			if (customProperty.property() instanceof PropertyData.LogicType
-					|| customProperty.property() instanceof PropertyData.IntegerType) {
-				properties.add(customProperty.property());
-			}
-		}
+		List<PropertyData<?>> properties = statePropertiesList.getProperties().stream()
+				.map(PropertyDataWithValue::property).collect(Collectors.toList());
 		if (isWaterloggable.isSelected()) {
 			properties.add(new PropertyData.LogicType("waterlogged"));
 		}
