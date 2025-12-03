@@ -1709,6 +1709,7 @@ public class TestWorkspaceDataProvider {
 			beitem.isFood = _true;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
+			beitem.foodIsMeat = _true;
 			beitem.foodCanAlwaysEat = _true;
 			return beitem;
 		}

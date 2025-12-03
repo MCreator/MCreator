@@ -50,15 +50,8 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.isFood = item.isFood;
 			beitem.foodNutritionalValue = item.nutritionalValue;
 			beitem.foodSaturation = item.saturation;
+			beitem.foodIsMeat = item.isMeat;
 			beitem.foodCanAlwaysEat = item.isAlwaysEdible;
-
-			workspace.removeModElement(item.getModElement());
-			workspace.getModElementManager().invalidateCache();
-
-			workspace.getModElementManager().storeModElementPicture(beitem);
-			workspace.addModElement(beitem.getModElement());
-			workspace.getGenerator().generateElement(beitem);
-			workspace.getModElementManager().storeModElement(beitem);
 
 			return beitem;
 

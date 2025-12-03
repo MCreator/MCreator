@@ -59,7 +59,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
 	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JCheckBox foodIsMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
+
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -88,9 +90,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		hasGlint.setOpaque(false);
 
 		visualsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), visualProperties)));
+				PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), visualProperties)));
 
-		JPanel basicProperties = new JPanel(new GridLayout(4, 2, 65, 5));
+		JPanel basicProperties = new JPanel(new GridLayout(10, 2, 65, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -113,17 +115,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.number_of_uses")));
 		basicProperties.add(maxDurability);
 
-		basicProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.page_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-
-		JPanel foodProperties = new JPanel(new GridLayout(5, 2, 65, 5));
-		foodProperties.setOpaque(false);
-
-		foodProperties.add(
+		basicProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
-		foodProperties.add(isFood);
+		basicProperties.add(isFood);
 		isFood.addActionListener(e -> {
 			updateFoodPanel();
 			if (!isEditingMode()) {
@@ -133,33 +127,31 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		updateFoodPanel();
 		isFood.setOpaque(false);
 
-		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
 				L10N.label("elementgui.item.nutritional_value")));
-		foodProperties.add(foodNutritionalValue);
+		basicProperties.add(foodNutritionalValue);
 		foodNutritionalValue.setOpaque(false);
 
-		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
 				L10N.label("elementgui.item.saturation")));
-		foodProperties.add(foodSaturation);
+		basicProperties.add(foodSaturation);
 		foodSaturation.setOpaque(false);
 
-		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
+		basicProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"), L10N.label("elementgui.item.is_meat")));
+		basicProperties.add(foodIsMeat);
+		foodIsMeat.setOpaque(false);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
-		foodProperties.add(foodCanAlwaysEat);
+		basicProperties.add(foodCanAlwaysEat);
 		foodCanAlwaysEat.setOpaque(false);
 
-		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/use_duration"),
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/use_duration"),
 				L10N.label("elementgui.beitem.use_duration")));
-		foodProperties.add(useDuration);
+		basicProperties.add(useDuration);
 
-		foodProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(basicProperties),
-						PanelUtils.pullElementUp(foodProperties))));
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 
 		page1group.addValidationElement(texture);
 
@@ -171,11 +163,13 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		if (isFood.isSelected()) {
 			foodNutritionalValue.setEnabled(true);
 			foodSaturation.setEnabled(true);
+			foodIsMeat.setEnabled(true);
 			foodCanAlwaysEat.setEnabled(true);
 			useDuration.setEnabled(true);
 		} else {
 			foodNutritionalValue.setEnabled(false);
 			foodSaturation.setEnabled(false);
+			foodIsMeat.setEnabled(false);
 			foodCanAlwaysEat.setEnabled(false);
 			useDuration.setEnabled(false);
 		}
@@ -195,6 +189,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		isFood.setSelected(item.isFood);
+		foodIsMeat.setSelected(item.foodIsMeat);
 		foodCanAlwaysEat.setSelected(item.foodCanAlwaysEat);
 		foodNutritionalValue.setValue(item.foodNutritionalValue);
 		foodSaturation.setValue(item.foodSaturation);
@@ -217,6 +212,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.isFood = isFood.isSelected();
 		item.foodNutritionalValue = (int) foodNutritionalValue.getValue();
 		item.foodSaturation = (double) foodSaturation.getValue();
+		item.foodIsMeat = foodIsMeat.isSelected();
 		item.foodCanAlwaysEat = foodCanAlwaysEat.isSelected();
 
 		return item;

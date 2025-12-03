@@ -2,7 +2,10 @@ templates:
   - template: item.json.ftl
     writer: json
     name: "@SRCROOT/items/@registryname.json"
+  - template: resourcepack/item.json.ftl
+    writer: json
+    name: "@RESROOT/items/@registryname.json"
 
 localizationkeys:
-  - key: item.@modid:@registryname
+  - key: item.@modid:@registryname.name
     mapto: name

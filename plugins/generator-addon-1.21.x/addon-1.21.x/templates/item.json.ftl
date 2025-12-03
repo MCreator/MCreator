@@ -1,36 +1,28 @@
 <#-- @formatter:off -->
 {
-  "format_version": "1.21.50",
+  "format_version": "1.12",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
-      "menu_category": {
-      	category: "items"
-      }
+      "register_to_creative_menu": true,
+      "is_experimental": false
     },
+
     "components": {
-      "minecraft:icon": "${registryname}",
-      "minecraft:glint": ${data.hasGlint},
+      "minecraft:foil": ${data.hasGlint},
       "minecraft:max_stack_size": ${data.stackSize},
-      "minecraft:durability": {
-        "max_durability": ${data.maxDurability}
-      }
-      <#if data.isFood>,
-      "minecraft:use_modifiers": {
-      	"use_duration": ${data.useDuration}
-      },
+      "minecraft:max_damage": ${data.maxDurability},
+      <#if data.isFood>
+      "minecraft:use_duration": ${data.useDuration},
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
-        "saturation_modifier": ${data.foodSaturation},
-        "can_always_eat": ${data.foodCanAlwaysEat}
+        "nutritionalValue": "${thelper.mapToString(data.foodSaturation, 0, 1.2, "poor", "low", "normal", "good", "high", "supernatural")}",
+        "saturation_modifier": "low",
+        "can_always_eat": ${data.foodCanAlwaysEat},
+        "is_meat": ${data.foodIsMeat}
       },
-      "minecraft:use_animation": "eat",
-      "minecraft:tags": {
-      	"tags": [
-      		"minecraft:is_food"
-      	]
-      }
       </#if>
+      "minecraft:creative_category": "Items"
     }
   }
 }
