@@ -39,19 +39,8 @@ public class BlockStatePropertyUtils {
 
 	public static int getNumberOfPropertyCombinations(List<PropertyData<?>> properties) {
 		int result = 1;
-		for (PropertyData<?> propertyData : properties) {
-			switch (propertyData) {
-			case PropertyData.LogicType ignored -> result *= 2; // logic has two possible values
-			case PropertyData.IntegerType integerType -> result *= integerType.getMax() - integerType.getMin() + 1;
-			case PropertyData.StringType stringType -> {
-				if (stringType.getArrayData() != null)
-					result *= stringType.getArrayData().length;
-				else
-					throw new RuntimeException("Strings without array data are not supported");
-			}
-			default -> throw new RuntimeException("Unsupported property type: " + propertyData.getClass());
-			}
-		}
+		for (PropertyData<?> property : properties)
+			result *= getPossiblePropertyValues(property).size();
 		return result;
 	}
 
