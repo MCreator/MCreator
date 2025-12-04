@@ -1,4 +1,7 @@
 _default: ""
+_mcreator_map_template:
+  - "@UPPERNAME"
+  - "@NAME"
 ATTACHED:
   - BlockStateProperties.ATTACHED
   - attached

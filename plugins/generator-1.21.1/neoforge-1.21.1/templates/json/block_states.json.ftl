@@ -126,9 +126,22 @@
 <#else>
 {
   "variants": {
-    "": {
+    <#if data.supportsBlockStates() && data.states?has_content>
+	<#list data.getStateCombinations() as model>
+	  <#assign variantPredicate = "">
+	  <#list model.stateMap.keySet() as property>
+	    <#assign value = model.stateMap.get(property)>
+		<#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + value + property?has_next?then(",", ""))>
+	  </#list>
+	  "${variantPredicate}": {
+        "model": "${modid}:block/${registryname}<#if model.renderType != -1>_${model?index}</#if>"
+      }<#sep>,
+    </#list>
+	<#else>
+	"": {
       "model": "${modid}:block/${registryname}"
     }
+	</#if>
   }
 }
 </#if>

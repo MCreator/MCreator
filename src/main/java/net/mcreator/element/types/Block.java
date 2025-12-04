@@ -29,9 +29,12 @@ import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -303,7 +306,7 @@ import java.util.stream.Collectors;
 		if (getItemModel().getType() == Model.Type.JAVA)
 			return false;
 
-		return blockBase != null && !blockBase.isEmpty();
+		return blockBase == null || blockBase.isEmpty();
 	}
 
 	@Override public boolean isFullCube() {
@@ -461,6 +464,54 @@ import java.util.stream.Collectors;
 
 	public TextureHolder getParticleTexture() {
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
+	}
+
+	public List<StateEntry> getDefinedStates() {
+		if (!supportsBlockStates() || states.isEmpty())
+			return List.of();
+		return new ArrayList<>(states);
+	}
+
+	/**
+	 * @return List of {@link #states} with missing state combinations autofilled
+	 */
+	public List<StateEntry> getStateCombinations() {
+		if (!supportsBlockStates() || states.isEmpty())
+			return List.of();
+
+		// add user-defined states
+		ArrayList<StateEntry> retval = new ArrayList<>(states);
+
+		// autofill missing state condition combinations below
+
+		// collect all used properties (all state maps use all properties as UI validation ensures this)
+		Set<PropertyData<?>> usedProperties = states.getFirst().stateMap.keySet();
+
+		// generate a list of all possible state condition combinations
+		Map<PropertyData<?>, List<Object>> valueMap = new LinkedHashMap<>();
+		for (PropertyData<?> prop : usedProperties) {
+			valueMap.put(prop, BlockStatePropertyUtils.getPossiblePropertyValues(prop));
+		}
+
+		Set<StateMap> possibleStateCombinations = new HashSet<>();
+		for (Map<PropertyData<?>, Object> combo : ListUtils.cartesianProduct(valueMap)) {
+			StateMap stateCombination = new StateMap();
+			stateCombination.putAll(combo);
+			possibleStateCombinations.add(stateCombination);
+		}
+
+		// remove combinations that are already handled
+		possibleStateCombinations.removeAll(states.stream().map(s -> s.stateMap).collect(Collectors.toSet()));
+
+		// add combinations that are missing
+		for (StateMap possibleStateCombination : possibleStateCombinations) {
+			var stateEntry = new StateEntry();
+			stateEntry.renderType = -1; // use the default model
+			stateEntry.stateMap = possibleStateCombination;
+			retval.add(stateEntry);
+		}
+
+		return retval;
 	}
 
 	public static class StateEntry implements IWorkspaceDependent {

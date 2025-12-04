@@ -28,6 +28,8 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +53,25 @@ public class BlockStatePropertyUtils {
 			}
 		}
 		return result;
+	}
+
+	public static List<Object> getPossiblePropertyValues(PropertyData<?> propertyData) {
+		return switch (propertyData) {
+			case PropertyData.LogicType ignored -> List.of(true, false);
+			case PropertyData.IntegerType integerType -> {
+				List<Object> values = new ArrayList<>();
+				for (int i = integerType.getMin(); i <= integerType.getMax(); i++)
+					values.add(i);
+				yield values;
+			}
+			case PropertyData.StringType stringType -> {
+				if (stringType.getArrayData() != null)
+					yield Arrays.stream(stringType.getArrayData()).map(e -> (Object) e).toList();
+				else
+					throw new RuntimeException("Strings without array data are not supported");
+			}
+			default -> throw new RuntimeException("Unsupported property type: " + propertyData.getClass());
+		};
 	}
 
 	@Nonnull public static String propertyRegistryName(PropertyData<?> data) {
