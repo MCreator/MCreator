@@ -22,6 +22,7 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -156,12 +157,11 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 	//validation code
 	private Validator validator = null;
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
-		if (validator != null && validationResult != null
-				&& validationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
-			setBorder(BorderFactory.createLineBorder(validationResult.getValidationResultType().getColor(), 1));
+		if (validator != null && validationResult != null && validationResult.type() != ValidationResult.Type.PASSED) {
+			setBorder(BorderFactory.createLineBorder(validationResult.type().getColor(), 1));
 		} else {
 			setBorder(BorderFactory.createEmptyBorder());
 		}

@@ -23,6 +23,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.ColorUtils;
@@ -35,7 +36,7 @@ import java.awt.event.*;
 public class VTextField extends JTextField implements IValidable {
 
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 	private boolean showPassed = true;
 
 	private boolean mouseInInfoZone = false;
@@ -97,9 +98,9 @@ public class VTextField extends JTextField implements IValidable {
 			String message = L10N.t("validators.input_field_is_validated");
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
-			if (currentValidationResult != null && currentValidationResult.getMessage() != null
-					&& !currentValidationResult.getMessage().isEmpty())
-				message = currentValidationResult.getMessage();
+			if (currentValidationResult != null && currentValidationResult.message() != null
+					&& !currentValidationResult.message().isEmpty())
+				message = currentValidationResult.message();
 			g.drawString(message, 4, 11);
 		}
 
@@ -109,17 +110,16 @@ public class VTextField extends JTextField implements IValidable {
 		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
 
 		if (currentValidationResult != null) {
-			g.setColor(currentValidationResult.getValidationResultType().getColor());
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			g.setColor(currentValidationResult.type().getColor());
+			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
 				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
 				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
-					&& showPassed) {
+			} else if (currentValidationResult.type() == ValidationResult.Type.PASSED && showPassed) {
 				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			}
 
-			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
+			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				Color old = g.getColor();
 				g.setColor(ColorUtils.applyAlpha(old, 40));
 				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
@@ -142,8 +142,8 @@ public class VTextField extends JTextField implements IValidable {
 		return this;
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 

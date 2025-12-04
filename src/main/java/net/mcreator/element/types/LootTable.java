@@ -33,6 +33,10 @@ import java.util.List;
 
 	@ModElementReference public List<Pool> pools;
 
+	private LootTable() {
+		this(null);
+	}
+
 	public LootTable(ModElement element) {
 		super(element);
 	}

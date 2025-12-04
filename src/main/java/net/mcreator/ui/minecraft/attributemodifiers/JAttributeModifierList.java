@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
-import net.mcreator.element.types.PotionEffect;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
@@ -34,16 +34,16 @@ import java.util.List;
 import java.util.Set;
 
 public class JAttributeModifierList
-		extends JSimpleEntriesList<JAttributeModifierEntry, PotionEffect.AttributeModifierEntry> {
+		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
 	public JAttributeModifierList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
 
-		add.setText(L10N.t("elementgui.potioneffect.add_modifier_entry"));
+		add.setText(L10N.t("elementgui.common.attribute_modifier.add_modifier_entry"));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.potioneffect.modifiers"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.common.attribute_modifier.modifiers"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 	}
 
@@ -58,7 +58,7 @@ public class JAttributeModifierList
 		for (var entry : entryList) {
 			if (usedAttributes.contains(entry.getEntry().attribute)) {
 				return new AggregatedValidationResult.FAIL(
-						L10N.t("elementgui.potioneffect.error_attributes_must_be_unique"));
+						L10N.t("elementgui.common.attribute_modifier.error_attributes_must_be_unique"));
 			}
 			usedAttributes.add(entry.getEntry().attribute);
 		}

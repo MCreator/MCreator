@@ -24,7 +24,7 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -46,7 +46,7 @@ public class NewClassAction extends BasicAction {
 			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_class.class_name"),
 					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidator() {
-						@Override public Validator.ValidationResult validate(JComponent component) {
+						@Override public ValidationResult validate(JComponent component) {
 							return new JavaMemberNameValidator((VTextField) component, true).validate();
 						}
 					});

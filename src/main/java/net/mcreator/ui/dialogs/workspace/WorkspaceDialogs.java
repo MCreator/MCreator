@@ -37,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
@@ -272,7 +273,7 @@ public class WorkspaceDialogs {
 
 				@Override public ValidationResult validate() {
 					if (modName.getText().matches(".*\\d+.*"))
-						return new ValidationResult(ValidationResultType.WARNING,
+						return new ValidationResult(ValidationResult.Type.WARNING,
 								L10N.t("dialog.workspace_settings.mod_name.verison_in_name"));
 
 					return parent.validate();
@@ -284,7 +285,7 @@ public class WorkspaceDialogs {
 					try {
 						ModuleDescriptor.Version.parse(version.getText());
 					} catch (Exception e) {
-						return new ValidationResult(ValidationResultType.ERROR,
+						return new ValidationResult(ValidationResult.Type.ERROR,
 								L10N.t("dialog.workspace_settings.version.error2", e.getMessage()));
 					}
 
@@ -332,7 +333,7 @@ public class WorkspaceDialogs {
 
 				@Override public ValidationResult validate() {
 					if (!VALID_MODID.matcher(modID.getText()).matches())
-						return new ValidationResult(ValidationResultType.ERROR,
+						return new ValidationResult(ValidationResult.Type.ERROR,
 								L10N.t("dialog.workspace.settings.workspace_modid_invalid"));
 					return parent.validate();
 				}
@@ -444,14 +445,14 @@ public class WorkspaceDialogs {
 			packageName.setValidator(() -> {
 				String text = packageName.getText();
 				if (text.isEmpty())
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_empty"));
 				if (text.startsWith(".")) {
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_startdot"));
 				}
 				if (text.endsWith(".")) {
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_enddot"));
 				}
 				char[] chars = text.toCharArray();
@@ -469,14 +470,14 @@ public class WorkspaceDialogs {
 					id++;
 				}
 				if (!valid)
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_pattern"));
 
 				if (text.matches(".*\\d+.*"))
-					return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
+					return new ValidationResult(ValidationResult.Type.WARNING,
 							L10N.t("dialog.workspace.settings.workspace_package_avoid_numbers"));
 
-				return Validator.ValidationResult.PASSED;
+				return ValidationResult.PASSED;
 			});
 
 			packageName.enableRealtimeValidation();

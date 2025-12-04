@@ -23,7 +23,7 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -60,7 +60,7 @@ public class NewFolderAction extends BasicAction {
 		String foldername = VOptionPane.showInputDialog(mcreator,
 				L10N.t("workspace_file_browser.new_folder_name.folder_name"),
 				L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null, new OptionPaneValidator() {
-					@Override public Validator.ValidationResult validate(JComponent component) {
+					@Override public ValidationResult validate(JComponent component) {
 						return new RegistryNameValidator((VTextField) component,
 								L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
 					}
