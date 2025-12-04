@@ -972,6 +972,7 @@ public class TestWorkspaceDataProvider {
 			if (random.nextBoolean()) {
 				armor.helmetModelName = "ModelCustomJavaModel";
 				armor.helmetModelPart = "head";
+				armor.helmetTranslucency = _true;
 			} else {
 				armor.helmetModelName = "Default";
 			}
@@ -983,6 +984,7 @@ public class TestWorkspaceDataProvider {
 				armor.bodyModelPart = "head";
 				armor.armsModelPartL = "leg0";
 				armor.armsModelPartR = "leg1";
+				armor.bodyTranslucency = _true;
 			} else {
 				armor.bodyModelName = "Default";
 			}
@@ -993,6 +995,7 @@ public class TestWorkspaceDataProvider {
 				armor.leggingsModelName = "ModelCustomJavaModel";
 				armor.leggingsModelPartL = "leg0";
 				armor.leggingsModelPartR = "leg1";
+				armor.leggingsTranslucency = _true;
 			} else {
 				armor.leggingsModelName = "Default";
 			}
@@ -1003,6 +1006,7 @@ public class TestWorkspaceDataProvider {
 				armor.bootsModelName = "ModelCustomJavaModel";
 				armor.bootsModelPartL = "leg2";
 				armor.bootsModelPartR = "leg3";
+				armor.bootsTranslucency = _true;
 			} else {
 				armor.bootsModelName = "Default";
 			}
