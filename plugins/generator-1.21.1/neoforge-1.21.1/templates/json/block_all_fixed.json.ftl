@@ -7,7 +7,7 @@
     "east": "${data.textureLeft().format("%s:block/%s")}",
     "south": "${data.textureBack().format("%s:block/%s")}",
     "west": "${data.textureRight().format("%s:block/%s")}",
-    "particle": "${data.getParticleTexture().format("%s:block/%s")}"
+    "particle": "${(parent???then(parent, data)).getParticleTexture().format("%s:block/%s")}"
   },
-  "render_type": "${data.getRenderType()}"
+  "render_type": "${(parent???then(parent, data)).getRenderType()}"
 }
