@@ -47,10 +47,11 @@ import java.util.stream.Collectors;
 
 import static net.mcreator.ui.modgui.BlockGUI.normal;
 import static net.mcreator.ui.modgui.BlockGUI.singleTexture;
+import static net.mcreator.ui.modgui.BlockGUI.cross;
 
 public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> implements IValidable {
 
-	public static final Model[] supportedbuiltinitemmodels = new Model[] { normal, singleTexture };
+	public static final Model[] supportedbuiltinitemmodels = new Model[] { normal, singleTexture, cross };
 
 	private final MCreator mcreator;
 
@@ -137,6 +138,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			retVal.renderType = 3;
 		else if (model.equals(singleTexture))
 			retVal.renderType = blockStatesList.isBlockNotTinted() ? 11 : 110;
+		else if (model.equals(cross))
+			retVal.renderType = blockStatesList.isBlockNotTinted() ? 12 : 120;
 		retVal.customModelName = model.getReadableName();
 
 		return retVal;
