@@ -346,26 +346,28 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			blocksAffected.setEnabled(true);
 			repairItems.setEnabled(true);
 
-			if (toolType.getSelectedItem().equals("Special")) {
+			switch ((String) toolType.getSelectedItem()) {
+			case "Special" -> {
 				blockDropsTier.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
-					.equals("Shield")) {
+			}
+			case "Fishing rod", "Shield" -> {
 				blockDropsTier.setEnabled(false);
 				additionalDropCondition.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 				blocksAffected.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Shears")) {
+			}
+			case "Shears" -> {
 				blockDropsTier.setEnabled(false);
 				additionalDropCondition.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 				blocksAffected.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else {
-				blocksAffected.setEnabled(false);
+			}
+			default -> blocksAffected.setEnabled(false);
 			}
 		}
 	}
@@ -447,7 +449,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
 		tool.creativeTabs = creativeTabs.getListElements();
-		tool.toolType = (String) toolType.getSelectedItem();
+		tool.toolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
 		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();
 		tool.efficiency = (double) efficiency.getValue();
