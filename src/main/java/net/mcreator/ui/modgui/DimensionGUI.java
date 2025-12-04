@@ -130,6 +130,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
 
 	private BiomeListField biomesInDimension;
+	private BiomeListField biomesInDimensionCaves;
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
@@ -182,6 +183,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		worldGenType.addActionListener(e -> updateWorldgenSettings());
 		biomesInDimension = new BiomeListField(mcreator);
+		biomesInDimensionCaves = new BiomeListField(mcreator);
 
 		portalParticles.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXX"));
 
@@ -361,10 +363,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.dimension.world_gen_type"), worldGenType),
 				PanelUtils.join(new JLabel(UIRES.get("dimension_types")))));
 
-		JPanel worldgenSettings = new JPanel(new GridLayout(8, 2, 2, 2));
+		JPanel worldgenSettings = new JPanel(new GridLayout(9, 2, 2, 2));
 		worldgenSettings.setOpaque(false);
 
 		biomesInDimension.setPreferredSize(new java.awt.Dimension(300, 42));
+		biomesInDimensionCaves.setPreferredSize(new java.awt.Dimension(300, 42));
 
 		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/main_filler_block"),
 				L10N.label("elementgui.dimension.main_filler_block"), new Color(0x2980b9)));
@@ -377,6 +380,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes"),
 				L10N.label("elementgui.dimension.biomes_in")));
 		worldgenSettings.add(biomesInDimension);
+
+		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/biomes_cave"),
+				L10N.label("elementgui.dimension.biomes_in_cave")));
+		worldgenSettings.add(biomesInDimensionCaves);
 
 		worldgenSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sea_level"),
 				L10N.label("elementgui.dimension.sea_level")));
@@ -604,6 +611,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				horizontalNoiseSize.setValue(1);
 				verticalNoiseSize.setValue(2);
 			}
+			biomesInDimensionCaves.setEnabled(true);
 		} else {
 			generateAquifers.setEnabled(false);
 			generateOreVeins.setEnabled(false);
@@ -618,6 +626,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 					verticalNoiseSize.setValue(1);
 				}
 			}
+			biomesInDimensionCaves.setEnabled(false);
 		}
 	}
 
@@ -661,6 +670,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		creativeTabs.setListElements(dimension.creativeTabs);
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
+		biomesInDimensionCaves.setListElements(dimension.biomesInDimensionCaves);
 		airColor.setColor(dimension.airColor);
 		defaultEffects.setSelectedItem(dimension.defaultEffects);
 		useCustomEffects.setSelected(dimension.useCustomEffects);
@@ -706,6 +716,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
+		dimension.biomesInDimensionCaves = biomesInDimensionCaves.getListElements();
 		dimension.airColor = airColor.getColor();
 		dimension.defaultEffects = defaultEffects.getSelectedItem();
 		dimension.useCustomEffects = useCustomEffects.isSelected();
