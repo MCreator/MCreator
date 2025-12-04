@@ -29,6 +29,9 @@ import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.diff.ListDiff;
 
 import javax.annotation.Nullable;
@@ -36,7 +39,8 @@ import javax.swing.*;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, Block.StateEntry> {
+public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, Block.StateEntry>
+		implements IValidable {
 
 	private final Supplier<List<PropertyData<?>>> currentPropertiesSupplier;
 
@@ -98,9 +102,39 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		return new JBlockStatesListEntry(mcreator, gui, parent, entryList, stateLabel);
 	}
 
+	@Override public ValidationResult getValidationStatus() {
+		// validate state definitions - if a certain property is used in one state, it needs to be present in all states
+		List<Block.StateEntry> entries = getEntries();
+
+		// collect all used properties
+		Set<PropertyData<?>> usedProperties = new HashSet<>();
+		for (Block.StateEntry entry : entries) {
+			usedProperties.addAll(entry.stateMap.keySet());
+		}
+
+		// make sure all states contain all used properties
+		for (Block.StateEntry entry : entries) {
+			if (!entry.stateMap.keySet().containsAll(usedProperties)) {
+				return new ValidationResult(ValidationResult.Type.ERROR,
+						L10N.t("elementgui.block.custom_states.error_missing_properties",
+								usedProperties.stream().map(BlockStatePropertyUtils::propertyRegistryName).toList()));
+			}
+		}
+
+		return ValidationResult.PASSED;
+	}
+
+	@Override public void setValidator(Validator validator) {
+	}
+
+	@Override public Validator getValidator() {
+		return null;
+	}
+
 	public AggregatedValidationResult getValidationResult() {
 		AggregatedValidationResult validationResult = new AggregatedValidationResult();
 		entryList.forEach(validationResult::addValidationElement);
+		validationResult.addValidationElement(this);
 		return validationResult;
 	}
 
