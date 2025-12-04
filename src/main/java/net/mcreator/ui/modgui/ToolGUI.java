@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -212,76 +213,77 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
 				0, 5)));
 
-		JPanel selp = new JPanel(new GridLayout(16, 2, 0, 2));
-		selp.setOpaque(false);
+		JPanel propertiesPanel = new JPanel(new AdaptiveGridLayout(-1, 1, 0, 2));
+		propertiesPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
+
+		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blockingModel.setRenderer(new ModelComboBoxRenderer());
 		blockingModel.setEnabled(false);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.common.name_in_gui")));
-		selp.add(name);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+						L10N.label("elementgui.common.name_in_gui")), name));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
-		selp.add(toolType);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")),
+				toolType));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
-				L10N.label("elementgui.common.creative_tabs")));
-		selp.add(creativeTabs);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+						L10N.label("elementgui.common.creative_tabs")), creativeTabs));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
-				L10N.label("elementgui.tool.blocks_drop_tier")));
-		selp.add(blockDropsTier);
-		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
+						L10N.label("elementgui.tool.blocks_drop_tier")), blockDropsTier));
 
-		selp.add(new JEmptyBox());
-		selp.add(additionalDropCondition);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2, new JEmptyBox(), additionalDropCondition));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
-				L10N.label("elementgui.tool.efficiency")));
-		selp.add(efficiency);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
+						L10N.label("elementgui.tool.efficiency")), efficiency));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
-				L10N.label("elementgui.common.enchantability")));
-		selp.add(enchantability);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
+						L10N.label("elementgui.common.enchantability")), enchantability));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
-				L10N.label("elementgui.tool.damage_vs_entity")));
-		selp.add(damageVsEntity);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
+						L10N.label("elementgui.tool.damage_vs_entity")), damageVsEntity));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
-				L10N.label("elementgui.tool.attack_speed")));
-		selp.add(attackSpeed);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+						L10N.label("elementgui.tool.attack_speed")), attackSpeed));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
-				L10N.label("elementgui.tool.usage_count")));
-		selp.add(usageCount);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+						L10N.label("elementgui.tool.usage_count")), usageCount));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
-				L10N.label("elementgui.common.repair_items")));
-		selp.add(repairItems);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+						L10N.label("elementgui.common.repair_items")), repairItems));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
-				L10N.label("elementgui.tool.shield_blocking_model")));
-		selp.add(blockingModel);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+						L10N.label("elementgui.tool.shield_blocking_model")), blockingModel));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
-				L10N.label("elementgui.tool.blocks_affected")));
-		selp.add(blocksAffected);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
+						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-				L10N.label("elementgui.tool.is_immune_to_fire")));
-		selp.add(immuneToFire);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+						L10N.label("elementgui.tool.is_immune_to_fire")), immuneToFire));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				L10N.label("elementgui.item.container_item")));
-		selp.add(stayInGridWhenCrafting);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
+						L10N.label("elementgui.item.container_item")), stayInGridWhenCrafting));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage")));
-		selp.add(damageOnCrafting);
+		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
+						L10N.label("elementgui.item.container_item_damage")), damageOnCrafting));
 
 		usageCount.addChangeListener(e -> updateCraftingSettings());
 
@@ -291,7 +293,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane4.setOpaque(false);
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(selp));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(propertiesPanel));
 
 		pane3.setOpaque(false);
 
