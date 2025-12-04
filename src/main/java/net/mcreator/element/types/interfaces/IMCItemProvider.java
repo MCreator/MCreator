@@ -59,6 +59,8 @@ import java.util.stream.Collectors;
 	 * @return A set of mapped block entries
 	 */
 	default Set<String> getProvidedBlocks() {
-		return providedMCItems().stream().map(DataListEntry::getName).collect(Collectors.toSet());
+		return providedMCItems().stream()
+				.filter(item -> item.getType().equals("block") || item.getType().equals("block_without_item"))
+				.map(DataListEntry::getName).collect(Collectors.toSet());
 	}
 }
