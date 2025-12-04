@@ -62,7 +62,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox foodIsMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
 
-
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public BEItemGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -72,8 +71,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel visualsPanel = new JPanel(new BorderLayout(10, 10));
-		visualsPanel.setOpaque(false);
 		JPanel propertiesPanel = new JPanel(new BorderLayout(10, 10));
 		propertiesPanel.setOpaque(false);
 
@@ -81,24 +78,18 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel visualProperties = new JPanel(new GridLayout(1, 2, 5, 5));
-		visualProperties.setOpaque(false);
-
-		visualProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/has_glint"),
-				L10N.label("elementgui.beitem.has_glint")));
-		visualProperties.add(hasGlint);
-		hasGlint.setOpaque(false);
-
-		visualsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(
-				PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), visualProperties)));
-
-		JPanel basicProperties = new JPanel(new GridLayout(10, 2, 65, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 65, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/has_glint"),
+				L10N.label("elementgui.beitem.has_glint")));
+		basicProperties.add(hasGlint);
+		hasGlint.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
@@ -151,11 +142,12 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.use_duration")));
 		basicProperties.add(useDuration);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.totalCenterInPanel(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties)));
 
 		page1group.addValidationElement(texture);
 
-		addPage(L10N.t("elementgui.common.page_visual"), visualsPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(name);
 	}
 
