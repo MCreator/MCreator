@@ -425,7 +425,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
-		blockStatesList = new JBlockStatesList(mcreator, this, this::propertiesForBlockBases);
+		blockStatesList = new JBlockStatesList(mcreator, this, this::propertiesForBlockBases,
+				() -> "No tint".equals(tintType.getSelectedItem()));
 		blockStatesList.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		statePropertiesList = new JBlockStatePropertiesList(mcreator, this, this::nonUserProvidedProperties,

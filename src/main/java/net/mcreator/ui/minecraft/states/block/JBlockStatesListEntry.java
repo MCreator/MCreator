@@ -46,24 +46,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static net.mcreator.ui.modgui.BlockGUI.normal;
+import static net.mcreator.ui.modgui.BlockGUI.singleTexture;
 
 public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> implements IValidable {
 
-	public static final Model[] supportedbuiltinitemmodels = new Model[] { normal };
+	public static final Model[] supportedbuiltinitemmodels = new Model[] { normal, singleTexture };
 
 	private final MCreator mcreator;
 
 	private final JStateLabel stateLabel;
+
+	private final JBlockStatesList blockStatesList;
 
 	private final BlockTexturesSelector textures;
 
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(supportedbuiltinitemmodels);
 
 	public JBlockStatesListEntry(MCreator mcreator, IHelpContext helpContext, JPanel parent,
-			List<JBlockStatesListEntry> entryList, JStateLabel stateLabel) {
+			List<JBlockStatesListEntry> entryList, JStateLabel stateLabel, JBlockStatesList blockStatesList) {
 		super(parent, entryList);
 		this.mcreator = mcreator;
 		this.stateLabel = stateLabel;
+		this.blockStatesList = blockStatesList;
 
 		this.textures = new BlockTexturesSelector(mcreator);
 
@@ -131,6 +135,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			retVal.renderType = 2;
 		else if (model.getType() == Model.Type.OBJ)
 			retVal.renderType = 3;
+		else if (model.equals(singleTexture))
+			retVal.renderType = blockStatesList.isBlockNotTinted() ? 11 : 110;
 		retVal.customModelName = model.getReadableName();
 
 		return retVal;

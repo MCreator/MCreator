@@ -43,13 +43,15 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		implements IValidable {
 
 	private final Supplier<List<PropertyData<?>>> currentPropertiesSupplier;
+	private final Supplier<Boolean> isBlockNotTinted;
 
 	private final List<PropertyData<?>> lastPropertyState = new ArrayList<>();
 
 	public JBlockStatesList(MCreator mcreator, IHelpContext gui,
-			Supplier<List<PropertyData<?>>> currentPropertiesSupplier) {
+			Supplier<List<PropertyData<?>>> currentPropertiesSupplier, Supplier<Boolean> isBlockNotTinted) {
 		super(mcreator, gui);
 		this.currentPropertiesSupplier = currentPropertiesSupplier;
+		this.isBlockNotTinted = isBlockNotTinted;
 
 		add.setText(L10N.t("elementgui.block.custom_states.add"));
 
@@ -92,6 +94,10 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		entries.repaint();
 	}
 
+	boolean isBlockNotTinted() {
+		return isBlockNotTinted.get();
+	}
+
 	@Nullable @Override
 	protected JBlockStatesListEntry newEntry(JPanel parent, List<JBlockStatesListEntry> entryList, boolean userAction) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, currentPropertiesSupplier,
@@ -99,7 +105,7 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		if (userAction && !stateLabel.editState())
 			return null;
 
-		return new JBlockStatesListEntry(mcreator, gui, parent, entryList, stateLabel);
+		return new JBlockStatesListEntry(mcreator, gui, parent, entryList, stateLabel, this);
 	}
 
 	@Override public ValidationResult getValidationStatus() {
