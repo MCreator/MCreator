@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import java.util.List;
@@ -36,9 +37,9 @@ public class CompoundValidator implements Validator {
 
 		for (Validator validator : validators) {
 			ValidationResult tmpResult = validator.validate();
-			if (tmpResult.getValidationResultType() == ValidationResultType.ERROR)
+			if (tmpResult.type() == ValidationResult.Type.ERROR)
 				return tmpResult; // Return as soon as we find an error
-			else if (tmpResult.getValidationResultType() == ValidationResultType.WARNING)
+			else if (tmpResult.type() == ValidationResult.Type.WARNING)
 				result = tmpResult; // Do not return yet, there might still be errors
 		}
 

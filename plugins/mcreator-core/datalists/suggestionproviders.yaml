@@ -1,0 +1,12 @@
+- AVAILABLE_SOUNDS:
+  readable_name: "Available sounds"
+- SUMMONABLE_ENTITIES:
+  readable_name: "Summonable entities"
+- SUGGEST_BOSS_BAR:
+  readable_name: "Available bossbars"
+- SUGGEST_FUNCTION:
+  readable_name: "Available functions"
+- SUGGEST_LOOT_TABLE:
+  readable_name: "Available loottables"
+- SUGGEST_SCORE_HOLDERS:
+  readable_name: "Available score holders"

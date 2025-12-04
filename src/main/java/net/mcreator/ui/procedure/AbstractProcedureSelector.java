@@ -30,6 +30,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -195,13 +196,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		super.paint(g);
 
 		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.setColor(currentValidationResult.getValidationResultType().getColor());
+			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
+				g.setColor(currentValidationResult.type().getColor());
 				g.drawRect(0, 0, getWidth(), getHeight());
 
 				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.setColor(currentValidationResult.getValidationResultType().getColor());
+			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
+				g.setColor(currentValidationResult.type().getColor());
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
 				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 11, 11, null);
@@ -211,10 +212,10 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	//validation code
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 
