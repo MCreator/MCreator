@@ -514,7 +514,7 @@ import java.util.stream.Collectors;
 		return retval;
 	}
 
-	public static class StateEntry implements IWorkspaceDependent {
+	public static class StateEntry implements IWorkspaceDependent, IItemWithModel {
 
 		@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 		@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -559,7 +559,7 @@ import java.util.stream.Collectors;
 			return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
 		}
 
-		public Model getItemModel() {
+		@Override public Model getItemModel() {
 			Model.Type modelType = Model.Type.BUILTIN;
 			if (renderType == 2)
 				modelType = Model.Type.JSON;
@@ -568,7 +568,7 @@ import java.util.stream.Collectors;
 			return Model.getModelByParams(workspace, customModelName, modelType);
 		}
 
-		public Map<String, TextureHolder> getTextureMap() {
+		@Override public Map<String, TextureHolder> getTextureMap() {
 			Model model = getItemModel();
 			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 				return ((TexturedModel) model).getTextureMapping().getTextureMap();
