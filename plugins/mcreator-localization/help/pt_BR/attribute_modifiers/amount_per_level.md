@@ -1,0 +1,1 @@
+A quantidade pela qual modificar o atributo. Este valor é multiplicado pelo nível do efeito da poção.

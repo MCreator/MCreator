@@ -1412,10 +1412,10 @@ public class TestWorkspaceDataProvider {
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
+			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
-					PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
