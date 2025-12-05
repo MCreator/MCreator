@@ -13,10 +13,11 @@ const workspace = Blockly.inject(blockly, {
     disable: false,
     trashcan: MCR_BLOCKLY_PREF['trashcan'],
     renderer: MCR_BLOCKLY_PREF['renderer'],
+    maxTrashcanContents: MCR_BLOCKLY_PREF['maxTrashContents'],
     zoom: {
         controls: false,
         wheel: true,
-        startScale: 0.95,
+        startScale: MCR_BLOCKLY_PREF['startScale'],
         maxScale: MCR_BLOCKLY_PREF['maxScale'],
         minScale: MCR_BLOCKLY_PREF['minScale'],
         scaleSpeed: MCR_BLOCKLY_PREF['scaleSpeed']
