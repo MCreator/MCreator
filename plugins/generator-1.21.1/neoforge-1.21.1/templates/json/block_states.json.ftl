@@ -1,3 +1,5 @@
+<#assign stateCombinations = (data.getDefinedStates?? && data.getDefinedStates()?has_content)?then(data.getStateCombinations(), [])>
+
 <#if data.rotationMode?? && (data.rotationMode == 1 || data.rotationMode == 3)>
 <#if data.enablePitch>
 {
@@ -54,8 +56,8 @@
 </#if>
 
 <#macro variant conditionExtra="" additionalData="">
-  <#if data.getDefinedStates?? && data.getDefinedStates()?has_content>
-  <#list data.getStateCombinations() as model>
+  <#if stateCombinations?has_content>
+  <#list stateCombinations as model>
     <#assign variantPredicate = "">
     <#list model.stateMap.keySet() as property>
       <#assign value = model.stateMap.get(property)>
