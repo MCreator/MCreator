@@ -344,13 +344,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			damageVsEntity.setEnabled(true);
 			attackSpeed.setEnabled(true);
 			blocksAffected.setEnabled(true);
-			repairItems.setEnabled(true);
 
 			switch ((String) toolType.getSelectedItem()) {
-			case "Special" -> {
-				blockDropsTier.setEnabled(false);
-				repairItems.setEnabled(false);
-			}
+			case "Special" -> blockDropsTier.setEnabled(false);
 			case "Fishing rod", "Shield" -> {
 				blockDropsTier.setEnabled(false);
 				additionalDropCondition.setEnabled(false);
@@ -365,7 +361,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
 				blocksAffected.setEnabled(false);
-				repairItems.setEnabled(false);
 			}
 			default -> blocksAffected.setEnabled(false);
 			}
