@@ -19,8 +19,6 @@
 
 package net.mcreator.ui.dialogs.file;
 
-import javafx.stage.FileChooser;
-import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.WorkspaceFolderManager;
@@ -64,9 +62,9 @@ public class FileDialogs {
 	}
 
 	public static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
-			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, ExtensionFilter... filters) {
 		if (nativeFileChooser()) {
-			return NativeFileDialogs.getFileChooserDialog(type, multiSelect, suggestedFileName, filters);
+			return NativeFileDialogs.getFileChooserDialog(f, type, multiSelect, suggestedFileName, filters);
 		} else {
 			return JavaFileDialogs.getFileChooserDialog(f, type, multiSelect, suggestedFileName, filters);
 		}
@@ -126,21 +124,20 @@ public class FileDialogs {
 		return false;
 	}
 
-	private static FileChooser.ExtensionFilter[] getFileFiltersForStringArray(String[] filters) {
-		FileChooser.ExtensionFilter[] fileFilters = new FileChooser.ExtensionFilter[filters.length];
+	private static ExtensionFilter[] getFileFiltersForStringArray(String[] filters) {
+		ExtensionFilter[] fileFilters = new ExtensionFilter[filters.length];
 		int idx = 0;
 		for (String extension : filters) {
 			extension = extension.toLowerCase(Locale.ROOT);
 			if (extension.startsWith("."))
 				extension = extension.replaceFirst("\\.", "");
-			fileFilters[idx++] = new FileChooser.ExtensionFilter(extension.toUpperCase(Locale.ROOT) + " files",
-					"*." + extension);
+			fileFilters[idx++] = new ExtensionFilter(extension.toUpperCase(Locale.ROOT) + " files", "*." + extension);
 		}
 		return fileFilters;
 	}
 
 	private static boolean nativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.nativeFileChooser.get() && OS.getOS() != OS.LINUX;
+		return PreferencesManager.PREFERENCES.ui.nativeFileChooser.get();
 	}
 
 }

@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.dialogs.file;
 
-import javafx.stage.FileChooser;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.IconUtils;
@@ -41,7 +40,7 @@ class JavaFileDialogs {
 	private static final Dimension FILEDIALOG_SIZE = new Dimension(720, 420);
 
 	protected static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
-			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, ExtensionFilter... filters) {
 		JFileChooser fc = new JFileChooser() {
 			@Override public File getSelectedFile() {
 				File selectedFile = super.getSelectedFile();
@@ -89,7 +88,7 @@ class JavaFileDialogs {
 		});
 
 		if (filters != null) {
-			for (FileChooser.ExtensionFilter extensionFilter : filters) {
+			for (ExtensionFilter extensionFilter : filters) {
 				if (extensionFilter != null) {
 					fc.addChoosableFileFilter(extensionToFileFilter(extensionFilter));
 				}
@@ -115,8 +114,9 @@ class JavaFileDialogs {
 				File[] files = fc.getSelectedFiles();
 				if (files != null && files.length > 0)
 					return files;
-			} else
+			} else {
 				return new File[] { fc.getSelectedFile() };
+			}
 		}
 
 		return null;
@@ -161,12 +161,12 @@ class JavaFileDialogs {
 		return null;
 	}
 
-	private static FileFilter extensionToFileFilter(FileChooser.ExtensionFilter extensionFilter) {
+	private static FileFilter extensionToFileFilter(ExtensionFilter extensionFilter) {
 		return new FileFilter() {
 			@Override public boolean accept(File f) {
 				if (f.isFile()) {
 					String filename = f.getName().toLowerCase(Locale.ROOT);
-					for (String ext : extensionFilter.getExtensions()) {
+					for (String ext : extensionFilter.extensions()) {
 						if (filename.matches(ext.replace(".", "\\.").replace("*", ".*") + "$"))
 							return true;
 					}
@@ -176,7 +176,7 @@ class JavaFileDialogs {
 			}
 
 			@Override public String getDescription() {
-				return extensionFilter.getDescription() + " " + extensionFilter.getExtensions().toString()
+				return extensionFilter.description() + " " + extensionFilter.extensions().toString()
 						.replace('[', '(').replace(']', ')');
 			}
 		};
