@@ -556,6 +556,7 @@ public class TestWorkspaceDataProvider {
 			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
 			biome.genErosion = new Biome.ClimatePoint(0.4, 1.4);
 			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
+			biome.genDepth = new Biome.ClimatePoint(0.3, 1.2);
 
 			biome.rainingPossibility = 1.1;
 			biome.temperature = 2.1;
@@ -1410,10 +1411,10 @@ public class TestWorkspaceDataProvider {
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
+			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
-					PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,

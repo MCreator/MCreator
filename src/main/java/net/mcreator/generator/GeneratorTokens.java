@@ -85,16 +85,16 @@ public class GeneratorTokens {
 					try {
 						value = TemplateExpressionParser.getValueFrom(match.substring("item.".length()), listItem);
 					} catch (Throwable e) {
-						TestUtil.failIfTestingEnvironment();
 						LOG.warn("Failed to load token value {}", match, e);
+						TestUtil.failIfTestingEnvironment();
 					}
 				}
 			} else if (element != null) { // get a value from the mod element
 				try {
 					value = TemplateExpressionParser.getValueFrom(match, element);
 				} catch (Throwable e) {
-					TestUtil.failIfTestingEnvironment();
 					LOG.warn("Failed to load token value {}", match, e);
+					TestUtil.failIfTestingEnvironment();
 				}
 			}
 			rawname = rawname.replace("@[" + match + "]", String.valueOf(value));

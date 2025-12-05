@@ -30,7 +30,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
@@ -144,8 +144,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
-							return name.getValidationStatus().getValidationResultType()
-									!= Validator.ValidationResultType.ERROR && super.stopCellEditing();
+							return name.getValidationStatus().type() != ValidationResult.Type.ERROR
+									&& super.stopCellEditing();
 						}
 					};
 				} else if (modelColumn == 3) {

@@ -29,7 +29,7 @@
                         "continentalness": [${ge.genContinentalness.min}, ${ge.genContinentalness.max}],
                         "weirdness": [${ge.genWeirdness.min}, ${ge.genWeirdness.max}],
                         "erosion": [${ge.genErosion.min}, ${ge.genErosion.max}],
-                        "depth": 0, <#-- 0 for surface biomes, 1 for cave biomes -->
+                        "depth": 0, <#-- 0 and 1 for surface biomes, 0.2-0.9 for cave biomes -->
                         "offset": 0
                     }
                 <#else>

@@ -49,7 +49,7 @@ import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -138,7 +138,7 @@ import java.util.regex.Pattern;
 			String folderName = ((JTextField) component).getText();
 
 			if (!folderName.matches("[A-Za-z0-9._ -]+")) {
-				return new Validator.ValidationResult(ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("workspace.elements.folders.add.error_letters"));
 			}
 
@@ -148,12 +148,12 @@ import java.util.regex.Pattern;
 
 			for (FolderElement folderElement : folderElements) {
 				if (folderElement.equals(tmpFolder)) {
-					return new Validator.ValidationResult(ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("workspace.elements.folders.add.error_exists"));
 				}
 			}
 
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		}
 	};
 
@@ -1023,7 +1023,7 @@ import java.util.regex.Pattern;
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidator() {
-							@Override public Validator.ValidationResult validate(JComponent component) {
+							@Override public ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();
 							}

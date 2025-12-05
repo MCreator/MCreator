@@ -570,4 +570,4 @@ tags:
       - hasInventory
       - sensitiveToVibration
       - "${data.vibrationalEvents?has_content}"
-    entryprovider: data.getVibrationalEvents()
+    entryprovider: getVibrationalEvents()

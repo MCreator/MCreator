@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
@@ -53,7 +54,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 
 	protected final MCreator mcreator;
 	protected T currentEntry;
@@ -192,21 +193,21 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		super.paint(g);
 
 		if (currentValidationResult != null) {
-			g.setColor(currentValidationResult.getValidationResultType().getColor());
-			switch (currentValidationResult.getValidationResultType()) {
+			g.setColor(currentValidationResult.type().getColor());
+			switch (currentValidationResult.type()) {
 			case WARNING -> WARNING_ICON.paintIcon(this, g, 0, 0);
 			case ERROR -> ERROR_ICON.paintIcon(this, g, 0, 0);
 			case PASSED -> OK_ICON.paintIcon(this, g, 0, 0);
 			}
 
-			if (currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED) {
+			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 		this.currentValidationResult = validationResult;
 
 		//repaint as new validation status might have to be rendered
