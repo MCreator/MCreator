@@ -18,7 +18,6 @@
 
 package net.mcreator.ui;
 
-import javafx.application.Platform;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -382,11 +381,10 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
-		// we dispose all windows and exit fx platform
+		// dispose all windows
 		try {
-			LOG.debug("Stopping AWT and FX threads");
+			LOG.debug("Stopping AWT thread");
 			Arrays.stream(Window.getWindows()).forEach(Window::dispose);
-			Platform.exit();
 		} catch (Exception ignored) {
 		}
 

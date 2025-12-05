@@ -43,8 +43,8 @@ public class LoggingSystem {
 		//noinspection resource
 		System.setErr(new PrintStream(
 				new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR).withCustomLogAction(log -> {
-					// Fail tests if anything but JavaFX configuration error is logged to STDERR
-					if (TestUtil.isTestingEnvironment() && !log.contains("Unsupported JavaFX configuration")) {
+					// Fail tests if anything is logged to STDERR
+					if (TestUtil.isTestingEnvironment()) {
 						TestUtil.failIfTestingEnvironment();
 					}
 				}), true));

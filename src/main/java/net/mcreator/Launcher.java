@@ -18,14 +18,11 @@
 
 package net.mcreator;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import net.mcreator.io.LoggingSystem;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.util.UTF8Forcer;
@@ -77,10 +74,6 @@ public class Launcher {
 		System.setProperty("sun.java2d.opengl", "false");
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("sun.java2d.pmoffscreen", "false");
-
-		// Init JFX Toolkit
-		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
-		Platform.setImplicitExit(false);
 
 		// check if proper version of MCreator per architecture is used
 		if (OS.getSystemBits() == OS.BIT32) {

@@ -19,7 +19,6 @@
 
 package net.mcreator.integration;
 
-import javafx.embed.swing.JFXPanel;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -35,7 +34,6 @@ import net.mcreator.preferences.data.GradleSection;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.ConsolePane;
-import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
@@ -95,8 +93,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// load preferences
 		PreferencesManager.init();
 
-		// Init JFX Toolkit
-		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 		/* ****************************
 		 * END: Launcher.java emulation
 		 * ****************************/

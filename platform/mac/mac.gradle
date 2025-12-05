@@ -129,8 +129,8 @@ void signAndNotarizeAPP(File appDirectory) {
     def libraries = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && (it.name.endsWith('.dylib') || it.name.endsWith('.jnilib')) }
     libraries.each { signFile(it) }
 
-    // Sign the natives in the JAR files (excluding JavaFX as they are already signed)
-    def jarFiles = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.jar') && !it.name.contains("javafx") }
+    // Sign the natives in the JAR files
+    def jarFiles = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.jar') }
     jarFiles.each { signNativesInJarFile(it) }
 
     // Sign the main binary
