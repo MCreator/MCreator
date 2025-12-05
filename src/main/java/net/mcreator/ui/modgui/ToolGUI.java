@@ -114,6 +114,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
+	private JComponent blockingModelPanel;
+	private JComponent blocksAffectedPanel;
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public ToolGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -221,7 +224,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blockingModel.setRenderer(new ModelComboBoxRenderer());
-		blockingModel.setEnabled(false);
 
 		propertiesPanel.add(PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -265,11 +267,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
 						L10N.label("elementgui.common.repair_items")), repairItems));
 
-		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+		propertiesPanel.add(blockingModelPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
 						L10N.label("elementgui.tool.shield_blocking_model")), blockingModel));
 
-		propertiesPanel.add(PanelUtils.gridElements(1, 2,
+		propertiesPanel.add(blocksAffectedPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
@@ -286,8 +288,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						L10N.label("elementgui.item.container_item_damage")), damageOnCrafting));
 
 		usageCount.addChangeListener(e -> updateCraftingSettings());
-
-		blocksAffected.setEnabled(false);
 
 		toolType.addActionListener(event -> updateFields());
 
@@ -331,19 +331,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	}
 
 	private void updateFields() {
-		if (toolType.getSelectedItem() != null) {
-			blockingModel.setEnabled(true);
-			if (!toolType.getSelectedItem().equals("Shield")) {
-				blockingModel.setEnabled(false);
-				blockingModel.setSelectedItem(normalBlocking);
-			}
+		String selectedToolType = (String) toolType.getSelectedItem();
+		if (selectedToolType != null) {
+
+			blockingModelPanel.setVisible(selectedToolType.equals("Shield"));
+			blocksAffectedPanel.setVisible(selectedToolType.equals("Special"));
 
 			blockDropsTier.setEnabled(true);
 			additionalDropCondition.setEnabled(true);
 			efficiency.setEnabled(true);
 			damageVsEntity.setEnabled(true);
 			attackSpeed.setEnabled(true);
-			blocksAffected.setEnabled(true);
 
 			switch ((String) toolType.getSelectedItem()) {
 			case "Special" -> blockDropsTier.setEnabled(false);
@@ -353,16 +351,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
 			}
 			case "Shears" -> {
 				blockDropsTier.setEnabled(false);
 				additionalDropCondition.setEnabled(false);
 				damageVsEntity.setEnabled(false);
 				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
 			}
-			default -> blocksAffected.setEnabled(false);
 			}
 		}
 	}
@@ -427,9 +422,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		updateCraftingSettings();
 		updateFields();
-
-		if (toolType.getSelectedItem() != null)
-			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
 
 		Model model = tool.getItemModel();
 		if (model != null)
