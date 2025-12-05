@@ -300,9 +300,6 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean supportsBlockStates() {
-		if (rotationMode != 0)
-			return false;
-
 		if (getItemModel().getType() == Model.Type.JAVA)
 			return false;
 

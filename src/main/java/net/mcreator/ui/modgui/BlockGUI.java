@@ -1641,9 +1641,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private void refreshBlockStatesList() {
 		boolean supportsBlockStates = blockBase.getSelectedItem() == null || blockBase.getSelectedIndex() == 0;
 
-		if (rotationMode.getSelectedIndex() != 0)
-			supportsBlockStates = false;
-
 		Model model = renderType.getSelectedItem();
 		if (model != null && model.getType() == Model.Type.JAVA)
 			supportsBlockStates = false;
