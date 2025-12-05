@@ -126,7 +126,7 @@
 <#else>
 {
   "variants": {
-    <#if data.supportsBlockStates() && data.states?has_content>
+    <#if data.getDefinedStates?? && data.getDefinedStates()?has_content>
 	<#list data.getStateCombinations() as model>
 	  <#assign variantPredicate = "">
 	  <#list model.stateMap.keySet() as property>

@@ -466,6 +466,9 @@ import java.util.stream.Collectors;
 		return particleTexture == null || particleTexture.isEmpty() ? texture : particleTexture;
 	}
 
+	/**
+	 * @return List of user-defined states or empty list if none defined or of the current block does not support custom block states
+	 */
 	public List<StateEntry> getDefinedStates() {
 		if (!supportsBlockStates() || states.isEmpty())
 			return List.of();
