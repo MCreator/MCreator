@@ -26,7 +26,7 @@ import net.mcreator.workspace.references.ModElementReference;
 
 import java.util.List;
 
-public class Attribute extends GeneratableElement {
+@SuppressWarnings("unused") public class Attribute extends GeneratableElement {
 
 	public String name;
 	public Double minValue;

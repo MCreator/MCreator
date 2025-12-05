@@ -25,7 +25,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("NotNullFieldNotInitialized") public class GameRule extends GeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class GameRule extends GeneratableElement {
 
 	@Nonnull public String type;
 
@@ -35,6 +35,10 @@ import java.awt.image.BufferedImage;
 
 	public boolean defaultValueLogic;
 	public int defaultValueNumber;
+
+	private GameRule() {
+		this(null);
+	}
 
 	public GameRule(ModElement element) {
 		super(element);

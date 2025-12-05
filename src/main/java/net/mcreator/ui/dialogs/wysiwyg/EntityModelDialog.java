@@ -28,7 +28,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -118,7 +118,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 
 		cancel.addActionListener(e -> dispose());
 		ok.addActionListener(e -> {
-			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (entityModel.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				if (model == null) {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),

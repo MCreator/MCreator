@@ -25,11 +25,15 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
 
-public class Tab extends GeneratableElement {
+@SuppressWarnings("unused") public class Tab extends GeneratableElement {
 
 	public String name;
 	public MItemBlock icon;
 	public boolean showSearch;
+
+	private Tab() {
+		this(null);
+	}
 
 	public Tab(ModElement element) {
 		super(element);
