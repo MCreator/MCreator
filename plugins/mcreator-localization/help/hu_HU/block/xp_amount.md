@@ -1,0 +1,1 @@
+Ez az a tapasztalatmennyiség, amelyet ez a blokk elejt, amikor egy játékos összetöri.
