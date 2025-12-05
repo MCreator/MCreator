@@ -1700,6 +1700,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BEITEM.equals(modElement.getType())) {
 			BEItem beitem = new BEItem(modElement);
 			beitem.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			beitem.hasGlint = _true;
 			beitem.name = modElement.getName();
 			beitem.stackSize = 52;
 			beitem.useDuration = 8;
