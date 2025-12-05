@@ -18,10 +18,10 @@
 
 package net.mcreator.ui.dialogs;
 
-import javafx.stage.FileChooser;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.dialogs.file.ExtensionFilter;
 import net.mcreator.ui.dialogs.file.FileChooserType;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -76,7 +76,7 @@ public class TextureImportDialogs {
 
 		p1.addActionListener(event -> {
 			File[] f1a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 1 texture files (*_layer_1.png)", "*.png"));
+					new ExtensionFilter("Armor layer 1 texture files (*_layer_1.png)", "*.png"));
 			if (f1a != null && f1a.length > 0) {
 				String name = f1a[0].getName().toLowerCase(Locale.ENGLISH);
 				if (name.endsWith("_layer_1.png") && !name.equals("_layer_1.png")) {
@@ -91,7 +91,7 @@ public class TextureImportDialogs {
 
 		p2.addActionListener(event -> {
 			File[] f2a = FileDialogs.getFileChooserDialog(mcreator, FileChooserType.OPEN, false, null,
-					new FileChooser.ExtensionFilter("Armor layer 2 texture files (*_layer_2.png)", "*.png"));
+					new ExtensionFilter("Armor layer 2 texture files (*_layer_2.png)", "*.png"));
 			if (f2a != null && f2a.length > 0) {
 				String name = f2a[0].getName().toLowerCase(Locale.ENGLISH);
 				if (name.endsWith("_layer_2.png") && !name.equals("_layer_2.png")) {

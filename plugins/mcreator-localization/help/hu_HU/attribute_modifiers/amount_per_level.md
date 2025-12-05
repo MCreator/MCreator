@@ -1,0 +1,1 @@
+Az attribútum módosításának mértéke. Ez az érték szorozódik a bájital hatásának szintjével.
