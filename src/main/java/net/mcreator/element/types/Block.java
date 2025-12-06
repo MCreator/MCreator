@@ -268,7 +268,7 @@ import java.util.stream.Collectors;
 						"entity/signs/" + getModElement().getRegistryName() + ".png");
 				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 			} catch (Exception e) {
-				LOG.error("Failed to sign texture", e);
+				LOG.error("Failed to copy sign texture", e);
 			}
 		}
 	}
