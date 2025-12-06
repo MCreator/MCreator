@@ -37,6 +37,7 @@
 package ${package}.init;
 
 <#assign hasTintedBlocks = false>
+<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
 <#list blocks as block>
 	<#if block.getModElement().getTypeString() == "block">
 		<#if block.tintType != "No tint">
@@ -52,7 +53,7 @@ package ${package}.init;
 <#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
-public class ${JavaModName}Blocks {
+<#if signs?size != 0>@EventBusSubscriber </#if>public class ${JavaModName}Blocks {
 
 	public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(${JavaModName}.MODID);
 
@@ -62,6 +63,9 @@ public class ${JavaModName}Blocks {
             public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
 			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
+			<#if (block.getModElement().getTypeString() == "block") && (block.blockBase! == "Sign")>
+				public static <#if !has_chunks>final</#if> DeferredBlock<Block> WALL_${block.getModElement().getRegistryNameUpper()};
+			</#if>
 		</#if>
 	</#list>
 	</@javacompress>
@@ -75,6 +79,10 @@ public class ${JavaModName}Blocks {
 			<#else>
 				${block.getModElement().getRegistryNameUpper()} =
 					register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+				<#if (block.getModElement().getTypeString() == "block") && (block.blockBase! == "Sign")>
+					WALL_${block.getModElement().getRegistryNameUpper()} =
+						register("wall_${block.getModElement().getRegistryName()}", Wall${block.getModElement().getName()}Block::new);
+				</#if>
 			</#if>
 		</#list>
 	}
@@ -93,8 +101,9 @@ public class ${JavaModName}Blocks {
 		return REGISTRY.registerBlock(name, supplier);
 	}
 
-	<#if hasTintedBlocks>
+	<#if hasTintedBlocks || (signs?size != 0)>
 	@EventBusSubscriber(Dist.CLIENT) public static class BlocksClientSideHandler {
+		<#if hasTintedBlocks>
 		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
@@ -104,6 +113,23 @@ public class ${JavaModName}Blocks {
 				</#if>
 			</#list>
 		}
+		</#if>
+
+		<#if signs?size != 0>
+		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
+			<#list signs as block>
+				Sheets.addWoodType(${JavaModName}WoodTypes.${block.getModElement().getRegistryNameUpper()}_WOOD_TYPE);
+			</#list>
+		}
+		</#if>
+	}
+	</#if>
+
+	<#if signs?size != 0>
+	@SubscribeEvent public static void registerSigns(BlockEntityTypeAddBlocksEvent event) {
+		<#list signs as block>
+			event.modify(BlockEntityType.SIGN, ${block.getModElement().getRegistryNameUpper()}.get(), WALL_${block.getModElement().getRegistryNameUpper()}.get());
+		</#list>
 	}
 	</#if>
 

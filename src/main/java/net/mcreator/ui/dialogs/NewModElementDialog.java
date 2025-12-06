@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Block;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -29,11 +30,14 @@ import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
+import java.util.Objects;
+import java.util.Optional;
 
 public class NewModElementDialog {
 
@@ -50,13 +54,28 @@ public class NewModElementDialog {
 				L10N.t("dialog.new_modelement.title_window", type.getReadableName()), type.getIcon(),
 				new OptionPaneValidator() {
 					@Override public ValidationResult validate(JComponent component) {
-						String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
+						String elementName = ((VTextField) component).getText();
+						String regNameString = RegistryNameFixer.fromCamelCase(elementName);
 						regName.setText(L10N.t("dialog.new_modelement.registry_name",
 								regNameString == null || regNameString.isEmpty() ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
-						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-								L10N.t("common.mod_element_name")).validate();
+						return new CompoundValidator(
+								new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name")),
+								// Avoid collision between new mod element and existing signs
+								() -> {
+									Optional<ModElement> conflictingElement = mcreator.getWorkspace().getModElements()
+											.stream()
+											.filter(me -> me.getType() == ModElementType.BLOCK && "Sign".equals(
+													((Block) Objects.requireNonNull(
+															me.getGeneratableElement())).blockBase))
+											.filter(me -> ("Wall" + me.getName()).equals(elementName)).findFirst();
+									return conflictingElement.map(
+											modElement -> new ValidationResult(ValidationResult.Type.ERROR,
+													L10N.t("dialog.new_modelement.error_name_conflict", elementName,
+															modElement.getName()))).orElse(ValidationResult.PASSED);
+								}).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null, breadcrumb.getInScrollPane(), regName);
