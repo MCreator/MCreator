@@ -352,8 +352,23 @@ public class WebView extends JPanel implements Closeable {
 	}
 
 	@Override public void close() {
+		remove(cefComponent);
+
+		callbackExecutor.shutdownNow();
+
+		browser.stopLoad();
+		browser.setCloseAllowed();
 		browser.close(true);
+
+		client.removeMessageRouter(router);
 		router.dispose();
+
+		client.removeDisplayHandler();
+		client.removeContextMenuHandler();
+		client.removeKeyboardHandler();
+		client.removeRequestHandler();
+		client.removeFocusHandler();
+		client.removeLoadHandler();
 		client.dispose();
 	}
 
