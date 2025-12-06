@@ -38,9 +38,8 @@ public class ItemToBedrockConverter implements IConverter {
 
 		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
 			BEItem beitem = new BEItem(new ModElement(workspace, item.getModElement().getName(), ModElementType.BEITEM));
-
-			beitem.texture = item.texture;
 			beitem.name = item.name;
+			beitem.texture = item.texture;
 			beitem.stackSize = item.stackSize;
 			beitem.useDuration = item.useDuration;
 			beitem.maxDurability = item.damageCount;
@@ -52,9 +51,7 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.foodSaturation = item.saturation;
 			beitem.foodIsMeat = item.isMeat;
 			beitem.foodCanAlwaysEat = item.isAlwaysEdible;
-
 			return beitem;
-
 		}
 
 		return item;
@@ -63,4 +60,5 @@ public class ItemToBedrockConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 81;
 	}
+
 }
