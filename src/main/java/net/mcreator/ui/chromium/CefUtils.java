@@ -56,6 +56,12 @@ public class CefUtils {
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
 			JCefAppConfig config = JCefAppConfig.getInstance();
+
+			if (TestUtil.isRunningInGitHubActions()) {
+				config.getAppArgsAsList().add("--disable-gpu");
+				config.getAppArgsAsList().add("--disable-gpu-compositing");
+			}
+
 			List<String> appArgs = config.getAppArgsAsList();
 
 			CefSettings settings = config.getCefSettings();
