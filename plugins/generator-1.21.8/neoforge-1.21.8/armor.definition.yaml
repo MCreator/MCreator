@@ -159,7 +159,7 @@ tags:
     condition: enableBoots
     entry: "CUSTOM:@NAME.boots"
   - tag: ITEMS:@modid:@registryname_repair_items
-    entryprovider: data.getRepairItemsAsStringList()
+    entryprovider: getRepairItemsAsStringList()
 
 localizationkeys:
   - key: item.@modid.@registryname_helmet

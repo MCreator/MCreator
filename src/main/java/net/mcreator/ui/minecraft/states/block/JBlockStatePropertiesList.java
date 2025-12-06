@@ -45,11 +45,11 @@ import java.util.stream.Collectors;
 
 import static net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS;
 
-public class JBlockPropertiesStatesList extends JEntriesList {
+public class JBlockStatePropertiesList extends JEntriesList {
 
 	private final Supplier<Collection<String>> nonUserProvidedProperties;
 
-	private final List<JBlockPropertiesListEntry> propertiesList = new ArrayList<>();
+	private final List<JBlockStatePropertiesListEntry> propertiesList = new ArrayList<>();
 
 	private final JPanel propertyEntries = new JPanel();
 
@@ -60,7 +60,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	private final JProgressBar propertiesCap = new JProgressBar();
 	private final JLabel propertiesCapLabel = new JLabel();
 
-	public JBlockPropertiesStatesList(MCreator mcreator, IHelpContext gui,
+	public JBlockStatePropertiesList(MCreator mcreator, IHelpContext gui,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
 		super(mcreator, new BorderLayout(0, 10), gui);
 		this.nonUserProvidedProperties = nonUserProvidedProperties;
@@ -116,7 +116,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private void recalculatePropertiesCap() {
 		propertyCombinations = BlockStatePropertyUtils.getNumberOfPropertyCombinations(
-				propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).map(PropertyDataWithValue::property)
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getEntry).map(PropertyDataWithValue::property)
 						.collect(Collectors.toList()));
 
 		int cappedPropertyCombinations = Math.min(propertyCombinations, MAX_PROPERTY_COMBINATIONS);
@@ -150,7 +150,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private void createPropertiesEntry() {
 		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showCreateDialog(mcreator,
-				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData).collect(Collectors.toList()),
 				nonUserProvidedProperties);
 		if (newEntry != null) {
 			addPropertiesEntry(newEntry);
@@ -159,7 +159,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 
 	private void addPropertyFromDataList() {
 		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showImportDialog(mcreator,
-				propertiesList.stream().map(JBlockPropertiesListEntry::getPropertyData).collect(Collectors.toList()),
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData).collect(Collectors.toList()),
 				nonUserProvidedProperties);
 		if (newEntry != null) {
 			addPropertiesEntry(newEntry);
@@ -167,14 +167,14 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
-		JBlockPropertiesListEntry pe = new JBlockPropertiesListEntry(this, gui, propertyEntries, propertiesList);
+		JBlockStatePropertiesListEntry pe = new JBlockStatePropertiesListEntry(this, gui, propertyEntries, propertiesList);
 		pe.setEntry(data);
 		registerEntryUI(pe);
 
 		recalculatePropertiesCap();
 	}
 
-	void removeProperty(JBlockPropertiesListEntry entry) {
+	void removeProperty(JBlockStatePropertiesListEntry entry) {
 		propertiesList.remove(entry);
 		propertyEntries.remove(entry);
 		propertyEntries.revalidate();
@@ -184,7 +184,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 	}
 
 	public List<PropertyDataWithValue<?>> getProperties() {
-		return propertiesList.stream().map(JBlockPropertiesListEntry::getEntry).collect(Collectors.toList());
+		return propertiesList.stream().map(JBlockStatePropertiesListEntry::getEntry).collect(Collectors.toList());
 	}
 
 	public void setProperties(List<PropertyDataWithValue<?>> properties) {
@@ -197,7 +197,7 @@ public class JBlockPropertiesStatesList extends JEntriesList {
 			validationResult = new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.block.custom_properties.error_too_many_combinations"));
 		}
-		for (JBlockPropertiesListEntry entry : propertiesList) {
+		for (JBlockStatePropertiesListEntry entry : propertiesList) {
 			if (nonUserProvidedProperties.get()
 					.contains(BlockStatePropertyUtils.propertyRegistryName(entry.getPropertyData()))) {
 				entry.setBorder(BorderFactory.createCompoundBorder(

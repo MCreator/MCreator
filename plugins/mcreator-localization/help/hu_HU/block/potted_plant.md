@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy milyen blokk legyen a virágcserépben.

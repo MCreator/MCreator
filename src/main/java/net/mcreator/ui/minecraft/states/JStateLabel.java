@@ -72,6 +72,8 @@ public class JStateLabel extends JPanel {
 
 		add("East", edit);
 
+		setOpaque(false);
+
 		refreshState();
 	}
 

@@ -48,7 +48,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
-import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
+import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -240,7 +240,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock, pottedPlantModel });
 
-	private JBlockPropertiesStatesList blockStates;
+	private JBlockStatePropertiesList statePropertiesList;
 	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
 			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
@@ -422,8 +422,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
-		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+		statePropertiesList = new JBlockStatePropertiesList(mcreator, this, this::nonUserProvidedProperties);
+		statePropertiesList.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		animations = new JBlockEntityAnimationList(mcreator, this);
 
@@ -780,7 +780,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		bsPane.setOpaque(false);
-		bsPane.add("Center", blockStates);
+		bsPane.add("Center", statePropertiesList);
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -1447,7 +1447,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
-		addPage(L10N.t("elementgui.block.page_states"), bsPane, false).lazyValidate(blockStates::getValidationResult);
+		addPage(L10N.t("elementgui.block.page_states"), bsPane, false).lazyValidate(statePropertiesList::getValidationResult);
 		addPage(L10N.t("elementgui.block.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
@@ -1687,7 +1687,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		guiBoundTo.setEntry(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
-		blockStates.setProperties(block.customProperties);
+		statePropertiesList.setProperties(block.customProperties);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1856,7 +1856,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.guiBoundTo = guiBoundTo.getEntry();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
-		block.customProperties = blockStates.getProperties();
+		block.customProperties = statePropertiesList.getProperties();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
