@@ -9,7 +9,7 @@
     },
 
     "components": {
-      "minecraft:foil": ${data.hasGlint},
+      <#if data.hasGlint>"minecraft:foil": true</#if>,
       "minecraft:max_stack_size": ${data.stackSize},
       "minecraft:max_damage": ${data.maxDurability},
       <#if data.isFood>
@@ -19,7 +19,7 @@
         "nutritionalValue": "${thelper.mapToString(data.foodSaturation, 0, 1.2, "poor", "low", "normal", "good", "high", "supernatural")}",
         "saturation_modifier": "low",
         "can_always_eat": ${data.foodCanAlwaysEat},
-        "is_meat": ${data.foodIsMeat}
+        <#if data.foodIsMeat>"is_meat": true</#if>
       },
       </#if>
       "minecraft:creative_category": "Items"
