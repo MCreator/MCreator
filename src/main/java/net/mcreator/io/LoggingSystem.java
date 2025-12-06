@@ -42,12 +42,8 @@ public class LoggingSystem {
 
 		//noinspection resource
 		System.setErr(new PrintStream(
-				new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR).withCustomLogAction(log -> {
-					// Fail tests if anything is logged to STDERR
-					if (TestUtil.isTestingEnvironment()) {
-						TestUtil.failIfTestingEnvironment();
-					}
-				}), true));
+				new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR).withCustomLogAction(
+						log -> TestUtil.failIfTestingEnvironment()), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 	}

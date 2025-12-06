@@ -127,7 +127,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				// this is here for compatibility with workspaces before 2020.4
 				.map(e -> {
 					if (e.getRawType().equals("int"))
-						return new Dependency(e.getName(), "number");
+						return new Dependency(e.name(), "number");
 					return e;
 				}).collect(Collectors.toList());
 	}

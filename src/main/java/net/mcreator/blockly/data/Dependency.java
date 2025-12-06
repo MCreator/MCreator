@@ -24,19 +24,12 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dependency implements Comparable<Dependency> {
-
-	private final String name;
-	private final String type;
-
-	public Dependency(String name, String type) {
-		this.name = name;
-		this.type = type;
-	}
+public record Dependency(String name, String type) implements Comparable<Dependency> {
 
 	@Override public int compareTo(Dependency o) {
 		return (type + ":" + name).compareTo(o.type + ":" + o.name);
@@ -52,7 +45,7 @@ public class Dependency implements Comparable<Dependency> {
 		return name.hashCode();
 	}
 
-	@Override public String toString() {
+	@Nonnull @Override public String toString() {
 		return L10N.t("common.dependency", name, type);
 	}
 
@@ -64,13 +57,9 @@ public class Dependency implements Comparable<Dependency> {
 		return type;
 	}
 
-	@SuppressWarnings("unused") public String getBlocklyType() {
+	public String getBlocklyType() {
 		VariableType varType = VariableTypeLoader.INSTANCE.fromName(type);
 		return varType != null ? varType.getBlocklyVariableType() : "";
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Color getColor() {
@@ -134,4 +123,19 @@ public class Dependency implements Comparable<Dependency> {
 		}
 		return retval.toArray(new Dependency[0]);
 	}
+
+	public static class BlocklyDependency {
+
+		public final String name;
+		public final String readableName;
+		public final String blocklyType;
+
+		public BlocklyDependency(Dependency dependency) {
+			this.name = dependency.name;
+			this.readableName = dependency.toString();
+			this.blocklyType = dependency.getBlocklyType();
+		}
+
+	}
+
 }
