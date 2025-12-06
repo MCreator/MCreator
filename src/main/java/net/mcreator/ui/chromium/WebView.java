@@ -30,15 +30,16 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.browser.CefMessageRouter;
 import org.cef.browser.CefRendering;
+import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
-import org.cef.handler.CefFocusHandlerAdapter;
-import org.cef.handler.CefKeyboardHandlerAdapter;
-import org.cef.handler.CefLoadHandlerAdapter;
-import org.cef.handler.CefMessageRouterHandlerAdapter;
+import org.cef.handler.*;
+import org.cef.misc.BoolRef;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.KeyEvent;
 import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class WebView extends JPanel implements Closeable {
 
 	// Helper for page load listeners
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
+
+	// Helper for JS dialog handlers
+	private final List<JSDialogListener> jsDialogListeners = new ArrayList<>();
 
 	// Helpers for executeScript
 	private CountDownLatch executeScriptLatch;
@@ -215,6 +219,21 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
+		this.client.addJSDialogHandler(new CefJSDialogHandlerAdapter() {
+			@Override
+			public boolean onJSDialog(CefBrowser browser, String origin_url, JSDialogType dialog_type,
+					String message_text, String default_prompt_text, CefJSDialogCallback callback,
+					BoolRef suppress_message) {
+				for (JSDialogListener listener : jsDialogListeners) {
+					if (listener.onJSDialog(browser, origin_url, dialog_type, message_text, default_prompt_text,
+							callback, suppress_message)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
 
@@ -335,16 +354,12 @@ public class WebView extends JPanel implements Closeable {
 		executeScript("window['%s'] = '%s';".formatted(name, value), false);
 	}
 
-	CefBrowser getBrowser() {
-		return browser;
-	}
-
-	CefClient getClient() {
-		return client;
-	}
-
 	CefMessageRouter getRouter() {
 		return router;
+	}
+
+	void addJSDialogListener(JSDialogListener listener) {
+		jsDialogListeners.add(listener);
 	}
 
 	public void addLoadListener(PageLoadListener listener) {
@@ -369,11 +384,18 @@ public class WebView extends JPanel implements Closeable {
 		client.removeRequestHandler();
 		client.removeFocusHandler();
 		client.removeLoadHandler();
+		client.removeJSDialogHandler();
 		client.dispose();
 	}
 
 	public interface PageLoadListener {
 		void pageLoaded();
+	}
+
+	public interface JSDialogListener {
+		boolean onJSDialog(CefBrowser browser, String origin_url, CefJSDialogHandler.JSDialogType dialog_type,
+				String message_text, String default_prompt_text, CefJSDialogCallback callback,
+				BoolRef suppress_message);
 	}
 
 	public static void preload() {

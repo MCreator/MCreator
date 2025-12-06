@@ -26,11 +26,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
-import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
-import org.cef.handler.CefJSDialogHandler;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
-import org.cef.misc.BoolRef;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -111,29 +108,15 @@ public class CefJavaBridgeHandler {
 		}, false);
 
 		// Blocking calls via JS dialogs (hacky, but the only way to suspend CEF IPC and wait for Java to provide value in a sync manner)
-		webView.getBrowser().getClient().addJSDialogHandler(new CefJSDialogHandler() {
-			@Override
-			public boolean onJSDialog(CefBrowser browser, String origin_url, JSDialogType dialog_type,
-					String message_text, String default_prompt_text, CefJSDialogCallback callback,
-					BoolRef suppress_message) {
-				if (!message_text.startsWith(prefix))
-					return false;
+		webView.addJSDialogListener(
+				(browser, origin_url, dialog_type, message_text, default_prompt_text, callback, suppress_message) -> {
+					if (!message_text.startsWith(prefix))
+						return false;
 
-				String result = invokeBridge(message_text, null);
-				callback.Continue(true, result != null ? result : "");
-				return true;
-			}
-
-			@Override
-			public boolean onBeforeUnloadDialog(CefBrowser browser, String message_text, boolean is_reload,
-					CefJSDialogCallback callback) {
-				return false;
-			}
-
-			@Override public void onResetDialogState(CefBrowser browser) {}
-
-			@Override public void onDialogClosed(CefBrowser browser) {}
-		});
+					String result = invokeBridge(message_text, null);
+					callback.Continue(true, result != null ? result : "");
+					return true;
+				});
 	}
 
 	@Nullable private String invokeBridge(String request, @Nullable Consumer<Object> callback) {
