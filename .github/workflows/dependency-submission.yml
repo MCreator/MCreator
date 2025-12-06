@@ -19,6 +19,8 @@ jobs:
           java-version: '21.0.9'
           distribution: 'jetbrains'
           java-package: 'jdk+jcef'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate and submit dependency graph
         if: github.repository == 'MCreator/MCreator'
         uses: gradle/actions/dependency-submission@v4
