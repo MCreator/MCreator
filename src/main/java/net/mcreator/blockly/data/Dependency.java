@@ -49,6 +49,11 @@ public record Dependency(String name, String type) implements Comparable<Depende
 		return L10N.t("common.dependency", name, type);
 	}
 
+	// For backward compatibility with FTL templates before this class was changed to a record
+	public String getName() {
+		return name;
+	}
+
 	public String getType(Workspace workspace) {
 		return new NameMapper(workspace, "types").getMapping(type);
 	}
