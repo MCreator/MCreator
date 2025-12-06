@@ -1,1 +1,1 @@
-You can activate melee damage for your item with this parameter, and set a value of damage.
+This parameter determines how much attack damage your item will deal against entities.
