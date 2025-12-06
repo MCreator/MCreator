@@ -515,32 +515,32 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe
     condition: "destroyTool %= pickaxe"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/axe
     condition: "destroyTool %= axe"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/shovel
     condition: "destroyTool %= shovel"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/hoe
     condition: "destroyTool %= hoe"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:needs_stone_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= STONE"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_iron_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= IRON"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_diamond_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= DIAMOND"
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:stairs
     condition: "blockBase %= Stairs"
@@ -604,10 +604,10 @@ tags:
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:climbable
     condition: isLadder
-    entryprovider: data.getProvidedBlocks()
+    entryprovider: getProvidedBlocks()
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:
