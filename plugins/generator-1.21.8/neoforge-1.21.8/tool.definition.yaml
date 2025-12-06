@@ -56,7 +56,7 @@ tags:
   - tag: ITEMS:minecraft:enchantable/fishing
     condition: "toolType %= Fishing rod"
   - tag: ITEMS:@modid:@registryname_repair_items
-    entryprovider: data.getRepairItemsAsStringList()
+    entryprovider: getRepairItemsAsStringList()
 
 localizationkeys:
   - key: item.@modid.@registryname

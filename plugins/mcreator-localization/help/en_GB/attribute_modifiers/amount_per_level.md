@@ -1,0 +1,1 @@
+The amount by which to modify the attribute. This value is multiplied by the potion effect level.

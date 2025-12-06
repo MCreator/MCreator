@@ -243,21 +243,16 @@ public class ConverterRegistry {
 		return converters_legacy.get(modElementType);
 	}
 
-	/**
-	 * <p>Here we add all the ModElementTypes previously used by the Bedrock Generator.
-	 * This way, we can apply the converter to those mod elements without blocking the opening of the workspace.</p>
-	 */
-	private static final Set<ModElementType<?>> ADDONS_OLD_METS = new HashSet<>() {{
-		add(ModElementType.ITEM);
+	// List of METs that now have specialized variant for Bedrock Edition specifically
+	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
+		add(ModElementType.ITEM); // -> BEITEM
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
 		Set<String> convertibleMETs = new HashSet<>(converters_legacy.keySet());
-
 		if (generatorFlavor == GeneratorFlavor.ADDON) {
-			ADDONS_OLD_METS.stream().map(ModElementType::getRegistryName).forEach(convertibleMETs::add);
+			addon_legacy_met_converters.stream().map(ModElementType::getRegistryName).forEach(convertibleMETs::add);
 		}
-
 		return convertibleMETs;
 	}
 
