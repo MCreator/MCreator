@@ -9,6 +9,3 @@ templates:
 localizationkeys:
   - key: item.@modid:@registryname.name
     mapto: name
-
-field_inclusions: [texture, name, glowCondition, stackSize, damageCount, damageVsEntity, enableMeleeDamage,
-                   isFood, useDuration, nutritionalValue, saturation, isAlwaysEdible, isMeat]

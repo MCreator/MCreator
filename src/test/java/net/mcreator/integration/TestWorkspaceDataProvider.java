@@ -36,6 +36,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -1696,6 +1697,22 @@ public class TestWorkspaceDataProvider {
 				attribute.addToAllEntities = true;
 			}
 			return attribute;
+		} else if (ModElementType.BEITEM.equals(modElement.getType())) {
+			BEItem beitem = new BEItem(modElement);
+			beitem.name = modElement.getName();
+			beitem.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			beitem.hasGlint = _true;
+			beitem.stackSize = 52;
+			beitem.useDuration = 8;
+			beitem.maxDurability = 4;
+			beitem.enableMeleeDamage = !_true;
+			beitem.damageVsEntity = 6.53;
+			beitem.isFood = _true;
+			beitem.foodNutritionalValue = 5;
+			beitem.foodSaturation = 0.82;
+			beitem.foodIsMeat = _true;
+			beitem.foodCanAlwaysEat = _true;
+			return beitem;
 		}
 		return null;
 	}
