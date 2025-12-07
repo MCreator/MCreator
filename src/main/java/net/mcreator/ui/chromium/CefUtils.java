@@ -77,7 +77,6 @@ public class CefUtils {
 				// Reduce RAM usage as CI/CD has limited RAM
 				config.getAppArgsAsList().add("--renderer-process-limit=1");
 				config.getAppArgsAsList().add("--js-flags=--lite-mode");
-				config.getAppArgsAsList().add("--single-process");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
