@@ -13,7 +13,7 @@
       "minecraft:max_stack_size": ${data.stackSize},
       "minecraft:max_damage": ${data.maxDurability},
       <#if data.isFood>
-      "minecraft:use_duration": ${data.useDuration},
+      "minecraft:use_duration": ${data.useDuration * 20},
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
         "nutritionalValue": "${thelper.mapToString(data.foodSaturation, 0, 1.2, "poor", "low", "normal", "good", "high", "supernatural")}",

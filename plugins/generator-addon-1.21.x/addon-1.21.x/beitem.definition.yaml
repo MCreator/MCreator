@@ -9,3 +9,5 @@ templates:
 localizationkeys:
   - key: item.@modid:@registryname.name
     mapto: name
+
+field_exclusions: [foodIsMeat]
