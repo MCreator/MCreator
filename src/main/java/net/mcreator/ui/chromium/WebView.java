@@ -35,6 +35,7 @@ import org.cef.callback.CefQueryCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WebView extends JPanel implements Closeable {
@@ -68,6 +70,8 @@ public class WebView extends JPanel implements Closeable {
 	// Helpers for executeScript
 	private CountDownLatch executeScriptLatch;
 	private final AtomicReference<String> executeScriptResult = new AtomicReference<>();
+
+	private boolean isClosing = false;
 
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
@@ -95,7 +99,7 @@ public class WebView extends JPanel implements Closeable {
 		 * Immediately create the browser if:
 		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
 		 * - on Windows, it reduces loading flickering
-		 * - on tests, brwoser is never shown so we need to preload it so it actually loads content
+		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
 		 */
 		if (forcePreload || OS.isWindows() || TestUtil.isTestingEnvironment())
 			this.browser.createImmediately(); // needed so tests that don't render also work
@@ -305,7 +309,10 @@ public class WebView extends JPanel implements Closeable {
 		executeScript(javaScript, false);
 	}
 
-	public synchronized String executeScript(String javaScript, boolean requestRetval) {
+	@Nullable public synchronized String executeScript(String javaScript, boolean requestRetval) {
+		if (isClosing)
+			return null;
+
 		executeScriptLatch = new CountDownLatch(1);
 		executeScriptResult.set(null);
 
@@ -327,7 +334,8 @@ public class WebView extends JPanel implements Closeable {
 		browser.executeJavaScript(script, "[WebView injected]", 0);
 
 		try {
-			executeScriptLatch.await();
+			// Timeout at 60 seconds as JS is blocking and nothing should take that long
+			executeScriptLatch.await(60, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
 		}
@@ -367,6 +375,8 @@ public class WebView extends JPanel implements Closeable {
 	}
 
 	@Override public void close() {
+		isClosing = true;
+
 		remove(cefComponent);
 
 		browser.stopLoad();
@@ -386,6 +396,10 @@ public class WebView extends JPanel implements Closeable {
 		client.dispose();
 
 		callbackExecutor.shutdownNow();
+
+		if (executeScriptLatch != null) {
+			executeScriptLatch.countDown();
+		}
 	}
 
 	public interface PageLoadListener {
