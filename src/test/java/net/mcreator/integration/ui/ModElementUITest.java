@@ -143,6 +143,9 @@ import static org.junit.jupiter.api.Assertions.*;
 				assertEquals(exportedJSON, exportedJSON2);
 			}
 		}
+
+		// Suggest GC clear after the test is done
+		System.gc();
 	}
 
 }
