@@ -113,6 +113,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
+	private JComponent dropTierPanel;
+	private JComponent attackDamagePanel;
+	private JComponent attackSpeedPanel;
+	private JComponent efficiencyPanel;
 	private JComponent blockingModelPanel;
 	private JComponent blocksAffectedPanel;
 
@@ -273,21 +277,21 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")),
 				toolType));
 
-		toolProperties.add(PanelUtils.gridElements(1, 2,
+		toolProperties.add(dropTierPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
 						L10N.label("elementgui.tool.blocks_drop_tier")), blockDropsTier));
 
 		toolProperties.add(additionalDropCondition);
 
-		toolProperties.add(PanelUtils.gridElements(1, 2,
+		toolProperties.add(efficiencyPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
 						L10N.label("elementgui.tool.efficiency")), efficiency));
 
-		toolProperties.add(PanelUtils.gridElements(1, 2,
+		toolProperties.add(attackDamagePanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 						L10N.label("elementgui.tool.damage_vs_entity")), damageVsEntity));
 
-		toolProperties.add(PanelUtils.gridElements(1, 2,
+		toolProperties.add(attackSpeedPanel = PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
 						L10N.label("elementgui.tool.attack_speed")), attackSpeed));
 
@@ -350,26 +354,26 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			blockingModelPanel.setVisible(selectedToolType.equals("Shield"));
 			blocksAffectedPanel.setVisible(selectedToolType.equals("Special"));
 
-			blockDropsTier.setEnabled(true);
-			additionalDropCondition.setEnabled(true);
-			efficiency.setEnabled(true);
-			damageVsEntity.setEnabled(true);
-			attackSpeed.setEnabled(true);
+			dropTierPanel.setVisible(true);
+			additionalDropCondition.setVisible(true);
+			efficiencyPanel.setVisible(true);
+			attackDamagePanel.setVisible(true);
+			attackSpeedPanel.setVisible(true);
 
 			switch ((String) toolType.getSelectedItem()) {
-			case "Special" -> blockDropsTier.setEnabled(false);
+			case "Special" -> dropTierPanel.setVisible(false);
 			case "Fishing rod", "Shield" -> {
-				blockDropsTier.setEnabled(false);
-				additionalDropCondition.setEnabled(false);
-				efficiency.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
+				dropTierPanel.setVisible(false);
+				additionalDropCondition.setVisible(false);
+				efficiencyPanel.setVisible(false);
+				attackDamagePanel.setVisible(false);
+				attackSpeedPanel.setVisible(false);
 			}
 			case "Shears" -> {
-				blockDropsTier.setEnabled(false);
-				additionalDropCondition.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
+				dropTierPanel.setVisible(false);
+				additionalDropCondition.setVisible(false);
+				attackDamagePanel.setVisible(false);
+				attackSpeedPanel.setVisible(false);
 			}
 			}
 		}
