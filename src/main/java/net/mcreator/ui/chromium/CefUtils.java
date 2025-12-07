@@ -78,7 +78,6 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--renderer-process-limit=1");
 				config.getAppArgsAsList().add("--js-flags=--lite-mode");
 				config.getAppArgsAsList().add("--single-process");
-				config.getAppArgsAsList().add("--disable-breakpad");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
