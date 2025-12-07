@@ -41,7 +41,7 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.name = item.name;
 			beitem.texture = item.texture;
 			beitem.stackSize = item.stackSize;
-			beitem.useDuration = item.useDuration;
+			beitem.useDuration = (double) item.useDuration / 20;
 			beitem.maxDurability = item.damageCount;
 			beitem.enableMeleeDamage = item.enableMeleeDamage;
 			beitem.damageVsEntity = item.damageVsEntity;
@@ -49,7 +49,6 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.isFood = item.isFood;
 			beitem.foodNutritionalValue = item.nutritionalValue;
 			beitem.foodSaturation = item.saturation;
-			beitem.foodIsMeat = item.isMeat;
 			beitem.foodCanAlwaysEat = item.isAlwaysEdible;
 			return beitem;
 		}
