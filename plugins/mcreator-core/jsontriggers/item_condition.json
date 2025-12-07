@@ -33,6 +33,7 @@
     "group": "items",
     "toolbox_id": "components",
     "toolbox_init": [
+      "<mutation inputs=\"0\"></mutation>",
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
     ],
     "inputs": [
