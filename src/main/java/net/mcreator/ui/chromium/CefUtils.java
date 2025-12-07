@@ -60,6 +60,8 @@ public class CefUtils {
 			if (TestUtil.isRunningInGitHubActions()) {
 				config.getAppArgsAsList().add("--disable-gpu");
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
+				config.getAppArgsAsList().add("--disable-gpu-vsync");
+				config.getAppArgsAsList().add("--disable-features=Vulkan");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
