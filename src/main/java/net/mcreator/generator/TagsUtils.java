@@ -24,9 +24,12 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -34,6 +37,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TagsUtils {
+
+	private static final Logger LOG = LogManager.getLogger(TagsUtils.class);
 
 	public static void generateTagsFiles(Generator generator, Workspace workspace, Map<?, ?> tagsSpecification) {
 		workspace.getTagElements().entrySet().parallelStream().forEach(tag -> {
@@ -103,8 +108,8 @@ public class TagsUtils {
 					if (tagRawName.contains("@registryname"))
 						removeAllManagedTagEntries(generator, tag);
 
-					@SuppressWarnings("unchecked") Collection<String> entryprovider = (Collection<String>) TemplateExpressionParser.processFTLExpression(
-							generator, (String) map.get("entryprovider"), element);
+					Collection<String> entryprovider = getTagEntriesForExpression(generator, element,
+							(String) map.get("entryprovider"));
 					if (entryprovider != null) {
 						for (String entry : entryprovider) {
 							handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
@@ -126,6 +131,23 @@ public class TagsUtils {
 				}
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked") @Nullable
+	private static Collection<String> getTagEntriesForExpression(Generator generator, GeneratableElement element,
+			String entryProviderRaw) {
+		try {
+			if (entryProviderRaw.startsWith("${")) {
+				return (Collection<String>) TemplateExpressionParser.processFTLExpression(generator,
+						entryProviderRaw.substring(2, entryProviderRaw.length() - 1), element);
+			} else {
+				return (Collection<String>) TemplateExpressionParser.getValueFrom(entryProviderRaw, element);
+			}
+		} catch (Throwable e) {
+			LOG.warn("Failed to entries for expression {}", entryProviderRaw, e);
+			TestUtil.failIfTestingEnvironment();
+		}
+		return null;
 	}
 
 	private static void removeAllManagedTagEntries(Generator generator, TagElement tag) {
