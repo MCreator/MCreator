@@ -18,8 +18,7 @@
         "nutrition": ${data.foodNutritionalValue},
         "nutritionalValue": "${thelper.mapToString(data.foodSaturation, 0, 1.2, "poor", "low", "normal", "good", "high", "supernatural")}",
         "saturation_modifier": "low",
-        "can_always_eat": ${data.foodCanAlwaysEat}<#if data.foodIsMeat>,
-        "is_meat": true</#if>
+        "can_always_eat": ${data.foodCanAlwaysEat}
       },
       </#if>
       "minecraft:creative_category": "Items"
