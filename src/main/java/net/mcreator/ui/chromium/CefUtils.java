@@ -79,7 +79,6 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--js-flags=--lite-mode");
 				config.getAppArgsAsList().add("--single-process");
 				config.getAppArgsAsList().add("--disable-breakpad");
-				config.getAppArgsAsList().add("--js-flags=\"--max_old_space_size=64\"");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
