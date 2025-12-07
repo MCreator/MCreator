@@ -152,6 +152,7 @@ public class WorkspaceGeneratorSetup {
 					} else {
 						FileUtils.copyInputStreamToFile(stream, outFile);
 					}
+					stream.close();
 				}
 			} catch (Exception e) {
 				LOG.error("Failed to copy workspace base file", e);
