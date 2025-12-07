@@ -28,6 +28,7 @@ import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.util.Tuple;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +43,7 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -74,10 +76,12 @@ public class PluginLoader extends URLClassLoader {
 
 	private final Set<Module> pluginsModules;
 
+	private final Map<Tuple<String, String>, Set<String>> resourcesCache;
+
 	/**
 	 * <p>The core of the detection and loading</p>
 	 */
-	public PluginLoader() {
+	private PluginLoader() {
 		super(new URL[] {}, null);
 
 		this.plugins = new LinkedHashSet<>();
@@ -85,6 +89,8 @@ public class PluginLoader extends URLClassLoader {
 		this.failedPlugins = new LinkedHashSet<>();
 		this.pluginUpdates = new LinkedHashSet<>();
 		this.pluginsModules = new LinkedHashSet<>();
+
+		this.resourcesCache = new ConcurrentHashMap<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -124,7 +130,7 @@ public class PluginLoader extends URLClassLoader {
 							} catch (Exception e) {
 								for (StackTraceElement element : e.getStackTrace()) {
 									if (element.getClassName().equals(Introspector.class.getName())) {
-										// If class not found was triggered due to Introspector looking for
+										// If the class not found was triggered due to Introspector looking for
 										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
 										// not log error or mark plugin as failed by setting loaded_failure
 										throw e;
@@ -199,11 +205,14 @@ public class PluginLoader extends URLClassLoader {
 	 * @return <p>The path into a {@link Plugin} of all files inside the provided folder following the provided {@link Pattern} .</p>
 	 */
 	public Set<String> getResources(@Nullable String pkg, @Nullable Pattern pattern) {
-		Set<String> reflectionsRetval =
-				pattern != null ? this.reflections.getResources(pattern) : this.reflections.getResources(".*");
-		if (pkg == null)
-			return reflectionsRetval;
-		return reflectionsRetval.stream().filter(e -> e.replace("/", ".").startsWith(pkg)).collect(Collectors.toSet());
+		return resourcesCache.computeIfAbsent(new Tuple<>(pkg, pattern == null ? null : pattern.pattern()), tuple -> {
+			Set<String> reflectionsRetval =
+					pattern != null ? this.reflections.getResources(pattern) : this.reflections.getResources(".*");
+			if (pkg == null)
+				return reflectionsRetval;
+			return reflectionsRetval.stream().filter(e -> e.replace("/", ".").startsWith(pkg))
+					.collect(Collectors.toSet());
+		});
 	}
 
 	/**
