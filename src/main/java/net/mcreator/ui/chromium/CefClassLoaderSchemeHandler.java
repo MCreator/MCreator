@@ -90,17 +90,24 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	@Override public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
 		try {
 			int n = inputStream.read(dataOut, 0, bytesToRead);
-			if (n == -1)
+			if (n == -1) {
+				closeStream();
 				return false;
+			}
 			bytesRead.set(n);
 			return true;
 		} catch (IOException e) {
 			LOG.warn("Error reading resource: {}", e.getMessage());
+			closeStream();
 			return false;
 		}
 	}
 
 	@Override public void cancel() {
+		closeStream();
+	}
+
+	private void closeStream() {
 		try {
 			if (inputStream != null)
 				inputStream.close();
