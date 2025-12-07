@@ -50,18 +50,35 @@ public class CefUtils {
 	private static CefApp cefApp = null;
 
 	public static boolean useOSR() {
-		return OS.isLinux() && !TestUtil.isTestingEnvironment(); // TODO: OSR may also work on Linux, we just need to test
+		// TODO: OSR may also work on Linux, we just need to test
+		return OS.isLinux() && !TestUtil.isTestingEnvironment();
 	}
 
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
+			LOG.info("Initializing JCEF");
+
 			JCefAppConfig config = JCefAppConfig.getInstance();
 
 			if (TestUtil.isRunningInGitHubActions()) {
+				config.getAppArgsAsList().add("--headless");
+
 				config.getAppArgsAsList().add("--disable-gpu");
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
 				config.getAppArgsAsList().add("--disable-gpu-vsync");
 				config.getAppArgsAsList().add("--disable-features=Vulkan");
+				config.getAppArgsAsList().add("--ignore-gpu-blocklist");
+
+				config.getAppArgsAsList().add("--no-sandbox");
+				config.getAppArgsAsList().add("--disable-setuid-sandbox");
+
+				config.getAppArgsAsList().add("--disable-zygote");
+				config.getAppArgsAsList().add("--disable-dev-shm-usage");
+				config.getAppArgsAsList().add("--use-gl=swiftshader");
+
+				// Reduce RAM usage
+				config.getAppArgsAsList().add("--renderer-process-limit=1");
+				config.getAppArgsAsList().add("--js-flags=--lite-mode");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
@@ -73,7 +90,6 @@ public class CefUtils {
 					Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
-			settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
