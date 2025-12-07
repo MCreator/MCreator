@@ -58,6 +58,7 @@ public class BlocklyLoader {
 		add("blockpredicates");
 		add("blocks");
 		add("components");
+		add("itemcomponents");
 	}};
 	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
 	private final ExternalTriggerLoader externalTriggerLoader;

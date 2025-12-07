@@ -1,0 +1,22 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": false,
+  "output": "ItemCondition",
+  "colour": 90,
+  "mcreator": {
+    "group": "items",
+    "toolbox_id": "components",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "item"
+    ]
+  }
+}

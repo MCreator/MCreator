@@ -9,7 +9,8 @@
       "type": "field_number",
       "name": "min",
       "value": 1,
-      "precision": 1
+      "precision": 1,
+      "min": 1
     },
     {
       "type": "field_number",
@@ -19,21 +20,18 @@
     },
     {
       "type": "input_dummy"
-    },
-    {
-      "type": "input_dummy"
     }
   ],
-  "mutator": "item_enchanted_mutator",
+  "mutator": "item_condition_mutator",
   "inputsInline": false,
   "output": "ItemCondition",
-  "colour": 325,
+  "colour": 90,
   "extensions": [
     "min_max_fields_validator"
   ],
   "mcreator": {
     "group": "items",
-    "toolbox_id": "conditions",
+    "toolbox_id": "components",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
     ],
@@ -45,7 +43,10 @@
       "max"
     ],
     "repeating_inputs": [
-      "enchantment"
+      "predicateComponent"
+    ],
+    "warnings": [
+      "first_component_type_only"
     ]
   }
 }

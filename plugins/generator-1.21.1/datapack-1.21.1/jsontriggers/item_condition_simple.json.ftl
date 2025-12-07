@@ -1,0 +1,3 @@
+"item": {
+	"items": ${input$item}
+}
