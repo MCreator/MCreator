@@ -63,13 +63,13 @@ public class CefUtils {
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is hadless and without GPU
 				config.getAppArgsAsList().add("--headless");
+				config.getAppArgsAsList().add("--ignore-gpu-blocklist");
+				config.getAppArgsAsList().add("--no-sandbox");
+				config.getAppArgsAsList().add("--disable-setuid-sandbox");
 				config.getAppArgsAsList().add("--disable-gpu");
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
 				config.getAppArgsAsList().add("--disable-gpu-vsync");
 				config.getAppArgsAsList().add("--disable-features=Vulkan,UseSkiaRenderer");
-				config.getAppArgsAsList().add("--ignore-gpu-blocklist");
-				config.getAppArgsAsList().add("--no-sandbox");
-				config.getAppArgsAsList().add("--disable-setuid-sandbox");
 				config.getAppArgsAsList().add("--disable-zygote");
 				config.getAppArgsAsList().add("--disable-dev-shm-usage");
 				config.getAppArgsAsList().add("--use-gl=swiftshader"); // CPU rendering
@@ -77,6 +77,7 @@ public class CefUtils {
 				// Reduce RAM usage as CI/CD has limited RAM
 				config.getAppArgsAsList().add("--renderer-process-limit=1");
 				config.getAppArgsAsList().add("--js-flags=--lite-mode");
+				config.getAppArgsAsList().add("--disable-breakpad");
 			}
 
 			List<String> appArgs = config.getAppArgsAsList();
