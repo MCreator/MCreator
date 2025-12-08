@@ -60,6 +60,12 @@ public class CefUtils {
 
 			JCefAppConfig config = JCefAppConfig.getInstance();
 
+			config.getAppArgsAsList().add("--disable-extensions");
+			config.getAppArgsAsList().add("--disable-default-apps");
+			config.getAppArgsAsList().add("--disable-sync");
+			config.getAppArgsAsList().add("--disable-speech-api");
+			config.getAppArgsAsList().add("--mute-audio");
+
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is headless and without GPU
 				config.getAppArgsAsList().add("--headless");
