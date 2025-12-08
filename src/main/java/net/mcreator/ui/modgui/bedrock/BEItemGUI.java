@@ -32,6 +32,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -149,6 +150,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		page1group.addValidationElement(texture);
 
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
+
+		if (!isEditingMode()) {
+			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
+			name.setText(readableNameFromModElement);
+		}
 	}
 
 	private void updateFoodPanel() {
