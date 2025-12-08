@@ -91,9 +91,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	private void testModElementLoading(Random random) throws Exception {
 		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				mcreator.getGeneratorConfiguration())) {
+				mcreator.getGeneratorConfiguration(), true)) {
 			if (modElementType == ModElementType.CODE)
-				continue; // does not have regular handling so skip it
+				continue; // does not have regular handling, so skip it
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(
 					mcreator.getWorkspace(), modElementType, true, random);
