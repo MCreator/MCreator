@@ -69,7 +69,6 @@ public class CefUtils {
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is headless and without GPU
 				config.getAppArgsAsList().add("--headless");
-				config.getAppArgsAsList().add("--single-process");
 				config.getAppArgsAsList().add("--ignore-gpu-blocklist");
 				config.getAppArgsAsList().add("--no-sandbox");
 				config.getAppArgsAsList().add("--disable-setuid-sandbox");
