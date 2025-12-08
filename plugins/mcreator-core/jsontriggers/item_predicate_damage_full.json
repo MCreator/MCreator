@@ -38,7 +38,7 @@
   ],
   "mcreator": {
     "group": "damage",
-    "toolbox_id": "itemcomponents",
+    "toolbox_id": "components",
     "fields": [
       "min",
       "max",

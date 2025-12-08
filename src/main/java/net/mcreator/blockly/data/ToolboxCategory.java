@@ -111,7 +111,6 @@ public class ToolboxCategory {
 
 		// toolbox_advancement.xml
 		put("components", builtin("components", "300"));
-		put("itemcomponents", builtin("itemcomponents", "100"));
 
 		// toolbox_ai_builder.xml
 		put("aiadvanced", builtin("advanced", "250"));
