@@ -20,11 +20,12 @@
 package net.mcreator.element.converter.v2025_4;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.Item;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -35,9 +36,11 @@ public class ItemToBedrockConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
 			throws Exception {
 		Item item = (Item) input;
+		JsonObject itemDefinition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
-			BEItem beitem = new BEItem(new ModElement(workspace, item.getModElement().getName(), ModElementType.BEITEM));
+			BEItem beitem = new BEItem(
+					new ModElement(workspace, item.getModElement().getName(), ModElementType.BEITEM));
 			beitem.name = item.name;
 			beitem.texture = item.texture;
 			beitem.stackSize = item.stackSize;
@@ -45,7 +48,15 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.maxDurability = item.damageCount;
 			beitem.enableMeleeDamage = item.enableMeleeDamage;
 			beitem.damageVsEntity = item.damageVsEntity;
-			beitem.hasGlint = item.glowCondition.getFixedValue();
+
+			if (itemDefinition.has("glowCondition")) {
+				JsonObject itemGlowCondition = itemDefinition.getAsJsonObject("glowCondition");
+				beitem.hasGlint = itemDefinition.has("hasGlow") ? itemDefinition.get("hasGlow").getAsBoolean() :
+						// Old format
+						itemGlowCondition.get("fixedValue").getAsBoolean(); // New format of 2023.4
+			} else if (itemDefinition.has("hasGlow")) {
+				beitem.hasGlint = itemDefinition.get("hasGlow").getAsBoolean();
+			}
 			beitem.isFood = item.isFood;
 			beitem.foodNutritionalValue = item.nutritionalValue;
 			beitem.foodSaturation = item.saturation;
