@@ -22,6 +22,7 @@ package net.mcreator.integration;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.gui.*;
@@ -77,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestWorkspaceDataProvider {
 
 	public static Collection<ModElementType<?>> getOrderedModElementTypesForTests(
-			GeneratorConfiguration generatorConfiguration) {
+			GeneratorConfiguration generatorConfiguration, boolean includeAll) {
 		Set<ModElementType<?>> retval = new LinkedHashSet<>();
 
 		// We try to provide order so MET that depend on less of other MEs are first
@@ -94,8 +95,12 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
 
-		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
-				.getSupportedModElementTypes();
+		Collection<ModElementType<?>> supportedMETs;
+		if (includeAll) {
+			supportedMETs = ModElementTypeLoader.getAllModElementTypes();
+		} else {
+			supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
+		}
 
 		// Remove METs not supported by the generator
 		retval.retainAll(supportedMETs);

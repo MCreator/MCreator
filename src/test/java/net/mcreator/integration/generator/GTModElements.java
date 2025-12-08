@@ -38,13 +38,14 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				workspace.getGeneratorConfiguration())) {
+				workspace.getGeneratorConfiguration(), false)) {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 
