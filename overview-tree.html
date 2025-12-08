@@ -130,7 +130,6 @@ loadScripts(document, 'script');</script>
 <li><a href="net/mcreator/ui/browser/action/package-tree.html">net.mcreator.ui.browser.action</a>, </li>
 <li><a href="net/mcreator/ui/component/package-tree.html">net.mcreator.ui.component</a>, </li>
 <li><a href="net/mcreator/ui/component/entries/package-tree.html">net.mcreator.ui.component.entries</a>, </li>
-<li><a href="net/mcreator/ui/component/filebrowser/package-tree.html">net.mcreator.ui.component.filebrowser</a>, </li>
 <li><a href="net/mcreator/ui/component/tree/package-tree.html">net.mcreator.ui.component.tree</a>, </li>
 <li><a href="net/mcreator/ui/component/util/package-tree.html">net.mcreator.ui.component.util</a>, </li>
 <li><a href="net/mcreator/ui/component/zoompane/package-tree.html">net.mcreator.ui.component.zoompane</a>, </li>
@@ -444,6 +443,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.ui.init.<a href="net/mcreator/ui/init/AppIcon.html" class="type-name-link" title="class in net.mcreator.ui.init">AppIcon</a></li>
 <li class="circle">net.mcreator.ui.init.<a href="net/mcreator/ui/init/ArmorMakerTexturesCache.html" class="type-name-link" title="class in net.mcreator.ui.init">ArmorMakerTexturesCache</a></li>
 <li class="circle">net.mcreator.element.converter.v2022_2.<a href="net/mcreator/element/converter/v2022_2/ArmorTexturesConverter.html" class="type-name-link" title="class in net.mcreator.element.converter.v2022_2">ArmorTexturesConverter</a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
+<li class="circle">net.mcreator.element.parts.<a href="net/mcreator/element/parts/AttributeModifierEntry.html" class="type-name-link" title="class in net.mcreator.element.parts">AttributeModifierEntry</a></li>
 <li class="circle">net.mcreator.ui.init.<a href="net/mcreator/ui/init/BackgroundLoader.html" class="type-name-link" title="class in net.mcreator.ui.init">BackgroundLoader</a></li>
 <li class="circle">net.mcreator.generator.template.base.<a href="net/mcreator/generator/template/base/BaseDataModelProvider.html" class="type-name-link" title="class in net.mcreator.generator.template.base">BaseDataModelProvider</a></li>
 <li class="circle">net.mcreator.minecraft.<a href="net/mcreator/minecraft/BedrockUtils.html" class="type-name-link" title="class in net.mcreator.minecraft">BedrockUtils</a></li>
@@ -704,12 +704,12 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/ImagePanel.html" class="type-name-link" title="class in net.mcreator.ui.component">ImagePanel</a></li>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/ImagePreviewPanel.html" class="type-name-link" title="class in net.mcreator.ui.component">ImagePreviewPanel</a></li>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/JAdaptiveSplitPane.html" class="type-name-link" title="class in net.mcreator.ui.component">JAdaptiveSplitPane</a></li>
-<li class="circle">net.mcreator.ui.minecraft.states.block.<a href="net/mcreator/ui/minecraft/states/block/JBlockPropertiesListEntry.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.states.block">JBlockPropertiesListEntry</a></li>
+<li class="circle">net.mcreator.ui.minecraft.states.block.<a href="net/mcreator/ui/minecraft/states/block/JBlockStatePropertiesListEntry.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.states.block">JBlockStatePropertiesListEntry</a></li>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/JColor.html" class="type-name-link" title="class in net.mcreator.ui.component">JColor</a></li>
 <li class="circle">net.mcreator.ui.component.<a href="net/mcreator/ui/component/JEmptyBox.html" class="type-name-link" title="class in net.mcreator.ui.component">JEmptyBox</a></li>
 <li class="circle">net.mcreator.ui.component.entries.<a href="net/mcreator/ui/component/entries/JEntriesList.html" class="type-name-link" title="class in net.mcreator.ui.component.entries">JEntriesList</a>
 <ul>
-<li class="circle">net.mcreator.ui.minecraft.states.block.<a href="net/mcreator/ui/minecraft/states/block/JBlockPropertiesStatesList.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.states.block">JBlockPropertiesStatesList</a></li>
+<li class="circle">net.mcreator.ui.minecraft.states.block.<a href="net/mcreator/ui/minecraft/states/block/JBlockStatePropertiesList.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.states.block">JBlockStatePropertiesList</a></li>
 <li class="circle">net.mcreator.ui.minecraft.states.item.<a href="net/mcreator/ui/minecraft/states/item/JItemPropertiesStatesList.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.states.item">JItemPropertiesStatesList</a></li>
 <li class="circle">net.mcreator.ui.minecraft.jigsaw.<a href="net/mcreator/ui/minecraft/jigsaw/JJigsawPool.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.jigsaw">JJigsawPool</a></li>
 <li class="circle">net.mcreator.ui.minecraft.loottable.<a href="net/mcreator/ui/minecraft/loottable/JLootTablePool.html" class="type-name-link" title="class in net.mcreator.ui.minecraft.loottable">JLootTablePool</a></li>
@@ -1176,6 +1176,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.ui.<a href="net/mcreator/ui/FileOpener.html" class="type-name-link" title="class in net.mcreator.ui">FileOpener</a></li>
 <li class="circle">net.mcreator.generator.template.base.<a href="net/mcreator/generator/template/base/FileProvider.html" class="type-name-link" title="class in net.mcreator.generator.template.base">FileProvider</a></li>
 <li class="circle">net.mcreator.io.<a href="net/mcreator/io/FileWatcher.html" class="type-name-link" title="class in net.mcreator.io">FileWatcher</a> (implements java.io.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Closeable.html" title="class or interface in java.io" class="external-link">Closeable</a>)</li>
+<li class="circle">net.mcreator.ui.laf.<a href="net/mcreator/ui/laf/FlafIcons.html" class="type-name-link" title="class in net.mcreator.ui.laf">FlafIcons</a></li>
 <li class="circle">net.mcreator.blockly.java.blocks.<a href="net/mcreator/blockly/java/blocks/FlowControlBlock.html" class="type-name-link" title="class in net.mcreator.blockly.java.blocks">FlowControlBlock</a> (implements net.mcreator.blockly.<a href="net/mcreator/blockly/IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>)</li>
 <li class="circle">net.mcreator.element.converter.v2023_1.<a href="net/mcreator/element/converter/v2023_1/FluidGenToFeatureConverter.html" class="type-name-link" title="class in net.mcreator.element.converter.v2023_1">FluidGenToFeatureConverter</a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
 <li class="circle">net.mcreator.element.converter.v2021_2.<a href="net/mcreator/element/converter/v2021_2/FluidNameFixer.html" class="type-name-link" title="class in net.mcreator.element.converter.v2021_2">FluidNameFixer</a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
@@ -1509,7 +1510,6 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.plugin.<a href="net/mcreator/plugin/PluginInfo.html" class="type-name-link" title="class in net.mcreator.plugin">PluginInfo</a></li>
 <li class="circle">net.mcreator.util.math.<a href="net/mcreator/util/math/Point3D.html" class="type-name-link" title="class in net.mcreator.util.math">Point3D</a></li>
 <li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/Potion.CustomEffectEntry.html" class="type-name-link" title="class in net.mcreator.element.types">Potion.CustomEffectEntry</a></li>
-<li class="circle">net.mcreator.element.types.<a href="net/mcreator/element/types/PotionEffect.AttributeModifierEntry.html" class="type-name-link" title="class in net.mcreator.element.types">PotionEffect.AttributeModifierEntry</a></li>
 <li class="circle">net.mcreator.element.converter.v2024_2.<a href="net/mcreator/element/converter/v2024_2/PotionEffectCategoryConverter.html" class="type-name-link" title="class in net.mcreator.element.converter.v2024_2">PotionEffectCategoryConverter</a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
 <li class="circle">net.mcreator.element.converter.v2021_2.<a href="net/mcreator/element/converter/v2021_2/PotionToEffectConverter.html" class="type-name-link" title="class in net.mcreator.element.converter.v2021_2">PotionToEffectConverter</a> (implements net.mcreator.element.converter.<a href="net/mcreator/element/converter/IConverter.html" title="interface in net.mcreator.element.converter">IConverter</a>)</li>
 <li class="circle">net.mcreator.preferences.data.<a href="net/mcreator/preferences/data/PreferencesData.html" class="type-name-link" title="class in net.mcreator.preferences.data">PreferencesData</a></li>
@@ -1797,7 +1797,6 @@ loadScripts(document, 'script');</script>
 </li>
 </ul>
 </li>
-<li class="circle">net.mcreator.ui.validation.<a href="net/mcreator/ui/validation/Validator.ValidationResult.html" class="type-name-link" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a></li>
 <li class="circle">net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableElement.html" class="type-name-link" title="class in net.mcreator.workspace.elements">VariableElement</a> (implements net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/IElement.html" title="interface in net.mcreator.workspace.elements">IElement</a>)</li>
 <li class="circle">net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableType.html" class="type-name-link" title="class in net.mcreator.workspace.elements">VariableType</a></li>
 <li class="circle">net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableTypeLoader.html" class="type-name-link" title="class in net.mcreator.workspace.elements">VariableTypeLoader</a></li>
@@ -2000,7 +1999,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.ui.views.editor.image.tool.tools.<a href="net/mcreator/ui/views/editor/image/tool/tools/Shape.html" class="type-name-link" title="enum class in net.mcreator.ui.views.editor.image.tool.tools">Shape</a></li>
 <li class="circle">net.mcreator.minecraft.<a href="net/mcreator/minecraft/TagType.html" class="type-name-link" title="enum class in net.mcreator.minecraft">TagType</a></li>
 <li class="circle">net.mcreator.ui.workspace.resources.<a href="net/mcreator/ui/workspace/resources/TextureType.html" class="type-name-link" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a></li>
-<li class="circle">net.mcreator.ui.validation.<a href="net/mcreator/ui/validation/Validator.ValidationResultType.html" class="type-name-link" title="enum class in net.mcreator.ui.validation">Validator.ValidationResultType</a></li>
+<li class="circle">net.mcreator.ui.validation.<a href="net/mcreator/ui/validation/ValidationResult.Type.html" class="type-name-link" title="enum class in net.mcreator.ui.validation">ValidationResult.Type</a></li>
 <li class="circle">net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableType.Scope.html" class="type-name-link" title="enum class in net.mcreator.workspace.elements">VariableType.Scope</a></li>
 <li class="circle">net.mcreator.workspace.settings.user.<a href="net/mcreator/workspace/settings/user/WorkspaceUserSettings.IconSize.html" class="type-name-link" title="enum class in net.mcreator.workspace.settings.user">WorkspaceUserSettings.IconSize</a></li>
 <li class="circle">net.mcreator.workspace.settings.user.<a href="net/mcreator/workspace/settings/user/WorkspaceUserSettings.SortType.html" class="type-name-link" title="enum class in net.mcreator.workspace.settings.user">WorkspaceUserSettings.SortType</a></li>
@@ -2022,6 +2021,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.blockly.java.<a href="net/mcreator/blockly/java/BlocklyVariables.html" class="type-name-link" title="class in net.mcreator.blockly.java">BlocklyVariables</a></li>
 <li class="circle">net.mcreator.util.diff.<a href="net/mcreator/util/diff/DiffResult.html" class="type-name-link" title="class in net.mcreator.util.diff">DiffResult</a>&lt;T&gt;</li>
 <li class="circle">net.mcreator.util.image.<a href="net/mcreator/util/image/EmptyIcon.html" class="type-name-link" title="class in net.mcreator.util.image">EmptyIcon</a> (implements javax.swing.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/Icon.html" title="class or interface in javax.swing" class="external-link">Icon</a>)</li>
+<li class="circle">net.mcreator.ui.dialogs.file.<a href="net/mcreator/ui/dialogs/file/ExtensionFilter.html" class="type-name-link" title="class in net.mcreator.ui.dialogs.file">ExtensionFilter</a></li>
 <li class="circle">net.mcreator.blockly.<a href="net/mcreator/blockly/ExtraTemplatesLinker.html" class="type-name-link" title="class in net.mcreator.blockly">ExtraTemplatesLinker</a> (implements freemarker.template.TemplateDirectiveModel)</li>
 <li class="circle">net.mcreator.io.tree.<a href="net/mcreator/io/tree/FileTree.html" class="type-name-link" title="class in net.mcreator.io.tree">FileTree</a>&lt;T&gt;</li>
 <li class="circle">net.mcreator.io.<a href="net/mcreator/io/FileWatcher.FileChange.html" class="type-name-link" title="class in net.mcreator.io">FileWatcher.FileChange</a></li>
@@ -2046,13 +2046,11 @@ loadScripts(document, 'script');</script>
 <li class="circle">net.mcreator.minecraft.resourcepack.<a href="net/mcreator/minecraft/resourcepack/ResourcePackStructure.Entry.html" class="type-name-link" title="class in net.mcreator.minecraft.resourcepack">ResourcePackStructure.Entry</a> (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;)</li>
 <li class="circle">net.mcreator.generator.blockly.<a href="net/mcreator/generator/blockly/SectionMarker.html" class="type-name-link" title="class in net.mcreator.generator.blockly">SectionMarker</a> (implements freemarker.template.TemplateDirectiveModel)</li>
 <li class="circle">net.mcreator.workspace.<a href="net/mcreator/workspace/ShareableZIPManager.ImportResult.html" class="type-name-link" title="class in net.mcreator.workspace">ShareableZIPManager.ImportResult</a></li>
-<li class="circle">net.mcreator.ui.component.filebrowser.<a href="net/mcreator/ui/component/filebrowser/SynchronousJFXCaller.html" class="type-name-link" title="class in net.mcreator.ui.component.filebrowser">SynchronousJFXCaller</a>&lt;T&gt;</li>
-<li class="circle">net.mcreator.ui.component.filebrowser.<a href="net/mcreator/ui/component/filebrowser/SynchronousJFXDirectoryChooser.html" class="type-name-link" title="class in net.mcreator.ui.component.filebrowser">SynchronousJFXDirectoryChooser</a></li>
-<li class="circle">net.mcreator.ui.component.filebrowser.<a href="net/mcreator/ui/component/filebrowser/SynchronousJFXFileChooser.html" class="type-name-link" title="class in net.mcreator.ui.component.filebrowser">SynchronousJFXFileChooser</a></li>
 <li class="circle">net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/TagElement.html" class="type-name-link" title="class in net.mcreator.workspace.elements">TagElement</a> (implements net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/IElement.html" title="interface in net.mcreator.workspace.elements">IElement</a>)</li>
 <li class="circle">net.mcreator.workspace.resources.<a href="net/mcreator/workspace/resources/TexturedModel.TextureMapping.html" class="type-name-link" title="class in net.mcreator.workspace.resources">TexturedModel.TextureMapping</a></li>
 <li class="circle">net.mcreator.blockly.data.<a href="net/mcreator/blockly/data/ToolboxType.html" class="type-name-link" title="class in net.mcreator.blockly.data">ToolboxType</a></li>
 <li class="circle">net.mcreator.util.<a href="net/mcreator/util/Tuple.html" class="type-name-link" title="class in net.mcreator.util">Tuple</a>&lt;X,<wbr>Y&gt;</li>
+<li class="circle">net.mcreator.ui.validation.<a href="net/mcreator/ui/validation/ValidationResult.html" class="type-name-link" title="class in net.mcreator.ui.validation">ValidationResult</a></li>
 <li class="circle">net.mcreator.workspace.misc.<a href="net/mcreator/workspace/misc/WorkspaceInfo.html" class="type-name-link" title="class in net.mcreator.workspace.misc">WorkspaceInfo</a></li>
 <li class="circle">net.mcreator.ui.wysiwyg.<a href="net/mcreator/ui/wysiwyg/WYSIWYGComponentRegistration.html" class="type-name-link" title="class in net.mcreator.ui.wysiwyg">WYSIWYGComponentRegistration</a>&lt;T&gt;</li>
 </ul>
