@@ -78,7 +78,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private ProcedureSelector additionalDropCondition;
 
-	private final VTextField name = new VTextField(30).requireValue("elementgui.tool.needs_a_name")
+	private final VTextField name = new VTextField(26).requireValue("elementgui.tool.needs_a_name")
 			.enableRealtimeValidation();
 
 	private final JComboBox<String> toolType = new JComboBox<>(
@@ -350,7 +350,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private void updateFields() {
 		String selectedToolType = (String) toolType.getSelectedItem();
 		if (selectedToolType != null) {
-
 			blockingModelPanel.setVisible(selectedToolType.equals("Shield"));
 			blocksAffectedPanel.setVisible(selectedToolType.equals("Special"));
 
