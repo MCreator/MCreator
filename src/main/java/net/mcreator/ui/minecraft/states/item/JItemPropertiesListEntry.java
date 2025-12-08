@@ -30,6 +30,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -113,7 +114,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		this.value.setSelectedProcedure(value);
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
+	@Override public ValidationResult getValidationStatus() {
 		return value.getValidationStatus();
 	}
 

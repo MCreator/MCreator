@@ -22,6 +22,7 @@ package net.mcreator.integration;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.gui.*;
@@ -53,6 +54,7 @@ import net.mcreator.ui.modgui.BlockGUI;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -76,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestWorkspaceDataProvider {
 
 	public static Collection<ModElementType<?>> getOrderedModElementTypesForTests(
-			GeneratorConfiguration generatorConfiguration) {
+			GeneratorConfiguration generatorConfiguration, boolean includeAll) {
 		Set<ModElementType<?>> retval = new LinkedHashSet<>();
 
 		// We try to provide order so MET that depend on less of other MEs are first
@@ -93,8 +95,12 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
 
-		List<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
-				.getSupportedModElementTypes();
+		Collection<ModElementType<?>> supportedMETs;
+		if (includeAll) {
+			supportedMETs = ModElementTypeLoader.getAllModElementTypes();
+		} else {
+			supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
+		}
 
 		// Remove METs not supported by the generator
 		retval.retainAll(supportedMETs);
@@ -149,9 +155,11 @@ public class TestWorkspaceDataProvider {
 							getBlockExample(me(workspace, type, "" + ++idx), random, true, false, 1, blockBase));
 				}
 			}
-		} else if (type == ModElementType.TAB) {
+		} else if (type == ModElementType.TAB || type == ModElementType.VILLAGERPROFESSION
+				|| type == ModElementType.GAMERULE || type == ModElementType.BANNERPATTERN
+				|| type == ModElementType.DAMAGETYPE) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
-			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, false, false, 1));
 		} else if (type == ModElementType.COMMAND) {
 			generatableElements.add(getCommandExample(me(workspace, type, "1"), "STANDARD", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
@@ -162,6 +170,12 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
+		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
+				|| type == ModElementType.STRUCTURE) {
+			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
+			generatableElements.add(getExampleFor(me(workspace, type, "4"), uiTest, random, false, false, 3));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -487,7 +501,7 @@ public class TestWorkspaceDataProvider {
 				.collect(Collectors.toList());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
-			return getAdvancementExample(modElement, random, _true, emptyLists, blocksAndItems, valueIndex);
+			return getAdvancementExample(modElement, random, _true, emptyLists, blocksAndItems);
 		} else if (ModElementType.BANNERPATTERN.equals(modElement.getType())) {
 			BannerPattern bannerPattern = new BannerPattern(modElement);
 			bannerPattern.texture = new TextureHolder(modElement.getWorkspace(), "other0");
@@ -556,6 +570,7 @@ public class TestWorkspaceDataProvider {
 			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
 			biome.genErosion = new Biome.ClimatePoint(0.4, 1.4);
 			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
+			biome.genDepth = new Biome.ClimatePoint(0.3, 1.2);
 
 			biome.rainingPossibility = 1.1;
 			biome.temperature = 2.1;
@@ -1224,6 +1239,7 @@ public class TestWorkspaceDataProvider {
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
 			item.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
+			item.openGUIOnRightClick = new LogicProcedure(_true ? null : "condition3", _true);
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
@@ -1328,7 +1344,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
+			itemExtension.compostLayerChance = _true ? 0 : 1.2;
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
@@ -1409,10 +1425,10 @@ public class TestWorkspaceDataProvider {
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			List<PotionEffect.AttributeModifierEntry> modifiers = new ArrayList<>();
+			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
-					PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
@@ -1487,9 +1503,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.supportedSlots = getRandomItem(random,
-					new String[] { "any", "mainhand", "offhand", "hand", "feet", "legs", "chest", "head", "armor",
-							"body" });
+			enchantment.supportedSlots = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
 			enchantment.weight = 42;
 			enchantment.anvilCost = 32;
 			enchantment.maxLevel = 45;
@@ -1556,8 +1570,8 @@ public class TestWorkspaceDataProvider {
 			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
-			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
-			gamerule.defaultValueLogic = _true;
+			gamerule.type = _true ? "Number" : "Logic";
+			gamerule.defaultValueLogic = random.nextBoolean();
 			gamerule.defaultValueNumber = -45;
 			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
@@ -1661,7 +1675,7 @@ public class TestWorkspaceDataProvider {
 			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
 			return damageType;
 		}
-		// As feature requires placement and feature to place, this GE is only returned for uiTests
+		// As a feature requires placement and feature to place, this GE is only returned for uiTests
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
 		else if (ModElementType.FEATURE.equals(modElement.getType()) && uiTest) {
 			Feature feature = new Feature(modElement);
@@ -2375,13 +2389,14 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static Achievement getAdvancementExample(ModElement modElement, Random random, boolean _true,
-			boolean emptyLists, List<MCItem> blocksAndItems, int valueIndex) {
+			boolean emptyLists, List<MCItem> blocksAndItems) {
 		Achievement achievement = new Achievement(modElement);
 		achievement.achievementName = "Test Achievement";
 		achievement.achievementDescription = "Description of it";
 		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
-		achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
+		achievement.achievementType = ListUtils.getRandomItem(random,
+				List.of("task", "goal", "challenge", "challenge"));
 		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 		achievement.announceToChat = _true;

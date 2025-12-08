@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
-import net.mcreator.element.types.PotionEffect;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -34,7 +34,7 @@ import net.mcreator.workspace.Workspace;
 import javax.swing.*;
 import java.util.List;
 
-public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.AttributeModifierEntry> {
+public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierEntry> {
 
 	private final Workspace workspace;
 
@@ -51,16 +51,16 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/attribute"),
-				L10N.label("elementgui.potioneffect.attribute")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/attribute"),
+				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/amount"),
-				L10N.label("elementgui.potioneffect.amount")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
+				L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
 		line.add(amount);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/operation"),
-				L10N.label("elementgui.potioneffect.operation")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/operation"),
+				L10N.label("elementgui.common.attribute_modifier.operation")));
 		line.add(operation);
 
 	}
@@ -75,15 +75,15 @@ public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.Attri
 		operation.setEnabled(enabled);
 	}
 
-	@Override public PotionEffect.AttributeModifierEntry getEntry() {
-		PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+	@Override public AttributeModifierEntry getEntry() {
+		AttributeModifierEntry entry = new AttributeModifierEntry();
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
 		return entry;
 	}
 
-	@Override public void setEntry(PotionEffect.AttributeModifierEntry e) {
+	@Override public void setEntry(AttributeModifierEntry e) {
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);
