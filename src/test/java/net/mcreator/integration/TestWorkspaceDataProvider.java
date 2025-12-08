@@ -1330,6 +1330,18 @@ public class TestWorkspaceDataProvider {
 					item.animations.add(animation);
 				}
 			}
+			item.attributeModifiers = new ArrayList<>();
+			if (!emptyLists) {
+				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
+					AttributeModifierEntry entry = new AttributeModifierEntry();
+					entry.equipmentSlot = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
+					entry.amount = random.nextDouble(-5, 5);
+					entry.operation = getRandomItem(random,
+							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+					item.attributeModifiers.add(entry);
+				}
+			}
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
