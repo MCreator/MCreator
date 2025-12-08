@@ -714,9 +714,9 @@ public class TestWorkspaceDataProvider {
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
-					Color.red, new Procedure("condition1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
+					Color.red, _true, new Procedure("condition1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-					Color.white, new Procedure("condition4"),
+					Color.white, !_true, new Procedure("condition4"),
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 
 			components.add(new Image(20, 30, "picture1", true, new Procedure("condition1"),
@@ -760,11 +760,11 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
 						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
-						new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red,
+						new StringProcedure(_true ? "string1" : null, "fixed value 1"), Color.red, _true,
 						new Procedure("condition1")));
 				components.add(new Label(AbstractWYSIWYGDialog.textToMachineName(components, null,
 						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 100, 150,
-						new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white,
+						new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white, !_true,
 						new Procedure("condition4")));
 
 				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
