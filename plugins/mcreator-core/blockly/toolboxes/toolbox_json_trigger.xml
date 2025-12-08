@@ -6,7 +6,4 @@
         <block type="mcitem_all"/>
         <custom-components/>
     </category>
-    <category name="${t:blockly.category.itemcomponents}" colour="100">
-        <custom-itemcomponents/>
-    </category>
 </xml>
