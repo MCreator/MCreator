@@ -1,3 +1,0 @@
-"item": {
-	"items": ${input$item}
-}

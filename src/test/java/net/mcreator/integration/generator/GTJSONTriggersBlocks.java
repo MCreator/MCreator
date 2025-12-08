@@ -125,15 +125,15 @@ public class GTJSONTriggersBlocks {
 				case "ItemCondition" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
-						<block type="item_continuous_use">
-							<value name="itemCondition">%s</value>
+						<block type="item_start_using">
+							<value name="item">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
 				case "ItemPredicateEntry" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
-						<block type="item_continuous_use">
-							<value name="itemCondition"><block type="item_condition"><mutation inputs="1"></mutation>
+						<block type="item_start_using">
+							<value name="item"><block type="item_condition"><mutation inputs="1"></mutation>
 							<field name="min">1</field><field name="max">64</field><value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
 							<value name="predicateComponent0">%s</value>
 						</block></value></block></next></block></xml>

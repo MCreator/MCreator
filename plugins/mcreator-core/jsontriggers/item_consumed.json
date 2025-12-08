@@ -3,7 +3,10 @@
     {
       "type": "input_value",
       "name": "item",
-      "check": "MCItem"
+      "check": [
+        "MCItem",
+        "ItemCondition"
+      ]
     }
   ],
   "inputsInline": true,
