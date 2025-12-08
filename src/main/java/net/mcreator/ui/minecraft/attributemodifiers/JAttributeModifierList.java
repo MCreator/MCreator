@@ -36,7 +36,7 @@ import java.util.Set;
 public class JAttributeModifierList
 		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
-	boolean isPotionEffectList;
+	private final boolean isPotionEffectList;
 
 	public JAttributeModifierList(MCreator mcreator, IHelpContext gui, boolean isPotionEffectList) {
 		super(mcreator, gui);
