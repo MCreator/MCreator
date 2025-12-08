@@ -26,7 +26,8 @@
       "entity"
     ],
     "warnings": [
-      "no_side_sync"
+      "no_side_sync",
+      "not_inventory_replacement"
     ]
   }
 }

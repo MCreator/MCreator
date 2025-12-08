@@ -29,6 +29,9 @@
         "name": "world",
         "type": "world"
       }
+    ],
+    "warnings": [
+      "not_inventory_replacement"
     ]
   }
 }
