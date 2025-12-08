@@ -27,7 +27,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -38,7 +37,6 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -144,11 +142,13 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				PanelUtils.totalCenterInPanel(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties)));
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties,
+				25, 25)));
 
+		page1group.addValidationElement(name);
 		page1group.addValidationElement(texture);
 
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(name);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 	}
 
 	private void updateFoodPanel() {
