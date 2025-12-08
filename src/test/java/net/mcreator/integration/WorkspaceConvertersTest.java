@@ -137,9 +137,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 				}
 
 				FileIO.deleteDir(workspaceDir);
-
-				// Suggest GC clear after the test is done
-				System.gc();
 			});
 		});
 	}

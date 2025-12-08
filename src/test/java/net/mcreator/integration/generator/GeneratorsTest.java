@@ -149,7 +149,7 @@ import static org.junit.jupiter.api.Assertions.*;
 							() -> TestWorkspaceDataProvider.provideAndGenerateSampleElements(random, workspace.get())));
 					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation", () -> {
 						GTModElements.runTest(LOG, generator, random, workspace.get());
-						// Fill the workspace with sample tags after the elements the tags reference actually exist
+						// Fill workspace with sample tags after the elements the tags reference actually exist
 						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
 					}));
 					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
@@ -231,9 +231,6 @@ import static org.junit.jupiter.api.Assertions.*;
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
-
-						// Suggest GC clear after the test is done
-						System.gc();
 					}));
 
 					return DynamicContainer.dynamicContainer("Test generator: " + generator, tests);
