@@ -5,7 +5,7 @@
       "name": "item",
       "check": [
         "MCItem",
-        "ItemCondition"
+        "ItemPredicate"
       ]
     }
   ],

@@ -700,8 +700,8 @@ registerSimpleMutatorContainer('item_enchanted_mutator_container', 'blockly.bloc
 registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_enchanted_mutator.input', 290);
 
 // Mutator blocks for item condition component advancement trigger mixin
-registerSimpleMutatorContainer('item_condition_mutator_container', 'blockly.block.item_condition_mutator.container', 90);
-registerSimpleMutatorInput('item_condition_mutator_input', 'blockly.block.item_condition_mutator.input', 90);
+registerSimpleMutatorContainer('item_predicate_mutator_container', 'blockly.block.item_predicate_mutator.container', 90);
+registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_predicate_mutator.input', 90);
 
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);

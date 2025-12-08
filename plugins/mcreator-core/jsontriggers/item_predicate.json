@@ -19,9 +19,9 @@
       "precision": 1
     }
   ],
-  "mutator": "item_condition_mutator",
+  "mutator": "item_predicate_mutator",
   "inputsInline": false,
-  "output": "ItemCondition",
+  "output": "ItemPredicate",
   "colour": 90,
   "extensions": [
     "min_max_fields_validator"
