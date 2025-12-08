@@ -4,7 +4,7 @@
     "location": [
       {
         "condition": "minecraft:block_state_property",
-        "block": "${input$block}"
+        "block": ${input$block}
       }
     ]
   }
