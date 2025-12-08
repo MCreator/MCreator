@@ -37,7 +37,7 @@ public class BinaryStringIO {
 		try {
 			return bytesToString(Files.readAllBytes(file.toPath()));
 		} catch (IOException e) {
-			LOG.error("Error reading {}", e.getMessage());
+			LOG.error("Error reading file to string: {}", e.getMessage());
 			return "";
 		}
 	}
@@ -48,12 +48,15 @@ public class BinaryStringIO {
 				resource = resource.substring(1);
 
 			InputStream inputStream = PluginLoader.INSTANCE.getResourceAsStream(resource);
-			if (inputStream != null)
-				return bytesToString(IOUtils.toByteArray(inputStream));
-			else
+			if (inputStream != null) {
+				byte[] data = IOUtils.toByteArray(inputStream);
+				inputStream.close();
+				return bytesToString(data);
+			} else {
 				throw new IOException("Failed to load resoruce from any plugin. Resource: " + resource);
+			}
 		} catch (IOException e) {
-			LOG.error("Error reading {}", e.getMessage());
+			LOG.error("Error reading resource to string {}", e.getMessage());
 			return "";
 		}
 	}
@@ -74,7 +77,7 @@ public class BinaryStringIO {
 			return new String(Base64.getDecoder().decode(base64));
 
 		} catch (IOException e) {
-			LOG.error("Error reading {}", e.getMessage());
+			LOG.error("Error reading bytes to string {}", e.getMessage());
 			return "";
 		}
 	}

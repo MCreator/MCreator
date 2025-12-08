@@ -53,6 +53,7 @@ import net.mcreator.ui.modgui.BlockGUI;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -149,9 +150,11 @@ public class TestWorkspaceDataProvider {
 							getBlockExample(me(workspace, type, "" + ++idx), random, true, false, 1, blockBase));
 				}
 			}
-		} else if (type == ModElementType.TAB) {
+		} else if (type == ModElementType.TAB || type == ModElementType.VILLAGERPROFESSION
+				|| type == ModElementType.GAMERULE || type == ModElementType.BANNERPATTERN
+				|| type == ModElementType.DAMAGETYPE) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
-			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, false, false, 1));
 		} else if (type == ModElementType.COMMAND) {
 			generatableElements.add(getCommandExample(me(workspace, type, "1"), "STANDARD", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
@@ -162,6 +165,12 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
+		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
+				|| type == ModElementType.STRUCTURE) {
+			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
+			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
+			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
+			generatableElements.add(getExampleFor(me(workspace, type, "4"), uiTest, random, false, false, 3));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -487,7 +496,7 @@ public class TestWorkspaceDataProvider {
 				.collect(Collectors.toList());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
-			return getAdvancementExample(modElement, random, _true, emptyLists, blocksAndItems, valueIndex);
+			return getAdvancementExample(modElement, random, _true, emptyLists, blocksAndItems);
 		} else if (ModElementType.BANNERPATTERN.equals(modElement.getType())) {
 			BannerPattern bannerPattern = new BannerPattern(modElement);
 			bannerPattern.texture = new TextureHolder(modElement.getWorkspace(), "other0");
@@ -1330,7 +1339,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
+			itemExtension.compostLayerChance = _true ? 0 : 1.2;
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
@@ -1555,8 +1564,8 @@ public class TestWorkspaceDataProvider {
 			gamerule.description = modElement.getName() + " description";
 			gamerule.category = getRandomString(random,
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
-			gamerule.type = new String[] { "Number", "Logic", "Number", "Logic" }[valueIndex];
-			gamerule.defaultValueLogic = _true;
+			gamerule.type = _true ? "Number" : "Logic";
+			gamerule.defaultValueLogic = random.nextBoolean();
 			gamerule.defaultValueNumber = -45;
 			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
@@ -1660,7 +1669,7 @@ public class TestWorkspaceDataProvider {
 			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
 			return damageType;
 		}
-		// As feature requires placement and feature to place, this GE is only returned for uiTests
+		// As a feature requires placement and feature to place, this GE is only returned for uiTests
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
 		else if (ModElementType.FEATURE.equals(modElement.getType()) && uiTest) {
 			Feature feature = new Feature(modElement);
@@ -2374,13 +2383,14 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static Achievement getAdvancementExample(ModElement modElement, Random random, boolean _true,
-			boolean emptyLists, List<MCItem> blocksAndItems, int valueIndex) {
+			boolean emptyLists, List<MCItem> blocksAndItems) {
 		Achievement achievement = new Achievement(modElement);
 		achievement.achievementName = "Test Achievement";
 		achievement.achievementDescription = "Description of it";
 		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
-		achievement.achievementType = new String[] { "task", "goal", "challenge", "challenge" }[valueIndex];
+		achievement.achievementType = ListUtils.getRandomItem(random,
+				List.of("task", "goal", "challenge", "challenge"));
 		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 		achievement.announceToChat = _true;
