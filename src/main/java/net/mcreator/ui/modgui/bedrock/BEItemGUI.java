@@ -198,7 +198,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	@Override public BEItem getElementFromGUI() {
 		BEItem item = new BEItem(modElement);
-
 		item.texture = texture.getTextureHolder();
 		item.name = name.getText();
 		item.stackSize = (int) stackSize.getValue();
