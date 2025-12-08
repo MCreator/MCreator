@@ -17,9 +17,6 @@
       "name": "max",
       "value": 64,
       "precision": 1
-    },
-    {
-      "type": "input_dummy"
     }
   ],
   "mutator": "item_condition_mutator",
@@ -34,7 +31,8 @@
     "toolbox_id": "components",
     "toolbox_init": [
       "<mutation inputs=\"0\"></mutation>",
-      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "~<value name=\"predicateComponent0\"><block type=\"item_predicate_damage_only\"><field name=\"min\">1</field><field name=\"max\">100</field></block></value>"
     ],
     "inputs": [
       "item"
