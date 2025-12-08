@@ -44,10 +44,10 @@ public class JAttributeModifierList
 
 		add.setText(L10N.t("elementgui.common.attribute_modifier.add_modifier_entry"));
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.attribute_modifier.modifiers"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
 	@Override
