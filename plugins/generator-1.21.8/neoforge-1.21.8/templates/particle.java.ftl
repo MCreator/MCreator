@@ -65,7 +65,7 @@ public class ${name}Particle extends TextureSheetParticle {
 
 		this.setSize(${data.width}f, ${data.height}f);
 
-		<#if (data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)) || data.fixedScale>
+		<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
 		this.quadSize <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
