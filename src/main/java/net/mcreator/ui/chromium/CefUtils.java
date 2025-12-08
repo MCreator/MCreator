@@ -61,7 +61,7 @@ public class CefUtils {
 			JCefAppConfig config = JCefAppConfig.getInstance();
 
 			if (TestUtil.isRunningInGitHubActions()) {
-				// Flags for CI/CD as it is hadless and without GPU
+				// Flags for CI/CD as it is headless and without GPU
 				config.getAppArgsAsList().add("--headless");
 				config.getAppArgsAsList().add("--ignore-gpu-blocklist");
 				config.getAppArgsAsList().add("--no-sandbox");
