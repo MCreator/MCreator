@@ -58,6 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2025_4.ItemInInventoryTriggerConverter;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 
 import java.util.HashMap;
@@ -73,7 +74,8 @@ public class ConverterRegistry {
 			new AchievementFixer(),
 			new AdvancementTextureConverter(),
 			new AdvancementTriggerInverter(),
-			new AdvancementFunctionConverter()
+			new AdvancementFunctionConverter(),
+			new ItemInInventoryTriggerConverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),

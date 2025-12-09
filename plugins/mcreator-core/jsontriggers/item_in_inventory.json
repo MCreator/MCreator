@@ -2,18 +2,11 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "amount_l",
-      "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "amount_h",
-      "check": "Number"
-    },
-    {
-      "type": "input_value",
       "name": "item",
-      "check": "MCItem"
+      "check": [
+        "MCItem",
+        "ItemPredicate"
+      ]
     }
   ],
   "inputsInline": true,
@@ -23,13 +16,9 @@
   "mcreator": {
     "toolbox_id": "items",
     "toolbox_init": [
-      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
-      "<value name=\"amount_l\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"amount_h\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+      "<value name=\"item\"><block type=\"item_predicate\"><value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value><mutation inputs=\"0\"/><field name=\"min\">1</field><field name=\"max\">1</field></block></value>"
     ],
     "inputs": [
-      "amount_l",
-      "amount_h",
       "item"
     ]
   }
