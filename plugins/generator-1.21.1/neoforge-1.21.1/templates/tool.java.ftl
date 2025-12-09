@@ -127,7 +127,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	}
 	</#if>
 
-	<#if data.toolType == "Shield" && data.repairItems?has_content>
+	<#if (data.toolType == "Shield" || data.toolType == "Shears") && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
 	}
@@ -222,6 +222,12 @@ public class ${name}Item extends Item {
 	@Override public int getEnchantmentValue() {
 		return ${data.enchantability};
 	}
+
+	<#if data.repairItems?has_content>
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+		}
+	</#if>
 
 	<@commonMethods/>
 }
