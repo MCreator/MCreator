@@ -36,7 +36,7 @@ tasks.register('exportMacX64', Copy.class) {
         from configurations.export
         from configurations.macX64
     }
-    into('jdk.bundle') { from 'jdk/jdk21_mac_x64/' }
+    into('jdk.bundle') { from 'jdk/jbr21_mac_x64/' }
 
     doLast {
         // fix line endings where needed
@@ -87,7 +87,7 @@ tasks.register('exportMacAarch64', Copy.class) {
         from configurations.export
         from configurations.macAarch64
     }
-    into('jdk.bundle') { from 'jdk/jdk21_mac_aarch64/' }
+    into('jdk.bundle') { from 'jdk/jbr21_mac_aarch64/' }
 
     doLast {
         // fix line endings where needed
