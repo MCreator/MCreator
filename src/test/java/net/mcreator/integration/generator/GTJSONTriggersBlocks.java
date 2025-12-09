@@ -85,7 +85,7 @@ public class GTJSONTriggersBlocks {
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
 
 			Achievement advancement = TestWorkspaceDataProvider.getAdvancementExample(modElement, random, true, true,
-					Collections.emptyList(), 1);
+					Collections.emptyList());
 
 			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
