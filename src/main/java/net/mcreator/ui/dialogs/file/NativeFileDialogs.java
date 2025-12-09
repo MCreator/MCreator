@@ -19,58 +19,88 @@
 
 package net.mcreator.ui.dialogs.file;
 
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import net.mcreator.ui.component.filebrowser.SynchronousJFXDirectoryChooser;
-import net.mcreator.ui.component.filebrowser.SynchronousJFXFileChooser;
+import com.formdev.flatlaf.util.SystemFileChooser;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.WorkspaceFolderManager;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Locale;
 
 import static net.mcreator.ui.dialogs.file.FileDialogs.prevDir;
 
-/**
- * Should only be used on Windows or macOS at the time of writing due to Threading issues
- */
 class NativeFileDialogs {
 
-	protected static File[] getFileChooserDialog(FileChooserType type, boolean multiSelect,
-			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
+	protected static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
+			@Nullable String suggestedFileName, ExtensionFilter... filters) {
 		if (multiSelect && type == FileChooserType.SAVE)
 			throw new RuntimeException("Invalid file chooser type for multi selection mode");
 
-		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(null, () -> {
-			FileChooser ch = new FileChooser();
+		SystemFileChooser fileChooser = new SystemFileChooser();
 
-			if (suggestedFileName != null)
-				ch.setInitialFileName(suggestedFileName);
+		if (suggestedFileName != null)
+			fileChooser.setSelectedFile(new File(prevDir, suggestedFileName));
 
-			if (prevDir != null && prevDir.isDirectory())
-				ch.setInitialDirectory(prevDir);
+		if (prevDir != null && prevDir.isDirectory())
+			fileChooser.setCurrentDirectory(prevDir);
 
-			if (filters != null) {
-				ch.getExtensionFilters().clear();
-				ch.getExtensionFilters().addAll(Arrays.asList(filters));
+		if (filters != null) {
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			for (ExtensionFilter filter : filters) {
+				fileChooser.resetChoosableFileFilters();
+				fileChooser.addChoosableFileFilter(new SystemFileChooser.FileNameExtensionFilter(filter.description(),
+						filter.extensions().stream().map(e -> e.replace("*.", "")).toArray(String[]::new)));
 			}
-			return ch;
-		});
+		}
+
+		if (type == FileChooserType.SAVE) {
+			fileChooser.setApproveCallback((selectedFiles, context) -> {
+				File selectedFile = selectedFiles != null ? selectedFiles[0] : null;
+				if (selectedFile != null) {
+					selectedFile = addExtensionIfNeeded(selectedFile, fileChooser);
+					if (selectedFile.exists()) {
+						int option = context.showMessageDialog(JOptionPane.WARNING_MESSAGE,
+								L10N.t("dialog.file.error_already_exists", selectedFile.getName()), null, 1,
+								UIManager.getString("OptionPane.yesButtonText"),
+								UIManager.getString("OptionPane.noButtonText"));
+						if (option != 0) { // if anything but yes button (index 0)
+							return SystemFileChooser.CANCEL_OPTION;
+						}
+					}
+				}
+				return SystemFileChooser.APPROVE_OPTION;
+			});
+		}
 
 		if (multiSelect) {
-			List<File> files = chooser.showOpenMultipleDialog();
-			if (files != null && !files.isEmpty()) {
-				prevDir = files.getFirst().getParentFile();
-				return files.toArray(File[]::new);
+			fileChooser.setMultiSelectionEnabled(true);
+			if (fileChooser.showOpenDialog(f) == SystemFileChooser.APPROVE_OPTION) {
+				prevDir = fileChooser.getCurrentDirectory();
+				File[] files = fileChooser.getSelectedFiles();
+				if (files != null)
+					return files;
+			} else {
+				prevDir = fileChooser.getCurrentDirectory();
 			}
 		} else {
-			File retval = type == FileChooserType.SAVE ? chooser.showSaveDialog() : chooser.showOpenDialog();
-			if (retval != null) {
-				prevDir = retval.getParentFile();
-				return new File[] { retval };
+			if ((type == FileChooserType.SAVE ? fileChooser.showSaveDialog(f) : fileChooser.showOpenDialog(f))
+					== SystemFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+
+				if (type == FileChooserType.SAVE) {
+					file = addExtensionIfNeeded(file, fileChooser);
+				}
+
+				if (file != null) {
+					prevDir = file.getParentFile();
+					return new File[] { file };
+				}
+			} else {
+				prevDir = fileChooser.getCurrentDirectory();
 			}
 		}
 
@@ -78,17 +108,17 @@ class NativeFileDialogs {
 	}
 
 	protected static File getWorkspaceDirectorySelectDialog(Window f, File file) {
-		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(null, () -> {
-			DirectoryChooser ch = new DirectoryChooser();
-			ch.setTitle(L10N.t("dialog.file.select_directory_title"));
+		SystemFileChooser fileChooser = new SystemFileChooser();
+		fileChooser.setFileSelectionMode(SystemFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setDialogTitle(L10N.t("dialog.file.select_directory_title"));
 
-			File initialDir = file == null ? WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot() : file;
-			if (initialDir != null && initialDir.isDirectory())
-				ch.setInitialDirectory(initialDir);
-			return ch;
-		});
+		File initialDir = file == null ? WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot() : file;
+		if (initialDir != null && initialDir.isDirectory())
+			fileChooser.setCurrentDirectory(initialDir);
 
-		File selectedFile = chooser.showDialog();
+		File selectedFile = null;
+		if (fileChooser.showOpenDialog(f) == SystemFileChooser.APPROVE_OPTION)
+			selectedFile = fileChooser.getSelectedFile();
 
 		if (selectedFile == null)
 			return null;
@@ -97,6 +127,20 @@ class NativeFileDialogs {
 			return getWorkspaceDirectorySelectDialog(f, selectedFile.getParentFile());
 
 		return selectedFile;
+	}
+
+	private static File addExtensionIfNeeded(File file, SystemFileChooser fileChooser) {
+		// getFileFilter does not work, so this only works for one extension
+		// see https://github.com/JFormDesigner/FlatLaf/issues/1065
+		SystemFileChooser.FileFilter filter = fileChooser.getFileFilter();
+		if (filter instanceof SystemFileChooser.FileNameExtensionFilter extensionFilter) {
+			String extension = FilenameUtils.getExtension(file.getName()).toLowerCase(Locale.ENGLISH);
+			if (Arrays.stream(extensionFilter.getExtensions()).map(e -> e.toLowerCase(Locale.ENGLISH))
+					.noneMatch(e -> e.equals(extension))) {
+				return new File(file.getAbsolutePath() + "." + extensionFilter.getExtensions()[0]);
+			}
+		}
+		return file;
 	}
 
 }

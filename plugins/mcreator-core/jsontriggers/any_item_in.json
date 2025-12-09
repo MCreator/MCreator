@@ -1,0 +1,20 @@
+{
+  "mutator": "any_item_mutator",
+  "output": "MCItem",
+  "colour": "350",
+  "mcreator": {
+    "toolbox_id": "components",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>"
+    ],
+    "repeating_fields": [
+      {
+        "name": "item",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_mcitem_selector"
+        }
+      }
+    ]
+  }
+}

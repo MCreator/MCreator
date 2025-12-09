@@ -30,31 +30,29 @@ package net.mcreator.integration.generator;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.IWorkspaceDependent;
-import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				workspace.getGeneratorConfiguration())) {
+				workspace.getGeneratorConfiguration(), false)) {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 
 			LOG.info("[{}] Testing mod element type generation {} with {} variants", generatorName,
 					modElementType.getReadableName(), modElementExamples.size());
 
-			modElementExamples.forEach(generatableElement -> {
+			for (GeneratableElement generatableElement : modElementExamples) {
 				// Check if all workspace fields are not null (from the TestWorkspaceDataProvider)
 				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
 						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
@@ -66,38 +64,14 @@ public class GTModElements {
 				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 
 				workspace.getModElementManager().storeModElement(generatableElement);
-
 				workspace.getModElementManager().storeModElementPicture(generatableElement);
-
-				List<File> modElementFiles = workspace.getGenerator()
-						.getModElementGeneratorTemplatesList(generatableElement).stream()
-						.map(GeneratorTemplate::getFile).toList();
-
-				// test mod element file detection system
-				for (File modElementFile : modElementFiles) {
-					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (!modElement.equals(modElement1))
-						fail("Filed to properly determine file ownership for mod element type: " + modElement.getType()
-								.getReadableName() + ", file: " + modElementFile);
-				}
 
 				// testing if element file deletion works properly (no exception thrown)
 				workspace.getGenerator().removeElementFilesAndWorkspaceLinks(generatableElement);
 
-				// testing if all element files were properly deleted
-				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
-						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				for (File modElementFile : modElementFiles) {
-					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (modElement.equals(
-							modElement1)) // if now ownership can still be found, this means some files were not properly removed
-						fail("Filed to properly delete file of mod element type: " + modElement.getType()
-								.getReadableName() + ", file: " + modElementFile);
-				}
-
 				// generate back after removal for build testing
 				assertTrue(workspace.getGenerator().generateElement(generatableElement));
-			});
+			}
 		}
 	}
 

@@ -107,7 +107,7 @@ dependencies {
     // from maven
     implementation "commons-io:commons-io:2.21.0"
     implementation "org.apache.commons:commons-lang3:3.20.0"
-    implementation "org.apache.commons:commons-text:1.14.0"
+    implementation "org.apache.commons:commons-text:1.15.0"
     implementation "org.apache.logging.log4j:log4j-core:2.25.2"
     implementation "org.freemarker:freemarker:2.3.34"
     implementation("com.google.code.gson:gson:2.13.2") {
@@ -135,14 +135,14 @@ dependencies {
     implementation "net.java.dev.jna:jna:5.18.1" // needed by discord-rpc.jar
 
     implementation "com.github.weisj:jsvg:2.0.0"
-    implementation "com.formdev:flatlaf:3.6.2:no-natives"
-    implementation("com.formdev:flatlaf-extras:3.6.2") {
+    implementation "com.formdev:flatlaf:3.7:no-natives"
+    implementation("com.formdev:flatlaf-extras:3.7") {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 "com.formdev:flatlaf:3.6.2:windows-x86_64@dll"
-    macX64 "com.formdev:flatlaf:3.6.2:macos-x86_64@dylib"
-    macAarch64 "com.formdev:flatlaf:3.6.2:macos-arm64@dylib"
-    linux64 "com.formdev:flatlaf:3.6.2:linux-x86_64@so"
+    win64 "com.formdev:flatlaf:3.7:windows-x86_64@dll"
+    macX64 "com.formdev:flatlaf:3.7:macos-x86_64@dylib"
+    macAarch64 "com.formdev:flatlaf:3.7:macos-arm64@dylib"
+    linux64 "com.formdev:flatlaf:3.7:linux-x86_64@so"
 
     // test dependencies
     testImplementation platform("org.junit:junit-bom:6.0.1")
