@@ -245,7 +245,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			</#if>
 			guiGraphics.drawString(this.font,
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()}, false);
+				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()}, ${component.hasShadow});
 		</#list>
 	}
 
