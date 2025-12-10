@@ -1,0 +1,17 @@
+{
+  "args0":  [
+    {
+      "type": "field_resourcelocation",
+      "name": "tag",
+      "text": "minecraft:fishes"
+    }
+  ],
+  "output": "ItemTag",
+  "colour": "350",
+  "mcreator": {
+    "toolbox_id": "aiadvanced",
+    "fields": [
+      "tag"
+    ]
+  }
+}
