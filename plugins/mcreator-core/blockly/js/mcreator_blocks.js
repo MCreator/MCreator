@@ -161,6 +161,15 @@ Blockly.Blocks['feature_container'] = {
     }
 };
 
+Blockly.Blocks['enchantment_effects_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.enchantment_effects_start"));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true);
+        this.setColour(150);
+    }
+};
+
 Blockly.Blocks['mcitem_allblocks'] = {
     init: function () {
         let block = this;
