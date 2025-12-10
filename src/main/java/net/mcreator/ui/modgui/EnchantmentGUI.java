@@ -31,6 +31,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
@@ -215,7 +216,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		effectsPage.add(enchantmentEffects);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane1).validate(page1group);
-		addPage(L10N.t("elementgui.enchantment.page_effects"), effectsPage);
+		addPage(L10N.t("elementgui.enchantment.page_effects"), effectsPage)
+				.lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
