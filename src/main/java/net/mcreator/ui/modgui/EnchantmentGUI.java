@@ -18,15 +18,28 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.datapack.BlocklyToEnchantmentEffects;
 import net.mcreator.element.types.Enchantment;
+import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
+import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.validators.CompoundValidator;
@@ -35,15 +48,21 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class EnchantmentGUI extends ModElementGUI<Enchantment> {
+public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlocklyPanelHolder {
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.enchantment.needs_name")
 			.enableRealtimeValidation();
@@ -67,10 +86,19 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
+	private BlocklyPanel blocklyPanel;
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
+	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<IBlocklyPanelHolder.BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
 	public EnchantmentGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(IBlocklyPanelHolder.BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -85,8 +113,10 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				"enchantable/mace");
 
 		JPanel pane1 = new JPanel(new BorderLayout());
+		JPanel effectsPage = new JPanel(new BorderLayout());
 
 		pane1.setOpaque(false);
+		effectsPage.setOpaque(false);
 
 		isCurse.setOpaque(false);
 		isTreasureEnchantment.setOpaque(false);
@@ -161,12 +191,59 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		page1group.addValidationElement(supportedItems);
 		page1group.addValidationElement(incompatibleEnchantments);
 
-		addPage(pane1).validate(page1group);
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
+				.getDefinedBlocks();
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.ENCHANTMENT_EFFECTS);
+		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(
+					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+					"EnchantmentEffectsRegenerate").start());
+			if (!isEditingMode()) {
+				blocklyPanel.setXML(Enchantment.XML_BASE);
+			}
+		});
+
+		JPanel enchantmentEffects = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		enchantmentEffects.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.enchantment.effects_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+		enchantmentEffects.setPreferredSize(new Dimension(0, 580));
+
+		effectsPage.add(enchantmentEffects);
+
+		addPage(L10N.t("elementgui.common.page_properties"), pane1).validate(page1group);
+		addPage(L10N.t("elementgui.enchantment.page_effects"), effectsPage);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+	}
+
+	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
+		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
+				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.ENCHANTMENT_EFFECTS));
+
+		BlocklyToEnchantmentEffects blocklyToEnchantmentEffects;
+		try {
+			blocklyToEnchantmentEffects = new BlocklyToEnchantmentEffects(mcreator.getWorkspace(), this.modElement,
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
+		} catch (TemplateGeneratorException e) {
+			TestUtil.failIfTestingEnvironment();
+			return List.of(); // should not be possible to happen here
+		}
+
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToEnchantmentEffects.getCompileNotes();
+
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+
+		blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel, jsEventTriggeredChange));
+
+		return compileNotesArrayList;
 	}
 
 	@Override public void openInEditingMode(Enchantment enchantment) {
@@ -182,6 +259,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		isCurse.setSelected(enchantment.isCurse);
 		canGenerateInLootTables.setSelected(enchantment.canGenerateInLootTables);
 		canVillagerTrade.setSelected(enchantment.canVillagerTrade);
+
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(enchantment.effectsxml));
 	}
 
 	@Override public Enchantment getElementFromGUI() {
@@ -198,7 +277,14 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.isCurse = isCurse.isSelected();
 		enchantment.canGenerateInLootTables = canGenerateInLootTables.isSelected();
 		enchantment.canVillagerTrade = canVillagerTrade.isSelected();
+
+		enchantment.effectsxml = blocklyPanel.getXML();
+
 		return enchantment;
+	}
+
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
