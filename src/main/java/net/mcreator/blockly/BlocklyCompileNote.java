@@ -18,7 +18,7 @@
 
 package net.mcreator.blockly;
 
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 
 public record BlocklyCompileNote(Type type, String message) implements Comparable<BlocklyCompileNote> {
 
@@ -34,19 +34,19 @@ public record BlocklyCompileNote(Type type, String message) implements Comparabl
 		}
 	}
 
-	public Validator.ValidationResultType getValidationResultType() {
+	public ValidationResult.Type getValidationResultType() {
 		return type.validationResultType;
 	}
 
 	public enum Type {
-		INFO(0, Validator.ValidationResultType.PASSED),
-		WARNING(1, Validator.ValidationResultType.WARNING),
-		ERROR(2, Validator.ValidationResultType.ERROR);
+		INFO(0, ValidationResult.Type.PASSED),
+		WARNING(1, ValidationResult.Type.WARNING),
+		ERROR(2, ValidationResult.Type.ERROR);
 
 		private final int priority;
-		private final Validator.ValidationResultType validationResultType;
+		private final ValidationResult.Type validationResultType;
 
-		Type(int priority, Validator.ValidationResultType validationResultType) {
+		Type(int priority, ValidationResult.Type validationResultType) {
 			this.priority = priority;
 			this.validationResultType = validationResultType;
 		}
