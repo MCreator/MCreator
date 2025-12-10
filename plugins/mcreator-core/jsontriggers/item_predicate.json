@@ -43,9 +43,6 @@
     ],
     "repeating_inputs": [
       "predicateComponent"
-    ],
-    "warnings": [
-      "first_component_type_only"
     ]
   }
 }
