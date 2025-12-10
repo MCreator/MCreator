@@ -61,6 +61,11 @@ public class GTAITaskBlocks {
 			String testXML = aiTask.getToolboxTestXML();
 
 			// Set block selectors to some value
+			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
+					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
+							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
+							+ "</field></block>");
+
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
@@ -73,10 +78,28 @@ public class GTAITaskBlocks {
 			LivingEntity livingentity = TestWorkspaceDataProvider.getLivingEntity(modElement, random, true, true,
 					Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
-			if (aiTask.getType() == IBlockGenerator.BlockType.PROCEDURAL)
+			if (aiTask.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				livingentity.aixml =
 						"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\""
 								+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + testXML + "</next></block></xml>";
+			} else {
+				if (aiTask.getOutputType().equals("MCItem")) {
+					livingentity.aixml = """
+							<xml xmlns="https://developers.google.com/blockly/xml"><block type="aitasks_container"
+							deletable="false" x="40" y="40"><next>
+							<block type="follow_item_in_hands">
+								<field name="speed">1</field>
+								<field name="scared">FALSE</field>
+								<field name="condition">null,null</field>
+								<value name="item">%s</value>
+							</block></next></block></xml>
+							""".formatted(testXML);
+				} else {
+					LOG.warn("[{}] Skipping AI task block of unrecognized type: {}", generatorName,
+							aiTask.getMachineName());
+					continue;
+				}
+			}
 
 			try {
 				workspace.addModElement(modElement);

@@ -34,6 +34,7 @@ import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.io.FileIO;
@@ -274,7 +275,8 @@ import java.util.stream.Collectors;
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.AI_TASK, this.aixml, this.getModElement().getGenerator()
 					.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()
