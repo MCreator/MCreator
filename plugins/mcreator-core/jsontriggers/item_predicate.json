@@ -7,14 +7,14 @@
     },
     {
       "type": "field_number",
-      "name": "min",
+      "name": "min1",
       "value": 1,
       "precision": 1,
       "min": 1
     },
     {
       "type": "field_number",
-      "name": "max",
+      "name": "max1",
       "value": 64,
       "precision": 1
     }
@@ -38,8 +38,8 @@
       "item"
     ],
     "fields": [
-      "min",
-      "max"
+      "min1",
+      "max1"
     ],
     "repeating_inputs": [
       "predicateComponent"
