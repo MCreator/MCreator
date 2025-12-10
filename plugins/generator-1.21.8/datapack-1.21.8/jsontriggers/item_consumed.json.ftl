@@ -2,7 +2,7 @@
   "trigger": "minecraft:consume_item",
   "conditions": {
     "item": {
-      ${input$item}
+    	${input$item}
     }
   }
 },
