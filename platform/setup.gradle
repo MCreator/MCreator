@@ -28,7 +28,7 @@ tasks.register('downloadJDKWin64') {
             delete "jdk/jbr21_win_64/${jbr21_win_64}"
 
             // Space saving
-            delete 'jdk/jbr21_win_64/jmods'
+            delete fileTree('jdk/jbr21_win_64/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -51,7 +51,7 @@ tasks.register('downloadJDKLinux64') {
             delete "jdk/jbr21_linux_64/${jbr21_linux_64}"
 
             // Space saving
-            delete 'jdk/jbr21_linux_64/jmods'
+            delete fileTree('jdk/jbr21_linux_64/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -74,7 +74,7 @@ tasks.register('downloadJDKMacX64') {
             delete "jdk/jbr21_mac_x64/${jbr21_mac_x64}/"
 
             // Space saving
-            delete 'jdk/jbr21_mac_x64/Contents/Home/jmods'
+            delete fileTree('jdk/jbr21_mac_x64/Contents/Home/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -97,7 +97,7 @@ tasks.register('downloadJDKMacAarch64') {
             delete "jdk/jbr21_mac_aarch64/${jbr21_mac_aarch64}/"
 
             // Space saving
-            delete 'jdk/jbr21_mac_aarch64/Contents/Home/jmods'
+            delete fileTree('jdk/jbr21_mac_aarch64/Contents/Home/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
