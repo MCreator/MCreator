@@ -852,6 +852,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				dimension.biomesInDimension.addAll(
 						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
+				dimension.biomesInDimensionCaves.addAll(
+						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
 			} else {
 				dimension.biomesInDimension.add(
 						new BiomeEntry(modElement.getWorkspace(), getRandomDataListEntry(random, biomes)));
