@@ -130,6 +130,9 @@ public class AcceleratorMap {
 		actionKeyStrokeMap.put(actionRegistry.imageEditorClearSelection, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorResizeLayer,
 				KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorFlipHorizontal, KeyStroke.getKeyStroke(KeyEvent.VK_V, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorFlipVertical,
+				KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.SHIFT_DOWN_MASK));
 	}
 
 	void registerAll() {
