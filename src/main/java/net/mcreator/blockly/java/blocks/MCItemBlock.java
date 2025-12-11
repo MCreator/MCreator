@@ -45,10 +45,17 @@ public class MCItemBlock implements IBlockGenerator {
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
-			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitemall.java.ftl")) {
+			if (master.getTemplateGenerator() != null && (
+					master.getTemplateGenerator().hasTemplate("_mcitem_all.java.ftl") || master.getTemplateGenerator()
+							.hasTemplate("_mcitem_allblocks.java.ftl"))) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
-				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemall.java.ftl", dataModel);
+
+				String templateFileName = "_mcitem_all.java.ftl";
+				if (block.getAttribute("type").equals("mcitem_allblocks"))
+					templateFileName = "_mcitem_allblocks.java.ftl";
+
+				String code = master.getTemplateGenerator().generateFromTemplate(templateFileName, dataModel);
 				master.append(code);
 			} else {
 				master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
