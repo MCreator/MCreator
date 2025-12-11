@@ -48,10 +48,12 @@ public class CefEventUtils {
 	}
 
 	public static KeyEvent convertCefKeyEvent(CefKeyboardHandler.CefKeyEvent cefKeyEvent, Component source) {
+		int id = convertCefKeyEventType(cefKeyEvent);
+		int keyCode = (id == KeyEvent.KEY_TYPED) ? KeyEvent.VK_UNDEFINED : convertCefKeyEventKeyCode(cefKeyEvent);
+
 		//noinspection MagicConstant
-		return new KeyEvent(source, convertCefKeyEventType(cefKeyEvent), System.currentTimeMillis(),
-				convertCefKeyEventModifiers(cefKeyEvent), convertCefKeyEventKeyCode(cefKeyEvent), cefKeyEvent.character,
-				KeyEvent.KEY_LOCATION_UNKNOWN);
+		return new KeyEvent(source, id, System.currentTimeMillis(), convertCefKeyEventModifiers(cefKeyEvent), keyCode,
+				cefKeyEvent.character, KeyEvent.KEY_LOCATION_UNKNOWN);
 	}
 
 	public static int convertCefKeyEventType(CefKeyboardHandler.CefKeyEvent cefKeyEvent) {
