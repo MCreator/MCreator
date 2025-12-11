@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-Ingredient.of(${mappedMCItemToItem(input$block)})
+Ingredient.of(${mappedMCItemToItem(w.itemBlock(block))})

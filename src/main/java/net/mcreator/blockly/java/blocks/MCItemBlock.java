@@ -45,7 +45,7 @@ public class MCItemBlock implements IBlockGenerator {
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
-			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitemall.json.ftl")) {
+			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitemall.java.ftl")) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
 				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemall.java.ftl", dataModel);
