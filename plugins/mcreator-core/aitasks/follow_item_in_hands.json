@@ -10,7 +10,7 @@
       "name": "item",
       "check": [
         "MCItem",
-        "ItemTag"
+        "ItemPredicate"
       ]
     },
     {

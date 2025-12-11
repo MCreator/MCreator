@@ -94,6 +94,17 @@ public class GTAITaskBlocks {
 								<value name="item">%s</value>
 							</block></next></block></xml>
 							""".formatted(testXML);
+				} else if (aiTask.getOutputType().equals("ItemPredicate")) {
+					livingentity.aixml = """
+							<xml xmlns="https://developers.google.com/blockly/xml"><block type="aitasks_container"
+							deletable="false" x="40" y="40"><next>
+							<block type="follow_item_in_hands">
+								<field name="speed">1</field>
+								<field name="scared">FALSE</field>
+								<field name="condition">null,null</field>
+								<value name="item">%s</value>
+							</block></next></block></xml>
+							""".formatted(testXML);
 				} else {
 					LOG.warn("[{}] Skipping AI task block of unrecognized type: {}", generatorName,
 							aiTask.getMachineName());

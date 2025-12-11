@@ -6,7 +6,7 @@
       "text": "minecraft:fishes"
     }
   ],
-  "output": "ItemTag",
+  "output": "ItemPredicate",
   "colour": "350",
   "mcreator": {
     "toolbox_id": "aiadvanced",
