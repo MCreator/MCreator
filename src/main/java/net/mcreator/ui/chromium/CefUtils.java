@@ -50,7 +50,9 @@ public class CefUtils {
 	private static CefApp cefApp = null;
 
 	public static boolean useOSR() {
-		return false;
+		// On linux, we need to use OSR due to several focus issues
+		// On GitHub actions, we cannot use OSR due to the headless environment not working well with it
+		return OS.isLinux() && !TestUtil.isTestingEnvironment();
 	}
 
 	private static CefApp getCefApp() {
