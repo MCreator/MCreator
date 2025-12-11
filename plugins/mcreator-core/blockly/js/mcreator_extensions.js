@@ -131,13 +131,6 @@ Blockly.Extensions.register('min_max_fields_validator',
         var minField = this.getField('min');
         var maxField = this.getField('max');
 
-        if (minField == null) {
-            minField = this.getField('min1');
-        }
-        if (maxField == null) {
-            maxField = this.getField('max1');
-        }
-
         // If min > max, we set its value to that of max
         minField.setValidator(function (newValue) {
             if (newValue > maxField.getValue()) {
@@ -150,48 +143,6 @@ Blockly.Extensions.register('min_max_fields_validator',
         maxField.setValidator(function (newValue) {
             if (newValue < minField.getValue()) {
                 return minField.getValue();
-            }
-            return newValue;
-        });
-    });
-
-// Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
-Blockly.Extensions.register('double_min_max_fields_validator',
-    function () {
-        var minField = this.getField('min');
-        var maxField = this.getField('max');
-
-        // If min > max, we set its value to that of max
-        minField.setValidator(function (newValue) {
-            if (newValue > maxField.getValue()) {
-                return maxField.getValue();
-            }
-            return newValue;
-        });
-
-        // If max < min, we set its value to that of min
-        maxField.setValidator(function (newValue) {
-            if (newValue < minField.getValue()) {
-                return minField.getValue();
-            }
-            return newValue;
-        });
-
-        var min2Field = this.getField('min2');
-        var max2Field = this.getField('max2');
-
-        // If min2 > max2, we set its value to that of max2
-        min2Field.setValidator(function (newValue) {
-            if (newValue > max2Field.getValue()) {
-                return max2Field.getValue();
-            }
-            return newValue;
-        });
-
-        // If max2 < min2, we set its value to that of min2
-        max2Field.setValidator(function (newValue) {
-            if (newValue < min2Field.getValue()) {
-                return min2Field.getValue();
             }
             return newValue;
         });

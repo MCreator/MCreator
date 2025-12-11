@@ -12,38 +12,20 @@
       "name": "max",
       "value": 100,
       "precision": 1
-    },
-    {
-      "type": "input_dummy"
-    },
-    {
-      "type": "field_number",
-      "name": "min2",
-      "value": 1,
-      "precision": 1,
-      "min": 1
-    },
-    {
-      "type": "field_number",
-      "name": "max2",
-      "value": 2000,
-      "precision": 1
     }
   ],
   "inputsInline": false,
   "output": "ItemPredicateEntry",
   "colour": 130,
   "extensions": [
-    "double_min_max_fields_validator"
+    "min_max_fields_validator"
   ],
   "mcreator": {
     "group": "damage",
     "toolbox_id": "components",
     "fields": [
       "min",
-      "max",
-      "min2",
-      "max2"
+      "max"
     ]
   }
 }
