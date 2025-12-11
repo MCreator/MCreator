@@ -98,10 +98,9 @@ public class WebView extends JPanel implements Closeable {
 		/*
 		 * Immediately create the browser if:
 		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
-		 * - on Windows, it reduces loading flickering
 		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
 		 */
-		if (forcePreload || OS.isWindows() || TestUtil.isTestingEnvironment())
+		if (forcePreload || TestUtil.isTestingEnvironment())
 			this.browser.createImmediately(); // needed so tests that don't render also work
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
