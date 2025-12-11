@@ -331,6 +331,38 @@ function checkIfAfter(block, predicate) {
     return null;
 }
 
+Blockly.Extensions.registerMixin('check_duplicate_input_blocks',
+    {
+        onchange: function (e) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
+                e.type !== Blockly.Events.BLOCK_MOVE &&
+                e.type !== Blockly.Events.BLOCK_DELETE &&
+                e.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+
+            var types = new Set(); // Store the type of blocks that are already placed in a previous argument.
+
+            var children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first one is kept.
+            children.forEach(block => {
+                var type = block.type.replace("_full", "").replace("_only", "");
+
+                if (types.has(type)) {
+                    if (!this.isInFlyout) {
+                        const group = Blockly.Events.getGroup();
+                        // Makes it so the move and the disable event get undone together.
+                        Blockly.Events.setGroup(e.group);
+                        block.setEnabled(false);
+                        Blockly.Events.setGroup(group);
+                    }
+                } else {
+                    types.add(type); // We add the type of the block that is the first one to be placed, so next ones are disabled.
+                }
+            })
+        }
+    });
+
 // Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
 Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
     {

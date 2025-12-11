@@ -24,7 +24,8 @@
   "output": "ItemPredicate",
   "colour": 90,
   "extensions": [
-    "min_max_fields_validator"
+    "min_max_fields_validator",
+    "check_duplicate_input_blocks"
   ],
   "mcreator": {
     "group": "items",
