@@ -135,8 +135,8 @@ public class BlocklyTestUtil {
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
+				TestUtil.failIfTestingEnvironment();
 				return false;
 			}
 		}
