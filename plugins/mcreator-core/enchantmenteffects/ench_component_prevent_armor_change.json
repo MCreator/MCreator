@@ -1,5 +1,7 @@
 {
-  "args0": [],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,

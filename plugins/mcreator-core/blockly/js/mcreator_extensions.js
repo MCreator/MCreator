@@ -309,3 +309,27 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
             }
         }
     });
+
+// Mutator to disable an enchantment component if it already appears in the effects list
+Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
+    {
+        onchange: function (e) {
+            // Don't change state if it's at the start of a drag and it's not a move or create event
+            if (!this.workspace.isDragging || this.workspace.isDragging()
+                    || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
+                return;
+            }
+            const thisType = this.type;
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type === thisType;
+            }));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.ench_component.warning_repeated'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
