@@ -49,7 +49,7 @@ public class MCItemBlock implements IBlockGenerator {
 					.hasTemplate("_mcitem_all.java.ftl") && block.getAttribute("type").equals("mcitem_all")) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
-				String code = master.getTemplateGenerator().generateFromTemplate("_mcitem_all.java.ftl", dataModel);
+				String code = master.getTemplateGenerator().generateFromTemplate("_mcitem.java.ftl", dataModel);
 				master.append(code);
 			} else {
 				master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
