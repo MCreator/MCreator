@@ -562,18 +562,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			refreshBonemealProperties();
 		});
 
-		// If sign block base is selected, check that workspace doesn't contain elements named "Wall" + block name
-		blockBase.setValidator(
-				() -> {
-					if ("Sign".equals(blockBase.getSelectedItem()) && mcreator.getWorkspace().getModElements().stream()
-							.map(ModElement::getName).anyMatch(name -> name.equals("Wall" + modElement.getName())))
-						return new ValidationResult(ValidationResult.Type.ERROR,
-								L10N.t("elementgui.block.error_wall_sign_name_collision",
-										"Wall" + modElement.getName()));
-					return ValidationResult.PASSED;
-				}
-		);
-
 		renderType.addActionListener(e -> updateTextureOptions());
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -1417,7 +1405,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
-		page1group.addValidationElement(blockBase);
 		page1group.addValidationElement(pottedPlant);
 		page1group.addValidationElement(signEntityTexture);
 
