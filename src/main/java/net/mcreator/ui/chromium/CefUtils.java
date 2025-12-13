@@ -90,6 +90,7 @@ public class CefUtils {
 			disabledFeatures.add("WebHID");
 			disabledFeatures.add("WebSerial");
 			disabledFeatures.add("NewUsbBackend");
+			disabledFeatures.add("TranslateUI");
 
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is headless and without GPU
