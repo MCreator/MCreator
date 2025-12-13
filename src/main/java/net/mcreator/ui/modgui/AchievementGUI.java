@@ -212,7 +212,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.JSON_TRIGGER);
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
 					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"TriggerRegenerate").start());

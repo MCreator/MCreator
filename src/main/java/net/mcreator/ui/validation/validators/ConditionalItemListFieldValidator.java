@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -28,22 +29,22 @@ public class ConditionalItemListFieldValidator implements Validator {
 
 	private final JItemListField<?> holder;
 	private final String emptyMessage;
-	private final ValidationResultType answer;
+	private final ValidationResult.Type answer;
 	private final boolean validateTextWhenBooleanIs;
 	private final Supplier<Boolean> conditionElement;
 
 	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, Supplier<Boolean> condition,
 			boolean validateTextWhenBooleanIs) {
-		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResultType.ERROR);
+		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResult.Type.ERROR);
 	}
 
 	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, JToggleButton condition,
 			boolean validateTextWhenBooleanIs) {
-		this(holder, emptyMessage, condition::isSelected, validateTextWhenBooleanIs, ValidationResultType.ERROR);
+		this(holder, emptyMessage, condition::isSelected, validateTextWhenBooleanIs, ValidationResult.Type.ERROR);
 	}
 
 	public ConditionalItemListFieldValidator(JItemListField<?> holder, String emptyMessage, Supplier<Boolean> condition,
-			boolean validateTextWhenBooleanIs, ValidationResultType answer) {
+			boolean validateTextWhenBooleanIs, ValidationResult.Type answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
 		this.answer = answer;

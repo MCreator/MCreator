@@ -25,6 +25,7 @@ import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.image.EmptyIcon;
@@ -156,10 +157,8 @@ public class MCItemHolder extends JButton implements IValidable {
 	@Override public void paintComponent(Graphics g) {
 
 		if (showValidation && validator != null && currentValidationResult != null
-				&& currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED)
-			g.setColor(currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR ?
-					err :
-					warn);
+				&& currentValidationResult.type() != ValidationResult.Type.PASSED)
+			g.setColor(currentValidationResult.type() == ValidationResult.Type.ERROR ? err : warn);
 		else
 			g.setColor(isEnabled() ? bg : bg.brighter());
 
@@ -179,9 +178,9 @@ public class MCItemHolder extends JButton implements IValidable {
 			}
 
 			if (validator != null && currentValidationResult != null) {
-				if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
 					g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-				} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+				} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
 					g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
 				}
 			}
@@ -208,14 +207,14 @@ public class MCItemHolder extends JButton implements IValidable {
 	}
 
 	private void updateTooltipText() {
-		boolean hasValidationMessage = currentValidationResult != null &&
-				currentValidationResult.getValidationResultType() != Validator.ValidationResultType.PASSED;
+		boolean hasValidationMessage =
+				currentValidationResult != null && currentValidationResult.type() != ValidationResult.Type.PASSED;
 		if (!block.isEmpty()) {
 			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
-					"\n" + currentValidationResult.getMessage() :
+					"\n" + currentValidationResult.message() :
 					""));
 		} else if (hasValidationMessage) {
-			this.setToolTipText(currentValidationResult.getMessage());
+			this.setToolTipText(currentValidationResult.message());
 		} else {
 			this.setToolTipText(null);
 		}
@@ -223,10 +222,10 @@ public class MCItemHolder extends JButton implements IValidable {
 
 	//validation code
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 

@@ -30,19 +30,95 @@
 
 <#-- @formatter:off -->
 
+<#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
+
+/*
+ *	MCreator note: This file will be REGENERATED on each build.
+ */
+
 package ${package}.init;
 
-<#compress>
+<@javacompress>
 @EventBusSubscriber public class ${JavaModName}DispenseBehaviors {
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
+			<#list itemextensions?filter(e -> e.hasDispenseBehavior) as extension>
+			DispenserBlock.registerBehavior(${mappedMCItemToItem(extension.item)},
+			<#if hasProcedure(extension.dispenseSuccessCondition)>
+			new OptionalDispenseItemBehavior() {
+				public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+					ItemStack itemstack = stack.copy();
+					Level world = blockSource.level();
+					Direction direction = blockSource.state().getValue(DispenserBlock.FACING);
+					int x = blockSource.pos().getX();
+					int y = blockSource.pos().getY();
+					int z = blockSource.pos().getZ();
+
+					this.setSuccess(<@procedureOBJToConditionCode extension.dispenseSuccessCondition/>);
+
+					<#if hasProcedure(extension.dispenseResultItemstack)>
+						boolean success = this.isSuccess();
+						<#if hasReturnValueOf(extension.dispenseResultItemstack, "itemstack")>
+							return <@procedureOBJToItemstackCode extension.dispenseResultItemstack, false/>;
+						<#else>
+							<@procedureOBJToCode extension.dispenseResultItemstack/>
+							if (success) {
+								itemstack.shrink(1);
+							}
+							return itemstack;
+						</#if>
+					<#else>
+						if (this.isSuccess()) {
+							itemstack.shrink(1);
+						}
+						return itemstack;
+					</#if>
+				}
+			}
+			<#else>
+			new DefaultDispenseItemBehavior() {
+				public ItemStack execute(BlockSource blockSource, ItemStack itemstack) {
+					<#if hasProcedure(extension.dispenseResultItemstack)>
+						<#if hasReturnValueOf(extension.dispenseResultItemstack, "itemstack")>
+							return <@procedureCode extension.dispenseResultItemstack, {
+								"x": "blockSource.pos().getX()",
+								"y": "blockSource.pos().getY()",
+								"z": "blockSource.pos().getZ()",
+								"itemstack": "itemstack.copy()",
+								"world": "blockSource.level()",
+								"direction": "blockSource.state().getValue(DispenserBlock.FACING)",
+								"success": "true" <#-- Dispense success condition defaults to true if not specified -->
+							}, false/>;
+						<#else>
+							<@procedureCode extension.dispenseResultItemstack, {
+								"x": "blockSource.pos().getX()",
+								"y": "blockSource.pos().getY()",
+								"z": "blockSource.pos().getZ()",
+								"itemstack": "itemstack.copy()",
+								"world": "blockSource.level()",
+								"direction": "blockSource.state().getValue(DispenserBlock.FACING)",
+								"success": "true" <#-- Dispense success condition defaults to true if not specified -->
+							}/>
+							itemstack.shrink(1);
+							return itemstack;
+						</#if>
+					<#else>
+						itemstack.shrink(1);
+						return itemstack;
+					</#if>
+				}
+			}
+			</#if>
+			);
+			</#list>
 			<#list specialentities as entity>
-				DispenserBlock.registerBehavior(${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get(),
-						new BoatDispenseItemBehavior(${JavaModName}BoatTypes.${entity.getModElement().getRegistryNameUpper()}_TYPE.getValue()
-						<#if entity.entityType == "ChestBoat">, true</#if>));
+			DispenserBlock.registerBehavior(${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get(),
+					new BoatDispenseItemBehavior(${JavaModName}BoatTypes.${entity.getModElement().getRegistryNameUpper()}_TYPE.getValue()
+					<#if entity.entityType == "ChestBoat">, true</#if>));
 			</#list>
 		});
 	}
 
-}</#compress>
+}</@javacompress>

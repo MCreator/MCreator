@@ -45,6 +45,7 @@ import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.FlafIcons;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
@@ -59,7 +60,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -73,7 +73,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
@@ -177,14 +176,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		southcenter.add(new JEmptyBox(7, 5));
 
 		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences")) {
+
 			@Override protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 
 				try {
-					String flagpath =
-							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-					BufferedImage image = ImageIO.read(
-							Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
+					BufferedImage image = FlafIcons.getFlag(
+							L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH));
 					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 4, this);
 				} catch (Exception ignored) { // flag not found, ignore
 				}

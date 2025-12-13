@@ -21,6 +21,7 @@ package net.mcreator.gradle;
 
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,6 @@ import org.gradle.tooling.model.eclipse.EclipseJavaSourceSettings;
 import org.gradle.tooling.model.eclipse.EclipseProject;
 
 import javax.annotation.Nullable;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -56,14 +56,16 @@ public class GradleToolchainUtil {
 		try {
 			initScript = createInitScript();
 
-			ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+			StringBuilder sb = new StringBuilder();
 
+			// Use the help task as a dummy task to invoke Gradle
 			BuildLauncher launcher = GradleUtils.getGradleTaskLauncher(generatorConfiguration, projectConnection,
-							"tasks").addArguments("--init-script", initScript.getAbsolutePath()).addArguments("--quiet")
-					.setStandardOutput(stdout).setStandardError(stdout);
+							"resolveToolchainPath").addArguments("--init-script", initScript.getAbsolutePath())
+					.addArguments("--quiet")
+					.setStandardOutput(new OutputStreamEventHandler(line -> sb.append(line).append("\n")));
 			launcher.run();
 
-			return parseOutput(stdout.toString());
+			return parseOutput(sb.toString());
 		} catch (Exception e) {
 			LOG.warn("Failed to determine toolchain JDK home", e);
 			TestUtil.failIfTestingEnvironment();
@@ -88,14 +90,10 @@ public class GradleToolchainUtil {
 		initScriptFile.deleteOnExit();
 		FileIO.writeStringToFile("""
 				allprojects {
-				    afterEvaluate {
-				        def t = tasks.findByName('compileJava')
-				        if (t != null && t.hasProperty('javaCompiler')) {
-				            def prov = t.javaCompiler
-				            if (prov.present) {
-				                def home = prov.get().metadata.installationPath
-				                println "TOOLCHAIN_JDK_HOME=${home}"
-				            }
+				    tasks.register("resolveToolchainPath") {
+				        def prov = tasks.named("compileJava").flatMap { it.javaCompiler }
+				        doLast {
+				            println "TOOLCHAIN_JDK_HOME=${prov.get().metadata.installationPath}"
 				        }
 				    }
 				}
@@ -105,11 +103,12 @@ public class GradleToolchainUtil {
 
 	private static File parseOutput(String output) {
 		for (String line : output.split("\n")) {
+			line = line.trim();
 			if (line.startsWith("TOOLCHAIN_JDK_HOME=")) {
 				return new File(line.substring("TOOLCHAIN_JDK_HOME=".length()).trim());
 			}
 		}
-		throw new RuntimeException("Could not determine compileJava toolchain JDK home.\nOutput:\n" + output);
+		throw new RuntimeException("Could not determine compileJava toolchain JDK home. Output: " + output);
 	}
 
 	@Nullable private static File findJavaHome(EclipseProject project) {
