@@ -42,7 +42,9 @@ import org.cef.network.CefRequest;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 public class CefUtils {
@@ -62,12 +64,32 @@ public class CefUtils {
 			LOG.info("Initializing JCEF");
 
 			JCefAppConfig config = JCefAppConfig.getInstance();
-
 			config.getAppArgsAsList().add("--disable-extensions");
 			config.getAppArgsAsList().add("--disable-default-apps");
 			config.getAppArgsAsList().add("--disable-sync");
 			config.getAppArgsAsList().add("--disable-speech-api");
 			config.getAppArgsAsList().add("--mute-audio");
+
+			Set<String> disabledFeatures = new HashSet<>();
+			// Get existing disabled features
+			String toRemove = null;
+			for (String entry : config.getAppArgsAsList()) {
+				if (entry.startsWith("--disable-features=")) {
+					disabledFeatures.addAll(List.of(entry.substring("--disable-features=".length()).split(",")));
+					toRemove = entry;
+					break;
+				}
+			}
+			// Remove original flag
+			if (toRemove != null)
+				config.getAppArgsAsList().remove(toRemove);
+
+			// Disable features we don't need
+			disabledFeatures.add("WebUSB");
+			disabledFeatures.add("WebBluetooth");
+			disabledFeatures.add("WebHID");
+			disabledFeatures.add("WebSerial");
+			disabledFeatures.add("NewUsbBackend");
 
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is headless and without GPU
@@ -78,7 +100,6 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--disable-gpu");
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
 				config.getAppArgsAsList().add("--disable-gpu-vsync");
-				config.getAppArgsAsList().add("--disable-features=Vulkan,UseSkiaRenderer");
 				config.getAppArgsAsList().add("--disable-zygote");
 				config.getAppArgsAsList().add("--disable-dev-shm-usage");
 				config.getAppArgsAsList().add("--use-gl=swiftshader"); // CPU rendering
@@ -87,10 +108,15 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--renderer-process-limit=1");
 				config.getAppArgsAsList().add("--js-flags=--lite-mode");
 				config.getAppArgsAsList().add("--disable-breakpad");
+
+				// Disable certain browser features
+				disabledFeatures.add("Vulkan");
+				disabledFeatures.add("UseSkiaRenderer");
 			}
 
-			List<String> appArgs = config.getAppArgsAsList();
+			config.getAppArgsAsList().add("--disable-features=" + String.join(",", disabledFeatures));
 
+			List<String> appArgs = config.getAppArgsAsList();
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
 			settings.cache_path = UserFolderManager.getFileFromUserFolder("/cef/").toString();
