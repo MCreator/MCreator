@@ -154,7 +154,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 			}
 
 			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
-					.append(dependency.getName()).append("&nbsp;</span><font size=1>&#32;</font>");
+					.append(dependency.name()).append("&nbsp;</span><font size=1>&#32;</font>");
 
 			idx++;
 		}
