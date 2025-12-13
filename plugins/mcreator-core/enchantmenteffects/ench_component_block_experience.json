@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "conditionalEffect",
+      "check": "ConditionalValueEffect"
+    }
+  ],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 60,
+  "inputsInline": false,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "statements": [
+      {
+        "name": "conditionalEffect"
+      }
+    ]
+  }
+}
