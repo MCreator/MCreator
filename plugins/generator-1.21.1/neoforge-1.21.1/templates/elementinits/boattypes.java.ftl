@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2025, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,23 +36,14 @@
 
 package ${package}.init;
 
-@EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}EntityRenderers {
-
-	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		<#list entities as entity>
-			<#if entity.getModElement().getTypeString() == "projectile">
-				<#if entity.isCustomModel()>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
-				<#else>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ThrownItemRenderer::new);
-				</#if>
-			<#elseif entity.getModElement().getTypeString() == "livingentity">
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
-				<#if entity.hasCustomProjectile()>
-				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), ThrownItemRenderer::new);
-				</#if>
-			</#if>
-		</#list>
-	}
+public class ${JavaModName}BoatTypes {
+	<#compress>
+	<#list specialentities as entity>
+		public static final EnumProxy<Boat.Type> ${entity.getModElement().getRegistryNameUpper()}_TYPE =
+				new EnumProxy<>(Boat.Type.class, (Supplier<Block>) () -> Blocks.OAK_PLANKS, "${modid}:${entity.getModElement().getRegistryName()}",
+				<#if entity.entityType == "Boat">${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}, (Supplier<Item>) () -> Items.AIR,
+				<#else>(Supplier<Item>) () -> Items.AIR, ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()},</#if>
+				(Supplier<Item>) () -> Items.STICK, false);
+	</#list>
+	</#compress>
 }
-<#-- @formatter:on -->
