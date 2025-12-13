@@ -299,7 +299,13 @@ Blockly.Extensions.registerMixin('check_duplicate_input_blocks',
             children.forEach(block => {
                 var type = block.type.replace("_full", "").replace("_only", "");
 
-                if (types.has(type)) {
+                // Here we only keep the part of the block's type telling us the real component's type
+                var realType = type;
+                if (type.includes("item_predicate_damage")) {
+                	realType = type.substring(0, "item_predicate_damage".length - 1);
+                }
+
+                if (types.has(realType)) {
                     if (!this.isInFlyout) {
                         const group = Blockly.Events.getGroup();
                         // Makes it so the move and the disable event get undone together.
@@ -308,7 +314,7 @@ Blockly.Extensions.registerMixin('check_duplicate_input_blocks',
                         Blockly.Events.setGroup(group);
                     }
                 } else {
-                    types.add(type); // We add the type of the block that is the first one to be placed, so next ones are disabled.
+                    types.add(realType); // We add the type of the block that is the first one to be placed, so next ones are disabled.
                 }
             })
         }
