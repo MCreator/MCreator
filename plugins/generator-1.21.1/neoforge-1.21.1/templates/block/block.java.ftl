@@ -283,12 +283,37 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign defaultStateCustomShape = data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign statesWithCustomShape = data.getDefinedStatesWithCustomShape()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
+		<#if !data.shouldDisableOffset() && (!data.isBoundingBoxEmpty() || statesWithCustomShape?has_content)>
+			Vec3 offset = state.getOffset(world, pos);
+		</#if>
+
+		<#list statesWithCustomShape as state>
+		<#if !state?is_first>else </#if>if (
+    		<#list state.stateMap.keySet() as property>
+				<#assign value = state.stateMap.get(property)>
+				<#if property.getClass().getSimpleName().equals("StringType")>
+					<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+				</#if>
+				state.getValue(${generator.map(property.getName(), "blockstateproperties")}) == ${value}<#sep>&&
+			</#list>
+		) {
+			<#if state.isBoundingBoxEmpty()>
+				return Shapes.empty();
+			<#else>
+				<@boundingBoxWithRotation state.positiveBoundingBoxes() state.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
+			</#if>
+		}
+		</#list>
+
+		<#if !defaultStateCustomShape>
+			return super.getShape(state, world, pos, context);
+		<#elseif data.isBoundingBoxEmpty()>
 			return Shapes.empty();
 		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
 		</#if>
 	}

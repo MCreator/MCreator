@@ -514,7 +514,17 @@ import java.util.stream.Collectors;
 		return retval;
 	}
 
-	public static class StateEntry implements IWorkspaceDependent, IItemWithModel {
+	public List<StateEntry> getDefinedStatesWithCustomShape() {
+		List<StateEntry> retval = new ArrayList<>();
+		for (StateEntry stateEntry : getDefinedStates()) {
+			if (stateEntry.hasCustomBoundingBox && !stateEntry.isFullCube()) {
+				retval.add(stateEntry);
+			}
+		}
+		return retval;
+	}
+
+	public static class StateEntry implements IWorkspaceDependent, IItemWithModel, IBlockWithBoundingBox {
 
 		@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 		@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -524,6 +534,9 @@ import java.util.stream.Collectors;
 		@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 		public int renderType;
 		@Nonnull public String customModelName;
+
+		public boolean hasCustomBoundingBox;
+		public List<BoxEntry> boundingBoxes;
 
 		public StateMap stateMap;
 
@@ -573,6 +586,10 @@ import java.util.stream.Collectors;
 			if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 				return ((TexturedModel) model).getTextureMapping().getTextureMap();
 			return new HashMap<>();
+		}
+
+		@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
+			return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 		}
 
 	}

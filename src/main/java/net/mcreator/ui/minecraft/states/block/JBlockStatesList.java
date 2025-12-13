@@ -53,6 +53,8 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		this.currentPropertiesSupplier = currentPropertiesSupplier;
 		this.isBlockNotTinted = isBlockNotTinted;
 
+		entries.setLayout(new BoxLayout(entries, BoxLayout.Y_AXIS));
+
 		add.setText(L10N.t("elementgui.block.custom_states.add"));
 
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
@@ -105,7 +107,7 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		if (userAction && !stateLabel.editState())
 			return null;
 
-		return new JBlockStatesListEntry(mcreator, gui, parent, entryList, stateLabel, this);
+		return new JBlockStatesListEntry(mcreator, gui, parent, entryList, stateLabel, this, userAction);
 	}
 
 	@Override public ValidationResult getValidationStatus() {

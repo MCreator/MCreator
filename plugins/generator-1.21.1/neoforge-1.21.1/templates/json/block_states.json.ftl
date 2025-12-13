@@ -60,8 +60,7 @@
   <#list stateCombinations as model>
     <#assign variantPredicate = "">
     <#list model.stateMap.keySet() as property>
-      <#assign value = model.stateMap.get(property)>
-      <#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + value + property?has_next?then(",", ""))>
+      <#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + model.stateMap.get(property) + property?has_next?then(",", ""))>
     </#list>
     "<#if conditionExtra?has_content>${conditionExtra},</#if>${variantPredicate}": {
       "model": "${modid}:block/${registryname}<#if model.renderType != -1>_${model?index}</#if>"

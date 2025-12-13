@@ -20,7 +20,9 @@
 package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.element.types.Block;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -31,6 +33,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.BlockTexturesSelector;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
@@ -41,14 +44,12 @@ import net.mcreator.workspace.resources.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static net.mcreator.ui.modgui.BlockGUI.normal;
-import static net.mcreator.ui.modgui.BlockGUI.singleTexture;
-import static net.mcreator.ui.modgui.BlockGUI.cross;
-import static net.mcreator.ui.modgui.BlockGUI.crop;
+import static net.mcreator.ui.modgui.BlockGUI.*;
 
 public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> implements IValidable {
 
@@ -64,12 +65,24 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(supportedbuiltinitemmodels);
 
+	private final JBoundingBoxList boundingBoxList;
+
+	private final JCheckBox hasCustomBoundingBox = L10N.checkbox("elementgui.common.enable");
+
 	public JBlockStatesListEntry(MCreator mcreator, IHelpContext helpContext, JPanel parent,
-			List<JBlockStatesListEntry> entryList, JStateLabel stateLabel, JBlockStatesList blockStatesList) {
+			List<JBlockStatesListEntry> entryList, JStateLabel stateLabel, JBlockStatesList blockStatesList,
+			boolean userAction) {
 		super(parent, entryList);
 		this.mcreator = mcreator;
 		this.stateLabel = stateLabel;
 		this.blockStatesList = blockStatesList;
+
+		this.boundingBoxList = new JBoundingBoxList(mcreator, helpContext, renderType::getSelectedItem);
+		if (userAction) {
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+		}
+		boundingBoxList.setOpaque(false);
+		boundingBoxList.setPreferredSize(new Dimension(0, 160));
 
 		this.textures = new BlockTexturesSelector(mcreator);
 
@@ -81,14 +94,28 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 		line.add("North", ComponentUtils.applyPadding(stateLabel, 5, true, false, true, false));
 
+		JPanel regularParamsGrid = new JPanel(new GridLayout(-1, 2, 2, 2));
+		regularParamsGrid.setOpaque(false);
+
+		regularParamsGrid.add(HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/state_model"),
+				L10N.label("elementgui.block.state_model")));
+		regularParamsGrid.add(renderType);
+
+		regularParamsGrid.add(HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/state_bounding_box_enable"),
+				L10N.label("elementgui.block.state_bounding_box_enable")));
+		regularParamsGrid.add(hasCustomBoundingBox);
+
+		hasCustomBoundingBox.addActionListener(e -> boundingBoxList.setEnabled(hasCustomBoundingBox.isSelected()));
+		boundingBoxList.setEnabled(false);
+
 		JPanel parameters = new JPanel(new BorderLayout(10, 10));
 		parameters.setOpaque(false);
 		parameters.add("West", textures);
-		parameters.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, 2, 2,
-				HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/state_model"),
-						L10N.label("elementgui.block.state_model")), renderType)));
+		parameters.add("Center", PanelUtils.northAndCenterElement(regularParamsGrid, boundingBoxList, 2, 2));
 
-		line.add("Center", parameters);
+		CollapsiblePanel collapse = new CollapsiblePanel(L10N.t("elementgui.block.state_collapse"), parameters);
+		collapse.toggleVisibility(userAction);
+		line.add("Center", collapse);
 
 		renderType.addActionListener(e -> {
 			if (normal.equals(renderType.getSelectedItem())) {
@@ -96,6 +123,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			} else {
 				textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
 			}
+
+			boundingBoxList.modelChanged();
 		});
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -131,6 +160,9 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		retVal.textureRight = textures.getTextureRight();
 		retVal.textureBack = textures.getTextureBack();
 
+		retVal.hasCustomBoundingBox = hasCustomBoundingBox.isSelected();
+		retVal.boundingBoxes = boundingBoxList.getEntries();
+
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		retVal.renderType = 10;
 		if (model.getType() == Model.Type.JSON)
@@ -150,6 +182,10 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 	@Override public void setEntry(Block.StateEntry value) {
 		this.stateLabel.setStateMap(value.stateMap);
+
+		this.hasCustomBoundingBox.setSelected(value.hasCustomBoundingBox);
+		this.boundingBoxList.setEntries(value.boundingBoxes);
+		boundingBoxList.setEnabled(hasCustomBoundingBox.isSelected());
 
 		textures.setTextures(value.texture, value.textureTop, value.textureLeft, value.textureFront, value.textureRight,
 				value.textureBack);
