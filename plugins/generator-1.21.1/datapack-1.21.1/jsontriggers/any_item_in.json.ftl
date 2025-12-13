@@ -3,6 +3,6 @@
 "items": "${mappedMCItemToRegistryName(w.itemBlock(field_list$item?first))}"
 <#else>
 "items": [
-	<#list field_list$item as item>"${mappedMCItemToRegistryName(w.itemBlock(item))}"<#sep>,</#list>
+  <#list field_list$item as item>"${mappedMCItemToRegistryName(w.itemBlock(item))}"<#sep>,</#list>
 ]
 </#if>
