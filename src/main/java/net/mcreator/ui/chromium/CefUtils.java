@@ -69,6 +69,7 @@ public class CefUtils {
 			config.getAppArgsAsList().add("--disable-sync");
 			config.getAppArgsAsList().add("--disable-speech-api");
 			config.getAppArgsAsList().add("--mute-audio");
+			config.getAppArgsAsList().add("--disable-gaia-services");
 
 			Set<String> disabledFeatures = new HashSet<>();
 			// Get existing disabled features
