@@ -19,13 +19,16 @@
 
 package net.mcreator.element.types.interfaces;
 
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public interface IMCItemProvider {
+@SuppressWarnings({ "unused" }) public interface IMCItemProvider {
 	/**
 	 * This method determines what MCItems are provided by this generatable element
 	 * <p>
@@ -47,5 +50,17 @@ public interface IMCItemProvider {
 	 */
 	default ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		return null;
+	}
+
+	/**
+	 * This method returns a set of mapped blocks MCItems provided by this generatable element.
+	 * For example, blocks use this method to determine their managed block tag entries.
+	 *
+	 * @return A set of mapped block entries
+	 */
+	default Set<String> getProvidedBlocks() {
+		return providedMCItems().stream()
+				.filter(item -> item.getType().equals("block") || item.getType().equals("block_without_item"))
+				.map(DataListEntry::getName).collect(Collectors.toSet());
 	}
 }
