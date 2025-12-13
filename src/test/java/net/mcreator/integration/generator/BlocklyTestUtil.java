@@ -39,6 +39,7 @@ import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -119,24 +120,35 @@ public class BlocklyTestUtil {
 			int processed = 0;
 
 			if (toolboxBlock.getBlocklyJSON().has("args0")) {
-				for (String field : toolboxBlock.getFields()) {
+				for (String field : toolboxBlock.getFields()) { // For each field defined in MCreator's block definition
 					JsonArray args0 = toolboxBlock.getBlocklyJSON().get("args0").getAsJsonArray();
+
+					// Go through args0 to find a potential match for definition
 					for (int i = 0; i < args0.size(); i++) {
 						JsonObject arg = args0.get(i).getAsJsonObject();
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
-						} else if (toolboxBlock.getToolboxTestXML().contains("<field name=\"" + field + "\">")) {
-							processed++;
-							break;
+						}
+					}
+
+					// If not found, check if filed may be defined in the toolbox init
+					List<String> toolboxInitEntries = toolboxBlock.getToolboxInitStatements();
+					if (toolboxInitEntries != null) {
+						for (String toolboxEntry : toolboxInitEntries) {
+							if (toolboxEntry.charAt(0) == '~')
+								toolboxEntry = toolboxEntry.substring(1);
+							if (toolboxEntry.startsWith("<field name=\"" + field + "\">")) {
+								processed++;
+							}
 						}
 					}
 				}
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
+				TestUtil.failIfTestingEnvironment();
 				return false;
 			}
 		}
