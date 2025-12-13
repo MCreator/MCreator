@@ -40,6 +40,8 @@ import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefRequestHandlerAdapter;
 import org.cef.network.CefRequest;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -149,6 +151,12 @@ public class CefUtils {
 					TestUtil.failIfTestingEnvironment();
 				}
 
+				return true;
+			}
+
+			@Override public boolean onCursorChange(CefBrowser browser, int cursorType) {
+				//noinspection MagicConstant
+				SwingUtilities.invokeLater(() -> browser.getUIComponent().setCursor(new Cursor(cursorType)));
 				return true;
 			}
 		});
