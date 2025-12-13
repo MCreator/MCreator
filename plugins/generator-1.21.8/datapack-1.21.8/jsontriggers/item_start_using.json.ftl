@@ -1,8 +1,8 @@
 "${registryname}_${cbi}": {
-  "trigger": "minecraft:consume_item",
+  "trigger": "minecraft:using_item",
   "conditions": {
     "item": {
-      ${input$item}
+    	${input$item}
     }
   }
 },
