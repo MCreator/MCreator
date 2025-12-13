@@ -239,7 +239,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	public static class ReloadContext {
 
-		private final Map<ModElement, ContexData> data = new HashMap<>();
+		// LinkedHashMap to keep the order of ModElement.getComparator
+		private final Map<ModElement, ContexData> data = new LinkedHashMap<>();
 
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();

@@ -1,0 +1,1 @@
+Se este parâmetro estiver marcado ou tiver uma condição que retorne true, este item abrirá a interface vinculada no botão direito.
