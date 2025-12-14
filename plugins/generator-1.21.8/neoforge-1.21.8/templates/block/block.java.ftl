@@ -94,6 +94,14 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	</#list>
 
+	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+		<#if data.rotationMode == 0><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+		<#else>
+		private final Function<BlockState, VoxelShape> shapes = this.makeShapes();
+		</#if>
+	</#if>
+
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(${name}Block::new);
 
@@ -236,6 +244,29 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	}
 
+	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+		<#if data.rotationMode != 0>
+		private Function<BlockState, VoxelShape> makeShapes() {
+			return this.getShapeForEachState(
+				state -> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>
+				<#-- exclude states that don't affect shape -->
+				<#if data.isWaterloggable>,WATERLOGGED</#if>
+				<#list filteredCustomProperties as prop>,${prop.property().getName().replace("CUSTOM:", "")?upper_case}</#list>
+			);
+		}
+		</#if>
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+
+			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
+			<#else><#-- shape is state dependent -->
+			return shapes.apply(state)<#if offset>.move(state.getOffset(pos))</#if>;
+			</#if>
+		}
+	</#if>
+
 	<#if data.renderType() == 4>
     @Override protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
@@ -282,22 +313,6 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	@Override public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return Shapes.empty();
 	}
-	</#if>
-
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-		<#if data.rotationMode == 0><#-- shape not state dependent -->
-		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
-		</#if>
-
-		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
-
-			<#if data.rotationMode == 0><#-- shape not state dependent -->
-			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
-			<#else><#-- shape is state dependent -->
-			return <#if offset>(</#if><@boundingBoxWithRotation data data.rotationMode data.enablePitch/><#if offset>).move(state.getOffset(pos))</#if>;
-			</#if>
-		}
 	</#if>
 
 	<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
