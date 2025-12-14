@@ -262,7 +262,6 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 
 			if (!filtered.isEmpty()) {
-				results.setVisible(false);
 				results.removeAll();
 
 				for (ToolboxBlock toolboxBlock : filtered) {
