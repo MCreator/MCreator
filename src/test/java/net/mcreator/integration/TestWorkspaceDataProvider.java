@@ -1948,7 +1948,7 @@ public class TestWorkspaceDataProvider {
 		block.displayFluidOverlay = _true;
 		block.emissiveRendering = _true;
 		block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
-		block.disableOffset = !_true;
+		block.disableOffset = random.nextBoolean();
 		block.boundingBoxes = new ArrayList<>();
 		if (!emptyLists) {
 			int boxes = random.nextInt(4) + 1;
@@ -1960,7 +1960,7 @@ public class TestWorkspaceDataProvider {
 				box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
 				box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
 				box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
-				box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+				box.subtract = random.nextBoolean();
 
 				block.boundingBoxes.add(box);
 			}
