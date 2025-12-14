@@ -97,11 +97,13 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	</#list>
 
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-		<#if data.rotationMode == 0><#-- shape not state dependent -->
+	<#assign defaultStateCustomShape = data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign statesWithCustomShape = data.getDefinedStatesWithCustomShape()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
 		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
 		<#else>
-		private final Function<BlockState, VoxelShape> shapes = this.makeShapes();
+		private final ImmutableMap<BlockState, VoxelShape> shapes = this.makeShapes();
 		</#if>
 	</#if>
 
@@ -241,10 +243,25 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	}
 
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
 		<#if data.rotationMode != 0>
-		private Function<BlockState, VoxelShape> makeShapes() {
-			return this.getShapeForEachState(state -> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>);
+		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
+			return this.getShapeForEachState(state -> {
+				<#list statesWithCustomShape as state>
+				<#if !state?is_first>else </#if>if (
+    				<#list state.stateMap.keySet() as property>
+						<#assign value = state.stateMap.get(property)>
+						<#if property.getClass().getSimpleName().equals("StringType")>
+							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+						</#if>
+						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					</#list>
+				) {
+					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+				}
+				</#list>
+				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+			});
 		}
 		</#if>
 
@@ -255,7 +272,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			<#if data.rotationMode == 0><#-- shape not state dependent -->
 			return SHAPE<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
 			<#else><#-- shape is state dependent -->
-			return shapes.apply(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			return shapes.get(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
 			</#if>
 		}
 	</#if>

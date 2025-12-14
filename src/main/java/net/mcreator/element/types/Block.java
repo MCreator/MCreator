@@ -524,6 +524,12 @@ import java.util.stream.Collectors;
 		return retval;
 	}
 
+	public List<String> getPropertiesUsedInStates() {
+		if (!supportsBlockStates() || states.isEmpty())
+			return List.of();
+		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
+	}
+
 	public static class StateEntry implements IWorkspaceDependent, IItemWithModel, IBlockWithBoundingBox {
 
 		@TextureReference(TextureType.BLOCK) public TextureHolder texture;
