@@ -1,6 +1,9 @@
 Here you can list additional custom properties of this block.
 Block properties define basic possible states of the block.
 
+Try to make as little combinations as possible, as the more combinations,
+slower the game load and higher the memory usage.
+
 The more property combinations possible, the slower the game will load and operate.
 If you need to define a lot of states, consider using NBT data instead.
 
