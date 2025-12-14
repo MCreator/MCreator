@@ -5,19 +5,18 @@
     "description": {
       "identifier": "${modid}:${registryname}",
       "menu_category": {
-      	category: "items"
+      	"category": "items"
       }
     },
     "components": {
       "minecraft:icon": "${registryname}",
       <#if data.hasGlint>"minecraft:glint": true,</#if>
-      "minecraft:max_stack_size": ${data.stackSize},
-      <#if data.maxDurability gt 0>
+      "minecraft:max_stack_size": ${data.stackSize}
+      <#if data.maxDurability gt 0>,
       "minecraft:durability": {
         "max_durability": ${data.maxDurability}
-      },
-      </#if>
-      <#if data.isFood>
+      }</#if>
+      <#if data.isFood>,
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration}
       },
