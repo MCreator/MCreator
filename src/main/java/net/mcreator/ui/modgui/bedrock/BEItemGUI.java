@@ -58,7 +58,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
 	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
-	private final JCheckBox foodIsMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -77,7 +76,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 65, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(10, 2, 65, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -127,11 +126,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(foodSaturation);
 		foodSaturation.setOpaque(false);
 
-		basicProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_meat"), L10N.label("elementgui.item.is_meat")));
-		basicProperties.add(foodIsMeat);
-		foodIsMeat.setOpaque(false);
-
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
 		basicProperties.add(foodCanAlwaysEat);
@@ -161,13 +155,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		if (isFood.isSelected()) {
 			foodNutritionalValue.setEnabled(true);
 			foodSaturation.setEnabled(true);
-			foodIsMeat.setEnabled(true);
 			foodCanAlwaysEat.setEnabled(true);
 			useDuration.setEnabled(true);
 		} else {
 			foodNutritionalValue.setEnabled(false);
 			foodSaturation.setEnabled(false);
-			foodIsMeat.setEnabled(false);
 			foodCanAlwaysEat.setEnabled(false);
 			useDuration.setEnabled(false);
 		}
@@ -187,7 +179,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		isFood.setSelected(item.isFood);
-		foodIsMeat.setSelected(item.foodIsMeat);
 		foodCanAlwaysEat.setSelected(item.foodCanAlwaysEat);
 		foodNutritionalValue.setValue(item.foodNutritionalValue);
 		foodSaturation.setValue(item.foodSaturation);
@@ -209,7 +200,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.isFood = isFood.isSelected();
 		item.foodNutritionalValue = (int) foodNutritionalValue.getValue();
 		item.foodSaturation = (double) foodSaturation.getValue();
-		item.foodIsMeat = foodIsMeat.isSelected();
 		item.foodCanAlwaysEat = foodCanAlwaysEat.isSelected();
 
 		return item;

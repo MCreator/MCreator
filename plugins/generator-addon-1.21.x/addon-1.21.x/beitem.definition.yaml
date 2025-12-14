@@ -6,5 +6,3 @@ templates:
 localizationkeys:
   - key: item.@modid:@registryname
     mapto: name
-
-field_exclusions: [foodIsMeat]
