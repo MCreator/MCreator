@@ -285,10 +285,19 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
-		return <#if offset>(</#if><@boundingBoxWithRotation data data.rotationMode data.enablePitch/><#if offset>).move(state.getOffset(pos))</#if>;
-	}
+		<#if data.rotationMode == 0><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+		</#if>
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+
+			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
+			<#else><#-- shape is state dependent -->
+			return <#if offset>(</#if><@boundingBoxWithRotation data data.rotationMode data.enablePitch/><#if offset>).move(state.getOffset(pos))</#if>;
+			</#if>
+		}
 	</#if>
 
 	<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
