@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.optionpane;
 
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;

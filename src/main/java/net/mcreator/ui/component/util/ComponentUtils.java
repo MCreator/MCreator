@@ -70,7 +70,7 @@ public class ComponentUtils {
 		JPanel p = new JPanel();
 		p.add(gor);
 		p.setOpaque(false);
-		p.setPreferredSize(new Dimension(100, 100));
+		p.setPreferredSize(new Dimension(94, 94));
 		p.setBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 1), text, TitledBorder.LEADING,
 						TitledBorder.BOTTOM, gor.getFont(), color));

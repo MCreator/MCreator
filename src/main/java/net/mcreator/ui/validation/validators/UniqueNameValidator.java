@@ -20,6 +20,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import java.util.Collection;
@@ -133,10 +134,10 @@ public class UniqueNameValidator implements Validator {
 	@Override public ValidationResult validate() {
 		String uniqueName = uniqueNameGetter.get();
 		if (uniqueName == null || uniqueName.isEmpty())
-			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.unique_name.empty", name));
 		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList.get() ? 1 : 0)
 				|| forbiddenNames.contains(uniqueName))
-			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", name));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.unique_name.duplicate", name));
 
 		return extraValidator.validate();
 	}

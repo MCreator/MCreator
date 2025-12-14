@@ -19,19 +19,20 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 public class ItemListFieldValidator implements Validator {
 
 	private final JItemListField<?> holder;
 	private final String emptyMessage;
-	private final ValidationResultType answer;
+	private final ValidationResult.Type answer;
 
 	public ItemListFieldValidator(JItemListField<?> holder, String emptyMessage) {
-		this(holder, emptyMessage, ValidationResultType.ERROR);
+		this(holder, emptyMessage, ValidationResult.Type.ERROR);
 	}
 
-	public ItemListFieldValidator(JItemListField<?> holder, String emptyMessage, ValidationResultType answer) {
+	public ItemListFieldValidator(JItemListField<?> holder, String emptyMessage, ValidationResult.Type answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
 		this.answer = answer;
@@ -39,7 +40,7 @@ public class ItemListFieldValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (!holder.getListElements().isEmpty())
-			return new ValidationResult(ValidationResultType.PASSED, "");
+			return ValidationResult.PASSED;
 		else
 			return new ValidationResult(answer, emptyMessage);
 	}

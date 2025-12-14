@@ -42,14 +42,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class ${name}Block extends
-	<#if data.hasGravity>
-		FallingBlock
-	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Leaves", "TintedParticleLeaves")}Block
-	<#else>
-		Block
-	</#if>
+public class ${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -292,14 +285,19 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
+		<#if data.rotationMode == 0><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
 		</#if>
-	}
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+
+			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
+			<#else><#-- shape is state dependent -->
+			return <#if offset>(</#if><@boundingBoxWithRotation data data.rotationMode data.enablePitch/><#if offset>).move(state.getOffset(pos))</#if>;
+			</#if>
+		}
 	</#if>
 
 	<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
@@ -742,3 +740,12 @@ public class ${name}Block extends
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#function getBlockClass blockBase="">
+	<#if data.hasGravity><#return "FallingBlock">
+	<#elseif blockBase == "Stairs"><#return "StairBlock">
+	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
+	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#else><#return blockBase + "Block">
+	</#if>
+</#function>

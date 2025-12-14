@@ -24,6 +24,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
@@ -165,26 +166,29 @@ public class MCreatorTabs {
 	}
 
 	public void addTab(final Tab tab) {
-		tab.container = this;
-		tabs.add(tab);
+		// Ensure tab content is always added on the Swing thread
+		ThreadUtil.runOnSwingThreadAndWait(() -> {
+			tab.container = this;
+			tabs.add(tab);
 
-		tab.addMouseListener(new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent mouseEvent) {
-				if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
-					MCREvent.event(new TabEvent.Closed(tab));
-					closeTab(tab);
-				} else {
-					MCREvent.event(new TabEvent.Shown(tab));
-					showTab(tab);
+			tab.addMouseListener(new MouseAdapter() {
+				@Override public void mousePressed(MouseEvent mouseEvent) {
+					if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
+						MCREvent.event(new TabEvent.Closed(tab));
+						closeTab(tab);
+					} else {
+						MCREvent.event(new TabEvent.Shown(tab));
+						showTab(tab);
+					}
 				}
-			}
+			});
+
+			MCREvent.event(new TabEvent.Added(tab));
+			container.add(tab.content, tab.identifier.toString().toLowerCase(Locale.ROOT));
+			showTab(tab);
+
+			reloadTabStrip();
 		});
-
-		MCREvent.event(new TabEvent.Added(tab));
-		container.add(tab.content, tab.identifier.toString().toLowerCase(Locale.ROOT));
-		showTab(tab);
-
-		reloadTabStrip();
 	}
 
 	/**

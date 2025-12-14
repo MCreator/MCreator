@@ -24,6 +24,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class ItemListFieldSingleTagValidator implements Validator {
 							(MCItem) object.getDataListEntry().get() :
 							null;
 					if (object.toString().startsWith("TAG:") || (dle != null && !dle.hasNoSubtypes()))
-						return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+						return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validator.singletag.multiple"));
 				}
 			}
 		} else {
@@ -53,11 +54,11 @@ public class ItemListFieldSingleTagValidator implements Validator {
 			if (listElements.size() > 1) {
 				for (Object object : listElements) {
 					if (object.toString().startsWith("#"))
-						return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+						return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validator.singletag.multiple"));
 				}
 			}
 		}
 
-		return new ValidationResult(ValidationResultType.PASSED, "");
+		return ValidationResult.PASSED;
 	}
 }

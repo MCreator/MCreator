@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -27,17 +28,17 @@ public class ConditionalTextFieldValidator implements Validator {
 
 	private final VTextField holder;
 	private final String emptyMessage;
-	private final ValidationResultType answer;
+	private final ValidationResult.Type answer;
 	private final boolean validateTextWhenBooleanIs;
 	private final JToggleButton conditionElement;
 
 	public ConditionalTextFieldValidator(VTextField holder, String emptyMessage, JToggleButton condition,
 			boolean validateTextWhenBooleanIs) {
-		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResultType.ERROR);
+		this(holder, emptyMessage, condition, validateTextWhenBooleanIs, ValidationResult.Type.ERROR);
 	}
 
 	public ConditionalTextFieldValidator(VTextField holder, String emptyMessage, JToggleButton condition,
-			boolean validateTextWhenBooleanIs, ValidationResultType answer) {
+			boolean validateTextWhenBooleanIs, ValidationResult.Type answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
 		this.answer = answer;
@@ -47,7 +48,7 @@ public class ConditionalTextFieldValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (!holder.getText().isBlank() || conditionElement.isSelected() != validateTextWhenBooleanIs)
-			return new ValidationResult(ValidationResultType.PASSED, "");
+			return ValidationResult.PASSED;
 		else
 			return new ValidationResult(answer, emptyMessage);
 	}

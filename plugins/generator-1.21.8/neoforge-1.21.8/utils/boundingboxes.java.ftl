@@ -1,27 +1,11 @@
-<#macro makeBoundingBox positiveBoxes negativeBoxes facing pitchType="floor">
-	<#if negativeBoxes?size != 0>Shapes.join(</#if>
-	<@mergeBoxes positiveBoxes, facing, pitchType/>
-	<#if negativeBoxes?size != 0>
-	, <@mergeBoxes negativeBoxes, facing, pitchType/>, BooleanOp.ONLY_FIRST)</#if>
-</#macro>
-
-<#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch>
-	<#if enablePitch>
-		switch (state.getValue(FACE)) {
-			case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
-			case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
-			case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
-		};
+<#macro boundingBoxWithRotation boundingBox rotationMode=0 enablePitch=false>
+	<#assign positiveBoxes = boundingBox.positiveBoundingBoxes()>
+	<#assign negativeBoxes = boundingBox.negativeBoundingBoxes()>
+	<#if boundingBox.isBoundingBoxEmpty()>
+		Shapes.empty()
+	<#elseif rotationMode == 0>
+		<@makeBoundingBox positiveBoxes negativeBoxes "north"/>
 	<#else>
-		<@makeBoundingBox positiveBoxes negativeBoxes facing/>;
-	</#if>
-</#macro>
-
-<#macro boundingBoxWithRotation positiveBoxes negativeBoxes noOffset rotationMode enablePitch=false>
-	<#if rotationMode == 0>
-	return <@makeBoundingBox positiveBoxes negativeBoxes "north"/><#if !noOffset>.move(offset.x, offset.y, offset.z)</#if>;
-	<#else>
-	return <#if !noOffset>(</#if>
 		<#if rotationMode != 5>
 			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
 			switch (state.getValue(FACING)) {
@@ -41,7 +25,25 @@
 				case Z -> <@makeBoundingBox positiveBoxes negativeBoxes "z"/>;
 			}
 		</#if>
-		<#if !noOffset>).move(offset.x, offset.y, offset.z)</#if>;
+	</#if>
+</#macro>
+
+<#macro makeBoundingBox positiveBoxes negativeBoxes facing pitchType="floor">
+	<#if negativeBoxes?size != 0>Shapes.join(</#if>
+	<@mergeBoxes positiveBoxes, facing, pitchType/>
+	<#if negativeBoxes?size != 0>
+	, <@mergeBoxes negativeBoxes, facing, pitchType/>, BooleanOp.ONLY_FIRST)</#if>
+</#macro>
+
+<#macro checkPitchSupport positiveBoxes negativeBoxes facing enablePitch>
+	<#if enablePitch>
+		switch (state.getValue(FACE)) {
+			case FLOOR -> <@makeBoundingBox positiveBoxes negativeBoxes facing "floor"/>;
+			case WALL -> <@makeBoundingBox positiveBoxes negativeBoxes facing "wall"/>;
+			case CEILING -> <@makeBoundingBox positiveBoxes negativeBoxes facing "ceiling"/>;
+		};
+	<#else>
+		<@makeBoundingBox positiveBoxes negativeBoxes facing/>;
 	</#if>
 </#macro>
 

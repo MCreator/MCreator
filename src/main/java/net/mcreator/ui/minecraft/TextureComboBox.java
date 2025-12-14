@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft;
 
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -27,6 +28,7 @@ import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -97,9 +99,8 @@ public class TextureComboBox extends JPanel implements IValidable {
 	public TextureComboBox requireValue(String errorTranslationKey) {
 		comboBox.setValidator(() -> {
 			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t(errorTranslationKey));
-			return Validator.ValidationResult.PASSED;
+				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
+			return ValidationResult.PASSED;
 		});
 		return this;
 	}
@@ -121,11 +122,21 @@ public class TextureComboBox extends JPanel implements IValidable {
 		}
 	}
 
+	public void setTexture(@Nullable TextureHolder textureHolder) {
+		if (textureHolder != null) {
+			setTextureFromTextureName(textureHolder.getRawTextureName());
+		}
+	}
+
 	public String getTextureName() {
 		Texture selected = comboBox.getSelectedItem();
 		if (selected == null || selected.equals(empty))
 			return defaultTextureName;
 		return selected.getTextureName() + (addPNGExtension ? ".png" : "");
+	}
+
+	public TextureHolder getTextureHolder() {
+		return new TextureHolder(mcreator.getWorkspace(), getTextureName());
 	}
 
 	public boolean hasTexture() {
@@ -136,7 +147,7 @@ public class TextureComboBox extends JPanel implements IValidable {
 		return comboBox.getSelectedItem();
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
+	@Override public ValidationResult getValidationStatus() {
 		return comboBox.getValidationStatus();
 	}
 

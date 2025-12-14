@@ -30,7 +30,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
@@ -91,6 +91,23 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						super.setValueAt(value, row, column);
 						if (column == 1) { // variable type has been changed
 							VariableType type = VariableTypeLoader.INSTANCE.fromName((String) getValueAt(row, column));
+
+							// Handle 2nd column - variable scope
+							VariableType.Scope currentScope = (VariableType.Scope) getValueAt(row, 2);
+							VariableType.Scope[] supportedScopes = type.getSupportedScopesWithoutLocal(
+									workspacePanel.getMCreator().getGeneratorConfiguration());
+							boolean scopeSupported = false;
+							for (VariableType.Scope supportedScope : supportedScopes) {
+								if (supportedScope.equals(currentScope)) {
+									scopeSupported = true;
+									break;
+								}
+							}
+							if (!scopeSupported) { // if the new type doesn't support the current scope, set it to the first supported one
+								super.setValueAt(supportedScopes[0], row, 2);
+							}
+
+							// Handle 3rd column - initial value
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
 								elements.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
@@ -127,8 +144,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
-							return name.getValidationStatus().getValidationResultType()
-									!= Validator.ValidationResultType.ERROR && super.stopCellEditing();
+							return name.getValidationStatus().type() != ValidationResult.Type.ERROR
+									&& super.stopCellEditing();
 						}
 					};
 				} else if (modelColumn == 3) {

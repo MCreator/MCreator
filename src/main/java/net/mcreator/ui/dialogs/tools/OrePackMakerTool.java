@@ -26,24 +26,20 @@ import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -51,28 +47,21 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
-public class OrePackMakerTool {
+public class OrePackMakerTool extends AbstractPackMakerTool {
 
-	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.ore_pack_title"), true);
+	private final VTextField name = new VTextField(25);
+	private final JColor color;
+	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
-		dialog.setIconImage(UIRES.get("16px.orepack").getImage());
-
-		dialog.setLayout(new BorderLayout(10, 10));
-
-		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.ore_pack_info")));
-
+	private OrePackMakerTool(MCreator mcreator) {
+		super(mcreator, "ore_pack", UIRES.get("16px.orepack").getImage());
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
-		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator, false, false);
-		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
+		color = new JColor(mcreator, false, false);
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
@@ -92,44 +81,34 @@ public class OrePackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.ore_pack_name_validator")));
 
-		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.ore_pack_create");
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.dispose());
-		dialog.add("South", PanelUtils.join(ok, cancel));
+		validableElements.addValidationElement(name);
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
-						(Double) power.getValue());
-				mcreator.reloadWorkspaceTabContents();
-				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.dispose();
-			}
-		});
+		this.add("Center", PanelUtils.centerInPanel(props));
 
-		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 280);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+		this.setSize(600, 280);
+		this.setLocationRelativeTo(mcreator);
+		this.setVisible(true);
+	}
+
+	@Override protected void generatePack(MCreator mcreator) {
+		addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
-		String oreItemName;
-		if (type.equals("Dust based")) {
-			oreItemName = name + "Dust";
-		} else if (type.equals("Gem based")) {
-			oreItemName = name;
-		} else {
-			oreItemName = name + "Ingot";
-		}
+		String oreItemName = switch (type) {
+			case "Dust based" -> name + "Dust";
+			case "Gem based" -> name;
+			default -> name + "Ingot";
+		};
 
-		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
+		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
 				name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting"))
 			return null;
+
+		String registryName = RegistryNameFixer.fromCamelCase(name);
+		String readableName = StringUtils.machineToReadableName(name);
 
 		// select folder the mod pack should be in
 		FolderElement folder = mcreator instanceof ModMaker modMaker ?
@@ -137,57 +116,48 @@ public class OrePackMakerTool {
 				null;
 
 		// first we generate ore texture
-		ImageIcon ore = ImageUtils.drawOver(
-				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/noise5.png")),
-				ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-						new ResourcePointer("templates/textures/texturemaker/ore10.png")), color, true));
-		String oreTextureName = (name + "_ore").toLowerCase(Locale.ENGLISH);
+		ImageIcon ore = ImageUtils.drawOver(getCachedTexture("noise5"),
+				ImageUtils.colorize(getCachedTexture("ore10"), color, true));
+		String oreTextureName = registryName + "_ore";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(oreTextureName), TextureType.BLOCK));
+				mcreator.getFolderManager().getTextureFile(oreTextureName, TextureType.BLOCK));
 
 		// next, ore block texture
-		ImageIcon oreBlockIc = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-				"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-						Arrays.asList("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
-								"oreblock7", "oreblock8")) + ".png")), color, true);
-		String oreBlockTextureName = (oreTextureName + "_block").toLowerCase(Locale.ENGLISH);
+		ImageIcon oreBlockIc = ImageUtils.colorize(
+				getCachedTexture("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
+						"oreblock7", "oreblock8"), color, true);
+		String oreBlockTextureName = registryName + "_ore_block";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()), mcreator.getFolderManager()
-				.getTextureFile(RegistryNameFixer.fix(oreBlockTextureName), TextureType.BLOCK));
+				.getTextureFile(oreBlockTextureName, TextureType.BLOCK));
 
 		// next, gem texture
 		ImageIcon gem;
 		String gemTextureName;
 		if (type.equals("Gem based")) {
-			gem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-					"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-							Arrays.asList("gem4", "gem6", "gem7", "gem9", "gem13")) + ".png")), color, true);
-			gemTextureName = (name + "_gem").toLowerCase(Locale.ENGLISH);
+			gem = ImageUtils.colorize(getCachedTexture("gem4", "gem6", "gem7", "gem9", "gem13"), color, true);
+			gemTextureName = registryName;
 		} else if (type.equals("Dust based")) {
-			gem = ImageUtils.drawOver(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-							new ResourcePointer("templates/textures/texturemaker/dust_base.png")), color, true),
-					ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
-							new ResourcePointer("templates/textures/texturemaker/dust_sprinkles.png")), color, true));
-			gemTextureName = (name + "_dust").toLowerCase(Locale.ENGLISH);
+			gem = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("dust_base"), color, true),
+					ImageUtils.colorize(getCachedTexture("dust_sprinkles"), color, true));
+			gemTextureName = registryName + "_dust";
 		} else {
-			gem = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
-					"templates/textures/texturemaker/" + ListUtils.getRandomItem(
-							Arrays.asList("ingot_dark", "ingot_bright")) + ".png")), color, true);
-			gemTextureName = (name + "_ingot").toLowerCase(Locale.ENGLISH);
+			gem = ImageUtils.colorize(getCachedTexture("ingot_dark", "ingot_bright"), color, true);
+			gemTextureName = registryName + "_ingot";
 		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
-				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(gemTextureName), TextureType.ITEM));
+				mcreator.getFolderManager().getTextureFile(gemTextureName, TextureType.ITEM));
 
 		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
-		oreItem.name = name;
+		oreItem.name = readableName;
 		oreItem.texture = new TextureHolder(workspace, gemTextureName);
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
+		addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
+		// We use element GUIs to get the default values for the elements
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
-		oreBlock.name = name + " Ore";
+		oreBlock.name = readableName + " Ore";
 		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
@@ -215,12 +185,11 @@ public class OrePackMakerTool {
 			oreBlock.dropAmount = 3;
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlock);
+		addGeneratableElementToWorkspace(workspace, folder, oreBlock);
 
-		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
-		oreBlockBlock.name = "Block of " + name;
+		oreBlockBlock.name = "Block of " + readableName;
 		oreBlockBlock.customModelName = "Single texture";
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
@@ -237,7 +206,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
 		oreBlockBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
+		addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -253,7 +222,7 @@ public class OrePackMakerTool {
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + oreItemName));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
 
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -262,7 +231,7 @@ public class OrePackMakerTool {
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
 		blockToItemRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Block"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
@@ -272,14 +241,14 @@ public class OrePackMakerTool {
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
 		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
-		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
+		addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
 
 		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.ore"),
-				e -> open(actionRegistry.getMCreator())) {
+				e -> new OrePackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)

@@ -37,9 +37,9 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
-import net.mcreator.ui.validation.CompoundValidator;
+import net.mcreator.ui.validation.ValidationResult;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -209,9 +209,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		structureSelector.setValidator(() -> {
 			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("elementgui.structuregen.error_select_structure_spawn"));
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 		page1group.addValidationElement(structureSelector);
 

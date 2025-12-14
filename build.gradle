@@ -105,47 +105,47 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.20.0'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.19.0'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.14.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.2'
-    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.34'
-    implementation(group: 'com.google.code.gson', name: 'gson', version: '2.13.2') {
+    implementation "commons-io:commons-io:2.21.0"
+    implementation "org.apache.commons:commons-lang3:3.20.0"
+    implementation "org.apache.commons:commons-text:1.15.0"
+    implementation "org.apache.logging.log4j:log4j-core:2.25.2"
+    implementation "org.freemarker:freemarker:2.3.34"
+    implementation("com.google.code.gson:gson:2.13.2") {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
-    implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.30.1.Final'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.30.1.Final'
-    implementation group: 'org.snakeyaml', name: 'snakeyaml-engine', version: '2.10'
-    implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
-    implementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
-    implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
-    implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.17'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '9.1.0'
-    implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
-    implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.6.0'
-    implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.2'
-    implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.4.0') {
+    implementation "com.github.sps.junidecode:junidecode:0.3"
+    implementation "org.jboss.forge.roaster:roaster-api:2.30.3.Final"
+    implementation "org.jboss.forge.roaster:roaster-jdt:2.30.3.Final"
+    implementation "org.snakeyaml:snakeyaml-engine:3.0.1"
+    implementation "org.reflections:reflections:0.10.2"
+    implementation "com.google.guava:guava:33.5.0-jre"
+    implementation "de.javagl:obj:0.4.0"
+    implementation "com.univocity:univocity-parsers:2.9.1"
+    implementation "org.slf4j:slf4j-nop:2.0.17"
+    implementation "org.gradle:gradle-tooling-api:9.2.1"
+    implementation "net.java.balloontip:balloontip:1.2.4.1"
+    implementation "com.atlassian.commonmark:commonmark:0.17.0"
+    implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.17.0"
+    implementation "com.fifesoft:rsyntaxtextarea:3.6.0"
+    implementation "com.fifesoft:autocomplete:3.3.2"
+    implementation("com.fifesoft:languagesupport:3.4.0") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
-    implementation group: 'net.java.dev.jna', name: 'jna', version: '5.18.1' // needed by discord-rpc.jar
+    implementation "net.java.dev.jna:jna:5.18.1" // needed by discord-rpc.jar
 
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '2.0.0'
-    implementation group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'no-natives'
-    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.6.2') {
+    implementation "com.github.weisj:jsvg:2.0.0"
+    implementation "com.formdev:flatlaf:3.7:no-natives"
+    implementation("com.formdev:flatlaf-extras:3.7") {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'windows-x86_64', ext: 'dll'
-    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'macos-x86_64', ext: 'dylib'
-    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'macos-arm64', ext: 'dylib'
-    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.6.2', classifier: 'linux-x86_64', ext: 'so'
+    win64 "com.formdev:flatlaf:3.7:windows-x86_64@dll"
+    macX64 "com.formdev:flatlaf:3.7:macos-x86_64@dylib"
+    macAarch64 "com.formdev:flatlaf:3.7:macos-arm64@dylib"
+    linux64 "com.formdev:flatlaf:3.7:linux-x86_64@so"
 
     // test dependencies
-    testImplementation platform(group: 'org.junit', name: 'junit-bom', version: '6.0.0')
+    testImplementation platform("org.junit:junit-bom:6.0.1")
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
