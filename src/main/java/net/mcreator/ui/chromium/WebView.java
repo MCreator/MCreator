@@ -47,6 +47,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WebView extends JPanel implements Closeable {
@@ -314,7 +315,7 @@ public class WebView extends JPanel implements Closeable {
 		new CefJavaBridgeHandler(this, bridge, name);
 	}
 
-	public synchronized void executeScript(String javaScript) {
+	public void executeScript(String javaScript) {
 		executeScript(javaScript, false);
 	}
 
@@ -340,13 +341,35 @@ public class WebView extends JPanel implements Closeable {
 					""".formatted(javaScript);
 		}
 
-		browser.executeJavaScript(script, "[WebView injected]", 0);
+		if (SwingUtilities.isEventDispatchThread()) { // If called from EDT, create a secondary loop to wait on
+			SecondaryLoop secondaryLoop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+			AtomicBoolean secondaryLoopExited = new AtomicBoolean(false);
 
-		try {
-			// Timeout at 60 seconds as JS is blocking and nothing should take that long
-			executeScriptLatch.await(60, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+			callbackExecutor.execute(() -> {
+				try {
+					executeScriptLatch.await(60, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+				} finally {
+					secondaryLoopExited.set(true);
+					secondaryLoop.exit();
+				}
+			});
+
+			browser.executeJavaScript(script, "[WebView injected]", 0);
+
+			if (!secondaryLoopExited.get() && !secondaryLoop.enter()) {
+				throw new RuntimeException("Failed to enter secondary loop for executeScript");
+			}
+		} else { // Not EDT, wait directly in the calling thread
+			browser.executeJavaScript(script, "[WebView injected]", 0);
+
+			try {
+				// Timeout at 60 seconds as JS is blocking and nothing should take that long
+				executeScriptLatch.await(60, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+			}
 		}
 
 		return executeScriptResult.get();
