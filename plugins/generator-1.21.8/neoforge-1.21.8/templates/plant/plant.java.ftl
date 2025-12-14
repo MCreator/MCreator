@@ -49,15 +49,18 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 <#if data.isWaterloggable()>
 	<#assign interfaces += ["SimpleWaterloggedBlock"]>
 </#if>
-public class ${name}Block extends ${getPlantClass(data.plantType)}Block
-	<#if interfaces?size gt 0>
-		implements ${interfaces?join(",")}
-	</#if>{
+public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if interfaces?size gt 0>implements ${interfaces?join(",")}</#if> {
+
 	<#if data.isWaterloggable()>
-		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
+
 	<#if data.plantType == "sapling">
-		public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
+	public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
+	</#if>
+
+	<#if data.customBoundingBox && data.boundingBoxes??>
+	private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
 	</#if>
 
 	public ${name}Block(BlockBehaviour.Properties properties) {
@@ -155,8 +158,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
-		return <#if offset>(</#if><@boundingBoxWithRotation data/><#if offset>).move(state.getOffset(pos))</#if>;
+		return SHAPE<#if !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>.move(state.getOffset(pos))</#if>;
 	}
 	</#if>
 
