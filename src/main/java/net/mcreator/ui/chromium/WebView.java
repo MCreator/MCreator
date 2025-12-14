@@ -38,9 +38,7 @@ import org.cef.misc.BoolRef;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -239,6 +237,18 @@ public class WebView extends JPanel implements Closeable {
 
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
+
+		if (!CefUtils.useOSR()) {
+			// Workaround for the non-OSR component to always gain focus in mouse click
+			// Without this, focus is not correctly transferred in some cases
+			cefComponent.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					cefComponent.requestFocusInWindow();
+					browser.setFocus(true);
+				}
+			});
+		}
 
 		setFocusCycleRoot(true);
 		setFocusTraversalPolicyProvider(true);
