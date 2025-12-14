@@ -101,7 +101,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.rotationMode == 0><#-- shape not state dependent -->
 		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
 		<#else>
-		private final Function<BlockState, VoxelShape> shapes = this.makeShapes();
+		private final ImmutableMap<BlockState, VoxelShape> shapes = this.makeShapes();
 		</#if>
 	</#if>
 
@@ -243,7 +243,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 
 	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
 		<#if data.rotationMode != 0>
-		private Function<BlockState, VoxelShape> makeShapes() {
+		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
 			return this.getShapeForEachState(state -> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>);
 		}
 		</#if>
@@ -255,7 +255,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			<#if data.rotationMode == 0><#-- shape not state dependent -->
 			return SHAPE<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
 			<#else><#-- shape is state dependent -->
-			return shapes.apply(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			return shapes.get(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
 			</#if>
 		}
 	</#if>
