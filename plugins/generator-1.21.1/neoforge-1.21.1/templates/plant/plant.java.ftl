@@ -155,12 +155,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
-		</#if>
+		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+		<#if offset>Vec3 offset = state.getOffset(world, pos);</#if>
+		return <#if offset>(</#if><@boundingBoxWithRotation data/><#if offset>).move(offset.x, offset.y, offset.z)</#if>;
 	}
 	</#if>
 
