@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class BlockStatePropertyUtils {
 
-	public static final int MAX_PROPERTY_COMBINATIONS = 4000;
+	public static final int MAX_PROPERTY_COMBINATIONS = 2000;
 
 	public static int getNumberOfPropertyCombinations(List<PropertyData<?>> properties) {
 		int result = 1;

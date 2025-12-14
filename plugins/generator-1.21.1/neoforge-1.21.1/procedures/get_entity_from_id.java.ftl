@@ -1,0 +1,1 @@
+(world instanceof Level _level${cbi} ? _level${cbi}.getEntity(${opt.toInt(input$id)}) : null)
