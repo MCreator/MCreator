@@ -243,8 +243,7 @@ public class WebView extends JPanel implements Closeable {
 			// Workaround for the non-OSR component to always gain focus in mouse click
 			// Without this, focus is not correctly transferred in some cases
 			cefComponent.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent e) {
+				@Override public void mousePressed(MouseEvent e) {
 					cefComponent.requestFocusInWindow();
 					browser.setFocus(true);
 				}
@@ -348,8 +347,7 @@ public class WebView extends JPanel implements Closeable {
 			callbackExecutor.execute(() -> {
 				try {
 					executeScriptLatch.await(60, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-					LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 				} finally {
 					secondaryLoopExited.set(true);
 					secondaryLoop.exit();
@@ -367,8 +365,7 @@ public class WebView extends JPanel implements Closeable {
 			try {
 				// Timeout at 60 seconds as JS is blocking and nothing should take that long
 				executeScriptLatch.await(60, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				LOG.warn("Interrupted while waiting for evaluation of JS: {}", javaScript, e);
+			} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 			}
 		}
 
