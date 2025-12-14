@@ -107,21 +107,19 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		.lightLevel(s -> ${data.luminance})
 		</#if>
 		<#if data.isSolid>
-		.noOcclusion()
-			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
-			.dynamicShape()
-			</#if>
+			.noOcclusion()
+			<#if data.offsetType != "NONE">.dynamicShape()</#if>
 		<#else>
-		.noCollission()
+			.noCollission()
 		</#if>
 		<#if data.isReplaceable>
 		.replaceable()
 		</#if>
 		<#if data.ignitedByLava>
-			.ignitedByLava()
+		.ignitedByLava()
 		</#if>
 		<#if data.offsetType != "NONE">
-			.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
+		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
 		</#if>
 		.pushReaction(PushReaction.DESTROY)
 		);
@@ -157,12 +155,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
 	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
-		</#if>
+		<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+		<#if offset>Vec3 offset = state.getOffset(world, pos);</#if>
+		return <#if offset>(</#if><@boundingBoxWithRotation data/><#if offset>).move(offset.x, offset.y, offset.z)</#if>;
 	}
 	</#if>
 

@@ -193,6 +193,10 @@ import java.util.stream.Collectors;
 		return dropAmount > 0 && (hasBlockItem || !customDrop.isEmpty());
 	}
 
+	public boolean shouldDisableOffset() {
+		return disableOffset || offsetType.equals("NONE");
+	}
+
 	public boolean isWaterloggable() {
 		// Disable waterlogging for sapling with mega trees due to ghost water blocks when the tree fails to grow
 		if ("sapling".equals(plantType) && (megaTrees[0] != null || megaTrees[1] != null)) {
