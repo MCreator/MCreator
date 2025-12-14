@@ -1716,7 +1716,6 @@ public class TestWorkspaceDataProvider {
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
-			beitem.foodIsMeat = _true;
 			beitem.foodCanAlwaysEat = _true;
 			return beitem;
 		}

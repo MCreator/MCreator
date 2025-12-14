@@ -10,7 +10,7 @@
     },
     "components": {
       "minecraft:icon": "${registryname}",
-      "minecraft:glint": ${data.hasGlint},
+      <#if data.hasGlint>"minecraft:glint": true,</#if>
       "minecraft:max_stack_size": ${data.stackSize},
       <#if data.maxDurability gt 0>
       "minecraft:durability": {
