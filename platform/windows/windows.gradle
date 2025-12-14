@@ -119,7 +119,7 @@ void signFile(File fileToSign) {
                     '--alias', System.getenv('WIN_CERT_KEYNAME'),
                     '--certfile', 'codesign-chain.pem',
                     '--tsmode', 'RFC3161',
-                    '--tsaurl', 'http://timestamp.globalsign.com/tsa/r45standard',
+                    '--tsaurl', 'http://timestamp.globalsign.com/tsa/r6advanced1',
                     '--name', 'MCreator',
                     '--url', 'https://mcreator.net/',
                     fileToSign
