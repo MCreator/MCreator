@@ -107,21 +107,19 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block
 		.lightLevel(s -> ${data.luminance})
 		</#if>
 		<#if data.isSolid>
-		.noOcclusion()
-			<#if (data.customBoundingBox && data.boundingBoxes??) || (data.offsetType != "NONE")>
-			.dynamicShape()
-			</#if>
+			.noOcclusion()
+			<#if data.offsetType != "NONE">.dynamicShape()</#if>
 		<#else>
-		.noCollission()
+			.noCollission()
 		</#if>
 		<#if data.isReplaceable>
 		.replaceable()
 		</#if>
 		<#if data.ignitedByLava>
-			.ignitedByLava()
+		.ignitedByLava()
 		</#if>
 		<#if data.offsetType != "NONE">
-			.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
+		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
 		</#if>
 		.pushReaction(PushReaction.DESTROY)
 		);
