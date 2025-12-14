@@ -21,6 +21,7 @@ package net.mcreator.ui.chromium;
 
 import com.jetbrains.cef.JCefAppConfig;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
@@ -114,9 +115,15 @@ public class CefUtils {
 				// Disable certain browser features
 				disabledFeatures.add("Vulkan");
 				disabledFeatures.add("UseSkiaRenderer");
+			} else if (!PreferencesManager.PREFERENCES.blockly.useGPUAcceleration.get()) {
+				config.getAppArgsAsList().add("--disable-gpu");
+				config.getAppArgsAsList().add("--disable-gpu-compositing");
+				config.getAppArgsAsList().add("--use-gl=swiftshader");
 			}
 
 			config.getAppArgsAsList().add("--disable-features=" + String.join(",", disabledFeatures));
+
+			LOG.debug("JCEF arguments: {}", config.getAppArgsAsList());
 
 			List<String> appArgs = config.getAppArgsAsList();
 			CefSettings settings = config.getCefSettings();

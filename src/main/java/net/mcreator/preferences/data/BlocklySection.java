@@ -26,6 +26,7 @@ import net.mcreator.preferences.entries.StringEntry;
 
 public class BlocklySection extends PreferencesSection {
 
+	public final BooleanEntry useGPUAcceleration;
 	public final StringEntry blockRenderer;
 	public final IntegerEntry colorSaturation;
 	public final IntegerEntry colorValue;
@@ -41,6 +42,7 @@ public class BlocklySection extends PreferencesSection {
 	BlocklySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
+		useGPUAcceleration = addEntry(new BooleanEntry("useGPUAcceleration", true));
 		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Thrasos", "Geras", "Zelos"));
 		colorSaturation = addEntry(new IntegerEntry("colorSaturation", 45, 30, 100));
 		colorValue = addEntry(new IntegerEntry("colorValue", 65, 30, 100));
