@@ -188,6 +188,11 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.ENCHANTMENT) != GeneratorStats.CoverageStatus.NONE)
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing enchantment effect blocks",
+								() -> GTEnchantmentEffectBlocks.runTest(LOG, generator, random, workspace.get())));
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.LIVINGENTITY) != GeneratorStats.CoverageStatus.NONE)
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
 								() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace.get())));

@@ -191,6 +191,25 @@ import java.util.Objects;
 	}
 
 	/**
+	 * @return Previous connection type String in Blockly format. Null if the block is not an output block or if
+	 * connection type is not specified
+	 */
+	public String getPreviousStatementConnectionType() {
+		if (type == IBlockGenerator.BlockType.PROCEDURAL) {
+			JsonElement output = blocklyJSON.getAsJsonObject().get("previousStatement");
+			if (output.isJsonArray()) {
+				return output.getAsJsonArray().get(0).getAsString();
+			} else if (output.isJsonNull()) {
+				return null;
+			} else {
+				return output.getAsString();
+			}
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * @param fieldName Field name to get type of
 	 * @return Field type String in Blockly format. Null if the field does not exist, or we can't determine its type.
 	 */
