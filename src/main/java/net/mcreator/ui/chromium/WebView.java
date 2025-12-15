@@ -79,6 +79,13 @@ public class WebView extends JPanel implements Closeable {
 		return thread;
 	});
 
+	private final ExecutorService edtJSWaitThread = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("EDT-JS-Wait-Thread");
+		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to wait on JS execution: {}", e, e));
+		return thread;
+	});
+
 	public WebView(String url) {
 		this(url, false);
 	}
@@ -350,7 +357,7 @@ public class WebView extends JPanel implements Closeable {
 			SecondaryLoop secondaryLoop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
 			AtomicBoolean secondaryLoopExited = new AtomicBoolean(false);
 
-			callbackExecutor.execute(() -> {
+			edtJSWaitThread.execute(() -> {
 				try {
 					executeScriptLatch.await(60, TimeUnit.SECONDS);
 				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
@@ -431,6 +438,7 @@ public class WebView extends JPanel implements Closeable {
 		client.dispose();
 
 		callbackExecutor.shutdownNow();
+		edtJSWaitThread.shutdownNow();
 
 		if (executeScriptLatch != null) {
 			executeScriptLatch.countDown();
