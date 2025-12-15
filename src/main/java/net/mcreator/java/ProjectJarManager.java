@@ -87,8 +87,8 @@ public class ProjectJarManager extends JarManager {
 		try {
 			tryLoadJVMLibraryInfo(generator);
 		} catch (GradleCacheImportFailedException e) {
-			TestUtil.failIfTestingEnvironment();
 			LOG.error("Failed to load JVM library info", e);
+			TestUtil.failIfTestingEnvironment();
 		}
 
 		// After we have collected all classpath entries, load them in the JAR manager

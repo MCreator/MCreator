@@ -1,0 +1,1 @@
+Die Anzahl, mit der das Attribut modifiziert werden soll. Dieser Wert wird mit dem Trankeffekt-Level multipliziert.
