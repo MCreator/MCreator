@@ -18,7 +18,7 @@
   "mcreator": {
     "toolbox_id": "valueeffects",
     "toolbox_init": [
-      "<value name = \"effect\"><block type=\"value_effect_set\"><value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value></block></value>",
+      "<value name=\"effect\"><block type=\"value_effect_set\"><value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value></block></value>",
       "<value name=\"requirements\"><shadow type=\"predicate_true\"></shadow></value>"
     ],
     "inputs": [
