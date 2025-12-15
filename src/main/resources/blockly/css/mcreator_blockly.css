@@ -1,6 +1,19 @@
 * {
-    font-family: sans-serif;
-    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+.whlab > .blocklyFlyoutLabelText {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-size: 14px;
+}
+
+.blocklyTreeLabel {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-size: 13px;
+}
+
+.blocklyText {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 
 ::-webkit-scrollbar {
@@ -30,15 +43,6 @@ body {
     right: 0;
 }
 
-.blocklyTreeLabel {
-    font-family: sans-serif;
-    font-size: 13px;
-}
-
-.blocklyText {
-    font-family: sans-serif;
-}
-
 .blocklyMainBackground {
     stroke-width: 0;
 }
@@ -48,24 +52,19 @@ body {
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    rx: 3;
-    ry: 3;
+    rx: 3px;
+    ry: 3px;
     width: 6px;
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    rx: 3;
-    ry: 3;
+    rx: 3px;
+    ry: 3px;
     height: 6px;
 }
 
 .blocklySelected > .blocklyPath {
     stroke-width: 2px;
-}
-
-.whlab > .blocklyFlyoutLabelText {
-    font-family: sans-serif;
-    font-size: 14px;
 }
 
 .small-text {
