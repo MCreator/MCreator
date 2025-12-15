@@ -241,8 +241,17 @@ public class WebView extends JPanel implements Closeable {
 			// Without this, focus is not correctly transferred in some cases
 			cefComponent.addMouseListener(new MouseAdapter() {
 				@Override public void mousePressed(MouseEvent e) {
-					cefComponent.requestFocusInWindow();
+					SwingUtilities.invokeLater(() -> {
+						browser.setFocus(true);
+						cefComponent.requestFocusInWindow();
+					});
+				}
+			});
+
+			cefComponent.addHierarchyListener(e -> {
+				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
 					browser.setFocus(true);
+					cefComponent.requestFocusInWindow();
 				}
 			});
 		}
