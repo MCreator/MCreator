@@ -124,12 +124,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code><a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#displayCondition" class="member-name-link">displayCondition</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#hasShadow" class="member-name-link">hasShadow</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#text" class="member-name-link">text</a></code></div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#text" class="member-name-link">text</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.element.parts.gui.GUIComponent">Fields inherited from class&nbsp;net.mcreator.element.parts.gui.<a href="GUIComponent.html" title="class in net.mcreator.element.parts.gui">GUIComponent</a></h3>
@@ -144,18 +147,20 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">Label</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,boolean,net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">Label</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;x,
  int&nbsp;y,
  <a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a>&nbsp;text,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ boolean&nbsp;hasShadow,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;displayCondition)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.gui.GUIComponent.AnchorPoint)" class="member-name-link">Label</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.gui.GUIComponent.AnchorPoint)" class="member-name-link">Label</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;x,
  int&nbsp;y,
  <a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a>&nbsp;text,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ boolean&nbsp;hasShadow,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;displayCondition,
  <a href="GUIComponent.AnchorPoint.html" title="enum class in net.mcreator.element.parts.gui">GUIComponent.AnchorPoint</a>&nbsp;anchorPoint)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -240,6 +245,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="hasShadow">
+<h3>hasShadow</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasShadow</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="displayCondition">
 <h3>displayCondition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">displayCondition</span></div>
@@ -254,24 +265,26 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,net.mcreator.element.parts.procedure.Procedure)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,boolean,net.mcreator.element.parts.procedure.Procedure)">
 <h3>Label</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Label</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;x,
  int&nbsp;y,
  <a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a>&nbsp;text,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ boolean&nbsp;hasShadow,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;displayCondition)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.gui.GUIComponent.AnchorPoint)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,int,int,net.mcreator.element.parts.procedure.StringProcedure,java.awt.Color,boolean,net.mcreator.element.parts.procedure.Procedure,net.mcreator.element.parts.gui.GUIComponent.AnchorPoint)">
 <h3>Label</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Label</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;x,
  int&nbsp;y,
  <a href="../procedure/StringProcedure.html" title="class in net.mcreator.element.parts.procedure">StringProcedure</a>&nbsp;text,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ boolean&nbsp;hasShadow,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;displayCondition,
  <a href="GUIComponent.AnchorPoint.html" title="enum class in net.mcreator.element.parts.gui">GUIComponent.AnchorPoint</a>&nbsp;anchorPoint)</span></div>
 </section>
