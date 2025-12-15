@@ -139,7 +139,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		if (loaded) {
 			@Nullable String newXml = executeJavaScriptSynchronously("workspaceToXML()", true);
 
-			// XML can become invalid if e.g., WebKit runs out of memory and executeJavaScriptSynchronously times out
+			// XML can become invalid if e.g., JCEF runs out of memory and executeJavaScriptSynchronously times out
 			boolean valid = isValidBlocklyXML(newXml);
 
 			if (valid) {
