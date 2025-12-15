@@ -53,7 +53,6 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
-import net.mcreator.ui.minecraft.states.block.JBlockStatesListEntry;
 import net.mcreator.ui.modgui.BlockGUI;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
@@ -2204,16 +2203,21 @@ public class TestWorkspaceDataProvider {
 		block.states = new ArrayList<>();
 		if (!emptyLists) {
 			int size2 = random.nextInt(4) + 1;
+
+			List<PropertyDataWithValue<?>> stateProperties = new ArrayList<>();
+			for (PropertyDataWithValue<?> property : block.customProperties) {
+				if (random.nextBoolean()) {
+					stateProperties.add(property);
+				}
+			}
+
 			for (int i = 0; i < size2; i++) {
 				StateMap stateMap = new StateMap();
-
-				for (PropertyDataWithValue<?> property : block.customProperties) {
-					if (random.nextBoolean()) {
-						if (property.property() instanceof PropertyData.IntegerType) {
-							stateMap.put(property.property(), random.nextInt(1, 10));
-						} else if (property.property() instanceof PropertyData.LogicType) {
-							stateMap.put(property.property(), random.nextBoolean());
-						}
+				for (PropertyDataWithValue<?> property : stateProperties) {
+					if (property.property() instanceof PropertyData.IntegerType) {
+						stateMap.put(property.property(), random.nextInt(1, 10));
+					} else if (property.property() instanceof PropertyData.LogicType) {
+						stateMap.put(property.property(), random.nextBoolean());
 					}
 				}
 
