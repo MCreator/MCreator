@@ -86,8 +86,6 @@ public class WebView extends JPanel implements Closeable {
 	private WebView(String url, boolean forcePreload) {
 		setLayout(new BorderLayout());
 		setOpaque(false);
-		setLayout(new BorderLayout());
-		setOpaque(false);
 
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
