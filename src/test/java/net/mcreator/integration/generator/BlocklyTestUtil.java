@@ -105,8 +105,8 @@ public class BlocklyTestUtil {
 			}
 
 			if (!templatesDefined) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incomplete template: {}", toolboxBlock.getMachineName());
+				TestUtil.failIfTestingEnvironment();
 				return false;
 			}
 		}
@@ -170,9 +170,9 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				TestUtil.failIfTestingEnvironment();
 				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: {}",
 						toolboxBlock.getMachineName());
+				TestUtil.failIfTestingEnvironment();
 				return false;
 			}
 		}

@@ -757,6 +757,10 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			@Override public String getSerializedName() {
 				return this.name;
 			}
+
+			@Override public String toString() {
+				return this.name;
+			}
 		}
 		</#if>
 	</#list>
