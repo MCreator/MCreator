@@ -421,6 +421,9 @@ public class WebView extends JPanel implements Closeable {
 	}
 
 	@Override public void close() {
+		if (isClosing)
+			return;
+
 		isClosing = true;
 
 		remove(cefComponent);
@@ -432,13 +435,6 @@ public class WebView extends JPanel implements Closeable {
 		client.removeMessageRouter(router);
 		router.dispose();
 
-		client.removeDisplayHandler();
-		client.removeContextMenuHandler();
-		client.removeKeyboardHandler();
-		client.removeRequestHandler();
-		client.removeFocusHandler();
-		client.removeLoadHandler();
-		client.removeJSDialogHandler();
 		client.dispose();
 
 		callbackExecutor.shutdownNow();
