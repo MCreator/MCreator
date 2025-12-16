@@ -190,9 +190,19 @@ public class CefUtils {
 			}
 
 			@Override public boolean onCursorChange(CefBrowser browser, int cursorType) {
-				//noinspection MagicConstant
-				SwingUtilities.invokeLater(() -> browser.getUIComponent().setCursor(new Cursor(cursorType)));
-				return true;
+				if (!useOSR()) {
+					// Override the hand cursor with a pointer to reduce flickering on dropdowns
+					if (cursorType == 12)
+						cursorType = 0;
+
+					try {
+						//noinspection MagicConstant
+						browser.getUIComponent().setCursor(Cursor.getPredefinedCursor(cursorType));
+					} catch (Exception ignored) {
+					}
+					return true;
+				}
+				return false;
 			}
 		});
 
