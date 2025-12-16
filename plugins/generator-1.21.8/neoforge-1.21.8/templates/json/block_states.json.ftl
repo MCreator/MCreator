@@ -5,7 +5,7 @@
 {
   'variants': {
     <@variant 'face=floor,facing=north'/>,
-	<@variant 'face=floor,facing=east' '"y": 90'/>,
+    <@variant 'face=floor,facing=east' '"y": 90'/>,
     <@variant 'face=floor,facing=south' '"y": 180'/>,
     <@variant 'face=floor,facing=west' '"y": 270'/>,
     <@variant 'face=wall,facing=north' '"x": 90'/>,
@@ -58,19 +58,19 @@
 <#macro variant conditionExtra="" additionalData="">
   <#if stateCombinations?has_content>
   <#list stateCombinations as model>
-    <#assign variantPredicate = "">
-    <#list model.stateMap.keySet() as property>
-      <#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + model.stateMap.get(property) + property?has_next?then(",", ""))>
-    </#list>
-    "<#if conditionExtra?has_content>${conditionExtra},</#if>${variantPredicate}": {
-      "model": "${modid}:block/${registryname}<#if model.renderType != -1>_${model?index}</#if>"
-      <#if additionalData?has_content>,${additionalData}</#if>
-    }<#sep>,
+   <#assign variantPredicate = "">
+   <#list model.stateMap.keySet() as property>
+    <#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + model.stateMap.get(property) + property?has_next?then(",", ""))>
+   </#list>
+   "<#if conditionExtra?has_content>${conditionExtra},</#if>${variantPredicate}": {
+    "model": "${modid}:block/${registryname}<#if model.renderType != -1>_${model?index}</#if>"
+    <#if additionalData?has_content>,${additionalData}</#if>
+   }<#sep>,
   </#list>
   <#else>
-    "${conditionExtra}": {
-      "model": "${modid}:block/${registryname}"
-	  <#if additionalData?has_content>,${additionalData}</#if>
-    }
+   "${conditionExtra}": {
+    "model": "${modid}:block/${registryname}"
+    <#if additionalData?has_content>,${additionalData}</#if>
+   }
   </#if>
 </#macro>
