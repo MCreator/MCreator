@@ -17,7 +17,7 @@
     }
   },
   "textures": {
-    "particle": "${(parent???then(parent, data)).getParticleTexture().format("%s:block/%s")}"
+    "particle": "${(parent???then(data.getParticleTexture(parent.getParticleTexture()), data.getParticleTexture())).format("%s:block/%s")}"
   },
   "render_type": "${(parent???then(parent, data)).getRenderType()}"
 }

@@ -28,16 +28,19 @@ import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.BlockTexturesSelector;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.resources.Model;
 
@@ -63,6 +66,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 	private final BlockTexturesSelector textures;
 
+	private final TextureSelectionButton particleTexture;
+
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(supportedbuiltinitemmodels);
 
 	private final JBoundingBoxList boundingBoxList;
@@ -86,6 +91,9 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 		this.textures = new BlockTexturesSelector(mcreator);
 
+		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		particleTexture.setOpaque(false);
+
 		ComponentUtils.deriveFont(renderType, 16);
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
@@ -100,6 +108,10 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		regularParamsGrid.add(HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/state_model"),
 				L10N.label("elementgui.block.state_model")));
 		regularParamsGrid.add(renderType);
+
+		regularParamsGrid.add(HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/particle_texture"),
+				L10N.label("elementgui.block.particle_texture")));
+		regularParamsGrid.add(PanelUtils.centerInPanel(particleTexture));
 
 		regularParamsGrid.add(HelpUtils.wrapWithHelpButton(helpContext.withEntry("block/state_bounding_box_enable"),
 				L10N.label("elementgui.block.state_bounding_box_enable")));
@@ -160,6 +172,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		retVal.textureRight = textures.getTextureRight();
 		retVal.textureBack = textures.getTextureBack();
 
+		retVal.particleTexture = particleTexture.getTextureHolder();
+
 		retVal.hasCustomBoundingBox = hasCustomBoundingBox.isSelected();
 		retVal.boundingBoxes = boundingBoxList.getEntries();
 
@@ -186,6 +200,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		this.hasCustomBoundingBox.setSelected(value.hasCustomBoundingBox);
 		this.boundingBoxList.setEntries(value.boundingBoxes);
 		boundingBoxList.setEnabled(hasCustomBoundingBox.isSelected());
+
+		particleTexture.setTexture(value.particleTexture);
 
 		textures.setTextures(value.texture, value.textureTop, value.textureLeft, value.textureFront, value.textureRight,
 				value.textureBack);

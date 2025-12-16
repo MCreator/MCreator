@@ -541,6 +541,8 @@ import java.util.stream.Collectors;
 		public int renderType;
 		@Nonnull public String customModelName;
 
+		@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
+
 		public boolean hasCustomBoundingBox;
 		public List<BoxEntry> boundingBoxes;
 
@@ -576,6 +578,10 @@ import java.util.stream.Collectors;
 
 		public TextureHolder textureBack() {
 			return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+		}
+
+		public TextureHolder getParticleTexture(TextureHolder fallback) {
+			return particleTexture == null || particleTexture.isEmpty() ? fallback : particleTexture;
 		}
 
 		@Override public Model getItemModel() {

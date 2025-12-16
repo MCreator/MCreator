@@ -2226,15 +2226,20 @@ public class TestWorkspaceDataProvider {
 
 				Block.StateEntry stateEntry = new Block.StateEntry();
 				stateEntry.setWorkspace(modElement.getWorkspace());
+				stateEntry.stateMap = stateMap;
+
 				stateEntry.customModelName = "Normal";
+				stateEntry.renderType = 10;
+
 				stateEntry.texture = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureTop = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureBack = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureLeft = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureFront = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureRight = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
-				stateEntry.renderType = 10;
-				stateEntry.stateMap = stateMap;
+
+				stateEntry.particleTexture = new TextureHolder(modElement.getWorkspace(),
+						random.nextBoolean() ? null : "test3");
 
 				stateEntry.hasCustomBoundingBox = _true;
 				stateEntry.boundingBoxes = new ArrayList<>();
