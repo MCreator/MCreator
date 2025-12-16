@@ -67,10 +67,10 @@ public class WebView extends JPanel implements Closeable {
 	private final List<JSDialogListener> jsDialogListeners = new ArrayList<>();
 
 	// Helpers for executeScript
-	private CountDownLatch executeScriptLatch;
+	private volatile CountDownLatch executeScriptLatch;
 	private final AtomicReference<String> executeScriptResult = new AtomicReference<>();
 
-	private boolean isClosing = false;
+	private volatile boolean isClosing = false;
 
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
@@ -112,7 +112,6 @@ public class WebView extends JPanel implements Closeable {
 					CefQueryCallback callback) {
 				if (request.startsWith("@jsResult:")) {
 					executeScriptResult.set(request.substring("@jsResult:".length()));
-					callback.success("ok");
 					if (executeScriptLatch != null)
 						executeScriptLatch.countDown();
 					return true;
