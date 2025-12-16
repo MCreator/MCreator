@@ -21,14 +21,12 @@ package net.mcreator.ui.blockly;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ui.BlocklyPanelRegisterDOMData;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -94,9 +92,9 @@ public class BlocklyPanel extends JPanel implements Closeable {
 					+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
 					+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
 					+ "'maxTrashContents' : " + PreferencesManager.PREFERENCES.blockly.maxTrashContents.get() + ","
-							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
+					+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
 					+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
-							+ "'startScale' : " + PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0 + ","
+					+ "'startScale' : " + PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0 + ","
 					+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 					+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
 					+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
