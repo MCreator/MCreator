@@ -849,8 +849,11 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
+			dimension.biomesInDimensionCaves = new ArrayList<>();
 			if (!emptyLists) {
 				dimension.biomesInDimension.addAll(
+						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
+				dimension.biomesInDimensionCaves.addAll(
 						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
 			} else {
 				dimension.biomesInDimension.add(
