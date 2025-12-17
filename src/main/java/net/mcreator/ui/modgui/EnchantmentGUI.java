@@ -207,11 +207,12 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		});
 
 		JPanel enchantmentEffects = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
-		enchantmentEffects.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.enchantment.effects_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-		enchantmentEffects.setPreferredSize(new Dimension(0, 580));
+		enchantmentEffects.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5),
+				BorderFactory.createTitledBorder(
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+						L10N.t("elementgui.enchantment.effects_builder"), TitledBorder.LEADING,
+						TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor())));
+		enchantmentEffects.setPreferredSize(new Dimension(0, 570));
 
 		effectsPage.add(enchantmentEffects);
 
