@@ -293,8 +293,8 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                 return;
             }
 
-            var types = new Set(); // Store the type of blocks that are already placed in a previous argument.
-            var children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
+            const types = new Set(); // Store the type of blocks that are already placed in a previous argument.
+            const children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
             children.forEach(block => {
                 const type = block.type.split("_"); // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
                 const realType = type[2];
