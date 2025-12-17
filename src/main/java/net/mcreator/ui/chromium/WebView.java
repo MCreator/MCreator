@@ -304,6 +304,9 @@ public class WebView extends JPanel implements Closeable {
 		}
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+
+		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force cursor to default
+		addLoadListener(() -> addCSSToDOM("* { cursor: default !important; }"));
 	}
 
 	@Override public void removeNotify() {
