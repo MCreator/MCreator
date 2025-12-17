@@ -1,6 +1,6 @@
 "minecraft:damage": {
-	"damage": {
-		"min": ${field$min},
-		"max": ${field$max}
-	}
+  "damage": {
+    "min": ${field$min},
+    "max": ${field$max}
+  }
 }
