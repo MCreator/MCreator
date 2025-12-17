@@ -355,23 +355,18 @@ public class WebView extends JPanel implements Closeable {
 		if (SwingUtilities.isEventDispatchThread()) { // If called from EDT, create a secondary loop to wait on
 			SecondaryLoop secondaryLoop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
 			AtomicBoolean secondaryLoopExited = new AtomicBoolean(false);
-			CountDownLatch secondaryLoopEnterLatch = new CountDownLatch(1);
 
 			edtJSWaitThread.execute(() -> {
 				try {
-					secondaryLoopEnterLatch.await(60, TimeUnit.SECONDS); // wait until EDT entered the loop
-					executeScriptLatch.await(60, TimeUnit.SECONDS); // then wait for JS execution to finish
+					executeScriptLatch.await(60, TimeUnit.SECONDS);
 				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 				} finally {
 					secondaryLoopExited.set(true);
-					secondaryLoop.exit();
+					SwingUtilities.invokeLater(secondaryLoop::exit);
 				}
 			});
 
 			browser.executeJavaScript(script, "[WebView injected]", 0);
-
-			// Make sure to call secondaryLoopEnterLatch after we enter secondaryLoop loop by queuing it on EDT
-			SwingUtilities.invokeLater(secondaryLoopEnterLatch::countDown);
 
 			if (!secondaryLoopExited.get() && !secondaryLoop.enter()) {
 				throw new RuntimeException("Failed to enter secondary loop for executeScript");
