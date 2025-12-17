@@ -22,6 +22,7 @@ package net.mcreator.element.converter.v2021_1;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
 
@@ -33,7 +34,7 @@ public class BlockLuminanceFixer implements IConverter {
 		if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("luminance") != null) {
 			double oldLuminance = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 					.get("luminance").getAsDouble();
-			block.luminance = (int) Math.floor(oldLuminance * 15);
+			block.luminance = new NumberProcedure(null, Math.floor(oldLuminance * 15));
 		}
 		return block;
 	}

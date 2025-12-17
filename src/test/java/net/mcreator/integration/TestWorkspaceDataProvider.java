@@ -2078,7 +2078,7 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		block.fallSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		block.luminance = 3;
+		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);

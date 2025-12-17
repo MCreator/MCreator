@@ -139,8 +139,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		<#else>
 			.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
-		<#if data.luminance != 0>
-			.lightLevel(s -> ${data.luminance})
+		<#if hasProcedure(data.luminance) || data.luminance.getFixedValue() != 0>
+			.lightLevel(blockstate -> <#if hasProcedure(data.luminance)>(int) <@procedureOBJToNumberCode data.luminance/><#else>${data.luminance.getFixedValue()}</#if>)
 		</#if>
 		<#if data.requiresCorrectTool>
 			.requiresCorrectToolForDrops()
@@ -167,7 +167,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			.pushReaction(PushReaction.${data.reactionToPushing})
 		</#if>
 		<#if data.emissiveRendering>
-			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
+			.hasPostProcess((bs, br, bp) -> true)
+			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
 		<#if data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
@@ -198,7 +199,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			.forceSolidOff()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "Leaves">
-			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
+			.isSuffocating((bs, br, bp) -> false)
+			.isViewBlocking((bs, br, bp) -> false)
 		</#if>
 	</#macro>
 

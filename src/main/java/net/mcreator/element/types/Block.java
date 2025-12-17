@@ -145,7 +145,7 @@ import java.util.stream.Collectors;
 	public Sound placeSound;
 	public Sound stepSound;
 
-	public int luminance;
+	public NumberProcedure luminance;
 	public boolean unbreakable;
 	public String vanillaToolTier;
 	public Procedure additionalHarvestCondition;

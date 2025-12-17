@@ -15,7 +15,7 @@
       <#if data.hasCustomDrop()>
       "minecraft:loot": "loot_tables/blocks/${modid}_${registryname}.json",
       </#if>
-      "minecraft:light_emission": ${data.luminance / 15},
+      "minecraft:light_emission": ${data.luminance.getFixedValue() / 15},
       "minecraft:destructible_by_mining": {
           "seconds_to_destroy": ${data.hardness}
       },
