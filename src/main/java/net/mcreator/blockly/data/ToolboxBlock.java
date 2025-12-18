@@ -191,8 +191,8 @@ import java.util.Objects;
 	}
 
 	/**
-	 * @return Previous connection type String in Blockly format. Null if the block is not an output block or if
-	 * connection type is not specified
+	 * @return Previous connection type String in Blockly format. Null if the block is not a procedural block or if
+	 * connection type is not specified.
 	 */
 	public String getPreviousStatementConnectionType() {
 		if (type == IBlockGenerator.BlockType.PROCEDURAL) {

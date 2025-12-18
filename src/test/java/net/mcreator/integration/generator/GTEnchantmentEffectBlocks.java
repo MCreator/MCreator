@@ -82,15 +82,18 @@ public class GTEnchantmentEffectBlocks {
 				case "EnchantmentComponent" -> """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
-						<next>%s</next></block></xml>
-						""".formatted(testXML);
+						<next>%s</next></block></xml>""".formatted(testXML);
 				// Conditional value effects are tested with the "Block experience" component
 				case "ConditionalValueEffect" -> """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
-						%s</statement></block></next></block></xml>
-						""".formatted(testXML);
+						%s</statement></block></next></block></xml>""".formatted(testXML);
+				default -> {
+					LOG.warn("[{}] Skipping procedural enchantment effect block of unrecognized type: {}",
+							generatorName, effectBlock.getMachineName());
+					continue;
+				}
 				}
 			} else {
 				switch (effectBlock.getOutputType()) {
@@ -115,7 +118,7 @@ public class GTEnchantmentEffectBlocks {
 						</statement></block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
-					LOG.warn("[{}] Skipping feature block of unrecognized type: {}", generatorName,
+					LOG.warn("[{}] Skipping output enchantment effect block of unrecognized type: {}", generatorName,
 							effectBlock.getMachineName());
 					continue;
 				}
