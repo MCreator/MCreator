@@ -79,12 +79,12 @@ public class GTEnchantmentEffectBlocks {
 
 			if (effectBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				switch (effectBlock.getPreviousStatementConnectionType()) {
-				case "EnchantmentComponent" -> """
+				case "EnchantmentComponent" -> enchantment.effectsxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next>%s</next></block></xml>""".formatted(testXML);
 				// Conditional value effects are tested with the "Block experience" component
-				case "ConditionalValueEffect" -> """
+				case "ConditionalValueEffect" -> enchantment.effectsxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
@@ -98,7 +98,7 @@ public class GTEnchantmentEffectBlocks {
 			} else {
 				switch (effectBlock.getOutputType()) {
 				// Predicates are tested with the "Block experience" component
-				case "Predicate" -> """
+				case "Predicate" -> enchantment.effectsxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
@@ -109,7 +109,7 @@ public class GTEnchantmentEffectBlocks {
 						</statement></block></next></block></xml>
 						""".formatted(testXML);
 				// Value effects are tested with the "Block experience" component
-				case "ValueEffect" -> """
+				case "ValueEffect" -> enchantment.effectsxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
