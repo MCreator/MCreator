@@ -106,7 +106,7 @@ public class GTEnchantmentEffectBlocks {
 						<value name="effect"><block type="value_effect_set"><value name="value">
 						<block type="math_number"><field name="NUM">1</field></block></value></block></value>
 						<value name="requirements">%s</value>
-						</statement></block></next></block></xml>
+						</block></statement></block></next></block></xml>
 						""".formatted(testXML);
 				// Value effects are tested with the "Block experience" component
 				case "ValueEffect" -> enchantment.effectsxml = """
@@ -115,7 +115,7 @@ public class GTEnchantmentEffectBlocks {
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
 						<block type="conditional_value_effect"><value name="effect">%s</value>
 						<value name="requirements"><shadow type="predicate_true"></shadow></value>
-						</statement></block></next></block></xml>
+						</block></statement></block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping output enchantment effect block of unrecognized type: {}", generatorName,
