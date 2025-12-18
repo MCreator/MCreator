@@ -1,5 +1,6 @@
 Depth parameter approximately controls the height at which the biome will be generated.
-Only applies to (overworld) cave biomes. 
+Only applies to (overworld) cave biomes and to custom dimensions where this biome
+is specified as a cave biome.
 
 For surface biomes, a depth value of 0 is always used, and this parameter is ignored.
 

@@ -55,6 +55,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private final ModElementChangedListener codeChangeListener;
 
+	private boolean listTemplatesLoaded = false;
+
 	private boolean updateRunning = false;
 	private boolean updateMisfired = false;
 
@@ -72,12 +74,17 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 				reload();
 			}
 		});
+	}
+
+	private void loadListTemplatesIfNotAlready(GeneratableElement generatableElement) {
+		if (listTemplatesLoaded)
+			return;
 
 		// we group list templates inside separate tabs to improve UX
 		ImageIcon enabledListIcon = UIRES.get("16px.list");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
-				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
+		modElementGUI.getModElement().getGenerator().getModElementListTemplates(generatableElement).stream()
+				.map(GeneratorTemplatesList::groupName).forEach(listName -> {
 					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
 					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
 							FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
@@ -88,6 +95,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setEnabledAt(indexOfTab(listName), false);
 					listPager.put(listName, listPane);
 				});
+
+		listTemplatesLoaded = true;
 	}
 
 	public void registerUI(JComponent container) {
@@ -102,8 +111,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			updateRunning = true;
 			new Thread(() -> {
 				try {
+					GeneratableElement generatableElement = modElementGUI.getElementFromGUI();
+
+					ThreadUtil.runOnSwingThreadAndWait(() -> loadListTemplatesIfNotAlready(generatableElement));
+
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
-							.generateElement(modElementGUI.getElementFromGUI(), false, false);
+							.generateElement(generatableElement, false, false);
 					files.sort(Comparator.<GeneratorFile, String>comparing(
 									e -> FilenameUtils.getExtension(e.getFile().getName()))
 							.thenComparing(e -> e.getFile().getName()));

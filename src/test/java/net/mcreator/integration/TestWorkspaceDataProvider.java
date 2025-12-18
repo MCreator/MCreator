@@ -37,6 +37,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -173,7 +174,7 @@ public class TestWorkspaceDataProvider {
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
-				|| type == ModElementType.STRUCTURE) {
+				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -848,8 +849,11 @@ public class TestWorkspaceDataProvider {
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
+			dimension.biomesInDimensionCaves = new ArrayList<>();
 			if (!emptyLists) {
 				dimension.biomesInDimension.addAll(
+						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
+				dimension.biomesInDimensionCaves.addAll(
 						subset(random, 10, biomes, e -> new BiomeEntry(modElement.getWorkspace(), e.getName())));
 			} else {
 				dimension.biomesInDimension.add(
@@ -982,6 +986,7 @@ public class TestWorkspaceDataProvider {
 			if (random.nextBoolean()) {
 				armor.helmetModelName = "ModelCustomJavaModel";
 				armor.helmetModelPart = "head";
+				armor.helmetTranslucency = _true;
 			} else {
 				armor.helmetModelName = "Default";
 			}
@@ -993,6 +998,7 @@ public class TestWorkspaceDataProvider {
 				armor.bodyModelPart = "head";
 				armor.armsModelPartL = "leg0";
 				armor.armsModelPartR = "leg1";
+				armor.bodyTranslucency = _true;
 			} else {
 				armor.bodyModelName = "Default";
 			}
@@ -1003,6 +1009,7 @@ public class TestWorkspaceDataProvider {
 				armor.leggingsModelName = "ModelCustomJavaModel";
 				armor.leggingsModelPartL = "leg0";
 				armor.leggingsModelPartR = "leg1";
+				armor.leggingsTranslucency = _true;
 			} else {
 				armor.leggingsModelName = "Default";
 			}
@@ -1013,6 +1020,7 @@ public class TestWorkspaceDataProvider {
 				armor.bootsModelName = "ModelCustomJavaModel";
 				armor.bootsModelPartL = "leg2";
 				armor.bootsModelPartR = "leg3";
+				armor.bootsTranslucency = _true;
 			} else {
 				armor.bootsModelName = "Default";
 			}
@@ -1698,6 +1706,22 @@ public class TestWorkspaceDataProvider {
 				attribute.addToAllEntities = true;
 			}
 			return attribute;
+		} else if (ModElementType.BEITEM.equals(modElement.getType())) {
+			BEItem beitem = new BEItem(modElement);
+			beitem.name = modElement.getName();
+			beitem.texture = new TextureHolder(modElement.getWorkspace(), "test2");
+			beitem.hasGlint = _true;
+			beitem.stackSize = 52;
+			beitem.useDuration = 8;
+			beitem.maxDurability = 4;
+			beitem.enableMeleeDamage = !_true;
+			beitem.damageVsEntity = 6.53;
+			beitem.isFood = emptyLists;
+			beitem.foodNutritionalValue = 5;
+			beitem.foodSaturation = 0.82;
+			beitem.foodIsMeat = _true;
+			beitem.foodCanAlwaysEat = _true;
+			return beitem;
 		}
 		return null;
 	}
@@ -1927,7 +1951,7 @@ public class TestWorkspaceDataProvider {
 		block.displayFluidOverlay = _true;
 		block.emissiveRendering = _true;
 		block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
-		block.disableOffset = !_true;
+		block.disableOffset = random.nextBoolean();
 		block.boundingBoxes = new ArrayList<>();
 		if (!emptyLists) {
 			int boxes = random.nextInt(4) + 1;
@@ -1939,7 +1963,7 @@ public class TestWorkspaceDataProvider {
 				box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
 				box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
 				box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
-				box.subtract = new boolean[] { false, _true, _true, random.nextBoolean() }[valueIndex];
+				box.subtract = random.nextBoolean();
 
 				block.boundingBoxes.add(box);
 			}
