@@ -293,22 +293,25 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                 return;
             }
 
-            var types = new Set(); // Store the type of blocks that are already placed in a previous argument.
-            var children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
+            const types = new Set(); // Store the type of blocks that are already placed in a previous argument.
+            const children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
             children.forEach(block => {
                 const type = block.type.split("_"); // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
                 const realType = type[2];
 
+                var isValid = true;
                 if (types.has(realType)) {
-                    if (!this.isInFlyout) {
-                        const group = Blockly.Events.getGroup();
-                        // Makes it so the move and the disable event get undone together.
-                        Blockly.Events.setGroup(e.group);
-                        block.setEnabled(false);
-                        Blockly.Events.setGroup(group);
-                    }
+                    isValid = false;
                 } else {
-                    types.add(realType); // We add the type of the block that is the first one to be placed, so next ones are disabled.
+                    types.add(realType);
+                }
+                if (!block.isInFlyout) {
+                    this.setWarningText(isValid ? null : javabridge.t("blockly.extension.disable_duplicate_input_type"));
+                    const group = Blockly.Events.getGroup();
+                    // Makes it so the move and the disable event get undone together.
+                    Blockly.Events.setGroup(e.group);
+                    block.setEnabled(isValid);
+                    Blockly.Events.setGroup(group);
                 }
             })
         }

@@ -2,7 +2,7 @@
   "trigger": "minecraft:using_item",
   "conditions": {
     "item": {
-    	${input$item}
+      ${input$item}
     }
   }
 },
