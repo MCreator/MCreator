@@ -133,9 +133,12 @@ public class GTJSONTriggersBlocks {
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="item_start_using">
-							<value name="item"><block type="item_predicate"><mutation inputs="1"></mutation>
-							<field name="min">1</field><field name="max">64</field><value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
-							<value name="predicateComponent0">%s</value>
+							<value name="item">
+								<block type="item_predicate">
+									<mutation inputs="1"></mutation>
+									<field name="min">1</field><field name="max">64</field>
+									<value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
+									<value name="predicateComponent0">%s</value>
 						</block></value></block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
