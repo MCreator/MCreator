@@ -301,6 +301,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
 
                 if (types.has(realType)) {
                     if (!this.isInFlyout) {
+                        this.setWarningText(javabridge.t("blockly.extension.disable_duplicate_input_type"));
                         const group = Blockly.Events.getGroup();
                         // Makes it so the move and the disable event get undone together.
                         Blockly.Events.setGroup(e.group);
@@ -308,6 +309,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                         Blockly.Events.setGroup(group);
                     }
                 } else {
+                	this.setWarningText(null);
                     types.add(realType); // We add the type of the block that is the first one to be placed, so next ones are disabled.
                 }
             })
