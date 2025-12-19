@@ -296,7 +296,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
             const types = new Set(); // Store the type of blocks that are already placed in a previous argument.
             const children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
             const group = Blockly.Events.getGroup();
-            let warningText = null;
+            let hasWarningText = false;
 
             children.forEach(block => {
                 const realType = block.type.split("_")[2]; // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
@@ -305,7 +305,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                 if (isValid) {
                     types.add(realType);
                 } else {
-                    warningText = javabridge.t("blockly.extension.disable_duplicate_input_type");
+                    hasWarningText = true;
                 }
 
                 if (!block.isInFlyout) {
@@ -316,7 +316,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                     Blockly.Events.setGroup(group);
                 }
             });
-            this.setWarningText(warningText);
+            this.setWarningText(hasWarningText ? javabridge.t("blockly.extension.disable_duplicate_input_type") : null);
         }
     });
 
