@@ -417,8 +417,8 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("gameevents");
 	}
 
-	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return DataListLoader.loadDataList("equipmentslots");
+	public static List<DataListEntry> loadAllEquipmentSlotGroups() {
+		return DataListLoader.loadDataList("equipmentslotgroups");
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

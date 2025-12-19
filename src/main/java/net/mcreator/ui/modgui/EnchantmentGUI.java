@@ -51,7 +51,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
 	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
 
-	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlotGroups());
 
 	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(4, 1, 255, 1));
 
