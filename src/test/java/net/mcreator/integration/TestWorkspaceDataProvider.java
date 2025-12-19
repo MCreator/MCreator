@@ -1044,6 +1044,10 @@ public class TestWorkspaceDataProvider {
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
 			armor.bootsImmuneToFire = !_true;
+			armor.helmetCanGlide = _true;
+			armor.bodyCanGlide = !_true;
+			armor.leggingsCanGlide = _true;
+			armor.bootsCanGlide = !_true;
 			armor.helmetGlowCondition = new LogicProcedure(_true ? "condition1" : null, _true);
 			armor.bodyGlowCondition = new LogicProcedure(_true ? "condition2" : null, _true);
 			armor.leggingsGlowCondition = new LogicProcedure(_true ? "condition3" : null, _true);

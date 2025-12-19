@@ -160,6 +160,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
+	private final JCheckBox helmetCanGlide = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bodyCanGlide = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox leggingsCanGlide = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox bootsCanGlide = L10N.checkbox("elementgui.common.enable");
+
 	private LogicProcedureSelector helmetGlowCondition;
 	private LogicProcedureSelector bodyGlowCondition;
 	private LogicProcedureSelector leggingsGlowCondition;
@@ -377,6 +382,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
+		helmetCanGlide.setOpaque(false);
+		bodyCanGlide.setOpaque(false);
+		leggingsCanGlide.setOpaque(false);
+		bootsCanGlide.setOpaque(false);
+
 		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
@@ -394,9 +404,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
 
-		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+		JPanel helmetFlagsPanel = new JPanel(new GridLayout(2, 2, 2, 2));
+		helmetFlagsPanel.setOpaque(false);
+
+		helmetFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
-		helmetSubPanel.add(helmetImmuneToFire);
+		helmetFlagsPanel.add(helmetImmuneToFire);
+
+		helmetFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_glide"),
+				L10N.label("elementgui.item.can_glide")));
+		helmetFlagsPanel.add(helmetCanGlide);
+
+		helmetSubPanel.add(helmetFlagsPanel);
 
 		helmetModel.addActionListener(e -> helmetTranslucency.setEnabled(helmetModel.getSelectedItem() != defaultModel));
 
@@ -451,9 +470,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
 
-		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+		JPanel bodyFlagsPanel = new JPanel(new GridLayout(2, 2, 2, 2));
+		bodyFlagsPanel.setOpaque(false);
+
+		bodyFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
-		bodySubPanel.add(bodyImmuneToFire);
+		bodyFlagsPanel.add(bodyImmuneToFire);
+
+		bodyFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_glide"),
+				L10N.label("elementgui.item.can_glide")));
+		bodyFlagsPanel.add(bodyCanGlide);
+
+		bodySubPanel.add(bodyFlagsPanel);
 
 		bodyModel.addActionListener(e -> bodyTranslucency.setEnabled(bodyModel.getSelectedItem() != defaultModel));
 
@@ -502,9 +530,18 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
 
-		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+		JPanel leggingsFlagsPanel = new JPanel(new GridLayout(2, 2, 2, 2));
+		leggingsFlagsPanel.setOpaque(false);
+
+		leggingsFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
-		leggingsSubPanel.add(leggingsImmuneToFire);
+		leggingsFlagsPanel.add(leggingsImmuneToFire);
+
+		leggingsFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_glide"),
+				L10N.label("elementgui.item.can_glide")));
+		leggingsFlagsPanel.add(leggingsCanGlide);
+
+		leggingsSubPanel.add(leggingsFlagsPanel);
 
 		leggingsModel.addActionListener(e -> leggingsTranslucency.setEnabled(leggingsModel.getSelectedItem() != defaultModel));
 
@@ -553,13 +590,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
 
-		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+		JPanel bootsFlagsPanel = new JPanel(new GridLayout(2, 2, 2, 2));
+		bootsFlagsPanel.setOpaque(false);
+
+		bootsFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
-		bootsSubPanel.add(bootsImmuneToFire);
+		bootsFlagsPanel.add(bootsImmuneToFire);
+
+		bootsFlagsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_glide"),
+				L10N.label("elementgui.item.can_glide")));
+		bootsFlagsPanel.add(bootsCanGlide);
+
+		bootsSubPanel.add(bootsFlagsPanel);
 
 		bootsModel.addActionListener(e -> bootsTranslucency.setEnabled(bootsModel.getSelectedItem() != defaultModel));
 
-		JPanel bootsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
+		JPanel bootsConditionsPanel = new JPanel(new GridLayout(4, 1, 2, 2));
 		bootsConditionsPanel.setOpaque(false);
 		bootsConditionsPanel.add(bootsGlowCondition);
 		bootsConditionsPanel.add(bootsSpecialInformation);
@@ -964,6 +1010,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
+		helmetCanGlide.setSelected(armor.helmetCanGlide);
+		bodyCanGlide.setSelected(armor.bodyCanGlide);
+		leggingsCanGlide.setSelected(armor.leggingsCanGlide);
+		bootsCanGlide.setSelected(armor.bootsCanGlide);
+
 		helmetGlowCondition.setSelectedProcedure(armor.helmetGlowCondition);
 		bodyGlowCondition.setSelectedProcedure(armor.bodyGlowCondition);
 		leggingsGlowCondition.setSelectedProcedure(armor.leggingsGlowCondition);
@@ -1051,6 +1102,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+		armor.helmetCanGlide = helmetCanGlide.isSelected();
+		armor.bodyCanGlide = bodyCanGlide.isSelected();
+		armor.leggingsCanGlide = leggingsCanGlide.isSelected();
+		armor.bootsCanGlide = bootsCanGlide.isSelected();
 		armor.helmetGlowCondition = helmetGlowCondition.getSelectedProcedure();
 		armor.bodyGlowCondition = bodyGlowCondition.getSelectedProcedure();
 		armor.leggingsGlowCondition = leggingsGlowCondition.getSelectedProcedure();

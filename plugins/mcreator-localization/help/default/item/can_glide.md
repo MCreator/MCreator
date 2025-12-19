@@ -1,0 +1,1 @@
+This parameter controls if the item can make the player Glide, like an Elytra.

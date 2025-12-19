@@ -116,6 +116,11 @@ import java.util.stream.Collectors;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public boolean helmetCanGlide;
+	public boolean bodyCanGlide;
+	public boolean leggingsCanGlide;
+	public boolean bootsCanGlide;
+
 	public LogicProcedure helmetGlowCondition;
 	public LogicProcedure bodyGlowCondition;
 	public LogicProcedure leggingsGlowCondition;
