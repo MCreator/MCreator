@@ -188,21 +188,7 @@ public class WebView extends JPanel implements Closeable {
 
 		// Focus fixes
 		this.client.addFocusHandler(new CefFocusHandlerAdapter() {
-			boolean firstShow = true;
-
 			@Override public boolean onSetFocus(CefBrowser browser, FocusSource source) {
-				Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-				boolean componentFocused = focusOwner == WebView.this || focusOwner == WebView.this.cefComponent;
-				boolean focusOnNavigation = firstShow || componentFocused;
-				firstShow = false;
-
-				if (source == FocusSource.FOCUS_SOURCE_NAVIGATION && !focusOnNavigation) {
-					if (OS.isWindows()) {
-						browser.setFocus(false);
-					}
-					return true; // suppress focusing the browser on navigation events
-				}
-
 				if (CefUtils.useOSR()) {
 					return false;
 				}
@@ -242,15 +228,13 @@ public class WebView extends JPanel implements Closeable {
 		this.cefComponent = browser.getUIComponent();
 		cefComponent.setBackground(Theme.current().getBackgroundColor());
 
-		if (!CefUtils.useOSR()) {
+		if (!CefUtils.useOSR() && OS.isWindows()) {
 			// Workaround for the non-OSR component to always gain focus in mouse click
 			// Without this, focus is not correctly transferred in some cases
 			cefComponent.addMouseListener(new MouseAdapter() {
 				@Override public void mousePressed(MouseEvent e) {
-					SwingUtilities.invokeLater(() -> {
-						browser.setFocus(true);
-						cefComponent.requestFocusInWindow();
-					});
+					browser.setFocus(true);
+					cefComponent.requestFocusInWindow();
 				}
 			});
 
