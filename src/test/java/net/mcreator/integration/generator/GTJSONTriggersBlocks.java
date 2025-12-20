@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTJSONTriggersBlocks {
 
+	@SuppressWarnings("DuplicateBranchesInSwitch")
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER);
 
@@ -125,14 +126,14 @@ public class GTJSONTriggersBlocks {
 				case "ItemPredicate" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
-						<block type="item_start_using">
+						<block type="item_consumed">
 							<value name="item">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
 				case "ItemPredicateEntry" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
-						<block type="item_start_using">
+						<block type="item_consumed">
 							<value name="item">
 								<block type="item_predicate">
 									<mutation inputs="1"></mutation>
