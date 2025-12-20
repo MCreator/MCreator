@@ -46,7 +46,7 @@ public class TextureSelectionButton extends VButton {
 	private final List<ActionListener> textureSelectedListeners = new ArrayList<>();
 
 	public TextureSelectionButton(TypedTextureSelectorDialog td) {
-		this(td, 70);
+		this(td, 64);
 	}
 
 	public TextureSelectionButton(TypedTextureSelectorDialog td, int size) {

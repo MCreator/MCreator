@@ -94,6 +94,14 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 		</#if>
 	</#list>
 
+	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+		<#if data.rotationMode == 0><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+		<#else>
+		private final Function<BlockState, VoxelShape> shapes = this.makeShapes();
+		</#if>
+	</#if>
+
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(${name}Block::new);
 
@@ -242,6 +250,29 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 		</#if>
 	}
 
+	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+		<#if data.rotationMode != 0>
+		private Function<BlockState, VoxelShape> makeShapes() {
+			return this.getShapeForEachState(
+				state -> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>
+				<#-- exclude states that don't affect shape -->
+				<#if data.isWaterloggable>,WATERLOGGED</#if>
+				<#list filteredCustomProperties as prop>,${prop.property().getName().replace("CUSTOM:", "")?upper_case}</#list>
+			);
+		}
+		</#if>
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+
+			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
+			<#else><#-- shape is state dependent -->
+			return shapes.apply(state)<#if offset>.move(state.getOffset(pos))</#if>;
+			</#if>
+		}
+	</#if>
+
 	<#if data.renderType() == 4>
     @Override protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
@@ -287,17 +318,6 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 	<#if data.hasTransparency && !data.blockBase?has_content>
 	@Override public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return Shapes.empty();
-	}
-	</#if>
-
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
-		</#if>
 	}
 	</#if>
 
@@ -720,6 +740,10 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 			}
 
 			@Override public String getSerializedName() {
+				return this.name;
+			}
+
+			@Override public String toString() {
 				return this.name;
 			}
 		}

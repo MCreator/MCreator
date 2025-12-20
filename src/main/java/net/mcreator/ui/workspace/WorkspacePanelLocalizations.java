@@ -30,6 +30,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.FlafIcons;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -199,12 +200,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 			button.setEnabled(!entry.getKey().equals("en_us"));
 
-			String flagpath = "/flags/" + entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
 			JLabel label = new JLabel(" " + entry.getKey() + " ");
 			ComponentUtils.deriveFont(label, 12);
 			try {
-				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
-						getClass().getResourceAsStream(flagpath));
+				BufferedImage image = FlafIcons.getFlag(entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH));
 				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
 			} catch (Exception ignored) { // flag not found, ignore
 			}

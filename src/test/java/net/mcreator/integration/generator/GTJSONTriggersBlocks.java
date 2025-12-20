@@ -85,7 +85,7 @@ public class GTJSONTriggersBlocks {
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
 
 			Achievement advancement = TestWorkspaceDataProvider.getAdvancementExample(modElement, random, true, true,
-					Collections.emptyList(), 1);
+					Collections.emptyList());
 
 			if (triggerBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				advancement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
@@ -115,6 +115,18 @@ public class GTJSONTriggersBlocks {
 							<value name="enchantment0">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
+				case "MCItem" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="item_consumed">
+							<value name="item">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				default -> {
+					LOG.warn("[{}] Skipping JSON trigger block of unrecognized type: {}", generatorName,
+							triggerBlock.getMachineName());
+					continue;
+				}
 				}
 			}
 

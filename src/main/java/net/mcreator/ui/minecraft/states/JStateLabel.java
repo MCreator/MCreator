@@ -27,6 +27,8 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,6 +71,12 @@ public class JStateLabel extends JPanel {
 		edit.setMargin(new Insets(0, 4, 0, 4));
 		edit.setToolTipText(L10N.t("components.state_label.edit"));
 		edit.addActionListener(e -> editState());
+
+		label.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				editState();
+			}
+		});
 
 		add("East", edit);
 

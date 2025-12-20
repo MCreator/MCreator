@@ -1,0 +1,39 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "uuid",
+      "check": "String"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
+    },
+    {
+      "type": "field_image",
+      "src": "./res/null.png",
+      "width": 8,
+      "height": 24
+    }
+  ],
+  "inputsInline": true,
+  "output": "Entity",
+  "colour": 195,
+  "mcreator": {
+    "toolbox_id": "worlddata",
+    "toolbox_init": [
+      "<value name=\"uuid\"><block type=\"entity_get_uuid\"><value name=\"entity\"><block type=\"entity_from_deps\"></block></value></block></value>"
+    ],
+    "inputs": [
+      "uuid"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
