@@ -60,7 +60,6 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.isFood = item.isFood;
 			beitem.foodNutritionalValue = item.nutritionalValue;
 			beitem.foodSaturation = item.saturation;
-			beitem.foodIsMeat = item.isMeat;
 			beitem.foodCanAlwaysEat = item.isAlwaysEdible;
 			return beitem;
 		}
