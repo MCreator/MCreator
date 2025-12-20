@@ -285,38 +285,23 @@ function checkIfAfter(block, predicate) {
 Blockly.Extensions.registerMixin('disable_duplicate_input_type',
     {
         onchange: function (e) {
-            // Trigger the change only if a block is changed, moved, deleted or created
-            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
-                e.type !== Blockly.Events.BLOCK_MOVE &&
-                e.type !== Blockly.Events.BLOCK_DELETE &&
-                e.type !== Blockly.Events.BLOCK_CREATE) {
+            // Don't change state if it's at the start of a drag and it's not a move or create event
+            if (!this.workspace.isDragging || this.workspace.isDragging()
+                    || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
                 return;
             }
-
-            const types = new Set(); // Store the type of blocks that are already placed in a previous argument.
-            const children = this.getChildren(true); // We get all children of the block we want to check ordered, so for cases like repeating_args, the real first block is kept.
-            const group = Blockly.Events.getGroup();
-            let hasWarningText = false;
-
-            children.forEach(block => {
-                const realType = block.type.split("_")[2]; // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
-                const isValid = !types.has(realType);
-
-                if (isValid) {
-                    types.add(realType);
-                } else {
-                    hasWarningText = true;
-                }
-
-                if (!block.isInFlyout) {
-                    this.setWarningText();
-                    // Makes it so the move and the disable event get undone together.
-                    Blockly.Events.setGroup(e.group);
-                    block.setEnabled(isValid);
-                    Blockly.Events.setGroup(group);
-                }
-            });
-            this.setWarningText(hasWarningText ? javabridge.t("blockly.extension.disable_duplicate_input_type") : null);
+            const thisType = this.type.split("_")[2]; // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type.split("_")[2] === thisType;
+            }));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.extension.disable_duplicate_input_type'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
         }
     });
 
