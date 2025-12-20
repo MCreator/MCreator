@@ -64,6 +64,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private ImageButton ${component.getName()};
 	</#list>
 
+	<#if data.renderBgLayer>
+	private static final ResourceLocation BACKGROUND = ResourceLocation.parse("${modid}:textures/screens/${registryname}.png");
+	</#if>
+
+	<#list data.getComponentsOfType("Image") as component>
+	private static final ResourceLocation IMAGE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.image}");
+	</#list>
+
+	<#list data.getComponentsOfType("Sprite") as component>
+	private static final ResourceLocation SPRITE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.sprite}");
+	</#list>
+
 	<#list sliders as component>
 	private ExtendedSlider ${component.getName()};
 	</#list>
@@ -117,10 +129,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	@Override public boolean isPauseScreen() {
 		return true;
 	}
-	</#if>
-
-	<#if data.renderBgLayer>
-	private static final ResourceLocation texture = ResourceLocation.parse("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
@@ -178,12 +186,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		RenderSystem.defaultBlendFunc();
 
 		<#if data.renderBgLayer>
-			guiGraphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
+			guiGraphics.blit(BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.image}"),
+				guiGraphics.blit(IMAGE_${component?index},
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
@@ -192,7 +200,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 		<#list data.getComponentsOfType("Sprite") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(ResourceLocation.parse("${modid}:textures/screens/${component.sprite}"),
+				guiGraphics.blit(SPRITE_${component?index},
 					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
 						<@getSpriteByIndex component "width"/>, 0
