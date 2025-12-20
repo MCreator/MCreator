@@ -19,13 +19,11 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
@@ -67,7 +65,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			//@formatter:on
 	);
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final JCheckBox enableCreativeTab = new JCheckBox();
+	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
+			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(1.6, 0, 128000, 0.1));
@@ -140,10 +140,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		handEquipped.setOpaque(false);
 		basicProperties.add(handEquipped);
 
-		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
-				L10N.label("elementgui.common.creative_tabs")));
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-		basicProperties.add(creativeTab);
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
+				L10N.label("elementgui.beitem.creative_tab")));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
+		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
@@ -153,7 +154,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.damage_vs_entity")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
 		enableMeleeDamage.addActionListener(e -> updateMeleeDamage());
-		updateMeleeDamage();
 		enableMeleeDamage.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
@@ -243,14 +243,18 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
 
-		updateFoodPanel();
-
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 			shouldDespawn.setSelected(true);
 			animation.setSelectedItem("eat");
+			enableCreativeTab.setSelected(true);
+			creativeTab.setSelectedItem("MATERIALS");
 		}
+
+		updateCreativeTab();
+		updateMeleeDamage();
+		updateFoodPanel();
 	}
 
 	private void updateFoodPanel() {
@@ -277,6 +281,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		damageVsEntity.setEnabled(enableMeleeDamage.isSelected());
 	}
 
+	private void updateCreativeTab() {
+		creativeTab.setEnabled(enableCreativeTab.isSelected());
+	}
+
 	@Override protected void openInEditingMode(BEItem item) {
 		texture.setTexture(item.texture);
 		name.setText(item.name);
@@ -292,6 +300,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodSaturation.setValue(item.foodSaturation);
 		handEquipped.setSelected(item.handEquipped);
 		rarity.setSelectedItem(item.rarity);
+		enableCreativeTab.setSelected(item.enableCreativeTab);
 		creativeTab.setSelectedItem(item.creativeTab);
 		isHiddenInCommands.setSelected(item.isHiddenInCommands);
 		movementModifier.setValue(item.movementModifier);
@@ -302,6 +311,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		animation.setSelectedItem(item.animation);
 		updateFoodPanel();
 		updateMeleeDamage();
+		updateCreativeTab();
 	}
 
 	@Override public BEItem getElementFromGUI() {
@@ -320,6 +330,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.foodCanAlwaysEat = foodCanAlwaysEat.isSelected();
 		item.handEquipped = handEquipped.isSelected();
 		item.rarity = rarity.getSelectedItem();
+		item.enableCreativeTab = enableCreativeTab.isSelected();
 		item.creativeTab = creativeTab.getSelectedItem().toString();
 		item.isHiddenInCommands = isHiddenInCommands.isSelected();
 		item.movementModifier = (double) movementModifier.getValue();

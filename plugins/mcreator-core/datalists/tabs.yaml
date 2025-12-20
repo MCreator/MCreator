@@ -31,6 +31,3 @@
 - OP_BLOCKS:
   texture: COMMAND_BLOCK
   readable_name: Operator Items
-- NONE:
-  texture: BARRIER
-  readable_name: None

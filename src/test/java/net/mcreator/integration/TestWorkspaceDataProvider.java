@@ -1722,6 +1722,7 @@ public class TestWorkspaceDataProvider {
 			beitem.foodCanAlwaysEat = _true;
 			beitem.handEquipped = _true;
 			beitem.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			beitem.enableCreativeTab = !_true;
 			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 					.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList()).toString();
 			beitem.isHiddenInCommands = _true;

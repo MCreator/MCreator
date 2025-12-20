@@ -47,6 +47,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean hasGlint;
 	public boolean handEquipped;
 	public String rarity;
+	public boolean enableCreativeTab;
 	public String creativeTab;
 	public boolean isHiddenInCommands;
 	public double movementModifier;
@@ -72,6 +73,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.movementModifier = 1.0;
 		this.shouldDespawn = true;
 		this.animation = "eat";
+		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
 	}
 

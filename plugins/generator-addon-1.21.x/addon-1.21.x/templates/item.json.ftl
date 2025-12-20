@@ -6,7 +6,7 @@
     "description": {
       "identifier": "${modid}:${registryname}",
       "menu_category": {
-      	"category": "${generator.map(data.creativeTab, "tabs")}"
+      	"category": "<#if data.enableCreativeTab>${generator.map(data.creativeTab, "tabs")}<#else>none</#if>"
       	<#if data.isHiddenInCommands>,"is_hidden_in_commands": true</#if>
       }
     },
