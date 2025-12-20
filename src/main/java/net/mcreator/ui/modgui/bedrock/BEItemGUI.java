@@ -182,6 +182,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
 				L10N.label("elementgui.item.nutritional_value")));
 		foodProperties.add(foodNutritionalValue);
+		foodNutritionalValue.setPreferredSize(new Dimension(-1, -1));
 		foodNutritionalValue.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
@@ -212,7 +213,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		foodPanel.add("Center", PanelUtils.totalCenterInPanel(foodProperties));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(4, 2, 65, 2));
 		advancedProperties.setOpaque(false);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
