@@ -20,6 +20,7 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -27,6 +28,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
@@ -43,15 +45,34 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
 	public boolean hasGlint;
+	public boolean handEquipped;
+	public String rarity;
+	public String creativeTab;
+	public boolean isHiddenInCommands;
+	public double movementModifier;
+	public boolean allowOffHand;
+	public double fuelDuration;
+	public boolean shouldDespawn;
 
 	// Food
 	public boolean isFood;
 	public int foodNutritionalValue;
 	public double foodSaturation;
 	public boolean foodCanAlwaysEat;
+	@ModElementReference public MItemBlock usingConvertsTo;
+	public String animation;
+
+	public BEItem() {
+		this(null);
+	}
 
 	public BEItem(ModElement element) {
 		super(element);
+		this.rarity = "COMMON";
+		this.movementModifier = 1.0;
+		this.shouldDespawn = true;
+		this.animation = "eat";
+		this.creativeTab = "MATERIALS";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -65,5 +86,4 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
-
 }

@@ -19,14 +19,21 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEItem;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -41,24 +48,55 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private TextureSelectionButton texture;
 	private final JCheckBox hasGlint = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox handEquipped = L10N.checkbox("elementgui.common.enable");
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("common", "elementgui.common.rarity_common"),
+			Map.entry("uncommon", "elementgui.common.rarity_uncommon"),
+			Map.entry("rare", "elementgui.common.rarity_rare"),
+			Map.entry("epic", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
+	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
-	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
+	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(1.6, 0, 128000, 0.1));
+	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0.35, 0, 1, 0.05));
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
+	private final JCheckBox allowOffHand = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner fuelDuration = new JSpinner(new SpinnerNumberModel(0, 0, 107374180, 0.05));
+	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
 	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
+	private final MCItemHolder usingConvertsTo = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+	private final TranslatedComboBox animation = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("none", "elementgui.item.item_animation_none"),
+			Map.entry("eat", "elementgui.item.item_animation_eat"),
+			Map.entry("block", "elementgui.item.item_animation_block"),
+			Map.entry("bow", "elementgui.item.item_animation_bow"),
+			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
+			Map.entry("drink", "elementgui.item.item_animation_drink"),
+			Map.entry("spear", "elementgui.item.item_animation_spear"),
+			Map.entry("brush", "elementgui.item.item_animation_brush"),
+			Map.entry("spyglass", "elementgui.item.item_animation_spyglass"),
+			Map.entry("camera", "elementgui.item.item_animation_camera")
+			//@formatter:on
+	);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -71,12 +109,16 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	@Override protected void initGUI() {
 		JPanel propertiesPanel = new JPanel(new BorderLayout(10, 10));
 		propertiesPanel.setOpaque(false);
+		JPanel foodPanel = new JPanel(new BorderLayout(10, 10));
+		foodPanel.setOpaque(false);
+		JPanel advancedPanel = new JPanel(new BorderLayout(10, 10));
+		advancedPanel.setOpaque(false);
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel basicProperties = new JPanel(new GridLayout(10, 2, 65, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 2, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -84,10 +126,24 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
 
+		basicProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		basicProperties.add(rarity);
+
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/has_glint"),
 				L10N.label("elementgui.beitem.has_glint")));
-		basicProperties.add(hasGlint);
 		hasGlint.setOpaque(false);
+		basicProperties.add(hasGlint);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/hand_equipped"),
+				L10N.label("elementgui.beitem.hand_equipped")));
+		handEquipped.setOpaque(false);
+		basicProperties.add(handEquipped);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
+		basicProperties.add(creativeTab);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
@@ -104,50 +160,96 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.number_of_uses")));
 		basicProperties.add(maxDurability);
 
-		basicProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
-		basicProperties.add(isFood);
-		isFood.addActionListener(e -> {
-			updateFoodPanel();
-			if (!isEditingMode()) {
-				useDuration.setValue(1.6);
-			}
-		});
-		updateFoodPanel();
-		isFood.setOpaque(false);
-
-		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
-				L10N.label("elementgui.item.nutritional_value")));
-		basicProperties.add(foodNutritionalValue);
-		foodNutritionalValue.setOpaque(false);
-
-		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
-				L10N.label("elementgui.item.saturation")));
-		basicProperties.add(foodSaturation);
-		foodSaturation.setOpaque(false);
-
-		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
-				L10N.label("elementgui.item.is_edible")));
-		basicProperties.add(foodCanAlwaysEat);
-		foodCanAlwaysEat.setOpaque(false);
-
-		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/use_duration"),
-				L10N.label("elementgui.beitem.use_duration")));
-		basicProperties.add(useDuration);
+		basicProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.common.properties_general"), 0, 0, getFont().deriveFont(12.0f),
+				Theme.current().getForegroundColor()));
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				PanelUtils.totalCenterInPanel(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties,
-				25, 25)));
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
+				PanelUtils.totalCenterInPanel(PanelUtils.pullElementUp(basicProperties)))));
+
+		JPanel foodProperties = new JPanel(new GridLayout(8, 2, 65, 2));
+		foodProperties.setOpaque(false);
+
+		foodProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
+		foodProperties.add(isFood);
+		isFood.addActionListener(e -> updateFoodPanel());
+		isFood.setOpaque(false);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
+				L10N.label("elementgui.item.nutritional_value")));
+		foodProperties.add(foodNutritionalValue);
+		foodNutritionalValue.setOpaque(false);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/saturation"),
+				L10N.label("elementgui.item.saturation")));
+		foodProperties.add(foodSaturation);
+		foodSaturation.setOpaque(false);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
+				L10N.label("elementgui.item.is_edible")));
+		foodProperties.add(foodCanAlwaysEat);
+		foodCanAlwaysEat.setOpaque(false);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
+				L10N.label("elementgui.item.eating_result")));
+		foodProperties.add(PanelUtils.centerInPanel(usingConvertsTo));
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.item.item_animation")));
+		foodProperties.add(animation);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/use_duration"),
+				L10N.label("elementgui.beitem.use_duration")));
+		foodProperties.add(useDuration);
+
+		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/movement_modifier"),
+				L10N.label("elementgui.beitem.movement_modifier")));
+		foodProperties.add(movementModifier);
+
+		foodPanel.add("Center", PanelUtils.totalCenterInPanel(foodProperties));
+
+		JPanel advancedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
+		advancedProperties.setOpaque(false);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
+				L10N.label("elementgui.beitem.is_hidden_commands")));
+		isHiddenInCommands.setOpaque(false);
+		advancedProperties.add(isHiddenInCommands);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/allow_off_hand"),
+				L10N.label("elementgui.beitem.allow_off_hand")));
+		allowOffHand.setOpaque(false);
+		advancedProperties.add(allowOffHand);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/fuel_duration"),
+				L10N.label("elementgui.beitem.fuel_duration")));
+		advancedProperties.add(fuelDuration);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/should_despawn"),
+				L10N.label("elementgui.beitem.should_despawn")));
+		shouldDespawn.setOpaque(false);
+		advancedProperties.add(shouldDespawn);
+
+		advancedPanel.add("Center", PanelUtils.totalCenterInPanel(advancedProperties));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(texture);
 
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
+		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
+
+		updateFoodPanel();
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+			shouldDespawn.setSelected(true);
+			animation.setSelectedItem("eat");
 		}
 	}
 
@@ -157,11 +259,17 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			foodSaturation.setEnabled(true);
 			foodCanAlwaysEat.setEnabled(true);
 			useDuration.setEnabled(true);
+			usingConvertsTo.setEnabled(true);
+			animation.setEnabled(true);
+			movementModifier.setEnabled(true);
 		} else {
 			foodNutritionalValue.setEnabled(false);
 			foodSaturation.setEnabled(false);
 			foodCanAlwaysEat.setEnabled(false);
 			useDuration.setEnabled(false);
+			usingConvertsTo.setEnabled(false);
+			animation.setEnabled(false);
+			movementModifier.setEnabled(false);
 		}
 	}
 
@@ -182,7 +290,16 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodCanAlwaysEat.setSelected(item.foodCanAlwaysEat);
 		foodNutritionalValue.setValue(item.foodNutritionalValue);
 		foodSaturation.setValue(item.foodSaturation);
-
+		handEquipped.setSelected(item.handEquipped);
+		rarity.setSelectedItem(item.rarity);
+		creativeTab.setSelectedItem(item.creativeTab);
+		isHiddenInCommands.setSelected(item.isHiddenInCommands);
+		movementModifier.setValue(item.movementModifier);
+		allowOffHand.setSelected(item.allowOffHand);
+		fuelDuration.setValue(item.fuelDuration);
+		shouldDespawn.setSelected(item.shouldDespawn);
+		usingConvertsTo.setBlock(item.usingConvertsTo);
+		animation.setSelectedItem(item.animation);
 		updateFoodPanel();
 		updateMeleeDamage();
 	}
@@ -201,6 +318,16 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.foodNutritionalValue = (int) foodNutritionalValue.getValue();
 		item.foodSaturation = (double) foodSaturation.getValue();
 		item.foodCanAlwaysEat = foodCanAlwaysEat.isSelected();
+		item.handEquipped = handEquipped.isSelected();
+		item.rarity = rarity.getSelectedItem();
+		item.creativeTab = creativeTab.getSelectedItem().toString();
+		item.isHiddenInCommands = isHiddenInCommands.isSelected();
+		item.movementModifier = (double) movementModifier.getValue();
+		item.allowOffHand = allowOffHand.isSelected();
+		item.fuelDuration = (double) fuelDuration.getValue();
+		item.shouldDespawn = shouldDespawn.isSelected();
+		item.usingConvertsTo = usingConvertsTo.getBlock();
+		item.animation = animation.getSelectedItem();
 
 		return item;
 	}

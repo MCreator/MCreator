@@ -1,0 +1,1 @@
+If selected, this will remove the item from commands like `/give`
