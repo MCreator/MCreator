@@ -50,8 +50,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -119,7 +118,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		debugPanel = new DebugPanel(this);
 
-		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace").toUpperCase(), createWorkspaceTabContent(),
+				"Workspace", false);
 		mcreatorTabs.addTab(workspaceTab);
 
 		mcreatorTabs.addTabShownListener(tab -> {
@@ -130,31 +130,13 @@ public abstract class MCreator extends MCreatorFrame {
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
-		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console"), gradleConsole, "Console", false) /*{
-			@Override public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				switch (gradleConsole.getStatus()) {
-				case GradleConsole.READY:
-					g.setColor(Theme.current().getForegroundColor());
-					break;
-				case GradleConsole.RUNNING:
-					g.setColor(new Color(158, 247, 89));
-					break;
-				case GradleConsole.ERROR:
-					g.setColor(new Color(0xFF5956));
-					break;
-				}
-				if (gradleConsole.isGradleSetupTaskRunning())
-					g.setColor(new Color(106, 247, 244));
-				g.fillRect(getWidth() - 15, getHeight() - 18, 3, 3);
-			}
-		};
-		consoleTab.addMouseListener(new MouseAdapter() {
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console").toUpperCase(), gradleConsole, "Console", false);
+		consoleTab.setMouseClickListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
 					actionRegistry.buildWorkspace.doAction();
 			}
-		})*/;
+		});
 		mcreatorTabs.addTab(consoleTab);
 
 		mcreatorTabs.showTabNoNotify(workspaceTab);

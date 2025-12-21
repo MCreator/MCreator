@@ -194,7 +194,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 				if (slock.isSelected() && fraction > 0.99)
 					slock.setSelected(false);
-				// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
+					// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
 				else if (!slock.isSelected() && fraction < 0.85 && maxValue > 2000)
 					slock.setSelected(true);
 			}
@@ -373,7 +373,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
 
-		//ref.consoleTab.repaint(); // TODO: fix
+		ref.consoleTab.setPersistentColor(
+				gradleSetupTaskRunning ? new Color(106, 247, 244) : Theme.current().getInterfaceAccentColor());
 		ref.getStatusBar().reloadGradleIndicator();
 
 		stateListeners.forEach(listener -> listener.taskStarted(command));
@@ -717,7 +718,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 					if (resultcode == GradleResultCode.STATUS_OK)
 						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
-					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(), taskErr.toString()));
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(),
+							taskErr.toString()));
 
 					taskComplete(resultcode);
 				});
@@ -725,14 +727,14 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 			private void fail() {
 				status = ERROR;
-				//ref.consoleTab.repaint(); // TODO: fix
+				ref.consoleTab.setPersistentColor(COLOR_LOGLEVEL_ERROR);
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
-				//ref.consoleTab.repaint(); // TODO: fix
+				ref.consoleTab.setPersistentColor(null);
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 
@@ -960,6 +962,5 @@ public class GradleConsole extends JPanel implements ISearchable {
 		if (searchTerm != null)
 			searchBar.getSearchField().setText(searchTerm);
 	}
-
 
 }

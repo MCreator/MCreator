@@ -681,8 +681,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					fileTab.setActiveColor(Theme.current().getForegroundColor());
 					fileTab.setInactiveColor(Theme.current().getAltForegroundColor());
 				} else {
-					fileTab.setActiveColor(Theme.current().getInterfaceAccentColor());
-					fileTab.setInactiveColor(Theme.current().getAltBackgroundColor());
+					fileTab.setActiveColor(null);
+					fileTab.setInactiveColor(null);
 				}
 			}
 		});

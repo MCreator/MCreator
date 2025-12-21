@@ -18,6 +18,8 @@
 
 package net.mcreator.ui;
 
+import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
+import com.formdev.flatlaf.ui.FlatUIUtils;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.TabEvent;
 import net.mcreator.ui.views.ViewBase;
@@ -30,6 +32,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +54,8 @@ public class MCreatorTabs extends JTabbedPane {
 			}
 		});
 
+		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
 		addChangeListener(e -> {
 			int selectedIndex = getSelectedIndex();
 			if (selectedIndex >= 0) {
@@ -63,14 +68,53 @@ public class MCreatorTabs extends JTabbedPane {
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (SwingUtilities.isMiddleMouseButton(e)) {
-					int tabIndex = indexAtLocation(e.getX(), e.getY());
-					if (tabIndex >= 0) {
-						Tab toClose = getTabForTabIndex(tabIndex);
-						if (toClose != null)
-							closeTab(toClose);
+				int tabIndex = indexAtLocation(e.getX(), e.getY());
+				if (tabIndex >= 0) {
+					Tab clickedTab = getTabForTabIndex(tabIndex);
+					if (clickedTab != null) {
+						if (SwingUtilities.isMiddleMouseButton(e)) {
+							closeTab(clickedTab);
+						}
+
+						clickedTab.mouseClicked(e);
 					}
 				}
+			}
+		});
+
+		setUI(new FlatTabbedPaneUI() {
+
+			private final Color defaultUnderlineColor = UIManager.getColor("TabbedPane.underlineColor");
+			private final Color defaultInactiveUnderlineColor = FlatUIUtils.getUIColor(
+					"TabbedPane.inactiveUnderlineColor", underlineColor);
+
+			@Override
+			protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h,
+					boolean isSelected) {
+				super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected);
+
+				if (!isSelected) {
+					Tab tab = getTabForTabIndex(tabIndex);
+					if (tab != null && tab.inactiveColor != null) {
+						underlineColor = tab.inactiveColor;
+						inactiveUnderlineColor = tab.inactiveColor;
+						super.paintTabSelection(g, tabPlacement, tabIndex, x, y, w, h);
+					}
+				}
+			}
+
+			@Override
+			protected void paintTabSelection(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h) {
+				underlineColor = defaultUnderlineColor;
+				inactiveUnderlineColor = defaultInactiveUnderlineColor;
+
+				Tab tab = getTabForTabIndex(tabIndex);
+				if (tab != null) {
+					if (tab.activeColor != null)
+						underlineColor = tab.activeColor;
+				}
+
+				super.paintTabSelection(g, tabPlacement, tabIndex, x, y, w, h);
 			}
 		});
 	}
@@ -200,9 +244,13 @@ public class MCreatorTabs extends JTabbedPane {
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
 		private TabHiddenListener tabHiddenListener;
+		private MouseListener clickListener;
 
 		private String text;
 		private ImageIcon icon;
+
+		private Color activeColor = null;
+		private Color inactiveColor = null;
 
 		public Tab(ViewBase content) {
 			this(content.getViewName(), content.getViewIcon(), content,
@@ -242,8 +290,13 @@ public class MCreatorTabs extends JTabbedPane {
 			setIcon(icon);
 		}
 
-		int getIndex() {
+		private int getIndex() {
 			return container.indexOfComponent(content);
+		}
+
+		private void mouseClicked(MouseEvent e) {
+			if (clickListener != null)
+				clickListener.mouseClicked(e);
 		}
 
 		public String getText() {
@@ -252,7 +305,8 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public void setText(String name) {
 			this.text = name;
-			container.setTitleAt(getIndex(), name);
+			if (container != null)
+				container.setTitleAt(getIndex(), name);
 		}
 
 		public void setIcon(@Nullable ImageIcon icon) {
@@ -266,15 +320,27 @@ public class MCreatorTabs extends JTabbedPane {
 			}
 
 			this.icon = icon;
-			container.setIconAt(getIndex(), icon);
+			if (container != null)
+				container.setIconAt(getIndex(), icon);
 		}
 
 		public void setInactiveColor(Color inactiveColor) {
-			// TODO: implement
+			this.inactiveColor = inactiveColor;
+			if (container != null)
+				container.repaint();
 		}
 
 		public void setActiveColor(Color activeColor) {
-			// TODO: implement
+			this.activeColor = activeColor;
+			if (container != null)
+				container.repaint();
+		}
+
+		public void setPersistentColor(Color persistentColor) {
+			this.inactiveColor = persistentColor;
+			this.activeColor = persistentColor;
+			if (container != null)
+				container.repaint();
 		}
 
 		public void setTabClosedListener(TabClosedListener tabClosedListener) {
@@ -291,6 +357,10 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public void setTabHiddenListener(TabHiddenListener tabHiddenListener) {
 			this.tabHiddenListener = tabHiddenListener;
+		}
+
+		public void setMouseClickListener(MouseListener clickListener) {
+			this.clickListener = clickListener;
 		}
 
 		public JPanel getContent() {
@@ -314,6 +384,7 @@ public class MCreatorTabs extends JTabbedPane {
 		@Override public String toString() {
 			return text + " (" + identifier + ")";
 		}
+
 	}
 
 	public interface TabShownListener {
