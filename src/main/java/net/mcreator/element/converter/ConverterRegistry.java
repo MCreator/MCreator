@@ -58,6 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2025_4.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
 import net.mcreator.generator.GeneratorFlavor;
@@ -100,7 +101,8 @@ public class ConverterRegistry {
 			new BlockHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new BlockLegacyMaterialRemover()
+			new BlockLegacyMaterialRemover(),
+			new BlockToBedrockConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
@@ -246,6 +248,7 @@ public class ConverterRegistry {
 	// List of METs that now have specialized variant for Bedrock Edition specifically
 	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
 		add(ModElementType.ITEM); // -> BEITEM
+		add(ModElementType.BLOCK); // -> BEBLOCK
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
