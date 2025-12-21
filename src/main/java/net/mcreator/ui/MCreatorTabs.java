@@ -124,18 +124,21 @@ public class MCreatorTabs extends JTabbedPane {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
-				if (performUIAction) {
-					SwingUtilities.invokeLater(() -> setSelectedIndex(tab.getIndex()));
-				}
+				SwingUtilities.invokeLater(() -> {
+					if (performUIAction) {
+						setSelectedIndex(tab.getIndex());
+					}
+
+					if (notify) {
+						tabShownListeners.forEach(l -> l.tabShown(tab));
+						if (tab.tabShownListener != null)
+							tab.tabShownListener.tabShown(tab);
+					}
+				});
 
 				this.current = tab;
 				existing = tab;
 
-				if (notify) {
-					tabShownListeners.forEach(l -> l.tabShown(tab));
-					if (tab.tabShownListener != null)
-						tab.tabShownListener.tabShown(tab);
-				}
 				MCREvent.event(new TabEvent.Shown(tab));
 
 				break;
