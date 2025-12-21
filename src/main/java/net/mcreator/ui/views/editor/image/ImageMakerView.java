@@ -388,15 +388,26 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			palettePanel.storePalette();
 		});
 		tab.setTabHiddenListener(tab -> palettePanel.storePalette());
-		tab.setTabShownListener(tab -> palettePanel.reloadPalette());
+		tab.setTabShownListener(new MCreatorTabs.TabShownListener() {
+
+			boolean firstTime = true;
+
+			@Override public void tabShown(MCreatorTabs.Tab tab) {
+				palettePanel.reloadPalette();
+
+				if (firstTime) {
+					leftSplitPane.setDividerLocation(0.16);
+					rightSplitPane.setDividerLocation(0.79);
+					paletteLayerSplitPane.setDividerLocation(0.5);
+					zoomPane.getZoomport().fitZoom();
+					firstTime = false;
+				}
+			}
+		});
 
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(this.tab);
 		if (existing == null) {
 			mcreator.getTabs().addTab(this.tab);
-			leftSplitPane.setDividerLocation(0.16);
-			rightSplitPane.setDividerLocation(0.79);
-			paletteLayerSplitPane.setDividerLocation(0.5);
-			zoomPane.getZoomport().fitZoom();
 			refreshTab();
 			return this;
 		}
