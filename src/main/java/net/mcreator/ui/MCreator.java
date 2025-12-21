@@ -29,7 +29,6 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -51,7 +50,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -119,13 +119,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		debugPanel = new DebugPanel(this);
 
-		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
-
-		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", true,
-				false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", false);
 		mcreatorTabs.addTab(workspaceTab);
-		pon.add("West", workspaceTab);
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			reloadWorkspaceTabContents();
@@ -135,7 +130,7 @@ public abstract class MCreator extends MCreatorFrame {
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
-		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", gradleConsole, "Console", true, false) {
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console"), gradleConsole, "Console", false) /*{
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
@@ -159,21 +154,16 @@ public abstract class MCreator extends MCreatorFrame {
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
 					actionRegistry.buildWorkspace.doAction();
 			}
-		});
+		})*/;
 		mcreatorTabs.addTab(consoleTab);
-		pon.add("East", consoleTab);
 
 		mcreatorTabs.showTabNoNotify(workspaceTab);
-
-		pon.add("Center", mcreatorTabs.getTabsStrip());
 
 		workspace.getFileManager().setDataSavedListener(() -> getStatusBar().setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
-
 		if (hasProjectBrowser) {
-			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
+			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, mcreatorTabs);
 			splitPane.setOpaque(false);
 			splitPane.setOneTouchExpandable(true);
 			splitPane.setDividerLocation(280);
@@ -190,13 +180,13 @@ public abstract class MCreator extends MCreatorFrame {
 				}
 			});
 
-			rightPanel.setMinimumSize(new Dimension(0, 0));
+			mcreatorTabs.setMinimumSize(new Dimension(0, 0));
 			workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
 		} else {
 			splitPane = null;
-			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, rightPanel, debugPanel, 0.65));
+			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, mcreatorTabs, debugPanel, 0.65));
 		}
 
 		add("North", toolBar);

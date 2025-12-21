@@ -656,7 +656,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	@Override public ViewBase showView() {
-		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
+		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
 				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),

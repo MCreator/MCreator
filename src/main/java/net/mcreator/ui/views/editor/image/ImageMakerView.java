@@ -418,7 +418,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		if (tab != null) {
 			tab.setIcon(getViewIcon());
 			tab.setText(this.name);
-			tab.updateSize();
 		}
 	}
 

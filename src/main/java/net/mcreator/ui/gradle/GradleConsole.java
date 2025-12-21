@@ -373,7 +373,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
 
-		ref.consoleTab.repaint();
+		//ref.consoleTab.repaint(); // TODO: fix
 		ref.getStatusBar().reloadGradleIndicator();
 
 		stateListeners.forEach(listener -> listener.taskStarted(command));
@@ -725,14 +725,14 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 			private void fail() {
 				status = ERROR;
-				ref.consoleTab.repaint();
+				//ref.consoleTab.repaint(); // TODO: fix
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
-				ref.consoleTab.repaint();
+				//ref.consoleTab.repaint(); // TODO: fix
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 
