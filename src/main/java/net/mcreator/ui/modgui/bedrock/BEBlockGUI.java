@@ -91,7 +91,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		visualPanel.add("Center", PanelUtils.totalCenterInPanel(textures));
 		page1group.addValidationElement(textures);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 2, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 65, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -144,7 +144,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 		page2group.addValidationElement(name);
 
-		JPanel genPanel = new JPanel(new GridLayout(5, 2, 20, 2));
+		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
@@ -172,7 +172,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		genPanel.add(generateHeight);
 
 		JComponent genPanelWithChunk = PanelUtils.westAndCenterElement(new JLabel(UIRES.get("chunk")),
-				PanelUtils.pullElementUp(genPanel), 25, 0);
+				PanelUtils.totalCenterInPanel(genPanel), 25, 0);
 		generationPanel.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
 		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
