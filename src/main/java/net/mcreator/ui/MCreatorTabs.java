@@ -221,7 +221,7 @@ public class MCreatorTabs {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
-				SwingUtilities.invokeLater(() -> cardLayout.show(container, tab.identifier.toString().toLowerCase(Locale.ROOT)));
+				cardLayout.show(container, identifier.toString().toLowerCase(Locale.ROOT));
 				tab.setBackground(Theme.current().getAltBackgroundColor());
 				tab.selected = true;
 				this.current = tab;
