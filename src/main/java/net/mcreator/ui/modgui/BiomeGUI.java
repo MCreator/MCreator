@@ -646,7 +646,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				if (!element.isCodeLocked()) {
 					GeneratableElement generatableElement = element.getGeneratableElement();
 					if (generatableElement instanceof net.mcreator.element.types.Dimension dimension) {
-						if (dimension.biomesInDimension.contains(
+						if (dimension.getUsedBiomes().contains(
 								new BiomeEntry(modElement.getWorkspace(), new DataListEntry.Custom(modElement)))) {
 							mcreator.getGenerator().generateElement(generatableElement);
 						}

@@ -59,11 +59,10 @@ import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
+import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
+import net.mcreator.generator.GeneratorFlavor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConverterRegistry {
 
@@ -201,7 +200,8 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new ItemOpenBoundGUIConverter()
+			new ItemOpenBoundGUIConverter(),
+			new ItemToBedrockConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -243,8 +243,17 @@ public class ConverterRegistry {
 		return converters_legacy.get(modElementType);
 	}
 
-	public static Set<String> getConvertibleModElementTypes() {
-		return converters_legacy.keySet();
+	// List of METs that now have specialized variant for Bedrock Edition specifically
+	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
+		add(ModElementType.ITEM); // -> BEITEM
+	}};
+
+	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
+		Set<String> convertibleMETs = new HashSet<>(converters_legacy.keySet());
+		if (generatorFlavor == GeneratorFlavor.ADDON) {
+			addon_legacy_met_converters.stream().map(ModElementType::getRegistryName).forEach(convertibleMETs::add);
+		}
+		return convertibleMETs;
 	}
 
 }

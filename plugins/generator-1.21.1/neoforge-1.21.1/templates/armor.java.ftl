@@ -241,8 +241,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.helmetModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.helmetModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -264,8 +266,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -287,8 +291,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -310,8 +316,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bootsModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.bootsModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 

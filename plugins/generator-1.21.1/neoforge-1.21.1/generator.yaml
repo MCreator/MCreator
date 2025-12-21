@@ -28,6 +28,7 @@ import_formatter:
     Items: net.minecraft.world.item
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
+    ImmutableMap: com.google.common.collect
     Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
     Keyframe: net.minecraft.client.animation
