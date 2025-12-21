@@ -48,7 +48,6 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean isFood;
 	public int foodNutritionalValue;
 	public double foodSaturation;
-	public boolean foodIsMeat;
 	public boolean foodCanAlwaysEat;
 
 	public BEItem(ModElement element) {
