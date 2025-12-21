@@ -202,7 +202,8 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
 		</#if>
 		<#if var_extends_class! == "WallSignBlock">
-			.overrideLootTable(${JavaModName}Blocks.${REGISTRYNAME}.get().getLootTable()).overrideDescription(${JavaModName}Blocks.${REGISTRYNAME}.get().getDescriptionId())
+			.overrideLootTable(${JavaModName}Blocks.${REGISTRYNAME}.get().getLootTable())
+			.overrideDescription(${JavaModName}Blocks.${REGISTRYNAME}.get().getDescriptionId())
 		</#if>
 	</#macro>
 

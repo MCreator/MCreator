@@ -38,7 +38,6 @@ package ${package}.init;
 
 <#assign hasTintedBlocks = false>
 <#assign hasTintedBlockItems = false>
-<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
 <#list blocks as block>
 	<#if block.getModElement().getTypeString() == "block">
 		<#if block.tintType != "No tint">
@@ -56,6 +55,8 @@ package ${package}.init;
 		</#if>
 	</#if>
 </#list>
+
+<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
 
 <#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>

@@ -37,7 +37,6 @@
 package ${package}.init;
 
 <#assign hasTintedBlocks = false>
-<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
 <#list blocks as block>
 	<#if block.getModElement().getTypeString() == "block">
 		<#if block.tintType != "No tint">
@@ -52,6 +51,8 @@ package ${package}.init;
 
 <#assign chunks = blocks?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
+
+<#assign signs = w.getGElementsOfType("block")?filter(e -> e.isSign())>
 
 <#if signs?size != 0>@EventBusSubscriber </#if>public class ${JavaModName}Blocks {
 
