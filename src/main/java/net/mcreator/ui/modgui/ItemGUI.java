@@ -89,6 +89,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
+	private final JCheckBox isUnbreakable = L10N.checkbox("elementgui.common.enable")
 	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
@@ -359,6 +360,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
 				L10N.label("elementgui.item.use_duration")));
 		subpane2.add(useDuration);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_unbreakable"),
+				L10N.lable("elementgui.item.is)unbreakable")));
+		subpane2.add(isUnbreakable);
 
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
@@ -810,3 +815,4 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 }
+
