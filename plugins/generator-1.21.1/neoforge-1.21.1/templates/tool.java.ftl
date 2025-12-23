@@ -106,6 +106,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				</#if>
+				<#if data.rarity != "COMMON">
+				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
@@ -197,6 +200,9 @@ public class ${name}Item extends Item {
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
 			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
+			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
@@ -238,6 +244,9 @@ public class ${name}Item extends FishingRodItem {
 		super(new Item.Properties()
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()

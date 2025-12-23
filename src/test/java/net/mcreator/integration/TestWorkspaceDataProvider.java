@@ -2211,6 +2211,7 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
+		tool.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()

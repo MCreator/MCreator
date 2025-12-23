@@ -103,6 +103,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
 				.durability(${data.usageCount})
 				</#if>
+				<#if data.rarity != "COMMON">
+				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
@@ -189,6 +192,9 @@ public class ${name}Item extends Item {
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
 			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
+			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
@@ -229,6 +235,9 @@ public class ${name}Item extends FishingRodItem {
 		super(properties
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
