@@ -4,6 +4,8 @@ ${input$item},
   "max": ${field$max}
 }<#if input_list$predicateComponent?has_content>,
 "predicates": {
-  ${statement$components?remove_ending(",")}
+  <#list input_list$predicateComponent as comp>
+    ${comp}
+  <#sep>,</#list>
 }
 </#if>

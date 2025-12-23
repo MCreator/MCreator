@@ -136,9 +136,10 @@ public class GTJSONTriggersBlocks {
 						<block type="item_consumed">
 							<value name="item">
 								<block type="item_predicate">
+									<mutation inputs="1"></mutation>
 									<field name="min">1</field><field name="max">64</field>
 									<value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
-									<statement name="components">%s</statement>
+									<value name="predicateComponent0">%s</value>
 						</block></value></block></next></block></xml>
 						""".formatted(testXML);
 				default -> {

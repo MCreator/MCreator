@@ -313,3 +313,11 @@ Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin
                 .appendField(new FieldMCItemSelector(), 'item' + index);
         }, false, ['item']),
     undefined, ['any_item_mutator_input']);
+
+Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInputMixin(
+        'item_predicate_mutator_container', 'item_predicate_mutator_input', 'predicateComponent',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('ItemPredicateEntry').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['item_predicate_mutator_input']);
