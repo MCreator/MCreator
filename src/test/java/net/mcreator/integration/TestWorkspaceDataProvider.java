@@ -1062,6 +1062,7 @@ public class TestWorkspaceDataProvider {
 			armor.bodyName = modElement.getName() + " appendix2";
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
+			armor.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
 			armor.maxDamage = 12;
