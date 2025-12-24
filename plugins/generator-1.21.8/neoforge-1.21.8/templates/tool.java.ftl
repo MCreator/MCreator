@@ -96,6 +96,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				))
 				<#elseif data.toolType == "Shears">
 				.component(DataComponents.TOOL, ShearsItem.createToolProperties())
+					<#if data.repairItems?has_content>
+					.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+					</#if>
 				</#if>
 				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
 				.durability(${data.usageCount})
@@ -188,6 +191,9 @@ public class ${name}Item extends Item {
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
+			</#if>
+			<#if data.repairItems?has_content>
+			.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
 			</#if>
 			.attributes(ItemAttributeModifiers.builder()
 				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
