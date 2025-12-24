@@ -24,6 +24,7 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -43,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
@@ -69,6 +71,7 @@ import java.util.*;
 	public boolean destroyAnyBlock;
 	public boolean immuneToFire;
 	public boolean isPiglinCurrency;
+	@ModElementReference public List<MItemBlock> repairItems;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -132,6 +135,7 @@ import java.util.*;
 		super(element);
 
 		this.creativeTabs = new ArrayList<>();
+		this.repairItems = new ArrayList<>();
 
 		this.customProperties = new LinkedHashMap<>();
 		this.states = new ArrayList<>();
@@ -282,6 +286,10 @@ import java.util.*;
 				models.add(model);
 		});
 		return models;
+	}
+
+	public List<String> getRepairItemsAsStringList() {
+		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
 
 	public static class StateEntry implements IWorkspaceDependent {

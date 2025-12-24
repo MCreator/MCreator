@@ -91,6 +91,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
 	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
+	private final MCItemListField repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+			false, true);
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isPiglinCurrency = L10N.checkbox("elementgui.common.enable");
@@ -320,7 +322,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(17, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -355,6 +357,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.item.number_of_uses")));
 		subpane2.add(damageCount);
+
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+				L10N.label("elementgui.common.repair_items")));
+		subpane2.add(repairItems);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
@@ -757,6 +763,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.setSelectedProcedure(item.onEntitySwing);
 		onDroppedByPlayer.setSelectedProcedure(item.onDroppedByPlayer);
 		creativeTabs.setListElements(item.creativeTabs);
+		repairItems.setListElements(item.repairItems);
 		stackSize.setValue(item.stackSize);
 		enchantability.setValue(item.enchantability);
 		toolType.setValue(item.toolType);
@@ -822,6 +829,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.name = name.getText();
 		item.rarity = rarity.getSelectedItem();
 		item.creativeTabs = creativeTabs.getListElements();
+		item.repairItems = repairItems.getListElements();
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
 		item.useDuration = (int) useDuration.getValue();

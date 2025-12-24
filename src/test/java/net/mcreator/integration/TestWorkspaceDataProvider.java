@@ -1247,6 +1247,14 @@ public class TestWorkspaceDataProvider {
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
+			item.repairItems = new ArrayList<>();
+			if (!emptyLists) {
+				item.repairItems.addAll(
+						blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+								.toList());
+				item.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
+				item.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
+			}
 			item.immuneToFire = _true;
 			item.isPiglinCurrency = _true;
 			item.glowCondition = new LogicProcedure(emptyLists ? "condition3" : null, _true);
