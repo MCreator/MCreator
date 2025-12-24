@@ -1167,6 +1167,7 @@ public class TestWorkspaceDataProvider {
 			plant.xpAmountMin = 2;
 			plant.xpAmountMax = 5;
 			plant.useLootTableForDrops = !_true;
+			plant.generateFeature = _true;
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
@@ -1719,7 +1720,6 @@ public class TestWorkspaceDataProvider {
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
-			beitem.foodIsMeat = _true;
 			beitem.foodCanAlwaysEat = _true;
 			return beitem;
 		}
@@ -2144,6 +2144,7 @@ public class TestWorkspaceDataProvider {
 				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
 		}
+		block.generateFeature = _true;
 		block.blocksToReplace = new ArrayList<>();
 		if (!emptyLists) {
 			block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
