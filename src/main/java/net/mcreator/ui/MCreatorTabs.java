@@ -45,6 +45,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MCreatorTabs {
 
@@ -60,7 +61,7 @@ public class MCreatorTabs {
 
 	private final List<Tab> tabs;
 
-	private final List<TabShownListener> tabShownListeners = new ArrayList<>();
+	private final List<TabShownListener> tabShownListeners = new CopyOnWriteArrayList<>();
 
 	private Tab current;
 	private Tab previous;
