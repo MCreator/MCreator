@@ -83,6 +83,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private final ModElementGUISearch search = new ModElementGUISearch(this);
 
+	private JButton save, saveOnly;
+
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
 		this.editingMode = editingMode;
@@ -259,11 +261,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			pager.add(forward);
 
-			JButton save = L10N.button("elementgui.save_mod_element");
+			save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.addActionListener(event -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				List<ValidationGroup> errors = new ArrayList<>();
 				for (int i = 0; i < pages.size(); i++) {
 					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
@@ -280,13 +285,19 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					finishModCreation(true);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
-			JButton saveOnly = L10N.button("elementgui.save_keep_open");
+			saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.addActionListener(event -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				List<ValidationGroup> errors = new ArrayList<>();
 				for (int i = 0; i < pages.size(); i++) {
 					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
@@ -303,6 +314,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					finishModCreation(false);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -352,28 +366,40 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
 		} else {
-			JButton saveOnly = L10N.button("elementgui.save_keep_open");
+			saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.addActionListener(event -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(false);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
-			JButton save = L10N.button("elementgui.save_mod_element");
+			save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.addActionListener(event -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(true);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));

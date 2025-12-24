@@ -45,6 +45,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MCreatorTabs {
 
@@ -60,7 +61,7 @@ public class MCreatorTabs {
 
 	private final List<Tab> tabs;
 
-	private final List<TabShownListener> tabShownListeners = new ArrayList<>();
+	private final List<TabShownListener> tabShownListeners = new CopyOnWriteArrayList<>();
 
 	private Tab current;
 	private Tab previous;
@@ -221,15 +222,19 @@ public class MCreatorTabs {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
-				cardLayout.show(container, identifier.toString().toLowerCase(Locale.ROOT));
-				tab.setBackground(Theme.current().getAltBackgroundColor());
+				SwingUtilities.invokeLater(() -> {
+					cardLayout.show(container, tab.identifier.toString().toLowerCase(Locale.ROOT));
+					tab.setBackground(Theme.current().getAltBackgroundColor());
+
+					if (notify) {
+						tabShownListeners.forEach(l -> l.tabShown(tab));
+						if (tab.tabShownListener != null)
+							tab.tabShownListener.tabShown(tab);
+					}
+				});
+
 				tab.selected = true;
 				this.current = tab;
-				if (notify) {
-					tabShownListeners.forEach(l -> l.tabShown(tab));
-					if (tab.tabShownListener != null)
-						tab.tabShownListener.tabShown(tab);
-				}
 				existing = tab;
 			} else {
 				tab.setBackground(Theme.current().getBackgroundColor());

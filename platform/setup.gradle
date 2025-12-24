@@ -19,7 +19,7 @@ tasks.register('downloadJDKWin64') {
             download.run {
                 src jdk21_win_64
                 dest 'build/tmp/jdk21_win_64'
-                overwrite false
+                overwrite true
             }
             copy { from zipTree('build/tmp/jdk21_win_64') into file('jdk/jdk21_win_64/') }
             delete 'build/tmp/jdk21_win_64'
@@ -39,7 +39,7 @@ tasks.register('downloadJDKLinux64') {
             download.run {
                 src jdk21_linux_64
                 dest 'build/tmp/jdk21_linux_64'
-                overwrite false
+                overwrite true
             }
             copy { from tarTree(resources.gzip('build/tmp/jdk21_linux_64')) into file('jdk/jdk21_linux_64/') }
             delete 'build/tmp/jdk21_linux_64'
@@ -59,7 +59,7 @@ tasks.register('downloadJDKMacX64') {
             download.run {
                 src jdk21_mac_x64
                 dest 'build/tmp/jdk21_mac_x64'
-                overwrite false
+                overwrite true
             }
             copy { from tarTree(resources.gzip('build/tmp/jdk21_mac_x64')) into file('jdk/jdk21_mac_x64/') }
             delete 'build/tmp/jdk21_mac_x64'
@@ -79,7 +79,7 @@ tasks.register('downloadJDKMacAarch64') {
             download.run {
                 src jdk21_mac_aarch64
                 dest 'build/tmp/jdk21_mac_aarch64'
-                overwrite false
+                overwrite true
             }
             copy { from tarTree(resources.gzip('build/tmp/jdk21_mac_aarch64/')) into file('jdk/jdk21_mac_aarch64/') }
             delete 'build/tmp/jdk21_mac_aarch64'
@@ -99,7 +99,7 @@ tasks.register('downloadNSIS') {
                 download.run {
                     src nsis_url
                     dest 'build/tmp/nsis'
-                    overwrite false
+                    overwrite true
                 }
                 copy { from zipTree(file('build/tmp/nsis')) into file('build/tools/') }
                 file('build/tools/nsis-3.09').renameTo(file('build/tools/nsis'))
@@ -108,7 +108,7 @@ tasks.register('downloadNSIS') {
                 download.run {
                     src nsis_lockedlist_plugin_url
                     dest 'build/tmp/nsis_lockedlist_plugin'
-                    overwrite false
+                    overwrite true
                 }
                 copy { from zipTree(file('build/tmp/nsis_lockedlist_plugin')) into file('build/tools/nsis/') }
                 delete 'build/tmp/nsis_lockedlist_plugin'
@@ -125,7 +125,7 @@ tasks.register('downloadMKISOFS') {
                 download.run {
                     src mkisofs_url
                     dest 'build/tmp/mkisofs'
-                    overwrite false
+                    overwrite true
                 }
                 copy {
                     from zipTree(file('build/tmp/mkisofs'))
