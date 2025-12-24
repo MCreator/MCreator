@@ -1361,6 +1361,7 @@ public class TestWorkspaceDataProvider {
 			projectile.showParticles = _true;
 			projectile.igniteFire = _true;
 			projectile.disableGravity = emptyLists;
+			projectile.disableDiscarding = _true;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = emptyLists ? "Default" : "ModelCustomJavaModel";
