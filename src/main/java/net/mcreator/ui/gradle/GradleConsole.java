@@ -373,8 +373,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
 
-		ref.consoleTab.setPersistentColor(
-				gradleSetupTaskRunning ? new Color(106, 247, 244) : Theme.current().getInterfaceAccentColor());
+		ref.getTabs().repaint();
 		ref.getStatusBar().reloadGradleIndicator();
 
 		stateListeners.forEach(listener -> listener.taskStarted(command));
@@ -727,14 +726,14 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 			private void fail() {
 				status = ERROR;
-				ref.consoleTab.setPersistentColor(COLOR_LOGLEVEL_ERROR);
+				ref.getTabs().repaint();
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
-				ref.consoleTab.setPersistentColor(null);
+				ref.getTabs().repaint();
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 

@@ -19,7 +19,6 @@
 package net.mcreator.ui;
 
 import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
-import com.formdev.flatlaf.ui.FlatUIUtils;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.TabEvent;
 import net.mcreator.ui.views.ViewBase;
@@ -85,38 +84,28 @@ public class MCreatorTabs extends JTabbedPane {
 
 		setUI(new FlatTabbedPaneUI() {
 
-			private final Color defaultUnderlineColor = UIManager.getColor("TabbedPane.underlineColor");
-			private final Color defaultInactiveUnderlineColor = FlatUIUtils.getUIColor(
-					"TabbedPane.inactiveUnderlineColor", underlineColor);
-
-			@Override
-			protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h,
-					boolean isSelected) {
-				super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected);
-
-				if (!isSelected) {
-					Tab tab = getTabForTabIndex(tabIndex);
-					if (tab != null && tab.inactiveColor != null) {
-						underlineColor = tab.inactiveColor;
-						inactiveUnderlineColor = tab.inactiveColor;
-						super.paintTabSelection(g, tabPlacement, tabIndex, x, y, w, h);
+			// This is used to paint background behind tab bar
+			@Override public void paint(Graphics g, JComponent c) {
+				Rectangle tr = null;
+				if (getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {
+					tr = tabViewport.getBounds();
+					for (Component child : tabPane.getComponents()) {
+						if (child instanceof FlatTabAreaButton && child.isVisible())
+							tr = tr.union(child.getBounds());
 					}
-				}
-			}
-
-			@Override
-			protected void paintTabSelection(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h) {
-				underlineColor = defaultUnderlineColor;
-				inactiveUnderlineColor = defaultInactiveUnderlineColor;
-
-				Tab tab = getTabForTabIndex(tabIndex);
-				if (tab != null) {
-					if (tab.activeColor != null)
-						underlineColor = tab.activeColor;
+				} else {
+					for (Rectangle r : rects)
+						tr = (tr != null) ? tr.union(r) : r;
 				}
 
-				super.paintTabSelection(g, tabPlacement, tabIndex, x, y, w, h);
+				if (tr != null) {
+					g.setColor(tabPane.getBackground());
+					g.fillRect(0, tr.y, getWidth(), tr.height);
+				}
+
+				super.paint(g, c);
 			}
+
 		});
 	}
 
@@ -234,12 +223,14 @@ public class MCreatorTabs extends JTabbedPane {
 
 	public static class Tab {
 
+		private static final int ICON_SIZE = 16;
+
 		private MCreatorTabs container;
 
 		private final boolean closeable;
 
 		private final Object identifier;
-		private final JPanel content;
+		private final JComponent content;
 
 		private TabClosedListener tabClosedListener;
 		private TabClosingListener tabClosingListener;
@@ -248,31 +239,32 @@ public class MCreatorTabs extends JTabbedPane {
 		private MouseListener clickListener;
 
 		private String text;
-		private ImageIcon icon;
+		@Nullable private ImageIcon icon;
 
-		private Color activeColor = null;
-		private Color inactiveColor = null;
+		@Nullable private final JComponent tabComponent;
 
 		public Tab(ViewBase content) {
-			this(content.getViewName(), content.getViewIcon(), content,
+			this(content.getViewName(), content.getViewIcon(), null, content,
 					content.getViewName() + System.currentTimeMillis(), true);
 		}
 
 		public Tab(ViewBase content, Object identifier) {
-			this(content.getViewName(), content.getViewIcon(), content, identifier, true);
+			this(content.getViewName(), content.getViewIcon(), null, content, identifier, true);
 		}
 
-		Tab(String name, JPanel content, Object identifier, boolean closeable) {
-			this(name, null, content, identifier, closeable);
+		public Tab(String name, JPanel content, Object identifier, boolean closeable) {
+			this(name, null, null, content, identifier, closeable);
 		}
 
-		private Tab(String text, ImageIcon icon, JPanel content, Object identifier, boolean closeable) {
+		public Tab(String text, @Nullable ImageIcon icon, @Nullable JComponent tabComponent, JComponent content,
+				Object identifier, boolean closeable) {
 			this.content = content;
 			this.identifier = identifier;
 			this.closeable = closeable;
 
 			this.text = text;
 			this.icon = icon;
+			this.tabComponent = tabComponent;
 
 			if (closeable) {
 				content.putClientProperty("JTabbedPane.tabClosable", true);
@@ -286,6 +278,9 @@ public class MCreatorTabs extends JTabbedPane {
 			this.container = container;
 
 			container.addTab(text, icon, content);
+
+			if (tabComponent != null)
+				container.setTabComponentAt(getIndex(), tabComponent);
 
 			setText(text);
 			setIcon(icon);
@@ -312,36 +307,19 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public void setIcon(@Nullable ImageIcon icon) {
 			if (icon != null) {
-				if (icon.getIconWidth() > 24 || icon.getIconHeight() > 24)
-					icon = IconUtils.resize(icon, 24, 24);
-				else if (icon.getIconWidth() < 24 || icon.getIconHeight() < 24) {
-					icon = ImageUtils.drawOver(new EmptyIcon.ImageIcon(24, 24), icon, 12 - icon.getIconWidth() / 2,
-							12 - icon.getIconHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
+				if (icon.getIconWidth() > ICON_SIZE || icon.getIconHeight() > ICON_SIZE)
+					icon = IconUtils.resize(icon, ICON_SIZE, ICON_SIZE);
+				else if (icon.getIconWidth() < ICON_SIZE || icon.getIconHeight() < ICON_SIZE) {
+					icon = ImageUtils.drawOver(new EmptyIcon.ImageIcon(ICON_SIZE, ICON_SIZE), icon,
+							(int) (ICON_SIZE / 2.0 - icon.getIconWidth() / 2.0),
+							(int) (ICON_SIZE / 2.0 - icon.getIconHeight() / 2.0), icon.getIconWidth(),
+							icon.getIconHeight());
 				}
 			}
 
 			this.icon = icon;
 			if (container != null)
 				container.setIconAt(getIndex(), icon);
-		}
-
-		public void setInactiveColor(Color inactiveColor) {
-			this.inactiveColor = inactiveColor;
-			if (container != null)
-				container.repaint();
-		}
-
-		public void setActiveColor(Color activeColor) {
-			this.activeColor = activeColor;
-			if (container != null)
-				container.repaint();
-		}
-
-		public void setPersistentColor(Color persistentColor) {
-			this.inactiveColor = persistentColor;
-			this.activeColor = persistentColor;
-			if (container != null)
-				container.repaint();
 		}
 
 		public void setTabClosedListener(TabClosedListener tabClosedListener) {
@@ -364,7 +342,7 @@ public class MCreatorTabs extends JTabbedPane {
 			this.clickListener = clickListener;
 		}
 
-		public JPanel getContent() {
+		public JComponent getContent() {
 			return content;
 		}
 

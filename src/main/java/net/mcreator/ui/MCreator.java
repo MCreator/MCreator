@@ -130,7 +130,25 @@ public abstract class MCreator extends MCreatorFrame {
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
-		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console").toUpperCase(), gradleConsole, "Console", false);
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console").toUpperCase(), null, new JLabel(L10N.t("tab.console").toUpperCase() + "  ") {
+			@Override public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				switch (gradleConsole.getStatus()) {
+				case GradleConsole.READY:
+					g.setColor(Theme.current().getForegroundColor());
+					break;
+				case GradleConsole.RUNNING:
+					g.setColor(new Color(158, 247, 89));
+					break;
+				case GradleConsole.ERROR:
+					g.setColor(new Color(0xFF5956));
+					break;
+				}
+				if (gradleConsole.isGradleSetupTaskRunning())
+					g.setColor(new Color(106, 247, 244));
+				g.fillRect(getWidth() - 3, getHeight() - 7, 3, 3);
+			}
+		}, gradleConsole, "Console", false);
 		consoleTab.setMouseClickListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
