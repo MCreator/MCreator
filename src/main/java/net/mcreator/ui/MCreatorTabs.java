@@ -36,11 +36,12 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.IntConsumer;
 
 public class MCreatorTabs extends JTabbedPane {
 
-	private final List<TabShownListener> tabShownListeners = new ArrayList<>();
+	private final List<TabShownListener> tabShownListeners = new CopyOnWriteArrayList<>();
 
 	private final List<Tab> tabs = new ArrayList<>();
 	private Tab current;
