@@ -129,7 +129,12 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = stateMap;
+		// Make sure state label holds copy of the original stateMap so changes here
+		// don't apply directly to the original element (e.g., entry in GE cache)
+		StateMap safeCopy = new StateMap();
+		safeCopy.putAll(stateMap);
+
+		this.stateMap = safeCopy;
 		refreshState();
 	}
 
