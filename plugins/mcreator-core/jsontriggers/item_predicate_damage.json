@@ -18,7 +18,8 @@
   "output": "ItemPredicateEntry",
   "colour": 130,
   "extensions": [
-    "min_max_fields_validator"
+    "min_max_fields_validator",
+    "disable_duplicate_input_type"
   ],
   "mcreator": {
     "group": "damage",
