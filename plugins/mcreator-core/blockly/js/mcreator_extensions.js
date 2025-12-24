@@ -216,7 +216,7 @@ Blockly.Extensions.registerMixin('disable_repeated_random_xz',
         onchange: function (e) {
             // Don't change state if it's at the start of a drag and it's not a move or create event
             if (!this.workspace.isDragging || this.workspace.isDragging()
-                || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
+                    || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
                 return;
             }
             const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
@@ -257,7 +257,7 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
                 this.setWarningText(null);
             } else if (isRepeated) {
                 this.setWarningText(javabridge.t('blockly.block.placement_in_square.warning_repeated') +
-                    (isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
+                        (isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
             } else {
                 this.setWarningText(javabridge.t('blockly.extension.placement_count_on_every_layer.count'));
             }
@@ -285,7 +285,7 @@ function checkIfAfter(block, predicate) {
 // Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
 Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
     {
-        onchange: function (changeEvent) {
+    	onchange: function (changeEvent) {
             // Trigger the change only if a block is changed, moved, deleted or created
             if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
                 changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
