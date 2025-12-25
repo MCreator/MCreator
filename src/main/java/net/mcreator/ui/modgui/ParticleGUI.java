@@ -66,6 +66,9 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private ProcedureSelector additionalExpiryCondition;
 
+	private final JCheckBox lockRot = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector rotationQuat;
+
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -77,6 +80,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.t("elementgui.particle.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
 				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
+		rotationQuat = new ProcedureSelector(this.withEntry("particle/rotation_quat"), mcreator,
+				L10N.t("elementgui.particle.rotation_quat"), ProcedureSelector.Side.SERVER, true,
+				VariableTypeLoader.BuiltInTypes.VECTOR,
+				Dependency.fromString("ageTicks:number")).makeInline();
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -87,6 +94,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		pane3.setOpaque(false);
 
 		canCollide.setSelected(true);
+		lockRot.setSelected(false);
 
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
@@ -100,7 +108,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
@@ -155,10 +163,19 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/lock_rot"),
+				L10N.label("elementgui.particle.lock_rot")));
+		spo2.add(lockRot);
+
+		rotationQuat.setEnabled(false);
+		lockRot.addActionListener(e -> {
+			rotationQuat.setEnabled(lockRot.isSelected());
+		});
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2,
-						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 2), 15,
-				5)));
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), PanelUtils.westAndCenterElement(rotationQuat, additionalExpiryCondition, 5, 2), 5, 2), 15,
+				5))));
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(texture);
 	}
@@ -170,6 +187,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				mcreator.getWorkspace());
 
 		additionalExpiryCondition.refreshListKeepSelected(context);
+		rotationQuat.refreshListKeepSelected(context);
 		scale.refreshListKeepSelected(context);
 	}
 
@@ -190,7 +208,11 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		alwaysShow.setSelected(particle.alwaysShow);
 		animate.setSelected(particle.animate);
 		renderType.setSelectedItem(particle.renderType);
+		lockRot.setSelected(particle.lockRot);
 		additionalExpiryCondition.setSelectedProcedure(particle.additionalExpiryCondition);
+		rotationQuat.setSelectedProcedure(particle.rotationQuat);
+
+		rotationQuat.setEnabled(lockRot.isSelected());
 	}
 
 	@Override public Particle getElementFromGUI() {
@@ -212,6 +234,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.alwaysShow = alwaysShow.isSelected();
 		particle.renderType = (String) renderType.getSelectedItem();
 		particle.additionalExpiryCondition = additionalExpiryCondition.getSelectedProcedure();
+		particle.lockRot = lockRot.isSelected();
+		particle.rotationQuat = rotationQuat.getSelectedProcedure();
 		return particle;
 	}
 

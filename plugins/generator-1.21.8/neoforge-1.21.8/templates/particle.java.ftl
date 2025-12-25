@@ -111,6 +111,16 @@ public class ${name}Particle extends TextureSheetParticle {
 	}
 	</#if>
 
+	<#if data.lockRot>
+	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
+		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(<#if hasProcedure(data.rotationQuat)>(<@procedureOBJToConditionCode data.rotationQuat/>).x()<#else>0.0</#if>));
+		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(<#if hasProcedure(data.rotationQuat)>(<@procedureOBJToConditionCode data.rotationQuat/>).y()<#else>90.0</#if>));
+		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians(<#if hasProcedure(data.rotationQuat)>(<@procedureOBJToConditionCode data.rotationQuat/>).z()<#else>0.0</#if>));
+		Quaternionf tilt = spinY.mul(spinX.mul(spinZ));
+		this.renderRotatedQuad(buffer, camera, tilt, ageTicks);
+	}
+	</#if>
+
 	@Override public void tick() {
 		super.tick();
 
