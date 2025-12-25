@@ -174,16 +174,12 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
-		JPanel rotation = new JPanel(new GridLayout(2, 3, 1, 1));
+		JPanel rotation = new JPanel(new GridLayout(2, 1, 2, 2));
 		rotation.setOpaque(false);
 
-		rotation.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/rot_lock"),
-				L10N.label("elementgui.particle.rot_lock")));
-		rotation.add(new JEmptyBox(3, 3));
-		rotation.add(rotLock);
-		rotation.add(yaw);
-		rotation.add(pitch);
-		rotation.add(roll);
+		rotation.add(PanelUtils.gridElements(1, 2, 2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("particle/rot_lock"),
+				L10N.label("elementgui.particle.rot_lock")), rotLock));
+		rotation.add(PanelUtils.gridElements(1, 3, 2, 2, yaw, pitch, roll));
 
 		rotLock.addActionListener(e -> {
 			yaw.setEnabled(rotLock.isSelected());
