@@ -20,7 +20,6 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
-import javassist.compiler.ast.Variable;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
