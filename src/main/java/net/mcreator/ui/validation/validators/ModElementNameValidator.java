@@ -18,20 +18,54 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModElementNameValidator extends UniqueNameValidator {
 
+	private final List<String> usedNames;
+
 	public ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField, String name) {
-		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()),
-				() -> workspace.getModElements().stream().map(ModElement::getName),
+		this(workspace, textField, name, new ArrayList<>());
+	}
+
+	// Private constructor so we can construct UniqueNameValidator with a reference to usedNames stream
+	private ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField, String name,
+			List<String> usedNames) {
+		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream,
 				new JavaMemberNameValidator(textField, true));
+		this.usedNames = usedNames;
+
 		setIsPresentOnList(false);
 		setIgnoreCase(true);
+
+		reloadUsedNames(workspace);
 	}
+
+	public void reloadUsedNames(@Nonnull Workspace workspace) {
+		usedNames.clear();
+		usedNames.addAll(workspace.getModElements().stream().map(ModElement::getName).toList());
+
+		for (ModElement element : workspace.getModElements()) {
+			usedNames.add(element.getName());
+
+			// Only load relevant GEs
+			if (!IMultipleNames.class.isAssignableFrom(element.getType().getModElementStorageClass()))
+				continue;
+
+			GeneratableElement gen = element.getGeneratableElement();
+			if (gen instanceof IMultipleNames multipleNames) {
+				usedNames.addAll(multipleNames.getAdditionalNames());
+			}
+		}
+	}
+
 }

@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider {
+		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider, IMultipleNames {
 
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
@@ -212,6 +212,10 @@ import java.util.List;
 	@Override public List<MItemBlock> poiBlocks() {
 		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
 				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		return List.of(getModElement().getName() + "Portal");
 	}
 
 }
