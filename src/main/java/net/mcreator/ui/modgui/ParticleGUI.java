@@ -85,15 +85,15 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
 		yaw = new NumberProcedureSelector(this.withEntry("particle/yaw"), mcreator,
 				L10N.t("elementgui.particle.yaw"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				new JSpinner(new SpinnerNumberModel(0, 0, 360, 1)), 0,
 				Dependency.fromString("ageTicks:number"));
 		pitch = new NumberProcedureSelector(this.withEntry("particle/pitch"), mcreator,
 				L10N.t("elementgui.particle.pitch"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				new JSpinner(new SpinnerNumberModel(90, 0, 360, 1)), 0,
 				Dependency.fromString("ageTicks:number"));
 		roll = new NumberProcedureSelector(this.withEntry("particle/roll"), mcreator,
 				L10N.t("elementgui.particle.roll"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				new JSpinner(new SpinnerNumberModel(0, 0, 360, 1)), 0,
 				Dependency.fromString("ageTicks:number"));
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
