@@ -1567,7 +1567,7 @@ public class TestWorkspaceDataProvider {
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
-			particle.rotManipulation = _true;
+			particle.rotLock = _true;
 			particle.yaw = new NumberProcedure(emptyLists ? null : "number3", 0.0);
 			particle.pitch = new NumberProcedure(emptyLists ? null : "number3", 0.0);
 			particle.roll = new NumberProcedure(emptyLists ? null : "number3", 0.0);

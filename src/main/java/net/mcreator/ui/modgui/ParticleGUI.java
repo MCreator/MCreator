@@ -70,7 +70,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private NumberProcedureSelector yaw;
 	private NumberProcedureSelector pitch;
 	private NumberProcedureSelector roll;
-	private final JCheckBox rotManipulation = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox rotLock = L10N.checkbox("elementgui.common.enable");
 
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -105,7 +105,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		pane3.setOpaque(false);
 
 		canCollide.setSelected(true);
-		rotManipulation.setSelected(false);
+		rotLock.setSelected(false);
 
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
@@ -177,14 +177,14 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		JPanel rotation = new JPanel(new GridLayout(2, 1, 2, 2));
 		rotation.setOpaque(false);
 
-		rotation.add(PanelUtils.gridElements(1, 2, 2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("particle/rot_manipulation"),
-				L10N.label("elementgui.particle.rot_manipulation")), rotManipulation));
+		rotation.add(PanelUtils.gridElements(1, 2, 2, 2, HelpUtils.wrapWithHelpButton(this.withEntry("particle/rot_lock"),
+				L10N.label("elementgui.particle.rot_lock")), rotLock));
 		rotation.add(PanelUtils.gridElements(1, 3, 2, 2, yaw, pitch, roll));
 
-		rotManipulation.addActionListener(e -> {
-			yaw.setEnabled(rotManipulation.isSelected());
-			pitch.setEnabled(rotManipulation.isSelected());
-			roll.setEnabled(rotManipulation.isSelected());
+		rotLock.addActionListener(e -> {
+			yaw.setEnabled(rotLock.isSelected());
+			pitch.setEnabled(rotLock.isSelected());
+			roll.setEnabled(rotLock.isSelected());
 		});
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
@@ -229,11 +229,11 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		yaw.setSelectedProcedure(particle.yaw);
 		pitch.setSelectedProcedure(particle.pitch);
 		roll.setSelectedProcedure(particle.roll);
-		rotManipulation.setSelected(particle.rotManipulation);
+		rotLock.setSelected(particle.rotLock);
 
-		yaw.setEnabled(rotManipulation.isSelected());
-		pitch.setEnabled(rotManipulation.isSelected());
-		roll.setEnabled(rotManipulation.isSelected());
+		yaw.setEnabled(rotLock.isSelected());
+		pitch.setEnabled(rotLock.isSelected());
+		roll.setEnabled(rotLock.isSelected());
 	}
 
 	@Override public Particle getElementFromGUI() {
@@ -258,7 +258,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.yaw = yaw.getSelectedProcedure();
 		particle.pitch = pitch.getSelectedProcedure();
 		particle.roll = roll.getSelectedProcedure();
-		particle.rotManipulation = rotManipulation.isSelected();
+		particle.rotLock = rotLock.isSelected();
 		return particle;
 	}
 

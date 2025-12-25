@@ -70,8 +70,7 @@ import java.io.IOException;
 	public NumberProcedure yaw;
 	public NumberProcedure pitch;
 	public NumberProcedure roll;
-
-	public boolean rotManipulation;
+	public boolean rotLock;
 
 	private Particle() {
 		this(null);
