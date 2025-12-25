@@ -1568,9 +1568,9 @@ public class TestWorkspaceDataProvider {
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			particle.rotLock = _true;
-			particle.yaw = new NumberProcedure(emptyLists ? null : "number2", 0.0);
-			particle.pitch = new NumberProcedure(emptyLists ? null : "number2", 0.0);
-			particle.roll = new NumberProcedure(emptyLists ? null : "number2", 0.0);
+			particle.yaw = new NumberProcedure(emptyLists ? null : "number3", 0.0);
+			particle.pitch = new NumberProcedure(emptyLists ? null : "number3", 0.0);
+			particle.roll = new NumberProcedure(emptyLists ? null : "number3", 0.0);
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);
