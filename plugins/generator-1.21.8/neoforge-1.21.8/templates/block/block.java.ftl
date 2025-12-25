@@ -280,7 +280,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
 
-			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
 			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
 			<#else><#-- shape is state dependent -->
 			return shapes.apply(state)<#if offset>.move(state.getOffset(pos))</#if>;
