@@ -51,6 +51,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private NumberProcedureSelector scale;
 	private final JSpinner gravity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
+
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
 	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
@@ -66,6 +67,11 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private ProcedureSelector additionalExpiryCondition;
 
+	private NumberProcedureSelector yaw;
+	private NumberProcedureSelector pitch;
+	private NumberProcedureSelector roll;
+	private final JCheckBox rotLock = L10N.checkbox("elementgui.common.enable");
+
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -77,6 +83,18 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.t("elementgui.particle.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
 				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
+		yaw = new NumberProcedureSelector(this.withEntry("particle/yaw"), mcreator,
+				L10N.t("elementgui.particle.yaw"), AbstractProcedureSelector.Side.CLIENT,
+				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				Dependency.fromString("ageTicks:number"));
+		pitch = new NumberProcedureSelector(this.withEntry("particle/pitch"), mcreator,
+				L10N.t("elementgui.particle.pitch"), AbstractProcedureSelector.Side.CLIENT,
+				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				Dependency.fromString("ageTicks:number"));
+		roll = new NumberProcedureSelector(this.withEntry("particle/roll"), mcreator,
+				L10N.t("elementgui.particle.roll"), AbstractProcedureSelector.Side.CLIENT,
+				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
+				Dependency.fromString("ageTicks:number"));
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -87,6 +105,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		pane3.setOpaque(false);
 
 		canCollide.setSelected(true);
+		rotLock.setSelected(false);
 
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
@@ -100,7 +119,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 3, 1, 2));
 		spo2.setOpaque(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
@@ -155,9 +174,26 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
+		JPanel rotation = new JPanel(new GridLayout(2, 3, 1, 1));
+		rotation.setOpaque(false);
+
+		rotation.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/rot_lock"),
+				L10N.label("elementgui.particle.rot_lock")));
+		rotation.add(new JEmptyBox(3, 3));
+		rotation.add(rotLock);
+		rotation.add(yaw);
+		rotation.add(pitch);
+		rotation.add(roll);
+
+		rotLock.addActionListener(e -> {
+			yaw.setEnabled(rotLock.isSelected());
+			pitch.setEnabled(rotLock.isSelected());
+			roll.setEnabled(rotLock.isSelected());
+		});
+
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2,
-						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition), 5, 2), 15,
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), PanelUtils.centerAndSouthElement(additionalExpiryCondition, rotation, 5, 2)), 5, 2), 15,
 				5)));
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(texture);
@@ -171,6 +207,9 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		additionalExpiryCondition.refreshListKeepSelected(context);
 		scale.refreshListKeepSelected(context);
+		yaw.refreshListKeepSelected(context);
+		pitch.refreshListKeepSelected(context);
+		roll.refreshListKeepSelected(context);
 	}
 
 	@Override public void openInEditingMode(Particle particle) {
@@ -191,6 +230,14 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		animate.setSelected(particle.animate);
 		renderType.setSelectedItem(particle.renderType);
 		additionalExpiryCondition.setSelectedProcedure(particle.additionalExpiryCondition);
+		yaw.setSelectedProcedure(particle.yaw);
+		pitch.setSelectedProcedure(particle.pitch);
+		roll.setSelectedProcedure(particle.roll);
+		rotLock.setSelected(particle.rotLock);
+
+		yaw.setEnabled(rotLock.isSelected());
+		pitch.setEnabled(rotLock.isSelected());
+		roll.setEnabled(rotLock.isSelected());
 	}
 
 	@Override public Particle getElementFromGUI() {
@@ -212,6 +259,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.alwaysShow = alwaysShow.isSelected();
 		particle.renderType = (String) renderType.getSelectedItem();
 		particle.additionalExpiryCondition = additionalExpiryCondition.getSelectedProcedure();
+		particle.yaw = yaw.getSelectedProcedure();
+		particle.pitch = pitch.getSelectedProcedure();
+		particle.roll = roll.getSelectedProcedure();
+		particle.rotLock = rotLock.isSelected();
 		return particle;
 	}
 

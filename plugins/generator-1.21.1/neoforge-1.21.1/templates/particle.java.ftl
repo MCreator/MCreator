@@ -111,6 +111,16 @@ package ${package}.client.particle;
 	}
 	</#if>
 
+	<#if data.rotLock>
+	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
+		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(<#if hasProcedure(data.yaw)><@procedureOBJToConditionCode data.yaw/><#else>${data.yaw.getFixedValue()}</#if>));
+		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(<#if hasProcedure(data.pitch)><@procedureOBJToConditionCode data.pitch/><#else>${data.pitch.getFixedValue()}</#if>));
+		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians(<#if hasProcedure(data.roll)><@procedureOBJToConditionCode data.roll/><#else>${data.roll.getFixedValue()}</#if>));
+		Quaternionf tilt = spinY.mul(spinX.mul(spinZ));
+		this.renderRotatedQuad(buffer, camera, tilt, ageTicks);
+	}
+	</#if>
+
 	@Override public void tick() {
 		super.tick();
 

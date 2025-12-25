@@ -53,6 +53,7 @@ import java.io.IOException;
 	public NumberProcedure scale;
 	public double speedFactor;
 	public double gravity;
+
 	public int maxAge;
 	public int maxAgeDiff;
 	public double angularVelocity;
@@ -65,6 +66,11 @@ import java.io.IOException;
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
+
+	public NumberProcedure yaw;
+	public NumberProcedure pitch;
+	public NumberProcedure roll;
+	public boolean rotLock;
 
 	private Particle() {
 		this(null);
