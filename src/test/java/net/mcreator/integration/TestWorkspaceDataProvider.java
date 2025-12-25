@@ -168,6 +168,11 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
+		} else if (type == ModElementType.SPECIALENTITY) {
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), "Boat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
@@ -1167,6 +1172,7 @@ public class TestWorkspaceDataProvider {
 			plant.xpAmountMin = 2;
 			plant.xpAmountMax = 5;
 			plant.useLootTableForDrops = !_true;
+			plant.generateFeature = _true;
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
@@ -1719,7 +1725,6 @@ public class TestWorkspaceDataProvider {
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
-			beitem.foodIsMeat = _true;
 			beitem.foodCanAlwaysEat = _true;
 			return beitem;
 		}
@@ -2144,6 +2149,7 @@ public class TestWorkspaceDataProvider {
 				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
 		}
+		block.generateFeature = _true;
 		block.blocksToReplace = new ArrayList<>();
 		if (!emptyLists) {
 			block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
@@ -2203,6 +2209,65 @@ public class TestWorkspaceDataProvider {
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
 		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
 				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
+		block.states = new ArrayList<>();
+		if (!emptyLists) {
+			int size2 = random.nextInt(4) + 1;
+
+			List<PropertyDataWithValue<?>> stateProperties = new ArrayList<>();
+			for (PropertyDataWithValue<?> property : block.customProperties) {
+				if (random.nextBoolean()) {
+					stateProperties.add(property);
+				}
+			}
+
+			for (int i = 0; i < size2; i++) {
+				StateMap stateMap = new StateMap();
+				for (PropertyDataWithValue<?> property : stateProperties) {
+					if (property.property() instanceof PropertyData.IntegerType) {
+						stateMap.put(property.property(), random.nextInt(1, 10));
+					} else if (property.property() instanceof PropertyData.LogicType) {
+						stateMap.put(property.property(), random.nextBoolean());
+					}
+				}
+
+				Block.StateEntry stateEntry = new Block.StateEntry();
+				stateEntry.setWorkspace(modElement.getWorkspace());
+				stateEntry.stateMap = stateMap;
+
+				stateEntry.customModelName = "Normal";
+				stateEntry.renderType = 10;
+
+				stateEntry.texture = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureTop = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureBack = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureLeft = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureFront = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureRight = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+
+				stateEntry.particleTexture = new TextureHolder(modElement.getWorkspace(),
+						random.nextBoolean() ? null : "test3");
+
+				stateEntry.hasCustomBoundingBox = _true;
+				stateEntry.boundingBoxes = new ArrayList<>();
+				if (stateEntry.hasCustomBoundingBox) {
+					int boxes = random.nextInt(4) + 1;
+					for (int i2 = 0; i2 < boxes; i2++) {
+						IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+						box.mx = new double[] { 0, 5 + i2, 1.2, 7.1 }[valueIndex];
+						box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+						box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+						box.Mx = new double[] { 16, 15.2, 4, 7.1 + i2 }[valueIndex];
+						box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+						box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+						box.subtract = random.nextBoolean();
+
+						stateEntry.boundingBoxes.add(box);
+					}
+				}
+
+				block.states.add(stateEntry);
+			}
+		}
 		return block;
 	}
 
@@ -2421,6 +2486,20 @@ public class TestWorkspaceDataProvider {
 				+ "<block type=\"tick\"></block></next></block></xml>";
 
 		return achievement;
+	}
+
+	public static SpecialEntity getSpecialEntityExample(ModElement modElement, String entityType, boolean emptyLists) {
+		SpecialEntity specialEntity = new SpecialEntity(modElement);
+		specialEntity.name = modElement.getName();
+		specialEntity.entityType = entityType;
+		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
+		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		specialEntity.creativeTabs = emptyLists ?
+				List.of() :
+				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+
+		return specialEntity;
 	}
 
 	public static <T> T getRandomItem(Random random, T[] list) {

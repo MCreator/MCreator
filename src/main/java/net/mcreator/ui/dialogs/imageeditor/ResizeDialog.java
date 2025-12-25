@@ -55,26 +55,24 @@ public class ResizeDialog extends MCreatorDialog {
 
 		ok.addActionListener(e -> {
 			layer.resize((int) width.getValue(), (int) height.getValue(), type.isSelected());
-			if (affectCanvas.isSelected() && (layer.getX() < 0 || layer.getY() < 0
-					|| (layer.getWidth() + layer.getX()) > canvas.getWidth()
-					|| (layer.getHeight() + layer.getY()) > canvas.getHeight())) {
+			// If checkbox to adjust canvas is ticked, set canvas size to current layer size
+			if (affectCanvas.isSelected()) {
 				UUID uuid = UUID.randomUUID();
 				versionManager.addRevision(new Modification(canvas, layer).setUUID(uuid));
 				int dx = layer.getX();
 				int dy = layer.getY();
-				if (dx < 0 || dy < 0) {
+				// If layer is not at (0,0), move all layers to align with origin relative to the active layer.
+				if (dx != 0 || dy != 0) {
 					for (Layer lay : canvas) {
-						Relocation reloc = new Relocation(canvas, lay);
-						if (dx < 0)
-							lay.setX(lay.getX() - dx);
-						if (dy < 0)
-							lay.setY(lay.getY() - dy);
-						reloc.setAfter(lay);
-						versionManager.addRevision(reloc.setUUID(uuid));
+						Relocation relocationChange = new Relocation(canvas, lay);
+						lay.setX(lay.getX() - dx);
+						lay.setY(lay.getY() - dy);
+						relocationChange.setAfter(lay);
+						versionManager.addRevision(relocationChange.setUUID(uuid));
 					}
 				}
-				canvas.setSize(Math.max(canvas.getWidth(), layer.getWidth() + dx) + Math.max(-dx, 0),
-						Math.max(canvas.getHeight(), layer.getHeight() + dy) + Math.max(-dy, 0), uuid);
+				// Resize canvas to layer size
+				canvas.setSize(layer.getWidth(), layer.getHeight(), uuid);
 			} else {
 				versionManager.addRevision(new Modification(canvas, layer));
 			}
