@@ -94,8 +94,10 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	</#list>
 
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-		<#if data.rotationMode == 0><#-- shape not state dependent -->
+	<#assign defaultStateCustomShape = data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign statesWithCustomShape = data.getDefinedStatesWithCustomShape()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
 		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
 		<#else>
 		private final Function<BlockState, VoxelShape> shapes = this.makeShapes();
@@ -244,14 +246,33 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	}
 
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-		<#if data.rotationMode != 0>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode != 0 || statesWithCustomShape?has_content>
 		private Function<BlockState, VoxelShape> makeShapes() {
-			return this.getShapeForEachState(
-				state -> <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>
-				<#-- exclude states that don't affect shape -->
-				<#if data.isWaterloggable>,WATERLOGGED</#if>
-				<#list filteredCustomProperties as prop>,${prop.property().getName().replace("CUSTOM:", "")?upper_case}</#list>
+			return this.getShapeForEachState(state -> {
+				<#list statesWithCustomShape as state>
+					<#if !state?is_first>else </#if>if (
+    				<#list state.stateMap.keySet() as property>
+						<#assign value = state.stateMap.get(property)>
+						<#if property.getClass().getSimpleName().equals("StringType")>
+							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+						</#if>
+						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					</#list>
+				) {
+					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+				}
+				</#list>
+				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+			}
+			<#-- exclude states that don't affect shape -->
+			<#assign usedProperties = data.getPropertiesUsedInStates()>
+			<#if data.isWaterloggable && !usedProperties?contains("waterlogged")>,WATERLOGGED</#if>
+			<#list filteredCustomProperties as prop>
+				<#if !usedProperties?contains(prop.property().getName())>
+				,${prop.property().getName().replace("CUSTOM:", "")?upper_case}
+				</#if>
+			</#list>
 			);
 		}
 		</#if>
@@ -259,7 +280,7 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
 
-			<#if data.rotationMode == 0><#-- shape not state dependent -->
+			<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
 			return SHAPE<#if offset>.move(state.getOffset(pos))</#if>;
 			<#else><#-- shape is state dependent -->
 			return shapes.apply(state)<#if offset>.move(state.getOffset(pos))</#if>;

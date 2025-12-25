@@ -24,6 +24,7 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -150,7 +151,7 @@ public class JStateLabel extends JPanel {
 		if (property.getClass() == PropertyData.IntegerType.class
 				|| property.getClass() == PropertyData.NumberType.class)
 			matchSymbol = numberMatchType.getSymbol();
-		return property.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + property.toString(value);
+		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(value);
 	}
 
 	public enum NumberMatchType {
