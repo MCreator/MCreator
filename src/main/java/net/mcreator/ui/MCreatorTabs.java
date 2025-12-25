@@ -45,6 +45,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MCreatorTabs {
 
@@ -60,7 +61,7 @@ public class MCreatorTabs {
 
 	private final List<Tab> tabs;
 
-	private final List<TabShownListener> tabShownListeners = new ArrayList<>();
+	private final List<TabShownListener> tabShownListeners = new CopyOnWriteArrayList<>();
 
 	private Tab current;
 	private Tab previous;
@@ -223,7 +224,6 @@ public class MCreatorTabs {
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
 				SwingUtilities.invokeLater(() -> {
 					cardLayout.show(container, tab.identifier.toString().toLowerCase(Locale.ROOT));
-					tab.setBackground(Theme.current().getAltBackgroundColor());
 
 					if (notify) {
 						tabShownListeners.forEach(l -> l.tabShown(tab));
@@ -231,6 +231,7 @@ public class MCreatorTabs {
 							tab.tabShownListener.tabShown(tab);
 					}
 				});
+				tab.setBackground(Theme.current().getAltBackgroundColor());
 
 				tab.selected = true;
 				this.current = tab;
