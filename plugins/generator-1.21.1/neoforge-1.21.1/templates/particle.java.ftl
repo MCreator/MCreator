@@ -111,7 +111,7 @@ package ${package}.client.particle;
 	}
 	</#if>
 
-	<#if data.rotLock>
+	<#if data.rotManipulation>
 	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
 		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(<#if hasProcedure(data.yaw)><@procedureOBJToConditionCode data.yaw/><#else>${data.yaw.getFixedValue()}</#if>));
 		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(<#if hasProcedure(data.pitch)><@procedureOBJToConditionCode data.pitch/><#else>${data.pitch.getFixedValue()}</#if>));
