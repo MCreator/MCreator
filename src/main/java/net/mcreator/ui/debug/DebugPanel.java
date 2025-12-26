@@ -94,6 +94,8 @@ public class DebugPanel extends JPanel {
 
 		markersParent.setOpaque(false);
 
+		// TODO: add another state when debug is not active so it does not show loading in this case
+
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
 		JLabel loading = L10N.label("debug.loading");
@@ -231,8 +233,6 @@ public class DebugPanel extends JPanel {
 		debugging.add("South", new JEmptyBox(2, 2));
 
 		add(debugging, DEBUGGING);
-
-		setVisible(false);
 	}
 
 	public void startDebug(@Nonnull JVMDebugClient debugClient) {
@@ -317,7 +317,6 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
-		setVisible(true);
 	}
 
 	public void addMarker(DebugMarker marker) {
@@ -329,7 +328,6 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
-		setVisible(false);
 		this.debugClient = null;
 	}
 

@@ -125,6 +125,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 	private final SimpleLineChart cpuChart = new SimpleLineChart();
 	private final SimpleLineChart memoryChart = new SimpleLineChart();
+	
+	private final JPanel monitorPanel = new JPanel();
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
 
@@ -220,8 +222,6 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 		searchBar.setBorder(BorderFactory.createEmptyBorder(6, 10, 5, 0));
 
-		// TODO: move to the right
-
 		JLabel cpuLabel = L10N.label("performance_monitor.cpu");
 		cpuLabel.setForeground(Theme.current().getAltForegroundColor());
 		cpuLabel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
@@ -251,16 +251,16 @@ public class GradleConsole extends JPanel implements ISearchable {
 			return new String[] { xLabel, yLabel };
 		});
 
-		JPanel monitorPanel = new JPanel();
 		monitorPanel.setOpaque(false);
-		monitorPanel.setLayout(new GridLayout(1, 2, 15, 15));
-		monitorPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 10));
-		monitorPanel.setPreferredSize(new Dimension(0, 100));
+		monitorPanel.setLayout(new GridLayout(2, 1, 15, 15));
+		monitorPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		monitorPanel.setPreferredSize(new Dimension(400, 0));
 		monitorPanel.add(PanelUtils.centerAndSouthElement(cpuChart, cpuLabel));
 		monitorPanel.add(PanelUtils.centerAndSouthElement(memoryChart, memoryLabel));
-		mainScrollPane.setColumnHeaderView(monitorPanel);
-		mainScrollPane.getColumnHeader().setOpaque(false);
-		mainScrollPane.getColumnHeader().setVisible(false);
+		monitorPanel.setOpaque(false);
+		monitorPanel.setVisible(false);
+
+		outerholder.add("East", monitorPanel);
 
 		add("Center", outerholder);
 
@@ -465,11 +465,11 @@ public class GradleConsole extends JPanel implements ISearchable {
 						@Override public void connected(JMXConnector jmxConnector) {
 							cpuChart.clear();
 							memoryChart.clear();
-							mainScrollPane.getColumnHeader().setVisible(true);
+							monitorPanel.setVisible(true);
 						}
 
 						@Override public void disconnected() {
-							mainScrollPane.getColumnHeader().setVisible(false);
+							monitorPanel.setVisible(false);
 						}
 
 						@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {

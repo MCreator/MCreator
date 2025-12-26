@@ -120,7 +120,6 @@ public abstract class MCreator extends MCreatorFrame {
 		debugPanel = new DebugPanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", true,
 				false);
@@ -147,17 +146,22 @@ public abstract class MCreator extends MCreatorFrame {
 		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mainWorkspaceTabs);
 		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
 
+		// TODO: names using L10N
+		// TODO: correct icons
+
 		if (hasProjectBrowser) {
 			leftDockRegion.addDock("project_browser", 280, "Project browser", UIRES.get("16px.runtask"),
 					workspaceFileBrowser);
 		}
 
-		bottomDockRegion.addDock("console", 270, createConsoleButton(), gradleConsole);
+		bottomDockRegion.addDock("console", 300, createConsoleButton(), gradleConsole);
 
 		bottomDockRegion.addDock("debug", 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
 
-		JPanel outerStrip = new JPanel();
-		outerStrip.setLayout(new BoxLayout(outerStrip, BoxLayout.Y_AXIS));
+		JToolBar outerStrip = new JToolBar(JToolBar.VERTICAL);
+		outerStrip.setFloatable(false);
+		outerStrip.setBorder(
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
 		outerStrip.add(leftDockRegion.getDockStrip());
 		outerStrip.add(Box.createVerticalGlue());
 		outerStrip.add(bottomDockRegion.getDockStrip());
@@ -182,26 +186,24 @@ public abstract class MCreator extends MCreatorFrame {
 	@Nonnull private JToggleButton createConsoleButton() {
 		JToggleButton consoleButton = new JToggleButton(UIRES.get("16px.runtask")) {
 
-			private Color defaultBg = null;
-
 			@Override protected void paintComponent(Graphics g) {
-				if (defaultBg == null)
-					defaultBg = getBackground();
-
-				switch (gradleConsole.getStatus()) {
-				case GradleConsole.READY:
-					setBackground(defaultBg);
-					break;
-				case GradleConsole.RUNNING:
-					setBackground(new Color(158, 247, 89));
-					break;
-				case GradleConsole.ERROR:
-					setBackground(new Color(0xFF5956));
-					break;
-				}
-				if (gradleConsole.isGradleSetupTaskRunning())
-					setBackground(new Color(106, 247, 244));
 				super.paintComponent(g);
+
+				Color dotColor = switch (gradleConsole.getStatus()) {
+					case GradleConsole.RUNNING -> new Color(0x9BCF52);
+					case GradleConsole.ERROR -> new Color(0xCF5252);
+					default -> null;
+				};
+				if (gradleConsole.isGradleSetupTaskRunning())
+					dotColor = new Color(0x52A9CF);
+
+				if (dotColor != null) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+					g.setColor(dotColor);
+					g.fillOval(getWidth() - 11, 5, 7, 7);
+				}
 			}
 		};
 		consoleButton.setToolTipText("Console");

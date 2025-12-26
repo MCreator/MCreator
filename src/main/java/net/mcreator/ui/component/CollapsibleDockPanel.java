@@ -39,6 +39,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 	private final Map<AbstractButton, String> buttonToID = new LinkedHashMap<>();
 	private final Map<String, AbstractButton> idToButton = new LinkedHashMap<>();
 	private final Map<String, Integer> idToLastSize = new LinkedHashMap<>();
+	private final Map<String, JComponent> idToContent = new LinkedHashMap<>();
 
 	private final DockPosition dockPosition;
 
@@ -52,7 +53,14 @@ public class CollapsibleDockPanel extends JSplitPane {
 				JSplitPane.HORIZONTAL_SPLIT);
 		this.dockPosition = dockPosition;
 
-		mainContent.setMinimumSize(new Dimension(0, 0));
+		mainContent.setMinimumSize(new Dimension(25, 25));
+
+		dockStrip.setFloatable(false);
+		dockStrip.setOpaque(false);
+		dockStrip.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 1));
+		dockStrip.putClientProperty("FlatLaf.style", "hoverButtonGroupBackground: #00000000");
+
+		putClientProperty("SplitPaneDivider.gripDotCount", 0);
 
 		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT) {
 			setLeftComponent(dockPanel);
@@ -63,6 +71,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 		}
 
 		setOpaque(false);
+		setResizeWeight(0);
 
 		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
 		ui.setDividerColor(Theme.current().getAltBackgroundColor());
@@ -92,18 +101,18 @@ public class CollapsibleDockPanel extends JSplitPane {
 	}
 
 	public AbstractButton addDock(String id, int initialSize, AbstractButton toggleButton, JComponent content) {
-		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
-			content.setMinimumSize(new Dimension(0, 25));
-		} else {
-			content.setMinimumSize(new Dimension(25, 0));
-		}
-
 		buttonGroup.add(toggleButton);
 
 		dockPanel.add(content, id);
 		buttonToID.put(toggleButton, id);
 		idToButton.put(id, toggleButton);
 		idToLastSize.put(id, initialSize);
+		idToContent.put(id, content);
+
+		toggleButton.putClientProperty("FlatLaf.style", "arc: 4");
+		toggleButton.setMargin(new Insets(4, 4, 4, 4));
+
+		content.setMinimumSize(new Dimension(0, 0));
 
 		toggleButton.addActionListener(e -> handleToggle(toggleButton));
 
@@ -131,8 +140,10 @@ public class CollapsibleDockPanel extends JSplitPane {
 	public void clearSelection() {
 		buttonGroup.clearSelection();
 
-		if (currentDockID != null)
+		if (currentDockID != null) {
 			idToLastSize.put(currentDockID, getCurrentDockSize());
+			idToContent.get(currentDockID).setMinimumSize(new Dimension(0, 0));
+		}
 
 		currentDockID = null;
 
@@ -142,21 +153,28 @@ public class CollapsibleDockPanel extends JSplitPane {
 	}
 
 	private void handleToggle(AbstractButton button) {
+		String affectedDockID = buttonToID.get(button);
+
 		if (currentDockID != null && button == idToButton.get(currentDockID)) {
 			clearSelection();
 			return;
 		}
 
-		String affectedDockID = buttonToID.get(button);
-
 		if (button.isSelected()) {
 			currentDockID = affectedDockID;
 
 			cardLayout.show(dockPanel, affectedDockID);
-			setDividerSize(UIManager.getInt("SplitPane.dividerSize"));
+			setDividerSize(3);
 			setDividerLocation(getExpandedLocation(affectedDockID));
+
+			if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
+				idToContent.get(affectedDockID).setMinimumSize(new Dimension(0, 25));
+			} else {
+				idToContent.get(affectedDockID).setMinimumSize(new Dimension(25, 0));
+			}
 		} else {
 			idToLastSize.put(affectedDockID, getCurrentDockSize());
+			idToContent.get(affectedDockID).setMinimumSize(new Dimension(0, 0));
 		}
 
 		revalidate();
