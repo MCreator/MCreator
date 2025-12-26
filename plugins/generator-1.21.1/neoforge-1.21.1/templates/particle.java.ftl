@@ -111,7 +111,7 @@ package ${package}.client.particle;
 	}
 	</#if>
 
-	<#if data.lockRotation>
+	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
 		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(<#if hasProcedure(data.rotationProvider)>(<@procedureOBJToConditionCode data.rotationProvider/>).x()<#else>90.0</#if>));
 		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(<#if hasProcedure(data.rotationProvider)>(<@procedureOBJToConditionCode data.rotationProvider/>).y()<#else>0.0</#if>));

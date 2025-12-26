@@ -66,7 +66,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private ProcedureSelector additionalExpiryCondition;
 
-	private final JCheckBox lockRotation = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector rotationProvider;
 
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -94,7 +93,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		pane3.setOpaque(false);
 
 		canCollide.setSelected(true);
-		lockRotation.setSelected(false);
 
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
@@ -163,18 +161,13 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				L10N.label("elementgui.particle.does_collide")));
 		spo2.add(canCollide);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/lock_rot"),
-				L10N.label("elementgui.particle.lock_rot")));
-		spo2.add(lockRotation);
-
-		rotationProvider.setEnabled(false);
-		lockRotation.addActionListener(e -> {
-			rotationProvider.setEnabled(lockRotation.isSelected());
-		});
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/rotation_provider"),
+				L10N.label("elementgui.particle.rotation_provider")));
+		spo2.add(rotationProvider);
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent,
 				PanelUtils.centerAndSouthElement(spo2,
-						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), PanelUtils.westAndCenterElement(rotationProvider, additionalExpiryCondition, 5, 2), 5, 2), 15,
+						PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), additionalExpiryCondition, 5, 2), 15,
 				5))));
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(texture);
@@ -186,8 +179,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
 				mcreator.getWorkspace());
 
-		additionalExpiryCondition.refreshListKeepSelected(context);
 		rotationProvider.refreshListKeepSelected(context);
+		additionalExpiryCondition.refreshListKeepSelected(context);
 		scale.refreshListKeepSelected(context);
 	}
 
@@ -208,11 +201,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		alwaysShow.setSelected(particle.alwaysShow);
 		animate.setSelected(particle.animate);
 		renderType.setSelectedItem(particle.renderType);
-		lockRotation.setSelected(particle.lockRotation);
-		additionalExpiryCondition.setSelectedProcedure(particle.additionalExpiryCondition);
 		rotationProvider.setSelectedProcedure(particle.rotationProvider);
-
-		rotationProvider.setEnabled(lockRotation.isSelected());
+		additionalExpiryCondition.setSelectedProcedure(particle.additionalExpiryCondition);
 	}
 
 	@Override public Particle getElementFromGUI() {
@@ -233,9 +223,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.animate = animate.isSelected();
 		particle.alwaysShow = alwaysShow.isSelected();
 		particle.renderType = (String) renderType.getSelectedItem();
-		particle.additionalExpiryCondition = additionalExpiryCondition.getSelectedProcedure();
-		particle.lockRotation = lockRotation.isSelected();
 		particle.rotationProvider = rotationProvider.getSelectedProcedure();
+		particle.additionalExpiryCondition = additionalExpiryCondition.getSelectedProcedure();
 		return particle;
 	}
 
