@@ -1565,10 +1565,10 @@ public class TestWorkspaceDataProvider {
 			particle.animate = _true;
 			particle.maxAge = 12;
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
+			particle.lockRotation = _true;
+			particle.rotationProvider = new Procedure("vector1");
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
-			particle.lockRot = _true;
-			particle.rotationQuat = new Procedure("condition2");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);

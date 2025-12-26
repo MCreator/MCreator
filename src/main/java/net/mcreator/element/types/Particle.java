@@ -62,8 +62,8 @@ import java.io.IOException;
 	public boolean alwaysShow;
 	public boolean emissiveRendering;
 
-	public boolean lockRot;
-	public Procedure rotationQuat;
+	public boolean lockRotation;
+	public Procedure rotationProvider;
 
 	public String renderType;
 
