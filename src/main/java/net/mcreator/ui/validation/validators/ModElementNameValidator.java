@@ -18,12 +18,9 @@
 
 package net.mcreator.ui.validation.validators;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -52,20 +49,7 @@ public class ModElementNameValidator extends UniqueNameValidator {
 
 	public void reloadUsedNames(@Nonnull Workspace workspace) {
 		usedNames.clear();
-		usedNames.addAll(workspace.getModElements().stream().map(ModElement::getName).toList());
-
-		for (ModElement element : workspace.getModElements()) {
-			usedNames.add(element.getName());
-
-			// Only load relevant GEs
-			if (!IMultipleNames.class.isAssignableFrom(element.getType().getModElementStorageClass()))
-				continue;
-
-			GeneratableElement gen = element.getGeneratableElement();
-			if (gen instanceof IMultipleNames multipleNames) {
-				usedNames.addAll(multipleNames.getAdditionalNames());
-			}
-		}
+		usedNames.addAll(workspace.getWorkspaceInfo().getUsedElementNames());
 	}
 
 }

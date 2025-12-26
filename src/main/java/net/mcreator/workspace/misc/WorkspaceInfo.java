@@ -26,6 +26,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
@@ -106,6 +107,24 @@ import java.util.*;
 
 	public boolean hasJavaModels() {
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+	}
+
+	public List<String> getUsedElementNames() {
+		List<String> usedNames = new ArrayList<>(workspace.getModElements().stream().map(ModElement::getName).toList());
+
+		for (ModElement element : workspace.getModElements()) {
+			usedNames.add(element.getName());
+
+			// Only load relevant GEs
+			if (!IMultipleNames.class.isAssignableFrom(element.getType().getModElementStorageClass()))
+				continue;
+
+			GeneratableElement gen = element.getGeneratableElement();
+			if (gen instanceof IMultipleNames multipleNames) {
+				usedNames.addAll(multipleNames.getAdditionalNames());
+			}
+		}
+		return usedNames;
 	}
 
 	public Map<String, TextureHolder> getItemTextureMap() {
