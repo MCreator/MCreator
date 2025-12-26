@@ -2,6 +2,7 @@ _default: ""
 Sword: CUSTOM
 Pickaxe: CUSTOM
 Armor: CUSTOM
+Tool: CUSTOM
 Axe: Axe
 Shovel: Shovel
 Hoe: Hoe
