@@ -94,8 +94,6 @@ public class DebugPanel extends JPanel {
 
 		markersParent.setOpaque(false);
 
-		// TODO: add another state when debug is not active so it does not show loading in this case
-
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
 		JLabel loading = L10N.label("debug.loading");
@@ -317,6 +315,7 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
+		mcreator.getBottomDockRegion().setToggleVisiblity(MCreator.DOCK_DEBUGGER, true);
 	}
 
 	public void addMarker(DebugMarker marker) {
@@ -328,6 +327,7 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
+		mcreator.getBottomDockRegion().setToggleVisiblity(MCreator.DOCK_DEBUGGER, false);
 		this.debugClient = null;
 	}
 

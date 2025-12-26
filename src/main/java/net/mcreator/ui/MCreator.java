@@ -61,6 +61,10 @@ public abstract class MCreator extends MCreatorFrame {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
+	public static final String DOCK_CONSOLE = "console";
+	public static final String DOCK_PROJECT_BROWSER = "project_browser";
+	public static final String DOCK_DEBUGGER = "debugger";
+
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
@@ -150,13 +154,15 @@ public abstract class MCreator extends MCreatorFrame {
 		// TODO: correct icons
 
 		if (hasProjectBrowser) {
-			leftDockRegion.addDock("project_browser", 280, "Project browser", UIRES.get("16px.runtask"),
+			leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, "Project browser", UIRES.get("16px.runtask"),
 					workspaceFileBrowser);
 		}
 
-		bottomDockRegion.addDock("console", 300, createConsoleButton(), gradleConsole);
+		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
+		bottomDockRegion.addDock(DOCK_DEBUGGER, 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
 
-		bottomDockRegion.addDock("debug", 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+		// Hide some docks by default until they are relevant
+		bottomDockRegion.setToggleVisiblity(DOCK_DEBUGGER, false);
 
 		JToolBar outerStrip = new JToolBar(JToolBar.VERTICAL);
 		outerStrip.setFloatable(false);
@@ -367,7 +373,7 @@ public abstract class MCreator extends MCreatorFrame {
 	}
 
 	public void showConsole() {
-		bottomDockRegion.setDockVisibility("console", true);
+		bottomDockRegion.setDockVisibility(DOCK_CONSOLE, true);
 		gradleConsole.requestFocusInWindow();
 	}
 
