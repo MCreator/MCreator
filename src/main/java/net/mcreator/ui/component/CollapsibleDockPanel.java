@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
@@ -27,118 +30,164 @@ import java.awt.event.ComponentEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CollapsibleDockPanel extends JPanel {
+public class CollapsibleDockPanel extends JSplitPane {
 
-	private final JToolBar buttonStrip;
-	private final JPanel dockPanel;
-	private final CardLayout cardLayout;
-	private final JSplitPane splitPane;
+	private final CardLayout cardLayout = new CardLayout();
+	private final JPanel dockPanel = new JPanel(cardLayout);
 
 	private final ButtonGroup buttonGroup;
-	private final Map<AbstractButton, String> buttonToCard = new LinkedHashMap<>();
-	private final Map<String, Integer> cardToLastHeight = new LinkedHashMap<>();
+	private final Map<AbstractButton, String> buttonToID = new LinkedHashMap<>();
+	private final Map<String, AbstractButton> idToButton = new LinkedHashMap<>();
+	private final Map<String, Integer> idToLastSize = new LinkedHashMap<>();
 
-	private AbstractButton selectedButton;
+	private final DockPosition dockPosition;
 
-	public CollapsibleDockPanel(JComponent mainContent) {
-		super(new BorderLayout());
+	@Nullable private String currentDockID = null;
+
+	public CollapsibleDockPanel(DockPosition dockPosition, JComponent mainContent) {
+		super((dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) ?
+				JSplitPane.VERTICAL_SPLIT :
+				JSplitPane.HORIZONTAL_SPLIT);
+		this.dockPosition = dockPosition;
+
+		mainContent.setMinimumSize(new Dimension(0, 0));
+
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT) {
+			setLeftComponent(dockPanel);
+			setRightComponent(mainContent);
+		} else {
+			setLeftComponent(mainContent);
+			setRightComponent(dockPanel);
+		}
+
 		setOpaque(false);
 
-		cardLayout = new CardLayout();
-		dockPanel = new JPanel(cardLayout);
-
-		buttonStrip = new JToolBar();
-		buttonStrip.setFloatable(false);
-		buttonStrip.setOpaque(false);
-		buttonStrip.setVisible(false);
-
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mainContent, dockPanel);
-		splitPane.setOpaque(false);
+		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
+		ui.setDividerColor(Theme.current().getAltBackgroundColor());
+		setUI(ui);
 
 		buttonGroup = new ButtonGroup();
 
-		add(splitPane, BorderLayout.CENTER);
-		add(buttonStrip, BorderLayout.SOUTH);
-
-		clearSelection(null);
-
-		addComponentListener(new ComponentAdapter() {
-			@Override public void componentResized(ComponentEvent e) {
-				String lastCard = buttonToCard.get(selectedButton);
-				if (lastCard != null) {
-					splitPane.setDividerLocation(splitPane.getHeight() - cardToLastHeight.get(lastCard));
-				} else {
-					splitPane.setDividerLocation(splitPane.getHeight());
+		if (dockPosition == DockPosition.DOWN || dockPosition == DockPosition.RIGHT) {
+			addComponentListener(new ComponentAdapter() {
+				@Override public void componentResized(ComponentEvent e) {
+					if (currentDockID != null) {
+						setDividerLocation(getTotalSize() - idToLastSize.get(currentDockID));
+					} else {
+						setDividerLocation(getTotalSize());
+					}
 				}
-			}
-		});
+			});
+		}
+
+		clearSelection();
 	}
 
-	public void addDock(String id, int initialHeight, JComponent content) {
-		addDock(id, initialHeight, null, null, content);
+	public AbstractButton addDock(@Nullable Container owner, String id, int initialSize, String text, Icon icon, JComponent content) {
+		JToggleButton button = new JToggleButton(icon);
+		button.setToolTipText(text);
+		button.setFocusable(false);
+		return addDock(owner, id, initialSize, button, content);
 	}
 
-	public void addDock(String id, int initialHeight, String text, JComponent content) {
-		addDock(id, initialHeight, text, null, content);
-	}
+	public AbstractButton addDock(@Nullable Container owner, String id, int initialSize, AbstractButton toggleButton, JComponent content) {
+		content.setMinimumSize(new Dimension(0, 0));
 
-	public void addDock(String id, int initialHeight, Icon icon, JComponent content) {
-		addDock(id, initialHeight, null, icon, content);
-	}
-
-	public void addDock(String id, int initialHeight, String text, Icon icon, JComponent content) {
-		JToggleButton button = createToggleButton(text, icon);
-		addDock(id, initialHeight, button, content);
-	}
-
-	public void addDock(String id, int initialHeight, AbstractButton toggleButton, JComponent content) {
 		toggleButton.setFocusable(false);
 
 		buttonGroup.add(toggleButton);
-		buttonStrip.add(toggleButton);
-		buttonStrip.setVisible(true);
 
 		dockPanel.add(content, id);
-		buttonToCard.put(toggleButton, id);
-		cardToLastHeight.put(id, initialHeight);
+		buttonToID.put(toggleButton, id);
+		idToButton.put(id, toggleButton);
+		idToLastSize.put(id, initialSize);
 
 		toggleButton.addActionListener(e -> handleToggle(toggleButton));
+
+		if (owner != null)
+			owner.add(toggleButton);
+
+		return toggleButton;
 	}
 
-	public void clearSelection(@Nullable String lastCard) {
+	/**
+	 * Handles showing of the dock and toggling the right button. Also considers initial width.
+	 *
+	 * @param id Dock to show
+	 */
+	public void setDockVisibility(String id, boolean visible) {
+		if (idToButton.containsKey(id)) {
+			AbstractButton button = idToButton.get(id);
+			boolean currentState = button.isSelected();
+			if (currentState != visible) {
+				button.setSelected(visible);
+				handleToggle(button);
+			}
+		}
+	}
+
+	public void clearSelection() {
 		buttonGroup.clearSelection();
-		selectedButton = null;
 
-		if (lastCard != null)
-			cardToLastHeight.put(lastCard, splitPane.getHeight() - splitPane.getDividerLocation());
+		if (currentDockID != null)
+			idToLastSize.put(currentDockID, getCurrentDockSize());
 
-		splitPane.setDividerLocation(splitPane.getHeight());
-		splitPane.setDividerSize(0);
+		currentDockID = null;
+
+		setDividerLocation(getCollapsedLocation());
+		setDividerSize(0);
 		revalidate();
 	}
 
 	private void handleToggle(AbstractButton button) {
-		if (button == selectedButton) {
-			clearSelection(buttonToCard.get(selectedButton));
+		if (currentDockID != null && button == idToButton.get(currentDockID)) {
+			clearSelection();
 			return;
 		}
 
-		selectedButton = button;
-		String card = buttonToCard.get(button);
+		String affectedDockID = buttonToID.get(button);
 
-		cardLayout.show(dockPanel, card);
+		if (button.isSelected()) {
+			currentDockID = affectedDockID;
 
-		splitPane.setDividerSize(UIManager.getInt("SplitPane.dividerSize"));
-		splitPane.setDividerLocation(splitPane.getHeight() - cardToLastHeight.get(card));
+			cardLayout.show(dockPanel, affectedDockID);
+			setDividerSize(UIManager.getInt("SplitPane.dividerSize"));
+			setDividerLocation(getExpandedLocation(affectedDockID));
+		} else {
+			idToLastSize.put(affectedDockID, getCurrentDockSize());
+		}
+
 		revalidate();
 	}
 
-	private JToggleButton createToggleButton(String text, Icon icon) {
-		JToggleButton button = new JToggleButton(text, icon);
-		button.setFocusable(false);
-		button.setHorizontalTextPosition(SwingConstants.CENTER);
-		button.setVerticalTextPosition(SwingConstants.BOTTOM);
-		return button;
+	private int getExpandedLocation(String id) {
+		int size = idToLastSize.get(id);
+
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT)
+			return size;
+
+		return getTotalSize() - size;
+	}
+
+	private int getCollapsedLocation() {
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT)
+			return 0;
+
+		return getTotalSize();
+	}
+
+	private int getCurrentDockSize() {
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT)
+			return getDividerLocation();
+		return getTotalSize() - getDividerLocation();
+	}
+
+	private int getTotalSize() {
+		return getOrientation() == VERTICAL_SPLIT ? getHeight() : getWidth();
+	}
+
+	public enum DockPosition {
+		UP, DOWN, LEFT, RIGHT
 	}
 
 }

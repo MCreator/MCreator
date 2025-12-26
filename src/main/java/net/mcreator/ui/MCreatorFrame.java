@@ -69,13 +69,13 @@ public abstract class MCreatorFrame extends JFrame
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		if (screenSize.getWidth() > 2144 && screenSize.getHeight() > 1250)
-			setSize(2144, 1250);
+			setSize(2164, 1250);
 		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
-			setSize(1574, 967);
+			setSize(1594, 967);
 		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
-			setSize(1290, 791);
+			setSize(1310, 791);
 		else
-			setSize(1002, 640);
+			setSize(1022, 640);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 

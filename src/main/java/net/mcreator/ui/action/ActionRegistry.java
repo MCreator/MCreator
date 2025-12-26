@@ -133,8 +133,6 @@ public class ActionRegistry {
 	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
-	public final BasicAction showWorkspaceBrowser;
-	public final BasicAction hideWorkspaceBrowser;
 	public final BasicAction showConsoleTab;
 	public final BasicAction showWorkspaceTab;
 	public final BasicAction closeAllTabs;
@@ -282,10 +280,6 @@ public class ActionRegistry {
 				e -> mcreator.getTabs().closeAllTabs());
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
-		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.showProjectBrowser(true));
-		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.showProjectBrowser(false));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);

@@ -28,14 +28,13 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
-import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -73,14 +72,15 @@ public abstract class MCreator extends MCreatorFrame {
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
 
-	@Nullable private final JSplitPane splitPane;
-
 	private final DebugPanel debugPanel;
 
 	public final MCreatorTabs.Tab workspaceTab;
 	public final MCreatorTabs.Tab consoleTab;
 
 	private final boolean hasProjectBrowser;
+
+	private final CollapsibleDockPanel leftDockRegion;
+	private final CollapsibleDockPanel bottomDockRegion;
 
 	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.RESOURCEPACK) {
@@ -171,38 +171,24 @@ public abstract class MCreator extends MCreatorFrame {
 		workspace.getFileManager().setDataSavedListener(() -> getStatusBar().setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
+		JComponent mainWorkspaceTabs = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
+
+		JToolBar dockStrip = new JToolBar(JToolBar.VERTICAL);
+
+		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mainWorkspaceTabs);
+		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
 
 		if (hasProjectBrowser) {
-			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
-			splitPane.setOpaque(false);
-			splitPane.setOneTouchExpandable(true);
-			splitPane.setDividerLocation(280);
-			splitPane.setDividerLocation(workspace.getWorkspaceUserSettings().projectBrowserSplitPos);
-
-			OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
-			splitPane.setUI(ui);
-			ui.setDividerColor(Theme.current().getAltBackgroundColor());
-			splitPane.addPropertyChangeListener("dividerLocation", evt -> {
-				if ((Integer) evt.getNewValue() == 0) {
-					ui.setDividerColor(Theme.current().getAltBackgroundColor());
-				} else {
-					ui.setDividerColor(Theme.current().getBackgroundColor());
-				}
-			});
-
-			rightPanel.setMinimumSize(new Dimension(0, 0));
-			workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
-
-			CollapsibleDockPanel collapsibleDockPanel = new CollapsibleDockPanel(
-					new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
-			collapsibleDockPanel.addDock("console", 200, "Console", gradleConsole);
-
-			setMainContent(collapsibleDockPanel);
-		} else {
-			splitPane = null;
-			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, rightPanel, debugPanel, 0.65));
+			leftDockRegion.addDock(dockStrip, "project_browser", 250, "Project browser", UIRES.get("16px.runtask"),
+					workspaceFileBrowser);
 		}
+
+		dockStrip.add(Box.createVerticalGlue());
+
+		bottomDockRegion.addDock(dockStrip, "console", 270, "Console", UIRES.get("16px.runtask"), gradleConsole);
+		bottomDockRegion.addDock(dockStrip, "debug", 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+
+		setMainContent(PanelUtils.westAndCenterElement(dockStrip, bottomDockRegion, 0, 0));
 
 		add("North", toolBar);
 
@@ -213,6 +199,8 @@ public abstract class MCreator extends MCreatorFrame {
 				initializeMCreator();
 			}
 		});
+
+		// TODO: recall dock states
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
@@ -316,8 +304,9 @@ public abstract class MCreator extends MCreatorFrame {
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
-			if (splitPane != null)
-				workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
+
+			// TODO: store dock states
+			// workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
@@ -366,12 +355,6 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 	}
 
-	public void showProjectBrowser(boolean visible) {
-		if (splitPane != null) {
-			splitPane.setDividerLocation(visible ? 280 : 0);
-		}
-	}
-
 	public GradleConsole getGradleConsole() {
 		return gradleConsole;
 	}
@@ -402,6 +385,14 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public final boolean hasProjectBrowser() {
 		return hasProjectBrowser;
+	}
+
+	public CollapsibleDockPanel getLeftDockRegion() {
+		return leftDockRegion;
+	}
+
+	public CollapsibleDockPanel getBottomDockRegion() {
+		return bottomDockRegion;
 	}
 
 }
