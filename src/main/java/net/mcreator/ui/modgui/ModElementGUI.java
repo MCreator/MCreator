@@ -572,8 +572,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			ourNames.addAll(multipleNames.getAdditionalNames());
 		}
 
-		Collection<String> conflictingNames = ListUtils.intersect(mcreator.getWorkspaceInfo().getUsedElementNames(),
-				ourNames);
+		// Get a list of used names without current ME and intersect it with ourNames
+		Collection<String> conflictingNames = ListUtils.intersect(
+				mcreator.getWorkspaceInfo().getUsedElementNames(modElement), ourNames);
 
 		// Check if the list of used names contains any of ourNames
 		if (!conflictingNames.isEmpty()) {

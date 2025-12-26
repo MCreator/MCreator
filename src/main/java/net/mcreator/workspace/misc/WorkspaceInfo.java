@@ -109,10 +109,15 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public List<String> getUsedElementNames() {
-		List<String> usedNames = new ArrayList<>(workspace.getModElements().stream().map(ModElement::getName).toList());
+	public List<String> getUsedElementNames(ModElement... exclusions) {
+		List<ModElement> exclusionList = exclusions.length > 0 ? Arrays.asList(exclusions) : null;
+
+		List<String> usedNames = new ArrayList<>();
 
 		for (ModElement element : workspace.getModElements()) {
+			if (exclusionList != null && exclusionList.contains(element))
+				continue;
+
 			usedNames.add(element.getName());
 
 			// Only load relevant GEs
