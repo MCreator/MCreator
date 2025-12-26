@@ -22,6 +22,7 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +49,7 @@ public class DebugClientAction extends GradleAction {
 				JVMDebugClient debugClient = new JVMDebugClient();
 
 				SwingUtilities.invokeLater(() -> {
-					actionRegistry.getMCreator().showConsole();
+					actionRegistry.getMCreator().getBottomDockRegion().setDockVisibility(MCreator.DOCK_DEBUGGER, true);
 					actionRegistry.getMCreator().getGradleConsole()
 							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
 									.getGradleTaskFor("run_client"), debugClient);

@@ -374,7 +374,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public void showConsole() {
 		bottomDockRegion.setDockVisibility(DOCK_CONSOLE, true);
-		gradleConsole.requestFocusInWindow();
 	}
 
 	public GradleConsole getGradleConsole() {

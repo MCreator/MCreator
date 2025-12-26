@@ -104,7 +104,7 @@ public class DebugPanel extends JPanel {
 		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
 		add(waitingToConnect, WAITING_TO_CONNECT);
 
-		JPanel debugging = new JPanel(new BorderLayout(5, 5));
+		JPanel debugging = new JPanel(new BorderLayout(2, 2));
 		debugging.setOpaque(false);
 
 		JScrollPane threadsScroll = new JScrollPane(debugThreadView);
@@ -116,7 +116,7 @@ public class DebugPanel extends JPanel {
 
 		debugFramesView.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
 
-		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView));
+		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView, 2, 2));
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
 		nomarkers.setFont(loading.getFont().deriveFont(13f));
@@ -143,7 +143,8 @@ public class DebugPanel extends JPanel {
 		markersScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		markersScroll.getViewport().setOpaque(false);
 
-		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.markers")));
+		markersParent.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2),
+				BorderFactory.createTitledBorder(L10N.t("debug.markers"))));
 		markersParent.setLayout(markersLayout);
 		markersParent.add(markersScroll, "markers");
 		markersParent.add(nomarkerwrap, "no_markers");
