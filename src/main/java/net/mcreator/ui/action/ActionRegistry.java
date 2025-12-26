@@ -273,7 +273,7 @@ public class ActionRegistry {
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
 		this.showConsoleTab = new BasicAction(this, L10N.t("action.show_console"),
-				e -> mcreator.getTabs().showTab(mcreator.consoleTab));
+				e -> mcreator.showConsole());
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
 				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),

@@ -71,7 +71,7 @@ public class WorkspaceGeneratorSetupDialog {
 					L10N.t("dialog.setup_workspace.step.gradle_project"));
 			dial.addProgressUnit(p2);
 
-			m.getTabs().showTab(m.consoleTab);
+			m.showConsole();
 
 			m.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(false);

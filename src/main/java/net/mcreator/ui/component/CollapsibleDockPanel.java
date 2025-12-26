@@ -44,6 +44,8 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 	@Nullable private String currentDockID = null;
 
+	private final JToolBar dockStrip = new JToolBar(JToolBar.VERTICAL);
+
 	public CollapsibleDockPanel(DockPosition dockPosition, JComponent mainContent) {
 		super((dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) ?
 				JSplitPane.VERTICAL_SPLIT :
@@ -83,17 +85,18 @@ public class CollapsibleDockPanel extends JSplitPane {
 		clearSelection();
 	}
 
-	public AbstractButton addDock(@Nullable Container owner, String id, int initialSize, String text, Icon icon, JComponent content) {
+	public AbstractButton addDock(String id, int initialSize, String text, Icon icon, JComponent content) {
 		JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(text);
-		button.setFocusable(false);
-		return addDock(owner, id, initialSize, button, content);
+		return addDock(id, initialSize, button, content);
 	}
 
-	public AbstractButton addDock(@Nullable Container owner, String id, int initialSize, AbstractButton toggleButton, JComponent content) {
-		content.setMinimumSize(new Dimension(0, 0));
-
-		toggleButton.setFocusable(false);
+	public AbstractButton addDock(String id, int initialSize, AbstractButton toggleButton, JComponent content) {
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
+			content.setMinimumSize(new Dimension(0, 25));
+		} else {
+			content.setMinimumSize(new Dimension(25, 0));
+		}
 
 		buttonGroup.add(toggleButton);
 
@@ -104,8 +107,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 		toggleButton.addActionListener(e -> handleToggle(toggleButton));
 
-		if (owner != null)
-			owner.add(toggleButton);
+		dockStrip.add(toggleButton);
 
 		return toggleButton;
 	}
@@ -184,6 +186,10 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 	private int getTotalSize() {
 		return getOrientation() == VERTICAL_SPLIT ? getHeight() : getWidth();
+	}
+
+	public JToolBar getDockStrip() {
+		return dockStrip;
 	}
 
 	public enum DockPosition {

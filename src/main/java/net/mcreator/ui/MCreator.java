@@ -75,7 +75,6 @@ public abstract class MCreator extends MCreatorFrame {
 	private final DebugPanel debugPanel;
 
 	public final MCreatorTabs.Tab workspaceTab;
-	public final MCreatorTabs.Tab consoleTab;
 
 	private final boolean hasProjectBrowser;
 
@@ -136,34 +135,6 @@ public abstract class MCreator extends MCreatorFrame {
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
-		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", new JPanel(), "Console", true, false) {
-			@Override public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				switch (gradleConsole.getStatus()) {
-				case GradleConsole.READY:
-					g.setColor(Theme.current().getForegroundColor());
-					break;
-				case GradleConsole.RUNNING:
-					g.setColor(new Color(158, 247, 89));
-					break;
-				case GradleConsole.ERROR:
-					g.setColor(new Color(0xFF5956));
-					break;
-				}
-				if (gradleConsole.isGradleSetupTaskRunning())
-					g.setColor(new Color(106, 247, 244));
-				g.fillRect(getWidth() - 15, getHeight() - 18, 3, 3);
-			}
-		};
-		consoleTab.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
-					actionRegistry.buildWorkspace.doAction();
-			}
-		});
-		mcreatorTabs.addTab(consoleTab);
-		pon.add("East", consoleTab);
-
 		mcreatorTabs.showTabNoNotify(workspaceTab);
 
 		pon.add("Center", mcreatorTabs.getTabsStrip());
@@ -173,22 +144,25 @@ public abstract class MCreator extends MCreatorFrame {
 
 		JComponent mainWorkspaceTabs = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
 
-		JToolBar dockStrip = new JToolBar(JToolBar.VERTICAL);
-
 		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mainWorkspaceTabs);
 		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
 
 		if (hasProjectBrowser) {
-			leftDockRegion.addDock(dockStrip, "project_browser", 250, "Project browser", UIRES.get("16px.runtask"),
+			leftDockRegion.addDock("project_browser", 280, "Project browser", UIRES.get("16px.runtask"),
 					workspaceFileBrowser);
 		}
 
-		dockStrip.add(Box.createVerticalGlue());
+		bottomDockRegion.addDock("console", 270, createConsoleButton(), gradleConsole);
 
-		bottomDockRegion.addDock(dockStrip, "console", 270, "Console", UIRES.get("16px.runtask"), gradleConsole);
-		bottomDockRegion.addDock(dockStrip, "debug", 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+		bottomDockRegion.addDock("debug", 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
 
-		setMainContent(PanelUtils.westAndCenterElement(dockStrip, bottomDockRegion, 0, 0));
+		JPanel outerStrip = new JPanel();
+		outerStrip.setLayout(new BoxLayout(outerStrip, BoxLayout.Y_AXIS));
+		outerStrip.add(leftDockRegion.getDockStrip());
+		outerStrip.add(Box.createVerticalGlue());
+		outerStrip.add(bottomDockRegion.getDockStrip());
+
+		setMainContent(PanelUtils.westAndCenterElement(outerStrip, bottomDockRegion, 0, 0));
 
 		add("North", toolBar);
 
@@ -203,6 +177,41 @@ public abstract class MCreator extends MCreatorFrame {
 		// TODO: recall dock states
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
+	}
+
+	@Nonnull private JToggleButton createConsoleButton() {
+		JToggleButton consoleButton = new JToggleButton(UIRES.get("16px.runtask")) {
+
+			private Color defaultBg = null;
+
+			@Override protected void paintComponent(Graphics g) {
+				if (defaultBg == null)
+					defaultBg = getBackground();
+
+				switch (gradleConsole.getStatus()) {
+				case GradleConsole.READY:
+					setBackground(defaultBg);
+					break;
+				case GradleConsole.RUNNING:
+					setBackground(new Color(158, 247, 89));
+					break;
+				case GradleConsole.ERROR:
+					setBackground(new Color(0xFF5956));
+					break;
+				}
+				if (gradleConsole.isGradleSetupTaskRunning())
+					setBackground(new Color(106, 247, 244));
+				super.paintComponent(g);
+			}
+		};
+		consoleButton.setToolTipText("Console");
+		consoleButton.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
+					actionRegistry.buildWorkspace.doAction();
+			}
+		});
+		return consoleButton;
 	}
 
 	protected abstract MainMenuBar createMenuBar();
@@ -353,6 +362,11 @@ public abstract class MCreator extends MCreatorFrame {
 							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
+	}
+
+	public void showConsole() {
+		bottomDockRegion.setDockVisibility("console", true);
+		gradleConsole.requestFocusInWindow();
 	}
 
 	public GradleConsole getGradleConsole() {
