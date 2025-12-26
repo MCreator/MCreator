@@ -27,6 +27,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
+import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -135,7 +136,7 @@ public abstract class MCreator extends MCreatorFrame {
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
-		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", gradleConsole, "Console", true, false) {
+		consoleTab = new MCreatorTabs.Tab(L10N.t("tab.console") + " ", new JPanel(), "Console", true, false) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
@@ -193,7 +194,11 @@ public abstract class MCreator extends MCreatorFrame {
 			rightPanel.setMinimumSize(new Dimension(0, 0));
 			workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
-			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
+			CollapsibleDockPanel collapsibleDockPanel = new CollapsibleDockPanel(
+					new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65));
+			collapsibleDockPanel.addDock("console", 200, "Console", gradleConsole);
+
+			setMainContent(collapsibleDockPanel);
 		} else {
 			splitPane = null;
 			setMainContent(new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, rightPanel, debugPanel, 0.65));
