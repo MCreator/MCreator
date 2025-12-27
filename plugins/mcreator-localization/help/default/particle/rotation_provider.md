@@ -4,4 +4,4 @@ Specify the direction (in radians) in which the particles faces by passing a _'`
 where: `vec(pitch, yaw, roll)`
 - (first entry provides pitch, second one provides yaw, third gives roll)
 
-Note: When rendering, the rotations are applied in the order: (pitch-yaw-roll)
+Note: When rendering, the rotations are applied in the order: (Roll-Yaw-Pitch)
