@@ -113,7 +113,7 @@ public class ${name}Particle extends TextureSheetParticle {
 
 	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
-		Vec3 vec = <@procedureOBJToConditionCode data.rotationProvider/>
+		Vec3 vec = <@procedureOBJToConditionCode data.rotationProvider/>;
 		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(vec.x()));
 		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(vec.y()));
 		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians(vec.z()));
