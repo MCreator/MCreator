@@ -58,7 +58,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox,
+		IMultipleNames {
 
 	private static final Logger LOG = LogManager.getLogger(Block.class);
 
@@ -567,6 +568,13 @@ import java.util.stream.Collectors;
 		if (!supportsBlockStates() || states.isEmpty())
 			return List.of();
 		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		if (isSign())
+			return List.of("Wall"+ getModElement().getName());
+		else
+			return Collections.emptyList();
 	}
 
 	public static class StateEntry implements IWorkspaceDependent, IItemWithModel, IBlockWithBoundingBox {
