@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class GTAITaskBlocks {
 
-	@SuppressWarnings("DuplicateBranchesInSwitch")
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
 
@@ -85,17 +84,7 @@ public class GTAITaskBlocks {
 								+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + testXML + "</next></block></xml>";
 			} else {
 				switch (aiTask.getOutputType()) {
-				case "MCItem" -> livingentity.aixml = """
-						<xml xmlns="https://developers.google.com/blockly/xml"><block type="aitasks_container"
-						deletable="false" x="40" y="40"><next>
-						<block type="follow_item_in_hands">
-							<field name="speed">1</field>
-							<field name="scared">FALSE</field>
-							<field name="condition">null,null</field>
-							<value name="item">%s</value>
-						</block></next></block></xml>
-						""".formatted(testXML);
-				case "ItemPredicate" -> livingentity.aixml = """
+				case "MCItem", "ItemPredicate" -> livingentity.aixml = """
 						<xml xmlns="https://developers.google.com/blockly/xml"><block type="aitasks_container"
 						deletable="false" x="40" y="40"><next>
 						<block type="follow_item_in_hands">
