@@ -465,7 +465,7 @@ templates:
   # TX: Sign templates
   - template: block/block.java.ftl # Wall sign class
     condition: "blockBase %= Sign"
-    name: "@SRCROOT/@BASEPACKAGEPATH/block/Wall@NAMEBlock.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@WALLNAMEBlock.java"
     variables: "extends_class=WallSignBlock"
   - template: json/block_item.json.ftl
     condition:
@@ -480,7 +480,7 @@ templates:
   - template: json/block_states.json.ftl # Wall sign blockstates definition
     condition: "blockBase %= Sign"
     writer: json
-    name: "@MODASSETSROOT/blockstates/wall_@registryname.json"
+    name: "@MODASSETSROOT/blockstates/@wallregistryname.json"
   - template: json/block_model_particle.json.ftl
     condition: "blockBase %= Sign"
     writer: json

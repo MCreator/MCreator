@@ -126,7 +126,7 @@ public class ${JavaModName}Items {
 					<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "Sign")>
 						<#assign hasSigns = true>
 						${item.getModElement().getRegistryNameUpper()} =
-							signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.WALL_${item.getModElement().getRegistryNameUpper()}
+							signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getModElement().getWallRegistryName(true)}
 							<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 					<#else>
 						<#assign hasBlocks = true>

@@ -72,7 +72,7 @@ package ${package}.init;
 		<#else>
 			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
 			<#if (block.getModElement().getTypeString() == "block") && (block.blockBase! == "Sign")>
-				public static <#if !has_chunks>final</#if> DeferredBlock<Block> WALL_${block.getModElement().getRegistryNameUpper()};
+				public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getWallRegistryName(true)};
 			</#if>
 		</#if>
 	</#list>
@@ -88,8 +88,8 @@ package ${package}.init;
 				${block.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
 				<#if (block.getModElement().getTypeString() == "block") && (block.blockBase! == "Sign")>
-					WALL_${block.getModElement().getRegistryNameUpper()} =
-						REGISTRY.register("wall_${block.getModElement().getRegistryName()}", Wall${block.getModElement().getName()}Block::new);
+					${block.getModElement().getWallRegistryName(true)} =
+						REGISTRY.register("${block.getModElement().getWallRegistryName(false)}", ${block.getModElement().getWallName()}Block::new);
 				</#if>
 			</#if>
 		</#list>
@@ -144,7 +144,7 @@ package ${package}.init;
 	<#if signs?size != 0>
 	@SubscribeEvent public static void registerSigns(BlockEntityTypeAddBlocksEvent event) {
 		<#list signs as block>
-			event.modify(BlockEntityType.SIGN, ${block.getModElement().getRegistryNameUpper()}.get(), WALL_${block.getModElement().getRegistryNameUpper()}.get());
+			event.modify(BlockEntityType.SIGN, ${block.getModElement().getRegistryNameUpper()}.get(), ${block.getModElement().getWallRegistryName(true)}.get());
 		</#list>
 	}
 	</#if>

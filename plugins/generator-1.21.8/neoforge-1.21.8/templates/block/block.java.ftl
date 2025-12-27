@@ -42,7 +42,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block extends ${getBlockClass(data.blockBase)}
+public class <#if var_extends_class! == "WallSignBlock">${data.getModElement().getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -209,7 +209,7 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 		</#if>
 	</#macro>
 
-	public <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block(BlockBehaviour.Properties properties) {
+	public <#if var_extends_class! == "WallSignBlock">${data.getModElement().getWallName()}<#else>${name}</#if>Block(BlockBehaviour.Properties properties) {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -776,7 +776,7 @@ public class <#if var_extends_class! == "WallSignBlock">Wall</#if>${name}Block e
 	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.isSign()>Sign<#else>Block</#if>Item {
 
 		public Item(Item.Properties properties) {
-			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.WALL_${REGISTRYNAME}.get(), </#if>properties);
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.${data.getModElement().getWallRegistryName(true)}.get(), </#if>properties);
 		}
 
 		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
