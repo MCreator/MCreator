@@ -1565,6 +1565,7 @@ public class TestWorkspaceDataProvider {
 			particle.animate = _true;
 			particle.maxAge = 12;
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
+			particle.rotationProvider = new Procedure("vector1");
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
@@ -2579,6 +2580,27 @@ public class TestWorkspaceDataProvider {
 						"<block type=\"return_logic\"><value name=\"return\">"
 								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
 								+ "</value></block>");
+
+				addGeneratableElementAndAssert(workspace, procedure);
+			}
+
+			for (int i = 1; i <= 4; i++) {
+				ModElement me = new ModElement(workspace, "vector" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "VECTOR");
+				me.putMetadata("dependencies", Collections.emptyList());
+
+				net.mcreator.element.types.Procedure procedure =
+						new net.mcreator.element.types.Procedure(me);
+
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_vector\"><value name=\"return\">"
+								+ "<block type=\"vector_new_vector\">"
+								+ "<value name=\"x\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+								+ "<value name=\"y\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
+								+ "<value name=\"z\"><block type=\"math_number\"><field name=\"NUM\">3</field></block></value>"
+								+ "</block>"
+								+ "</value></block>"
+				);
 
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
