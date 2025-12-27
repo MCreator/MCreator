@@ -137,12 +137,12 @@ public class CollapsibleDockPanel extends JSplitPane {
 		}
 	}
 
-	public void setToggleVisiblity(String id, boolean visible) {
+	public void setToggleEnabled(String id, boolean enabled) {
 		if (idToButton.containsKey(id)) {
-			idToButton.get(id).setVisible(visible);
+			idToButton.get(id).setEnabled(enabled);
 
 			if (idToButton.get(id).isSelected()) {
-				setDockVisibility(id, visible);
+				setDockVisibility(id, enabled);
 			}
 		}
 	}

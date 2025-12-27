@@ -159,10 +159,14 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
-		bottomDockRegion.addDock(DOCK_DEBUGGER, 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA) {
+			bottomDockRegion.addDock(DOCK_DEBUGGER, 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+		}
 
 		// Hide some docks by default until they are relevant
-		bottomDockRegion.setToggleVisiblity(DOCK_DEBUGGER, false);
+		bottomDockRegion.setToggleEnabled(DOCK_DEBUGGER, false);
 
 		JToolBar outerStrip = new JToolBar(JToolBar.VERTICAL);
 		outerStrip.setFloatable(false);

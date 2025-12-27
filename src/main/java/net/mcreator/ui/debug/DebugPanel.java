@@ -316,7 +316,7 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
-		mcreator.getBottomDockRegion().setToggleVisiblity(MCreator.DOCK_DEBUGGER, true);
+		mcreator.getBottomDockRegion().setToggleEnabled(MCreator.DOCK_DEBUGGER, true);
 	}
 
 	public void addMarker(DebugMarker marker) {
@@ -328,7 +328,7 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
-		mcreator.getBottomDockRegion().setToggleVisiblity(MCreator.DOCK_DEBUGGER, false);
+		mcreator.getBottomDockRegion().setToggleEnabled(MCreator.DOCK_DEBUGGER, false);
 		this.debugClient = null;
 	}
 
