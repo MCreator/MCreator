@@ -1,6 +1,6 @@
 This parameter overrides default particle billboarding (always appears to face player)
 
-Specify the direction in which the particles faces by passing a _'`vector`'_ with 3 parameters,\
+Specify the direction (in degrees) in which the particles faces by passing a _'`vector`'_ with 3 parameters,\
 where: `vec(pitch, yaw, roll)`
 - (first entry provides pitch, second one provides yaw, third gives roll)
 
