@@ -137,7 +137,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return foldersRoot;
 	}
 
-	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
+	@Override @Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
 
