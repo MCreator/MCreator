@@ -150,11 +150,10 @@ public abstract class MCreator extends MCreatorFrame {
 		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mainWorkspaceTabs);
 		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
 
-		// TODO: names using L10N
 		// TODO: correct icons
 
 		if (hasProjectBrowser) {
-			leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, "Project browser", UIRES.get("16px.runtask"),
+			leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.runtask"),
 					workspaceFileBrowser);
 		}
 
@@ -162,7 +161,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA) {
-			bottomDockRegion.addDock(DOCK_DEBUGGER, 300, "Debugger", UIRES.get("16px.runtask"), debugPanel);
+			bottomDockRegion.addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.runtask"), debugPanel);
 		}
 
 		// Hide some docks by default until they are relevant
@@ -216,7 +215,7 @@ public abstract class MCreator extends MCreatorFrame {
 				}
 			}
 		};
-		consoleButton.setToolTipText("Console");
+		consoleButton.setToolTipText(L10N.t("dock.console"));
 		consoleButton.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
