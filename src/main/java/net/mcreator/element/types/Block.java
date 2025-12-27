@@ -572,7 +572,7 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<String> getAdditionalNames() {
 		if (isSign())
-			return List.of("Wall"+ getModElement().getName());
+			return List.of("Wall" + getModElement().getName());
 		else
 			return Collections.emptyList();
 	}
