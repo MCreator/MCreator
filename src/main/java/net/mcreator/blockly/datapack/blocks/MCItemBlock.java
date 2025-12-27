@@ -50,7 +50,7 @@ public class MCItemBlock implements IBlockGenerator {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
 
-				String templateFileName = "_mcblock.json.ftl";
+				String templateFileName = "_mcitemblock.json.ftl";
 				if (master instanceof BlocklyToJSONTrigger && block.getAttribute("type").equals("mcitem_all"))
 					templateFileName = "_mcitem.json.ftl";
 
