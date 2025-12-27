@@ -1,0 +1,1 @@
+If enabled, this will render the item like tools while in hand.
