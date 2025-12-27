@@ -40,12 +40,6 @@ public class TerribleModuleHacks {
 				.ifPresent(module -> addOpens(module, "sun.awt", net.mcreator.ui.laf.LafUtil.class.getModule()));
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(
 				module -> addOpens(module, "javax.swing.text.html", net.mcreator.ui.laf.LafUtil.class.getModule()));
-
-		// Required by: BlocklyPanel - for transparency
-		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> addOpens(module, "com.sun.javafx.webkit",
-				net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
-		ModuleLayer.boot().findModule("javafx.web").ifPresent(
-				module -> addOpens(module, "com.sun.webkit", net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 	}
 
 	public static void addOpens(Module where, String pn, Module toadd) {
