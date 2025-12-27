@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
@@ -207,15 +208,13 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
-					new OptionPaneValidator() {
-						@Override public ValidationResult validate(JComponent component) {
-							UniqueNameValidator validator = new UniqueNameValidator(
-									L10N.t("workspace.variables.variable_name"),
+					new OptionPaneValidator.Cached() {
+						@Override public Validator createValidator(JComponent component) {
+							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component, false));
-							validator.setIsPresentOnList(false);
-							return validator.validate();
+									new JavaMemberNameValidator((VTextField) component, false)).setIsPresentOnList(
+									false);
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
 							workspacePanel.getMCreator().getGeneratorConfiguration()));

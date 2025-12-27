@@ -120,11 +120,14 @@ public class NameMapper {
 			}
 
 			if (toMapTemplate != null) {
-				// Remove prefix and possibly the suffix
+				// Remove the prefix and possibly the suffix
 				origName = Strings.CS.removeEnd(origName.replace(MCREATOR_PREFIX, ""), suffix);
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
+				if (toMapTemplate.contains("@SnakeCaseName")) {
+					retval = retval.replace("@SnakeCaseName", net.mcreator.util.StringUtils.snakeToCamel(origName));
+				}
 				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
 					if (element != null) {

@@ -73,6 +73,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	public String getPluralName() {
 		if (this == LIVINGENTITY)
 			return "livingentities";
+		else if (this == SPECIALENTITY)
+			return "specialentities";
 
 		return registryName.toLowerCase(Locale.ENGLISH) + "s";
 	}
@@ -172,6 +174,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> PROCEDURE;
 	public static ModElementType<?> PROJECTILE;
 	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> SPECIALENTITY;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TOOL;

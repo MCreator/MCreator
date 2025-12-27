@@ -39,6 +39,7 @@
           "move": "animation.humanoid.move",
           "riding.arms": "animation.humanoid.riding.arms",
           "riding.legs": "animation.humanoid.riding.legs",
+          "riding.body": "animation.humanoid.riding.body",
           "holding": "animation.humanoid.holding",
           "brandish_spear": "animation.humanoid.brandish_spear",
           "charging": "animation.humanoid.charging",

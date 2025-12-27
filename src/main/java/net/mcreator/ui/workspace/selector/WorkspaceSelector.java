@@ -288,7 +288,30 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JScrollPane recentsScrollPane = new JScrollPane(recentsList);
 		recentsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		recentPanel.add("recents", recentsScrollPane);
+		JLabel userTip = L10N.label("dialog.workspace_selector.recent_workspaces");
+		userTip.setOpaque(true);
+		ComponentUtils.deriveFont(userTip, 11);
+		userTip.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 0));
+		userTip.setForeground(Theme.current().getAltBackgroundColor());
+		userTip.setBackground(Theme.current().getSecondAltBackgroundColor());
+
+		recentsList.setBorder(BorderFactory.createEmptyBorder(0, 0, 17, 0));
+
+		JLayeredPane layered = new JLayeredPane();
+		layered.setLayout(null);
+		layered.add(recentsScrollPane, JLayeredPane.DEFAULT_LAYER);
+		layered.add(userTip, JLayeredPane.PALETTE_LAYER);
+		layered.addComponentListener(new ComponentAdapter() {
+			@Override public void componentResized(ComponentEvent e) {
+				int w = layered.getWidth();
+				int h = layered.getHeight();
+				int fh = userTip.getPreferredSize().height;
+				recentsScrollPane.setBounds(0, 0, w, h);
+				userTip.setBounds(0, h - fh, w - 10, fh);
+			}
+		});
+
+		recentPanel.add("recents", layered);
 		recentPanel.add("norecentsloaded", PanelUtils.totalCenterInPanel(norecentsloaded));
 		recentPanel.add("norecents", PanelUtils.totalCenterInPanel(norecents));
 

@@ -1,0 +1,1 @@
+Ha engedélyezve van, az elem textúrája hasonlóan ragyogó hatást kölcsönöz, mint az elvarázsolt elemek.

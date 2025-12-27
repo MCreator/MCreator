@@ -4,7 +4,6 @@ function registerSimpleMutatorContainer(blockId, localizationKey, colour) {
         init: function () {
             this.appendDummyInput().appendField(javabridge.t(localizationKey));
             this.appendStatementInput('STACK');
-            this.contextMenu = false;
             this.setColour(colour);
         }
     };
@@ -17,7 +16,6 @@ function registerSimpleMutatorInput(blockId, localizationKey, colour, hasFields)
             this.appendDummyInput().appendField(javabridge.t(localizationKey));
             this.setPreviousStatement(true);
             this.setNextStatement(true);
-            this.contextMenu = false;
             this.setColour(colour);
             if (hasFields)
                 this.fieldValues_ = [];
@@ -172,7 +170,6 @@ Blockly.Blocks['enchantment_effects_start'] = {
 
 Blockly.Blocks['mcitem_allblocks'] = {
     init: function () {
-        let block = this;
         this.appendDummyInput()
             .appendField(new FieldMCItemSelector("allblocks"), "value")
             .appendField(new Blockly.FieldImage("./res/b.png", 8, 36));
@@ -185,7 +182,6 @@ Blockly.Blocks['mcitem_allblocks'] = {
 
 Blockly.Blocks['mcitem_all'] = {
     init: function () {
-        let block = this;
         this.appendDummyInput()
             .appendField(new FieldMCItemSelector("all"), "value")
             .appendField(new Blockly.FieldImage("./res/bi.png", 8, 36));

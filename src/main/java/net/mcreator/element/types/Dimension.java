@@ -41,9 +41,11 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider {
+		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
+		IMultipleNames {
 
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
+	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
 	public String worldGenType;
 
@@ -123,6 +125,7 @@ import java.util.List;
 		this.skyType = "NONE";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
+		this.biomesInDimensionCaves = new ArrayList<>();
 	}
 
 	public boolean hasIgniter() {
@@ -137,7 +140,7 @@ import java.util.List;
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
 		retval.add(mainFillerBlock.getUnmappedValue());
-		for (BiomeEntry biomeEntry : biomesInDimension) {
+		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				ModElement biomeElement = getModElement().getWorkspace()
 						.getModElementByName(biomeEntry.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, ""));
@@ -151,6 +154,13 @@ import java.util.List;
 			}
 		}
 		return retval;
+	}
+
+	public List<BiomeEntry> getUsedBiomes() {
+		List<BiomeEntry> usedBiomes = new ArrayList<>();
+		usedBiomes.addAll(biomesInDimension);
+		usedBiomes.addAll(biomesInDimensionCaves);
+		return usedBiomes;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -203,6 +213,13 @@ import java.util.List;
 	@Override public List<MItemBlock> poiBlocks() {
 		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
 				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		if (enablePortal)
+			return List.of(getModElement().getName() + "Portal");
+		else
+			return Collections.emptyList();
 	}
 
 }

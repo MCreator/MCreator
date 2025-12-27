@@ -1,3 +1,1 @@
-Cette liste défini sur quels blocs l'outil peut intérragir.
-
-Ce paramètre est utilisé seulement pour le type d'outil spécial.
+Cette liste définie quels blocs sur lequel cet outil peut être utilisé.

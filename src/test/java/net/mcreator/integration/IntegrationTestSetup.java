@@ -47,24 +47,44 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import javax.annotation.Nonnull;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
-public class IntegrationTestSetup implements BeforeAllCallback {
+public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallback {
 
-	private static final String STORE_KEY = IntegrationTestSetup.class.getName();
+	private static final String SETUP_DONE_FLAG_KEY = IntegrationTestSetup.class.getName();
 
 	@Override public synchronized void beforeAll(ExtensionContext context) throws Exception {
-		Object value = context.getRoot().getStore(GLOBAL).get(STORE_KEY);
+		Object value = context.getRoot().getStore(GLOBAL).get(SETUP_DONE_FLAG_KEY);
 		if (value == null) {
-			context.getRoot().getStore(GLOBAL).put(STORE_KEY, this);
+			context.getRoot().getStore(GLOBAL).put(SETUP_DONE_FLAG_KEY, this);
 			setup();
+		}
+	}
+
+	private static Thread junitThread = null;
+	private static boolean failedInOtherThread = false;
+
+	@Override public void afterEach(@Nonnull ExtensionContext context) {
+		if (failedInOtherThread) {
+			Assertions.fail("Tests failed in another thread, see logs for details");
+			failedInOtherThread = false; // clear flag if we intend to fail more
+		}
+	}
+
+	private static void failTests() {
+		if (junitThread != Thread.currentThread()) {
+			failedInOtherThread = true;
+		} else {
+			Assertions.fail();
 		}
 	}
 
@@ -74,7 +94,8 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * ******************************/
 		LoggingSystem.init();
 
-		TestUtil.enterTestingMode(Assertions::fail);
+		junitThread = Thread.currentThread();
+		TestUtil.enterTestingMode(IntegrationTestSetup::failTests);
 
 		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
