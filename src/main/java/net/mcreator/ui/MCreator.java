@@ -157,12 +157,12 @@ public abstract class MCreator extends MCreatorFrame {
 					workspaceFileBrowser);
 		}
 
-		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
-
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA) {
 			bottomDockRegion.addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.runtask"), debugPanel);
 		}
+
+		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
 		// Hide some docks by default until they are relevant
 		bottomDockRegion.setToggleEnabled(DOCK_DEBUGGER, false);
@@ -187,7 +187,8 @@ public abstract class MCreator extends MCreatorFrame {
 			}
 		});
 
-		// TODO: recall dock states
+		CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
+		CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState, bottomDockRegion);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
@@ -325,8 +326,8 @@ public abstract class MCreator extends MCreatorFrame {
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 
-			// TODO: store dock states
-			// workspace.getWorkspaceUserSettings().projectBrowserSplitPos = splitPane.getDividerLocation();
+			workspace.getWorkspaceUserSettings().bottomDockState = CollapsibleDockPanel.State.get(bottomDockRegion);
+			workspace.getWorkspaceUserSettings().leftDockState = CollapsibleDockPanel.State.get(leftDockRegion);
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)

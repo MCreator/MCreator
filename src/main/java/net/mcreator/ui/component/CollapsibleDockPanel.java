@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 		dockStrip.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 1));
 		dockStrip.putClientProperty("FlatLaf.style", "hoverButtonGroupBackground: #00000000");
 
-		putClientProperty("SplitPaneDivider.gripDotCount", 0);
+		putClientProperty("FlatLaf.style", "gripDotCount: 0");
 
 		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT) {
 			setLeftComponent(dockPanel);
@@ -74,6 +75,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 		setResizeWeight(0);
 
 		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
+		ui.setDividerColor(Theme.current().getAltBackgroundColor());
 		setUI(ui);
 
 		buttonGroup = new ButtonGroup();
@@ -89,6 +91,12 @@ public class CollapsibleDockPanel extends JSplitPane {
 				}
 			});
 		}
+
+		addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, e -> {
+			if (currentDockID != null) {
+				idToLastSize.put(currentDockID, getCurrentDockSize());
+			}
+		});
 
 		clearSelection();
 	}
@@ -128,10 +136,12 @@ public class CollapsibleDockPanel extends JSplitPane {
 	public void setDockVisibility(String id, boolean visible) {
 		if (idToButton.containsKey(id)) {
 			AbstractButton button = idToButton.get(id);
-			boolean currentState = button.isSelected();
-			if (currentState != visible) {
-				button.setSelected(visible);
-				handleToggle(button);
+			if (button.isEnabled()) {
+				boolean currentState = button.isSelected();
+				if (currentState != visible) {
+					button.setSelected(visible);
+					handleToggle(button);
+				}
 			}
 		}
 	}
@@ -173,7 +183,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 			currentDockID = affectedDockID;
 
 			cardLayout.show(dockPanel, affectedDockID);
-			setDividerSize(5);
+			setDividerSize(2);
 			setDividerLocation(getExpandedLocation(affectedDockID));
 
 			if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
@@ -190,12 +200,14 @@ public class CollapsibleDockPanel extends JSplitPane {
 	}
 
 	private int getExpandedLocation(String id) {
-		int size = idToLastSize.get(id);
+		int requestedSize = idToLastSize.getOrDefault(id, 300);
+		int totalAvailable = getTotalSize();
 
-		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT)
-			return size;
+		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT) {
+			return requestedSize;
+		}
 
-		return getTotalSize() - size;
+		return Math.max(0, totalAvailable - requestedSize);
 	}
 
 	private int getCollapsedLocation() {
@@ -221,6 +233,24 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 	public enum DockPosition {
 		UP, DOWN, LEFT, RIGHT
+	}
+
+	public record State(String expandedDock, Map<String, Integer> dockSizes) {
+
+		public static State get(CollapsibleDockPanel collapsibleDockPanel) {
+			return new State(collapsibleDockPanel.currentDockID, new HashMap<>(collapsibleDockPanel.idToLastSize));
+		}
+
+		public static void apply(@Nullable State state, CollapsibleDockPanel collapsibleDockPanel) {
+			if (state == null)
+				return;
+
+			collapsibleDockPanel.idToLastSize.putAll(state.dockSizes);
+			if (state.expandedDock != null) {
+				collapsibleDockPanel.setDockVisibility(state.expandedDock, true);
+			}
+		}
+
 	}
 
 }
