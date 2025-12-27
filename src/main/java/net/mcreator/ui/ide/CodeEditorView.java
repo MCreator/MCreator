@@ -91,7 +91,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private final JScrollPane treeSP = new JScrollPane();
 	private AbstractSourceTree tree;
-	public ChangeListener cl;
+	public ChangeListener changeListener;
 
 	private final RTextScrollPane sp;
 
@@ -197,16 +197,16 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			@Override public void insertUpdate(DocumentEvent documentEvent) {
 				if (!changed && !readOnly) {
 					changed = true;
-					if (cl != null)
-						cl.stateChanged(new ChangeEvent(this));
+					if (changeListener != null)
+						changeListener.stateChanged(new ChangeEvent(this));
 				}
 			}
 
 			@Override public void removeUpdate(DocumentEvent documentEvent) {
 				if (!changed && !readOnly) {
 					changed = true;
-					if (cl != null)
-						cl.stateChanged(new ChangeEvent(this));
+					if (changeListener != null)
+						changeListener.stateChanged(new ChangeEvent(this));
 				}
 
 			}
@@ -561,7 +561,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public void setChangeListener(ChangeListener changeListener) {
-		this.cl = changeListener;
+		this.changeListener = changeListener;
 	}
 
 	public void reformatTheCodeOnly() {
@@ -601,8 +601,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		savingMCreatorModElementWarning();
 		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
-		if (cl != null)
-			cl.stateChanged(new ChangeEvent(this));
+		if (changeListener != null)
+			changeListener.stateChanged(new ChangeEvent(this));
 	}
 
 	public void centerLineInScrollPane() {
@@ -656,7 +656,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	@Override public ViewBase showView() {
-		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
+		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
 				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),
@@ -671,20 +671,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					return res == 1;
 			}
 			return true;
-		});
-		if (readOnly)
-			fileTab.setActiveColor(Theme.current().getAltForegroundColor());
-
-		setChangeListener(changeEvent -> {
-			if (!readOnly) {
-				if (changed) {
-					fileTab.setActiveColor(Theme.current().getForegroundColor());
-					fileTab.setInactiveColor(Theme.current().getAltForegroundColor());
-				} else {
-					fileTab.setActiveColor(Theme.current().getInterfaceAccentColor());
-					fileTab.setInactiveColor(Theme.current().getAltBackgroundColor());
-				}
-			}
 		});
 
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);
