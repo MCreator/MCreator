@@ -1,5 +1,6 @@
 A mélység paraméter nagyjából szabályozza azt a magasságot, amelyen a biom generálódik.
-Csak a (felszíni) barlangi biomokra vonatkozik.
+Csak a (felszíni) barlangi biomokra és azokra az egyéni dimenziókra vonatkozik, ahol ez a biom
+barlangi biomként van megadva.
 
 A felszíni biomák esetében mindig 0 mélységértéket használunk, és ezt a paramétert figyelmen kívül hagyjuk.
 
