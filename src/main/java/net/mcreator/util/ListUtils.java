@@ -40,8 +40,8 @@ public class ListUtils {
 		return retval;
 	}
 
-	public static <T> List<T> intersect(Collection<T> a, Collection<T> b) {
-		List<T> retval = new ArrayList<>(a);
+	public static <T> Collection<T> intersect(Collection<T> a, Collection<T> b) {
+		Set<T> retval = new HashSet<>(a);
 		retval.retainAll(b); // only retain a elements that are in b too
 		return retval;
 	}
