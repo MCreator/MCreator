@@ -24,8 +24,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Enchantment;
-import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -60,13 +58,6 @@ public class GTEnchantmentEffectBlocks {
 					"TestEnchantmentEffectBlock" + effectBlock.getMachineName(), ModElementType.ENCHANTMENT);
 
 			String testXML = effectBlock.getToolboxTestXML();
-
-			// Set block selectors to some value
-			testXML = testXML.replace(
-					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block>",
-					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\">"
-							+ TestWorkspaceDataProvider.getRandomMCItem(random,
-							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
 			testXML = testXML.replace("<block type=\"" + effectBlock.getMachineName() + "\">",
 					"<block type=\"" + effectBlock.getMachineName() + "\">" + additionalXML);
