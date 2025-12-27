@@ -112,10 +112,19 @@ package ${package}.client.particle;
 	</#if>
 
 	<#if hasProcedure(data.rotationProvider)>
-	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
+	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+		Level world = this.level;
+		double x = Mth.lerp(partialTicks, this.xo, this.x);
+		double y = Mth.lerp(partialTicks, this.yo, this.y);
+		double z = Mth.lerp(partialTicks, this.zo, this.z);
+		double speedX = this.xd;
+		double speedY = this.yd;
+		double speedZ = this.zd;
+		float angularVelocity = this.angularVelocity;
+		float angularAcceleration = this.angularAcceleration;
 		Vec3 vec = <@procedureOBJToConditionCode data.rotationProvider/>;
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
-		this.renderRotatedQuad(buffer, camera, tilt, ageTicks);
+		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
 	}
 	</#if>
 
