@@ -113,10 +113,11 @@ package ${package}.client.particle;
 
 	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
-		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).x()));
-		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).y()));
-		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).z()));
-		Quaternionf tilt = spinX.mul(spinY.mul(spinZ));
+		Vec3 vec = <@procedureOBJToConditionCode data.rotationProvider/>
+		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(vec.x()));
+		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(vec.y()));
+		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians(vec.z()));
+		Quaternionf tilt = spinZ.mul(spinY.mul(spinX));
 		this.renderRotatedQuad(buffer, camera, tilt, ageTicks);
 	}
 	</#if>
