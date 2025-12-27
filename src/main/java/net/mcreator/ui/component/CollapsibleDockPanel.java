@@ -74,7 +74,6 @@ public class CollapsibleDockPanel extends JSplitPane {
 		setResizeWeight(0);
 
 		OpaqueFlatSplitPaneUI ui = new OpaqueFlatSplitPaneUI();
-		ui.setDividerColor(Theme.current().getAltBackgroundColor());
 		setUI(ui);
 
 		buttonGroup = new ButtonGroup();
@@ -174,7 +173,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 			currentDockID = affectedDockID;
 
 			cardLayout.show(dockPanel, affectedDockID);
-			setDividerSize(3);
+			setDividerSize(5);
 			setDividerLocation(getExpandedLocation(affectedDockID));
 
 			if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
