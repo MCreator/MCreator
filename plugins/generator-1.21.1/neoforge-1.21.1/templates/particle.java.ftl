@@ -113,18 +113,26 @@ package ${package}.client.particle;
 
 	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
-		Level world = this.level;
+		Quaternionf flip = new Quaternionf().rotateY((float)Math.PI);
 		double x = Mth.lerp(partialTicks, this.xo, this.x);
 		double y = Mth.lerp(partialTicks, this.yo, this.y);
 		double z = Mth.lerp(partialTicks, this.zo, this.z);
-		double speedX = this.xd;
-		double speedY = this.yd;
-		double speedZ = this.zd;
-		float angularVelocity = this.angularVelocity;
-		float angularAcceleration = this.angularAcceleration;
-		Vec3 vec = <@procedureOBJToConditionCode data.rotationProvider/>;
+		Vec3 vec = <@procedureCode data.rotationProvider, {
+			"world": "this.level",
+			"x": "x",
+			"y": "y",
+			"z": "z",
+			"speedX": "this.xd",
+			"speedY": "this.yd",
+			"speedZ": "this.zd",
+			"angularVelocity": "this.angularVelocity",
+			"angularAcceleration": "this.angularAcceleration",
+			"partialTicks": "partialTicks"
+		}/>;
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
+		Quaternionf flippedTilt = new Quaternionf(tilt).mul(flip);
 		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks); // render a flipped face because by default only a single side renders this makes particle visible from all angles
 	}
 	</#if>
 
