@@ -58,7 +58,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner lightEmission = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final MCItemHolder loot = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
@@ -118,7 +118,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/custom_drop"),
 				L10N.label("elementgui.common.custom_drop")));
-		basicProperties.add(PanelUtils.centerInPanel(loot));
+		basicProperties.add(PanelUtils.centerInPanel(customDrop));
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/drop_amount"),
 				L10N.label("elementgui.common.drop_amount")));
@@ -205,7 +205,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		resistance.setValue(block.resistance);
 		soundOnStep.setSelectedItem(block.soundOnStep);
 		lightEmission.setValue(block.lightEmission);
-		loot.setBlock(block.loot);
+		customDrop.setBlock(block.customDrop);
 		dropAmount.setValue(block.dropAmount);
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		friction.setValue(block.friction);
@@ -235,7 +235,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.name = name.getText();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
-		block.loot = loot.getBlock();
+		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.lightEmission = (int) lightEmission.getValue();

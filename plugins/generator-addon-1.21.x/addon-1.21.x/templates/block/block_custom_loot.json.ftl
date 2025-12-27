@@ -7,7 +7,7 @@
         "entries": [
           {
             "type": "item",
-            "name": "${mappedMCItemToRegistryNameNoTags(data.loot)}",
+            "name": "${mappedMCItemToRegistryNameNoTags(data.customDrop)}",
             "weight": 1,
             "functions": [
               {
@@ -17,10 +17,10 @@
                   "max": ${data.dropAmount}
                 }
               }
-              <#if hasMetadata(data.loot)>
+              <#if hasMetadata(data.customDrop)>
               ,{
                 "function": "set_data",
-                "data": ${getMappedMCItemMetadata(data.loot)}
+                "data": ${getMappedMCItemMetadata(data.customDrop)}
               }
               </#if>
             ]

@@ -51,7 +51,7 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.textureTop = block.textureTop;
 			beblock.hardness = block.hardness;
 			beblock.resistance = block.resistance;
-			beblock.loot = block.customDrop;
+			beblock.customDrop = block.customDrop;
 			beblock.dropAmount = block.dropAmount;
 			if (beblock.dropAmount > 64)
 				beblock.dropAmount = 64; // Current Bedrock limit

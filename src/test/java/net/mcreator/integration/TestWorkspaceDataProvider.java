@@ -1734,7 +1734,7 @@ public class TestWorkspaceDataProvider {
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 			block.hardness = 2.3;
 			block.resistance = 3.1;
-			block.loot = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			block.dropAmount = 3;
 			block.flammability = 5;
 			block.flammableDestroyChance = 12;

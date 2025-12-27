@@ -45,7 +45,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 
 	public String name;
-	public MItemBlock loot;
+	public MItemBlock customDrop;
 	public int dropAmount;
 	public double friction;
 	public StepSound soundOnStep;
@@ -72,7 +72,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	public boolean hasCustomDrop() {
-		return !loot.isEmpty();
+		return !customDrop.isEmpty();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
