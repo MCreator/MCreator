@@ -28,6 +28,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -59,8 +60,9 @@ public class StateEditorDialog {
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 		for (PropertyData<?> data : properties) {
 			Object value = stateMap != null ? stateMap.get(data) : null;
-			StatePart part = new StatePart(data.getName(), data.getClass() == PropertyData.IntegerType.class
-					|| data.getClass() == PropertyData.NumberType.class ? numberMatchSymbol.getSymbol() : "=",
+			StatePart part = new StatePart(BlockStatePropertyUtils.propertyRegistryName(data),
+					data.getClass() == PropertyData.IntegerType.class
+							|| data.getClass() == PropertyData.NumberType.class ? numberMatchSymbol.getSymbol() : "=",
 					data.getComponent(mcreator, value));
 			part.useEntry.setSelected(value != null);
 			entryMap.put(data, part);

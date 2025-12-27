@@ -37,4 +37,19 @@ public abstract class OptionPaneValidator implements Validator {
 		return this.validate(validatedComponent);
 	}
 
+	public static abstract class Cached extends OptionPaneValidator {
+
+		private Validator validator = null;
+
+		@Override public ValidationResult validate(JComponent component) {
+			if (validator == null)
+				validator = createValidator(component);
+
+			return validator.validate();
+		}
+
+		public abstract Validator createValidator(JComponent component);
+
+	}
+
 }

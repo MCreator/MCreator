@@ -97,6 +97,10 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 					register("${item.getModElement().getRegistryName()}_spawn_egg",
 						properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties));
+			<#elseif item.getModElement().getTypeString() == "specialentity">
+				${item.getModElement().getRegistryNameUpper()} =
+					register("${item.getModElement().getRegistryName()}",
+						properties -> new BoatItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties.stacksTo(1)));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);

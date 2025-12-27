@@ -4,7 +4,7 @@
   "children": {
     "part1": {
       "loader": "neoforge:obj",
-      "render_type": "${data.getRenderType()}",
+      "render_type": "${(parent???then(parent, data)).getRenderType()}",
       "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
       "emissive_ambient": true
       <#if data.getTextureMap()??>,
@@ -17,7 +17,7 @@
     }
   },
   "textures": {
-    "particle": "${data.getParticleTexture().format("%s:block/%s")}"
+    "particle": "${(parent???then(data.getParticleTexture(parent.getParticleTexture()), data.getParticleTexture())).format("%s:block/%s")}"
   },
-  "render_type": "${data.getRenderType()}"
+  "render_type": "${(parent???then(parent, data)).getRenderType()}"
 }
