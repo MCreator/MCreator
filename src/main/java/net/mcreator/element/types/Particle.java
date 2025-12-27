@@ -61,8 +61,6 @@ import java.io.IOException;
 	public boolean canCollide;
 	public boolean alwaysShow;
 	public boolean emissiveRendering;
-
-	public boolean lockRotation;
 	public Procedure rotationProvider;
 
 	public String renderType;

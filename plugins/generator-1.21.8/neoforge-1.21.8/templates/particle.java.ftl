@@ -111,11 +111,11 @@ public class ${name}Particle extends TextureSheetParticle {
 	}
 	</#if>
 
-	<#if data.lockRotation>
+	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float ageTicks) {
-		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians(<#if hasProcedure(data.rotationProvider)>(<@procedureOBJToConditionCode data.rotationProvider/>).x()<#else>90.0</#if>));
-		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians(<#if hasProcedure(data.rotationProvider)>(<@procedureOBJToConditionCode data.rotationProvider/>).y()<#else>0.0</#if>));
-		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians(<#if hasProcedure(data.rotationProvider)>(<@procedureOBJToConditionCode data.rotationProvider/>).z()<#else>0.0</#if>));
+		Quaternionf spinX = new Quaternionf().rotationX((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).x()));
+		Quaternionf spinY = new Quaternionf().rotationY((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).y()));
+		Quaternionf spinZ = new Quaternionf().rotationZ((float) Math.toRadians((<@procedureOBJToConditionCode data.rotationProvider/>).z()));
 		Quaternionf tilt = spinX.mul(spinY.mul(spinZ));
 		this.renderRotatedQuad(buffer, camera, tilt, ageTicks);
 	}
