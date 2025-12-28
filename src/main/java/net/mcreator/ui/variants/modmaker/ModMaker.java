@@ -75,7 +75,7 @@ public final class ModMaker extends MCreator {
 			}
 		});
 
-		getBottomDockRegion().addDock(DOCK_CODE_VIEWER, 360, L10N.t("dock.code_viewer"), UIRES.get("16px.dock_inspect"),
+		getBottomDockRegion().addDock(DOCK_CODE_VIEWER, 300, L10N.t("dock.code_viewer"), UIRES.get("16px.dock_inspect"),
 				codeViewer);
 
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
