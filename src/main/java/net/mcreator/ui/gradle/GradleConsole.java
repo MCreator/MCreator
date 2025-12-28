@@ -46,6 +46,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -450,7 +451,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 			if (optionalDebugClient != null) {
 				this.debugClient = optionalDebugClient;
 				this.debugClient.init(environment, cancellationSource.token());
-				ref.getDebugPanel().startDebug(this.debugClient);
+				if (ref instanceof ModMaker modMaker)
+					modMaker.getDebugPanel().startDebug(this.debugClient);
 			} else {
 				this.debugClient = null;
 			}
@@ -753,7 +755,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 				MCREvent.event(new WorkspaceTaskFinishedEvent.TaskCompleted(ref, mcreatorGradleStatus));
 
 				if (debugClient != null) {
-					ref.getDebugPanel().stopDebug();
+					if (ref instanceof ModMaker modMaker)
+						modMaker.getDebugPanel().stopDebug();
 					debugClient.stop();
 					debugClient = null;
 				}

@@ -76,8 +76,6 @@ public abstract class MCreator extends MCreatorFrame {
 	private final MainMenuBar menuBar;
 	private final MainToolBar toolBar;
 
-	private final DebugPanel debugPanel;
-
 	public final MCreatorTabs.Tab workspaceTab;
 
 	private final boolean hasProjectBrowser;
@@ -121,8 +119,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 		GlobalSearchListener.install(this, () -> mcreatorTabs.getCurrentTab().getContent());
 
-		debugPanel = new DebugPanel(this);
-
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", true,
@@ -157,15 +153,7 @@ public abstract class MCreator extends MCreatorFrame {
 					workspaceFileBrowser);
 		}
 
-		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
-				== GeneratorFlavor.BaseLanguage.JAVA) {
-			bottomDockRegion.addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.runtask"), debugPanel);
-		}
-
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
-
-		// Hide some docks by default until they are relevant
-		bottomDockRegion.setToggleEnabled(DOCK_DEBUGGER, false);
 
 		JToolBar outerStrip = new JToolBar(JToolBar.VERTICAL);
 		outerStrip.setFloatable(false);
@@ -394,10 +382,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public MCreatorTabs getTabs() {
 		return mcreatorTabs;
-	}
-
-	public DebugPanel getDebugPanel() {
-		return debugPanel;
 	}
 
 	public MainMenuBar getMainMenuBar() {

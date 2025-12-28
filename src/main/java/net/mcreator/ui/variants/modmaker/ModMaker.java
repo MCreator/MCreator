@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.variants.modmaker;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.ui.MCreator;
@@ -26,6 +27,9 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.MainMenuBar;
 import net.mcreator.ui.MainToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.debug.DebugPanel;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
@@ -39,8 +43,12 @@ public final class ModMaker extends MCreator {
 
 	private WorkspacePanel workspacePanel;
 
+	private final DebugPanel debugPanel;
+
 	public ModMaker(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		super(application, workspace, true);
+
+		this.debugPanel = new DebugPanel(this);
 
 		new ModMakerDropTarget(this);
 
@@ -53,6 +61,15 @@ public final class ModMaker extends MCreator {
 				workspacePanel.enableRemoving();
 			}
 		});
+
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA) {
+			getBottomDockRegion().addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.runtask"),
+					debugPanel);
+
+			// Hide some docks by default until they are relevant
+			getBottomDockRegion().setToggleEnabled(DOCK_DEBUGGER, false);
+		}
 	}
 
 	@Override public MainMenuBar createMenuBar() {
@@ -82,6 +99,10 @@ public final class ModMaker extends MCreator {
 				workspacePanelTextures.attachGeneratorFileWatcher();
 			}
 		}
+	}
+
+	public DebugPanel getDebugPanel() {
+		return debugPanel;
 	}
 
 }
