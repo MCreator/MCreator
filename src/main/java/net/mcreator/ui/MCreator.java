@@ -139,7 +139,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 		// TODO: correct icons
 
-		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.runtask"),
+		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
@@ -171,7 +171,7 @@ public abstract class MCreator extends MCreatorFrame {
 	}
 
 	@Nonnull private JToggleButton createConsoleButton() {
-		JToggleButton consoleButton = new JToggleButton(UIRES.get("16px.runtask")) {
+		JToggleButton consoleButton = new JToggleButton(UIRES.get("16px.dock_console")) {
 
 			@Override protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
