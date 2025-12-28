@@ -49,6 +49,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
 	private NumberProcedureSelector scale;
+	private final JCheckBox fixedScale = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner gravity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
@@ -93,6 +94,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		canCollide.setSelected(true);
 
+		fixedScale.setOpaque(false);
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
 		animate.setOpaque(false);
@@ -105,7 +107,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(14, 2, 2, 2));
 		spo2.setOpaque(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/animated_texture"),
@@ -127,6 +129,10 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/scale"),
 				L10N.label("elementgui.particle.visual_scale")));
 		spo2.add(scale);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("particle/fixed_scale"),
+				L10N.label("elementgui.particle.fixed_scale")));
+		spo2.add(fixedScale);
 
 		spo2.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/width"), L10N.label("elementgui.particle.bbox")));
@@ -184,6 +190,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		width.setValue(particle.width);
 		height.setValue(particle.height);
 		scale.setSelectedProcedure(particle.scale);
+		fixedScale.setSelected(particle.fixedScale);
 		gravity.setValue(particle.gravity);
 		speedFactor.setValue(particle.speedFactor);
 		frameDuration.setValue(particle.frameDuration);
@@ -206,6 +213,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = scale.getSelectedProcedure();
+		particle.fixedScale = fixedScale.isSelected();
 		particle.gravity = (double) gravity.getValue();
 		particle.speedFactor = (double) speedFactor.getValue();
 		particle.maxAge = (int) maxAge.getValue();
