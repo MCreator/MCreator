@@ -27,9 +27,6 @@ base_templates:
   - template: manifest_resourcepack.json.ftl
     writer: json
     name: "@RESROOT/manifest.json"
-  - template: item_texture.json.ftl
-    writer: json
-    name: "@RESROOT/textures/item_texture.json"
   - template: resourcepack/sound_definitions.json.ftl
     writer: json
     name: "@RESROOT/sounds/sound_definitions.json"

@@ -41,6 +41,8 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	protected final JPanel parent;
 	protected final List<? extends JSimpleListEntry<T>> entryList;
 
+	private final JComponent container;
+
 	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList) {
 		this.parent = parent;
 		this.entryList = entryList;
@@ -48,7 +50,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		setBackground((Theme.current().getAltBackgroundColor()).darker());
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		JComponent container = PanelUtils.expandHorizontally(this);
+		this.container = PanelUtils.expandHorizontally(this);
 
 		line.setOpaque(false);
 
@@ -65,7 +67,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 				else if (thisIndex == entryList.size()) // This entry was the last one
 					entryList.getLast().updateMoveButtons();
 			}
-			parent.remove(container);
+			parent.remove(getContainerPanel());
 			parent.revalidate();
 			parent.repaint();
 			entryRemovedByUserHandler();
@@ -107,6 +109,10 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 
 		parent.revalidate();
 		parent.repaint();
+	}
+
+	public JComponent getContainerPanel() {
+		return container;
 	}
 
 	private static void swapEntries(JPanel parent, List<? extends JSimpleListEntry<?>> entryList, int thisIndex,

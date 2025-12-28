@@ -28,6 +28,7 @@ import_formatter:
     Items: net.minecraft.world.item
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
+    ImmutableMap: com.google.common.collect
     Iterables: com.google.common.collect
     Attributes: net.minecraft.world.entity.ai.attributes
     Keyframe: net.minecraft.client.animation
@@ -90,6 +91,7 @@ base_templates:
     name: "@RESROOT/META-INF/enumextensions.json"
     condition_any:
       - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
@@ -98,6 +100,11 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+    condition_any:
+      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
 
 sources_setup_tasks:
   - task: copy_models

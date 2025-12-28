@@ -97,6 +97,16 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	</#list>
 
+	<#assign defaultStateCustomShape = data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign statesWithCustomShape = data.getDefinedStatesWithCustomShape()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+		<#else>
+		private final ImmutableMap<BlockState, VoxelShape> shapes = this.makeShapes();
+		</#if>
+	</#if>
+
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(properties -> new ${name}Block());
 
@@ -233,6 +243,40 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	}
 
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode != 0 || statesWithCustomShape?has_content>
+		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
+			return this.getShapeForEachState(state -> {
+				<#list statesWithCustomShape as state>
+				<#if !state?is_first>else </#if>if (
+    				<#list state.stateMap.keySet() as property>
+						<#assign value = state.stateMap.get(property)>
+						<#if property.getClass().getSimpleName().equals("StringType")>
+							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+						</#if>
+						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					</#list>
+				) {
+					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+				}
+				</#list>
+				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+			});
+		}
+		</#if>
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+			<#if offset>Vec3 offset = state.getOffset(world, pos);</#if>
+
+			<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			<#else><#-- shape is state dependent -->
+			return shapes.get(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			</#if>
+		}
+	</#if>
+
 	<#if data.renderType() == 4>
     @Override protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
@@ -280,17 +324,6 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	<#if data.hasTransparency && !data.blockBase?has_content>
 	@Override public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return Shapes.empty();
-	}
-	</#if>
-
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
-		</#if>
 	}
 	</#if>
 
@@ -745,6 +778,10 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			}
 
 			@Override public String getSerializedName() {
+				return this.name;
+			}
+
+			@Override public String toString() {
 				return this.name;
 			}
 		}
