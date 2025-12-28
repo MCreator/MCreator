@@ -124,6 +124,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 		toggleButton.addActionListener(e -> handleToggle(toggleButton));
 
 		dockStrip.add(toggleButton);
+		dockStrip.add(Box.createVerticalStrut(4));
 
 		return toggleButton;
 	}
