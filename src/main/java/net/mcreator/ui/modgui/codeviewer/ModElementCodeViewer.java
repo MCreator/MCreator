@@ -70,7 +70,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 		addComponentListener(new ComponentAdapter() {
 			@Override public void componentShown(ComponentEvent e) {
-				super.componentShown(e);
 				reload();
 			}
 		});

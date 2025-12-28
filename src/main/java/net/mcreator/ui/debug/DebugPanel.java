@@ -57,6 +57,7 @@ public class DebugPanel extends JPanel {
 
 	public static final Color DEBUG_COLOR = new Color(239, 50, 61);
 
+	private static final String WAITING_FOR_DEBUG_SESSION = "waiting_for_debug_session";
 	private static final String WAITING_TO_CONNECT = "waiting_to_connect";
 	private static final String DEBUGGING = "debugging";
 
@@ -69,6 +70,8 @@ public class DebugPanel extends JPanel {
 	private final DebugThreadView debugThreadView = new DebugThreadView();
 
 	private final DebugFramesView debugFramesView = new DebugFramesView();
+
+	private final JButton stop = new JButton(UIRES.get("16px.stop"));
 
 	private final JButton resume = new JButton(UIRES.get("16px.debug_resume"));
 	private final JButton stepOver = new JButton(UIRES.get("16px.debug_step_over"));
@@ -95,6 +98,10 @@ public class DebugPanel extends JPanel {
 		setPreferredSize(new Dimension(1400, 280));
 
 		markersParent.setOpaque(false);
+
+		JPanel waitingForDebugSession = new JPanel(new BorderLayout());
+		waitingForDebugSession.add("Center", ComponentUtils.bigCenteredText("debug.waiting_for_debug"));
+		add(waitingForDebugSession, WAITING_FOR_DEBUG_SESSION);
 
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
@@ -175,7 +182,6 @@ public class DebugPanel extends JPanel {
 		});
 		bar.add(resume);
 
-		JButton stop = new JButton(UIRES.get("16px.stop"));
 		stop.setToolTipText(L10N.t("debug.stop"));
 		stop.addActionListener(e -> mcreator.getGradleConsole().cancelTask());
 		bar.add(stop);
@@ -227,12 +233,20 @@ public class DebugPanel extends JPanel {
 		});
 		bar.add(stepOut);
 
+		// Disable step actions at start
+		markVMResumed();
+
+		// Also disable stop
+		stop.setEnabled(false);
+
 		debugging.add("South", new JEmptyBox(2, 2));
 
 		add(debugging, DEBUGGING);
 	}
 
 	public void startDebug(@Nonnull JVMDebugClient debugClient) {
+		stop.setEnabled(true);
+
 		this.debugClient = debugClient;
 		this.debugClient.addEventListener((vm, eventSet, resumed) -> {
 			if (!resumed) {
@@ -314,7 +328,6 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
-		mcreator.getBottomDockRegion().setToggleEnabled(ModMaker.DOCK_DEBUGGER, true);
 		mcreator.getBottomDockRegion().setDockVisibility(ModMaker.DOCK_DEBUGGER, true);
 	}
 
@@ -327,8 +340,11 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
-		mcreator.getBottomDockRegion().setToggleEnabled(ModMaker.DOCK_DEBUGGER, false);
+		stop.setEnabled(false);
 		this.debugClient = null;
+
+		// In case debug was stopped in the WAITING state, we switch to DEBUGGING here to show the right panel
+		cardLayout.show(this, DEBUGGING);
 	}
 
 	private void initiateDebugSession() {

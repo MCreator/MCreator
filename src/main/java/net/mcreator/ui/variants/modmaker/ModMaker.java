@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
@@ -81,9 +82,6 @@ public final class ModMaker extends MCreator {
 				== GeneratorFlavor.BaseLanguage.JAVA) {
 			getBottomDockRegion().addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.runtask"),
 					debugPanel);
-
-			// Hide some docks by default until they are relevant
-			getBottomDockRegion().setToggleEnabled(DOCK_DEBUGGER, false);
 		}
 	}
 
