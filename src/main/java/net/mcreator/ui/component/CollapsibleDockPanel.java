@@ -136,7 +136,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 	public void setDockVisibility(String id, boolean visible) {
 		if (idToButton.containsKey(id)) {
 			AbstractButton button = idToButton.get(id);
-			if (button.isEnabled()) {
+			if (button.isEnabled() || !visible) {
 				boolean currentState = button.isSelected();
 				if (currentState != visible) {
 					button.setSelected(visible);
@@ -150,8 +150,8 @@ public class CollapsibleDockPanel extends JSplitPane {
 		if (idToButton.containsKey(id)) {
 			idToButton.get(id).setEnabled(enabled);
 
-			if (idToButton.get(id).isSelected()) {
-				setDockVisibility(id, enabled);
+			if (!enabled && id.equals(currentDockID)) {
+				setDockVisibility(currentDockID, false);
 			}
 		}
 	}

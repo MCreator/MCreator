@@ -32,12 +32,14 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,12 +98,8 @@ public class DebugPanel extends JPanel {
 
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
-		JLabel loading = L10N.label("debug.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
+		waitingToConnect.add("Center", ComponentUtils.bigCenteredText("debug.loading",
+				new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
 		add(waitingToConnect, WAITING_TO_CONNECT);
 
 		JPanel debugging = new JPanel(new BorderLayout(2, 2));
@@ -119,7 +117,7 @@ public class DebugPanel extends JPanel {
 		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView, 2, 2));
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
-		nomarkers.setFont(loading.getFont().deriveFont(13f));
+		ComponentUtils.deriveFont(nomarkers, 13);
 		nomarkers.setForeground(Theme.current().getAltForegroundColor());
 		JButton showHelp = new JButton(L10N.t("common.help"));
 		showHelp.addActionListener(
@@ -316,7 +314,8 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
-		mcreator.getBottomDockRegion().setToggleEnabled(MCreator.DOCK_DEBUGGER, true);
+		mcreator.getBottomDockRegion().setToggleEnabled(ModMaker.DOCK_DEBUGGER, true);
+		mcreator.getBottomDockRegion().setDockVisibility(ModMaker.DOCK_DEBUGGER, true);
 	}
 
 	public void addMarker(DebugMarker marker) {
@@ -328,7 +327,7 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
-		mcreator.getBottomDockRegion().setToggleEnabled(MCreator.DOCK_DEBUGGER, false);
+		mcreator.getBottomDockRegion().setToggleEnabled(ModMaker.DOCK_DEBUGGER, false);
 		this.debugClient = null;
 	}
 

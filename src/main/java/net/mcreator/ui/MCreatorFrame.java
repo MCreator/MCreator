@@ -26,10 +26,9 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.SquareLoaderIcon;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.BackgroundLoader;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
@@ -113,12 +112,8 @@ public abstract class MCreatorFrame extends JFrame
 
 	protected JComponent getPreloaderPane() {
 		JPanel wrap = new BlockingGlassPane();
-		JLabel loading = L10N.label("workspace.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		wrap.add(ComponentUtils.bigCenteredText("workspace.loading",
+				new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
 		return wrap;
 	}
 

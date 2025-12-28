@@ -35,7 +35,7 @@ public final class ResourcePackMaker extends MCreator {
 	private ResourcePackMakerWorkspacePanel workspacePanel;
 
 	public ResourcePackMaker(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		super(application, workspace, true);
+		super(application, workspace);
 
 		new ResourcePackMakerDropTarget(this);
 	}

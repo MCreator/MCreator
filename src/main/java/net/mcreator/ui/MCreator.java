@@ -30,7 +30,6 @@ import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
@@ -63,7 +62,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public static final String DOCK_CONSOLE = "console";
 	public static final String DOCK_PROJECT_BROWSER = "project_browser";
-	public static final String DOCK_DEBUGGER = "debugger";
 
 	private final GradleConsole gradleConsole;
 
@@ -78,8 +76,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public final MCreatorTabs.Tab workspaceTab;
 
-	private final boolean hasProjectBrowser;
-
 	private final CollapsibleDockPanel leftDockRegion;
 	private final CollapsibleDockPanel bottomDockRegion;
 
@@ -91,12 +87,9 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 	}
 
-	protected MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace,
-			boolean hasProjectBrowser) {
+	protected MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		super(application, workspace);
 		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
-
-		this.hasProjectBrowser = hasProjectBrowser;
 
 		this.gradleConsole = new GradleConsole(this);
 
@@ -128,9 +121,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			reloadWorkspaceTabContents();
-
 			menuBar.refreshMenuBar();
-
 			setTitle(WindowTitleHelper.getWindowTitle(this));
 		});
 
@@ -148,10 +139,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		// TODO: correct icons
 
-		if (hasProjectBrowser) {
-			leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.runtask"),
-					workspaceFileBrowser);
-		}
+		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.runtask"),
+				workspaceFileBrowser);
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
@@ -390,10 +379,6 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public MainToolBar getToolBar() {
 		return toolBar;
-	}
-
-	public final boolean hasProjectBrowser() {
-		return hasProjectBrowser;
 	}
 
 	public CollapsibleDockPanel getLeftDockRegion() {
