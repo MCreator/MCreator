@@ -580,15 +580,14 @@ import java.util.stream.Collectors;
 	}
 
 	public String getWallRegistryName() {
-		return getWallRegistryName(false);
-	}
-
-	public String getWallRegistryName(boolean upper) {
 		String registryName = this.getModElement().getRegistryName();
-		String retval = registryName.endsWith("sign") ?
+		return registryName.endsWith("sign") ?
 				registryName.substring(0, registryName.length() - 4) + "wall_sign" :
 				"wall_" + registryName;
-		return upper ? retval.toUpperCase(Locale.ENGLISH) : retval;
+	}
+
+	public String getWallRegistryNameUpper() {
+		return getWallRegistryName().toUpperCase(Locale.ENGLISH);
 	}
 
 	@Override public Collection<String> getAdditionalNames() {

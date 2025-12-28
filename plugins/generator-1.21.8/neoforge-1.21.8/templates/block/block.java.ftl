@@ -776,7 +776,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.isSign()>Sign<#else>Block</#if>Item {
 
 		public Item(Item.Properties properties) {
-			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.${data.getWallRegistryName(true)}.get(), </#if>properties);
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.${data.getWallRegistryNameUpper()}.get(), </#if>properties);
 		}
 
 		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
