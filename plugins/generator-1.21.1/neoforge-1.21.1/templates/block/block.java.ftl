@@ -45,7 +45,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class <#if var_extends_class! == "WallSignBlock">${data.getModElement().getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
+public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -207,7 +207,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getModElement().g
 		</#if>
 	</#macro>
 
-	public <#if var_extends_class! == "WallSignBlock">${data.getModElement().getWallName()}<#else>${name}</#if>Block() {
+	public <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block() {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);

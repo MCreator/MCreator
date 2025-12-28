@@ -570,9 +570,30 @@ import java.util.stream.Collectors;
 		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
 	}
 
+	public String getWallName() {
+		String elementName = this.getModElement().getName();
+		if (elementName.endsWith("Sign"))
+			return elementName.substring(0, elementName.length() - 4) + "WallSign";
+		else
+			return "Wall" + elementName;
+
+	}
+
+	public String getWallRegistryName() {
+		return getWallRegistryName(false);
+	}
+
+	public String getWallRegistryName(boolean upper) {
+		String registryName = this.getModElement().getRegistryName();
+		String retval = registryName.endsWith("sign") ?
+				registryName.substring(0, registryName.length() - 4) + "wall_sign" :
+				"wall_" + registryName;
+		return upper ? retval.toUpperCase(Locale.ENGLISH) : retval;
+	}
+
 	@Override public Collection<String> getAdditionalNames() {
 		if (isSign())
-			return List.of(getModElement().getWallName());
+			return List.of(this.getWallName());
 		else
 			return Collections.emptyList();
 	}

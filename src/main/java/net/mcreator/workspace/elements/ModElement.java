@@ -253,23 +253,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.registry_name = registry_name;
 	}
 
-	public String getWallName() {
-		String elementName = this.getName();
-		if (elementName.endsWith("Sign"))
-			return elementName.substring(0, elementName.length() - 4) + "WallSign";
-		else
-			return "Wall" + elementName;
-
-	}
-
-	public String getWallRegistryName(boolean upper) {
-		String registryName = this.getRegistryName();
-		String retval = registryName.endsWith("sign") ?
-				registryName.substring(0, registryName.length() - 4) + "wall_sign" :
-				"wall_" + registryName;
-		return upper ? retval.toUpperCase(Locale.ENGLISH) : retval;
-	}
-
 	public @Nullable String getFolderPath() {
 		return path;
 	}

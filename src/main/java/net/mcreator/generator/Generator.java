@@ -471,11 +471,8 @@ public class Generator implements IGenerator, Closeable {
 				File file = new File(GeneratorTokens.replaceVariableTokens(generatableElement,
 						GeneratorTokens.replaceTokens(workspace,
 								((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
-												generatableElement.getModElement().getName())
-										.replace("@registryname", generatableElement.getModElement().getRegistryName())
-										.replace("@WALLNAME", generatableElement.getModElement().getWallName())
-										.replace("@wallregistryname",
-												generatableElement.getModElement().getWallRegistryName(false)))));
+										generatableElement.getModElement().getName()).replace("@registryname",
+										generatableElement.getModElement().getRegistryName()))));
 
 				if (!workspace.getFolderManager().isFileInWorkspace(file))
 					continue; // if file is not in workspace, we skip it
@@ -546,11 +543,7 @@ public class Generator implements IGenerator, Closeable {
 													((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
 																	generatableElement.getModElement().getName())
 															.replace("@registryname", generatableElement.getModElement()
-																	.getRegistryName()).replace("@WALLNAME",
-																	generatableElement.getModElement().getWallName())
-															.replace("@wallregistryname",
-																	generatableElement.getModElement()
-																			.getWallRegistryName(false))
+																	.getRegistryName())
 															.replace("@itemindex", Integer.toString(index)))));
 
 							if (!workspace.getFolderManager().isFileInWorkspace(file))
