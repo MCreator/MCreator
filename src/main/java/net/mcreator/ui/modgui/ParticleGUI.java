@@ -81,7 +81,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
 		rotationProvider = new ProcedureSelector(this.withEntry("particle/rotation_provider"), mcreator,
 				L10N.t("elementgui.particle.rotation_provider"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.VECTOR, Dependency.fromString("x:number/y:number/z:number/world:world/speedX:number/speedY:number/speedZ:number/angularVelocity:number/angularAcceleration:number/partialTicks:number")).setDefaultName(
+				VariableTypeLoader.BuiltInTypes.VECTOR, Dependency.fromString("x:number/y:number/z:number/world:world/speedX:number/speedY:number/speedZ:number/angularVelocity:number/angularAcceleration:number/age:number")).setDefaultName(
 				L10N.t("vector.particle.billboard")).makeInline();
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
