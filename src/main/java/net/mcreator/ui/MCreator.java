@@ -112,12 +112,9 @@ public abstract class MCreator extends MCreatorFrame {
 
 		GlobalSearchListener.install(this, () -> mcreatorTabs.getCurrentTab().getContent());
 
-		JPanel pon = new JPanel(new BorderLayout(0, 0));
-
-		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"), createWorkspaceTabContent(), "Workspace", true,
-				false);
+		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace").toUpperCase(), createWorkspaceTabContent(),
+				"Workspace", false);
 		mcreatorTabs.addTab(workspaceTab);
-		pon.add("West", workspaceTab);
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			reloadWorkspaceTabContents();
@@ -127,17 +124,11 @@ public abstract class MCreator extends MCreatorFrame {
 
 		mcreatorTabs.showTabNoNotify(workspaceTab);
 
-		pon.add("Center", mcreatorTabs.getTabsStrip());
-
 		workspace.getFileManager().setDataSavedListener(() -> getStatusBar().setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		JComponent mainWorkspaceTabs = PanelUtils.northAndCenterElement(pon, mcreatorTabs.getContainer());
-
-		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mainWorkspaceTabs);
+		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mcreatorTabs);
 		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
-
-		// TODO: correct icons
 
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);

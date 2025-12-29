@@ -241,30 +241,26 @@ public class MCreatorTabs extends JTabbedPane {
 		private String text;
 		@Nullable private ImageIcon icon;
 
-		@Nullable private final JComponent tabComponent;
-
 		public Tab(ViewBase content) {
-			this(content.getViewName(), content.getViewIcon(), null, content,
+			this(content.getViewName(), content.getViewIcon(), content,
 					content.getViewName() + System.currentTimeMillis(), true);
 		}
 
 		public Tab(ViewBase content, Object identifier) {
-			this(content.getViewName(), content.getViewIcon(), null, content, identifier, true);
+			this(content.getViewName(), content.getViewIcon(), content, identifier, true);
 		}
 
 		public Tab(String name, JPanel content, Object identifier, boolean closeable) {
-			this(name, null, null, content, identifier, closeable);
+			this(name, null, content, identifier, closeable);
 		}
 
-		public Tab(String text, @Nullable ImageIcon icon, @Nullable JComponent tabComponent, JComponent content,
-				Object identifier, boolean closeable) {
+		public Tab(String text, @Nullable ImageIcon icon, JComponent content, Object identifier, boolean closeable) {
 			this.content = content;
 			this.identifier = identifier;
 			this.closeable = closeable;
 
 			this.text = text;
 			this.icon = icon;
-			this.tabComponent = tabComponent;
 
 			if (closeable) {
 				content.putClientProperty("JTabbedPane.tabClosable", true);
@@ -278,9 +274,6 @@ public class MCreatorTabs extends JTabbedPane {
 			this.container = container;
 
 			container.addTab(text, icon, content);
-
-			if (tabComponent != null)
-				container.setTabComponentAt(getIndex(), tabComponent);
 
 			setText(text);
 			setIcon(icon);
@@ -336,10 +329,6 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public void setTabHiddenListener(TabHiddenListener tabHiddenListener) {
 			this.tabHiddenListener = tabHiddenListener;
-		}
-
-		public void setMouseClickListener(MouseListener clickListener) {
-			this.clickListener = clickListener;
 		}
 
 		public JComponent getContent() {
