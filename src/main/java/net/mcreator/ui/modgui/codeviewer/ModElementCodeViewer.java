@@ -67,12 +67,6 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		this.codeChangeListener = this::reload;
 
 		setBackground(Theme.current().getAltBackgroundColor());
-
-		addComponentListener(new ComponentAdapter() {
-			@Override public void componentShown(ComponentEvent e) {
-				reload();
-			}
-		});
 	}
 
 	private void loadListTemplatesIfNotAlready(GeneratableElement generatableElement) {
@@ -102,7 +96,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		codeChangeListener.registerUI(container);
 	}
 
-	private synchronized void reload() {
+	public synchronized void reload() {
 		if (!isShowing())
 			return;
 

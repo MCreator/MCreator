@@ -22,13 +22,15 @@ package net.mcreator.ui.variants.modmaker;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.gradle.GradleStateListener;
-import net.mcreator.ui.*;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.MainMenuBar;
+import net.mcreator.ui.MainToolBar;
 import net.mcreator.ui.component.DynamicContentPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
@@ -70,6 +72,7 @@ public final class ModMaker extends MCreator {
 		getTabs().addTabShownListener(tab -> {
 			if (tab.getContent() instanceof ModElementGUI<?> elementGUI) {
 				codeViewer.setCurrentComponent(elementGUI.getModElementCodeViewer());
+				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);
 			} else {
 				codeViewer.clear();
 			}
