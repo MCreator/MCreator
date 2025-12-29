@@ -581,9 +581,10 @@ import java.util.stream.Collectors;
 
 	public String getWallRegistryName() {
 		String registryName = this.getModElement().getRegistryName();
-		return registryName.endsWith("sign") ?
-				registryName.substring(0, registryName.length() - 4) + "wall_sign" :
-				"wall_" + registryName;
+		if (registryName.endsWith("sign"))
+			return registryName.substring(0, registryName.length() - 4) + "wall_sign";
+		else
+			return "wall_" + registryName;
 	}
 
 	public String getWallRegistryNameUpper() {
