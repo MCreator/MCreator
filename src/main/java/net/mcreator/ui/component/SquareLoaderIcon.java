@@ -95,10 +95,12 @@ public class SquareLoaderIcon implements Icon {
 				component.repaint();
 			}
 		});
-		timer.start();
+		if (component.isShowing())
+			timer.start();
 
 		component.addAncestorListener(new AncestorListener() {
 			@Override public void ancestorAdded(AncestorEvent event) {
+				timer.start();
 			}
 
 			@Override public void ancestorRemoved(AncestorEvent event) {
