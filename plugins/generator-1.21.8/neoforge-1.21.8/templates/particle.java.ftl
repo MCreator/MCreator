@@ -114,7 +114,6 @@ public class ${name}Particle extends TextureSheetParticle {
 	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
 		Quaternionf flip = new Quaternionf().rotateY((float)Math.PI);
-		double particleAge = this.age + partialTicks;
 		Vec3 vec = <@procedureCode data.rotationProvider, {
 			"world": "this.level",
 			"x": "this.x",
@@ -125,7 +124,7 @@ public class ${name}Particle extends TextureSheetParticle {
 			"speedZ": "this.zd",
 			"angularVelocity": "this.angularVelocity",
 			"angularAcceleration": "this.angularAcceleration",
-			"age": "particleAge"
+			"age": "(this.age + partialTicks)"
 		}/>;
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
 		Quaternionf flippedTilt = new Quaternionf(tilt).mul(flip);
