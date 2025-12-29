@@ -75,14 +75,14 @@ public final class ModMaker extends MCreator {
 			}
 		});
 
-		getBottomDockRegion().addDock(DOCK_CODE_VIEWER, 300, L10N.t("dock.code_viewer"), UIRES.get("16px.dock_inspect"),
-				codeViewer);
-
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA) {
 			getBottomDockRegion().addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.dock_debug"),
 					debugPanel);
 		}
+
+		getBottomDockRegion().addDock(DOCK_CODE_VIEWER, 300, L10N.t("dock.code_viewer"), UIRES.get("16px.dock_inspect"),
+				codeViewer);
 	}
 
 	@Override public MainMenuBar createMenuBar() {

@@ -56,6 +56,8 @@ public class MCreatorTabs extends JTabbedPane {
 
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
+		setFocusable(true);
+
 		addChangeListener(e -> {
 			int selectedIndex = getSelectedIndex();
 			if (selectedIndex >= 0) {
@@ -64,6 +66,8 @@ public class MCreatorTabs extends JTabbedPane {
 					showTabOrGetExisting(toNotifyOfShow.identifier, true, false);
 				}
 			}
+
+			SwingUtilities.invokeLater(this::requestFocusInWindow);
 		});
 
 		addMouseListener(new MouseAdapter() {
