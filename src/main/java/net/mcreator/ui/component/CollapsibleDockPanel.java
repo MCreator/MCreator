@@ -61,6 +61,8 @@ public class CollapsibleDockPanel extends JSplitPane {
 		dockStrip.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 1));
 		dockStrip.putClientProperty("FlatLaf.style", "hoverButtonGroupBackground: #00000000");
 
+		dockPanel.setOpaque(false);
+
 		putClientProperty("FlatLaf.style", "gripDotCount: 0");
 
 		if (dockPosition == DockPosition.UP || dockPosition == DockPosition.LEFT) {
