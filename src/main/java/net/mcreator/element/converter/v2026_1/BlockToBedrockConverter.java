@@ -17,18 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2025_4;
+package net.mcreator.element.converter.v2026_1;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Block;
-import net.mcreator.element.types.Item;
 import net.mcreator.element.types.bedrock.BEBlock;
-import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
