@@ -29,6 +29,7 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -135,7 +136,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
-		JToolBar outerStrip = new JToolBar(JToolBar.VERTICAL);
+		JToolBar outerStrip = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
+		outerStrip.setOrientation(JToolBar.VERTICAL);
 		outerStrip.setFloatable(false);
 		outerStrip.setBorder(
 				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));

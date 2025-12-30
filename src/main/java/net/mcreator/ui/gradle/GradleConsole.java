@@ -120,8 +120,6 @@ public class GradleConsole extends JPanel implements ISearchable {
 	private int status = READY;
 	private boolean gradleSetupTaskRunning = false;
 
-	private final JScrollPane mainScrollPane;
-
 	private final ConsoleSearchBar searchBar = new ConsoleSearchBar();
 
 	private final SimpleLineChart cpuChart = new SimpleLineChart();
@@ -182,7 +180,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 		pan.setBorder(BorderFactory.createEmptyBorder(9, 0, 0, 0));
 
-		mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScrollPane.setBorder(
 				BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
