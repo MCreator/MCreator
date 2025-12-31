@@ -82,9 +82,11 @@ public class CollapsiblePanel extends JPanel {
 	}
 
 	public void toggleVisibility(boolean visible) {
-		contentHolder.setVisible(visible);
-		updateBorderTitle();
-		setPreferredSize(contentHolder.isVisible() ? null : new Dimension(getPreferredSize().width, 24));
+		if (isEnabled()) {
+			contentHolder.setVisible(visible);
+			updateBorderTitle();
+			setPreferredSize(contentHolder.isVisible() ? null : new Dimension(getPreferredSize().width, 24));
+		}
 	}
 
 	protected void updateBorderTitle() {
