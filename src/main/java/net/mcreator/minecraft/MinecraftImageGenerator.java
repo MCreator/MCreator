@@ -266,7 +266,7 @@ public class MinecraftImageGenerator {
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.f));
 			g.drawRect(0, 79, 200, 80);
-			g.drawString("LEGGINGS", 135, 91);
+			g.drawString("LEGGINGS", 135, 92);
 			return image;
 		}
 
