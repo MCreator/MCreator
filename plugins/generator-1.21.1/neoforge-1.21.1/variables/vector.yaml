@@ -10,33 +10,24 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public Vec3 ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = new Vec3(nbt.getDouble("${var.getName()}_x"), nbt.getDouble("${var.getName()}_y"), nbt.getDouble("${var.getName()}_z"));
-    write: |
-      nbt.putDouble("${var.getName()}_x", ${var.getName()}.x); 
-      nbt.putDouble("${var.getName()}_y", ${var.getName()}.y); 
-      nbt.putDouble("${var.getName()}_z", ${var.getName()}.z);
+    read: ${var.getName()} = new Vec3(nbt.getList("${var.getName()}", 6).getDouble(0), nbt.getList("${var.getName()}", 6).getDouble(1), nbt.getList("${var.getName()}", 6).getDouble(2));
+    write: nbt.put("${var.getName()}", ${JavaModName}Variables.newDoubleList(${var.getName()}.x, ${var.getName()}.y, ${var.getName()}.z));
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)}; 
       <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public Vec3 ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = new Vec3(nbt.getDouble("${var.getName()}_x"), nbt.getDouble("${var.getName()}_y"), nbt.getDouble("${var.getName()}_z"));
-    write: |
-      nbt.putDouble("${var.getName()}_x", ${var.getName()}.x); 
-      nbt.putDouble("${var.getName()}_y", ${var.getName()}.y); 
-      nbt.putDouble("${var.getName()}_z", ${var.getName()}.z);
+    read: ${var.getName()} = new Vec3(nbt.getList("${var.getName()}", 6).getDouble(0), nbt.getList("${var.getName()}", 6).getDouble(1), nbt.getList("${var.getName()}", 6).getDouble(2));
+    write: nbt.put("${var.getName()}", ${JavaModName}Variables.newDoubleList(${var.getName()}.x, ${var.getName()}.y, ${var.getName()}.z));
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)}; 
       <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
   player_lifetime:
     init: public Vec3 ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = new Vec3(input.getDouble("${var.getName()}_x"), input.getDouble("${var.getName()}_y"), input.getDouble("${var.getName()}_z"));
-    write: |
-      output.putDouble("${var.getName()}_x", ${var.getName()}.x); 
-      output.putDouble("${var.getName()}_y", ${var.getName()}.y); 
-      output.putDouble("${var.getName()}_z", ${var.getName()}.z);
+    read: ${var.getName()} = new Vec3(nbt.getList("${var.getName()}", 6).getDouble(0), nbt.getList("${var.getName()}", 6).getDouble(1), nbt.getList("${var.getName()}", 6).getDouble(2));
+    write: nbt.put("${var.getName()}", ${JavaModName}Variables.newDoubleList(${var.getName()}.x, ${var.getName()}.y, ${var.getName()}.z));
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head> 
@@ -44,11 +35,8 @@ scopes:
       <@tail>_vars.markSyncDirty();}</@tail>
   player_persistent:
     init: public Vec3 ${var.getName()} = ${var.getValue()};
-    read: ${var.getName()} = new Vec3(input.getDouble("${var.getName()}_x"), input.getDouble("${var.getName()}_y"), input.getDouble("${var.getName()}_z"));
-    write: |
-      output.putDouble("${var.getName()}_x", ${var.getName()}.x); 
-      output.putDouble("${var.getName()}_y", ${var.getName()}.y); 
-      output.putDouble("${var.getName()}_z", ${var.getName()}.z);
+    read: ${var.getName()} = new Vec3(nbt.getList("${var.getName()}", 6).getDouble(0), nbt.getList("${var.getName()}", 6).getDouble(1), nbt.getList("${var.getName()}", 6).getDouble(2));
+    write: nbt.put("${var.getName()}", ${JavaModName}Variables.newDoubleList(${var.getName()}.x, ${var.getName()}.y, ${var.getName()}.z));
     get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
       <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head> 

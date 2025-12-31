@@ -333,5 +333,13 @@ import ${package}.${JavaModName};
 	}
 	</#if>
 
+    public static ListTag newDoubleList(double... values) {
+        ListTag listTag = new ListTag();
+
+        for (double value : values)
+            listTag.add(DoubleTag.valueOf(value));
+
+        return listTag;
+    }
 }
 <#-- @formatter:on -->
