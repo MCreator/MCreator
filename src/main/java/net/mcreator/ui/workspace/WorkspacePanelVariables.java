@@ -279,10 +279,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 				// let workspace know element changed
 				workspace.markDirty();
-
-				System.out.println(
-						"Updated variable: " + name + " to type: " + type + " with value: " + value + " scope: " + scope
-								+ " index: " + i);
 			}
 		});
 	}
