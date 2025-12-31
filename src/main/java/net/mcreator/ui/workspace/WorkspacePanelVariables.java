@@ -50,14 +50,14 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
+
+	private Map<Integer, String> oldNames = new HashMap<>();
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -263,23 +263,37 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			int lastRow = e.getLastRow();
 
 			for (int i = firstRow; i <= lastRow; i++) {
-				String name = (String) model.getValueAt(i, 0);
+				String oldName = oldNames.get(i);
+				String newName = (String) model.getValueAt(i, 0);
 				VariableType type = VariableTypeLoader.INSTANCE.fromName((String) model.getValueAt(i, 1));
 				Object value = model.getValueAt(i, 3);
 				VariableType.Scope scope = (VariableType.Scope) model.getValueAt(i, 2);
 
-				VariableElement element = workspace.getVariableElementByName(name);
-				if (element == null)
-					return;
+				VariableElement element;
+				if (!newName.equals(oldName)) { // Name changed: remove the old element
+					element = workspace.getVariableElementByName(oldName);
+					if (element != null) {
+						workspace.removeVariableElement(element);
+					}
+					// Add the new element
+					element = new VariableElement(newName);
+					workspace.addVariableElement(element);
+				} else {
+					element = workspace.getVariableElementByName(newName);
+					if (element == null)
+						return;
+				}
 
-				// Update fields
 				element.setType(type);
 				element.setValue(value);
 				element.setScope(scope);
 
-				// let workspace know element changed
-				workspace.markDirty();
+				// Remember the new name for future edits
+				oldNames.put(i, newName);
 			}
+
+			// let workspace know that the element(s) changed
+			workspace.markDirty();
 		});
 	}
 
@@ -323,6 +337,12 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
 					variable.getValue() });
 		}
+
+		// Save names of variables in case rename action happens
+		for (int i = 0; i < model.getRowCount(); i++) {
+			oldNames.put(i, (String) model.getValueAt(i, 0));
+		}
+
 		refilterElements();
 
 		try {
