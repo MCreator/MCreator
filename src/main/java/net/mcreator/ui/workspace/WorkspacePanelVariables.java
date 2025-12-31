@@ -50,15 +50,14 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
-
-	private volatile boolean storingEdits = false;
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -68,9 +67,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
-				if (storingEdits)
-					return false;
-
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
@@ -80,7 +76,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 
 			@Override public void setValueAt(Object value, int row, int column) {
-				Object oldVal = elements.getValueAt(row, column);
+				Object oldVal = super.getValueAt(row, column);
 				if (oldVal.equals(value))
 					return;
 
@@ -110,14 +106,14 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 							// Handle 3rd column - initial value
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
-								elements.setValueAt("0", row, 3);
+								super.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
-								elements.setValueAt("false", row, 3);
+								super.setValueAt("false", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
-								elements.setValueAt("", row, 3);
+								super.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()),
-										row, 3);
+								super.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()), row,
+										3);
 							}
 						}
 					}
@@ -256,37 +252,39 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		});
 
-		// save values on table edit, do it in another thread
-		elements.getModel().addTableModelListener(e -> new Thread(() -> {
-			if (e.getType() == TableModelEvent.UPDATE) {
-				if (storingEdits)
+		elements.getModel().addTableModelListener(e -> {
+			if (e.getType() != TableModelEvent.UPDATE)
+				return;
+
+			TableModel model = elements.getModel();
+			Workspace workspace = workspacePanel.getMCreator().getWorkspace();
+
+			int firstRow = e.getFirstRow();
+			int lastRow = e.getLastRow();
+
+			for (int i = firstRow; i <= lastRow; i++) {
+				String name = (String) model.getValueAt(i, 0);
+				VariableType type = VariableTypeLoader.INSTANCE.fromName((String) model.getValueAt(i, 1));
+				Object value = model.getValueAt(i, 3);
+				VariableType.Scope scope = (VariableType.Scope) model.getValueAt(i, 2);
+
+				VariableElement element = workspace.getVariableElementByName(name);
+				if (element == null)
 					return;
 
-				storingEdits = true;
-				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+				// Update fields
+				element.setType(type);
+				element.setValue(value);
+				element.setScope(scope);
 
-				Workspace workspace = workspacePanel.getMCreator().getWorkspace();
+				// let workspace know element changed
+				workspace.markDirty();
 
-				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
-				for (VariableElement variableElement : todelete)
-					workspace.removeVariableElement(variableElement);
-
-				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
-					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
-					if (elementType != null) {
-						VariableElement element = new VariableElement((String) elements.getValueAt(i, 0));
-						element.setType(elementType);
-						element.setValue(elements.getValueAt(i, 3));
-						element.setScope((VariableType.Scope) elements.getValueAt(i, 2));
-						workspace.addVariableElement(element);
-					}
-				}
-
-				elements.setCursor(Cursor.getDefaultCursor());
-				storingEdits = false;
+				System.out.println(
+						"Updated variable: " + name + " to type: " + type + " with value: " + value + " scope: " + scope
+								+ " index: " + i);
 			}
-		}, "WorkspaceVariablesReload").start());
-
+		});
 	}
 
 	private void deleteCurrentlySelected() {
@@ -339,7 +337,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}
