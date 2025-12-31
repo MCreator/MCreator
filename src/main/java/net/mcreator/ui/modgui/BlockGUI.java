@@ -47,13 +47,16 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
-import net.mcreator.ui.minecraft.states.block.JBlockPropertiesStatesList;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
+import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -230,20 +233,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
 
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model singleTexture = new Model.BuiltInModel("Single texture");
-	private final Model cross = new Model.BuiltInModel("Cross model");
-	private final Model crop = new Model.BuiltInModel("Crop model");
-	private final Model grassBlock = new Model.BuiltInModel("Grass block");
-	private final Model pottedPlantModel = new Model.BuiltInModel("Potted plant");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
-			new Model[] { normal, singleTexture, cross, crop, grassBlock, pottedPlantModel });
+	public static final Model normal = new Model.BuiltInModel("Normal");
+	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model crop = new Model.BuiltInModel("Crop model");
+	public static final Model grassBlock = new Model.BuiltInModel("Grass block");
+	public static final Model pottedPlantModel = new Model.BuiltInModel("Potted plant");
+	public static final Model[] builtinitemmodels = new Model[] { normal, singleTexture, cross, crop, grassBlock,
+			pottedPlantModel };
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
-	private JBlockPropertiesStatesList blockStates;
+	private JBlockStatePropertiesList statePropertiesList;
 	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
 			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
 			Collections.emptyMap());
+
+	private JBlockStatesList blockStatesList;
 
 	private final JComboBox<String> transparencyType = new JComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
@@ -419,8 +425,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Dependency.fromString(
 						"x:number/y:number/z:number/world:world/blockstate:blockstate/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
-		blockStates = new JBlockPropertiesStatesList(mcreator, this, this::nonUserProvidedProperties);
-		blockStates.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+		blockStatesList = new JBlockStatesList(mcreator, this, this::propertiesForBlockBases,
+				() -> "No tint".equals(tintType.getSelectedItem()));
+		blockStatesList.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+
+		statePropertiesList = new JBlockStatePropertiesList(mcreator, this, this::nonUserProvidedProperties,
+				blockStatesList);
+		statePropertiesList.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		animations = new JBlockEntityAnimationList(mcreator, this);
 
@@ -537,11 +548,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 			}
 
+			refreshBlockStatesList();
 			updateTextureOptions();
 			refreshBonemealProperties();
 		});
 
-		renderType.addActionListener(e -> updateTextureOptions());
+		renderType.addActionListener(e -> {
+			updateTextureOptions();
+			refreshBlockStatesList();
+		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -552,6 +567,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 		JPanel bsPane = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
+		JPanel statesPane = new JPanel(new BorderLayout(0, 0));
 
 		pane8.setOpaque(false);
 
@@ -698,6 +714,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
 			if (!enablePitch.isEnabled())
 				enablePitch.setSelected(false);
+			refreshBlockStatesList();
 		});
 
 		isItemTinted.setOpaque(false);
@@ -752,7 +769,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
 		bsPane.setOpaque(false);
-		bsPane.add("Center", blockStates);
+		bsPane.add("Center", statePropertiesList);
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
@@ -987,6 +1004,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			if (isWaterloggable.isSelected()) {
 				hasGravity.setSelected(false);
 			}
+
+			blockStatesList.propertiesChanged();
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(
@@ -1376,6 +1395,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		animationsPane.setOpaque(false);
 		animationsPane.add("Center", animationsList);
 
+		JComponent statesListWrap = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/states_list"),
+						L10N.label("elementgui.block.states_list")), blockStatesList);
+		statesListWrap.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		statesPane.setOpaque(false);
+		statesPane.add("Center", statesListWrap);
+
 		page1group.addValidationElement(textures);
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(pottedPlant);
@@ -1388,7 +1415,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
 				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
-					return Validator.ValidationResult.PASSED;
+					return ValidationResult.PASSED;
 				return super.validate();
 			}
 		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
@@ -1414,7 +1441,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
-		addPage(L10N.t("elementgui.block.page_states"), bsPane, false).lazyValidate(blockStates::getValidationResult);
+		addPage(L10N.t("elementgui.block.page_state_properties"), bsPane, false).lazyValidate(
+				statePropertiesList::getValidationResult);
+		addPage(L10N.t("elementgui.block.page_states"), statesPane, false).lazyValidate(
+				blockStatesList::getValidationResult);
 		addPage(L10N.t("elementgui.block.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
@@ -1450,6 +1480,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (isWaterloggable.isSelected())
 			props.add("waterlogged");
 		return props;
+	}
+
+	/**
+	 * @return List of supported custom properties and non-user-provided properties for use with block states
+	 */
+	private List<PropertyData<?>> propertiesForBlockBases() {
+		List<PropertyData<?>> properties = statePropertiesList.getProperties().stream()
+				.map(PropertyDataWithValue::property).collect(Collectors.toList());
+		if (isWaterloggable.isSelected()) {
+			properties.add(new PropertyData.LogicType("waterlogged"));
+		}
+		return properties;
 	}
 
 	private void showBlockBaseCard(String card) {
@@ -1596,6 +1638,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		openGUIOnRightClick.setEnabled(isGuiBoundToEmpty);
 	}
 
+	private void refreshBlockStatesList() {
+		boolean supportsBlockStates = blockBase.getSelectedItem() == null || blockBase.getSelectedIndex() == 0;
+
+		Model model = renderType.getSelectedItem();
+		if (model != null && model.getType() == Model.Type.JAVA)
+			supportsBlockStates = false;
+
+		blockStatesList.setEnabled(supportsBlockStates);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
@@ -1634,6 +1686,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		animations.reloadDataLists();
 
+		blockStatesList.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock, pottedPlantModel),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
@@ -1652,7 +1706,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		guiBoundTo.setEntry(block.guiBoundTo);
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
-		blockStates.setProperties(block.customProperties);
+		statePropertiesList.setProperties(block.customProperties);
 		enchantPowerBonus.setValue(block.enchantPowerBonus);
 		hasTransparency.setSelected(block.hasTransparency);
 		connectedSides.setSelected(block.connectedSides);
@@ -1729,6 +1783,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
 		animations.setEntries(block.animations);
+		blockStatesList.setEntries(block.states);
 
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
@@ -1806,6 +1861,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
 		refreshSpawnProperties();
+		refreshBlockStatesList();
 	}
 
 	@Override public Block getElementFromGUI() {
@@ -1820,7 +1876,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.guiBoundTo = guiBoundTo.getEntry();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
-		block.customProperties = blockStates.getProperties();
+		block.customProperties = statePropertiesList.getProperties();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -1953,6 +2009,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 
 		block.animations = animations.getEntries();
+		block.states = blockStatesList.getEntries();
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();

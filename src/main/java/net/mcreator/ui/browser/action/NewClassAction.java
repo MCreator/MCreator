@@ -45,9 +45,10 @@ public class NewClassAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.browser.new_class"), actionEvent -> {
 			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_class.class_name"),
-					L10N.t("workspace_file_browser.new_class.class_name.title"), null, new OptionPaneValidator() {
-						@Override public Validator.ValidationResult validate(JComponent component) {
-							return new JavaMemberNameValidator((VTextField) component, true).validate();
+					L10N.t("workspace_file_browser.new_class.class_name.title"), null,
+					new OptionPaneValidator.Cached() {
+						@Override public Validator createValidator(JComponent component) {
+							return new JavaMemberNameValidator((VTextField) component, true);
 						}
 					});
 

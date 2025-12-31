@@ -121,6 +121,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	     and IRenderStateExtension#setRenderData with custom ContextKey-->
 	private ${name}Entity entity = null;
 
+	private final ResourceLocation entityTexture = ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
+
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
 
@@ -183,7 +185,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	}
 
 	@Override public ResourceLocation getTextureLocation(${renderState} state) {
-		return ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
+		return entityTexture;
 	}
 
 	<#if data.mobModelName == "Villager" || data.breedable || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
@@ -243,8 +245,18 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		public AnimatedModel(ModelPart root) {
 			super(root);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index} = ${animation.animation}.bake(root);
+			this.keyframeAnimation${animation?index} = safeBake(${animation.animation});
 			</#list>
+		}
+
+		<#-- ideally we would not do this, but many users use animations that animate parts
+		     that don't exist in their model and then complain the game is crashing -->
+		private KeyframeAnimation safeBake(AnimationDefinition source) {
+			try {
+				return source.bake(root);
+			} catch (IllegalArgumentException e) {
+				return new AnimationDefinition(0, false, Map.of()).bake(root);
+			}
 		}
 
 		public void setEntity(${name}Entity entity) {

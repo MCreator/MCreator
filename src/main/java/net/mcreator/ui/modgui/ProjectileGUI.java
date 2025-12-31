@@ -37,7 +37,7 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -58,6 +58,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	private MCItemHolder projectileItem;
 	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableGravity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableDiscarding = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JCheckBox igniteFire = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
@@ -115,8 +116,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
 		disableGravity.setOpaque(false);
+		disableDiscarding.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(11, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(12, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
@@ -163,6 +165,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.disable_gravity")));
 		propertiesPanel.add(disableGravity);
 
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/disable_discarding"),
+				L10N.label("elementgui.projectile.disable_discarding")));
+		propertiesPanel.add(disableDiscarding);
+
 		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
 
@@ -178,9 +184,9 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
 				if (!customModelTexture.hasTexture())
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+					return new ValidationResult(ValidationResult.Type.ERROR,
 							L10N.t("elementgui.projectile.error_custom_model_needs_texture"));
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 
 		page1group.addValidationElement(projectileItem);
@@ -214,6 +220,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setBlock(projectile.projectileItem);
 		showParticles.setSelected(projectile.showParticles);
 		disableGravity.setSelected(projectile.disableGravity);
+		disableDiscarding.setSelected(projectile.disableDiscarding);
 		actionSound.setSound(projectile.actionSound);
 		power.setValue(projectile.power);
 		damage.setValue(projectile.damage);
@@ -237,6 +244,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.projectileItem = projectileItem.getBlock();
 		projectile.showParticles = showParticles.isSelected();
 		projectile.disableGravity = disableGravity.isSelected();
+		projectile.disableDiscarding = disableDiscarding.isSelected();
 		projectile.actionSound = actionSound.getSound();
 		projectile.igniteFire = igniteFire.isSelected();
 		projectile.power = (double) power.getValue();

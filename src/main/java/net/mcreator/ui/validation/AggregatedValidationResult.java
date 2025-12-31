@@ -44,11 +44,11 @@ public class AggregatedValidationResult extends ValidationGroup {
 		return this;
 	}
 
-	@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
-		List<Validator.ValidationResult> retval = new ArrayList<>();
+	@Override public List<ValidationResult> getGroupedValidationResults() {
+		List<ValidationResult> retval = new ArrayList<>();
 
 		validationElements.stream().map(IValidable::getValidationStatus)
-				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED).forEach(retval::add);
+				.filter(e -> e.type() != ValidationResult.Type.PASSED).forEach(retval::add);
 
 		validationGroups.stream().filter((e) -> !e.validateIsErrorFree())
 				.forEach((e) -> retval.addAll(e.getGroupedValidationResults()));
@@ -58,7 +58,7 @@ public class AggregatedValidationResult extends ValidationGroup {
 
 	public static class PASS extends AggregatedValidationResult {
 
-		@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
+		@Override public List<ValidationResult> getGroupedValidationResults() {
 			return Collections.emptyList();
 		}
 
@@ -72,8 +72,8 @@ public class AggregatedValidationResult extends ValidationGroup {
 			this.message = message;
 		}
 
-		@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
-			return List.of(new Validator.ValidationResult(Validator.ValidationResultType.ERROR, message));
+		@Override public List<ValidationResult> getGroupedValidationResults() {
+			return List.of(new ValidationResult(ValidationResult.Type.ERROR, message));
 		}
 
 	}

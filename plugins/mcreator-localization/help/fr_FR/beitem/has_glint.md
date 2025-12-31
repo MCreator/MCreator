@@ -1,0 +1,1 @@
+Si cette option est activée, la texture de l'item aura un effet lumineux similaire à celui des item enchantés.

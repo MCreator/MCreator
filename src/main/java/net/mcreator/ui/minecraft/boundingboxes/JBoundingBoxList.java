@@ -71,6 +71,11 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		genFromModel.setEnabled(enabled);
+	}
+
 	@Override public void entryAddedByUserHandler() {
 		firePropertyChange("boundingBoxChanged", false, true);
 	}

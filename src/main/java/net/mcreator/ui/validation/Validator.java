@@ -18,45 +18,7 @@
 
 package net.mcreator.ui.validation;
 
-import java.awt.*;
-
 public interface Validator {
-
-	enum ValidationResultType {
-
-		PASSED(new Color(0x93c54b)), WARNING(new Color(0xf0c948)), ERROR(new Color(0xc43b39));
-
-		private final Color color;
-
-		ValidationResultType(Color color) {
-			this.color = color;
-		}
-
-		public Color getColor() {
-			return color;
-		}
-	}
-
-	class ValidationResult {
-
-		public static final ValidationResult PASSED = new ValidationResult(ValidationResultType.PASSED, "");
-
-		private final ValidationResultType validationResultType;
-		private final String message;
-
-		public ValidationResult(ValidationResultType validationResultType, String message) {
-			this.validationResultType = validationResultType;
-			this.message = message;
-		}
-
-		public ValidationResultType getValidationResultType() {
-			return validationResultType;
-		}
-
-		public String getMessage() {
-			return message;
-		}
-	}
 
 	default ValidationResult validateIfEnabled(IValidable validable) {
 		if (!validable.isEnabled())

@@ -1,0 +1,1 @@
+Elindít egy eljárást, amikor a csúszka kiválasztásra kerül és a kurzor elmozdul.

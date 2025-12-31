@@ -48,7 +48,7 @@ package ${package}.init;
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
-<#if itemsWithInventory?size != 0>
+<#if itemsWithInventory?size != 0 || buckets?size != 0>
 @EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
@@ -96,6 +96,10 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
 					register("${item.getModElement().getRegistryName()}_spawn_egg",
 						properties -> new SpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties));
+			<#elseif item.getModElement().getTypeString() == "specialentity">
+				${item.getModElement().getRegistryNameUpper()} =
+					register("${item.getModElement().getRegistryName()}",
+						properties -> new BoatItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()}.get(), properties.stacksTo(1)));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);

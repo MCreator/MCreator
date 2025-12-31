@@ -47,7 +47,7 @@ package ${package}.init;
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
-<#if itemsWithInventory?size != 0>
+<#if itemsWithInventory?size != 0 || buckets?size != 0>
 @EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
@@ -96,6 +96,12 @@ public class ${JavaModName}Items {
 					REGISTRY.register("${item.getModElement().getRegistryName()}_spawn_egg",
 						() -> new DeferredSpawnEggItem(${JavaModName}Entities.${item.getModElement().getRegistryNameUpper()},
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
+			<#elseif item.getModElement().getTypeString() == "specialentity">
+				${item.getModElement().getRegistryNameUpper()} =
+					REGISTRY.register("${item.getModElement().getRegistryName()}",
+						() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>,
+						${JavaModName}BoatTypes.${item.getModElement().getRegistryNameUpper()}_TYPE.getValue(),
+						new Item.Properties().stacksTo(1)));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);

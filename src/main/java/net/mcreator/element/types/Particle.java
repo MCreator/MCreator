@@ -39,7 +39,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Particle extends GeneratableElement {
+@SuppressWarnings("unused") public class Particle extends GeneratableElement {
 
 	private static final Logger LOG = LogManager.getLogger(Particle.class);
 
@@ -51,6 +51,7 @@ public class Particle extends GeneratableElement {
 	public double width;
 	public double height;
 	public NumberProcedure scale;
+	public boolean fixedScale;
 	public double speedFactor;
 	public double gravity;
 	public int maxAge;
@@ -65,6 +66,10 @@ public class Particle extends GeneratableElement {
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
+
+	private Particle() {
+		this(null);
+	}
 
 	public Particle(ModElement element) {
 		super(element);

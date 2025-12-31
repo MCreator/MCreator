@@ -21,7 +21,11 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-public class CustomElement extends GeneratableElement {
+@SuppressWarnings("unused") public class CustomElement extends GeneratableElement {
+
+	private CustomElement() {
+		this(null);
+	}
 
 	public CustomElement(ModElement element) {
 		super(element);

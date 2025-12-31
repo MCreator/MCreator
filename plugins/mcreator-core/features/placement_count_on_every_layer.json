@@ -7,7 +7,7 @@
     }
   ],
   "extensions": [
-    "count_placement_validator"
+    "disable_repeated_count_on_every_layer"
   ],
   "inputsInline": true,
   "previousStatement": null,

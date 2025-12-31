@@ -13,8 +13,9 @@ Blockly.Extensions.register('is_custom_loop',
 // Extension to append the marker image to all blockstate provider inputs
 Blockly.Extensions.register('add_image_to_bsp_inputs',
     function () {
-        for (let i = 0, input; input = this.inputList[i]; i++) {
-            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'BlockStateProvider')
+        for (let i = 0; i < this.inputList.length; i++) {
+            const input = this.inputList[i];
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] === 'BlockStateProvider')
                 input.appendField(new Blockly.FieldImage("./res/bsp_input.png", 8, 20));
         }
     });
@@ -22,8 +23,9 @@ Blockly.Extensions.register('add_image_to_bsp_inputs',
 // Extension to append the marker image to all plain blockstate inputs
 Blockly.Extensions.register('add_image_to_blockstate_inputs',
     function () {
-        for (let i = 0, input; input = this.inputList[i]; i++) {
-            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'MCItemBlock')
+        for (let i = 0; i < this.inputList.length; i++) {
+            const input = this.inputList[i];
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] === 'MCItemBlock')
                 input.appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
         }
     });
@@ -32,14 +34,14 @@ Blockly.Extensions.register('add_image_to_blockstate_inputs',
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
         mutationToDom: function () {
-            var container = document.createElement('mutation');
-            var parentConnection = this.outputConnection.targetConnection;
+            const container = document.createElement('mutation');
+            const parentConnection = this.outputConnection.targetConnection;
             if (parentConnection == null)
                 return null;
             else {
-                var connectionChecks = parentConnection.getCheck();
-                var shouldMark = connectionChecks &&
-                    (connectionChecks.indexOf('MCItem') != -1 || connectionChecks.indexOf('MCItemBlock') != -1);
+                const connectionChecks = parentConnection.getCheck();
+                const shouldMark = connectionChecks &&
+                    (connectionChecks.indexOf('MCItem') !== -1 || connectionChecks.indexOf('MCItemBlock') !== -1);
                 container.setAttribute('mark', shouldMark);
                 return container;
             }
@@ -53,17 +55,17 @@ Blockly.Extensions.registerMutator('mark_attached_to_block_item',
 Blockly.Extensions.registerMutator('variable_entity_input',
     {
         mutationToDom: function () {
-            var container = document.createElement('mutation');
-            var isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            const container = document.createElement('mutation');
+            const isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
             container.setAttribute('is_player_var', isPlayerVar);
-            var hasEntity = (this.getInputTargetBlock('entity') != null);
+            const hasEntity = (this.getInputTargetBlock('entity') != null);
             container.setAttribute('has_entity', hasEntity);
             return container;
         },
 
         domToMutation: function (xmlElement) {
-            var isPlayerVar = (xmlElement.getAttribute('is_player_var') == 'true');
-            var hasEntity = (xmlElement.getAttribute('has_entity') == 'true');
+            const isPlayerVar = (xmlElement.getAttribute('is_player_var') === 'true');
+            const hasEntity = (xmlElement.getAttribute('has_entity') === 'true');
             this.updateShape_(isPlayerVar, !hasEntity); // don't create another block if it already has one
         },
 
@@ -210,10 +212,82 @@ function checkIfWithin(block, predicate) {
     return null;
 }
 
+// Mutator to disable the "With random XZ" blocks if they already appear in the placement
+Blockly.Extensions.registerMixin('disable_repeated_random_xz',
+    {
+        onchange: function (e) {
+            // Don't change state if it's at the start of a drag and it's not a move or create event
+            if (!this.workspace.isDragging || this.workspace.isDragging()
+                || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
+                return;
+            }
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
+            }));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placement_in_square.warning_repeated'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+
+// Mutator to disable the "Repeated on every later with random XZ" blocks if they already appear in the placement
+// or if the count int provider is outside bounds
+Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
+    {
+        onchange: function (e) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
+                e.type !== Blockly.Events.BLOCK_MOVE &&
+                e.type !== Blockly.Events.BLOCK_DELETE &&
+                e.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            // First, check if this placement is repeated
+            const isRepeated = checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
+            });
+            // Then check if the count input is within range
+            const isWithinRange = isIntProviderWithinBounds(this.getInput('count').connection.targetBlock(), 0, 256);
+
+            const enabled = !isRepeated && isWithinRange;
+            if (enabled) {
+                this.setWarningText(null);
+            } else if (isRepeated) {
+                this.setWarningText(javabridge.t('blockly.block.placement_in_square.warning_repeated') +
+                    (isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
+            } else {
+                this.setWarningText(javabridge.t('blockly.extension.placement_count_on_every_layer.count'));
+            }
+
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+
+function checkIfAfter(block, predicate) {
+    while (block) {
+        if (predicate(block.type)) {
+            return block;
+        }
+        block = block.getPreviousBlock();
+    }
+    return null;
+}
+
 // Disable the null comparison block if a Number or Boolean input is attached, as they represent primitive types
 Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
     {
-    	onchange: function (changeEvent) {
+        onchange: function (changeEvent) {
             // Trigger the change only if a block is changed, moved, deleted or created
             if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
                 changeEvent.type !== Blockly.Events.BLOCK_MOVE &&

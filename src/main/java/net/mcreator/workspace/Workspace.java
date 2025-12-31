@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
@@ -136,7 +137,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return foldersRoot;
 	}
 
-	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
+	@Override @Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
 
@@ -233,7 +234,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
+		if (!mod_elements.contains(element)) // skip if it is not present on the list already
 			return;
 
 		fileManager.getModElementManager().removeModElement(element);
@@ -432,6 +433,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				throw new CorruptedWorkspaceFileException(e);
 			}
 
+			retval.getWorkspaceSettings().setWorkspace(retval);
+
 			if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator()) == null) {
 				if (ui == null) {
 					throw new UnsupportedGeneratorException(retval.getWorkspaceSettings().getCurrentGenerator());
@@ -483,12 +486,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 					retval.generator.loadOrCreateGradleCaches();
 				} catch (GradleCacheImportFailedException e) {
 					LOG.warn("Failed to import caches when opening a workspace", e);
-					// gradle is missing libs, rerun the setup to fix this
+
+					// This should never happen in a testing environment
+					TestUtil.failIfTestingEnvironment();
+
+					// Gradle is missing libs, rerun the setup to fix this
 					WorkspaceGeneratorSetup.requestSetup(retval);
 				}
 			}
-
-			retval.getWorkspaceSettings().setWorkspace(retval);
 
 			// Handle corrupted mod elements
 			List<ModElement> corruptedElements = new ArrayList<>();

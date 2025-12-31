@@ -1,0 +1,8 @@
+templates:
+  - template: item.json.ftl
+    writer: json
+    name: "@SRCROOT/items/@registryname.json"
+
+localizationkeys:
+  - key: item.@modid:@registryname
+    mapto: name

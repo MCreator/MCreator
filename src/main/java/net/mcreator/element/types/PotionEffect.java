@@ -19,10 +19,8 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.AttributeEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -73,12 +71,6 @@ import java.util.List;
 
 		this.mobEffectCategory = "NEUTRAL";
 		modifiers = new ArrayList<>();
-	}
-
-	public static class AttributeModifierEntry {
-		public AttributeEntry attribute;
-		public double amount;
-		public String operation;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
