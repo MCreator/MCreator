@@ -1096,10 +1096,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			hasAI.setEnabled(false);
 			breedTriggerItems.setEnabled(true);
 			tameable.setEnabled(true);
+			aiBase.setEnabled(false);
+			aiBase.setSelectedItem("(none)");
 		} else {
 			hasAI.setEnabled(true);
 			breedTriggerItems.setEnabled(false);
 			tameable.setEnabled(false);
+			aiBase.setEnabled(true);
 		}
 
 		boolean isBossSelected = isBoss.isSelected();
