@@ -252,11 +252,11 @@ public class MinecraftImageGenerator {
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.0f));
 			g.drawString("HELMET", 5, 72);
-			g.drawRect(0, 0, 159, 77);
+			g.drawRect(0, 0, 319, 79);
 			g.drawString("BOOTS", 5, 155);
-			g.drawRect(0, 79, 78, 80);
+			g.drawRect(0, 79, 79, 80);
 			g.drawString("CHESTPLATE", 87, 155);
-			g.drawRect(80, 79, 205, 80);
+			g.drawRect(80, 79, 200, 80);
 			return image;
 		}
 
@@ -265,8 +265,8 @@ public class MinecraftImageGenerator {
 			Graphics2D g = (Graphics2D) image.getGraphics();
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.f));
-			g.drawRect(0, 75, 227, 84);
-			g.drawString("LEGGINGS", 160, 91);
+			g.drawRect(0, 79, 200, 80);
+			g.drawString("LEGGINGS", 135, 91);
 			return image;
 		}
 
