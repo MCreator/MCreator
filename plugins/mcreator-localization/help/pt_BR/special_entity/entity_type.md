@@ -1,0 +1,1 @@
+Este parâmetro controla o comportamento básico e o modelo da sua entidade.

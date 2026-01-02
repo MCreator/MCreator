@@ -1,0 +1,2 @@
+L’activation de ce paramètre empêche le projectile d’être supprimé après avoir atterri sur un bloc.
+Cela peut être utilisé pour créer des projectiles comme le trident qui peuvent revenir vers le joueur ou être ramassés.
