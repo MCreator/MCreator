@@ -21,6 +21,7 @@ package net.mcreator.ui.chromium;
 
 import net.mcreator.Launcher;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeCSS;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -289,8 +290,8 @@ public class WebView extends JPanel implements Closeable {
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
-		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force cursor to default
-		addLoadListener(() -> addCSSToDOM("* { cursor: default !important; }"));
+		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force cursor to default + theme CSS
+		addLoadListener(() -> addCSSToDOM("* { cursor: default !important; }" + ThemeCSS.generateCSS(Theme.current())));
 	}
 
 	@Override public void removeNotify() {
