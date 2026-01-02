@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
@@ -43,6 +44,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -560,12 +562,43 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				JOptionPane.ERROR_MESSAGE);
 	}
 
+	protected AggregatedValidationResult getAdditionalValidationResult(GE generatableElement) {
+		// Just before saving the ME and GE, we make sure again that the name we are trying to use was
+		// not reserved by some other ME (e.g., ME that has multiple names, if this ME has multiple names,
+		// or if the pack-making tool was used to reserve the same name as we are in the process of reserving)
+		List<String> ourNames = new ArrayList<>();
+		ourNames.add(modElement.getName());
+		if (generatableElement instanceof IMultipleNames multipleNames) {
+			ourNames.addAll(multipleNames.getAdditionalNames());
+		}
+
+		// Get a list of used names without current ME and intersect it with ourNames
+		Collection<String> conflictingNames = ListUtils.intersect(
+				mcreator.getWorkspaceInfo().getUsedElementNames(modElement), ourNames);
+
+		// Check if the list of used names contains any of ourNames
+		if (!conflictingNames.isEmpty()) {
+			return new AggregatedValidationResult.FAIL(
+					L10N.t("elementgui.errors.name_reserved", String.join(", ", conflictingNames)));
+		}
+
+		return new AggregatedValidationResult.PASS();
+	}
+
 	/**
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
+
 		GE element = getElementFromGUI();
+
+		// Perform any potential additional validation the editor specifies
+		AggregatedValidationResult validationResult = getAdditionalValidationResult(element);
+		if (!validationResult.validateIsErrorFree()) {
+			showErrorsMessage(validationResult);
+			return;
+		}
 
 		// if new element, specify the folder of the mod element
 		if (!editingMode && mcreator instanceof ModMaker modMaker)

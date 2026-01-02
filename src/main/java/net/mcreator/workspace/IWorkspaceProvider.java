@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.workspace.elements.ModElementManager;
+import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 
@@ -51,6 +52,10 @@ public interface IWorkspaceProvider {
 
 	default WorkspaceUserSettings getWorkspaceUserSettings() {
 		return getWorkspace().getWorkspaceUserSettings();
+	}
+
+	default WorkspaceInfo getWorkspaceInfo() {
+		return getWorkspace().getWorkspaceInfo();
 	}
 
 }

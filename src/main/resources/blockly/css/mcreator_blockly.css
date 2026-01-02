@@ -48,14 +48,14 @@ body {
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    rx: 3px;
-    ry: 3px;
+    rx: 2px;
+    ry: 2px;
     width: 6px;
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    rx: 3px;
-    ry: 3px;
+    rx: 2px;
+    ry: 2px;
     height: 6px;
 }
 

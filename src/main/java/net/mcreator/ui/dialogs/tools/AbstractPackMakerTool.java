@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
@@ -69,12 +70,12 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	protected abstract void generatePack(MCreator mcreator);
 
 	public static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
+		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();
 		for (String name : names) {
-			if (workspace.containsModElement(name)) {
+			if (usedElementNames.contains(name)) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 

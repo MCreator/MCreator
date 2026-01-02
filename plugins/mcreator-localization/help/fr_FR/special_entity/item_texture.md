@@ -1,0 +1,1 @@
+Ce paramètre contrôle la texture de l'item de votre entité.
