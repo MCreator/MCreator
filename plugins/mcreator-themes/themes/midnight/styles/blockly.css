@@ -1,112 +1,112 @@
 body {
-    fill: #1f252f;
+    fill: var(--backgroundColorBrighter);
 }
 
 #blockly {
-    background: #1f252f;
+    background: var(--backgroundColorBrighter);
 }
 
 .blocklySvg {
-    background-color: #1f252f !important;
+    background-color: var(--backgroundColorBrighter) !important;
 }
 
 .blocklyMainBackground {
-    fill: #1f252f !important;
+    fill: var(--backgroundColorBrighter) !important;
 }
 
 ::-webkit-scrollbar-track {
-    background: #1c2128;
+    background: var(--altBackgroundColor);
 }
 
 ::-webkit-scrollbar-corner {
-    background: #1c2128;
+    background: var(--altBackgroundColor);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #171c23;
+    background: var(--backgroundColor);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1f252f;
+    background: var(--altBackgroundColor);
 }
 
 .blocklyToolboxDiv {
-    background-color: #171c23;
-    color: #eaeaea;
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
-    background-color: #e4e4e4 !important;
-    color: #171c23 !important;
+    background-color: var(--foregroundColor) !important;
+    color: var(--backgroundColor) !important;
 }
 
 .blocklyTreeSeparator {
-    border-bottom: solid #1c2128 1px;
+    border-bottom: solid var(--altBackgroundColor) 1px;
 }
 
 .blocklyFlyout {
-    background-color: #171c23c2;
+    background-color: var(--backgroundColorTransparent);
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    fill: #1c2129;
+    fill: var(--backgroundColor);
 }
 
 .blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
-    fill: #171c23;
+    fill: var(--altBackgroundColor);
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    fill: #1c2129;
+    fill: var(--backgroundColor);
 }
 
 .blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
-    fill: #171c23;
+    opacity: var(--altBackgroundColor);
 }
 
 .whlab > .blocklyFlyoutLabelText {
-    fill: #eaeaea !important;
+    fill: var(--foregroundColor) !important;
 }
 
 .blocklyDropDownDiv {
-    background: #1c2128 !important;
+    background: var(--altBackgroundColor) !important;
+    border-color: var(--secondAltBackgroundColor) !important;
 }
 
 .blocklyDropDownDiv .goog-menuitem-content {
-    color: #eaeaea !important;
+    color: var(--foregroundColor) !important;
 }
 
 .blocklyTooltipDiv {
-    background-color: #171c23;
-    color: #eaeaea;
-	border-color: #1e1e1e 1px !important;
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
 }
 
 .blocklyWidgetDiv .goog-menu {
-    background: #171c23 !important;
-    border-color: #1c2128 !important;
+    background: var(--backgroundColor) !important;
+    border-color: var(--altBackgroundColor) !important;
 }
 
 .blocklyWidgetDiv .goog-menuitem-content {
-    color: #eaeaea;
+    color: var(--foregroundColor);
 }
 
 .blocklyCommentTextarea {
-    background: #171c23;
-    color: #eaeaea;
+    background: var(--backgroundColor);
+    color: var(--foregroundColor);
 }
 
 .blocklyMutatorBackground {
-    fill: #171c23;
+    fill: var(--backgroundColor);
     stroke-width: 0;
 }
 
 .blocklySelected > .blocklyPath {
-    stroke: #fff !important;
+    stroke: var(--foregroundColor) !important;
     stroke-width: 2px !important;
 }
 
 .blocklyHtmlTextAreaInput {
-    background: #171c23;
-    color: #eaeaea;
+    background: var(--backgroundColor);
+    color: var(--foregroundColor);
 }
