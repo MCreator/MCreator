@@ -60,7 +60,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
+		g.setColor(mcreator.hasBackgroundImage() ?
+				ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100) :
+				Theme.current().getBackgroundColor());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}
