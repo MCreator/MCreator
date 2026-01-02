@@ -61,7 +61,10 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.*;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.TagElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.IOUtils;
 
@@ -1492,7 +1495,7 @@ public class TestWorkspaceDataProvider {
 			particle.animate = _true;
 			particle.maxAge = 12;
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
-			particle.rotationProvider = new Procedure("vector1");
+			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
@@ -2511,27 +2514,6 @@ public class TestWorkspaceDataProvider {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 4; i++) {
-				ModElement me = new ModElement(workspace, "vector" + i, ModElementType.PROCEDURE);
-				me.putMetadata("return_type", "VECTOR");
-				me.putMetadata("dependencies", Collections.emptyList());
-
-				net.mcreator.element.types.Procedure procedure =
-						new net.mcreator.element.types.Procedure(me);
-
-				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
-						"<block type=\"return_vector\"><value name=\"return\">"
-								+ "<block type=\"vector_new_vector\">"
-								+ "<value name=\"x\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
-								+ "<value name=\"y\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
-								+ "<value name=\"z\"><block type=\"math_number\"><field name=\"NUM\">3</field></block></value>"
-								+ "</block>"
-								+ "</value></block>"
-				);
-
-				addGeneratableElementAndAssert(workspace, procedure);
-			}
-
 			for (int i = 1; i <= 3; i++) {
 				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE);
 				me.putMetadata("return_type", "NUMBER");
@@ -2610,6 +2592,24 @@ public class TestWorkspaceDataProvider {
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_entity\"><value name=\"return\">"
 								+ "<block type=\"entity_from_deps\"></block></value></block>");
+
+				addGeneratableElementAndAssert(workspace, procedure);
+			}
+
+			for (int i = 1; i <= 2; i++) {
+				ModElement me = new ModElement(workspace, "vector" + i, ModElementType.PROCEDURE);
+				me.putMetadata("return_type", "VECTOR");
+				me.putMetadata("dependencies", Dependency.fromString(
+						"x:number/y:number/z:number/world:world/speedX:number/speedY:number/speedZ:number/angularVelocity:number/angularAcceleration:number/age:number"));
+
+				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+
+				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
+						"<block type=\"return_vector\"><value name=\"return\"><block type=\"vector_new_vector\">"
+								+ "<value name=\"x\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+								+ "<value name=\"y\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
+								+ "<value name=\"z\"><block type=\"math_number\"><field name=\"NUM\">3</field></block></value>"
+								+ "</block></value></block>");
 
 				addGeneratableElementAndAssert(workspace, procedure);
 			}

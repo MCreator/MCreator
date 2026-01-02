@@ -113,7 +113,6 @@ public class ${name}Particle extends TextureSheetParticle {
 
 	<#if hasProcedure(data.rotationProvider)>
 	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
-		Quaternionf flip = new Quaternionf().rotateY((float)Math.PI);
 		Vec3 vec = <@procedureCode data.rotationProvider, {
 			"world": "this.level",
 			"x": "this.x",
@@ -124,12 +123,13 @@ public class ${name}Particle extends TextureSheetParticle {
 			"speedZ": "this.zd",
 			"angularVelocity": "this.angularVelocity",
 			"angularAcceleration": "this.angularAcceleration",
-			"age": "(this.age + partialTicks)"
+			"age": "this.age + partialTicks"
 		}/>;
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
-		Quaternionf flippedTilt = new Quaternionf(tilt).mul(flip);
 		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
-		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks); <#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		Quaternionf flippedTilt = new Quaternionf(tilt).mul(new Quaternionf().rotateY((float) Math.PI));
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks);
 	}
 	</#if>
 

@@ -1,7 +1,6 @@
-This parameter overrides default particle billboarding (always appears to face player)
+This parameter overrides default particle billboarding (always appears to face the player).
 
-Specify the direction (in radians) in which the particles faces by passing a _'`vector`'_ with 3 parameters,\
-where: `vec(pitch, yaw, roll)`
-- (first entry provides pitch, second one provides yaw, third gives roll)
+Specify the orientation of the particle by passing a _`vector`_ with 
+3 parameters `(pitch, yaw, roll)` in radians.
 
-Note: When rendering, the rotations are applied in the order: (Roll-Yaw-Pitch)
+Rotations are applied in the following order: Roll, Yaw, Pitch
