@@ -20,9 +20,11 @@
 package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ITextFieldSearchable;
 import net.mcreator.util.ColorUtils;
@@ -100,14 +102,27 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
 			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
+				if (mcreator.hasBackgroundImage()) {
+					Graphics2D g2d = (Graphics2D) g.create();
+					g2d.setColor(Theme.current().getAltBackgroundColor());
+					g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+					g2d.fillRect(0, 0, getWidth(), getHeight());
+					g2d.dispose();
+				}
 				super.paintComponent(g);
 			}
 		};
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
+
+		if (mcreator.hasBackgroundImage()) {
+			subTabs.setOpaque(false);
+			subTabs.setBackground(ColorUtils.applyAlpha(subTabs.getBackground(), 0));
+		} else {
+			subTabs.setOpaque(true);
+		}
+
 		subTabs.setModel(new DefaultSingleSelectionModel() {
 			@Override public void setSelectedIndex(int index) {
 				if (subTabs.getComponentAt(index) instanceof AbstractWorkspacePanel tabComponent) {
@@ -123,11 +138,6 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 				afterVerticalTabChanged();
 			}
 		});
-
-		subTabs.setOpaque(false);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
-				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
 
 		add("Center", subTabs);
 	}
