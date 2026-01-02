@@ -61,7 +61,7 @@ body {
 }
 
 .blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
-    opacity: var(--altBackgroundColor);
+    fill: var(--altBackgroundColor);
 }
 
 .whlab > .blocklyFlyoutLabelText {
