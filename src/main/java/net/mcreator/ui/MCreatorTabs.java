@@ -21,6 +21,7 @@ package net.mcreator.ui;
 import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.TabEvent;
+import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.IconUtils;
@@ -86,31 +87,7 @@ public class MCreatorTabs extends JTabbedPane {
 			}
 		});
 
-		setUI(new FlatTabbedPaneUI() {
-
-			// This is used to paint background behind tab bar
-			@Override public void paint(Graphics g, JComponent c) {
-				Rectangle tr = null;
-				if (getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {
-					tr = tabViewport.getBounds();
-					for (Component child : tabPane.getComponents()) {
-						if (child instanceof FlatTabAreaButton && child.isVisible())
-							tr = tr.union(child.getBounds());
-					}
-				} else {
-					for (Rectangle r : rects)
-						tr = (tr != null) ? tr.union(r) : r;
-				}
-
-				if (tr != null) {
-					g.setColor(tabPane.getBackground());
-					g.fillRect(0, tr.y, getWidth(), tr.height);
-				}
-
-				super.paint(g, c);
-			}
-
-		});
+		setUI(new OpaqueTabStripTabbedPaneUI());
 	}
 
 	private Tab getTabForTabIndex(int index) {
