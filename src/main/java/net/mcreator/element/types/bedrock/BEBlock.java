@@ -25,8 +25,8 @@ import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
@@ -76,7 +76,14 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.resizeAndCrop(getMainTexture(), 32);
+		return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+				getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+	}
+
+	private Image getTextureWithFallback(TextureHolder texture) {
+		if (texture.isEmpty())
+			return getMainTexture();
+		return texture.getImage(TextureType.BLOCK);
 	}
 
 	@Override public String getRenderType() {
