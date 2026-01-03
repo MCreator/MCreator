@@ -74,7 +74,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final ValidationGroup page2group = new ValidationGroup();
 
 	public BEBlockGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -83,24 +82,22 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel visualPanel = new JPanel(new BorderLayout(10, 10));
-		visualPanel.setOpaque(false);
 		JPanel propertiesPanel = new JPanel(new BorderLayout(10, 10));
 		propertiesPanel.setOpaque(false);
 		JPanel generationPanel = new JPanel(new BorderLayout(10, 10));
 		generationPanel.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
-		visualPanel.add("Center", PanelUtils.totalCenterInPanel(textures));
 		page1group.addValidationElement(textures);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 65, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 5, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
+		page1group.addValidationElement(name);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -144,8 +141,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
-		page2group.addValidationElement(name);
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(textures),
+				PanelUtils.totalCenterInPanel(basicProperties), 65, 10)));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
@@ -178,8 +175,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				PanelUtils.totalCenterInPanel(genPanel), 25, 0);
 		generationPanel.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
-		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page2group);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
 
 		if (!isEditingMode()) {
