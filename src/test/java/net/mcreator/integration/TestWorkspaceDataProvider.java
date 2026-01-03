@@ -207,81 +207,6 @@ public class TestWorkspaceDataProvider {
 			}
 		}
 
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
-				== GeneratorStats.CoverageStatus.FULL) {
-			VariableElement sampleVariable1 = new VariableElement("test");
-			sampleVariable1.setValue("true");
-			sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-			sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
-			workspace.addVariableElement(sampleVariable1);
-
-			int idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("logic" + (idx++));
-					variable.setValue("true");
-					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("number" + (idx++));
-					variable.setValue("12");
-					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("string" + (idx++));
-					variable.setValue("test");
-					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("itemstack" + (idx++));
-					variable.setValue("ItemStack.EMPTY");
-					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("direction" + (idx++));
-					variable.setValue("UP");
-					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("blockstate" + (idx++));
-					variable.setValue("Blocks.AIR");
-					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-		}
-
 		EmptyIcon.ImageIcon imageIcon = new EmptyIcon.ImageIcon(16, 16);
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.BLOCK) != null) {
@@ -395,7 +320,7 @@ public class TestWorkspaceDataProvider {
 		}
 	}
 
-	public static void filleWorkspaceWithSampleTags(Workspace workspace) {
+	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
@@ -841,8 +766,8 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, blocksAndItems, blocksAndItemsAndTags, biomes,
-					guis);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems,
+					blocksAndItemsAndTags, biomes, guis);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
@@ -1743,7 +1668,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
 			List<String> guis) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
@@ -1845,10 +1770,13 @@ public class TestWorkspaceDataProvider {
 			livingEntity.onInitialSpawn = new Procedure("procedure9");
 		}
 		livingEntity.hasAI = _true;
-		livingEntity.aiBase = "(none)";
-		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
-		livingEntity.tameable = _true;
+		livingEntity.tameable = random.nextBoolean();
+		livingEntity.aiBase = (livingEntity.breedable || livingEntity.mobBehaviourType.equals("Raider")) ?
+				"(none)" :
+				new String[] { "(none)", "Wolf", "Cow",
+						"Zombie" }[valueIndex]; // index 0 must be none for GTAITaskBlocks
+		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.breedTriggerItems = subset(random, 5, blocksAndItemsAndTags,
@@ -2188,6 +2116,7 @@ public class TestWorkspaceDataProvider {
 		}
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
+		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");

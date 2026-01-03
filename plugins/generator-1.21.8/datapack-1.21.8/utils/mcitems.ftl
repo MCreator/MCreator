@@ -6,17 +6,25 @@
     </#if>
 </#function>
 
-<#function transformExtension mappedBlock>
+<#function handleExtension mappedBlock customelement>
     <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
-    <#return (extension?has_content)?then("_" + extension, "")>
+    <#if extension == "wall"> <#-- Special handling for wall variant of signs -->
+        <#if customelement?ends_with("sign")> <#-- If element name ends with "sign", we can use proper naming for wall sign -->
+            <#return customelement?remove_ending("sign") + "wall_sign">
+        <#else>
+            <#return "wall_" + customelement>
+        </#if>
+    <#else>
+    	<#return (extension?has_content)?then(customelement + "_" + extension, customelement)>
+    </#if>
 </#function>
 
 <#function mappedMCItemToItemObjectJSON mappedBlock itemKey="item">
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
-            <#return "\"" + itemKey + "\": \"" + "${modid}:" + customelement
-            + transformExtension(mappedBlock)
+            <#return "\"" + itemKey + "\": \"" + "${modid}:"
+            + handleExtension(mappedBlock, customelement)
             + "\"">
         <#else>
             <#return "\"" + itemKey + "\": \"minecraft:air\"">
@@ -39,7 +47,7 @@
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
-            <#return "${modid}:" + customelement + transformExtension(mappedBlock)>
+            <#return "${modid}:" + handleExtension(mappedBlock, customelement)>
         <#else>
             <#return "minecraft:air">
         </#if>
