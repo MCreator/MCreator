@@ -93,7 +93,7 @@ public class Theme {
 
 			Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) consoleFont.getAttributes();
 
-			if (PreferencesManager.PREFERENCES.ui.useLigatures.get()) {
+			if (PreferencesManager.PREFERENCES.ide.useLigatures.get()) {
 				attributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
 				attributes.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
 			}
