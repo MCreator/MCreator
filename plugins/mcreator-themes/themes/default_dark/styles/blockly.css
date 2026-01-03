@@ -14,7 +14,7 @@ body {
     fill: var(--backgroundColor) !important;
 }
 
-.blocklyPath {
+.thrasos-renderer .blocklyPath {
     stroke: var(--altBackgroundColor);
 }
 
