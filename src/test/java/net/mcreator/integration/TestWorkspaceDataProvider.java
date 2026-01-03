@@ -169,6 +169,11 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
+		} else if (type == ModElementType.SPECIALENTITY) {
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), "Boat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
@@ -201,81 +206,6 @@ public class TestWorkspaceDataProvider {
 			for (int i = 1; i <= 3; i++) {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
-			}
-		}
-
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
-				== GeneratorStats.CoverageStatus.FULL) {
-			VariableElement sampleVariable1 = new VariableElement("test");
-			sampleVariable1.setValue("true");
-			sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-			sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
-			workspace.addVariableElement(sampleVariable1);
-
-			int idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("logic" + (idx++));
-					variable.setValue("true");
-					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("number" + (idx++));
-					variable.setValue("12");
-					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("string" + (idx++));
-					variable.setValue("test");
-					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("itemstack" + (idx++));
-					variable.setValue("ItemStack.EMPTY");
-					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("direction" + (idx++));
-					variable.setValue("UP");
-					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
-			}
-
-			idx = 0;
-			for (VariableType.Scope scope : VariableType.Scope.values()) {
-				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement("blockstate" + (idx++));
-					variable.setValue("Blocks.AIR");
-					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
-					variable.setScope(scope);
-					workspace.addVariableElement(variable);
-				}
 			}
 		}
 
@@ -392,7 +322,7 @@ public class TestWorkspaceDataProvider {
 		}
 	}
 
-	public static void filleWorkspaceWithSampleTags(Workspace workspace) {
+	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
@@ -838,8 +768,8 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, blocksAndItems, blocksAndItemsAndTags, biomes,
-					guis);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems,
+					blocksAndItemsAndTags, biomes, guis);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
@@ -1169,6 +1099,7 @@ public class TestWorkspaceDataProvider {
 			plant.xpAmountMin = 2;
 			plant.xpAmountMax = 5;
 			plant.useLootTableForDrops = !_true;
+			plant.generateFeature = _true;
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
@@ -1362,6 +1293,7 @@ public class TestWorkspaceDataProvider {
 			projectile.showParticles = _true;
 			projectile.igniteFire = _true;
 			projectile.disableGravity = emptyLists;
+			projectile.disableDiscarding = _true;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			projectile.entityModel = emptyLists ? "Default" : "ModelCustomJavaModel";
@@ -1552,6 +1484,7 @@ public class TestWorkspaceDataProvider {
 			particle.emissiveRendering = _true;
 			particle.height = 1.38;
 			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
+			particle.fixedScale = _true;
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
@@ -1768,7 +1701,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
 			List<String> guis) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
@@ -1870,10 +1803,13 @@ public class TestWorkspaceDataProvider {
 			livingEntity.onInitialSpawn = new Procedure("procedure9");
 		}
 		livingEntity.hasAI = _true;
-		livingEntity.aiBase = "(none)";
-		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
-		livingEntity.tameable = _true;
+		livingEntity.tameable = random.nextBoolean();
+		livingEntity.aiBase = (livingEntity.breedable || livingEntity.mobBehaviourType.equals("Raider")) ?
+				"(none)" :
+				new String[] { "(none)", "Wolf", "Cow",
+						"Zombie" }[valueIndex]; // index 0 must be none for GTAITaskBlocks
+		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.breedTriggerItems = subset(random, 5, blocksAndItemsAndTags,
@@ -2176,6 +2112,7 @@ public class TestWorkspaceDataProvider {
 				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
 		}
+		block.generateFeature = _true;
 		block.blocksToReplace = new ArrayList<>();
 		if (!emptyLists) {
 			block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
@@ -2212,6 +2149,7 @@ public class TestWorkspaceDataProvider {
 		}
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
+		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
@@ -2235,6 +2173,65 @@ public class TestWorkspaceDataProvider {
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
 		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
 				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
+		block.states = new ArrayList<>();
+		if (!emptyLists) {
+			int size2 = random.nextInt(4) + 1;
+
+			List<PropertyDataWithValue<?>> stateProperties = new ArrayList<>();
+			for (PropertyDataWithValue<?> property : block.customProperties) {
+				if (random.nextBoolean()) {
+					stateProperties.add(property);
+				}
+			}
+
+			for (int i = 0; i < size2; i++) {
+				StateMap stateMap = new StateMap();
+				for (PropertyDataWithValue<?> property : stateProperties) {
+					if (property.property() instanceof PropertyData.IntegerType) {
+						stateMap.put(property.property(), random.nextInt(1, 10));
+					} else if (property.property() instanceof PropertyData.LogicType) {
+						stateMap.put(property.property(), random.nextBoolean());
+					}
+				}
+
+				Block.StateEntry stateEntry = new Block.StateEntry();
+				stateEntry.setWorkspace(modElement.getWorkspace());
+				stateEntry.stateMap = stateMap;
+
+				stateEntry.customModelName = "Normal";
+				stateEntry.renderType = 10;
+
+				stateEntry.texture = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureTop = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureBack = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureLeft = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureFront = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+				stateEntry.textureRight = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
+
+				stateEntry.particleTexture = new TextureHolder(modElement.getWorkspace(),
+						random.nextBoolean() ? null : "test3");
+
+				stateEntry.hasCustomBoundingBox = _true;
+				stateEntry.boundingBoxes = new ArrayList<>();
+				if (stateEntry.hasCustomBoundingBox) {
+					int boxes = random.nextInt(4) + 1;
+					for (int i2 = 0; i2 < boxes; i2++) {
+						IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+						box.mx = new double[] { 0, 5 + i2, 1.2, 7.1 }[valueIndex];
+						box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+						box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+						box.Mx = new double[] { 16, 15.2, 4, 7.1 + i2 }[valueIndex];
+						box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+						box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+						box.subtract = random.nextBoolean();
+
+						stateEntry.boundingBoxes.add(box);
+					}
+				}
+
+				block.states.add(stateEntry);
+			}
+		}
 		return block;
 	}
 
@@ -2453,6 +2450,20 @@ public class TestWorkspaceDataProvider {
 				+ "<block type=\"tick\"></block></next></block></xml>";
 
 		return achievement;
+	}
+
+	public static SpecialEntity getSpecialEntityExample(ModElement modElement, String entityType, boolean emptyLists) {
+		SpecialEntity specialEntity = new SpecialEntity(modElement);
+		specialEntity.name = modElement.getName();
+		specialEntity.entityType = entityType;
+		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
+		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		specialEntity.creativeTabs = emptyLists ?
+				List.of() :
+				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+
+		return specialEntity;
 	}
 
 	public static <T> T getRandomItem(Random random, T[] list) {

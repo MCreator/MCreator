@@ -60,10 +60,13 @@ public class JBlockStatePropertiesList extends JEntriesList {
 	private final JProgressBar propertiesCap = new JProgressBar();
 	private final JLabel propertiesCapLabel = new JLabel();
 
+	private final JBlockStatesList blockStatesList;
+
 	public JBlockStatePropertiesList(MCreator mcreator, IHelpContext gui,
-			Supplier<Collection<String>> nonUserProvidedProperties) {
+			Supplier<Collection<String>> nonUserProvidedProperties, JBlockStatesList blockStatesList) {
 		super(mcreator, new BorderLayout(0, 10), gui);
 		this.nonUserProvidedProperties = nonUserProvidedProperties;
+		this.blockStatesList = blockStatesList;
 
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
@@ -173,6 +176,8 @@ public class JBlockStatePropertiesList extends JEntriesList {
 		registerEntryUI(pe);
 
 		recalculatePropertiesCap();
+
+		blockStatesList.propertiesChanged();
 	}
 
 	void removeProperty(JBlockStatePropertiesListEntry entry) {
@@ -182,6 +187,8 @@ public class JBlockStatePropertiesList extends JEntriesList {
 		propertyEntries.repaint();
 
 		recalculatePropertiesCap();
+
+		blockStatesList.propertiesChanged();
 	}
 
 	public List<PropertyDataWithValue<?>> getProperties() {
