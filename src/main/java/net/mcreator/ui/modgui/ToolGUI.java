@@ -116,6 +116,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private ProcedureSelector onItemInInventoryTick;
 	private ProcedureSelector onItemInUseTick;
 	private ProcedureSelector onEntitySwing;
+	private ProcedureSelector onDroppedByPlayer;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private MCItemListField blocksAffected;
 
@@ -164,6 +166,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
+				L10N.t("elementgui.item.event_on_dropped"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
@@ -328,7 +336,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
 		events.add(onCrafted);
@@ -337,6 +345,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
 		events.add(onEntitySwing);
+		events.add(onDroppedByPlayer);
+		events.add(onItemEntityDestroyed);
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
@@ -406,6 +416,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.refreshListKeepSelected(context);
 		onItemInUseTick.refreshListKeepSelected(context);
 		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
 		glowCondition.refreshListKeepSelected(context);
 		specialInformation.refreshListKeepSelected(context);
 
@@ -442,6 +454,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.setSelectedProcedure(tool.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(tool.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
+		onDroppedByPlayer.setSelectedProcedure(tool.onDroppedByPlayer);
+		onItemEntityDestroyed.setSelectedProcedure(tool.onItemEntityDestroyed);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
 		specialInformation.setSelectedProcedure(tool.specialInformation);
 		repairItems.setListElements(tool.repairItems);
@@ -485,6 +499,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		tool.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
+		tool.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
+		tool.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();

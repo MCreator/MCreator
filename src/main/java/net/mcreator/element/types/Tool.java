@@ -84,6 +84,8 @@ import java.util.stream.Collectors;
 	public Procedure onItemInUseTick;
 	public Procedure onBlockDestroyedWithTool;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
+	public Procedure onItemEntityDestroyed;
 
 	private Tool() {
 		this(null);

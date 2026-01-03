@@ -2259,6 +2259,8 @@ public class TestWorkspaceDataProvider {
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
 		tool.onEntitySwing = new Procedure("procedure11");
+		tool.onDroppedByPlayer = new Procedure("procedure8");
+		tool.onItemEntityDestroyed = new Procedure("procedure9");
 		tool.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		tool.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 		tool.renderType = 0;

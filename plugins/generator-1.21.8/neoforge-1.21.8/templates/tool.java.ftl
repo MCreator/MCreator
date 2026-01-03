@@ -306,6 +306,10 @@ public class ${name}Item extends FishingRodItem {
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
+	<@onDroppedByPlayer data.onDroppedByPlayer/>
+
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
+
 	<@hasGlow data.glowCondition/>
 
 </#macro>
