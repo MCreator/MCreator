@@ -53,7 +53,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private BlockTexturesSelector textures;
 
-	private final VTextField name = new VTextField(19).requireValue("elementgui.block.error_block_must_have_name")
+	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
@@ -90,7 +90,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 2, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -141,8 +141,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(textures),
-				PanelUtils.totalCenterInPanel(basicProperties), 200, 10)));
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(textures),
+						PanelUtils.totalCenterInPanel(basicProperties))));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
