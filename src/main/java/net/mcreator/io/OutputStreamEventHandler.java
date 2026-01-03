@@ -54,13 +54,9 @@ public class OutputStreamEventHandler extends OutputStream {
 		}
 	}
 
-	@Override public void flush() {
+	@Override public void close() {
 		if (buffer.size() > 0)
 			event();
-	}
-
-	@Override public void close() {
-		flush();
 	}
 
 	private void event() {
