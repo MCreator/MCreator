@@ -63,7 +63,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
-	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 0.9, 0.01));
+	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.6, 0, 0.9, 0.01));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -90,7 +90,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(11, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -142,7 +142,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(flammableDestroyChance);
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(textures),
-				PanelUtils.totalCenterInPanel(basicProperties), 65, 10)));
+				PanelUtils.totalCenterInPanel(basicProperties), 200, 10)));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
