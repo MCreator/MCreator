@@ -27,9 +27,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class CollapsibleDockPanel extends JSplitPane {
 
@@ -41,6 +40,8 @@ public class CollapsibleDockPanel extends JSplitPane {
 	private final Map<String, AbstractButton> idToButton = new LinkedHashMap<>();
 	private final Map<String, Integer> idToLastSize = new LinkedHashMap<>();
 	private final Map<String, JComponent> idToContent = new LinkedHashMap<>();
+
+	private final Map<String, List<DockVisibilityListener>> dockVisibilityListeners = new LinkedHashMap<>();
 
 	private final DockPosition dockPosition;
 
@@ -131,6 +132,10 @@ public class CollapsibleDockPanel extends JSplitPane {
 		return toggleButton;
 	}
 
+	public void addDockVisibilityListener(String dockID, DockVisibilityListener listener) {
+		dockVisibilityListeners.computeIfAbsent(dockID, k -> new ArrayList<>()).add(listener);
+	}
+
 	/**
 	 * Handles showing of the dock and toggling the right button. Also considers initial width.
 	 *
@@ -188,6 +193,9 @@ public class CollapsibleDockPanel extends JSplitPane {
 			cardLayout.show(dockPanel, affectedDockID);
 			setDividerSize(2);
 			setDividerLocation(getExpandedLocation(affectedDockID));
+
+			dockVisibilityListeners.getOrDefault(affectedDockID, Collections.emptyList())
+					.forEach(l -> l.dockShown(affectedDockID));
 
 			if (dockPosition == DockPosition.UP || dockPosition == DockPosition.DOWN) {
 				idToContent.get(affectedDockID).setMinimumSize(new Dimension(0, 25));
@@ -254,6 +262,10 @@ public class CollapsibleDockPanel extends JSplitPane {
 			}
 		}
 
+	}
+
+	public interface DockVisibilityListener {
+		void dockShown(String dockID);
 	}
 
 }

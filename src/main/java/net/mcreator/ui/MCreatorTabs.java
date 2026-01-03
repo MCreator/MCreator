@@ -18,7 +18,6 @@
 
 package net.mcreator.ui;
 
-import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.TabEvent;
 import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;

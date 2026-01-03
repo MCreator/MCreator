@@ -78,6 +78,13 @@ public final class ModMaker extends MCreator {
 			}
 		});
 
+		getBottomDockRegion().addDockVisibilityListener(DOCK_CODE_VIEWER, dockID -> {
+			if (getTabs().getCurrentTab() != null && getTabs().getCurrentTab()
+					.getContent() instanceof ModElementGUI<?> elementGUI) {
+				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);
+			}
+		});
+
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA) {
 			getBottomDockRegion().addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.dock_debug"),
