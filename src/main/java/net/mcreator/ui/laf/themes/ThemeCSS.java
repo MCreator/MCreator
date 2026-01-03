@@ -41,7 +41,7 @@ public class ThemeCSS {
             }
             """,
 				toCssColor(theme.getBackgroundColor()),
-				toCssColor(theme.getBackgroundColor()) + "C2",
+				toCssColor(theme.getBackgroundColor()) + "D5",
 				toCssColor(theme.getBackgroundColor().brighter()),
 				toCssColor(theme.getAltBackgroundColor()),
 				toCssColor(theme.getSecondAltBackgroundColor()),
