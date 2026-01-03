@@ -13,7 +13,8 @@ function getIntProviderMinMax(providerBlock) {
     else if (providerBlock.type === 'int_provider_weighted') {
         // Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
         let retval = [Infinity, -Infinity];
-        for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+        for (let i = 0; i < providerBlock.inputList.length; i++) {
+            const input = providerBlock.inputList[i];
             if (!input.connection) {
                 continue;
             }

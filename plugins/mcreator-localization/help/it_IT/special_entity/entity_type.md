@@ -1,0 +1,1 @@
+Questo parametro controlla il comportamento base e il modello della tua entità.

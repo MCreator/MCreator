@@ -50,6 +50,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.ValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -1022,10 +1023,10 @@ import java.util.regex.Pattern;
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
-						new OptionPaneValidator() {
-							@Override public ValidationResult validate(JComponent component) {
+						new OptionPaneValidator.Cached() {
+							@Override public Validator createValidator(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-										L10N.t("common.mod_element_name")).validate();
+										L10N.t("common.mod_element_name"));
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
 						mu.getName(), breadcrumb.getInScrollPane(), null);
