@@ -21,10 +21,12 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +43,11 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		super(workspacePanel);
 		resourceTabs = new JTabbedPane();
 		resourceTabs.setOpaque(false);
+		if (workspacePanel.getMCreator().hasBackgroundImage()) {
+			resourceTabs.setBackground(ColorUtils.applyAlpha(resourceTabs.getBackground(), 0));
+		} else {
+			resourceTabs.setUI(new OpaqueTabStripTabbedPaneUI());
+		}
 
 		WorkspacePanelTextures workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
 		WorkspacePanelSounds workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);

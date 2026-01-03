@@ -22,7 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-public class DamageType extends GeneratableElement {
+@SuppressWarnings("unused") public class DamageType extends GeneratableElement {
 
 	public double exhaustion;
 	public String scaling;
@@ -31,6 +31,10 @@ public class DamageType extends GeneratableElement {
 	public String normalDeathMessage;
 	public String itemDeathMessage;
 	public String playerDeathMessage;
+
+	private DamageType() {
+		this(null);
+	}
 
 	public DamageType(ModElement element) {
 		super(element);

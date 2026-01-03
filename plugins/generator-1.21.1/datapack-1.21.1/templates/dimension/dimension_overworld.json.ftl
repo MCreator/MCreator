@@ -55,6 +55,16 @@
              </#if>
              <#if biome?has_next>,</#if>
            </#list>
+           <#list w.filterBrokenReferences(data.biomesInDimensionCaves) as biome>
+		     <#if biome?is_first>,</#if>
+		     <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
+		       <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
+		       <@sb.defaultAny biome ge.groundBlock ge.undergroundBlock ge.getUnderwaterBlock()/>
+		     <#else>
+		       <@sb.vanilla biome true/>
+		     </#if>
+		     <#if biome?has_next>,</#if>
+		   </#list>
          ]
       }
     }

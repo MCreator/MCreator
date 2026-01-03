@@ -37,6 +37,7 @@ import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -87,14 +88,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
 		addProperty.addActionListener(e -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
-					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator() {
-						@Override public ValidationResult validate(JComponent component) {
+					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator.Cached() {
+						@Override public Validator createValidator(JComponent component) {
 							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
 									((VTextField) component)::getText,
 									() -> propertiesList.stream().map(JItemPropertiesListEntry::getPropertyName),
 									builtinPropertyNames, new RegistryNameValidator((VTextField) component,
-									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false)
-									.validate();
+									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false);
 						}
 					});
 			if (name != null)
@@ -179,7 +179,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private List<PropertyData<?>> getPropertiesList() {
 		List<PropertyData<?>> props = new ArrayList<>();
 		for (JItemPropertiesListEntry entry : propertiesList) {
-			if (entry.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.PASSED)
+			if (entry.getValidationStatus().type() != ValidationResult.Type.PASSED)
 				return null; // indicates that some property names are not defined correctly
 
 			props.add(entry.toPropertyData());
@@ -222,7 +222,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			JItemStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if state map is empty or duplicate is found
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if the state map is empty or a duplicate is found
 				iterator.remove(); // remove the JItemStatesListEntry
 				stateEntries.remove(s);
 			} else {

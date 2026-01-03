@@ -32,7 +32,7 @@ import net.mcreator.workspace.references.TextureReference;
 import java.io.File;
 import java.util.List;
 
-public class VillagerProfession extends GeneratableElement implements IPOIProvider {
+@SuppressWarnings("unused") public class VillagerProfession extends GeneratableElement implements IPOIProvider {
 
 	public String displayName;
 	public MItemBlock pointOfInterest;
@@ -40,6 +40,10 @@ public class VillagerProfession extends GeneratableElement implements IPOIProvid
 	public String hat;
 	@TextureReference(TextureType.ENTITY) public String professionTextureFile;
 	@TextureReference(TextureType.ENTITY) public String zombifiedProfessionTextureFile;
+
+	private VillagerProfession() {
+		this(null);
+	}
 
 	public VillagerProfession(ModElement element) {
 		super(element);

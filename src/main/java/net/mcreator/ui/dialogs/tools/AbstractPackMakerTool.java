@@ -21,12 +21,15 @@ package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -34,6 +37,8 @@ import net.mcreator.workspace.elements.TagElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
@@ -65,12 +70,12 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	protected abstract void generatePack(MCreator mcreator);
 
 	public static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
+		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();
 		for (String name : names) {
-			if (workspace.containsModElement(name)) {
+			if (usedElementNames.contains(name)) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -101,5 +106,14 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 				}
 			}
 		}
+	}
+
+	public static ImageIcon getCachedTexture(String location) {
+		return ImageMakerTexturesCache.CACHE.get(
+				new ResourcePointer("templates/textures/texturemaker/" + location + ".png"));
+	}
+
+	public static ImageIcon getCachedTexture(String... locations) {
+		return getCachedTexture(ListUtils.getRandomItem(Arrays.asList(locations)));
 	}
 }

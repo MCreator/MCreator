@@ -174,7 +174,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/modifiers"),
-						L10N.label("elementgui.potioneffect.modifiers")), modifierList);
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), modifierList);
 		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		modifiersPage.add("Center", modifiersEditor);
@@ -201,7 +201,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
-		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage).lazyValidate(
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), modifiersPage).lazyValidate(
 				modifierList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}

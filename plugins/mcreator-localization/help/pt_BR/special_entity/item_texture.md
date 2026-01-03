@@ -1,0 +1,1 @@
+Este parâmetro controla a textura do seu item de entidade.

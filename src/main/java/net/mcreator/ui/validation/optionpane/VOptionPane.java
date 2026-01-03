@@ -20,7 +20,7 @@ package net.mcreator.ui.validation.optionpane;
 
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 
 import javax.annotation.Nullable;
@@ -100,11 +100,11 @@ public class VOptionPane {
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, icon, new String[] { ok, cancel }, ok);
 		if (option == JOptionPane.OK_OPTION) {
-			if (textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (textField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				return textField.getText();
 			} else { // user confirmed, but the validation returned error
 				JOptionPane.showMessageDialog(frame,
-						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().getMessage(),
+						L10N.t("dialog.option_pane.invalid_text") + textField.getValidationStatus().message(),
 						L10N.t("dialog.option_pane.invalid_input"), JOptionPane.ERROR_MESSAGE);
 				return showSwingOptionDialog(frame, title, icon, ok, cancel, inp, textField);
 			}

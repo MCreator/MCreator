@@ -28,29 +28,39 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class BlockStatePropertyUtils {
 
-	public static final int MAX_PROPERTY_COMBINATIONS = 4000;
+	public static final int MAX_PROPERTY_COMBINATIONS = 2000;
 
 	public static int getNumberOfPropertyCombinations(List<PropertyData<?>> properties) {
 		int result = 1;
-		for (PropertyData<?> propertyData : properties) {
-			switch (propertyData) {
-			case PropertyData.LogicType ignored -> result *= 2; // logic has two possible values
-			case PropertyData.IntegerType integerType -> result *= integerType.getMax() - integerType.getMin() + 1;
+		for (PropertyData<?> property : properties)
+			result *= getPossiblePropertyValues(property).size();
+		return result;
+	}
+
+	public static List<Object> getPossiblePropertyValues(PropertyData<?> propertyData) {
+		return switch (propertyData) {
+			case PropertyData.LogicType ignored -> List.of(true, false);
+			case PropertyData.IntegerType integerType -> {
+				List<Object> values = new ArrayList<>();
+				for (int i = integerType.getMin(); i <= integerType.getMax(); i++)
+					values.add(i);
+				yield values;
+			}
 			case PropertyData.StringType stringType -> {
 				if (stringType.getArrayData() != null)
-					result *= stringType.getArrayData().length;
+					yield Arrays.stream(stringType.getArrayData()).map(e -> (Object) e).toList();
 				else
 					throw new RuntimeException("Strings without array data are not supported");
 			}
 			default -> throw new RuntimeException("Unsupported property type: " + propertyData.getClass());
-			}
-		}
-		return result;
+		};
 	}
 
 	@Nonnull public static String propertyRegistryName(PropertyData<?> data) {

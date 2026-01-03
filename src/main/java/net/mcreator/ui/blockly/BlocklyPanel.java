@@ -38,6 +38,7 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeCSS;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -111,8 +112,8 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 								"/themes/default_dark/styles/blockly.css");
 					}
 
-					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()
-							&& OS.getOS() == OS.WINDOWS) {
+					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get() && OS.getOS() == OS.WINDOWS
+							&& mcreator.hasBackgroundImage()) {
 						makeComponentsTransparent(scene);
 						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
 					}
@@ -121,6 +122,8 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
 						css = css.replace("font-family: sans-serif;", "");
 					}
+
+					css += ThemeCSS.generateCSS(Theme.current());
 
 					Text styleContent = webEngine.getDocument().createTextNode(css);
 					styleNode.appendChild(styleContent);
@@ -143,8 +146,10 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
 							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
 							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
+							+ "'maxTrashContents' : " + PreferencesManager.PREFERENCES.blockly.maxTrashContents.get() + ","
 							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
 							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
+							+ "'startScale' : " + PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0 + ","
 							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 							+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
 							+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0

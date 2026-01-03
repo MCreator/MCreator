@@ -10,6 +10,12 @@
       "src": "./res/null.png",
       "width": 8,
       "height": 24
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "output": "Entity",

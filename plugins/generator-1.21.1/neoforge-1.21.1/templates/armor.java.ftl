@@ -38,6 +38,7 @@ package ${package}.item;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
+<@javacompress>
 @EventBusSubscriber public abstract class ${name}Item extends ArmorItem {
 
 	public static Holder<ArmorMaterial> ARMOR_MATERIAL = null;
@@ -84,7 +85,22 @@ import net.minecraft.client.model.Model;
 						"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-					)));
+					)))
+					<#if data.helmetTranslucency>
+					{
+						@Override
+						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+								<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+									${JavaModName}Items.${REGISTRYNAME}_HELMET.get().getArmorTexture(null, null, null, null, false)
+								<#else>
+									ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png")
+								</#if>
+							));
+							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
+						}
+					}
+					</#if>;
 				}
 				armorModel.crouching = living.isShiftKeyDown();
 				armorModel.riding = defaultModel.riding;
@@ -108,7 +124,22 @@ import net.minecraft.client.model.Model;
 						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-					)));
+					)))
+					<#if data.bodyTranslucency>
+					{
+						@Override
+						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+								<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+									${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get().getArmorTexture(null, null, null, null, false)
+								<#else>
+									ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png")
+								</#if>
+							));
+							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
+						}
+					}
+					</#if>;
 				}
 				armorModel.crouching = living.isShiftKeyDown();
 				armorModel.riding = defaultModel.riding;
@@ -132,7 +163,22 @@ import net.minecraft.client.model.Model;
 						"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-					)));
+					)))
+					<#if data.leggingsTranslucency>
+					{
+						@Override
+						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+								<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+									${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get().getArmorTexture(null, null, null, null, false)
+								<#else>
+									ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png")
+								</#if>
+							));
+							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
+						}
+					}
+					</#if>;
 				}
 				armorModel.crouching = living.isShiftKeyDown();
 				armorModel.riding = defaultModel.riding;
@@ -156,7 +202,22 @@ import net.minecraft.client.model.Model;
 						"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap())
-					)));
+					)))
+					<#if data.bootsTranslucency>
+					{
+						@Override
+						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(
+								<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+									${JavaModName}Items.${REGISTRYNAME}_BOOTS.get().getArmorTexture(null, null, null, null, false)
+								<#else>
+									ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png")
+								</#if>
+							));
+							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
+						}
+					}
+					</#if>;
 				}
 				armorModel.crouching = living.isShiftKeyDown();
 				armorModel.riding = defaultModel.riding;
@@ -180,8 +241,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.helmetModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.helmetModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -203,8 +266,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -226,8 +291,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -249,8 +316,10 @@ import net.minecraft.client.model.Model;
 		}
 
 		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
+		private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bootsModelTexture}");
+
 		@Override public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-			return ResourceLocation.parse("${modid}:textures/entities/${data.bootsModelTexture}");
+			return armorTexture;
 		}
 		</#if>
 
@@ -265,4 +334,5 @@ import net.minecraft.client.model.Model;
 	</#if>
 
 }
+</@javacompress>
 <#-- @formatter:on -->

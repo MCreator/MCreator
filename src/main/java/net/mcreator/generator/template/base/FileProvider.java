@@ -50,7 +50,9 @@ import java.util.Map;
 				for (String path : generatorConfiguration.getGeneratorPaths(key)) {
 					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path);
 					if (stream != null) {
-						return IOUtils.toString(stream, StandardCharsets.UTF_8);
+						String retval = IOUtils.toString(stream, StandardCharsets.UTF_8);
+						stream.close();
+						return retval;
 					}
 				}
 			} catch (Exception e) {

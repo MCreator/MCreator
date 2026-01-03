@@ -458,19 +458,61 @@ templates:
     variables: "model=button_inventory;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+list_templates:
+  - name: "Block states"
+    listData: data.getDefinedStates()
+    forEach:
+      - template: json/block_all_fixed.json.ftl
+        condition: "renderType #= 10"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #?= 11"
+        writer: json
+        variables: "model=cube_all;txname=all"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 110"
+        writer: json
+        variables: "model=leaves;txname=all"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 12"
+        writer: json
+        variables: "model=cross;txname=cross"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 120"
+        writer: json
+        variables: "model=tinted_cross;txname=cross"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 13"
+        writer: json
+        variables: "model=crop;txname=crop"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block_cmodel.json.ftl
+        condition: "renderType #= 2"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block_cmodel_obj.json.ftl
+        condition: "renderType #= 3"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+
 block_base_properties:
-  Stairs: [facing, half, shape, waterlogged]
-  Slab: [type, waterlogged]
-  Fence: [north, south, west, east, waterlogged]
-  Wall: [up, north, south, west, east, waterlogged]
-  Leaves: [distance, persistent, waterlogged]
-  TrapDoor: [facing, half, open, powered, waterlogged]
-  Pane: [north, south, west, east, waterlogged]
-  Door: [facing, half, hinge, open, powered]
-  FenceGate: [facing, in_wall, open, powered]
-  EndRod: [facing]
-  PressurePlate: [powered]
-  Button: [facing, face, powered]
+  Stairs: [ facing, half, shape, waterlogged ]
+  Slab: [ type, waterlogged ]
+  Fence: [ north, south, west, east, waterlogged ]
+  Wall: [ up, north, south, west, east, waterlogged ]
+  Leaves: [ distance, persistent, waterlogged ]
+  TrapDoor: [ facing, half, open, powered, waterlogged ]
+  Pane: [ north, south, west, east, waterlogged ]
+  Door: [ facing, half, hinge, open, powered ]
+  FenceGate: [ facing, in_wall, open, powered ]
+  EndRod: [ facing ]
+  PressurePlate: [ powered ]
+  Button: [ facing, face, powered ]
 
 localizationkeys:
   - key: block.@modid.@registryname
@@ -566,6 +608,6 @@ tags:
       - hasInventory
       - sensitiveToVibration
       - "${data.vibrationalEvents?has_content}"
-    entryprovider: data.getVibrationalEvents()
+    entryprovider: getVibrationalEvents()
 
-field_exclusions: [leavesParticleType, leavesParticleChance]
+field_exclusions: [ leavesParticleType, leavesParticleChance ]

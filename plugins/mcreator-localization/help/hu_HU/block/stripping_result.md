@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy mi lesz ebből a blokkból, amikor fejszével lecsapják.

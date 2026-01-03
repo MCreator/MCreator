@@ -30,12 +30,12 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.FlafIcons;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
@@ -159,18 +159,24 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			header.setBackground(Theme.current().getInterfaceAccentColor());
 			header.setForeground(Theme.current().getBackgroundColor());
 
-			// save values on table edit, do it in another thread
-			// we add the listener after the values are inserted
-			elements.getModel().addTableModelListener(e -> new Thread(() -> {
-				if (e.getType() == TableModelEvent.UPDATE) {
-					LinkedHashMap<String, String> keyValueMap = new LinkedHashMap<>();
-					for (int i = 0; i < elements.getModel().getRowCount(); i++) {
-						keyValueMap.put((String) elements.getModel().getValueAt(i, 0),
-								(String) elements.getModel().getValueAt(i, 1));
-					}
-					workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
+			elements.getModel().addTableModelListener(e -> {
+				if (e.getType() != TableModelEvent.UPDATE)
+					return;
+
+				int firstRow = e.getFirstRow();
+				int lastRow = e.getLastRow();
+
+				LinkedHashMap<String, String> languageData = workspacePanel.getMCreator().getWorkspace()
+						.getLanguageMap().get(entry.getKey());
+
+				for (int i = firstRow; i <= lastRow; i++) {
+					String key = (String) elements.getModel().getValueAt(i, 0);
+					String value = (String) elements.getModel().getValueAt(i, 1);
+					languageData.put(key, value);
 				}
-			}, "WorkspaceLocalizationsReload").start());
+
+				workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), languageData);
+			});
 
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setBorder(BorderFactory.createEmptyBorder());
@@ -199,12 +205,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 			button.setEnabled(!entry.getKey().equals("en_us"));
 
-			String flagpath = "/flags/" + entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
 			JLabel label = new JLabel(" " + entry.getKey() + " ");
 			ComponentUtils.deriveFont(label, 12);
 			try {
-				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
-						getClass().getResourceAsStream(flagpath));
+				BufferedImage image = FlafIcons.getFlag(entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH));
 				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
 			} catch (Exception ignored) { // flag not found, ignore
 			}
@@ -397,9 +401,12 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public void refilterElements() {
-		var filter = RowFilter.regexFilter(workspacePanel.getSearchTerm());
+		var filter = RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm());
 		for (TableRowSorter<TableModel> sorter : sorters) {
-			sorter.setRowFilter(filter);
+			try {
+				sorter.setRowFilter(filter);
+			} catch (Exception ignored) {
+			}
 		}
 	}
 

@@ -43,9 +43,16 @@ public class ModElementType<GE extends GeneratableElement> {
 	private final String description;
 	@Nullable private final Character shortcut;
 
+	private final String iconID;
+
 	@Nullable private List<GeneratorFlavor> coveredFlavors;
 
 	public ModElementType(String registryName, @Nullable Character shortcut,
+			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
+		this(registryName, registryName, shortcut, modElementGUIProvider, modElementStorageClass);
+	}
+
+	public ModElementType(String registryName, String iconSufix, @Nullable Character shortcut,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.registryName = registryName;
 		this.shortcut = shortcut;
@@ -55,6 +62,8 @@ public class ModElementType<GE extends GeneratableElement> {
 
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
+
+		this.iconID = "mod_types." + iconSufix;
 	}
 
 	public String getRegistryName() {
@@ -64,6 +73,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	public String getPluralName() {
 		if (this == LIVINGENTITY)
 			return "livingentities";
+		else if (this == SPECIALENTITY)
+			return "specialentities";
 
 		return registryName.toLowerCase(Locale.ENGLISH) + "s";
 	}
@@ -81,7 +92,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	}
 
 	public ImageIcon getIcon() {
-		return UIRES.get("mod_types." + registryName);
+		return UIRES.get(this.iconID);
 	}
 
 	public ModElementGUI<GE> getModElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -163,11 +174,15 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> PROCEDURE;
 	public static ModElementType<?> PROJECTILE;
 	public static ModElementType<?> RECIPE;
+	public static ModElementType<?> SPECIALENTITY;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TOOL;
 	public static ModElementType<?> VILLAGERPROFESSION;
 	public static ModElementType<?> VILLAGERTRADE;
+
+	// Bedrock-specific METs
+	public static ModElementType<?> BEITEM;
 
 	public static ModElementType<?> UNKNOWN;
 

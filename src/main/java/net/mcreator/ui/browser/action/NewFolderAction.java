@@ -59,10 +59,11 @@ public class NewFolderAction extends BasicAction {
 	@Nullable public static File openCreateFolderDialog(MCreator mcreator, File parentFolder) {
 		String foldername = VOptionPane.showInputDialog(mcreator,
 				L10N.t("workspace_file_browser.new_folder_name.folder_name"),
-				L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null, new OptionPaneValidator() {
-					@Override public Validator.ValidationResult validate(JComponent component) {
+				L10N.t("workspace_file_browser.new_folder_name.folder_name.title"), null,
+				new OptionPaneValidator.Cached() {
+					@Override public Validator createValidator(JComponent component) {
 						return new RegistryNameValidator((VTextField) component,
-								L10N.t("workspace_file_browser.new_folder_name.folder")).validate();
+								L10N.t("workspace_file_browser.new_folder_name.folder"));
 					}
 				});
 		if (foldername != null) {

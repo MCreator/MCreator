@@ -30,6 +30,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -50,14 +51,13 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.util.List;
 
 class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
-	private volatile boolean storingEdits = false;
+	private Map<Integer, String> oldNames = new HashMap<>();
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -67,9 +67,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						L10N.t("workspace.variables.variable_scope"), L10N.t("workspace.variables.initial_value") },
 				0) {
 			@Override public boolean isCellEditable(int row, int column) {
-				if (storingEdits)
-					return false;
-
 				if (!getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.STRING.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.NUMBER.getName())
 						&& !getValueAt(row, 1).toString().equals(VariableTypeLoader.BuiltInTypes.LOGIC.getName())
@@ -79,7 +76,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 
 			@Override public void setValueAt(Object value, int row, int column) {
-				Object oldVal = elements.getValueAt(row, column);
+				Object oldVal = super.getValueAt(row, column);
 				if (oldVal.equals(value))
 					return;
 
@@ -109,14 +106,14 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 							// Handle 3rd column - initial value
 							if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
-								elements.setValueAt("0", row, 3);
+								super.setValueAt("0", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
-								elements.setValueAt("false", row, 3);
+								super.setValueAt("false", row, 3);
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
-								elements.setValueAt("", row, 3);
+								super.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()),
-										row, 3);
+								super.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()), row,
+										3);
 							}
 						}
 					}
@@ -144,8 +141,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
-							return name.getValidationStatus().getValidationResultType()
-									!= Validator.ValidationResultType.ERROR && super.stopCellEditing();
+							return name.getValidationStatus().type() != ValidationResult.Type.ERROR
+									&& super.stopCellEditing();
 						}
 					};
 				} else if (modelColumn == 3) {
@@ -207,15 +204,13 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
-					new OptionPaneValidator() {
-						@Override public ValidationResult validate(JComponent component) {
-							UniqueNameValidator validator = new UniqueNameValidator(
-									L10N.t("workspace.variables.variable_name"),
+					new OptionPaneValidator.Cached() {
+						@Override public Validator createValidator(JComponent component) {
+							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component, false));
-							validator.setIsPresentOnList(false);
-							return validator.validate();
+									new JavaMemberNameValidator((VTextField) component, false)).setIsPresentOnList(
+									false);
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
 							workspacePanel.getMCreator().getGeneratorConfiguration()));
@@ -257,37 +252,49 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		});
 
-		// save values on table edit, do it in another thread
-		elements.getModel().addTableModelListener(e -> new Thread(() -> {
-			if (e.getType() == TableModelEvent.UPDATE) {
-				if (storingEdits)
-					return;
+		elements.getModel().addTableModelListener(e -> {
+			if (e.getType() != TableModelEvent.UPDATE)
+				return;
 
-				storingEdits = true;
-				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			TableModel model = elements.getModel();
+			Workspace workspace = workspacePanel.getMCreator().getWorkspace();
 
-				Workspace workspace = workspacePanel.getMCreator().getWorkspace();
+			int firstRow = e.getFirstRow();
+			int lastRow = e.getLastRow();
 
-				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
-				for (VariableElement variableElement : todelete)
-					workspace.removeVariableElement(variableElement);
+			for (int i = firstRow; i <= lastRow; i++) {
+				String oldName = oldNames.get(i);
+				String newName = (String) model.getValueAt(i, 0);
+				VariableType type = VariableTypeLoader.INSTANCE.fromName((String) model.getValueAt(i, 1));
+				Object value = model.getValueAt(i, 3);
+				VariableType.Scope scope = (VariableType.Scope) model.getValueAt(i, 2);
 
-				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
-					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
-					if (elementType != null) {
-						VariableElement element = new VariableElement((String) elements.getValueAt(i, 0));
-						element.setType(elementType);
-						element.setValue(elements.getValueAt(i, 3));
-						element.setScope((VariableType.Scope) elements.getValueAt(i, 2));
-						workspace.addVariableElement(element);
+				VariableElement element;
+				if (!newName.equals(oldName)) { // Name changed: remove the old element
+					element = workspace.getVariableElementByName(oldName);
+					if (element != null) {
+						workspace.removeVariableElement(element);
 					}
+					// Add the new element
+					element = new VariableElement(newName);
+					workspace.addVariableElement(element);
+				} else {
+					element = workspace.getVariableElementByName(newName);
+					if (element == null)
+						return;
 				}
 
-				elements.setCursor(Cursor.getDefaultCursor());
-				storingEdits = false;
-			}
-		}, "WorkspaceVariablesReload").start());
+				element.setType(type);
+				element.setValue(value);
+				element.setScope(scope);
 
+				// Remember the new name for future edits
+				oldNames.put(i, newName);
+			}
+
+			// let workspace know that the element(s) changed
+			workspace.markDirty();
+		});
 	}
 
 	private void deleteCurrentlySelected() {
@@ -330,6 +337,12 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
 					variable.getValue() });
 		}
+
+		// Save names of variables in case rename action happens
+		for (int i = 0; i < model.getRowCount(); i++) {
+			oldNames.put(i, (String) model.getValueAt(i, 0));
+		}
+
 		refilterElements();
 
 		try {
@@ -340,7 +353,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}
