@@ -88,4 +88,5 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
 	}
+
 }
