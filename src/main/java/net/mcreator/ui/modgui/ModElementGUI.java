@@ -81,7 +81,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final List<ModElementGUIPage> pages = new ArrayList<>();
 
 	private ModElementCodeViewer<GE> modElementCodeViewer = null;
-	private JSplitPane splitPane;
 
 	private final ModElementGUISearch search = new ModElementGUISearch(this);
 
@@ -329,25 +328,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			if (modElementCodeViewer != null) {
-				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setMargin(new Insets(1, 40, 1, 40));
-				codeViewer.addActionListener(e -> {
-					if (codeViewer.isSelected()) {
-						modElementCodeViewer.setVisible(true);
-						splitPane.setDividerSize(10);
-						splitPane.setDividerLocation(0.6);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-					} else {
-						modElementCodeViewer.setVisible(false);
-						splitPane.setDividerSize(0);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-					}
-				});
-
-				toolBarLeft.add(codeViewer);
-			}
-
 			try {
 				URI helpURI = this.contextURL();
 				if (helpURI != null) {
@@ -412,25 +392,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			if (modElementCodeViewer != null) {
-				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setMargin(new Insets(1, 40, 1, 40));
-				codeViewer.addActionListener(e -> {
-					if (codeViewer.isSelected()) {
-						modElementCodeViewer.setVisible(true);
-						splitPane.setDividerSize(10);
-						splitPane.setDividerLocation(0.6);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-					} else {
-						modElementCodeViewer.setVisible(false);
-						splitPane.setDividerSize(0);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-					}
-				});
-
-				toolBarLeft.add(codeViewer);
-			}
-
 			try {
 				URI helpURI = this.contextURL();
 				if (helpURI != null) {
@@ -450,19 +411,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			centerComponent = pages.getFirst().getComponent();
 		}
 
-		if (modElementCodeViewer != null) {
-			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
-			splitPane.setOpaque(false);
-			splitPane.setOneTouchExpandable(true);
-			modElementCodeViewer.setVisible(false);
-			splitPane.setDividerSize(0);
-			add("Center", splitPane);
-			modElementCodeViewer.registerUI(centerComponent);
-		} else {
-			add("Center", centerComponent);
-		}
+		add("Center", centerComponent);
 
 		reloadDataLists();
+
+		if (modElementCodeViewer != null) {
+			modElementCodeViewer.registerUI(centerComponent);
+		}
 
 		if (editingMode) {
 			@SuppressWarnings("unchecked") GE generatableElement = (GE) modElement.getGeneratableElement();
@@ -737,5 +692,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override @Nullable public abstract URI contextURL() throws URISyntaxException;
+
+	public ModElementCodeViewer<GE> getModElementCodeViewer() {
+		return modElementCodeViewer;
+	}
 
 }
