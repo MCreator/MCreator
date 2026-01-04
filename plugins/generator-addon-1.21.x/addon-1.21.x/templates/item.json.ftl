@@ -11,7 +11,6 @@
       }
     },
     "components": {
-      "minecraft:icon": "${registryname}",
       <#if data.hasGlint>"minecraft:glint": true,</#if>
       <#if data.allowOffHand>"minecraft:allow_off_hand": true,</#if>
       <#if data.handEquipped>"minecraft:hand_equipped": true,</#if>
@@ -26,8 +25,10 @@
       "minecraft:durability": {
         "max_durability": ${data.maxDurability}
       },</#if>
-      "minecraft:max_stack_size": ${data.stackSize}
-      <#if data.isFood>,
+      <#if data.stackSize lt 64>
+      "minecraft:max_stack_size": ${data.stackSize},
+      </#if>
+      <#if data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
       	"movement_modifier": ${data.movementModifier}
@@ -45,8 +46,9 @@
       	"tags": [
       		"minecraft:is_food"
       	]
-      }
+      },
       </#if>
+      "minecraft:icon": "${registryname}"
     }
   }
 }
