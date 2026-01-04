@@ -1,1 +1,1 @@
-If enabled, this will render the item like tools while in hand.
+If this parameter is enabled, the item will render with the tool item transform in the player's hand.
