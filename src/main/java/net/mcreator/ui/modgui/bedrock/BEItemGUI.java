@@ -29,7 +29,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -118,7 +117,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 2, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 30, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -160,15 +159,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.number_of_uses")));
 		basicProperties.add(maxDurability);
 
-		basicProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.properties_general"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				PanelUtils.totalCenterInPanel(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
-				PanelUtils.totalCenterInPanel(PanelUtils.pullElementUp(basicProperties)))));
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties,
+				35, 35)));
 
 		JPanel foodProperties = new JPanel(new GridLayout(8, 2, 65, 2));
 		foodProperties.setOpaque(false);
