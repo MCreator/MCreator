@@ -360,7 +360,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}

@@ -462,19 +462,91 @@ templates:
     variables: "model=button_inventory;txname=texture"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+  # TX: Sign templates
+  - template: block/block.java.ftl # Wall sign class
+    condition: "blockBase %= Sign"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@[getWallName()]Block.java"
+    variables: "extends_class=WallSignBlock"
+  - template: json/block_item.json.ftl
+    condition:
+      - hasBlockItem
+      - "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/block_states.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states.json.ftl # Wall sign blockstates definition
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@[getWallRegistryName()].json"
+  - template: json/block_model_particle.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
+global_templates:
+  - template: elementinits/woodtypes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
+
+list_templates:
+  - name: "Block states"
+    listData: data.getDefinedStates()
+    forEach:
+      - template: json/block_all_fixed.json.ftl
+        condition: "renderType #= 10"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #?= 11"
+        writer: json
+        variables: "model=cube_all;txname=all"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 110"
+        writer: json
+        variables: "model=leaves;txname=all"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 12"
+        writer: json
+        variables: "model=cross;txname=cross"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 120"
+        writer: json
+        variables: "model=tinted_cross;txname=cross"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block.json.ftl
+        condition: "renderType #= 13"
+        writer: json
+        variables: "model=crop;txname=crop"
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block_cmodel.json.ftl
+        condition: "renderType #= 2"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+      - template: json/block_cmodel_obj.json.ftl
+        condition: "renderType #= 3"
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+
 block_base_properties:
-  Stairs: [facing, half, shape, waterlogged]
-  Slab: [type, waterlogged]
-  Fence: [north, south, west, east, waterlogged]
-  Wall: [up, north, south, west, east, waterlogged]
-  Leaves: [distance, persistent, waterlogged]
-  TrapDoor: [facing, half, open, powered, waterlogged]
-  Pane: [north, south, west, east, waterlogged]
-  Door: [facing, half, hinge, open, powered]
-  FenceGate: [facing, in_wall, open, powered]
-  EndRod: [facing]
-  PressurePlate: [powered]
-  Button: [facing, face, powered]
+  Stairs: [ facing, half, shape, waterlogged ]
+  Slab: [ type, waterlogged ]
+  Fence: [ north, south, west, east, waterlogged ]
+  Wall: [ up, north, south, west, east, waterlogged ]
+  Leaves: [ distance, persistent, waterlogged ]
+  TrapDoor: [ facing, half, open, powered, waterlogged ]
+  Pane: [ north, south, west, east, waterlogged ]
+  Door: [ facing, half, hinge, open, powered ]
+  FenceGate: [ facing, in_wall, open, powered ]
+  EndRod: [ facing ]
+  PressurePlate: [ powered ]
+  Button: [ facing, face, powered ]
+  Sign: [ facing, rotation, waterlogged ] # includes both standing sign and wall sign properties
 
 localizationkeys:
   - key: item.@modid.@registryname
@@ -485,25 +557,32 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe
     condition: "destroyTool %= pickaxe"
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/axe
     condition: "destroyTool %= axe"
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/shovel
     condition: "destroyTool %= shovel"
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:mineable/hoe
     condition: "destroyTool %= hoe"
+    entryprovider: getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:needs_stone_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= STONE"
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_iron_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= IRON"
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:needs_diamond_tool
     condition:
       - requiresCorrectTool
       - "vanillaToolTier %= DIAMOND"
+    entryprovider: getProvidedBlocks()
 
   - tag: BLOCKS:minecraft:stairs
     condition: "blockBase %= Stairs"
@@ -559,11 +638,18 @@ tags:
       - "!blockSetType %= OAK"
   - tag: BLOCKS:minecraft:flower_pots
     condition: "blockBase %= FlowerPot"
+  - tag: BLOCKS:minecraft:standing_signs
+    condition: "blockBase %= Sign"
+  - tag: BLOCKS:minecraft:wall_signs
+    condition: "blockBase %= Sign"
+    entry: "CUSTOM:@NAME.wall"
 
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+    entryprovider: getProvidedBlocks()
   - tag: BLOCKS:minecraft:climbable
     condition: isLadder
+    entryprovider: getProvidedBlocks()
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:

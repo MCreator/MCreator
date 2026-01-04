@@ -27,6 +27,7 @@ public class DefaultExceptionHandler implements Thread.UncaughtExceptionHandler 
 
 	@Override public void uncaughtException(Thread thread, Throwable throwable) {
 		LOG.error("Uncaught exception in {}", thread.getName(), throwable);
+		TestUtil.failIfTestingEnvironment(); // we do not tolerate uncaught exceptions in the testing environment
 	}
 
 }

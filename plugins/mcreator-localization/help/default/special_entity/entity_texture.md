@@ -1,0 +1,1 @@
+This is the texture of your entity. Make sure that the texture is compatible with the entity model. 
