@@ -1,7 +1,112 @@
-/*
-Use default Blockly colors
- */
+body {
+    fill: var(--backgroundColorBrighter);
+}
+
+#blockly {
+    background: var(--backgroundColorBrighter);
+}
+
+.blocklySvg {
+    background-color: var(--backgroundColorBrighter) !important;
+}
+
+.blocklyMainBackground {
+    fill: var(--backgroundColorBrighter) !important;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--altBackgroundColor);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--altBackgroundColor);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--backgroundColor);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--altBackgroundColor);
+}
+
+.blocklyToolboxDiv {
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+    background-color: var(--foregroundColor) !important;
+    color: var(--backgroundColor) !important;
+}
+
+.blocklyTreeSeparator {
+    border-bottom: solid var(--altBackgroundColor) 1px;
+}
 
 .blocklyFlyout {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: var(--backgroundColorTransparent);
+}
+
+.blocklyScrollbarVertical .blocklyScrollbarHandle {
+    fill: var(--backgroundColor);
+}
+
+.blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
+    fill: var(--altBackgroundColor);
+}
+
+.blocklyScrollbarHorizontal .blocklyScrollbarHandle {
+    fill: var(--backgroundColor);
+}
+
+.blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
+    fill: var(--altBackgroundColor);
+}
+
+.whlab > .blocklyFlyoutLabelText {
+    fill: var(--foregroundColor) !important;
+}
+
+.blocklyDropDownDiv {
+    background: var(--altBackgroundColor) !important;
+    border-color: var(--secondAltBackgroundColor) !important;
+}
+
+.blocklyDropDownDiv .goog-menuitem-content {
+    color: var(--foregroundColor) !important;
+}
+
+.blocklyTooltipDiv {
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
+}
+
+.blocklyWidgetDiv .goog-menu {
+    background: var(--backgroundColor) !important;
+    border-color: var(--altBackgroundColor) !important;
+}
+
+.blocklyWidgetDiv .goog-menuitem-content {
+    color: var(--foregroundColor);
+}
+
+.blocklyCommentTextarea {
+    background: var(--backgroundColor);
+    color: var(--foregroundColor);
+}
+
+.blocklyMutatorBackground {
+    fill: var(--backgroundColor);
+    stroke-width: 0;
+}
+
+.blocklySelected > .blocklyPath {
+    stroke: var(--foregroundColor) !important;
+    stroke-width: 2px !important;
+}
+
+.blocklyHtmlTextAreaInput {
+    background: var(--backgroundColor);
+    color: var(--foregroundColor);
 }

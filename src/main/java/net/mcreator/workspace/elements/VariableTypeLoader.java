@@ -87,6 +87,7 @@ public class VariableTypeLoader {
 			case "actionresulttype" -> BuiltInTypes.ACTIONRESULTTYPE = variableType;
 			case "entity" -> BuiltInTypes.ENTITY = variableType;
 			case "damagesource" -> BuiltInTypes.DAMAGESOURCE = variableType;
+			case "vector" -> BuiltInTypes.VECTOR = variableType;
 			}
 		}
 
@@ -134,5 +135,6 @@ public class VariableTypeLoader {
 		public static VariableType ACTIONRESULTTYPE;
 		public static VariableType ENTITY;
 		public static VariableType DAMAGESOURCE;
+		public static VariableType VECTOR;
 	}
 }

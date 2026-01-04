@@ -86,7 +86,9 @@ base_templates:
       - "${w.hasElementsOfType('armor')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-    condition: hasJavaModels()
+    condition_any:
+      - hasJavaModels()
+      - "${w.hasElementsOfType('specialentity')}"
   - template: modbase/enumextensions.json.ftl
     writer: json
     name: "@RESROOT/META-INF/enumextensions.json"
@@ -97,6 +99,11 @@ base_templates:
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+    condition_any:
+      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
+      - "${w.hasElementsOfType('specialentity')}"
 
 java_models:
   key: mojmap-1.21.x

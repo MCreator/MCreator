@@ -21,7 +21,9 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.variants.modmaker.ModMaker;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -58,7 +60,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+		g.setColor(mcreator.hasBackgroundImage() ?
+				ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100) :
+				Theme.current().getBackgroundColor());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}
