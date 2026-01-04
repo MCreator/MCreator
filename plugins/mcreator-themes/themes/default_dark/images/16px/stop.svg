@@ -1,15 +1,1 @@
-<svg
-  clip-rule="evenodd"
-  fill-rule="evenodd"
-  height="16"
-  stroke-linejoin="round"
-  width="16"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path
-    d="m2.5 2.5h11v11h-11z"
-    fill="#E04442"
-    fill-rule="nonzero"
-    stroke="#E04442"
-  />
-</svg>
+<svg clip-rule="evenodd" fill-rule="evenodd" height="16" stroke-linejoin="round" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m2.5 2.5h11v11h-11z" fill="#e04442" fill-rule="nonzero" stroke="#e04442"/></svg>
