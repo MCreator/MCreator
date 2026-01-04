@@ -31,7 +31,7 @@ public record ValidationResult(Type type, String message, boolean isBlocklyResul
 
 	public enum Type {
 
-		PASSED(new Color(0x93c54b)), WARNING(new Color(0xf0c948)), ERROR(new Color(0xE85A58));
+		PASSED(new Color(0x93c54b)), WARNING(new Color(0xf0c948)), ERROR(new Color(0xC43B39));
 
 		private final Color color;
 
