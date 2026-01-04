@@ -274,7 +274,8 @@ import java.util.stream.Collectors;
 			try {
 				File entityTextureLocation = new File(
 						getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-						"entity/signs/" + getModElement().getRegistryName() + ".png");
+						("Sign".equals(blockBase) ? "entity/signs/" : "entity/signs/hanging/")
+								+ getModElement().getRegistryName() + ".png");
 				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 			} catch (Exception e) {
 				LOG.error("Failed to copy sign texture", e);
@@ -305,7 +306,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean isSign() {
-		return "Sign".equals(blockBase);
+		return "Sign".equals(blockBase) || "HangingSign".equals(blockBase);
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
