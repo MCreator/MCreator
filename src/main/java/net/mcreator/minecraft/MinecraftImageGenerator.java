@@ -1103,6 +1103,25 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
+		 * <p>This method generates the block icon for wall hanging signs.</p>
+		 *
+		 * @param texture <p>Block texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateWallHangingSignIcon(Image texture) {
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.scale(1.3, 1.5);
+			g2d.translate(-3, -2);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 1, 8, 13, 7, 6, 1), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 14, 7, 16, 1), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
 		 * <p>This method generates the potion bottle icon for potions.</p>
 		 *
 		 * @param color <p>Color of the potion</p>
