@@ -273,7 +273,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final CardLayout blockBaseCardLayout = new CardLayout();
@@ -545,7 +545,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
-				case "Sign" -> {
+				case "Sign", "HangingSign" -> {
 					showBlockBaseCard("sign");
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
@@ -1436,13 +1436,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(signEntityTexture);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
-			String selectedBlockBase = blockBase.getSelectedItem();
 			Model model = renderType.getSelectedItem();
-			return (model != null && model.getType() == Model.Type.JAVA) || ("Sign".equals(selectedBlockBase));
+			return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
 		}));
 
-		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture",
-				() -> "Sign".equals(blockBase.getSelectedItem()));
+		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
 
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
@@ -1596,7 +1594,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
 			refreshFieldsTileEntity();
-		} else if (!"Sign".equals(blockBase.getSelectedItem())) {
+		} else if (!isAnySign()) {
 			hasInventory.setEnabled(true);
 		}
 
@@ -1611,6 +1609,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setSelected(false);
 			hasTransparency.setEnabled(true);
 		}
+	}
+
+	private boolean isAnySign() {
+		return "Sign".equals(blockBase.getSelectedItem()) || "HangingSign".equals(blockBase.getSelectedItem());
 	}
 
 	private void updateSoundType() {
