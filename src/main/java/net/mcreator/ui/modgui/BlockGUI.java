@@ -34,6 +34,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -287,6 +288,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	);
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
+	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
+	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -304,6 +307,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override protected void initGUI() {
 		signEntityTexture.setAddPNGExtension(false);
+		signGUITexture.setAddPNGExtension(false);
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -547,6 +551,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				case "Sign", "HangingSign" -> {
 					showBlockBaseCard("sign");
+					// Only show GUI texture selector for hanging signs
+					signGUITexturePanel.setVisible("HangingSign".equals(selectedBlockBase));
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
 					if (!isEditingMode()) {
@@ -598,6 +604,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
 		signEntityTexture.setOpaque(false);
+		signGUITexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -617,9 +624,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"flowerPot");
 
 		// Card for signs
-		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+		JPanel signTextures = new JPanel(new AdaptiveGridLayout(-1, 1, 2, 2));
+		signTextures.setOpaque(false);
+		signTextures.add(PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_entity_texture"),
-						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture), "sign");
+						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture));
+		signTextures.add(signGUITexturePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_gui_texture"),
+						L10N.label("elementgui.block.sign_gui_texture")), signGUITexture));
+		blockBasePropertiesPanel.add(signTextures, "sign");
 
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
@@ -1434,6 +1447,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(pottedPlant);
 		page1group.addValidationElement(signEntityTexture);
+		page1group.addValidationElement(signGUITexture);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
 			Model model = renderType.getSelectedItem();
@@ -1441,6 +1455,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}));
 
 		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
+		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
+				() -> "HangingSign".equals(blockBase.getSelectedItem()));
 
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
@@ -1686,6 +1702,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		super.reloadDataLists();
 
 		signEntityTexture.reload();
+		signGUITexture.reload();
 
 		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
 				mcreator.getWorkspace());
@@ -1824,11 +1841,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
 		} else {
+			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
 		pottedPlant.setBlock(block.pottedPlant);
 		signEntityTexture.setTexture(block.signEntityTexture);
+		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -2053,6 +2072,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.blockSetType = (String) blockSetType.getSelectedItem();
 		block.pottedPlant = pottedPlant.getBlock();
 		block.signEntityTexture = signEntityTexture.getTextureHolder();
+		block.signGUITexture = signGUITexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

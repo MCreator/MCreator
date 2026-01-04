@@ -87,6 +87,7 @@ import java.util.stream.Collectors;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
+	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -278,7 +279,17 @@ import java.util.stream.Collectors;
 								+ getModElement().getRegistryName() + ".png");
 				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 			} catch (Exception e) {
-				LOG.error("Failed to copy sign texture", e);
+				LOG.error("Failed to copy sign entity texture", e);
+			}
+			if ("HangingSign".equals(blockBase)) {
+				try {
+					File GUITextureLocation = new File(
+							getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+							"gui/hanging_signs/" + getModElement().getRegistryName() + ".png");
+					FileIO.copyFile(signGUITexture.toFile(TextureType.SCREEN), GUITextureLocation);
+				} catch (Exception e) {
+					LOG.error("Failed to copy sign GUI texture", e);
+				}
 			}
 		}
 	}
