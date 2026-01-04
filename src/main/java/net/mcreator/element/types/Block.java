@@ -572,16 +572,19 @@ import java.util.stream.Collectors;
 
 	public String getWallName() {
 		String elementName = this.getModElement().getName();
-		if (elementName.endsWith("Sign"))
+		if (elementName.endsWith("HangingSign"))
+			return elementName.substring(0, elementName.length() - 11) + "WallHangingSign";
+		else if (elementName.endsWith("Sign"))
 			return elementName.substring(0, elementName.length() - 4) + "WallSign";
 		else
 			return "Wall" + elementName;
-
 	}
 
 	public String getWallRegistryName() {
 		String registryName = this.getModElement().getRegistryName();
-		if (registryName.endsWith("sign"))
+		if (registryName.endsWith("hanging_sign"))
+			return registryName.substring(0, registryName.length() - 12) + "wall_hanging_sign";
+		else if (registryName.endsWith("sign"))
 			return registryName.substring(0, registryName.length() - 4) + "wall_sign";
 		else
 			return "wall_" + registryName;

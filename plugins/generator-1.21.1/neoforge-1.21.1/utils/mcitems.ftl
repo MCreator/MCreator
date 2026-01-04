@@ -167,7 +167,9 @@
 <#function handleExtension mappedBlock customelement>
     <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
     <#if extension == "wall"> <#-- Special handling for wall variant of signs -->
-        <#if customelement?ends_with("sign")> <#-- If element name ends with "sign", we can use proper naming for wall sign -->
+        <#if customelement?ends_with("hanging_sign")> <#-- If element name ends with "hanging_sign", we can use proper naming for wall sign -->
+            <#return customelement?remove_ending("hanging_sign") + "wall_hanging_sign">
+        <#elseif customelement?ends_with("sign")> <#-- If element name ends with "sign", we can use proper naming for wall sign -->
             <#return customelement?remove_ending("sign") + "wall_sign">
         <#else>
             <#return "wall_" + customelement>
