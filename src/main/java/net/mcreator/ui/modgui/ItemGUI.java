@@ -323,7 +323,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
