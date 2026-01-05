@@ -574,6 +574,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 			refreshBlockStatesList();
 		});
 
+		hasTransparency.addActionListener(e -> {
+			if (!isEditingMode()) {
+				// We can assume the user wants to make the block fully transparent
+				hasCustomOpacity.setSelected(hasTransparency.isSelected());
+				refreshLightOpacitySetting();
+				lightOpacity.setValue(0);
+			}
+		});
+
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
