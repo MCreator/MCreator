@@ -1179,11 +1179,9 @@ public class TestWorkspaceDataProvider {
 			item.damageOnCrafting = _true;
 			item.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				item.repairItems.addAll(
-						blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
-								.toList());
+				item.repairItems = subset(random, blocksAndItemsAndTags.size() / 8, blocksAndItemsAndTags,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				item.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
-				item.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
 			}
 			item.immuneToFire = _true;
 			item.isPiglinCurrency = _true;
@@ -2247,11 +2245,9 @@ public class TestWorkspaceDataProvider {
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
 			List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
-			tool.repairItems.addAll(
-					blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
-							.toList());
+			tool.repairItems = subset(random, blocksAndItemsAndTags.size() / 8, blocksAndItemsAndTags,
+					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
