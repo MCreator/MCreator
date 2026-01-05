@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 <#if field_list$block?size == 1>
   "${mappedMCItemToRegistryName(w.itemBlock(field_list$block?first))}"
 <#else>
