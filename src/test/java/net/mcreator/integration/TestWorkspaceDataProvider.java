@@ -2135,7 +2135,7 @@ public class TestWorkspaceDataProvider {
 		block.customModelName = emptyLists ?
 				new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex] :
 				"ModelCustomJavaModel";
-		// third is 0 because third index for model is cross which requires transparency; if render type 4 (Java model), also set to 0
+		block.hasCustomOpacity = block.renderType == 4 || new boolean[] { _true, _true, true, false }[valueIndex];
 		block.lightOpacity = block.renderType == 4 ? 0 : new int[] { 0, 2, 0, 3 }[valueIndex];
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
 		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
