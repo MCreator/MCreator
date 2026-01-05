@@ -32,7 +32,7 @@ public class ReloadCodeAction extends BasicAction {
 
 	public ReloadCodeAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.ide.reload_code"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
+			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				File curr = codeEditorView.fileWorkingOn;
 				if (curr.isFile()) {
@@ -44,8 +44,8 @@ public class ReloadCodeAction extends BasicAction {
 					if (sel == JOptionPane.OK_OPTION) {
 						codeEditorView.te.setText(FileIO.readFileToString(curr));
 						codeEditorView.changed = false;
-						if (codeEditorView.cl != null)
-							codeEditorView.cl.stateChanged(new ChangeEvent(codeEditorView));
+						if (codeEditorView.changeListener != null)
+							codeEditorView.changeListener.stateChanged(new ChangeEvent(codeEditorView));
 					}
 				}
 			}

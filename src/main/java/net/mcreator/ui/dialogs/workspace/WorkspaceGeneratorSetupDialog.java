@@ -71,7 +71,7 @@ public class WorkspaceGeneratorSetupDialog {
 					L10N.t("dialog.setup_workspace.step.gradle_project"));
 			dial.addProgressUnit(p2);
 
-			m.getTabs().showTab(m.consoleTab);
+			m.showConsole();
 
 			m.getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
@@ -120,8 +120,7 @@ public class WorkspaceGeneratorSetupDialog {
 
 				SwingUtilities.invokeLater(() -> {
 					m.getTabs().showTab(m.workspaceTab);
-					if (m.hasProjectBrowser())
-						m.getProjectBrowser().reloadTree();
+					m.getProjectBrowser().reloadTree();
 				});
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);

@@ -29,7 +29,7 @@ import javax.swing.*;
 public class ImageEditorRedoAction extends BasicAction {
 	public ImageEditorRedoAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.redo"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
+			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getVersionManager().redo();
 			}

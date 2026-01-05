@@ -1,0 +1,1 @@
+This is the texture used by signs to render in the world. Make sure the texture is compatible with the sign model.
