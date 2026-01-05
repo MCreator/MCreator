@@ -54,6 +54,9 @@ public class ${name}Item extends Item {
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
+					<#if data.repairItems?has_content>
+					.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+					</#if>
 				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
@@ -105,9 +108,6 @@ public class ${name}Item extends Item {
 				</#if>
 				<#if data.stayInGridWhenCrafting && (!data.recipeRemainder?? || data.recipeRemainder.isEmpty()) && data.damageCount != 0>
 				.setNoCombineRepair()
-				</#if>
-				<#if data.repairItems?has_content>
-				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
 				</#if>
 		);
 	}

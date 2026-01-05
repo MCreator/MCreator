@@ -289,7 +289,10 @@ import java.util.stream.Collectors;
 	}
 
 	public List<String> getRepairItemsAsStringList() {
-		return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
+		if (damageCount == 0)
+			return List.of();
+		else
+			return this.repairItems.stream().map(MappableElement::getUnmappedValue).collect(Collectors.toList());
 	}
 
 	public static class StateEntry implements IWorkspaceDependent {

@@ -185,7 +185,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
-	<#if data.repairItems?has_content>
+	<#if data.damageCount != 0 && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
 	}

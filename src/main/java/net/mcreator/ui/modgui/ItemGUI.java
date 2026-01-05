@@ -390,7 +390,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
-		damageCount.addChangeListener(e -> updateCraftingSettings());
+		damageCount.addChangeListener(e -> updateDamageDependantSettings());
 		immuneToFire.setOpaque(false);
 		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
@@ -398,7 +398,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
-		updateCraftingSettings();
+		updateDamageDependantSettings();
 
 		subpane2.setOpaque(false);
 
@@ -654,6 +654,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
 	}
 
+	private void updateDamageDependantSettings() {
+		repairItems.setEnabled((int) damageCount.getValue() > 0);
+		updateCraftingSettings();
+	}
+
 	private void updateCraftingSettings() {
 		recipeRemainder.setEnabled(stayInGridWhenCrafting.isSelected());
 		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) damageCount.getValue() > 0));
@@ -821,7 +826,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
 		animations.setEntries(item.animations);
 
-		updateCraftingSettings();
+		updateDamageDependantSettings();
 		updateFoodPanel();
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
