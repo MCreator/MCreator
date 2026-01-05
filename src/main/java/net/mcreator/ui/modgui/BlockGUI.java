@@ -118,6 +118,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -807,7 +808,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -832,6 +833,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		hardness.setOpaque(false);
 		resistance.setOpaque(false);
+		hasCustomOpacity.setOpaque(false);
 		lightOpacity.setOpaque(false);
 		isNotColidable.setOpaque(false);
 
@@ -857,6 +859,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
+				L10N.label("elementgui.block.has_custom_opacity")));
+		selp.add(hasCustomOpacity);
+
+		hasCustomOpacity.addActionListener(e -> refreshLightOpacitySetting());
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
 		selp.add(lightOpacity);
@@ -868,6 +876,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
+
+		refreshLightOpacitySetting();
 
 		JPanel blockItemSettings = new JPanel(new GridLayout(5, 2, 0, 2));
 		blockItemSettings.setOpaque(false);
@@ -1649,6 +1659,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		resistance.setEnabled(!isUnbreakable);
 	}
 
+	private void refreshLightOpacitySetting() {
+		lightOpacity.setEnabled(hasCustomOpacity.isSelected());
+	}
+
 	private void refreshVibrationProperties() {
 		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
 
@@ -1817,6 +1831,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.setSelectedProcedure(block.isBonemealTargetCondition);
 		bonemealSuccessCondition.setSelectedProcedure(block.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(block.onBonemealSuccess);
+		hasCustomOpacity.setSelected(block.hasCustomOpacity);
 		lightOpacity.setValue(block.lightOpacity);
 		transparencyType.setSelectedItem(block.transparencyType);
 		tintType.setSelectedItem(block.tintType);
@@ -1900,6 +1915,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshLightOpacitySetting();
 		refreshSpawnProperties();
 		refreshBlockStatesList();
 	}
@@ -1949,6 +1965,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
 		block.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
 		block.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
+		block.hasCustomOpacity = hasCustomOpacity.isSelected();
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.tickRate = (int) tickRate.getValue();
 		block.isCustomSoundType = customSoundType.isSelected();
