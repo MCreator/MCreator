@@ -73,7 +73,7 @@ public class BlockToBedrockConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 82;
+		return 83;
 	}
 
 }
