@@ -486,7 +486,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 					if (!isEditingMode()) {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
-						lightOpacity.setValue(0);
 					}
 				}
 				case "Leaves" -> {
@@ -494,7 +493,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					transparencyType.setSelectedItem("SOLID");
 
 					if (!isEditingMode()) {
-						lightOpacity.setValue(1);
 						reactionToPushing.setSelectedItem("DESTROY");
 						hasTransparency.setSelected(true);
 						ignitedByLava.setSelected(true);
@@ -505,21 +503,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 					isBonemealable.setSelected(false);
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Fence" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Door" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
@@ -527,7 +522,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				case "PressurePlate", "Button" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						reactionToPushing.setSelectedItem("DESTROY");
@@ -540,7 +534,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 						renderType.setSelectedItem(pottedPlantModel);
 						hasBlockItem.setSelected(false);
 						updateBlockItemSettings();
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						transparencyType.setSelectedItem("CUTOUT");
 						hardness.setValue(0d);
@@ -554,7 +547,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						maxStackSize.setValue(16);
@@ -562,7 +554,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				case null, default -> {
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
 								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
@@ -1409,6 +1400,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				boundingBoxList.modelChanged();
 				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
+					hasCustomOpacity.setSelected(true);
+					refreshLightOpacitySetting();
 					lightOpacity.setValue(0);
 				}
 				if (!isEditingMode() && selected.equals(grassBlock)) {
