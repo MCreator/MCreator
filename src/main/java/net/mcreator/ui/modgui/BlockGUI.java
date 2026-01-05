@@ -451,6 +451,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockBasePropertiesPanel.setVisible(false);
+			if (!hasBlockBase) {
+				showBlockBaseCard("default");
+			}
 			if (!isEditingMode()) {
 				// Re-enable block item if user switches from flower pot to any other block base option
 				if (!hasBlockItem.isSelected()) {
@@ -603,7 +606,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canProvidePower.setOpaque(false);
 
 		blockBasePropertiesPanel.setOpaque(false);
-		blockBasePropertiesPanel.setVisible(false);
+
+		// Card for "default" block base
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"),
+						L10N.label("elementgui.block.has_gravity")), hasGravity), "default");
 
 		// Card for block bases with block set type
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
@@ -624,6 +631,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
 				blockBase), blockBasePropertiesPanel, 0, 2);
+
+		showBlockBaseCard("default");
 
 		blockBasePanel.setOpaque(false);
 		blockBasePanel.setBorder(BorderFactory.createTitledBorder(
@@ -798,7 +807,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -851,10 +860,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
 		selp.add(lightOpacity);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"),
-				L10N.label("elementgui.block.has_gravity")));
-		selp.add(hasGravity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
