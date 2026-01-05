@@ -268,7 +268,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
+		JPanel useProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
@@ -322,7 +322,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(17, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -386,14 +386,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
-				L10N.label("elementgui.item.item_animation")));
-		subpane2.add(animation);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
-				L10N.label("elementgui.item.use_duration")));
-		subpane2.add(useDuration);
-
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
@@ -413,7 +405,26 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
+		JPanel itemUseSubpane = new JPanel(new GridLayout(2, 2, 2, 2));
+		itemUseSubpane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.use_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+		itemUseSubpane.setOpaque(false);
+
+		itemUseSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.item.item_animation")));
+		itemUseSubpane.add(animation);
+
+		itemUseSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
+				L10N.label("elementgui.item.use_duration")));
+		itemUseSubpane.add(useDuration);
+
 		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
+		foodSubpane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
@@ -456,8 +467,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
 
-		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
-		foodProperties.setOpaque(false);
+		useProperties.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)));
+		useProperties.setOpaque(false);
 
 		advancedProperties.setOpaque(false);
 
@@ -627,7 +639,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				customProperties::getValidationResult);
 		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
-		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
+		addPage(L10N.t("elementgui.item.use_properties"), useProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
