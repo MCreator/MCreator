@@ -452,9 +452,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setEnabled(true);
 			connectedSides.setEnabled(true);
 			blockBasePropertiesPanel.setVisible(false);
-			if (!hasBlockBase) {
-				showBlockBaseCard("default");
-			}
 			if (!isEditingMode()) {
 				// Re-enable block item if user switches from flower pot to any other block base option
 				if (!hasBlockItem.isSelected()) {
@@ -561,6 +558,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				}
+			} else {
+				showBlockBaseCard("default"); // No block base is selected, show default base settings
 			}
 
 			refreshBlockStatesList();
