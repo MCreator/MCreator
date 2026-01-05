@@ -2135,11 +2135,12 @@ public class TestWorkspaceDataProvider {
 		block.customModelName = emptyLists ?
 				new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex] :
 				"ModelCustomJavaModel";
-		block.hasCustomOpacity = block.renderType == 4 || new boolean[] { _true, _true, true, false }[valueIndex];
 		block.lightOpacity = block.renderType == 4 ? 0 : new int[] { 0, 2, 0, 3 }[valueIndex];
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
 		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
 				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
+		block.hasCustomOpacity =
+				block.hasTransparency || valueIndex == 3; // Test custom opacity with non-transparent block
 		block.states = new ArrayList<>();
 		if (!emptyLists) {
 			int size2 = random.nextInt(4) + 1;
