@@ -78,6 +78,7 @@ import java.util.stream.Collectors;
 
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
+	public double attackSpeed;
 
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
@@ -149,6 +150,8 @@ import java.util.stream.Collectors;
 		this.providedBannerPatterns = new ArrayList<>();
 
 		this.animations = new ArrayList<>();
+
+		this.attackSpeed = 1.6;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

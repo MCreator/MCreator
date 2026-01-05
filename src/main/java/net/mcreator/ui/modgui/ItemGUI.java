@@ -136,8 +136,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page5group = new ValidationGroup();
 
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
-	private final JCheckBox enableMeleeDamage = new JCheckBox();
+	private final JCheckBox enableMeleeDamage = L10N.checkbox("elementgui.common.enable");
+	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
+	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1.2, 0, 128000, 0.1));
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
@@ -349,10 +350,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/destroy_speed"),
 				L10N.label("elementgui.item.destroy_speed")));
 		subpane2.add(toolType);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
-				L10N.label("elementgui.item.damage_vs_entity")));
-		subpane2.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.item.number_of_uses")));
@@ -616,10 +613,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 
+		JPanel meleePanel = new JPanel(new GridLayout(3, 2, 35, 2));
+		meleePanel.setOpaque(false);
+		meleePanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.melee_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
+		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_melee_damage"),
+				L10N.label("elementgui.item.enable_melee_damage")));
+		enableMeleeDamage.setOpaque(false);
+		enableMeleeDamage.addActionListener(e -> updateMeleePanel());
+		meleePanel.add(enableMeleeDamage);
+
+		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
+				L10N.label("elementgui.item.damage_vs_entity")));
+		damageVsEntity.setPreferredSize(new Dimension(100, 40));
+		meleePanel.add(damageVsEntity);
+
+		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/attack_speed"),
+				L10N.label("elementgui.item.attack_speed")));
+		attackSpeed.setPreferredSize(new Dimension(100, 40));
+		meleePanel.add(attackSpeed);
+
+		updateMeleePanel();
+
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
-				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(rangedPanel, meleePanel)), 5, 5)));
 
 		page1group.addValidationElement(texture);
 
@@ -721,6 +743,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void updateMeleePanel() {
+		if (enableMeleeDamage.isSelected()) {
+			damageVsEntity.setEnabled(true);
+			attackSpeed.setEnabled(true);
+		} else {
+			damageVsEntity.setEnabled(false);
+			attackSpeed.setEnabled(false);
+		}
+	}
+
 	private void refreshGUIProperties() {
 		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
 
@@ -795,6 +827,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		specialInformation.setSelectedProcedure(item.specialInformation);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
+		attackSpeed.setValue(item.attackSpeed);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
 		guiBoundTo.setEntry(item.guiBoundTo);
 		openGUIOnRightClick.setSelectedProcedure(item.openGUIOnRightClick);
@@ -828,6 +861,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateDamageDependantSettings();
 		updateFoodPanel();
+		updateMeleePanel();
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
@@ -870,6 +904,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		item.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
 		item.damageVsEntity = (double) damageVsEntity.getValue();
+		item.attackSpeed = (double) attackSpeed.getValue();
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
