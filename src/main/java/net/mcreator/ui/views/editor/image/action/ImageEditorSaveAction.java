@@ -28,7 +28,7 @@ import javax.swing.*;
 public class ImageEditorSaveAction extends BasicAction {
 	public ImageEditorSaveAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.save"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
+			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.save();
 			}

@@ -19,6 +19,7 @@
 
 package net.mcreator.workspace.settings.user;
 
+import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.tree.SerializableTreeExpansionState;
 
 import javax.annotation.Nullable;
@@ -29,8 +30,10 @@ public class WorkspaceUserSettings {
 	public SortType workspacePanelSortType = SortType.CREATED;
 	public boolean workspacePanelSortAscending = true;
 
-	public int projectBrowserSplitPos = 0;
 	@Nullable public SerializableTreeExpansionState projectBrowserState = null;
+
+	@Nullable public CollapsibleDockPanel.State leftDockState = null;
+	@Nullable public CollapsibleDockPanel.State bottomDockState = null;
 
 	public enum SortType {
 		NAME, CREATED, TYPE
