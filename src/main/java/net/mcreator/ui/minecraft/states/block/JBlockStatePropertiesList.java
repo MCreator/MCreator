@@ -60,10 +60,13 @@ public class JBlockStatePropertiesList extends JEntriesList {
 	private final JProgressBar propertiesCap = new JProgressBar();
 	private final JLabel propertiesCapLabel = new JLabel();
 
+	private final JBlockStatesList blockStatesList;
+
 	public JBlockStatePropertiesList(MCreator mcreator, IHelpContext gui,
-			Supplier<Collection<String>> nonUserProvidedProperties) {
+			Supplier<Collection<String>> nonUserProvidedProperties, JBlockStatesList blockStatesList) {
 		super(mcreator, new BorderLayout(0, 10), gui);
 		this.nonUserProvidedProperties = nonUserProvidedProperties;
+		this.blockStatesList = blockStatesList;
 
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
@@ -116,19 +119,19 @@ public class JBlockStatePropertiesList extends JEntriesList {
 
 	private void recalculatePropertiesCap() {
 		propertyCombinations = BlockStatePropertyUtils.getNumberOfPropertyCombinations(
-				propertiesList.stream().map(JBlockStatePropertiesListEntry::getEntry).map(PropertyDataWithValue::property)
-						.collect(Collectors.toList()));
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getEntry)
+						.map(PropertyDataWithValue::property).collect(Collectors.toList()));
 
 		int cappedPropertyCombinations = Math.min(propertyCombinations, MAX_PROPERTY_COMBINATIONS);
 		propertiesCap.setValue(cappedPropertyCombinations);
 
-		if (cappedPropertyCombinations < MAX_PROPERTY_COMBINATIONS * 0.5) {
+		float blendStart = 200; // start changing color 200 property combinations, which is already a lot compared to Vanilla
+		if (cappedPropertyCombinations < blendStart) {
 			propertiesCap.setForeground(ValidationResult.Type.PASSED.getColor());
 		} else { // blend color between warn and error
 			Color warn = ValidationResult.Type.WARNING.getColor();
 			Color error = ValidationResult.Type.ERROR.getColor();
-			float blend = (cappedPropertyCombinations - MAX_PROPERTY_COMBINATIONS * 0.5f) / (MAX_PROPERTY_COMBINATIONS
-					* 0.5f);
+			float blend = (cappedPropertyCombinations - blendStart) / (MAX_PROPERTY_COMBINATIONS - blendStart);
 			propertiesCap.setForeground(new Color((int) (warn.getRed() + blend * (error.getRed() - warn.getRed())),
 					(int) (warn.getGreen() + blend * (error.getGreen() - warn.getGreen())),
 					(int) (warn.getBlue() + blend * (error.getBlue() - warn.getBlue()))));
@@ -150,8 +153,8 @@ public class JBlockStatePropertiesList extends JEntriesList {
 
 	private void createPropertiesEntry() {
 		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showCreateDialog(mcreator,
-				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData).collect(Collectors.toList()),
-				nonUserProvidedProperties);
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData)
+						.collect(Collectors.toList()), nonUserProvidedProperties);
 		if (newEntry != null) {
 			addPropertiesEntry(newEntry);
 		}
@@ -159,19 +162,22 @@ public class JBlockStatePropertiesList extends JEntriesList {
 
 	private void addPropertyFromDataList() {
 		PropertyDataWithValue<?> newEntry = AddBlockPropertyDialog.showImportDialog(mcreator,
-				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData).collect(Collectors.toList()),
-				nonUserProvidedProperties);
+				propertiesList.stream().map(JBlockStatePropertiesListEntry::getPropertyData)
+						.collect(Collectors.toList()), nonUserProvidedProperties);
 		if (newEntry != null) {
 			addPropertiesEntry(newEntry);
 		}
 	}
 
 	private void addPropertiesEntry(@Nonnull PropertyDataWithValue<?> data) {
-		JBlockStatePropertiesListEntry pe = new JBlockStatePropertiesListEntry(this, gui, propertyEntries, propertiesList);
+		JBlockStatePropertiesListEntry pe = new JBlockStatePropertiesListEntry(this, gui, propertyEntries,
+				propertiesList);
 		pe.setEntry(data);
 		registerEntryUI(pe);
 
 		recalculatePropertiesCap();
+
+		blockStatesList.propertiesChanged();
 	}
 
 	void removeProperty(JBlockStatePropertiesListEntry entry) {
@@ -181,6 +187,8 @@ public class JBlockStatePropertiesList extends JEntriesList {
 		propertyEntries.repaint();
 
 		recalculatePropertiesCap();
+
+		blockStatesList.propertiesChanged();
 	}
 
 	public List<PropertyDataWithValue<?>> getProperties() {

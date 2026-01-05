@@ -45,7 +45,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class ${name}Block extends ${getBlockClass(data.blockBase)}
+public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -96,6 +96,16 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			</#if>
 		</#if>
 	</#list>
+
+	<#assign defaultStateCustomShape = data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
+	<#assign statesWithCustomShape = data.getDefinedStatesWithCustomShape()>
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
+		private static final VoxelShape SHAPE = <@boundingBoxWithRotation data/>;
+		<#else>
+		private final ImmutableMap<BlockState, VoxelShape> shapes = this.makeShapes();
+		</#if>
+	</#if>
 
 	<#if data.hasGravity>
 	public static final MapCodec<${name}Block> CODEC = simpleCodec(properties -> new ${name}Block());
@@ -182,7 +192,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
-				data.blockBase == "Wall")>
+				data.blockBase == "Wall" ||
+				data.blockBase == "Sign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
@@ -191,9 +202,12 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.blockBase?has_content && data.blockBase == "Leaves">
 			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
 		</#if>
+		<#if var_extends_class! == "WallSignBlock">
+			.dropsLike(${JavaModName}Blocks.${REGISTRYNAME}.get())
+		</#if>
 	</#macro>
 
-	public ${name}Block() {
+	public <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block() {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -206,6 +220,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
+			<#elseif data.blockBase == "Sign">
+				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
@@ -232,6 +248,40 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	    );
 		</#if>
 	}
+
+	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
+		<#if data.rotationMode != 0 || statesWithCustomShape?has_content>
+		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
+			return this.getShapeForEachState(state -> {
+				<#list statesWithCustomShape as state>
+				<#if !state?is_first>else </#if>if (
+    				<#list state.stateMap.keySet() as property>
+						<#assign value = state.stateMap.get(property)>
+						<#if property.getClass().getSimpleName().equals("StringType")>
+							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+						</#if>
+						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					</#list>
+				) {
+					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+				}
+				</#list>
+				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+			});
+		}
+		</#if>
+
+		@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+			<#assign offset = !data.shouldDisableOffset() && !data.isBoundingBoxEmpty()>
+			<#if offset>Vec3 offset = state.getOffset(world, pos);</#if>
+
+			<#if data.rotationMode == 0 && !statesWithCustomShape?has_content><#-- shape not state dependent -->
+			return SHAPE<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			<#else><#-- shape is state dependent -->
+			return shapes.get(state)<#if offset>.move(offset.x, offset.y, offset.z)</#if>;
+			</#if>
+		}
+	</#if>
 
 	<#if data.renderType() == 4>
     @Override protected RenderShape getRenderShape(BlockState state) {
@@ -280,17 +330,6 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 	<#if data.hasTransparency && !data.blockBase?has_content>
 	@Override public VoxelShape getVisualShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return Shapes.empty();
-	}
-	</#if>
-
-	<#if data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube()>
-	@Override public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		<#if data.isBoundingBoxEmpty()>
-			return Shapes.empty();
-		<#else>
-			<#if !data.shouldDisableOffset()>Vec3 offset = state.getOffset(world, pos);</#if>
-			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.shouldDisableOffset() data.rotationMode data.enablePitch/>
-		</#if>
 	}
 	</#if>
 
@@ -747,6 +786,10 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			@Override public String getSerializedName() {
 				return this.name;
 			}
+
+			@Override public String toString() {
+				return this.name;
+			}
 		}
 		</#if>
 	</#list>
@@ -756,9 +799,11 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 <#-- @formatter:on -->
 
 <#function getBlockClass blockBase="">
-	<#if data.hasGravity><#return "FallingBlock">
+	<#if var_extends_class??><#return var_extends_class>
+	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
+	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>
 </#function>

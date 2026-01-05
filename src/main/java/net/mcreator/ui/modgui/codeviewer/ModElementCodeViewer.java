@@ -38,8 +38,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +53,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 	private final ModElementChangedListener codeChangeListener;
 
+	private boolean listTemplatesLoaded = false;
+
 	private boolean updateRunning = false;
 	private boolean updateMisfired = false;
 
@@ -64,37 +64,37 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		this.modElementGUI = modElementGUI;
 		this.codeChangeListener = this::reload;
 
-		setBackground(Theme.current().getAltBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
+	}
 
-		addComponentListener(new ComponentAdapter() {
-			@Override public void componentShown(ComponentEvent e) {
-				super.componentShown(e);
-				reload();
-			}
-		});
+	private void loadListTemplatesIfNotAlready(GeneratableElement generatableElement) {
+		if (listTemplatesLoaded)
+			return;
 
 		// we group list templates inside separate tabs to improve UX
 		ImageIcon enabledListIcon = UIRES.get("16px.list");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
-		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
-				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
+		modElementGUI.getModElement().getGenerator().getModElementListTemplates(generatableElement).stream()
+				.map(GeneratorTemplatesList::groupName).forEach(listName -> {
 					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
 					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
 							FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
-					listPane.setBackground(Theme.current().getAltBackgroundColor());
+					listPane.setBackground(Theme.current().getBackgroundColor());
 
 					addTab(listName, enabledListIcon, listPane);
 					setDisabledIconAt(indexOfTab(listName), disabledListIcon);
 					setEnabledAt(indexOfTab(listName), false);
 					listPager.put(listName, listPane);
 				});
+
+		listTemplatesLoaded = true;
 	}
 
 	public void registerUI(JComponent container) {
 		codeChangeListener.registerUI(container);
 	}
 
-	private synchronized void reload() {
+	public synchronized void reload() {
 		if (!isShowing())
 			return;
 
@@ -102,8 +102,12 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 			updateRunning = true;
 			new Thread(() -> {
 				try {
+					GeneratableElement generatableElement = modElementGUI.getElementFromGUI();
+
+					ThreadUtil.runOnSwingThreadAndWait(() -> loadListTemplatesIfNotAlready(generatableElement));
+
 					List<GeneratorFile> files = modElementGUI.getModElement().getGenerator()
-							.generateElement(modElementGUI.getElementFromGUI(), false, false);
+							.generateElement(generatableElement, false, false);
 					files.sort(Comparator.<GeneratorFile, String>comparing(
 									e -> FilenameUtils.getExtension(e.getFile().getName()))
 							.thenComparing(e -> e.getFile().getName()));

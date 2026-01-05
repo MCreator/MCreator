@@ -63,11 +63,6 @@ public class AcceleratorMap {
 		actionKeyStrokeMap.put(actionRegistry.showWorkspaceTab, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 
-		actionKeyStrokeMap.put(actionRegistry.showWorkspaceBrowser, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.hideWorkspaceBrowser, KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-
 		actionKeyStrokeMap.put(actionRegistry.newWorkspace, KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 
@@ -130,6 +125,9 @@ public class AcceleratorMap {
 		actionKeyStrokeMap.put(actionRegistry.imageEditorClearSelection, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorResizeLayer,
 				KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorFlipHorizontal, KeyStroke.getKeyStroke(KeyEvent.VK_V, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorFlipVertical,
+				KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.SHIFT_DOWN_MASK));
 	}
 
 	void registerAll() {

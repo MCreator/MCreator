@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.function.Supplier;
 
 public class TextureComboBox extends JPanel implements IValidable {
 
@@ -98,6 +99,17 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 	public TextureComboBox requireValue(String errorTranslationKey) {
 		comboBox.setValidator(() -> {
+			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
+				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
+			return ValidationResult.PASSED;
+		});
+		return this;
+	}
+
+	public TextureComboBox requireValue(String errorTranslationKey, Supplier<Boolean> validationCondition) {
+		comboBox.setValidator(() -> {
+			if (!validationCondition.get())
+				return ValidationResult.PASSED;
 			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
 				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
 			return ValidationResult.PASSED;

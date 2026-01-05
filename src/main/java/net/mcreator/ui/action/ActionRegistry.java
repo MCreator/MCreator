@@ -133,8 +133,6 @@ public class ActionRegistry {
 	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
-	public final BasicAction showWorkspaceBrowser;
-	public final BasicAction hideWorkspaceBrowser;
 	public final BasicAction showConsoleTab;
 	public final BasicAction showWorkspaceTab;
 	public final BasicAction closeAllTabs;
@@ -176,6 +174,8 @@ public class ActionRegistry {
 	public final BasicAction imageEditorColorize;
 	public final BasicAction imageEditorDesaturate;
 	public final BasicAction imageEditorHSVNoise;
+	public final BasicAction imageEditorFlipHorizontal;
+	public final BasicAction imageEditorFlipVertical;
 	public final BasicAction imageEditorMoveLayer;
 	public final BasicAction imageEditorSelectLayer;
 	public final ImageEditorClearSelectionAction imageEditorClearSelection;
@@ -273,17 +273,13 @@ public class ActionRegistry {
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
 		this.showConsoleTab = new BasicAction(this, L10N.t("action.show_console"),
-				e -> mcreator.getTabs().showTab(mcreator.consoleTab));
+				e -> mcreator.showConsole());
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
 				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
 				e -> mcreator.getTabs().closeAllTabs());
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
-		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.showProjectBrowser(true));
-		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.showProjectBrowser(false));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);
@@ -331,6 +327,8 @@ public class ActionRegistry {
 		this.imageEditorColorize = new ColorizeToolAction(this);
 		this.imageEditorDesaturate = new DesaturateToolAction(this);
 		this.imageEditorHSVNoise = new HSVNoiseToolAction(this);
+		this.imageEditorFlipHorizontal = new FlipHorizontalToolAction(this);
+		this.imageEditorFlipVertical = new FlipVerticalToolAction(this);
 		this.imageEditorMoveLayer = new MoveToolAction(this);
 		this.imageEditorSelectLayer = new SelectionToolAction(this);
 		this.imageEditorClearSelection = new ImageEditorClearSelectionAction(this);

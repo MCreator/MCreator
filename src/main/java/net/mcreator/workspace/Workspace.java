@@ -137,7 +137,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return foldersRoot;
 	}
 
-	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
+	@Override @Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
 
@@ -234,7 +234,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
-		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
+		if (!mod_elements.contains(element)) // skip if it is not present on the list already
 			return;
 
 		fileManager.getModElementManager().removeModElement(element);
