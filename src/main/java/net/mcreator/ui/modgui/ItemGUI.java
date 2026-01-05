@@ -271,7 +271,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel useProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
-		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
@@ -464,8 +463,58 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
 
-		useProperties.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)));
+		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
+		rangedProperties.setOpaque(false);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
+				L10N.label("elementgui.item.enable_ranged_item")));
+		enableRanged.setOpaque(false);
+		enableRanged.addActionListener(e -> updateRangedPanel());
+		rangedProperties.add(enableRanged);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
+				L10N.label("elementgui.item.projectile")));
+		rangedProperties.add(projectile);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
+				L10N.label("elementgui.item.projectile_disable_ammo_check")));
+		projectileDisableAmmoCheck.setOpaque(false);
+		rangedProperties.add(projectileDisableAmmoCheck);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
+				L10N.label("elementgui.item.shoot_constantly")));
+		shootConstantly.setOpaque(false);
+		rangedProperties.add(shootConstantly);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
+				L10N.label("elementgui.item.charges_power")));
+		rangedItemChargesPower.setOpaque(false);
+		rangedProperties.add(rangedItemChargesPower);
+
+		updateRangedPanel();
+
+		shootConstantly.addActionListener((e) -> {
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
+			if (shootConstantly.isSelected())
+				rangedItemChargesPower.setSelected(false);
+		});
+
+		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
+		rangedTriggers.setOpaque(false);
+		rangedTriggers.add(rangedUseCondition);
+		rangedTriggers.add(onRangedItemUsed);
+
+		JComponent rangedPanel = PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers);
+		rangedPanel.setOpaque(false);
+		rangedPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), Theme.current().getForegroundColor()));
+
+		useProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
+				PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)),
+				PanelUtils.pullElementUp(rangedPanel), 5, 5)));
 		useProperties.setOpaque(false);
 
 		advancedProperties.setOpaque(false);
@@ -565,54 +614,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
 
-		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
-		rangedProperties.setOpaque(false);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
-				L10N.label("elementgui.item.enable_ranged_item")));
-		enableRanged.setOpaque(false);
-		enableRanged.addActionListener(e -> updateRangedPanel());
-		rangedProperties.add(enableRanged);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
-				L10N.label("elementgui.item.projectile")));
-		rangedProperties.add(projectile);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
-				L10N.label("elementgui.item.projectile_disable_ammo_check")));
-		projectileDisableAmmoCheck.setOpaque(false);
-		rangedProperties.add(projectileDisableAmmoCheck);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
-				L10N.label("elementgui.item.shoot_constantly")));
-		shootConstantly.setOpaque(false);
-		rangedProperties.add(shootConstantly);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
-				L10N.label("elementgui.item.charges_power")));
-		rangedItemChargesPower.setOpaque(false);
-		rangedProperties.add(rangedItemChargesPower);
-
-		updateRangedPanel();
-
-		shootConstantly.addActionListener((e) -> {
-			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
-			if (shootConstantly.isSelected())
-				rangedItemChargesPower.setSelected(false);
-		});
-
-		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
-		rangedTriggers.setOpaque(false);
-		rangedTriggers.add(rangedUseCondition);
-		rangedTriggers.add(onRangedItemUsed);
-
-		rangedPanel.setOpaque(false);
-		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
-		rangedPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-
 		JPanel meleePanel = new JPanel(new GridLayout(3, 2, 35, 2));
 		meleePanel.setOpaque(false);
 		meleePanel.setBorder(BorderFactory.createTitledBorder(
@@ -641,7 +642,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(rangedPanel, meleePanel)), 5, 5)));
+				PanelUtils.pullElementUp(meleePanel), 5, 5)));
 
 		page1group.addValidationElement(texture);
 
