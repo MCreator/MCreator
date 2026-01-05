@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 {
     "type": "minecraft:smithing_transform",
     <#if data.smithingInputTemplateStack?? && !data.smithingInputTemplateStack.isEmpty()>

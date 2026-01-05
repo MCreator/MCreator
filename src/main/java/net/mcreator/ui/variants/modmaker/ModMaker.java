@@ -19,13 +19,19 @@
 
 package net.mcreator.ui.variants.modmaker;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.MainMenuBar;
 import net.mcreator.ui.MainToolBar;
+import net.mcreator.ui.component.DynamicContentPanel;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.debug.DebugPanel;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.ui.workspace.resources.WorkspacePanelTextures;
@@ -37,10 +43,19 @@ import javax.swing.*;
 
 public final class ModMaker extends MCreator {
 
+	public static final String DOCK_DEBUGGER = "debugger";
+	public static final String DOCK_CODE_VIEWER = "code_viewer";
+
 	private WorkspacePanel workspacePanel;
 
+	private final DebugPanel debugPanel;
+	private final DynamicContentPanel codeViewer;
+
 	public ModMaker(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		super(application, workspace, true);
+		super(application, workspace);
+
+		this.debugPanel = new DebugPanel(this);
+		this.codeViewer = new DynamicContentPanel(ComponentUtils.bigCenteredText("dock.code_viewer.empty"));
 
 		new ModMakerDropTarget(this);
 
@@ -53,6 +68,31 @@ public final class ModMaker extends MCreator {
 				workspacePanel.enableRemoving();
 			}
 		});
+
+		getTabs().addTabShownListener(tab -> {
+			if (tab.getContent() instanceof ModElementGUI<?> elementGUI) {
+				codeViewer.setCurrentComponent(elementGUI.getModElementCodeViewer());
+				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);
+			} else {
+				codeViewer.clear();
+			}
+		});
+
+		getBottomDockRegion().addDockVisibilityListener(DOCK_CODE_VIEWER, dockID -> {
+			if (getTabs().getCurrentTab() != null && getTabs().getCurrentTab()
+					.getContent() instanceof ModElementGUI<?> elementGUI) {
+				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);
+			}
+		});
+
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA) {
+			getBottomDockRegion().addDock(DOCK_DEBUGGER, 300, L10N.t("dock.debugger"), UIRES.get("16px.dock_debug"),
+					debugPanel);
+		}
+
+		getBottomDockRegion().addDock(DOCK_CODE_VIEWER, 300, L10N.t("dock.code_viewer"), UIRES.get("16px.dock_inspect"),
+				codeViewer);
 	}
 
 	@Override public MainMenuBar createMenuBar() {
@@ -86,6 +126,10 @@ public final class ModMaker extends MCreator {
 				workspacePanelTextures.attachGeneratorFileWatcher();
 			}
 		}
+	}
+
+	public DebugPanel getDebugPanel() {
+		return debugPanel;
 	}
 
 }

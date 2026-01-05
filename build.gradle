@@ -114,8 +114,8 @@ dependencies {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation "com.github.sps.junidecode:junidecode:0.3"
-    implementation "org.jboss.forge.roaster:roaster-api:2.30.3.Final"
-    implementation "org.jboss.forge.roaster:roaster-jdt:2.30.3.Final"
+    implementation "org.jboss.forge.roaster:roaster-api:2.31.0.Final"
+    implementation "org.jboss.forge.roaster:roaster-jdt:2.31.0.Final"
     implementation "org.snakeyaml:snakeyaml-engine:3.0.1"
     implementation "org.reflections:reflections:0.10.2"
     implementation "com.google.guava:guava:33.5.0-jre"
@@ -128,7 +128,7 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.17.0"
     implementation "com.fifesoft:rsyntaxtextarea:3.6.1"
-    implementation "com.fifesoft:autocomplete:3.3.2"
+    implementation "com.fifesoft:autocomplete:3.3.3"
     implementation("com.fifesoft:languagesupport:3.4.0") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
