@@ -766,8 +766,8 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, blocksAndItems, blocksAndItemsAndTags, biomes,
-					guis);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems,
+					blocksAndItemsAndTags, biomes, guis);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
@@ -1192,6 +1192,7 @@ public class TestWorkspaceDataProvider {
 			item.onItemEntityDestroyed = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
+			item.attackSpeed = 4.20;
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1668,7 +1669,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes,
 			List<String> guis) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
@@ -1770,10 +1771,13 @@ public class TestWorkspaceDataProvider {
 			livingEntity.onInitialSpawn = new Procedure("procedure9");
 		}
 		livingEntity.hasAI = _true;
-		livingEntity.aiBase = "(none)";
-		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
-		livingEntity.tameable = _true;
+		livingEntity.tameable = random.nextBoolean();
+		livingEntity.aiBase = (livingEntity.breedable || livingEntity.mobBehaviourType.equals("Raider")) ?
+				"(none)" :
+				new String[] { "(none)", "Wolf", "Cow",
+						"Zombie" }[valueIndex]; // index 0 must be none for GTAITaskBlocks
+		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.breedTriggerItems = subset(random, 5, blocksAndItemsAndTags,
@@ -2113,6 +2117,7 @@ public class TestWorkspaceDataProvider {
 		}
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
+		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");

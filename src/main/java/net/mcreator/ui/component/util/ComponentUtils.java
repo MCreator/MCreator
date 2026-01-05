@@ -18,10 +18,13 @@
 
 package net.mcreator.ui.component.util;
 
+import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -48,6 +51,19 @@ public class ComponentUtils {
 			font = Theme.current().getFont();
 		component.setFont(font.deriveFont(param));
 		return component;
+	}
+
+	public static JComponent bigCenteredText(String translationKey) {
+		return bigCenteredText(translationKey, null);
+	}
+
+	public static JComponent bigCenteredText(String translationKey, @Nullable Icon icon) {
+		JLabel loading = L10N.label(translationKey);
+		loading.setIconTextGap(5);
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground(Theme.current().getAltForegroundColor());
+		loading.setIcon(icon);
+		return PanelUtils.totalCenterInPanel(loading);
 	}
 
 	public static Component wrapWithInfoButton(Component ca, String url) {

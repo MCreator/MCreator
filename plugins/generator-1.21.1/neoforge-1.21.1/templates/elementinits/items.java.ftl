@@ -39,6 +39,7 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
+<#assign hasSigns = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
@@ -114,6 +115,11 @@ public class ${JavaModName}Items {
 					${item.getModElement().getRegistryNameUpper()} =
 					doubleBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}
 					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "Sign")>
+					<#assign hasSigns = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 				<#else>
 					<#assign hasBlocks = true>
 					${item.getModElement().getRegistryNameUpper()} =
@@ -175,6 +181,16 @@ public class ${JavaModName}Items {
 
 	private static DeferredItem<Item> doubleBlock(DeferredHolder<Block, Block> block, Item.Properties properties) {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), properties));
+	}
+	</#if>
+
+	<#if hasSigns>
+	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock) {
+		return signBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new SignItem(properties, block.get(), wallBlock.get()));
 	}
 	</#if>
 
