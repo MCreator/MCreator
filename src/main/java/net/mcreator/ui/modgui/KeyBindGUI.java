@@ -99,10 +99,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		JPanel events = new JPanel(new GridLayout(1, 2, 2, 2));
 		events.setOpaque(false);
-		events.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(events, L10N.t("elementgui.keybind.key_procedure_triggers"));
 		events.add(onKeyPressed);
 		events.add(onKeyReleased);
 

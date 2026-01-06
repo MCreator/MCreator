@@ -22,6 +22,7 @@ package net.mcreator.ui.minecraft.modellayers;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -37,10 +38,7 @@ public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, Li
 
 		add.setText(L10N.t("elementgui.living_entity.add_model_layer"));
 
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+		ComponentUtils.borderWrap(this);
 	}
 
 	@Override

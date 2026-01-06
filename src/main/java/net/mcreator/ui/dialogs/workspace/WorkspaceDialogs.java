@@ -401,7 +401,8 @@ public class WorkspaceDialogs {
 			generatorSelector = PanelUtils.centerAndEastElement(generator, selectGenerator);
 
 			JPanel generalSettings = new JPanel(new GridLayout(4, 2, 5, 2));
-			generalSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			generalSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.basic")));
 			_basicSettings.add(generalSettings);
 			generalSettings.add(L10N.label("dialog.workspace_settings.display_name"));
@@ -416,9 +417,9 @@ public class WorkspaceDialogs {
 			_basicSettings.add(new JEmptyBox(5, 5));
 
 			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
-			descriptionSettings.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
-							L10N.t("dialog.workspace_settings.section.details")));
+			descriptionSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+					L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
 			descriptionSettings.add(version);
@@ -484,7 +485,8 @@ public class WorkspaceDialogs {
 
 			if (workspace != null) {
 				JPanel apiSettings = new JPanel(new BorderLayout());
-				apiSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				apiSettings.setBorder(BorderFactory.createTitledBorder(
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 						L10N.t("dialog.workspace_settings.section.external_apis")));
 				apiSettings.add("North", L10N.label("dialog.workspace_settings.section.external_apis.tooltip"));
 
@@ -527,7 +529,8 @@ public class WorkspaceDialogs {
 			}
 
 			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
-			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			advancedSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));

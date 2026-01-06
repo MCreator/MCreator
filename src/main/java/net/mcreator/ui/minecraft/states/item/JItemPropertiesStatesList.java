@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -116,10 +117,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollProperties.getVerticalScrollBar().setUnitIncrement(15);
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
-		scrollProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(scrollProperties, L10N.t("elementgui.item.custom_properties.title"));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
@@ -140,10 +138,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollStates.getVerticalScrollBar().setUnitIncrement(15);
 		scrollStates.setOpaque(false);
 		scrollStates.getViewport().setOpaque(false);
-		scrollStates.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.custom_states.title"), 0, 0, scrollStates.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(scrollStates, L10N.t("elementgui.item.custom_states.title"));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
 		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addState, new JEmptyBox(5, 5),

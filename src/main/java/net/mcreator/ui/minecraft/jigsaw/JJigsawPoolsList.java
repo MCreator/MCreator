@@ -22,6 +22,7 @@ package net.mcreator.ui.minecraft.jigsaw;
 import net.mcreator.element.types.Structure;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSingleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -52,10 +53,7 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 			pool.addInitialEntry();
 		});
 
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+		ComponentUtils.borderWrap(this);
 	}
 
 	Validator newPoolNameValidator(VTextField nameField) {
