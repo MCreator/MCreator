@@ -20,176 +20,91 @@ package net.mcreator.ui;
 
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.TabEvent;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JScrollablePopupMenu;
-import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
 import net.mcreator.ui.views.ViewBase;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.IntConsumer;
 
-public class MCreatorTabs {
-
-	private static final int TAB_HEIGHT = 39;
-	private static final int TAB_BORDER_HEIGHT = 4;
-
-	private final CardLayout cardLayout;
-	private final JPanel container;
-
-	private final JPanel tabsStrip;
-	private final JLabel moreTabs;
-	private JScrollablePopupMenu moreTabsMenu;
-
-	private final List<Tab> tabs;
+public class MCreatorTabs extends JTabbedPane {
 
 	private final List<TabShownListener> tabShownListeners = new CopyOnWriteArrayList<>();
 
+	private final List<Tab> tabs = new ArrayList<>();
 	private Tab current;
 	private Tab previous;
 
-	private final JPanel filler;
-
 	MCreatorTabs() {
-		tabs = new ArrayList<>();
-		cardLayout = new CardLayout();
-
-		container = new JPanel(cardLayout);
-		container.setOpaque(false);
-
-		tabsStrip = new JPanel();
-		tabsStrip.setOpaque(false);
-		tabsStrip.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		tabsStrip.addComponentListener(new ComponentAdapter() {
-			@Override public void componentResized(ComponentEvent componentEvent) {
-				super.componentResized(componentEvent);
-				reloadTabStrip();
+		putClientProperty("JTabbedPane.tabCloseCallback", (IntConsumer) tabIndex -> {
+			Tab toClose = getTabForTabIndex(tabIndex);
+			if (toClose != null) {
+				closeTab(toClose);
 			}
 		});
 
-		moreTabs = new JLabel(UIRES.get("more"));
-		moreTabs.setPreferredSize(new Dimension(40, TAB_HEIGHT));
-		moreTabs.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, Theme.current().getAltBackgroundColor()),
-				BorderFactory.createEmptyBorder(0, 10, 0, 10)));
-		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		moreTabs.addMouseListener(new MouseAdapter() {
+		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+		setFocusable(true);
+
+		addChangeListener(e -> {
+			int selectedIndex = getSelectedIndex();
+			if (selectedIndex >= 0) {
+				Tab toNotifyOfShow = getTabForTabIndex(selectedIndex);
+				if (toNotifyOfShow != null) {
+					showTabOrGetExisting(toNotifyOfShow.identifier, true, false);
+				}
+			}
+
+			SwingUtilities.invokeLater(this::requestFocusInWindow);
+		});
+
+		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				moreTabsMenu.show(e.getComponent(), 0, TAB_HEIGHT);
+				int tabIndex = indexAtLocation(e.getX(), e.getY());
+				if (tabIndex >= 0) {
+					Tab clickedTab = getTabForTabIndex(tabIndex);
+					if (clickedTab != null) {
+						if (SwingUtilities.isMiddleMouseButton(e)) {
+							closeTab(clickedTab);
+						}
+
+						clickedTab.mouseClicked(e);
+					}
+				}
 			}
 		});
 
-		filler = new JPanel();
-		filler.setOpaque(false);
-		filler.setBorder(
-				BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, Theme.current().getAltBackgroundColor()));
+		setUI(new OpaqueTabStripTabbedPaneUI());
 	}
 
-	void reloadTabStrip() {
-		tabsStrip.removeAll();
-
-		if (moreTabsMenu != null) {
-			moreTabsMenu.setVisible(false);
-			moreTabsMenu.removeAll();
-		}
-
-		moreTabsMenu = new JScrollablePopupMenu();
-		moreTabsMenu.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getInterfaceAccentColor()));
-		moreTabsMenu.setMaximumVisibleRows(11);
-
-		int maxWidth = tabsStrip.getWidth();
-		int currWidth = 0;
-		int tabsStripWidth = 0;
-
-		List<Tab> overflown = new ArrayList<>();
-
-		boolean first = true;
-
+	private Tab getTabForTabIndex(int index) {
 		for (Tab tab : tabs) {
-			if (!tab.ghost) {
-				currWidth += tab.getPreferredSize().width;
-				if (currWidth < maxWidth - 50) {
-					tabsStripWidth += tab.getPreferredSize().width;
-					tabsStrip.add(tab);
-				} else {
-					if (first) { // if the first one is already overflown, we add at least this one
-						tabsStrip.add(tab);
-						tabsStripWidth += tab.getPreferredSize().width;
-					} else
-						overflown.add(tab);
-				}
-				first = false;
+			if (tab.getIndex() == index) {
+				return tab;
 			}
 		}
-
-		if (!overflown.isEmpty()) {
-			tabsStrip.add(moreTabs);
-			for (Tab tab : overflown) {
-				// if the current tab is overflown, we move this tab up on the list
-				if (tab.equals(current)) {
-					showOverflownTab(tab);
-					return;
-				}
-				tab.setBorder(BorderFactory.createEmptyBorder());
-				moreTabsMenu.add(tab);
-			}
-			tabsStripWidth += moreTabs.getPreferredSize().width;
-		}
-
-		filler.setPreferredSize(new Dimension(Math.max(0, maxWidth - tabsStripWidth), TAB_HEIGHT));
-		tabsStrip.add(filler);
-
-		tabsStrip.revalidate();
-		tabsStrip.repaint();
-	}
-
-	private void showOverflownTab(Tab tab) {
-		ListUtils.rearrange(tabs, tab);
-		reloadTabStrip();
+		return null;
 	}
 
 	public void addTab(final Tab tab) {
-		// Ensure tab content is always added on the Swing thread
-		ThreadUtil.runOnSwingThreadAndWait(() -> {
-			tab.container = this;
-			tabs.add(tab);
+		tabs.add(tab);
+		tab.addImpl(this);
 
-			tab.addMouseListener(new MouseAdapter() {
-				@Override public void mousePressed(MouseEvent mouseEvent) {
-					if (mouseEvent.getButton() == MouseEvent.BUTTON2 && !tab.ghost && tab.closeable) {
-						MCREvent.event(new TabEvent.Closed(tab));
-						closeTab(tab);
-					} else {
-						MCREvent.event(new TabEvent.Shown(tab));
-						showTab(tab);
-					}
-				}
-			});
+		MCREvent.event(new TabEvent.Added(tab));
 
-			MCREvent.event(new TabEvent.Added(tab));
-			container.add(tab.content, tab.identifier.toString().toLowerCase(Locale.ROOT));
-			showTab(tab);
-
-			reloadTabStrip();
-		});
+		showTab(tab);
 	}
 
 	/**
@@ -201,7 +116,7 @@ public class MCreatorTabs {
 	}
 
 	public void showTabNoNotify(Tab tab) {
-		this.showTabOrGetExisting(tab.identifier, false);
+		this.showTabOrGetExisting(tab.identifier, false, true);
 	}
 
 	public Tab showTabOrGetExisting(Tab tab) {
@@ -209,21 +124,24 @@ public class MCreatorTabs {
 	}
 
 	public Tab showTabOrGetExisting(Object identifier) {
-		return this.showTabOrGetExisting(identifier, true);
+		return this.showTabOrGetExisting(identifier, true, true);
 	}
 
-	public Tab showTabOrGetExisting(Object identifier, boolean notify) {
-		Tab existing = null;
+	private Tab showTabOrGetExisting(Object identifier, boolean notify, boolean performUIAction) {
 		if (this.current != null && !this.current.equals(this.previous)) {
 			this.previous = this.current;
 			if (this.previous.tabHiddenListener != null)
 				this.previous.tabHiddenListener.tabHidden(this.previous);
 		}
+
+		Tab existing = null;
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
 				SwingUtilities.invokeLater(() -> {
-					cardLayout.show(container, tab.identifier.toString().toLowerCase(Locale.ROOT));
+					if (performUIAction) {
+						setSelectedIndex(tab.getIndex());
+					}
 
 					if (notify) {
 						tabShownListeners.forEach(l -> l.tabShown(tab));
@@ -231,20 +149,15 @@ public class MCreatorTabs {
 							tab.tabShownListener.tabShown(tab);
 					}
 				});
-				tab.setBackground(Theme.current().getAltBackgroundColor());
 
-				tab.selected = true;
 				this.current = tab;
 				existing = tab;
-			} else {
-				tab.setBackground(Theme.current().getBackgroundColor());
-				tab.selected = false;
-			}
-			tab.updateBorder();
-		}
-		if (existing != null)
-			reloadTabStrip();
 
+				MCREvent.event(new TabEvent.Shown(tab));
+
+				break;
+			}
+		}
 		return existing;
 	}
 
@@ -253,23 +166,26 @@ public class MCreatorTabs {
 			return;
 
 		if (tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
+			MCREvent.event(new TabEvent.Closed(tab));
+
+			SwingUtilities.invokeLater(() -> removeTabAt(tab.getIndex()));
 			this.tabs.remove(tab);
 
-			reloadTabStrip();
-
-			if (tab.equals(this.current))
+			if (tab.equals(this.current)) {
 				if (!showTab(this.previous)) {
 					showTab(tabs.getFirst());
 				}
+			}
 
-			if (tab.tabClosedListener != null)
+			if (tab.tabClosedListener != null) {
 				tab.tabClosedListener.tabClosed(tab);
+			}
 		}
 	}
 
 	public void closeAllTabs() {
-		List<Tab> toClose = new ArrayList<>(
-				tabs); // make copy so we don't foreach original which is changed during iterations
+		// make copy so we don't foreach the original which is changed during iterations
+		List<Tab> toClose = new ArrayList<>(tabs);
 		toClose.forEach(this::closeTab);
 	}
 
@@ -285,171 +201,98 @@ public class MCreatorTabs {
 		this.tabShownListeners.add(tabShownListener);
 	}
 
-	JComponent getContainer() {
-		return container;
-	}
+	public static class Tab {
 
-	JComponent getTabsStrip() {
-		return tabsStrip;
-	}
+		private static final int ICON_SIZE = 16;
 
-	public static class Tab extends JPanel {
-
-		private final boolean ghost;
-		private final boolean closeable;
-		private final boolean uppercase;
 		private MCreatorTabs container;
 
+		private final boolean closeable;
+
 		private final Object identifier;
-		private final ImageIcon icon;
-		private final JPanel content;
+		private final JComponent content;
 
 		private TabClosedListener tabClosedListener;
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
 		private TabHiddenListener tabHiddenListener;
-
-		private Color inactiveColor = Theme.current().getAltBackgroundColor();
-		private Color activeColor = Theme.current().getInterfaceAccentColor();
-
-		private boolean selected = false;
-
-		private final JLabel iconLabel = new JLabel();
-		private final JLabel blo = new JLabel();
-		private final FontRenderContext frc;
+		private MouseListener clickListener;
 
 		private String text;
+		@Nullable private ImageIcon icon;
 
 		public Tab(ViewBase content) {
 			this(content.getViewName(), content.getViewIcon(), content,
-					content.getViewName() + System.currentTimeMillis(), false, true, true);
+					content.getViewName() + System.currentTimeMillis(), true);
 		}
 
 		public Tab(ViewBase content, Object identifier) {
-			this(content.getViewName(), content.getViewIcon(), content, identifier, false, true, true);
+			this(content.getViewName(), content.getViewIcon(), content, identifier, true);
 		}
 
-		public Tab(ViewBase content, Object identifier, boolean uppercase) {
-			this(content.getViewName(), content.getViewIcon(), content, identifier, false, true, uppercase);
+		public Tab(String name, JPanel content, Object identifier, boolean closeable) {
+			this(name, null, content, identifier, closeable);
 		}
 
-		Tab(String name, JPanel content, Object identifier, boolean ghost, boolean closeable) {
-			this(name, null, content, identifier, ghost, closeable, true);
-		}
-
-		private Tab(String name, ImageIcon icon, JPanel content, Object identifier, boolean ghost, boolean closeable,
-				boolean uppercase) {
-			super(new BorderLayout(0, 0));
-			this.icon = icon;
-
-			this.text = name;
-
+		public Tab(String text, @Nullable ImageIcon icon, JComponent content, Object identifier, boolean closeable) {
 			this.content = content;
 			this.identifier = identifier;
-			this.ghost = ghost;
 			this.closeable = closeable;
-			this.uppercase = uppercase;
 
-			blo.setHorizontalAlignment(SwingConstants.CENTER);
-			blo.setVerticalAlignment(SwingConstants.CENTER);
-			blo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			blo.setBackground(new Color(80, 80, 80));
-			blo.setForeground(Theme.current().getForegroundColor());
+			this.text = text;
+			this.icon = icon;
 
-			setText(name);
-
-			AffineTransform affinetransform = new AffineTransform();
-			frc = new FontRenderContext(affinetransform, true, true);
-
-			JLabel close = new JLabel(UIRES.get("close_small"));
-			close.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			close.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
-			close.addMouseListener(new MouseAdapter() {
-				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					container.closeTab(Tab.this);
-				}
-			});
-
-			if (closeable && this.icon == null) {
-				add(close, "East");
-				add(PanelUtils.centerAndEastElement(blo,
-						PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0), 0, 0), "Center");
-			} else if (closeable) {
-				setIcon(this.icon);
-				iconLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 9, 0, 0));
-				add(iconLabel, "West");
-				add(close, "East");
-				add(PanelUtils.centerAndEastElement(blo,
-						PanelUtils.centerAndEastElement(close, new JEmptyBox(10, 10), 0, 0), 0, 0), "Center");
-			} else {
-				add(blo, "Center");
-			}
-			updateSize();
-			updateBorder();
-			setBackground(Theme.current().getBackgroundColor());
-		}
-
-		public void updateSize() {
-			if (closeable && icon == null) {
-				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 45),
-								TAB_HEIGHT));
-			} else if (closeable) {
-				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 75),
-								TAB_HEIGHT));
-			} else {
-				setPreferredSize(
-						new Dimension((int) (blo.getFont().getStringBounds(blo.getText(), frc).getWidth() + 32),
-								TAB_HEIGHT));
+			if (closeable) {
+				content.putClientProperty("JTabbedPane.tabClosable", true);
 			}
 		}
 
-		public void setText(String name) {
-			this.text = name;
+		private void addImpl(MCreatorTabs container) {
+			if (this.container != null)
+				return; // Tab already added to a container
 
-			if (uppercase)
-				name = name.toUpperCase(Locale.ENGLISH);
-			blo.setText(name);
-			if (name.length() < 24) {
-				ComponentUtils.deriveFont(blo, 15);
-			} else {
-				ComponentUtils.deriveFont(blo, 12);
-			}
-			blo.setText(StringUtils.abbreviateString(name, uppercase ? 35 : 42));
+			this.container = container;
+
+			container.addTab(text, icon, content);
+
+			setText(text);
+			setIcon(icon);
+		}
+
+		private int getIndex() {
+			return container.indexOfComponent(content);
+		}
+
+		private void mouseClicked(MouseEvent e) {
+			if (clickListener != null)
+				clickListener.mouseClicked(e);
 		}
 
 		public String getText() {
 			return text;
 		}
 
-		public void setIcon(ImageIcon icon) {
-			if (icon.getIconWidth() > 24 || icon.getIconHeight() > 24)
-				icon = IconUtils.resize(icon, 24, 24);
-			else if (icon.getIconWidth() < 24 || icon.getIconHeight() < 24) {
-				icon = ImageUtils.drawOver(new EmptyIcon.ImageIcon(24, 24), icon, 12 - icon.getIconWidth() / 2,
-						12 - icon.getIconHeight() / 2, icon.getIconWidth(), icon.getIconHeight());
+		public void setText(String name) {
+			this.text = name;
+			if (container != null)
+				container.setTitleAt(getIndex(), name);
+		}
+
+		public void setIcon(@Nullable ImageIcon icon) {
+			if (icon != null) {
+				if (icon.getIconWidth() > ICON_SIZE || icon.getIconHeight() > ICON_SIZE)
+					icon = IconUtils.resize(icon, ICON_SIZE, ICON_SIZE);
+				else if (icon.getIconWidth() < ICON_SIZE || icon.getIconHeight() < ICON_SIZE) {
+					icon = ImageUtils.drawOver(new EmptyIcon.ImageIcon(ICON_SIZE, ICON_SIZE), icon,
+							(int) (ICON_SIZE / 2.0 - icon.getIconWidth() / 2.0),
+							(int) (ICON_SIZE / 2.0 - icon.getIconHeight() / 2.0), icon.getIconWidth(),
+							icon.getIconHeight());
+				}
 			}
-			iconLabel.setIcon(icon);
-		}
 
-		void updateBorder() {
-			if (selected) {
-				setBorder(BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, activeColor));
-			} else {
-				setBorder(BorderFactory.createMatteBorder(0, 0, TAB_BORDER_HEIGHT, 0, inactiveColor));
-			}
-		}
-
-		public void setInactiveColor(Color inactiveColor) {
-			this.inactiveColor = inactiveColor;
-			updateBorder();
-		}
-
-		public void setActiveColor(Color activeColor) {
-			this.activeColor = activeColor;
-			updateBorder();
+			this.icon = icon;
+			if (container != null)
+				container.setIconAt(getIndex(), icon);
 		}
 
 		public void setTabClosedListener(TabClosedListener tabClosedListener) {
@@ -468,7 +311,7 @@ public class MCreatorTabs {
 			this.tabHiddenListener = tabHiddenListener;
 		}
 
-		public JPanel getContent() {
+		public JComponent getContent() {
 			return content;
 		}
 
@@ -485,6 +328,11 @@ public class MCreatorTabs {
 		@Override public int hashCode() {
 			return identifier.hashCode();
 		}
+
+		@Override public String toString() {
+			return text + " (" + identifier + ")";
+		}
+
 	}
 
 	public interface TabShownListener {

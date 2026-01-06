@@ -68,7 +68,6 @@ import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -790,10 +789,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		canControlStrafe.setOpaque(false);
 		canControlForward.setOpaque(false);
 
-		aitopoveral.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(aitopoveral, L10N.t("elementgui.living_entity.ai_parameters"));
 
 		JPanel aipan = new JPanel(new BorderLayout(0, 5));
 		aipan.setOpaque(false);
@@ -816,10 +812,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		JPanel bpb = new JPanel(new GridLayout());
 		bpb.setOpaque(false);
-		bpb.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(bpb, L10N.t("elementgui.living_entity.ai_tasks"));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(155);
@@ -1096,10 +1089,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			hasAI.setEnabled(false);
 			breedTriggerItems.setEnabled(true);
 			tameable.setEnabled(true);
+			aiBase.setEnabled(false);
+			aiBase.setSelectedItem("(none)");
 		} else {
 			hasAI.setEnabled(true);
 			breedTriggerItems.setEnabled(false);
 			tameable.setEnabled(false);
+			aiBase.setEnabled(true);
 		}
 
 		boolean isBossSelected = isBoss.isSelected();

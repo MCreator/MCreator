@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 
 <#assign ct = data.treeType == data.TREES_CUSTOM>
 

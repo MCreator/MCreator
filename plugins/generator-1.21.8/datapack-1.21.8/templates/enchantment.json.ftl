@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 
 <#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
 <#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>

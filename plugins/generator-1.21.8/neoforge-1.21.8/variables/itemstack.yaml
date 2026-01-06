@@ -11,7 +11,7 @@ scopes:
   global_world:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, nbt.getCompoundOrEmpty("${var.getName()}")).result().orElse(ItemStack.EMPTY);
-    write: nbt.put("${var.getName()}", (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElse(new CompoundTag()));
+    write: nbt.put("${var.getName()}", (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElseGet(CompoundTag::new));
     get: /*@ItemStack*/${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
@@ -20,7 +20,7 @@ scopes:
   global_map:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
     read: ${var.getName()} = ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, nbt.getCompoundOrEmpty("${var.getName()}")).result().orElse(ItemStack.EMPTY);
-    write: nbt.put("${var.getName()}", (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElse(new CompoundTag()));
+    write: nbt.put("${var.getName()}", (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElseGet(CompoundTag::new));
     get: /*@ItemStack*/${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">

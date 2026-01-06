@@ -11,5 +11,5 @@ body {
 }
 
 .blocklyMainBackground {
-    fill: rgba(85, 85, 85, 0.66) !important;
+    opacity: 0.65;
 }

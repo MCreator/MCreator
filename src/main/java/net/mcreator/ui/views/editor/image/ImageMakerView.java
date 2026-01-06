@@ -421,7 +421,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	@Override public ImageIcon getViewIcon() {
 		if (canvasRenderer != null)
-			return ImageUtils.fit(canvasRenderer.render(), 24);
+			return ImageUtils.fit(canvasRenderer.render(), 16);
 		return null;
 	}
 
@@ -429,7 +429,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		if (tab != null) {
 			tab.setIcon(getViewIcon());
 			tab.setText(this.name);
-			tab.updateSize();
 		}
 	}
 
