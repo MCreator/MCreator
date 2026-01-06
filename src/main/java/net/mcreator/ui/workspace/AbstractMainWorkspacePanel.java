@@ -20,11 +20,9 @@
 package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ITextFieldSearchable;
 import net.mcreator.util.ColorUtils;

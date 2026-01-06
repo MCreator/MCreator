@@ -38,7 +38,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
@@ -57,7 +56,6 @@ import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -302,12 +300,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		renderType.addActionListener(e -> updateTextureOptions());
 
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+				PanelUtils.pullElementUp(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
+				rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -470,10 +466,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane4.setOpaque(false);
 
 		JPanel inventoryProperties = new JPanel(new BorderLayout());
-		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(inventoryProperties, L10N.t("elementgui.common.page_inventory"));
 		inventoryProperties.setOpaque(false);
 
 		JPanel guiProperties = new JPanel(new GridLayout(2, 1, 35, 2));
@@ -511,10 +504,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		inventoryProperties.add(PanelUtils.northAndCenterElement(guiProperties, stackSizeProperties, 2, 2));
 
 		JPanel musicDiscBannerProperties = new JPanel(new GridLayout(6, 2, 35, 2));
-		musicDiscBannerProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.section_musicdisc_banner"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(musicDiscBannerProperties, L10N.t("elementgui.item.section_musicdisc_banner"));
 		musicDiscBannerProperties.setOpaque(false);
 
 		musicDiscBannerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/musicdisc"),
@@ -590,17 +580,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		rangedPanel.setOpaque(false);
 		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
-		rangedPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rangedPanel, L10N.t("elementgui.item.ranged_properties"));
 
 		JPanel meleePanel = new JPanel(new GridLayout(3, 2, 35, 2));
 		meleePanel.setOpaque(false);
-		meleePanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.melee_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(meleePanel, L10N.t("elementgui.item.melee_properties"));
 
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_melee_damage"),
 				L10N.label("elementgui.item.enable_melee_damage")));

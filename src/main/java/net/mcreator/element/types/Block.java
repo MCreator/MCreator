@@ -347,7 +347,7 @@ import java.util.stream.Collectors;
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
 				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
-				|| "FlowerPot".equals(blockBase))
+				|| "FlowerPot".equals(blockBase) || "Sign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
