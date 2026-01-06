@@ -40,12 +40,11 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.StringUtils;
@@ -54,7 +53,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -206,19 +204,17 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 			}
 		});
 
-		JPanel enchantmentEffects = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
-		enchantmentEffects.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5),
-				BorderFactory.createTitledBorder(
-						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-						L10N.t("elementgui.enchantment.effects_builder"), TitledBorder.LEADING,
-						TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor())));
+		JPanel enchantmentEffects = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		ComponentUtils.makeSection(enchantmentEffects, L10N.t("elementgui.enchantment.effects_builder"));
 		enchantmentEffects.setPreferredSize(new Dimension(0, 570));
+
+		effectsPage.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
 		effectsPage.add(enchantmentEffects);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane1).validate(page1group);
-		addPage(L10N.t("elementgui.enchantment.page_effects"), effectsPage)
-				.lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
+		addPage(L10N.t("elementgui.enchantment.page_effects"), effectsPage).lazyValidate(
+				BlocklyAggregatedValidationResult.blocklyValidator(this));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
