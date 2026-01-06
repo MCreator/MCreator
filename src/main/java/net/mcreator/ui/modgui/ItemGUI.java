@@ -38,7 +38,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
@@ -398,10 +397,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
 		JPanel itemUseSubpane = new JPanel(new GridLayout(2, 2, 2, 2));
-		itemUseSubpane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.use_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(itemUseSubpane, L10N.t("elementgui.item.use_properties"));
 		itemUseSubpane.setOpaque(false);
 
 		itemUseSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
@@ -413,10 +409,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		itemUseSubpane.add(useDuration);
 
 		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
-		foodSubpane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.food_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(foodSubpane, L10N.t("elementgui.item.food_properties"));
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
@@ -502,10 +495,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JComponent rangedPanel = PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers);
 		rangedPanel.setOpaque(false);
-		rangedPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rangedPanel, L10N.t("elementgui.item.ranged_properties"));
 
 		useProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
