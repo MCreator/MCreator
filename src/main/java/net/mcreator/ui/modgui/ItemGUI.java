@@ -38,7 +38,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
@@ -303,7 +302,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+				PanelUtils.pullElementUp(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
+				rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
