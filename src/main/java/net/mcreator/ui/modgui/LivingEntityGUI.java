@@ -791,7 +791,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		ComponentUtils.makeSection(aitopoveral, L10N.t("elementgui.living_entity.ai_parameters"));
 
-		JPanel aipan = new JPanel(new BorderLayout(0, 5));
+		JPanel aipan = new JPanel(new BorderLayout(0, 2));
 		aipan.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks();
@@ -810,15 +810,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		aipan.add("North", aitopoveral);
 
-		JPanel bpb = new JPanel(new GridLayout());
+		JPanel bpb = new JPanel(new BorderLayout());
 		bpb.setOpaque(false);
 		ComponentUtils.makeSection(bpb, L10N.t("elementgui.living_entity.ai_tasks"));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(155);
-		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
+		bpb.add("North", blocklyEditorToolbar);
+		bpb.add("Center", blocklyPanel);
+		bpb.add("South", compileNotesPanel);
+
 		aipan.add("Center", bpb);
-		aipan.add("South", compileNotesPanel);
 
 		blocklyPanel.setPreferredSize(new Dimension(150, 150));
 

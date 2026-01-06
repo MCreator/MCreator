@@ -348,7 +348,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComponentUtils.makeSection(texturesAndRent, L10N.t("elementgui.plant.textures_and_model"));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout(10, 10));
+		JPanel sbbp2 = new JPanel(new BorderLayout(5, 5));
 
 		sbbp2.setOpaque(false);
 
