@@ -23,6 +23,7 @@ import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -44,6 +45,7 @@ public class JAttributeModifierList
 
 		add.setText(L10N.t("elementgui.common.attribute_modifier.add_modifier_entry"));
 
+		ComponentUtils.makeSection(this, L10N.t("elementgui.common.attribute_modifier.modifiers"));
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),

@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 <#include "trees.ftl">
 {
   "dirt_provider": ${mappedBlockToBlockStateProvider(input$dirt)},

@@ -36,6 +36,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.PlacementHelperDialog;
 import net.mcreator.ui.help.HelpUtils;
@@ -54,7 +55,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -155,11 +155,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
-		featureProcedure.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.feature.feature_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		JComponent featureProcedure = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
+		ComponentUtils.makeSection(featureProcedure, L10N.t("elementgui.feature.feature_builder"));
 
 		featureProcedure.setPreferredSize(new Dimension(0, 460));
 
