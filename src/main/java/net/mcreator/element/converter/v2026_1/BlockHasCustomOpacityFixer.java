@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2025_4;
+package net.mcreator.element.converter.v2026_1;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -68,6 +68,6 @@ public class BlockHasCustomOpacityFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 82;
+		return 84;
 	}
 }
