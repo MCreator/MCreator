@@ -4,7 +4,7 @@
 	"padding": 8,
 	"num_mip_levels": 0,
 	"texture_data": {
-		<#list w.getElementsOfType("block") as mod>
+		<#list w.getElementsOfType("beblock") as mod>
 			<#assign ge = mod.getGeneratableElement()>
     		"${modid}_${mod.getRegistryName()}_up": { "textures": [ "textures/blocks/${ge.textureTop()}" ] },
     		"${modid}_${mod.getRegistryName()}_down": { "textures": [ "textures/blocks/${ge.texture}" ] },

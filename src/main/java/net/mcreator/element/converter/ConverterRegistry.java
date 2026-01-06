@@ -58,6 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
@@ -104,6 +105,7 @@ public class ConverterRegistry {
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
 			new BlockLegacyMaterialRemover(),
+			new BlockToBedrockConverter(),
 			new BlockHasCustomOpacityFixer()
 		));
 		put(ModElementType.DIMENSION, List.of(
@@ -251,6 +253,7 @@ public class ConverterRegistry {
 	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
 		add(ModElementType.ITEM); // -> BEITEM
 		add(ModElementType.BIOME); // -> Currently bedrock no longer supports custom biomes
+		add(ModElementType.BLOCK); // -> BEBLOCK
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {

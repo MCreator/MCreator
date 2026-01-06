@@ -6,7 +6,7 @@
       "description": {
         "identifier": "${modid}:${modid}_${registryname}_ore_feature"
       },
-      "count": ${data.frequencyOnChunk},
+      "count": ${data.oreCount},
       "replace_rules": [
         {
           "places_block": "${modid}:${registryname}",
