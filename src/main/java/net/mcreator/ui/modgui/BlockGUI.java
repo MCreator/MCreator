@@ -1408,9 +1408,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				boundingBoxList.modelChanged();
 				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
-					hasCustomOpacity.setSelected(true);
-					refreshLightOpacitySetting();
-					lightOpacity.setValue(0);
+					if (!isEditingMode()) {
+						hasCustomOpacity.setSelected(true);
+						refreshLightOpacitySetting();
+						lightOpacity.setValue(0);
+					}
 				}
 				if (!isEditingMode() && selected.equals(grassBlock)) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
