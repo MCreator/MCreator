@@ -35,7 +35,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -212,9 +211,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.westAndCenterElement(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
-				0, 5)));
+				PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture"))), rent),
+				visualBottom, 0, 5)));
 
 		JPanel itemProperties = new JPanel(new GridLayout(-1, 2, 2, 2));
 		itemProperties.setOpaque(false);

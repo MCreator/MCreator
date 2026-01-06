@@ -303,7 +303,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+				PanelUtils.pullElementUp(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
+				rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
