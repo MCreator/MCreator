@@ -334,7 +334,11 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 
 		<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
 		@Override public int getLightBlock(BlockState state) {
-			return ${data.lightOpacity};
+			<#if data.isWaterloggable && data.lightOpacity == 0> <#-- Prevent fully transparent blocks from overriding water opacity -->
+				return propagatesSkylightDown(state) ? 0 : 1;
+			<#else>
+				return ${data.lightOpacity};
+			</#if>
 		}
 		</#if>
 	</#if>
