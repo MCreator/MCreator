@@ -56,6 +56,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -595,7 +596,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
 		fluid.flowCondition = flowCondition.getSelectedProcedure();
 		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
-		fluid.type = (String) fluidtype.getSelectedItem();
+		fluid.type = (String) Objects.requireNonNull(fluidtype.getSelectedItem());
 		fluid.specialInformation = specialInformation.getSelectedProcedure();
 
 		fluid.creativeTabs = creativeTabs.getListElements();
