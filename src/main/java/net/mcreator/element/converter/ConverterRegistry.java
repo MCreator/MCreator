@@ -61,6 +61,7 @@ import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 import net.mcreator.element.converter.v2025_4.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
+import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
@@ -87,7 +88,8 @@ public class ConverterRegistry {
 			new BiomeFrozenTopLayerConverter(),
 			new BiomeGenParametersConverter(),
 			new BiomeCustomFeaturesConverter(),
-			new BiomeFogColorConverter()
+			new BiomeFogColorConverter(),
+			new BedrockBiomeRemover()
 		));
 		put(ModElementType.BLOCK, List.of(
 			new BlockLuminanceFixer(),
@@ -248,6 +250,7 @@ public class ConverterRegistry {
 	// List of METs that now have specialized variant for Bedrock Edition specifically
 	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
 		add(ModElementType.ITEM); // -> BEITEM
+		add(ModElementType.BIOME); // -> Currently bedrock no longer supports custom biomes
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
