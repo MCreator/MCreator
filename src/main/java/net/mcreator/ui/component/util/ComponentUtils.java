@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.component.util;
 
-import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -80,6 +79,19 @@ public class ComponentUtils {
 		pan.add(ca);
 		pan.add(lab);
 		return pan;
+	}
+
+	public static void makeSection(JComponent input, String title) {
+		input.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1), title, TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, null, Theme.current().getForegroundColor()));
+	}
+
+	public static void borderWrap(JComponent input) {
+		input.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
 	public static JPanel squareAndBorder(Component gor, Color color, String text) {

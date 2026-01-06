@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states.entity;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.AddEntityPropertyDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -39,10 +40,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 
 		add.setText(L10N.t("elementgui.living_entity.entity_data_entries.add_entry"));
 
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+		ComponentUtils.borderWrap(this);
 	}
 
 	@Override @Nullable
