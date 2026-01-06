@@ -58,6 +58,7 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2025_4.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
 import net.mcreator.generator.GeneratorFlavor;
@@ -100,7 +101,8 @@ public class ConverterRegistry {
 			new BlockHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new BlockLegacyMaterialRemover()
+			new BlockLegacyMaterialRemover(),
+			new BlockHasCustomOpacityFixer()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
