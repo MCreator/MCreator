@@ -37,6 +37,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -179,7 +180,8 @@ public class TestWorkspaceDataProvider {
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
-				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM) {
+				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM
+				|| type == ModElementType.BEBLOCK) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1192,6 +1194,7 @@ public class TestWorkspaceDataProvider {
 			item.onItemEntityDestroyed = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
+			item.attackSpeed = 4.20;
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1654,6 +1657,37 @@ public class TestWorkspaceDataProvider {
 			beitem.foodSaturation = 0.82;
 			beitem.foodCanAlwaysEat = _true;
 			return beitem;
+		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
+			BEBlock block = new BEBlock(modElement);
+			block.name = modElement.getName();
+			block.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
+			block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
+			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
+			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
+			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
+			block.hardness = 2.3;
+			block.resistance = 3.1;
+			block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			block.dropAmount = 3;
+			block.flammability = 5;
+			block.flammableDestroyChance = 12;
+			block.friction = 0.5;
+			block.soundOnStep = new StepSound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+			block.lightEmission = 3;
+			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			block.generateFeature = _true;
+			block.blocksToReplace = new ArrayList<>();
+			if (!emptyLists) {
+				block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+			}
+			block.frequencyPerChunks = 3;
+			block.oreCount = 2;
+			block.minGenerateHeight = 21;
+			block.maxGenerateHeight = 92;
+			return block;
 		}
 		return null;
 	}
