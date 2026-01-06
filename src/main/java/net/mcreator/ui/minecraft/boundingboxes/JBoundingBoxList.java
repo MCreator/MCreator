@@ -30,7 +30,6 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

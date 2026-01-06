@@ -28,7 +28,6 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
