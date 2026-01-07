@@ -432,9 +432,9 @@ import java.util.stream.Collectors;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("wall".equals(suffix)) {
-			if ("Sign".equals(blockBase))
+			if ("Sign".equals(blockBase)) {
 				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
-			else if ("HangingSign".equals(blockBase)) {
+			} else if ("HangingSign".equals(blockBase)) {
 				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallHangingSignIcon(getMainTexture()));
 			}
 		}
