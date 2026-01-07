@@ -122,7 +122,7 @@ public class GTJSONTriggersBlocks {
 							<value name="item">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
-				case "ItemPredicateEntry" -> advancement.triggerxml = """
+				case "DataComponentPredicate" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="item_consumed">

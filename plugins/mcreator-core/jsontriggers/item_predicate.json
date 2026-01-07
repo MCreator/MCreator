@@ -34,7 +34,7 @@
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
-      "<value name=\"predicateComponent0\"><block type=\"item_predicate_damage\"><field name=\"min\">1</field><field name=\"max\">100</field></block></value>"
+      "<value name=\"predicateComponent0\"><block type=\"data_component_predicate_damage\"><field name=\"min\">1</field><field name=\"max\">100</field></block></value>"
     ],
     "inputs": [
       "item"

@@ -15,7 +15,7 @@
     }
   ],
   "inputsInline": false,
-  "output": "ItemPredicateEntry",
+  "output": "DataComponentPredicate",
   "colour": 130,
   "extensions": [
     "min_max_fields_validator",
