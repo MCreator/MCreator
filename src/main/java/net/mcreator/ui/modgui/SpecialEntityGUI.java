@@ -30,7 +30,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;

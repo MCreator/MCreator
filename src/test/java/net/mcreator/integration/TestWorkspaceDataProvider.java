@@ -82,7 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestWorkspaceDataProvider {
 
 	public static Collection<ModElementType<?>> getOrderedModElementTypesForTests(
-			GeneratorConfiguration generatorConfiguration, boolean includeAll) {
+			GeneratorConfiguration generatorConfiguration) {
 		Set<ModElementType<?>> retval = new LinkedHashSet<>();
 
 		// We try to provide order so MET that depend on less of other MEs are first
@@ -99,12 +99,7 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
 
-		Collection<ModElementType<?>> supportedMETs;
-		if (includeAll) {
-			supportedMETs = ModElementTypeLoader.getAllModElementTypes();
-		} else {
-			supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
-		}
+		Collection<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
 
 		// Remove METs not supported by the generator
 		retval.retainAll(supportedMETs);

@@ -37,7 +37,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -348,7 +347,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ComponentUtils.makeSection(texturesAndRent, L10N.t("elementgui.plant.textures_and_model"));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout(10, 10));
+		JPanel sbbp2 = new JPanel(new BorderLayout(5, 5));
 
 		sbbp2.setOpaque(false);
 
