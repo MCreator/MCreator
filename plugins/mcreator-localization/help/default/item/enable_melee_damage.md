@@ -1,0 +1,1 @@
+By checking this parameter, you allow your item to become a melee weapon with attack damage and attack speed.

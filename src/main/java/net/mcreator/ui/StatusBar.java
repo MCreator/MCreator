@@ -173,14 +173,14 @@ public class StatusBar extends JPanel {
 					g.setColor(Theme.current().getAltForegroundColor());
 					break;
 				case GradleConsole.RUNNING:
-					g.setColor(new Color(158, 247, 89));
+					g.setColor(new Color(0x93c54b));
 					break;
 				case GradleConsole.ERROR:
-					g.setColor(new Color(0xFF5956));
+					g.setColor(new Color(0xe04442));
 					break;
 				}
 				if (mcreator.getGradleConsole().isGradleSetupTaskRunning())
-					g.setColor(new Color(106, 247, 244));
+					g.setColor(new Color(0x739df0));
 
 				g.fillRect(4, 5, 8, 8);
 			}

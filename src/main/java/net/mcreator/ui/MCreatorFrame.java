@@ -26,13 +26,13 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.SquareLoaderIcon;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.BackgroundLoader;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -69,13 +69,13 @@ public abstract class MCreatorFrame extends JFrame
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		if (screenSize.getWidth() > 2144 && screenSize.getHeight() > 1250)
-			setSize(2144, 1250);
+			setSize(2164, 1257);
 		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
-			setSize(1574, 967);
+			setSize(1594, 974);
 		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
-			setSize(1290, 791);
+			setSize(1310, 798);
 		else
-			setSize(1002, 640);
+			setSize(1022, 647);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -112,13 +112,15 @@ public abstract class MCreatorFrame extends JFrame
 	}
 
 	protected JComponent getPreloaderPane() {
-		JPanel wrap = new BlockingGlassPane();
-		JLabel loading = L10N.label("workspace.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		JPanel wrap;
+		// For small workspaces, the preloader only briefly flashes, causing bad UX, so we don't show it in such cases
+		if (this instanceof ModMaker && workspace.getModElements().size() > 10) {
+			wrap = new BlockingGlassPane(true);
+			wrap.add(ComponentUtils.bigCenteredText("workspace.loading",
+					new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
+		} else {
+			wrap = new BlockingGlassPane(false);
+		}
 		return wrap;
 	}
 
