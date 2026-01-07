@@ -48,6 +48,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -94,12 +95,12 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
+		addWoodPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
 				barkColor.getColor(), (Double) power.getValue());
 	}
 
-	public static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
-			Color barkColor, double factor) {
+	public static void addWoodPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, Color color, Color barkColor, double factor) {
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
 
@@ -251,7 +252,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		logBlock.fireSpreadSpeed = 5;
 		logBlock.rotationMode = 5; // log rotation
 		logBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, logBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, logBlock);
 
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
@@ -269,7 +270,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		woodBlock.fireSpreadSpeed = 5;
 		woodBlock.rotationMode = 5; // log rotation
 		woodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, woodBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, woodBlock);
 
 		Block strippedLogBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
@@ -292,7 +293,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedLogBlock.fireSpreadSpeed = 5;
 		strippedLogBlock.rotationMode = 5; // log rotation
 		strippedLogBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, strippedLogBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, strippedLogBlock);
 
 		Block strippedWoodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
@@ -310,7 +311,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedWoodBlock.fireSpreadSpeed = 5;
 		strippedWoodBlock.rotationMode = 5; // log rotation
 		strippedWoodBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, strippedWoodBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, strippedWoodBlock);
 
 		// we update stripping results of log blocks *after* we add the stripped variants to the workspace
 		logBlock.strippingResult = new MItemBlock(workspace, "CUSTOM:Stripped" + name + "Log");
@@ -335,7 +336,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		planksBlock.flammability = 20;
 		planksBlock.fireSpreadSpeed = 5;
 		planksBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, planksBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, planksBlock);
 
 		Block leavesBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Leaves", ModElementType.BLOCK), false).getElementFromGUI();
@@ -352,7 +353,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
 		leavesBlock.reactionToPushing = "DESTROY";
-		addGeneratableElementToWorkspace(workspace, folder, leavesBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, leavesBlock);
 
 		Block stairsBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false).getElementFromGUI();
@@ -371,7 +372,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsBlock.fireSpreadSpeed = 5;
 		stairsBlock.lightOpacity = 0;
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, stairsBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, stairsBlock);
 
 		Block slabBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false).getElementFromGUI();
@@ -390,7 +391,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabBlock.fireSpreadSpeed = 5;
 		slabBlock.lightOpacity = 0;
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, slabBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, slabBlock);
 
 		Block fenceBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false).getElementFromGUI();
@@ -407,7 +408,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceBlock.fireSpreadSpeed = 5;
 		fenceBlock.lightOpacity = 0;
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, fenceBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceBlock);
 
 		Block fenceGateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false).getElementFromGUI();
@@ -424,7 +425,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceGateBlock.fireSpreadSpeed = 5;
 		fenceGateBlock.lightOpacity = 0;
 		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, fenceGateBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceGateBlock);
 
 		Block doorBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Door", ModElementType.BLOCK), false).getElementFromGUI();
@@ -443,7 +444,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		doorBlock.ignitedByLava = true;
 		doorBlock.lightOpacity = 0;
 		doorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, doorBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, doorBlock);
 
 		Block trapdoorBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Trapdoor", ModElementType.BLOCK), false).getElementFromGUI();
@@ -460,7 +461,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorBlock.ignitedByLava = true;
 		trapdoorBlock.lightOpacity = 0;
 		trapdoorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, trapdoorBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, trapdoorBlock);
 
 		Block pressurePlateBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false).getElementFromGUI();
@@ -477,7 +478,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		pressurePlateBlock.isNotColidable = true;
 		pressurePlateBlock.reactionToPushing = "DESTROY";
-		addGeneratableElementToWorkspace(workspace, folder, pressurePlateBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, pressurePlateBlock);
 
 		Block buttonBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
@@ -492,7 +493,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		buttonBlock.isNotColidable = true;
 		buttonBlock.reactionToPushing = "DESTROY";
-		addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, buttonBlock);
 
 		Block signBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sign", ModElementType.BLOCK), false).getElementFromGUI();
@@ -537,15 +538,13 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		String woodEntry = "CUSTOM:" + name + "Wood";
 		String strippedLogEntry = "CUSTOM:Stripped" + name + "Log";
 		String strippedWoodEntry = "CUSTOM:Stripped" + name + "Wood";
-		addTagEntries(workspace, TagType.BLOCKS, "mod:" + registryName + "_logs", logEntry,
-				woodEntry, strippedLogEntry, strippedWoodEntry);
-		addTagEntries(workspace, TagType.BLOCKS, "minecraft:logs_that_burn",
-				"TAG:mod:" + registryName + "_logs");
+		addTagEntries(workspace, TagType.BLOCKS, "mod:" + registryName + "_logs", logEntry, woodEntry, strippedLogEntry,
+				strippedWoodEntry);
+		addTagEntries(workspace, TagType.BLOCKS, "minecraft:logs_that_burn", "TAG:mod:" + registryName + "_logs");
 		addTagEntries(workspace, TagType.BLOCKS, "minecraft:planks", planksEntry);
-		addTagEntries(workspace, TagType.ITEMS, "mod:" + registryName + "_logs", logEntry, woodEntry,
-				strippedLogEntry, strippedWoodEntry);
-		addTagEntries(workspace, TagType.ITEMS, "minecraft:logs_that_burn",
-				"TAG:mod:" + registryName + "_logs");
+		addTagEntries(workspace, TagType.ITEMS, "mod:" + registryName + "_logs", logEntry, woodEntry, strippedLogEntry,
+				strippedWoodEntry);
+		addTagEntries(workspace, TagType.ITEMS, "minecraft:logs_that_burn", "TAG:mod:" + registryName + "_logs");
 		addTagEntries(workspace, TagType.ITEMS, "minecraft:planks", planksEntry);
 
 		// Recipes
@@ -560,7 +559,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		woodRecipe.recipeReturnStack = new MItemBlock(workspace, woodEntry);
 		woodRecipe.recipeRetstackSize = 3;
 		woodRecipe.unlockingItems.add(new MItemBlock(workspace, logEntry));
-		addGeneratableElementToWorkspace(workspace, folder, woodRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, woodRecipe);
 
 		Recipe strippedWoodRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, "Stripped" + name + "WoodRecipe", ModElementType.RECIPE), false)
@@ -574,7 +573,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedWoodRecipe.recipeReturnStack = new MItemBlock(workspace, strippedWoodEntry);
 		strippedWoodRecipe.recipeRetstackSize = 3;
 		strippedWoodRecipe.unlockingItems.add(new MItemBlock(workspace, strippedLogEntry));
-		addGeneratableElementToWorkspace(workspace, folder, strippedWoodRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, strippedWoodRecipe);
 
 		Recipe planksLogRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -587,7 +586,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		planksLogRecipe.recipeRetstackSize = 4;
 		planksLogRecipe.unlockingItems.add(new MItemBlock(workspace,
 				"TAG:" + workspace.getWorkspaceSettings().getModID() + ":" + registryName + "_logs"));
-		addGeneratableElementToWorkspace(workspace, folder, planksLogRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, planksLogRecipe);
 
 		Recipe stairsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -602,7 +601,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Stairs");
 		stairsRecipe.recipeRetstackSize = 4;
 		stairsRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, stairsRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, stairsRecipe);
 
 		Recipe slabRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -614,7 +613,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Slab");
 		slabRecipe.recipeRetstackSize = 6;
 		slabRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, slabRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, slabRecipe);
 
 		Recipe fenceRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -628,7 +627,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Fence");
 		fenceRecipe.recipeRetstackSize = 3;
 		fenceRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, fenceRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceRecipe);
 
 		Recipe fenceGateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceGateRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -643,7 +642,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceGateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "FenceGate");
 		fenceGateRecipe.recipeRetstackSize = 1;
 		fenceGateRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, fenceGateRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceGateRecipe);
 
 		Recipe doorRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "DoorRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -658,7 +657,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		doorRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Door");
 		doorRecipe.recipeRetstackSize = 3;
 		doorRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, doorRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, doorRecipe);
 
 		Recipe trapdoorRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "TrapdoorRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -673,7 +672,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Trapdoor");
 		trapdoorRecipe.recipeRetstackSize = 2;
 		trapdoorRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, trapdoorRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, trapdoorRecipe);
 
 		Recipe pressurePlateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE), false)
@@ -685,7 +684,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "PressurePlate");
 		pressurePlateRecipe.recipeRetstackSize = 1;
 		pressurePlateRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, pressurePlateRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, pressurePlateRecipe);
 
 		Recipe buttonRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -696,7 +695,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
 		buttonRecipe.recipeRetstackSize = 1;
 		buttonRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, buttonRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, buttonRecipe);
 
 		Recipe signRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SignRecipe", ModElementType.RECIPE), false).getElementFromGUI();
