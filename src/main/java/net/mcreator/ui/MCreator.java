@@ -171,7 +171,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 				Color dotColor = switch (gradleConsole.getStatus()) {
 					case GradleConsole.RUNNING -> new Color(0x93c54b);
-					case GradleConsole.ERROR -> new Color(0xc43b39);
+					case GradleConsole.ERROR -> new Color(0xe04442);
 					default -> null;
 				};
 				if (gradleConsole.isGradleSetupTaskRunning())
