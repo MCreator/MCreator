@@ -57,14 +57,16 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 	private final VTextField name = new VTextField(25);
 	private final JColor color;
+	private final JColor barkColor;
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 
 	private WoodPackMakerTool(MCreator mcreator) {
 		super(mcreator, "wood_pack", UIRES.get("16px.woodpack").getImage());
 
-		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
+		JPanel props = new JPanel(new GridLayout(5, 2, 5, 2));
 
 		color = new JColor(mcreator, false, false);
+		barkColor = new JColor(mcreator, true, false);
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.wood_pack_name"));
@@ -72,6 +74,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		props.add(L10N.label("dialog.tools.wood_pack_color_accent"));
 		props.add(color);
+
+		props.add(L10N.label("dialog.tools.wood_pack_bark_color"));
+		props.add(barkColor);
 
 		props.add(L10N.label("dialog.tools.wood_pack_power_factor"));
 		props.add(power);
@@ -90,13 +95,17 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 	@Override protected void generatePack(MCreator mcreator) {
 		addWoodPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
-				(Double) power.getValue());
+				barkColor.getColor(), (Double) power.getValue());
 	}
 
 	public static void addWoodPackToWorkspace(MCreator mcreator, Workspace workspace, String name, Color color,
-			double factor) {
+			Color barkColor, double factor) {
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
+
+		// If bark color is not specified, use default color
+		if (barkColor == null)
+			barkColor = color;
 
 		// Use a slightly desaturated, darker color for stripped log textures
 		float[] colorHSB = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
@@ -119,7 +128,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		// first we generate wood texture
 		ImageIcon wood = ImageUtils.colorize(
-				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), color, true);
+				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor, true);
 		String woodTextureName = registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
 				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
@@ -127,6 +136,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		//then we generate the missing log texture
 		ImageIcon log = ImageUtils.colorize(getCachedTexture("log_top"), color, true);
 		String logTextureName = registryName + "_log_top";
+		if (barkColor != color) { // Redraw the bark rind if bark color is different from default color
+			log = ImageUtils.drawOver(log, ImageUtils.colorize(getCachedTexture("log_top_1"), barkColor, true));
+		}
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
 				mcreator.getFolderManager().getTextureFile(logTextureName, TextureType.BLOCK));
 
