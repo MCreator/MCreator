@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${input$entity}.getPersistentData().put(${input$tagName}, (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${mappedMCItemToItemStackCode(input$tagValue, 1)}, NbtOps.INSTANCE, new CompoundTag()).result().orElse(new CompoundTag()));
+${input$entity}.getPersistentData().put(${input$tagName}, (CompoundTag) ItemStack.OPTIONAL_CODEC.encode(${mappedMCItemToItemStackCode(input$tagValue, 1)}, NbtOps.INSTANCE, new CompoundTag()).result().orElseGet(CompoundTag::new));
