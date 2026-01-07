@@ -188,7 +188,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signItem.getImage()),
 				mcreator.getFolderManager().getTextureFile(signItemTextureName, TextureType.ITEM));
 
-		ImageIcon signEntity = ImageUtils.colorize(getCachedTexture("sign_entity"), color, true);
+		ImageIcon signEntity = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("sign_entity"), color, true),
+				new ImageIcon(ImageUtils.crop(ImageUtils.toBufferedImage(wood.getImage()), new Rectangle(4, 0, 8, 14))),
+				0, 16, 8, 14); // Vanilla signs use part of the log texture for the post
 		String signEntityTextureName = registryName + "_sign";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signEntity.getImage()),
 				mcreator.getFolderManager().getTextureFile(signEntityTextureName, TextureType.ENTITY));
