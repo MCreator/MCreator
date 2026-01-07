@@ -209,7 +209,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatItem.getImage()),
 				mcreator.getFolderManager().getTextureFile(chestBoatItemTextureName, TextureType.ITEM));
 
-		ImageIcon chestBoatEntity = ImageUtils.drawOver(boatEntity, getCachedTexture("boat_entity_chest_overlay"));
+		ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"), boatEntity, 0, 0,
+				128, 64);
 		String chestBoatEntityTextureName = registryName + "_chest_boat";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatEntity.getImage()),
 				mcreator.getFolderManager().getTextureFile(chestBoatEntityTextureName, TextureType.ENTITY));
