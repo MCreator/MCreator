@@ -511,7 +511,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signBlock.creativeTabs = List.of(new TabEntry(workspace, "TRANSPORTATION"));
 		signBlock.isNotColidable = true;
 		signBlock.ignitedByLava = true;
-		addGeneratableElementToWorkspace(workspace, folder, signBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, signBlock);
 
 		// Boats
 		SpecialEntity boat = (SpecialEntity) ModElementType.SPECIALENTITY.getModElementGUI(mcreator,
@@ -521,7 +521,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		boat.entityTexture = new TextureHolder(workspace, boatEntityTextureName);
 		boat.itemTexture = new TextureHolder(workspace, boatItemTextureName);
 		boat.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		addGeneratableElementToWorkspace(workspace, folder, boat);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, boat);
 
 		SpecialEntity chestBoat = (SpecialEntity) ModElementType.SPECIALENTITY.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ChestBoat", ModElementType.SPECIALENTITY), false).getElementFromGUI();
@@ -530,7 +530,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoat.entityTexture = new TextureHolder(workspace, chestBoatEntityTextureName);
 		chestBoat.itemTexture = new TextureHolder(workspace, chestBoatItemTextureName);
 		chestBoat.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		addGeneratableElementToWorkspace(workspace, folder, chestBoat);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoat);
 
 		// Tags
 		String planksEntry = "CUSTOM:" + name + "Planks";
@@ -711,7 +711,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sign");
 		signRecipe.recipeRetstackSize = 3;
 		signRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, signRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, signRecipe);
 
 		Recipe boatRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BoatRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -725,7 +725,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		boatRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Boat");
 		boatRecipe.recipeRetstackSize = 1;
 		boatRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
-		addGeneratableElementToWorkspace(workspace, folder, boatRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, boatRecipe);
 
 		Recipe chestBoatRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ChestBoatRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -737,7 +737,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoatRecipe.recipeShapeless = true;
 		chestBoatRecipe.recipeRetstackSize = 1;
 		chestBoatRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Boat"));
-		addGeneratableElementToWorkspace(workspace, folder, chestBoatRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoatRecipe);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
