@@ -1087,17 +1087,20 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for wall signs.</p>
 		 *
-		 * @param texture <p>Block texture</p>
+		 * @param texture <p>Sign entity texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateWallSignIcon(Image texture) {
+			Image actualTexture = ImageUtils.crop(ImageUtils.toBufferedImage(ImageUtils.resize(texture, 64, 32)),
+					new Rectangle(2, 0, 16, 16));
+
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2d.scale(1.6, 1.5);
 			g2d.translate(-6, -6);
 
-			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 1, 12, 16, 8, 2, 0), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(actualTexture, 1, 12, 16, 8, 2, 0), null, null);
 			g2d.dispose();
 			return out;
 		}
@@ -1105,18 +1108,23 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates the block icon for wall hanging signs.</p>
 		 *
-		 * @param texture <p>Block texture</p>
+		 * @param texture <p>Sign entity texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static Image generateWallHangingSignIcon(Image texture) {
+			BufferedImage actualTexture = ImageUtils.toBufferedImage(ImageUtils.resize(texture, 64, 32));
+			BufferedImage signTexture = ImageUtils.crop(actualTexture, new Rectangle(2, 12, 16, 16));
+			BufferedImage postTexture = ImageUtils.crop(actualTexture, new Rectangle(4, 0, 16, 16));
+
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2d.scale(1.3, 1.5);
 			g2d.translate(-3, -2);
 
-			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 1, 8, 13, 7, 6, 1), null, null);
-			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 2, 2, 14, 7, 16, 1), null, null);
+			g2d.drawImage(ImageUtils.generateCuboidImage(signTexture, 1, 8, 13, 7, 6, 1), null, null); // Sign
+			g2d.drawImage(ImageUtils.generateCuboidImage(ImageUtils.translate(postTexture, 0, 4),
+					ImageUtils.translate(postTexture, 0, 2), postTexture, 2, 2, 14, 7, 16, 1), null, null); // Pole
 			g2d.dispose();
 			return out;
 		}

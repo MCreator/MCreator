@@ -433,9 +433,11 @@ import java.util.stream.Collectors;
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if ("wall".equals(suffix)) {
 			if ("Sign".equals(blockBase)) {
-				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
 			} else if ("HangingSign".equals(blockBase)) {
-				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallHangingSignIcon(getMainTexture()));
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallHangingSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
 			}
 		}
 		return null;
