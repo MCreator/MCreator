@@ -170,12 +170,12 @@ public abstract class MCreator extends MCreatorFrame {
 				super.paintComponent(g);
 
 				Color dotColor = switch (gradleConsole.getStatus()) {
-					case GradleConsole.RUNNING -> new Color(0x9BCF52);
-					case GradleConsole.ERROR -> new Color(0xCF5252);
+					case GradleConsole.RUNNING -> new Color(0x93c54b);
+					case GradleConsole.ERROR -> new Color(0xc43b39);
 					default -> null;
 				};
 				if (gradleConsole.isGradleSetupTaskRunning())
-					dotColor = new Color(0x52A9CF);
+					dotColor = new Color(0x739df0);
 
 				if (dotColor != null) {
 					Graphics2D g2 = (Graphics2D) g;
