@@ -221,7 +221,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
-			<#elseif data.blockBase == "Sign" || data.blockBase == "HangingSign">
+			<#elseif data.isSign()>
 				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);

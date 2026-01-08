@@ -144,7 +144,7 @@ package ${package}.init;
 	<#if signs?size != 0>
 	@SubscribeEvent public static void registerSigns(BlockEntityTypeAddBlocksEvent event) {
 		<#list signs as block>
-			event.modify(<#if block.blockBase == "Sign">BlockEntityType.SIGN<#else>BlockEntityType.HANGING_SIGN</#if>,
+			event.modify(BlockEntityType.<#if block.blockBase == "HangingSign">HANGING_</#if>SIGN,
 					${block.getModElement().getRegistryNameUpper()}.get(), ${block.getWallRegistryNameUpper()}.get());
 		</#list>
 	}
