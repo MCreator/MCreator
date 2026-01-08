@@ -290,8 +290,8 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlockDeepslateBlock.name = readableName + " Deepslate Ore";
 		oreBlockDeepslateBlock.customModelName = "Single texture";
 		oreBlockDeepslateBlock.soundOnStep = new StepSound(workspace, "METAL");
-		oreBlockDeepslateBlock.hardness = 5.0;
-		oreBlockDeepslateBlock.resistance = 6.0;
+		oreBlockDeepslateBlock.hardness = 4.5 * factor;
+		oreBlockDeepslateBlock.resistance = 3.0 * factor;
 		oreBlockDeepslateBlock.texture = new TextureHolder(workspace, oreDeepslateTextureName);
 		oreBlockDeepslateBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
