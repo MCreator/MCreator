@@ -1,9 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="20" height="20" version="1.1" viewBox="0 0 5.2917 5.2917" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
-    <rect x=".52917" y="4.7625" width="4.2334" height=".26458" fill="#9AA7B0" style="paint-order:normal"/>
-    <g fill="#231F20">
-        <path d="m2.3812 2.7104v0.2a1.3229 1.3229 90 0 1 -1.3229 1.3229h-0.79372v0.52917h4.7625v-0.52917h-0.79372a1.3229 1.3229 90 0 1 -1.3229 -1.3229v-0.2z" style="paint-order:normal"/>
-        <ellipse cx="2.6458" cy="1.5875" rx=".79375" ry="1.3229" style="paint-order:normal"/>
-    </g>
-</svg>
+<svg height="20" viewBox="0 0 5.2917 5.2917" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m.52917 4.7625h4.2334v.26458h-4.2334z" fill="#9aa7b0"/><g fill="#231f20"><path d="m2.3812 2.7104v.2a1.3229 1.3229 90 0 1 -1.3229 1.3229h-.79372v.52917h4.7625v-.52917h-.79372a1.3229 1.3229 90 0 1 -1.3229-1.3229v-.2z"/><ellipse cx="2.6458" cy="1.5875" rx=".79375" ry="1.3229"/></g></svg>

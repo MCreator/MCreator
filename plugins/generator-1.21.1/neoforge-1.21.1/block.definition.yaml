@@ -683,3 +683,5 @@ tags:
       - sensitiveToVibration
       - "${data.vibrationalEvents?has_content}"
     entryprovider: getVibrationalEvents()
+
+field_exclusions: [ leavesParticleType, leavesParticleChance ]
