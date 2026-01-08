@@ -25,16 +25,15 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.Map;
 
@@ -98,11 +97,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		rarityFrequencySettings.add(L10N.label("dialog.tools.placement_helper.frequency_on_chunk"));
 		rarityFrequencySettings.add(frequencyOnChunk);
 
-		rarityFrequencySettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.tools.placement_helper.rarity_and_frequency"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rarityFrequencySettings, L10N.t("dialog.tools.placement_helper.rarity_and_frequency"));
 
 		// Height settings
 		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 2));
@@ -144,11 +139,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 
 		JPanel heightSettings = new JPanel(new BorderLayout(5, 5));
 		heightSettings.add(PanelUtils.northAndCenterElement(heightPlacementSettings, heightCardPanel, 2, 2));
-		heightSettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.tools.placement_helper.height_settings"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(heightSettings, L10N.t("dialog.tools.placement_helper.height_settings"));
 
 		// Offset and conditions
 		JPanel conditionsPanel = new JPanel(new GridLayout(4, 2, 4, 2));
@@ -162,11 +153,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		conditionsPanel.add(L10N.label("dialog.tools.placement_helper.required_blocks"));
 		conditionsPanel.add(requiredBlocks);
 
-		conditionsPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.tools.placement_helper.offset_and_conditions"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, Theme.current().getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(conditionsPanel, L10N.t("dialog.tools.placement_helper.offset_and_conditions"));
 
 		this.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.northAndCenterElement(rarityFrequencySettings, PanelUtils.pullElementUp(heightSettings)),

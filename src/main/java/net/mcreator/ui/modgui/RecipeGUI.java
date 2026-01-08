@@ -31,7 +31,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
@@ -44,7 +43,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -188,10 +186,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smithingRecipeMaker.getIngredientSlots().forEach(this::addIngredientMouseListener);
 
 		JComponent recwrap = ComponentUtils.applyPadding(recipesPanel, 10, true, true, true, true);
-		recwrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(recwrap, L10N.t("elementgui.recipe.definition"));
 
 		JPanel northPanel = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
 		northPanel.setOpaque(false);

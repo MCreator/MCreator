@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "cap_provider": ${mappedBlockToBlockStateProvider(input$cap)},
   "stem_provider": ${mappedBlockToBlockStateProvider(input$stem)}

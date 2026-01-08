@@ -15,17 +15,17 @@
       <#if data.hasCustomDrop()>
       "minecraft:loot": "loot_tables/blocks/${modid}_${registryname}.json",
       </#if>
-      "minecraft:light_emission": ${data.luminance / 15},
+      "minecraft:light_emission": ${data.lightEmission},
       "minecraft:destructible_by_mining": {
           "seconds_to_destroy": ${data.hardness}
       },
       "minecraft:destructible_by_explosion": {
           "explosion_resistance": ${data.resistance}
       },
-      "minecraft:friction": ${data.slipperiness},
+      "minecraft:friction": ${data.friction},
       "minecraft:flammable": {
-        "flame_odds": ${data.flammability},
-        "burn_odds": ${data.fireSpreadSpeed}
+        "catch_chance_modifier": ${data.flammability},
+        "destroy_chance_modifier": ${data.flammableDestroyChance}
       }
     }
   }

@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		workspace = TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random);
 
 		for (ModElementType<?> type : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				workspace.getGeneratorConfiguration(), false)) {
+				workspace.getGeneratorConfiguration())) {
 			TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
 				workspace.addModElement(e.getModElement());
 				workspace.getModElementManager().storeModElement(e);

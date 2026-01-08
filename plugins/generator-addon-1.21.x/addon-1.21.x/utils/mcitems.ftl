@@ -11,7 +11,7 @@
 </#function>
 
 <#function transformExtension mappedBlock>
-    <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
+    <#assign extension = mappedBlock?keep_after_last(".")>
     <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 

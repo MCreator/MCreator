@@ -35,11 +35,15 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 
+import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -48,37 +52,77 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(IntegrationTestSetup.class) public class ModElementUITest {
 
+	@Nested @TestInstance(TestInstance.Lifecycle.PER_CLASS) class JavaGeneratorTests {
+
+		private Collection<ModElementType<?>> modElementTypesToTest;
+
+		@BeforeAll void setup(@TempDir File tempDir) {
+			initMCreator(tempDir,
+					GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(Generator.GENERATOR_CACHE.values(),
+							GeneratorFlavor.BaseLanguage.JAVA));
+
+			modElementTypesToTest = TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
+					mcreator.getGeneratorConfiguration());
+		}
+
+		@Test void testModElementsDefaultLocale() throws Exception {
+			testDefaultLocale(modElementTypesToTest);
+		}
+
+		@Test void testModElementsNonDefaultLocale() throws Exception {
+			testNonDefaultLocale(modElementTypesToTest);
+		}
+	}
+
+	@Nested @TestInstance(TestInstance.Lifecycle.PER_CLASS) class AddonGeneratorTests {
+
+		private Collection<ModElementType<?>> modElementTypesToTest;
+
+		@BeforeAll void setup(@TempDir File tempDir) {
+			initMCreator(tempDir,
+					GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
+							GeneratorFlavor.ADDON));
+
+			modElementTypesToTest = TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
+					mcreator.getGeneratorConfiguration()).stream().filter(type -> {
+				List<GeneratorFlavor> coveredFlavors = type.getCoveredFlavors();
+				return coveredFlavors.size() == 1 && coveredFlavors.getFirst() == GeneratorFlavor.ADDON;
+			}).toList();
+		}
+
+		@Test void testModElementsDefaultLocale() throws Exception {
+			testDefaultLocale(modElementTypesToTest);
+		}
+
+		@Test void testModElementsNonDefaultLocale() throws Exception {
+			testNonDefaultLocale(modElementTypesToTest);
+		}
+	}
+
 	private static final Logger LOG = LogManager.getLogger("Mod Element Test");
 
-	private static Random random;
+	private Random random;
+	private MCreator mcreator;
 
-	private static MCreator mcreator;
+	private void initMCreator(File tempDir, @Nullable GeneratorConfiguration generatorConfiguration) {
+		if (generatorConfiguration == null)
+			fail("Failed to load generator configuration");
 
-	@BeforeAll public static void initTest(@TempDir File tempDir) {
 		long rgenseed = System.currentTimeMillis();
 		random = new Random(rgenseed);
-		LOG.info("Random number generator seed: {}", rgenseed);
-
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
-
-		if (generatorConfiguration == null)
-			fail("Failed to load any Forge flavored generator for this unit test");
+		LOG.info("Random number generator seed ({}): {}", generatorConfiguration.getGeneratorFlavor(), rgenseed);
 
 		mcreator = MCreator.create(null,
 				TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true, true, random));
 	}
 
-	@Test public void testModElementsDefaultLocale() throws Exception {
+	private void testDefaultLocale(Collection<ModElementType<?>> modElementTypesToTest) throws Exception {
 		PreferencesManager.PREFERENCES.ui.language.set(L10N.DEFAULT_LOCALE);
 		L10N.initTranslations();
-
-		// test mod elements using default (en) translations
-		testModElementLoading(random);
+		testModElementLoading(modElementTypesToTest, random);
 	}
 
-	// use non-default translation to test translations at the same time
-	@Test public void testModElementsNonDefaultLocale() throws Exception {
+	private void testNonDefaultLocale(Collection<ModElementType<?>> modElementTypesToTest) throws Exception {
 		PreferencesManager.PREFERENCES.ui.language.set(
 				L10N.getSupportedLocales().stream().filter(locale -> locale != L10N.DEFAULT_LOCALE)
 						.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null));
@@ -86,12 +130,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 		LOG.info("Testing mod element GUI for locale {}", PreferencesManager.PREFERENCES.ui.language.get());
 
-		testModElementLoading(random);
+		testModElementLoading(modElementTypesToTest, random);
 	}
 
-	private void testModElementLoading(Random random) throws Exception {
-		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				mcreator.getGeneratorConfiguration(), true)) {
+	private void testModElementLoading(Collection<ModElementType<?>> modElementTypesToTest, Random random)
+			throws Exception {
+		for (ModElementType<?> modElementType : modElementTypesToTest) {
+
 			if (modElementType == ModElementType.CODE)
 				continue; // does not have regular handling, so skip it
 
@@ -144,5 +189,4 @@ import static org.junit.jupiter.api.Assertions.*;
 			}
 		}
 	}
-
 }

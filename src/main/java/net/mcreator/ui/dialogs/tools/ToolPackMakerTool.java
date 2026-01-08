@@ -48,6 +48,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
@@ -113,15 +114,15 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(), color.getColor(),
-				(Double) power.getValue());
+		addToolPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
+				color.getColor(), (Double) power.getValue());
 	}
 
-	static void addToolPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
-			Color color, double factor) {
-		if (!checkIfNamesAvailable(workspace, name + "Pickaxe", name + "Axe", name + "Sword",
-				name + "Shovel", name + "Hoe", name + "PickaxeRecipe", name + "AxeRecipe", name + "SwordRecipe",
-				name + "ShovelRecipe", name + "HoeRecipe"))
+	static void addToolPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
+		if (!checkIfNamesAvailable(workspace, name + "Pickaxe", name + "Axe", name + "Sword", name + "Shovel",
+				name + "Hoe", name + "PickaxeRecipe", name + "AxeRecipe", name + "SwordRecipe", name + "ShovelRecipe",
+				name + "HoeRecipe"))
 			return;
 
 		String registryName = RegistryNameFixer.fromCamelCase(name);
@@ -136,8 +137,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		ImageIcon pickaxe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
 				ImageUtils.colorize(getCachedTexture("tool_pickaxe"), color, true));
 		String pickaxeTextureName = registryName + "_pickaxe";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()), mcreator.getFolderManager()
-				.getTextureFile(pickaxeTextureName, TextureType.ITEM));
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
+				mcreator.getFolderManager().getTextureFile(pickaxeTextureName, TextureType.ITEM));
 
 		// then we generate axe texture
 		ImageIcon axe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
@@ -176,7 +177,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		pickaxeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
+		setParametersBasedOnFactorAndAddElement(packMaker, mcreator, factor, pickaxeTool, folder);
 		pickaxeTool.attackSpeed = (double) Math.round(1.2f * factor);
 
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -186,7 +187,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
 		axeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
+		setParametersBasedOnFactorAndAddElement(packMaker, mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 		axeTool.attackSpeed = (double) Math.round(0.9f * factor);
 
@@ -197,7 +198,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		swordTool.toolType = "Sword";
 		swordTool.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		swordTool.repairItems = Collections.singletonList(base);
-		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
+		setParametersBasedOnFactorAndAddElement(packMaker, mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
 		swordTool.attackSpeed = (double) Math.round(1.6f * factor);
 
@@ -208,7 +209,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
 		shovelTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
+		setParametersBasedOnFactorAndAddElement(packMaker, mcreator, factor, shovelTool, folder);
 		shovelTool.damageVsEntity = (double) Math.round(4.5f * factor);
 		shovelTool.attackSpeed = (double) Math.round(1.0f * factor);
 
@@ -219,7 +220,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
 		hoeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
-		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
+		setParametersBasedOnFactorAndAddElement(packMaker, mcreator, factor, hoeTool, folder);
 		hoeTool.damageVsEntity = (double) Math.round(1.0f * factor);
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -232,7 +233,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		pickaxeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		pickaxeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Pickaxe");
 		pickaxeRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, pickaxeRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, pickaxeRecipe);
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -244,7 +245,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		axeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		axeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Axe");
 		axeRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, axeRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, axeRecipe);
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -254,7 +255,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		swordRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sword");
 		swordRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, swordRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, swordRecipe);
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -264,7 +265,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Shovel");
 		shovelRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, shovelRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, shovelRecipe);
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -275,10 +276,10 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		hoeRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
 		hoeRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, hoeRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, hoeRecipe);
 	}
 
-	private static void setParametersBasedOnFactorAndAddElement(MCreator mcreator, double factor, Tool tool,
+	private static void setParametersBasedOnFactorAndAddElement(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator, double factor, Tool tool,
 			FolderElement folder) {
 		if (factor < 0.5) {
 			tool.blockDropsTier = "WOOD";
@@ -294,7 +295,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		tool.damageVsEntity = (double) Math.round(4.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
 		tool.attackSpeed = (double) Math.round(3.0f * factor);
-		addGeneratableElementToWorkspace(mcreator.getWorkspace(), folder, tool);
+		addGeneratableElementToWorkspace(packMaker, mcreator.getWorkspace(), folder, tool);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
