@@ -2025,6 +2025,9 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
+		block.leavesParticleType = emptyLists ? null : new Particle(modElement.getWorkspace(),
+				getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+		block.leavesParticleChance = 0.265;
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 		block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksWithItemForm).getName());

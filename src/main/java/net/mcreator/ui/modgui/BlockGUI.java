@@ -284,6 +284,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			//@formatter:on
 	);
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
+	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
+	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
@@ -311,6 +313,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
 		fluidRestrictions = new FluidListField(mcreator);
+		leavesParticleType.setDefaultText(L10N.t("elementgui.block.leaves_particle_type.default"));
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
@@ -486,7 +489,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				case "Leaves" -> {
 					transparencyType.setEnabled(false);
 					transparencyType.setSelectedItem("SOLID");
-
+					showBlockBaseCard("leaves");
 					if (!isEditingMode()) {
 						lightOpacity.setValue(1);
 						reactionToPushing.setSelectedItem("DESTROY");
@@ -607,6 +610,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/block_set_type"),
 						L10N.label("elementgui.block.block_set_type")), blockSetType), "blockSetType");
+
+		// Card for leaves
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(2, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_type"),
+						L10N.label("elementgui.block.leaves_particle_type")), leavesParticleType,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_chance"),
+						L10N.label("elementgui.block.leaves_particle_chance")), leavesParticleChance),
+				"leaves");
 
 		// Card for flower pots
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
@@ -1773,6 +1784,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
 		pottedPlant.setBlock(block.pottedPlant);
+		leavesParticleType.setEntry(block.leavesParticleType);
+		leavesParticleChance.setValue(block.leavesParticleChance);
 		signEntityTexture.setTexture(block.signEntityTexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
@@ -1997,6 +2010,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
 		block.pottedPlant = pottedPlant.getBlock();
+		block.leavesParticleType = leavesParticleType.getEntry();
+		block.leavesParticleChance = (double) leavesParticleChance.getValue();
 		block.signEntityTexture = signEntityTexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
