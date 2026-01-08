@@ -167,7 +167,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			// Need to change the texture for raw item as well
 			raw = ImageUtils.colorize(getCachedTexture("raw"), color, true);
 			rawTextureName = "raw_" + registryName;
-		} 
+		}
 
 		if (type.equals("Ingot based")) {
 	
