@@ -220,8 +220,8 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlock.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
 		oreBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		if (type.equals("Ingot based")) {
-			// Ingot-based ores drop 3 raw items
-			oreBlock.dropAmount = 3;
+			// Ingot-based ores drop an amount based on factor (default 1 for normal ores)
+			oreBlock.dropAmount = factor <= 1 ? 1 : 3;
 			oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name);
 		} else {
 			// Gem-based ores drop 1 of the gem item 
