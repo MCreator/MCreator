@@ -102,7 +102,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			oreItemName = name;
 		} else {
 			oreItemName = name + "Ingot";
-		} 
+		}
 
 		if (type.equals("Ingot based")) {
 			if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
