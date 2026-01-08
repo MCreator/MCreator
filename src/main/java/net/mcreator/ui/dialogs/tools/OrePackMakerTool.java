@@ -55,7 +55,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 	private final VTextField name = new VTextField(25);
 	private final JColor color;
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-	private final JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Ingot based" });
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
 	private OrePackMakerTool(MCreator mcreator) {
 		super(mcreator, "ore_pack", UIRES.get("16px.orepack").getImage());
@@ -97,21 +97,32 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
-		String oreItemName;
+		String productItemName;
+		String dropItemName;
 		if (type.equals("Gem based")) {
-			oreItemName = name;
-		} else {
-			oreItemName = name + "Ingot";
+			productItemName = name;
+			dropItemName = name;
+		} else if (type.equals("Dust based")) {
+			productItemName = name + "Ingot";
+			dropItemName = name + "Dust";
+		} else { // Ingot based
+			productItemName = name + "Ingot";
+			dropItemName = "Raw" + name;
 		}
 
 		if (type.equals("Ingot based")) {
-			if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
+			if (!checkIfNamesAvailable(workspace, productItemName, name + "Ore", name + "Block",
 					name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting", name + "OreBlasting",
 					"Raw" + name, "Raw" + name + "Block", name + "DeepslateOreSmelting", name + "DeepslateOreBlasting",
 					name + "DeepslateOre", name + "RawBlockRecipe", name + "BlockRawRecipe", name + "RawOreSmelting", name + "RawOreBlasting"))
 				return null;
+		} else if (type.equals("Dust based")) {
+			if (!checkIfNamesAvailable(workspace, productItemName, name + "Ore", name + "Block",
+					name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting", name + "OreBlasting",
+					name + "Dust", name + "DustSmelting", name + "DustBlasting", name + "DeepslateOreSmelting", name + "DeepslateOreBlasting", name + "DeepslateOre"))
+				return null;
 		} else {
-			if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
+			if (!checkIfNamesAvailable(workspace, productItemName, name + "Ore", name + "Block",
 					name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting", name + "OreBlasting",
 					name + "DeepslateOreSmelting", name + "DeepslateOreBlasting", name + "DeepslateOre"))
 				return null;
@@ -155,22 +166,30 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 
 		ImageIcon gem;
 		ImageIcon raw = null;
+		ImageIcon dust = null;
 		String gemTextureName;
 		String rawTextureName = null;
+		String dustTextureName = null;
 		Item rawItem = null;
+		Item dustItem = null;
 		if (type.equals("Gem based")) {
 			gem = ImageUtils.colorize(getCachedTexture("gem4", "gem6", "gem7", "gem9", "gem13"), color, true);
 			gemTextureName = registryName;
+		} else if (type.equals("Dust based")) {
+			gem = ImageUtils.colorize(getCachedTexture("ingot_dark", "ingot_bright"), color, true);
+			gemTextureName = registryName + "_ingot";
+			dust = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("dust_base"), color, true),
+					ImageUtils.colorize(getCachedTexture("dust_sprinkles"), color, true));
+			dustTextureName = registryName + "_dust";
 		} else {
 			gem = ImageUtils.colorize(getCachedTexture("ingot_dark", "ingot_bright"), color, true);
 			gemTextureName = registryName + "_ingot";
 			// Need to change the texture for raw item as well
 			raw = ImageUtils.colorize(getCachedTexture("raw"), color, true);
 			rawTextureName = "raw_" + registryName;
-		}
+		} 
 
 		if (type.equals("Ingot based")) {
-	
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(raw.getImage()),
 					mcreator.getFolderManager().getTextureFile(rawTextureName, TextureType.ITEM));
 
@@ -180,21 +199,32 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			rawItem.texture = new TextureHolder(workspace, rawTextureName);
 			rawItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
 			addGeneratableElementToWorkspace(workspace, folder, rawItem);
+		} else if (type.equals("Dust based")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(dust.getImage()),
+					mcreator.getFolderManager().getTextureFile(dustTextureName, TextureType.ITEM));
+			dustItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Dust", ModElementType.ITEM), false).getElementFromGUI();
+			dustItem.name = readableName + " Dust";
+			dustItem.texture = new TextureHolder(workspace, dustTextureName);
+			dustItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
+			addGeneratableElementToWorkspace(workspace, folder, dustItem);
 		}
-
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
 				mcreator.getFolderManager().getTextureFile(gemTextureName, TextureType.ITEM));
 
-		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
-				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
-		oreItem.name = readableName;
-		oreItem.texture = new TextureHolder(workspace, gemTextureName);
-		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
-		addGeneratableElementToWorkspace(workspace, folder, oreItem);
+		Item productItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
+			new ModElement(workspace, productItemName, ModElementType.ITEM), false).getElementFromGUI();
+		if (type.equals("Gem based")) {
+			productItem.name = readableName;
+		} else {
+			productItem.name = readableName + " Ingot";
+		}
+		productItem.texture = new TextureHolder(workspace, gemTextureName);
+		productItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
+		addGeneratableElementToWorkspace(workspace, folder, productItem);
 
-		// Ore Block
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
+			new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = readableName + " Ore";
 		oreBlock.texture = new TextureHolder(workspace, oreTextureName);
 		oreBlock.renderType = 11; // single texture
@@ -220,13 +250,17 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlock.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
 		oreBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		if (type.equals("Ingot based")) {
-			// Ingot-based ores drop an amount based on factor (default 1 for normal ores)
+			// Ingot-based ores drop raw items (3 above factor 1)
 			oreBlock.dropAmount = factor <= 1 ? 1 : 3;
 			oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name);
+		} else if (type.equals("Dust based")) {
+			// Dust-based ores drop 3 dust items
+			oreBlock.dropAmount = 3;
+			oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + name + "Dust");
 		} else {
-			// Gem-based ores drop 1 of the gem item 
+			// Gem-based ores drop 1 of the gem item
 			oreBlock.dropAmount = 1;
-			oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+			oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		}
 		addGeneratableElementToWorkspace(workspace, folder, oreBlock);
 
@@ -307,9 +341,12 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		if (type.equals("Ingot based")) {
 			oreBlockDeepslateBlock.dropAmount = 3;
 			oreBlockDeepslateBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name);
+		} else if (type.equals("Dust based")) {
+			oreBlockDeepslateBlock.dropAmount = 3;
+			oreBlockDeepslateBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + name + "Dust");
 		} else {
 			oreBlockDeepslateBlock.dropAmount = 1;
-			oreBlockDeepslateBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+			oreBlockDeepslateBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		}
 		addGeneratableElementToWorkspace(workspace, folder, oreBlockDeepslateBlock);
 
@@ -319,27 +356,29 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		itemToBlockRecipe.craftingBookCategory = "BUILDING";
-		itemToBlockRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[2] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		itemToBlockRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[2] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
-		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + oreItemName));
+		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + productItemName));
+
 		addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
 
 		// Storage Block -> Ingots
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		blockToItemRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
-		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
 		blockToItemRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Block"));
+		
 		addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
 
 		if (type.equals("Ingot based")) {
@@ -361,7 +400,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		rawItemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + "Raw" + name));
 		addGeneratableElementToWorkspace(workspace, folder, rawItemToBlockRecipe);
 
-		// Raw Storage Block -> Raw Items
+		// Raw Storage Block -> Raw Ingots
 		Recipe rawBlockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockRawRecipe", ModElementType.RECIPE), false).getElementFromGUI();
 		rawBlockToItemRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name + "Block");
@@ -377,7 +416,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
 		oreSmeltingRecipe.recipeType = "Smelting";
 		oreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Ore");
-		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
 		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
@@ -388,7 +427,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "OreBlasting", ModElementType.RECIPE), false).getElementFromGUI();
 		oreBlastingRecipe.recipeType = "Blasting";
 		oreBlastingRecipe.blastingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Ore");
-		oreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		oreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		oreBlastingRecipe.xpReward = oreSmeltingRecipe.xpReward;
 		oreBlastingRecipe.cookingTime = 100; // faster than smelting
 		oreBlastingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
@@ -399,7 +438,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "DeepslateOreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
 		deepslateOreSmeltingRecipe.recipeType = "Smelting";
 		deepslateOreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "DeepslateOre");
-		deepslateOreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		deepslateOreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		deepslateOreSmeltingRecipe.xpReward = 0.7 * factor;
 		deepslateOreSmeltingRecipe.cookingTime = 200;
 		deepslateOreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "DeepslateOre"));
@@ -410,11 +449,34 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			new ModElement(workspace, name + "DeepslateOreBlasting", ModElementType.RECIPE), false).getElementFromGUI();
 		deepslateOreBlastingRecipe.recipeType = "Blasting";
 		deepslateOreBlastingRecipe.blastingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "DeepslateOre");
-		deepslateOreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		deepslateOreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 		deepslateOreBlastingRecipe.xpReward = deepslateOreSmeltingRecipe.xpReward;
 		deepslateOreBlastingRecipe.cookingTime = 100;
 		deepslateOreBlastingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "DeepslateOre"));
 		addGeneratableElementToWorkspace(workspace, folder, deepslateOreBlastingRecipe);
+
+		// Dust -> ingot recipes
+		if (type.equals("Dust based")) {
+			Recipe dustSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "DustSmelting", ModElementType.RECIPE), false).getElementFromGUI();
+			dustSmeltingRecipe.recipeType = "Smelting";
+			dustSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Dust");
+			dustSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+			dustSmeltingRecipe.xpReward = 0.7 * factor;
+			dustSmeltingRecipe.cookingTime = 200;
+			dustSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Dust"));
+			addGeneratableElementToWorkspace(workspace, folder, dustSmeltingRecipe);
+
+			Recipe dustBlastingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "DustBlasting", ModElementType.RECIPE), false).getElementFromGUI();
+			dustBlastingRecipe.recipeType = "Blasting";
+			dustBlastingRecipe.blastingInputStack = new MItemBlock(workspace, "CUSTOM:" + name + "Dust");
+			dustBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
+			dustBlastingRecipe.xpReward = 0.7 * factor;
+			dustBlastingRecipe.cookingTime = 100;
+			dustBlastingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Dust"));
+			addGeneratableElementToWorkspace(workspace, folder, dustBlastingRecipe);
+		} 
 
 		// Raw ore smelting (raw -> ingot)
 		if (type.equals("Ingot based")) {
@@ -422,7 +484,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "RawOreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
 			rawOreSmeltingRecipe.recipeType = "Smelting";
 			rawOreSmeltingRecipe.smeltingInputStack = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name);
-			rawOreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+			rawOreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 			rawOreSmeltingRecipe.xpReward = 0.7 * factor;
 			rawOreSmeltingRecipe.cookingTime = 200;
 			rawOreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + "Raw" + name));
@@ -433,14 +495,14 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "RawOreBlasting", ModElementType.RECIPE), false).getElementFromGUI();
 			rawOreBlastingRecipe.recipeType = "Blasting";
 			rawOreBlastingRecipe.blastingInputStack = new MItemBlock(workspace, "CUSTOM:" + "Raw" + name);
-			rawOreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+			rawOreBlastingRecipe.blastingReturnStack = new MItemBlock(workspace, "CUSTOM:" + productItemName);
 			rawOreBlastingRecipe.xpReward = rawOreSmeltingRecipe.xpReward;
 			rawOreBlastingRecipe.cookingTime = 100;
 			rawOreBlastingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + "Raw" + name));
 			addGeneratableElementToWorkspace(workspace, folder, rawOreBlastingRecipe);
 		}
 
-		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		return new MItemBlock(workspace, "CUSTOM:" + productItemName);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
