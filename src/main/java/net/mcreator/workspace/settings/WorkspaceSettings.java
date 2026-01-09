@@ -184,11 +184,10 @@ import java.util.stream.Stream;
 	 * a version range of <code>[0,)</code> will be returned.
 	 */
 	public String getVersionRange(String requiredMod) {
-		ModAPIImplementation api = ModAPIManager.getModAPIForNameAndGenerator(requiredMod, workspace.getGenerator().getGeneratorName());
+		ModAPIImplementation api = ModAPIManager.getModAPIForNameAndGenerator(requiredMod,
+				workspace.getGenerator().getGeneratorName());
 
-		if (api == null) return "[0,)";
-
-		return api.versionRange() != null ? api.versionRange() : "[0,)";
+		return (api == null) || (api.versionRange() == null) ? "[0,)" : api.versionRange();
 	}
 
 	public Set<String> getDependants() {
