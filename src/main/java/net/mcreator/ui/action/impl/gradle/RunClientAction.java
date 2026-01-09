@@ -18,9 +18,11 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.minecraft.BedrockUtils;
 import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
@@ -52,7 +54,12 @@ public class RunClientAction extends GradleAction {
 					SwingUtilities.invokeLater(() -> {
 						actionRegistry.getMCreator().getGradleConsole()
 								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-										.getGradleTaskFor("run_client"));
+										.getGradleTaskFor("run_client"), result -> {
+									if (result == GradleResultCode.STATUS_OK) {
+										actionRegistry.getMCreator().getBottomDockRegion()
+												.setDockVisibility(MCreator.DOCK_CONSOLE, false);
+									}
+								});
 						actionRegistry.getMCreator().showConsole();
 					});
 				}
