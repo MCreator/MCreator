@@ -132,7 +132,7 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.17.0"
     implementation "com.fifesoft:rsyntaxtextarea:3.6.1"
     implementation "com.fifesoft:autocomplete:3.3.3"
-    implementation("com.fifesoft:languagesupport:3.4.0") {
+    implementation("com.fifesoft:languagesupport:3.4.1") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
     }
     implementation "net.java.dev.jna:jna:5.18.1" // needed by discord-rpc.jar
@@ -148,7 +148,7 @@ dependencies {
     linux64 "com.formdev:flatlaf:3.7:linux-x86_64@so"
 
     // test dependencies
-    testImplementation platform("org.junit:junit-bom:6.0.1")
+    testImplementation platform("org.junit:junit-bom:6.0.2")
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }

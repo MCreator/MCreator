@@ -37,9 +37,9 @@
 package ${package}.init;
 
 public class ${JavaModName}WoodTypes {
-	<#compress>
+	<@javacompress>
 	<#list blocks?filter(e -> e.isSign()) as block>
 	public static final WoodType ${block.getModElement().getRegistryNameUpper()}_WOOD_TYPE = WoodType.register(new WoodType("${modid}:${block.getModElement().getRegistryName()}", BlockSetType.OAK));
 	</#list>
-	</#compress>
+	</@javacompress>
 }

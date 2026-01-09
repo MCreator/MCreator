@@ -1,0 +1,1 @@
+Nếu tùy chọn này được chọn, hiệu ứng này sẽ có thời lượng vô tận.

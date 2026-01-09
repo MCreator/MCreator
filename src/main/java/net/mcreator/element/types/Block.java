@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -86,6 +87,8 @@ import java.util.stream.Collectors;
 	public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
+	public Particle leavesParticleType;
+	public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 
 	public String tintType;
@@ -240,6 +243,7 @@ import java.util.stream.Collectors;
 		this.customProperties = new ArrayList<>();
 
 		this.blockSetType = "OAK";
+		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -335,7 +339,7 @@ import java.util.stream.Collectors;
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
 				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
-				|| "FlowerPot".equals(blockBase))
+				|| "FlowerPot".equals(blockBase) || "Sign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -396,8 +400,6 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
 		} else if ("Button".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Sign")) {
-			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
@@ -420,7 +422,8 @@ import java.util.stream.Collectors;
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
 		if (isSign() && "wall".equals(suffix)) {
-			return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
+			return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(
+					signEntityTexture.getImage(TextureType.ENTITY)));
 		}
 		return null;
 	}
@@ -477,6 +480,11 @@ import java.util.stream.Collectors;
 
 	public Set<String> getVibrationalEvents() {
 		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+	}
+
+	public int getLeavesParticleColor() {
+		return ImageUtils.getAverageColor(ImageUtils.toBufferedImage(texture.getImage(TextureType.BLOCK))).brighter()
+				.brighter().getRGB();
 	}
 
 	public TextureHolder textureTop() {

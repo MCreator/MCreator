@@ -1,0 +1,1 @@
+Esta é a textura usada pelas placas para serem renderizadas no mundo virtual. Certifique-se de que a textura seja compatível com o modelo da placa.

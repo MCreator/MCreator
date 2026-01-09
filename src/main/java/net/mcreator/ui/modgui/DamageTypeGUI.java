@@ -26,7 +26,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.elements.ModElement;
@@ -34,7 +33,6 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -66,10 +64,7 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		page.setOpaque(false);
 
 		JPanel damageProperties = new JPanel(new GridLayout(3, 2, 20, 2));
-		damageProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.damagetype.damage_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(damageProperties, L10N.t("elementgui.damagetype.damage_properties"));
 		damageProperties.setOpaque(false);
 
 		exhaustion.setOpaque(false);
@@ -87,10 +82,7 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		damageProperties.add(effects);
 
 		JPanel localizationPanel = new JPanel(new GridLayout(3, 2, 20, 2));
-		localizationPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.damagetype.death_messages"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(localizationPanel, L10N.t("elementgui.damagetype.death_messages"));
 		localizationPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(normalDeathMessage, 16);

@@ -1,0 +1,120 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.element.types.bedrock;
+
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+public class BEBlock extends GeneratableElement implements IBlock {
+
+	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureLeft;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureFront;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureRight;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
+
+	public String name;
+	public MItemBlock customDrop;
+	public int dropAmount;
+	public double friction;
+	public StepSound soundOnStep;
+	public double hardness;
+	public double resistance;
+	public int lightEmission;
+	public int flammability;
+	public int flammableDestroyChance;
+	public String colorOnMap;
+
+	public boolean generateFeature;
+	public int frequencyPerChunks;
+	public int oreCount;
+	public int minGenerateHeight;
+	public int maxGenerateHeight;
+	@ModElementReference public List<MItemBlock> blocksToReplace;
+
+	private BEBlock() {
+		this(null);
+	}
+
+	public BEBlock(ModElement element) {
+		super(element);
+	}
+
+	public boolean hasCustomDrop() {
+		return !customDrop.isEmpty();
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+				getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+	}
+
+	private Image getTextureWithFallback(TextureHolder texture) {
+		if (texture.isEmpty())
+			return getMainTexture();
+		return texture.getImage(TextureType.BLOCK);
+	}
+
+	@Override public String getRenderType() {
+		return "SOLID";
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+	}
+
+	private Image getMainTexture() {
+		return texture.getImage(TextureType.BLOCK);
+	}
+
+	public TextureHolder textureTop() {
+		return textureTop == null || textureTop.isEmpty() ? texture : textureTop;
+	}
+
+	public TextureHolder textureLeft() {
+		return textureLeft == null || textureLeft.isEmpty() ? texture : textureLeft;
+	}
+
+	public TextureHolder textureFront() {
+		return textureFront == null || textureFront.isEmpty() ? texture : textureFront;
+	}
+
+	public TextureHolder textureRight() {
+		return textureRight == null || textureRight.isEmpty() ? texture : textureRight;
+	}
+
+	public TextureHolder textureBack() {
+		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+}

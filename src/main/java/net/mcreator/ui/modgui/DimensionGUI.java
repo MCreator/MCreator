@@ -39,7 +39,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -54,7 +53,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -243,10 +241,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.infiniburn_tag")));
 		dimensionTypeSettings.add(infiniburnTag);
 
-		dimensionTypeSettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.dimension_type_settings"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(dimensionTypeSettings, L10N.t("elementgui.dimension.dimension_type_settings"));
 
 		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
 		dimensionEffects.setOpaque(false);
@@ -283,10 +278,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.has_fog")));
 		dimensionEffects.add(hasFog);
 
-		dimensionEffects.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.dimension_effects"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(dimensionEffects, L10N.t("elementgui.dimension.dimension_effects"));
 
 		JPanel mobSettings = new JPanel(new GridLayout(4, 2, 15, 2));
 		mobSettings.setOpaque(false);
@@ -309,10 +301,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		monsterSpawnBlockLightLimit.setPreferredSize(new java.awt.Dimension(0, 36));
 
-		mobSettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.mob_settings"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(mobSettings, L10N.t("elementgui.dimension.mob_settings"));
 
 		bedWorks.setOpaque(false);
 		hasSkyLight.setOpaque(false);
@@ -493,10 +482,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		igniterPanel.add("South", PanelUtils.centerAndSouthElement(proper22, conditions, 2, 2));
 
-		igniterPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(igniterPanel, L10N.t("elementgui.dimension.portal_igniter_properties"));
 
 		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
 		propertiesPanel.setOpaque(false);
@@ -506,10 +492,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				proper)));
 		propertiesPanel.add("South", portalUseCondition);
 
-		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(propertiesPanel, L10N.t("elementgui.dimension.portal_properties"));
 
 		JPanel portalPanelMain = new JPanel(new BorderLayout(0, 0));
 		portalPanelMain.setOpaque(false);
