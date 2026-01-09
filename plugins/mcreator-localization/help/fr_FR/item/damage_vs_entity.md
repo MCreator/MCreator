@@ -1,1 +1,1 @@
-Vous pouvez activer les dégâts de mêlée pour votre item avec ce paramètre, et définir une valeur de dégâts.
+Ce paramètre détermine les dégâts d'attaque que votre item infligera aux entités.

@@ -1,0 +1,1 @@
+En cochant ce paramètre, vous permettez à votre objet de devenir une arme de mêlée avec des dégâts d'attaque et une vitesse d'attaque.
