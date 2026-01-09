@@ -178,6 +178,19 @@ import java.util.stream.Stream;
 				.map(String::trim).collect(Collectors.toSet());
 	}
 
+	/**
+	 * Gets the <code>version_range</code> specified in the plugins api .yaml
+	 * for this <code>requiredMod</code>. If no <code>version_range</code> is specified,
+	 * a version range of <code>[0,)</code> will be returned.
+	 */
+	public String getVersionRange(String requiredMod) {
+		ModAPIImplementation api = ModAPIManager.getModAPIForNameAndGenerator(requiredMod, workspace.getGenerator().getGeneratorName());
+
+		if (api == null) return "[0,)";
+
+		return api.versionRange() != null ? api.versionRange() : "[0,)";
+	}
+
 	public Set<String> getDependants() {
 		return dependants.stream().map(String::trim).collect(Collectors.toSet());
 	}
