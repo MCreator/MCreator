@@ -187,7 +187,7 @@ import java.util.stream.Stream;
 		ModAPIImplementation api = ModAPIManager.getModAPIForNameAndGenerator(requiredMod,
 				workspace.getGenerator().getGeneratorName());
 
-		return (api == null) || (api.versionRange() == null) ? "[0,)" : api.versionRange();
+		return (api == null || api.versionRange() == null) ? "[0,)" : api.versionRange();
 	}
 
 	public Set<String> getDependants() {
