@@ -1,0 +1,1 @@
+Giá trị này là giá trị năng lượng tối đa mà phần tử năng lượng (khối, vật phẩm, ...) có thể nhận được từ phần tử năng lượng khác.
