@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddBlockPropertyDialog;
 import net.mcreator.ui.help.HelpUtils;
@@ -107,10 +108,7 @@ public class JBlockStatePropertiesList extends JEntriesList {
 
 		JPanel basePane = new JPanel(new GridLayout());
 		basePane.setOpaque(false);
-		basePane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.block.custom_properties_states"), 0, 0, basePane.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(basePane, L10N.t("elementgui.block.custom_properties_states"));
 		basePane.add(mainContent);
 		add("Center", basePane);
 

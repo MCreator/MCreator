@@ -252,11 +252,11 @@ public class MinecraftImageGenerator {
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.0f));
 			g.drawString("HELMET", 5, 72);
-			g.drawRect(0, 0, 159, 77);
+			g.drawRect(0, 0, 319, 79);
 			g.drawString("BOOTS", 5, 155);
-			g.drawRect(0, 79, 78, 80);
+			g.drawRect(0, 79, 79, 80);
 			g.drawString("CHESTPLATE", 87, 155);
-			g.drawRect(80, 79, 205, 80);
+			g.drawRect(79, 79, 200, 80);
 			return image;
 		}
 
@@ -265,8 +265,8 @@ public class MinecraftImageGenerator {
 			Graphics2D g = (Graphics2D) image.getGraphics();
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.f));
-			g.drawRect(0, 75, 227, 84);
-			g.drawString("LEGGINGS", 160, 91);
+			g.drawRect(0, 79, 200, 80);
+			g.drawString("LEGGINGS", 135, 92);
 			return image;
 		}
 
@@ -1080,6 +1080,27 @@ public class MinecraftImageGenerator {
 			g2d.translate(0, -8);
 
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 6, 4, 4, 5, 0, 6), null, null);
+			g2d.dispose();
+			return out;
+		}
+
+		/**
+		 * <p>This method generates the block icon for wall signs.</p>
+		 *
+		 * @param texture <p>Sign entity texture</p>
+		 * @return <p>Returns generated image.</p>
+		 */
+		public static Image generateWallSignIcon(Image texture) {
+			Image actualTexture = ImageUtils.crop(ImageUtils.toBufferedImage(ImageUtils.resize(texture, 64, 32)),
+					new Rectangle(2, 0, 16, 16));
+
+			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.scale(1.6, 1.5);
+			g2d.translate(-6, -6);
+
+			g2d.drawImage(ImageUtils.generateCuboidImage(actualTexture, 1, 12, 16, 8, 2, 0), null, null);
 			g2d.dispose();
 			return out;
 		}

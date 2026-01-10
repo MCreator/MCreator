@@ -35,7 +35,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -206,26 +205,20 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rent, L10N.t("elementgui.tool.tool_3d_model"));
 
 		JComponent visualBottom = PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 0, 5);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.westAndCenterElement(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
-				0, 5)));
+				PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture"))), rent),
+				visualBottom, 0, 5)));
 
 		JPanel itemProperties = new JPanel(new GridLayout(-1, 2, 2, 2));
 		itemProperties.setOpaque(false);
 
-		itemProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.properties_general"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(itemProperties, L10N.t("elementgui.common.properties_general"));
 
 		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -264,10 +257,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel toolProperties = new JPanel(new AdaptiveGridLayout(-1, 1, 0, 2));
 		toolProperties.setOpaque(false);
 
-		toolProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.tool.tool_properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(toolProperties, L10N.t("elementgui.tool.tool_properties"));
 
 		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 

@@ -31,11 +31,6 @@ public class ValidationGroup {
 		return this;
 	}
 
-	public final <T extends JTextField & IValidable> ValidationGroup addValidationElement(T validable) {
-		validationElements.add(validable);
-		return this;
-	}
-
 	public final boolean validateIsErrorFree() {
 		return getGroupedValidationResults().stream()
 				.noneMatch(e -> e.type() == ValidationResult.Type.ERROR);

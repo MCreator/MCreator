@@ -22,9 +22,9 @@ package net.mcreator.ui.minecraft.states.block;
 import net.mcreator.element.types.Block;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -57,10 +57,7 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 
 		add.setText(L10N.t("elementgui.block.custom_states.add"));
 
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+		ComponentUtils.borderWrap(this);
 	}
 
 	// called when a property is removed

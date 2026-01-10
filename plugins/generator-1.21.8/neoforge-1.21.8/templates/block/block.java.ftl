@@ -42,7 +42,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class ${name}Block extends ${getBlockClass(data.blockBase)}
+public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -194,7 +194,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 				data.blockBase == "FenceGate" ||
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
-				data.blockBase == "Wall")>
+				data.blockBase == "Wall" ||
+				data.blockBase == "Sign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
@@ -204,14 +205,21 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			.isSuffocating((bs, br, bp) -> false)
 			.isViewBlocking((bs, br, bp) -> false)
 		</#if>
+		<#if var_extends_class! == "WallSignBlock">
+			.overrideLootTable(${JavaModName}Blocks.${REGISTRYNAME}.get().getLootTable())
+			.overrideDescription(${JavaModName}Blocks.${REGISTRYNAME}.get().getDescriptionId())
+		</#if>
 	</#macro>
 
-	public ${name}Block(BlockBehaviour.Properties properties) {
+	public <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block(BlockBehaviour.Properties properties) {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0f, <@blockProperties/>);
+				super(${data.leavesParticleChance}f,
+						<#if data.leavesParticleType??>${data.leavesParticleType},
+						<#elseif data.tintType == "No tint">ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, ${data.getLeavesParticleColor()}),
+						</#if><@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -221,6 +229,8 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
+			<#elseif data.blockBase == "Sign">
+				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
 			</#if>
@@ -767,11 +777,11 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 	</#list>
 
-	<#if data.hasSpecialInformation(w)>
-	public static class Item extends <#if data.isDoubleBlock()>DoubleHigh</#if>BlockItem {
+	<#if data.hasSpecialInformation(w) && !(var_extends_class??)> <#-- Do not generate item class for secondary block templates -->
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.isSign()>Sign<#else>Block</#if>Item {
 
 		public Item(Item.Properties properties) {
-			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), properties);
+			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.${data.getWallRegistryNameUpper()}.get(), </#if>properties);
 		}
 
 		<@addSpecialInformation data.specialInformation, "block." + modid + "." + registryname, true/>
@@ -784,10 +794,17 @@ public class ${name}Block extends ${getBlockClass(data.blockBase)}
 <#-- @formatter:on -->
 
 <#function getBlockClass blockBase="">
-	<#if data.hasGravity><#return "FallingBlock">
+	<#if var_extends_class??><#return var_extends_class>
+	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
-	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#elseif blockBase == "Leaves">
+		<#if data.leavesParticleType?? || (data.tintType == "No tint")>
+			<#return "UntintedParticleLeavesBlock">
+		<#else>
+			<#return "TintedParticleLeavesBlock">
+		</#if>
+	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>
 </#function>

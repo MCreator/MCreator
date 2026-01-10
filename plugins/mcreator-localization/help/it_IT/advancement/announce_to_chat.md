@@ -1,1 +1,1 @@
-Scrivi un messaggio in chat quando il giocatore completa l'avanzamento.
+Invia un messaggio nella chat quando il giocatore completa il progresso.

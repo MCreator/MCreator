@@ -75,6 +75,7 @@ import java.util.*;
 
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
+	public double attackSpeed;
 
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
@@ -124,6 +125,8 @@ import java.util.*;
 
 	@ModElementReference public List<String> providedBannerPatterns;
 
+	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
+
 	private Item() {
 		this(null);
 	}
@@ -145,6 +148,9 @@ import java.util.*;
 		this.providedBannerPatterns = new ArrayList<>();
 
 		this.animations = new ArrayList<>();
+		this.attributeModifiers = new ArrayList<>();
+
+		this.attackSpeed = 1.6;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -71,7 +71,10 @@ public interface ModElementChangedListener
 		case JSpinner spinner -> spinner.addChangeListener(this);
 		case JComboBox<?> comboBox -> comboBox.addItemListener(this);
 		case JTextComponent textComponent -> textComponent.getDocument().addDocumentListener(this);
-		case BlocklyPanel blocklyPanel -> blocklyPanel.addChangeListener(this);
+		case BlocklyPanel blocklyPanel -> {
+			blocklyPanel.addChangeListener(this);
+			blocklyPanel.addTaskToRunAfterLoaded(() -> SwingUtilities.invokeLater(this::modElementChanged));
+		}
 		default -> {
 			if (!isGenericComponent(component)) {
 				component.addMouseListener(this);

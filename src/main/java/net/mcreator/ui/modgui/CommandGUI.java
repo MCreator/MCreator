@@ -34,7 +34,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.TestUtil;
@@ -42,7 +41,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -109,13 +107,10 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
+		JPanel args = PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
 						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
-		args.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(args, L10N.t("elementgui.command.arguments"));
 		args.setOpaque(false);
 
 		page1group.addValidationElement(commandName);

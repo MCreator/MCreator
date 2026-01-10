@@ -150,16 +150,16 @@ import static org.junit.jupiter.api.Assertions.*;
 					tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation", () -> {
 						GTModElements.runTest(LOG, generator, random, workspace.get());
 						// Fill workspace with sample tags after the elements the tags reference actually exist
-						TestWorkspaceDataProvider.filleWorkspaceWithSampleTags(workspace.get());
+						TestWorkspaceDataProvider.fillWorkspaceWithSampleTags(workspace.get());
 					}));
 					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
 							generatorConfiguration)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
 							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
-								MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator.get(), workspace.get(),
+								MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator.get(), workspace.get(),
 										"Material", "Dust based", Color.red, 1.234);
 							if (WoodPackMakerTool.isSupported(generatorConfiguration))
-								WoodPackMakerTool.addWoodPackToWorkspace(mcreator.get(), workspace.get(), "Wood",
+								WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator.get(), workspace.get(), "Wood",
 										Color.green, 0.123);
 						}));
 					}
@@ -170,6 +170,13 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTProcedureTriggers.runTest(LOG, generator, workspace.get())));
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
 								() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace.get())));
+
+						// If we support variables and procedures, also test this combination
+						if (generatorConfiguration.getGeneratorStats().getBaseCoverageInfo().get("variables")
+								!= GeneratorStats.CoverageStatus.NONE) {
+							tests.add(DynamicTest.dynamicTest(generator + " - Testing variables",
+									() -> GTVariables.runTest(LOG, generator, random, workspace.get())));
+						}
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()

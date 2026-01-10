@@ -3,7 +3,7 @@
 
 <RSyntaxTheme version="1.0">
 
-    <background color="323232"/>
+    <background color="${backgroundColor}"/>
     <caret color="c1cbc2"/>
     <selection useFG="false" bg="404E51"/>
     <currentLineHighlight color="2F393C"/>
@@ -22,7 +22,7 @@
     <gutterBorder color="747E82"/>
     <lineNumbers fg="81969A"/>
     <foldIndicator fg="6A8088" iconBg="2f383c"/>
-    <iconRowHeader activeLineRange="3399ff"/>
+    <iconRowHeader activeLineRange="${mainTint}"/>
 
     <tokenStyles>
         <style token="IDENTIFIER" fg="E0E2E4"/>

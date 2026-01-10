@@ -47,7 +47,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.entityanimations.JEntityAnimationList;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
@@ -68,7 +67,6 @@ import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -790,12 +788,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		canControlStrafe.setOpaque(false);
 		canControlForward.setOpaque(false);
 
-		aitopoveral.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(aitopoveral, L10N.t("elementgui.living_entity.ai_parameters"));
 
-		JPanel aipan = new JPanel(new BorderLayout(0, 5));
+		JPanel aipan = new JPanel(new BorderLayout(0, 2));
 		aipan.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks();
@@ -814,18 +809,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		aipan.add("North", aitopoveral);
 
-		JPanel bpb = new JPanel(new GridLayout());
+		JPanel bpb = new JPanel(new BorderLayout());
 		bpb.setOpaque(false);
-		bpb.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(bpb, L10N.t("elementgui.living_entity.ai_tasks"));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(155);
-		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
+		bpb.add("North", blocklyEditorToolbar);
+		bpb.add("Center", blocklyPanel);
+		bpb.add("South", compileNotesPanel);
+
 		aipan.add("Center", bpb);
-		aipan.add("South", compileNotesPanel);
 
 		blocklyPanel.setPreferredSize(new Dimension(150, 150));
 
@@ -1096,10 +1090,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			hasAI.setEnabled(false);
 			breedTriggerItems.setEnabled(true);
 			tameable.setEnabled(true);
+			aiBase.setEnabled(false);
+			aiBase.setSelectedItem("(none)");
 		} else {
 			hasAI.setEnabled(true);
 			breedTriggerItems.setEnabled(false);
 			tameable.setEnabled(false);
+			aiBase.setEnabled(true);
 		}
 
 		boolean isBossSelected = isBoss.isSelected();
