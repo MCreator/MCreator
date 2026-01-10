@@ -36,7 +36,7 @@
 package ${package}.item;
 
 <@javacompress>
-<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
+<#if modifiesDefaultComponents(data.toolType)>
 @EventBusSubscriber
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
@@ -117,12 +117,44 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 				.setNoCombineRepair()
 				</#if>
+				<#if (data.attributeModifiers?size gt 0) && (data.toolType == "Pickaxe" || data.toolType == "Sword" || data.toolType == "Shears"|| data.toolType == "Shield")>
+				.attributes(ItemAttributeModifiers.builder()
+					<#if (data.toolType == "Pickaxe" || data.toolType == "Sword")>
+					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					</#if>
+					<#list data.attributeModifiers as modifier>
+					.add(${modifier.attribute}, new AttributeModifier(
+							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+					</#list>
+					.build())
+				</#if>
 		);
 	}
 
-	<#if (data.usageCount == 0) && (data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool")>
-	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
-		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder.remove(DataComponents.MAX_DAMAGE));
+	<#if modifiesDefaultComponents(data.toolType)>
+	@SubscribeEvent public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder
+		<#if data.usageCount == 0>
+			.remove(DataComponents.MAX_DAMAGE)
+		</#if>
+		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe")>
+			.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+            	.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
+            			AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+            	.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
+            			AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+            	<#list data.attributeModifiers as modifier>
+            	.add(${modifier.attribute}, new AttributeModifier(
+            			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+            			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+            	</#list>
+            	.build())
+		</#if>
+		);
 	}
 	</#if>
 
@@ -287,6 +319,16 @@ public class ${name}Item extends FishingRodItem {
 }
 </#if>
 </@javacompress>
+
+<#function modifiesDefaultComponents toolType>
+	<#if data.usageCount == 0>
+		<#return toolType == "Pickaxe" || toolType == "Axe" || toolType == "Sword" || toolType == "Spade" || toolType == "Hoe" || toolType == "MultiTool">
+	<#elseif data.attributeModifiers?size gt 0>
+		<#return toolType == "Axe" || toolType == "Spade" || toolType == "Hoe">
+	<#else>
+		<#return false>
+	</#if>
+</#function>
 
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
