@@ -100,7 +100,26 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						<#list data.attributeModifiers as modifier>
+						.add(${modifier.attribute}, new AttributeModifier(
+								ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+								${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+						</#list>
 						.build())
+				<#elseif data.attributeModifiers?size gt 0>
+				.attributes(ItemAttributeModifiers.builder()
+					<#if data.toolType != "Shield" && data.toolType != "Shears">
+					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					</#if>
+					<#list data.attributeModifiers as modifier>
+					.add(${modifier.attribute}, new AttributeModifier(
+							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+					</#list>
+					.build())
 				<#elseif data.toolType == "Sword">
 				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
@@ -205,6 +224,11 @@ public class ${name}Item extends Item {
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				<#list data.attributeModifiers as modifier>
+				.add(${modifier.attribute}, new AttributeModifier(
+						ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+						${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+				</#list>
 				.build())
 		);
 	}
@@ -241,6 +265,15 @@ public class ${name}Item extends FishingRodItem {
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
+			</#if>
+			<#if data.attributeModifiers?size gt 0>
+			.attributes(ItemAttributeModifiers.builder()
+				<#list data.attributeModifiers as modifier>
+				.add(${modifier.attribute}, new AttributeModifier(
+						ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+						${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+				</#list>
+				.build())
 			</#if>
 		);
 	}
