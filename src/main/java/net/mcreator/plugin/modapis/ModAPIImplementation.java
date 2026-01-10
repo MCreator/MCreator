@@ -23,4 +23,4 @@ import java.util.List;
 import java.util.Map;
 
 public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-								   @Nullable Map<String, String> resource_paths, boolean requiredWhenEnabled) {}
+								   @Nullable Map<String, String> resource_paths, boolean requiredWhenEnabled, @Nullable String versionRange) {}
