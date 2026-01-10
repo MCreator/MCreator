@@ -1,17 +1,21 @@
 body {
-    fill: var(--backgroundColorBrighter);
+    fill: var(--backgroundColor);
 }
 
 #blockly {
-    background: var(--backgroundColorBrighter);
+    background: var(--backgroundColor);
 }
 
 .blocklySvg {
-    background-color: var(--backgroundColorBrighter) !important;
+    background-color: var(--backgroundColor) !important;
 }
 
 .blocklyMainBackground {
-    fill: var(--backgroundColorBrighter) !important;
+    fill: var(--backgroundColor) !important;
+}
+
+.thrasos-renderer .blocklyPath {
+    stroke: var(--altBackgroundColor);
 }
 
 ::-webkit-scrollbar-track {
