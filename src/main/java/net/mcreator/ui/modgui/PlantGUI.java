@@ -686,7 +686,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		advancedProperties.add(canBePlacedOn);
 
 		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
-				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
+				placingCondition, 2, 2);
 		ComponentUtils.makeSection(plocb, L10N.t("elementgui.plant.properties_advanced_plant"));
 		plocb.setOpaque(false);
 
