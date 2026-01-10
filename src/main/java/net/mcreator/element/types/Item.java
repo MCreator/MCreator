@@ -125,6 +125,8 @@ import java.util.*;
 
 	@ModElementReference public List<String> providedBannerPatterns;
 
+	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
+
 	private Item() {
 		this(null);
 	}
@@ -146,6 +148,7 @@ import java.util.*;
 		this.providedBannerPatterns = new ArrayList<>();
 
 		this.animations = new ArrayList<>();
+		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 1.6;
 	}
