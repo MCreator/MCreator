@@ -80,6 +80,11 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+						<#list data.attributeModifiers as modifier>
+						.add(${modifier.attribute}, new AttributeModifier(
+								ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+								${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+						</#list>
 						.build())
 				<#elseif data.toolType == "Shield">
 				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
@@ -200,6 +205,11 @@ public class ${name}Item extends Item {
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				<#list data.attributeModifiers as modifier>
+				.add(${modifier.attribute}, new AttributeModifier(
+						ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+						${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+				</#list>
 				.build())
 			<#if data.enchantability != 0>
 			.enchantable(${data.enchantability})
@@ -239,6 +249,15 @@ public class ${name}Item extends FishingRodItem {
 			</#if>
 			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 			.setNoCombineRepair()
+			</#if>
+			<#if data.attributeModifiers?size gt 0>
+			.attributes(ItemAttributeModifiers.builder()
+				<#list data.attributeModifiers as modifier>
+				.add(${modifier.attribute}, new AttributeModifier(
+						ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+						${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+				</#list>
+				.build())
 			</#if>
 		);
 	}
