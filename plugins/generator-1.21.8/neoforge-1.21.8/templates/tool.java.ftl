@@ -107,7 +107,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 				.setNoCombineRepair()
 				</#if>
-				<#if (data.attributeModifiers?size gt 0) && (data.toolType == "Pickaxe" || data.toolType == "Sword" || data.toolType == "Shears"|| data.toolType == "Shield")>
+				<#if (data.attributeModifiers?size gt 0) && (data.toolType == "Pickaxe" || data.toolType == "Sword" || data.toolType == "Shears" || data.toolType == "Shield")>
 				.attributes(<@itemAttributeModifiers (data.toolType == "Pickaxe" || data.toolType == "Sword")/>)
 				</#if>
 		);
