@@ -37,7 +37,7 @@
 package ${package}.init;
 
 public class ${JavaModName}BoatTypes {
-	<#compress>
+	<@javacompress>
 	<#list specialentities as entity>
 		public static final EnumProxy<Boat.Type> ${entity.getModElement().getRegistryNameUpper()}_TYPE =
 				new EnumProxy<>(Boat.Type.class, (Supplier<Block>) () -> Blocks.OAK_PLANKS, "${modid}:${entity.getModElement().getRegistryName()}",
@@ -45,5 +45,5 @@ public class ${JavaModName}BoatTypes {
 				<#else>(Supplier<Item>) () -> Items.AIR, ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()},</#if>
 				(Supplier<Item>) () -> Items.STICK, false);
 	</#list>
-	</#compress>
+	</@javacompress>
 }

@@ -23,7 +23,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFile;
-import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.io.FileIO;

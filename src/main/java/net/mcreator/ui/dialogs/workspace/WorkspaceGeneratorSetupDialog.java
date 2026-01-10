@@ -119,7 +119,7 @@ public class WorkspaceGeneratorSetupDialog {
 				dial.hideDialog();
 
 				SwingUtilities.invokeLater(() -> {
-					m.getTabs().showTab(m.workspaceTab);
+					m.getBottomDockRegion().setDockVisibility(MCreator.DOCK_CONSOLE, false);
 					m.getProjectBrowser().reloadTree();
 				});
 			} catch (Exception e) {

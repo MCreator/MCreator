@@ -28,7 +28,6 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -168,7 +167,11 @@ public class MCreatorTabs extends JTabbedPane {
 		if (tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
 			MCREvent.event(new TabEvent.Closed(tab));
 
-			SwingUtilities.invokeLater(() -> removeTabAt(tab.getIndex()));
+			SwingUtilities.invokeLater(() -> {
+				int tabIndex = tab.getIndex();
+				if (tabIndex >= 0)
+					removeTabAt(tabIndex);
+			});
 			this.tabs.remove(tab);
 
 			if (tab.equals(this.current)) {

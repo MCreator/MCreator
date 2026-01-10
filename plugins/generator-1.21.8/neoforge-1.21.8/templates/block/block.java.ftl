@@ -214,7 +214,10 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0f, <@blockProperties/>);
+				super(${data.leavesParticleChance}f,
+						<#if data.leavesParticleType??>${data.leavesParticleType},
+						<#elseif data.tintType == "No tint">ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, ${data.getLeavesParticleColor()}),
+						</#if><@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -793,7 +796,12 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
-	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#elseif blockBase == "Leaves">
+		<#if data.leavesParticleType?? || (data.tintType == "No tint")>
+			<#return "UntintedParticleLeavesBlock">
+		<#else>
+			<#return "TintedParticleLeavesBlock">
+		</#if>
 	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>

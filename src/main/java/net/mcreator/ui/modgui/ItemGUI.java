@@ -39,6 +39,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -137,6 +138,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox enableMeleeDamage = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
 	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1.2, 0, 128000, 0.1));
+
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
@@ -269,6 +272,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel useProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
+		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
@@ -303,7 +307,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+				PanelUtils.pullElementUp(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))),
+				rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -621,6 +626,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(meleePanel), 5, 5)));
 
+		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), attributeModifiersList);
+		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		attributeModifiersPage.add("Center", modifiersEditor);
+		attributeModifiersPage.setOpaque(false);
+
 		page1group.addValidationElement(texture);
 
 		page5group.addValidationElement(musicDiscDescription);
@@ -641,6 +654,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.use_properties"), useProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
+				attributeModifiersList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
 		if (!isEditingMode()) {
@@ -769,6 +784,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		animations.reloadDataLists();
 
+		attributeModifiersList.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
@@ -836,6 +853,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		providedBannerPatterns.setListElements(
 				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
 		animations.setEntries(item.animations);
+		attributeModifiersList.setEntries(item.attributeModifiers);
 
 		updateDamageDependantSettings();
 		updateFoodPanel();
@@ -922,6 +940,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.states = customProperties.getStates();
 
 		item.animations = animations.getEntries();
+		item.attributeModifiers = attributeModifiersList.getEntries();
 
 		return item;
 	}
