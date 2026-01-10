@@ -2286,6 +2286,18 @@ public class TestWorkspaceDataProvider {
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
 		}
+		tool.attributeModifiers = new ArrayList<>();
+		if (!emptyLists) {
+			for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
+				AttributeModifierEntry entry = new AttributeModifierEntry();
+				entry.equipmentSlot = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
+				entry.amount = random.nextDouble(-5, 5);
+				entry.operation = getRandomItem(random,
+						new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+				tool.attributeModifiers.add(entry);
+			}
+		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 		tool.onCrafted = new Procedure("procedure3");
