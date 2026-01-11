@@ -41,7 +41,6 @@ import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefRequestHandlerAdapter;
 import org.cef.network.CefRequest;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +61,7 @@ public class CefUtils {
 
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
-			LOG.info("Initializing JCEF");
+			LOG.info("Initializing JCEF in {} mode", useOSR() ? "OSR" : "WR");
 
 			JCefAppConfig config = JCefAppConfig.getInstance();
 			config.getAppArgsAsList().add("--disable-extensions");
@@ -93,6 +92,7 @@ public class CefUtils {
 			disabledFeatures.add("WebSerial");
 			disabledFeatures.add("NewUsbBackend");
 			disabledFeatures.add("TranslateUI");
+			disabledFeatures.add("MediaRouter");
 
 			if (TestUtil.isRunningInGitHubActions()) {
 				// Flags for CI/CD as it is headless and without GPU
