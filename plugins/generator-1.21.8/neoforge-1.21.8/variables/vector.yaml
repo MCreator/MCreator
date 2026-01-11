@@ -10,16 +10,16 @@ scopes:
     set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
   global_world:
     init: public Vec3 ${var.getName()} = Vec3.ZERO;
-    read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.getCompoundOrEmpty("${var.getName()}")).result().orElse(Vec3.ZERO);
-    write: nbt.put("${var.getName()}", (CompoundTag) Vec3.CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElseGet(CompoundTag::new));
+    read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.get("${var.getName()}")).result().orElse(Vec3.ZERO);
+    write: nbt.put("${var.getName()}", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, ${var.getName()}).result().orElseGet(CompoundTag::new));
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
       <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
   global_map:
     init: public Vec3 ${var.getName()} = Vec3.ZERO;
-    read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.getCompoundOrEmpty("${var.getName()}")).result().orElse(Vec3.ZERO);
-    write: nbt.put("${var.getName()}", (CompoundTag) Vec3.CODEC.encode(${var.getName()}, NbtOps.INSTANCE, new CompoundTag()).result().orElseGet(CompoundTag::new));
+    read: ${var.getName()} = Vec3.CODEC.parse(NbtOps.INSTANCE, nbt.get("${var.getName()}")).result().orElse(Vec3.ZERO);
+    write: nbt.put("${var.getName()}", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, ${var.getName()}).result().orElseGet(CompoundTag::new));
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
