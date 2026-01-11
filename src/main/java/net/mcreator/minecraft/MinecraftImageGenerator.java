@@ -848,7 +848,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateBlockIcon(Image top, Image left, Image front) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			Point2D t1 = new Point2D.Double(15.5, 0.2), f2 = new Point2D.Double(2, 24.5), r3 = new Point2D.Double(29.5,
 					24), t2f1 = new Point2D.Double(1.5, 7.6), t4r4 = new Point2D.Double(29.9,
@@ -876,7 +876,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateSlabIcon(Image top, Image side) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			Point2D t1 = new Point2D.Double(16, 8), t2 = new Point2D.Double(2, 16), t3 = new Point2D.Double(16,
 					24), t4 = new Point2D.Double(30, 16), f1 = new Point2D.Double(2, 7.6), f2 = new Point2D.Double(2,
@@ -904,7 +904,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateTrapdoorIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			Point2D t1 = new Point2D.Double(16, 13), t2 = new Point2D.Double(2, 21), t3 = new Point2D.Double(16,
 					28), t4 = new Point2D.Double(30, 21), f1 = new Point2D.Double(2, 20.6), f2 = new Point2D.Double(2,
@@ -933,7 +933,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateStairsIcon(Image top, Image side) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			Point2D t1 = new Point2D.Double(15.5, 0.2), f2 = new Point2D.Double(2, 24.5), r3 = new Point2D.Double(29.5,
 					24), t2f1 = new Point2D.Double(1.5, 7.6), t4r4 = new Point2D.Double(29.9,
@@ -976,7 +976,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateWallIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 			g2d.scale(0.88, 1);
 
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 4, 13, 6, 0, 0, 5), null, null);
@@ -994,7 +994,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateFenceIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			g2d.scale(0.88, 1);
 
@@ -1027,7 +1027,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateFenceGateIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			g2d.translate(0, 1);
 			g2d.scale(1, 1.1547);
@@ -1053,7 +1053,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateEndRodIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			g2d.scale(1, 1.15);
 
@@ -1079,7 +1079,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generatePressurePlateIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 			g2d.scale(0.88, 1);
 
 			g2d.drawImage(ImageUtils.generateCuboidImage(texture, 14, 2, 14, 1, 0, 1), null, null);
@@ -1095,7 +1095,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static Image generateButtonIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 			g2d.scale(1, 1.15);
 			g2d.translate(0, -8);
 
@@ -1115,7 +1115,7 @@ public class MinecraftImageGenerator {
 					new Rectangle(2, 0, 16, 16));
 
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2d.scale(1.6, 1.5);
 			g2d.translate(-6, -6);
@@ -1133,7 +1133,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static BufferedImage generatePotionIcon(Color color) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			g2d.drawImage(ImageUtils.resize(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
 							new ResourcePointer("templates/textures/texturemaker/potion_fluid_bright.png")), color, true)
@@ -1154,7 +1154,7 @@ public class MinecraftImageGenerator {
 		 */
 		public static BufferedImage generatePotionEffectIcon(Image icon) {
 			BufferedImage out = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D) out.getGraphics();
+			Graphics2D g2d = out.createGraphics();
 
 			g2d.setColor(new Color(50, 50, 50));
 			g2d.fillRect(2, 2, 24, 24);
