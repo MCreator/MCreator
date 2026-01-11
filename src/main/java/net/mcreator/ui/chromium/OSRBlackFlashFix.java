@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-public class OSRBlackFlashFix {
+final class OSRBlackFlashFix {
 
 	private static final Logger LOG = LogManager.getLogger(OSRBlackFlashFix.class);
 

@@ -28,7 +28,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CefEventUtils {
+final class CefEventUtils {
 
 	private static final Map<Integer, Integer> CEF_2_JAVA_KEYCODES = new HashMap<>();
 	private static final Map<Integer, Integer> CEF_2_JAVA_MODIFIERS = new HashMap<>();
