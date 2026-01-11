@@ -14,20 +14,16 @@ body {
     fill: var(--backgroundColor) !important;
 }
 
-.thrasos-renderer .blocklyPath {
-    stroke: var(--altBackgroundColor);
-}
-
 ::-webkit-scrollbar-track {
-    background: var(--altBackgroundColor);
+    background: var(--backgroundColorBrighter);
 }
 
 ::-webkit-scrollbar-corner {
-    background: var(--altBackgroundColor);
+    background: var(--backgroundColorBrighter);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--backgroundColor);
+    background: var(--backgroundColorBrighter);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -53,7 +49,7 @@ body {
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-    fill: var(--backgroundColor);
+    fill: var(--backgroundColorBrighter);
 }
 
 .blocklyScrollbarVertical:hover .blocklyScrollbarHandle {
@@ -61,7 +57,7 @@ body {
 }
 
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-    fill: var(--backgroundColor);
+    fill: var(--backgroundColorBrighter);
 }
 
 .blocklyScrollbarHorizontal:hover .blocklyScrollbarHandle {
@@ -113,4 +109,8 @@ body {
 .blocklyHtmlTextAreaInput {
     background: var(--backgroundColor);
     color: var(--foregroundColor);
+}
+
+.thrasos-renderer .blocklyPath {
+    stroke: var(--altBackgroundColor);
 }
