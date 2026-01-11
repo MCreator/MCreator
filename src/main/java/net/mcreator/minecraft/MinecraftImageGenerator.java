@@ -49,7 +49,7 @@ public class MinecraftImageGenerator {
 		if (width < 10)
 			width = 10;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 		g.setColor(new Color(198, 198, 198)); //filler color
 		g.fillRect(3, 3, width - 6, height - 6);
 
@@ -78,6 +78,8 @@ public class MinecraftImageGenerator {
 		g.drawLine(width - 1, height - 3, width - 3, height - 1); //kot desno spodaj
 		g.drawLine(0, height - 4, 3, height - 1); //kot levo spodaj
 
+		g.dispose();
+
 		return bi;
 	}
 
@@ -87,7 +89,7 @@ public class MinecraftImageGenerator {
 		if (width < 5)
 			width = 5;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		g.setColor(new Color(111, 111, 111));
 		g.fillRect(1, 1, width - 2, height - 2);
@@ -106,6 +108,8 @@ public class MinecraftImageGenerator {
 		g.drawLine(0, height - 1, width - 1, height - 1); // edge bottom
 		g.drawLine(0, 1, 0, height - 2); // edge left
 
+		g.dispose();
+
 		return bi;
 	}
 
@@ -115,7 +119,7 @@ public class MinecraftImageGenerator {
 		if (width < 3)
 			width = 3;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		g.setColor(new Color(0, 0, 0)); // filler color
 		g.fillRect(1, 1, width - 2, height - 2);
@@ -126,13 +130,15 @@ public class MinecraftImageGenerator {
 		g.drawLine(0, height - 1, width - 1, height - 1);
 		g.drawLine(0, 1, 0, height - 2);
 
+		g.dispose();
+
 		return bi;
 	}
 
 	public static BufferedImage generateItemSlot() {
 		int width = 18, height = 18;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		g.setColor(new Color(139, 139, 139)); // filler color
 		g.fillRect(0, 0, width, height);
@@ -149,13 +155,15 @@ public class MinecraftImageGenerator {
 		g.fillRect(width - 1, 0, 1, 1);
 		g.fillRect(0, height - 1, 1, 1);
 
+		g.dispose();
+
 		return bi;
 	}
 
 	public static BufferedImage generateCheckbox() {
 		int width = 20, height = 20;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		g.setColor(new Color(0x2c2c2c)); //filler color
 		g.fillRect(0, 0, width, height);
@@ -165,6 +173,8 @@ public class MinecraftImageGenerator {
 		g.drawLine(0, 1, 0, height - 1); //left border
 		g.drawLine(width - 1, 0, width - 1, height - 1); //right border
 		g.drawLine(0, height - 1, width - 2, height - 1); //bottom border
+
+		g.dispose();
 
 		return bi;
 	}
@@ -175,7 +185,7 @@ public class MinecraftImageGenerator {
 		if (width < 5)
 			width = 5;
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		g.setColor(new Color(0x2c2c2c)); //filler color
 		g.fillRect(0, 0, width, height);
@@ -186,6 +196,8 @@ public class MinecraftImageGenerator {
 		g.drawLine(width - 1, 0, width - 1, height - 1); //right border
 		g.drawLine(0, height - 1, width - 2, height - 1); //bottom border
 
+		g.dispose();
+
 		return bi;
 	}
 
@@ -195,7 +207,7 @@ public class MinecraftImageGenerator {
 		int start1y = 83, start2y = 141;
 		BufferedImage slot = generateItemSlot();
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) bi.getGraphics();
+		Graphics2D g = bi.createGraphics();
 
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 3; j++) {
@@ -204,6 +216,8 @@ public class MinecraftImageGenerator {
 		for (int i = 0; i < 9; i++) {
 			g.drawImage(slot, i * 18 + startx, start2y, null);
 		}
+
+		g.dispose();
 
 		return bi;
 	}
@@ -248,7 +262,7 @@ public class MinecraftImageGenerator {
 
 		public static Image generateArmorPreviewFrame1() {
 			BufferedImage image = new BufferedImage(320, 160, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) image.getGraphics();
+			Graphics2D g = image.createGraphics();
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.0f));
 			g.drawString("HELMET", 5, 72);
@@ -257,16 +271,22 @@ public class MinecraftImageGenerator {
 			g.drawRect(0, 79, 79, 80);
 			g.drawString("CHESTPLATE", 87, 155);
 			g.drawRect(79, 79, 200, 80);
+
+			g.dispose();
+
 			return image;
 		}
 
 		public static Image generateArmorPreviewFrame2() {
 			BufferedImage image = new BufferedImage(320, 160, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) image.getGraphics();
+			Graphics2D g = image.createGraphics();
 			g.setColor(Color.white);
 			g.setFont(g.getFont().deriveFont(12.f));
 			g.drawRect(0, 79, 200, 80);
 			g.drawString("LEGGINGS", 135, 92);
+
+			g.dispose();
+
 			return image;
 		}
 
@@ -1489,7 +1509,7 @@ public class MinecraftImageGenerator {
 
 		public static Image generateBannerPatternPreview() {
 			BufferedImage image = new BufferedImage(210, 210, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) image.getGraphics();
+			Graphics2D g = image.createGraphics();
 			g.setColor(Color.white);
 			g.drawRect(5, 0, 99, 4); // TOP
 			g.drawRect(0, 5, 4, 199); // LEFT
@@ -1497,12 +1517,14 @@ public class MinecraftImageGenerator {
 			g.drawRect(105, 5, 4, 199); // RIGHT
 			g.drawRect(110, 5, 99, 199); // BACK
 			g.drawRect(5, 205, 99, 4); // BOTTOM
+
+			g.dispose();
 			return image;
 		}
 
 		public static Image generateShieldPatternPreview() {
 			BufferedImage image = new BufferedImage(130, 120, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) image.getGraphics();
+			Graphics2D g = image.createGraphics();
 			g.setColor(Color.white);
 			g.drawRect(5, 0, 59, 4); // TOP
 			g.drawRect(0, 5, 4, 109); // LEFT
@@ -1510,6 +1532,8 @@ public class MinecraftImageGenerator {
 			g.drawRect(65, 5, 4, 109); // RIGHT
 			g.drawRect(70, 5, 59, 109); // BACK
 			g.drawRect(5, 115, 59, 4); // BOTTOM
+
+			g.dispose();
 			return image;
 		}
 	}
