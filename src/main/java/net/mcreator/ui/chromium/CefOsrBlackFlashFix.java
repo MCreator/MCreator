@@ -35,9 +35,9 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-final class OSRBlackFlashFix {
+final class CefOsrBlackFlashFix {
 
-	private static final Logger LOG = LogManager.getLogger(OSRBlackFlashFix.class);
+	private static final Logger LOG = LogManager.getLogger(CefOsrBlackFlashFix.class);
 
 	public static void apply(JComponent parent, CefBrowser browser, Component cefComponent) {
 		cefComponent.setBackground(parent.getBackground());
