@@ -39,16 +39,12 @@ final class JcefOsrWheelFix {
 	}
 
 	public void handle(MouseWheelEvent e) {
-		if (browser == null)
-			return;
-
 		int rotation = e.getWheelRotation();
 		if (rotation == 0)
 			return;
 
-		if (OS.getOS() == OS.LINUX) {
+		if (OS.getOS() == OS.LINUX)
 			rotation = -rotation;
-		}
 
 		int totalUnits = rotation * 120; // Chromium assumes ~120 units per wheel notch
 		int sign = Integer.signum(totalUnits);
