@@ -288,7 +288,7 @@ public class WebView extends JPanel implements Closeable {
 			});
 		}
 
-		// In OSR mode, there is a black flash at initialization that can be prevented with this hack
+		// In OSR mode, there is a black flash at initialization that can be partially prevented with this hack
 		// below that prevents rendering of the Chromium component during initialization
 		if (CefUtils.useOSR()) {
 			OSRBlackFlashFix.apply(this, browser, cefComponent);
