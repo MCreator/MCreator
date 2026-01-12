@@ -232,24 +232,26 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage darken(BufferedImage image) {
-		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		Graphics2D g2d = image.createGraphics();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				g2d.setPaint(new Color(image.getRGB(x, y), true).darker());
 				g2d.drawLine(x, y, x, y);
 			}
 		}
+		g2d.dispose();
 		return image;
 	}
 
 	public static BufferedImage brighten(BufferedImage image) {
-		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		Graphics2D g2d = image.createGraphics();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				g2d.setPaint(new Color(image.getRGB(x, y), true).brighter());
 				g2d.drawLine(x, y, x, y);
 			}
 		}
+		g2d.dispose();
 		return image;
 	}
 
@@ -343,7 +345,7 @@ public class ImageUtils {
 	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z, int xOff,
 			int yOff, int zOff) {
 		BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = (Graphics2D) out.getGraphics();
+		Graphics2D g2d = out.createGraphics();
 
 		int xTot = x + xOff;
 		int yTot = y + yOff;
@@ -529,6 +531,7 @@ public class ImageUtils {
 		Graphics2D graphics = bi.createGraphics();
 		graphics.drawImage(first, xFirst, yFirst, null);
 		graphics.drawImage(second, xSecond, ySecond, null);
+		graphics.dispose();
 		return bi;
 	}
 
