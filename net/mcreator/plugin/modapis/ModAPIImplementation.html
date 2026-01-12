@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ModAPIImplementation</span>(<a href="ModAPI.html" title="class in net.mcreator.plugin.modapis">ModAPI</a>&nbsp;parent, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gradle, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;update_files, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;resource_paths, boolean&nbsp;requiredWhenEnabled)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">ModAPIImplementation</span>(<a href="ModAPI.html" title="class in net.mcreator.plugin.modapis">ModAPI</a>&nbsp;parent, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gradle, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;update_files, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;resource_paths, boolean&nbsp;requiredWhenEnabled, @Nullable <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionRange)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 </section>
 <section class="summary">
@@ -104,11 +104,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.plugin.modapis.ModAPI,java.lang.String,java.util.List,java.util.Map,boolean)" class="member-name-link">ModAPIImplementation</a><wbr>(<a href="ModAPI.html" title="class in net.mcreator.plugin.modapis">ModAPI</a>&nbsp;parent,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.plugin.modapis.ModAPI,java.lang.String,java.util.List,java.util.Map,boolean,java.lang.String)" class="member-name-link">ModAPIImplementation</a><wbr>(<a href="ModAPI.html" title="class in net.mcreator.plugin.modapis">ModAPI</a>&nbsp;parent,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gradle,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;update_files,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;resource_paths,
- boolean&nbsp;requiredWhenEnabled)</code></div>
+ boolean&nbsp;requiredWhenEnabled,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionRange)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>ModAPIImplementation</code> record class.</div>
 </div>
@@ -166,6 +167,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>update_files</code> record component.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#versionRange()" class="member-name-link">versionRange</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <code>versionRange</code> record component.</div>
+</div>
 </div>
 </div>
 </div>
@@ -184,7 +190,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.plugin.modapis.ModAPI,java.lang.String,java.util.List,java.util.Map,boolean)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.plugin.modapis.ModAPI,java.lang.String,java.util.List,java.util.Map,boolean,java.lang.String)">
 <h3>ModAPIImplementation</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ModAPIImplementation</span><wbr><span class="parameters">(<a href="ModAPI.html" title="class in net.mcreator.plugin.modapis">ModAPI</a>&nbsp;parent,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gradle,
@@ -192,7 +198,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;update_files,
  @Nullable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;resource_paths,
- boolean&nbsp;requiredWhenEnabled)</span></div>
+ boolean&nbsp;requiredWhenEnabled,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionRange)</span></div>
 <div class="block">Creates an instance of a <code>ModAPIImplementation</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -201,6 +209,7 @@ loadScripts(document, 'script');</script>
 <dd><code>update_files</code> - the value for the <code>update_files</code> record component</dd>
 <dd><code>resource_paths</code> - the value for the <code>resource_paths</code> record component</dd>
 <dd><code>requiredWhenEnabled</code> - the value for the <code>requiredWhenEnabled</code> record component</dd>
+<dd><code>versionRange</code> - the value for the <code>versionRange</code> record component</dd>
 </dl>
 </section>
 </li>
@@ -307,6 +316,18 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value of the <code>requiredWhenEnabled</code> record component</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="versionRange()">
+<h3>versionRange</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">versionRange</span>()</div>
+<div class="block">Returns the value of the <code>versionRange</code> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <code>versionRange</code> record component</dd>
 </dl>
 </section>
 </li>

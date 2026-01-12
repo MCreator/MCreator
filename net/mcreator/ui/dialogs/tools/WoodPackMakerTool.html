@@ -177,7 +177,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addWoodPackToWorkspace(net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,java.awt.Color,double)" class="member-name-link">addWoodPackToWorkspace</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addWoodPackToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,java.awt.Color,double)" class="member-name-link">addWoodPackToWorkspace</a><wbr>(<a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a>&nbsp;packMaker,
+ <a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
@@ -197,7 +198,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.tools.AbstractPackMakerTool">Methods inherited from class&nbsp;net.mcreator.ui.dialogs.tools.<a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a></h3>
-<code><a href="AbstractPackMakerTool.html#addGeneratableElementToWorkspace(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)">addGeneratableElementToWorkspace</a>, <a href="AbstractPackMakerTool.html#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)">addTagEntries</a>, <a href="AbstractPackMakerTool.html#checkIfNamesAvailable(net.mcreator.workspace.Workspace,java.lang.String...)">checkIfNamesAvailable</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String)">getCachedTexture</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String...)">getCachedTexture</a></code></div>
+<code><a href="AbstractPackMakerTool.html#addGeneratableElementToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)">addGeneratableElementToWorkspace</a>, <a href="AbstractPackMakerTool.html#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)">addTagEntries</a>, <a href="AbstractPackMakerTool.html#checkIfNamesAvailable(net.mcreator.workspace.Workspace,java.lang.String...)">checkIfNamesAvailable</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String)">getCachedTexture</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String...)">getCachedTexture</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.MCreatorDialog">Methods inherited from class&nbsp;net.mcreator.ui.dialogs.<a href="../MCreatorDialog.html" title="class in net.mcreator.ui.dialogs">MCreatorDialog</a></h3>
 <code><a href="../MCreatorDialog.html#setClosable(boolean)">setClosable</a>, <a href="../MCreatorDialog.html#setSize(int,int)">setSize</a></code></div>
@@ -241,9 +242,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addWoodPackToWorkspace(net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,java.awt.Color,double)">
+<section class="detail" id="addWoodPackToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,java.awt.Color,double)">
 <h3>addWoodPackToWorkspace</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addWoodPackToWorkspace</span><wbr><span class="parameters">(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addWoodPackToWorkspace</span><wbr><span class="parameters">(@Nullable
+ <a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a>&nbsp;packMaker,
+ <a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
