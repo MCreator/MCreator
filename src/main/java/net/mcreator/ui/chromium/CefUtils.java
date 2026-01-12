@@ -53,7 +53,16 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 
+	public static Boolean useOSR = null;
+
 	public static boolean useOSR() {
+		if (useOSR == null) {
+			useOSR = useOSRImpl();
+		}
+		return useOSR;
+	}
+
+	private static boolean useOSRImpl() {
 		if (OS.isMacintosh()) {
 			// On macOS, we need to use WR in all cases, as OSR fails to load JOGL natives in the current JBR JCEF build
 			// WR is quite stable and smooth on macOS anyway
