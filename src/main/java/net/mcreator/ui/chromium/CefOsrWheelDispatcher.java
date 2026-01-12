@@ -27,9 +27,6 @@ import java.awt.event.MouseWheelEvent;
 
 final class JcefOsrWheelFix {
 
-	private static final int CHUNK = 50;
-	private static final int MAX_EVENTS = 12;
-
 	private final CefBrowser browser;
 	private final Component source;
 
@@ -39,30 +36,18 @@ final class JcefOsrWheelFix {
 	}
 
 	public void handle(MouseWheelEvent e) {
-		int rotation = e.getWheelRotation();
-		if (rotation == 0)
-			return;
+		double rotation = e.getPreciseWheelRotation();
 
-		if (OS.getOS() == OS.LINUX)
-			rotation = -rotation;
+		// Chromium has inverted mouse wheel logic on Linux
+		if (OS.getOS() == OS.LINUX || OS.getOS() == OS.MAC)
+			rotation *= -1;
 
-		int totalUnits = rotation * 120; // Chromium assumes ~120 units per wheel notch
-		int sign = Integer.signum(totalUnits);
-		int remaining = Math.abs(totalUnits);
-
-		int sent = 0;
-		while (remaining > 0 && sent < MAX_EVENTS) {
-			int units = Math.min(CHUNK, remaining);
-
-			MouseWheelEvent synthetic = new MouseWheelEvent(source, MouseWheelEvent.MOUSE_WHEEL, e.getWhen(),
-					e.getModifiersEx(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(),
-					e.isPopupTrigger(), MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, // scroll amount
-					units * sign // wheel rotation
-			);
-			browser.sendMouseWheelEvent(synthetic);
-
-			remaining -= units;
-			sent++;
-		}
+		// One wheel tick is 120 units in Chromium
+		int delta = (int) (rotation * 120);
+		MouseWheelEvent synthetic = new MouseWheelEvent(source, MouseWheelEvent.MOUSE_WHEEL, e.getWhen(),
+				e.getModifiersEx(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(),
+				e.isPopupTrigger(), MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, delta);
+		browser.sendMouseWheelEvent(synthetic);
 	}
+
 }

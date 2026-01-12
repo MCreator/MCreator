@@ -292,9 +292,7 @@ public class WebView extends JPanel implements Closeable {
 		// below that prevents rendering of the Chromium component during initialization
 		if (CefUtils.useOSR()) {
 			CefOsrBlackFlashFix.apply(this, browser, cefComponent);
-
-			JcefOsrWheelFix wheelFix = new JcefOsrWheelFix(browser, this);
-			this.addMouseWheelListener(wheelFix::handle);
+			this.addMouseWheelListener(new JcefOsrWheelFix(browser, this)::handle);
 		}
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
