@@ -22,6 +22,7 @@ package net.mcreator.ui.chromium;
 import net.mcreator.Launcher;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.laf.themes.ThemeCSS;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
@@ -98,11 +99,13 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addMessageRouter(this.router);
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
 				false);
-
-		// needed so Blockly is loaded even if it is e.g. hidden in a tab
-		// but not needed and damaging on Windows with non-OSR
-		if (!(OS.isWindows() && !CefUtils.useOSR()) || forcePreload)
-			this.browser.createImmediately();
+		/*
+		 * Immediately create the browser if:
+		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
+		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
+		 */
+		if (forcePreload || TestUtil.isTestingEnvironment())
+			this.browser.createImmediately(); // needed so tests that don't render also work
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
