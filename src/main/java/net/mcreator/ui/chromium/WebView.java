@@ -286,21 +286,16 @@ public class WebView extends JPanel implements Closeable {
 			CefOsrBlackFlashFix.apply(this, browser, cefComponent);
 			this.addMouseWheelListener(new JcefOsrWheelFix(browser, this)::handle);
 		}
-		// In non-OSR mode, if createImmediately is called, the browser will not show until
-		// the parent is resized. We overcome this with the workaround below.
-		else {
-			addHierarchyListener(e -> {
-				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
-					SwingUtilities.invokeLater(() -> {
-						// Force size recalculation since at createImmediately, the size was assumed to be (0,0)
-						Dimension d = cefComponent.getSize();
-						if (d.width > 0 && d.height > 0) {
-							cefComponent.setBounds(cefComponent.getX(), cefComponent.getY(), d.width, d.height);
-						}
-					});
-				}
-			});
-		}
+
+		// If createImmediately is called, the browser will not show until the parent is resized
+		addHierarchyListener(e -> {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
+				SwingUtilities.invokeLater(() -> {
+					cefComponent.invalidate();
+					cefComponent.validate();
+				});
+			}
+		});
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
