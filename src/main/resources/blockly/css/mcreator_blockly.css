@@ -1,17 +1,3 @@
-.whlab > .blocklyFlyoutLabelText {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-    font-size: 14px;
-}
-
-.blocklyTreeLabel {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-    font-size: 13px;
-}
-
-.blocklyText, .blocklyToolboxContents {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-}
-
 ::-webkit-scrollbar {
     width: 7px;
 }
@@ -25,6 +11,19 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+.whlab > .blocklyFlyoutLabelText {
+    font-size: 14px;
+}
+
+.blocklyTreeLabel {
+    font-size: 13px;
+}
+
+.blocklyTreeRow {
+    line-height: 1 !important;
 }
 
 #toolbox {
