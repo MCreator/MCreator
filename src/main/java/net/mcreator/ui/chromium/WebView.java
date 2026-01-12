@@ -22,6 +22,7 @@ package net.mcreator.ui.chromium;
 import net.mcreator.Launcher;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.laf.themes.ThemeCSS;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
@@ -87,6 +88,10 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
+		this(url, false);
+	}
+
+	private WebView(String url, boolean forcePreload) {
 		setLayout(new BorderLayout());
 
 		this.client = CefUtils.createClient();
@@ -95,9 +100,13 @@ public class WebView extends JPanel implements Closeable {
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
 				false);
 
-		// Need to create immediately as if the browser is in a panel that is not shown, it will not start, causing issues
-		// with e.g., calling getXML on the blockly panel that was never shown yet
-		this.browser.createImmediately();
+		/*
+		 * Immediately create the browser if:
+		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
+		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
+		 */
+		if (forcePreload || TestUtil.isTestingEnvironment())
+			this.browser.createImmediately(); // needed so tests that don't render also work
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
@@ -287,16 +296,6 @@ public class WebView extends JPanel implements Closeable {
 			this.addMouseWheelListener(new JcefOsrWheelFix(browser, this)::handle);
 		}
 
-		// If createImmediately is called, the browser will not show until the parent is resized
-		addHierarchyListener(e -> {
-			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
-				SwingUtilities.invokeLater(() -> {
-					cefComponent.invalidate();
-					cefComponent.validate();
-				});
-			}
-		});
-
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
 		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force cursor to default + theme CSS
@@ -450,7 +449,7 @@ public class WebView extends JPanel implements Closeable {
 	public static void preload() {
 		LOG.debug("Preloading CEF WebView");
 		CountDownLatch latch = new CountDownLatch(1);
-		WebView preloader = new WebView("about:blank");
+		WebView preloader = new WebView("about:blank", true);
 		try (preloader) {
 			preloader.addLoadListener(latch::countDown);
 			latch.await();
