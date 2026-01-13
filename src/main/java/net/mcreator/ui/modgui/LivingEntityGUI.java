@@ -275,18 +275,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyChangedListeners.add(listener);
 	}
 
-	private void setDefaultAISet() {
-		blocklyPanel.setXML("""
-				<xml xmlns="https://developers.google.com/blockly/xml">
-				<block type="aitasks_container" deletable="false" x="40" y="40"><next>
-				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
-				<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
-				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
-				<block type="look_around"><field name="condition">null,null</field><next>
-				<block type="swim_in_water"/><field name="condition">null,null</field></next>
-				</block></next></block></next></block></next></block></next></block></xml>""");
-	}
-
 	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
@@ -802,10 +790,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
 					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"AITasksRegenerate").start());
-			if (!isEditingMode()) {
-				setDefaultAISet();
-			}
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML("""
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+						<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+						<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+						<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+						<block type="look_around"><field name="condition">null,null</field><next>
+						<block type="swim_in_water"/><field name="condition">null,null</field></next>
+						</block></next></block></next></block></next></block></next></block></xml>""");
+		}
 
 		aipan.add("North", aitopoveral);
 
@@ -1235,7 +1231,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		if (model != null)
 			mobModel.setSelectedItem(model);
 
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(livingEntity.aixml));
+		blocklyPanel.setInitialXML(livingEntity.aixml);
 
 		enableOrDisableFields();
 

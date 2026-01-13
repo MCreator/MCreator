@@ -214,6 +214,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 	@Nullable private String lastValidXML = null;
 
 	public synchronized String getXML() {
+		// If Blockly JS was loaded, query XML from the workspace using JS
 		if (loaded) {
 			@Nullable String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
 
@@ -234,11 +235,36 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 				TestUtil.failIfTestingEnvironment();
 			}
 		}
+		// In the testing environment, we require XML to be processed through Blockly JS, but
+		// in other cases, return initialXML until the Blockly editor is loaded
+		else if (!TestUtil.isTestingEnvironment()) {
+			return initialXMLBeforeLoad != null ? initialXMLBeforeLoad : "";
+		}
 
 		return "";
 	}
 
-	public void setXML(String xml) {
+	@Nullable private String initialXMLBeforeLoad = null;
+	private boolean initialXMLQueued = false;
+
+	/**
+	 * Sets the initial XML configuration for the Blockly workspace. If the workspace
+	 * has not been loaded yet, the provided XML is stored as the initial XML to be
+	 * applied upon loading. If the workspace is already loaded, the XML is applied
+	 * immediately to the workspace.
+	 *
+	 * @param xml The XML configuration string to set, representing the Blockly workspace structure.
+	 */
+	public void setInitialXML(String xml) {
+		initialXMLBeforeLoad = xml;
+
+		if (!initialXMLQueued) {
+			addTaskToRunAfterLoaded(() -> setXML(initialXMLBeforeLoad));
+			initialXMLQueued = true;
+		}
+	}
+
+	private void setXML(String xml) {
 		executeJavaScriptSynchronously("""
 				workspace.clear();
 				Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('%s'), workspace);

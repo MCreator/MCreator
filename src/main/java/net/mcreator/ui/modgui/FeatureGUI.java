@@ -134,10 +134,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
 					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"FeatureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Feature.XML_BASE);
-			}
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Feature.XML_BASE);
+		}
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
@@ -230,8 +230,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 		refreshPlacementSettings(false);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
+		blocklyPanel.setInitialXML(feature.featurexml);
 	}
 
 	@Override public Feature getElementFromGUI() {
