@@ -592,9 +592,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"ProcedureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(net.mcreator.element.types.Procedure.XML_BASE);
