@@ -273,10 +273,10 @@ public class WebView extends JPanel implements Closeable {
 		});
 
 		if (!OS.isMacintosh()) {
-			// On non MacOS systems, we can directly add the component
+			// On non-macOS systems, we can directly add the component
 			add(cefComponent, BorderLayout.CENTER);
 		} else {
-			// On MacOS systems, we need to add the component only when the webview is shown
+			// On macOS systems, we need to add the component only when the webview is shown
 			// so when other webview can take over focus when they are showing instead of this one
 			addHierarchyListener(e -> {
 				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
@@ -300,7 +300,7 @@ public class WebView extends JPanel implements Closeable {
 
 		StringBuilder css = new StringBuilder(ThemeCSS.generateCSS(Theme.current()));
 		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force the cursor to default + theme CSS
-		// Only needed for non-OSR rendering; on OSR, cursor does not flicker and we don't need to force pointer
+		// Only needed for non-OSR rendering; on OSR, the cursor does not flicker, and we don't need to force the pointer
 		if (!CefUtils.useOSR())
 			css.append("* { cursor: default !important; }");
 		addLoadListener(() -> addCSSToDOM(css.toString()));
