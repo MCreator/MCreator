@@ -298,8 +298,12 @@ public class WebView extends JPanel implements Closeable {
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
-		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force cursor to default + theme CSS
-		addLoadListener(() -> addCSSToDOM("* { cursor: default !important; }" + ThemeCSS.generateCSS(Theme.current())));
+		StringBuilder css = new StringBuilder(ThemeCSS.generateCSS(Theme.current()));
+		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force the cursor to default + theme CSS
+		// Only needed for non-OSR rendering; on OSR, cursor does not flicker and we don't need to force pointer
+		if (!CefUtils.useOSR())
+			css.append("* { cursor: default !important; }");
+		addLoadListener(() -> addCSSToDOM(css.toString()));
 	}
 
 	@Override public void removeNotify() {
