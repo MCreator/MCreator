@@ -272,7 +272,7 @@ public class BlocklyPanel extends JFXPanel implements Closeable {
 				""".formatted(escapeXML(xml)));
 
 		ThreadUtil.runOnSwingThread(
-				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(xml))));
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(this))));
 	}
 
 	public void addBlocksFromXML(String xml) {

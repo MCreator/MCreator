@@ -131,9 +131,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"FeatureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(Feature.XML_BASE);
