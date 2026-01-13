@@ -53,10 +53,37 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 
+	public static Boolean useOSR = null;
+
 	public static boolean useOSR() {
-		// On linux, we need to use OSR due to several focus issues
-		// On GitHub actions, we cannot use OSR due to the headless environment not working well with it
-		return OS.isLinux() && !TestUtil.isTestingEnvironment();
+		if (useOSR == null) {
+			useOSR = useOSRImpl();
+		}
+		return useOSR;
+	}
+
+	private static boolean useOSRImpl() {
+		// For test environments, we use WR as it works better with headless environments
+		if (TestUtil.isTestingEnvironment()) {
+			return false;
+		}
+
+		if (OS.isMacintosh()) {
+			// On macOS, we need to use WR in all cases, as OSR fails to load JOGL natives in the current JBR JCEF build
+			// WR is quite stable and smooth on macOS anyway
+			return false;
+		}
+
+		//noinspection IfStatementWithIdenticalBranches
+		if (OS.isWindows()) {
+			// On Windows, we can use WR or OS
+			// WR has less latency between input events and rendering due to direct render pipeline
+			// OSR starts up faster and has less glitching during visibility changes and supports cursor changes
+			return true; // use OSR at this time due to more benefits
+		}
+
+		// On linux, we need to use OSR due to several focus and keyboard transfer issues
+		return true;
 	}
 
 	private static CefApp getCefApp() {
