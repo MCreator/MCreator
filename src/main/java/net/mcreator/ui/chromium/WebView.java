@@ -272,8 +272,26 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
-		if (!OS.isMacintosh()) {
-			// On non-macOS systems, we can directly add the component
+		if (CefUtils.useOSR()) {
+			// On OSR components, we need to handle visibility changes to prevent crashes
+			addHierarchyListener(e -> {
+				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+					if (isShowing()) {
+						// Browser panel should be visible and take full size
+						cefComponent.setVisible(true);
+						cefComponent.setSize(getWidth(), getHeight());
+					} else {
+						// Hidden: set the size to zero to prevent GLCanvas native crashes
+						cefComponent.setVisible(false);
+						cefComponent.setSize(0, 0);
+					}
+					revalidate();
+					repaint();
+				}
+			});
+			add(cefComponent, BorderLayout.CENTER);
+		} else if (!OS.isMacintosh()) {
+			// On non-macOS systems with a non-OSR component, we can directly add the component
 			add(cefComponent, BorderLayout.CENTER);
 		} else {
 			// On macOS systems, we need to add the component only when the webview is shown
