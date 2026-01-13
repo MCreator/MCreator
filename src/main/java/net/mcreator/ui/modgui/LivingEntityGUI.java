@@ -799,7 +799,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
 						<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
 						<block type="look_around"><field name="condition">null,null</field><next>
-						<block type="swim_in_water"/><field name="condition">null,null</field></next>
+						<block type="swim_in_water"><field name="condition">null,null</field></block></next>
 						</block></next></block></next></block></next></block></next></block></xml>""");
 		}
 
