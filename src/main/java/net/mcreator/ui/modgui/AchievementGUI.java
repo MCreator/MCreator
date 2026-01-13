@@ -208,11 +208,11 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
 					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"TriggerRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
-			}
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(
+					"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
+		}
 
 		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
@@ -280,8 +280,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
+		blocklyPanel.setInitialXML(achievement.triggerxml);
 	}
 
 	@Override public Achievement getElementFromGUI() {

@@ -595,10 +595,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(
 					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
 					"ProcedureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
-			}
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(net.mcreator.element.types.Procedure.XML_BASE);
+		}
 
 		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));
 
@@ -663,9 +663,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
 		skipDependencyNullCheck.setSelected(procedure.skipDependencyNullCheck);
+		blocklyPanel.setInitialXML(procedure.procedurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.setXML(procedure.procedurexml);
-
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
 		});
