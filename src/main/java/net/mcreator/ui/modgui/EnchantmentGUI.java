@@ -196,13 +196,12 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
+			blocklyPanel.addChangeListener(changeEvent -> new Thread(() -> regenerateBlockAssemblies(true),
 					"EnchantmentEffectsRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Enchantment.XML_BASE);
-			}
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Enchantment.XML_BASE);
+		}
 
 		JPanel enchantmentEffects = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		ComponentUtils.makeSection(enchantmentEffects, L10N.t("elementgui.enchantment.effects_builder"));
@@ -259,7 +258,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		canGenerateInLootTables.setSelected(enchantment.canGenerateInLootTables);
 		canVillagerTrade.setSelected(enchantment.canVillagerTrade);
 
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(enchantment.effectsxml));
+		blocklyPanel.setInitialXML(enchantment.effectsxml);
 	}
 
 	@Override public Enchantment getElementFromGUI() {
