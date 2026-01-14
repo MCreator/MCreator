@@ -42,7 +42,6 @@ import net.mcreator.ui.dialogs.PlacementHelperDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -132,13 +131,12 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"FeatureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Feature.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Feature.XML_BASE);
+		}
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
@@ -231,8 +229,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 		refreshPlacementSettings(false);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
+		blocklyPanel.setInitialXML(feature.featurexml);
 	}
 
 	@Override public Feature getElementFromGUI() {

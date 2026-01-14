@@ -32,6 +32,7 @@ import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -111,9 +112,15 @@ public abstract class MCreatorFrame extends JFrame
 	}
 
 	protected JComponent getPreloaderPane() {
-		JPanel wrap = new BlockingGlassPane();
-		wrap.add(ComponentUtils.bigCenteredText("workspace.loading",
-				new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
+		JPanel wrap;
+		// For small workspaces, the preloader only briefly flashes, causing bad UX, so we don't show it in such cases
+		if (this instanceof ModMaker && workspace.getModElements().size() > 10) {
+			wrap = new BlockingGlassPane(true);
+			wrap.add(ComponentUtils.bigCenteredText("workspace.loading",
+					new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
+		} else {
+			wrap = new BlockingGlassPane(false);
+		}
 		return wrap;
 	}
 

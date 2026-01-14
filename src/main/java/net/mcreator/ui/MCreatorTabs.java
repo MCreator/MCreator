@@ -28,10 +28,8 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +42,6 @@ public class MCreatorTabs extends JTabbedPane {
 
 	private final List<Tab> tabs = new ArrayList<>();
 	private Tab current;
-	private Tab previous;
 
 	MCreatorTabs() {
 		putClientProperty("JTabbedPane.tabCloseCallback", (IntConsumer) tabIndex -> {
@@ -79,8 +76,6 @@ public class MCreatorTabs extends JTabbedPane {
 						if (SwingUtilities.isMiddleMouseButton(e)) {
 							closeTab(clickedTab);
 						}
-
-						clickedTab.mouseClicked(e);
 					}
 				}
 			}
@@ -128,11 +123,7 @@ public class MCreatorTabs extends JTabbedPane {
 	}
 
 	private Tab showTabOrGetExisting(Object identifier, boolean notify, boolean performUIAction) {
-		if (this.current != null && !this.current.equals(this.previous)) {
-			this.previous = this.current;
-			if (this.previous.tabHiddenListener != null)
-				this.previous.tabHiddenListener.tabHidden(this.previous);
-		}
+		Tab previous = this.current;
 
 		Tab existing = null;
 		for (Tab tab : tabs) {
@@ -158,6 +149,12 @@ public class MCreatorTabs extends JTabbedPane {
 				break;
 			}
 		}
+
+		if (previous != null && !previous.equals(this.current)) {
+			if (previous.tabHiddenListener != null)
+				previous.tabHiddenListener.tabHidden(previous);
+		}
+
 		return existing;
 	}
 
@@ -168,14 +165,12 @@ public class MCreatorTabs extends JTabbedPane {
 		if (tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
 			MCREvent.event(new TabEvent.Closed(tab));
 
-			SwingUtilities.invokeLater(() -> removeTabAt(tab.getIndex()));
+			SwingUtilities.invokeLater(() -> {
+				int tabIndex = tab.getIndex();
+				if (tabIndex >= 0)
+					removeTabAt(tabIndex);
+			});
 			this.tabs.remove(tab);
-
-			if (tab.equals(this.current)) {
-				if (!showTab(this.previous)) {
-					showTab(tabs.getFirst());
-				}
-			}
 
 			if (tab.tabClosedListener != null) {
 				tab.tabClosedListener.tabClosed(tab);
@@ -216,7 +211,6 @@ public class MCreatorTabs extends JTabbedPane {
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
 		private TabHiddenListener tabHiddenListener;
-		private MouseListener clickListener;
 
 		private String text;
 		@Nullable private ImageIcon icon;
@@ -261,11 +255,6 @@ public class MCreatorTabs extends JTabbedPane {
 
 		private int getIndex() {
 			return container.indexOfComponent(content);
-		}
-
-		private void mouseClicked(MouseEvent e) {
-			if (clickListener != null)
-				clickListener.mouseClicked(e);
 		}
 
 		public String getText() {

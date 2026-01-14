@@ -34,6 +34,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
@@ -80,15 +81,15 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+		addMaterialPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(),
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
-	public static void addMaterialPackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
+	public static void addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
-		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(mcreator, workspace, name, type, color, factor);
-		ToolPackMakerTool.addToolPackToWorkspace(mcreator, workspace, name, gem, color, factor);
-		ArmorPackMakerTool.addArmorPackToWorkspace(mcreator, workspace, name, gem, color, factor);
+		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color, factor);
+		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

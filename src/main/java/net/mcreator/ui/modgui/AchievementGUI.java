@@ -44,7 +44,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -206,14 +205,13 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.JSON_TRIGGER);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"TriggerRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "TriggerRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(
+					"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
+		}
 
 		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
@@ -281,8 +279,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
+		blocklyPanel.setInitialXML(achievement.triggerxml);
 	}
 
 	@Override public Achievement getElementFromGUI() {

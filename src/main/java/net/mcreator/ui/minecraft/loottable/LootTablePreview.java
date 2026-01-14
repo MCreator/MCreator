@@ -54,7 +54,7 @@ public class LootTablePreview extends JLayeredPane {
 		BufferedImage container = MinecraftImageGenerator.generateBackground(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 		Image slot = ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 41, 40);
 
-		Graphics2D g = (Graphics2D) container.getGraphics();
+		Graphics2D g = container.createGraphics();
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 3; j++)
 				g.drawImage(slot, i * 41 + 14, j * 40 + 14, null);
