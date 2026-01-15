@@ -1663,6 +1663,19 @@ public class TestWorkspaceDataProvider {
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
 			beitem.foodCanAlwaysEat = _true;
+			beitem.handEquipped = _true;
+			beitem.rarity = getRandomString(random, Arrays.asList("common", "uncommon", "rare", "epic"));
+			beitem.enableCreativeTab = !_true;
+			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beitem.isHiddenInCommands = _true;
+			beitem.movementModifier = _true ? 1 : 0.35;
+			beitem.allowOffHand = _true;
+			beitem.fuelDuration = _true ? 0 : 10;
+			beitem.shouldDespawn = _true;
+			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
+			beitem.animation = getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush", "spyglass" });
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
 			BEBlock block = new BEBlock(modElement);
