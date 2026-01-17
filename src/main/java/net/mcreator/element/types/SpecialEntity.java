@@ -52,6 +52,7 @@ import java.util.List;
 
 	public String entityType;
 	public String name;
+	public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
@@ -63,6 +64,8 @@ import java.util.List;
 
 	public SpecialEntity(ModElement element) {
 		super(element);
+
+		this.rarity = "COMMON";
 	}
 
 	@Override public void finalizeModElementGeneration() {

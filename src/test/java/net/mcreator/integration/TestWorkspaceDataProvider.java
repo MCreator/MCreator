@@ -165,10 +165,10 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
 		} else if (type == ModElementType.SPECIALENTITY) {
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), "Boat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), random, "Boat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), random, "Boat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), random, "ChestBoat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), random, "ChestBoat", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
@@ -2463,12 +2463,14 @@ public class TestWorkspaceDataProvider {
 		return achievement;
 	}
 
-	public static SpecialEntity getSpecialEntityExample(ModElement modElement, String entityType, boolean emptyLists) {
+	public static SpecialEntity getSpecialEntityExample(ModElement modElement, Random random, String entityType,
+			boolean emptyLists) {
 		SpecialEntity specialEntity = new SpecialEntity(modElement);
 		specialEntity.name = modElement.getName();
 		specialEntity.entityType = entityType;
 		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
 		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		specialEntity.rarity =  getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()

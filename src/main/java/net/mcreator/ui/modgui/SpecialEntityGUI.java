@@ -65,6 +65,14 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
 			"elementgui.special_entity.error_entity_needs_item_texture");
 
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -79,7 +87,7 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		entityTexture.setAddPNGExtension(false);
 		itemTexture.setOpaque(false);
 
-		JPanel properties = new JPanel(new GridLayout(5, 2, 5, 2));
+		JPanel properties = new JPanel(new GridLayout(6, 2, 5, 2));
 		properties.setOpaque(false);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_type"),
@@ -97,6 +105,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/item_texture"),
 				L10N.label("elementgui.special_entity.item_texture")));
 		properties.add(PanelUtils.centerInPanel(itemTexture));
+
+		properties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		properties.add(rarity);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
@@ -133,6 +145,7 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		name.setText(entity.name);
 		entityTexture.setTextureFromTextureName(entity.entityTexture.getRawTextureName());
 		itemTexture.setTexture(entity.itemTexture);
+		rarity.setSelectedItem(entity.rarity);
 		creativeTabs.setListElements(entity.creativeTabs);
 	}
 
@@ -142,6 +155,7 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		entity.name = name.getText();
 		entity.entityTexture = new TextureHolder(mcreator.getWorkspace(), entityTexture.getTextureName());
 		entity.itemTexture = itemTexture.getTextureHolder();
+		entity.rarity = rarity.getSelectedItem();
 		entity.creativeTabs = creativeTabs.getListElements();
 		return entity;
 	}
