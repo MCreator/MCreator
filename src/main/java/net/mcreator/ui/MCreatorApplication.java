@@ -18,7 +18,6 @@
 
 package net.mcreator.ui;
 
-import javafx.application.Platform;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -38,6 +37,8 @@ import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.impl.AboutAction;
+import net.mcreator.ui.chromium.CefUtils;
+import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -113,6 +114,9 @@ public final class MCreatorApplication {
 			taskbarIntegration = new TaskbarIntegration();
 
 			splashScreen.setProgress(25, "Loading interface components");
+
+			// preload CEF into RAM so it loads faster when needed
+			WebView.preload();
 
 			// preload help entries cache
 			HelpLoader.preloadCache();
@@ -377,13 +381,15 @@ public final class MCreatorApplication {
 
 		discordClient.close(); // close discord client
 
-		// we dispose all windows and exit fx platform
+		// dispose all windows
 		try {
-			LOG.debug("Stopping AWT and FX threads");
+			LOG.debug("Stopping AWT thread");
 			Arrays.stream(Window.getWindows()).forEach(Window::dispose);
-			Platform.exit();
 		} catch (Exception ignored) {
 		}
+
+		// Close CEF
+		CefUtils.close();
 
 		try {
 			PluginLoader.INSTANCE.close();
