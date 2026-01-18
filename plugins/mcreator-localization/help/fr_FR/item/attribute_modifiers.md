@@ -1,0 +1,1 @@
+Ces modificateurs d'attributs sont appliqués à l'entité lorsque l'item est équipé dans les emplacements spécifiés.
