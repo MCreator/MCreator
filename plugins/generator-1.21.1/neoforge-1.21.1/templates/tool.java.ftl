@@ -91,8 +91,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			TOOL_TIER,
 			</#if>
 			new Item.Properties()
-				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
-				.durability(${data.usageCount})
+				<#if data.toolType == "Shears" || data.toolType == "Shield">
+					<#if data.usageCount != 0>
+					.durability(${data.usageCount})
+					<#else>
+					.stacksTo(1)
+					</#if>
 				</#if>
 				<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
 				.attributes(<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>)
@@ -191,6 +195,8 @@ public class ${name}Item extends Item {
 		super(new Item.Properties()
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
@@ -228,6 +234,8 @@ public class ${name}Item extends FishingRodItem {
 		super(new Item.Properties()
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
@@ -239,9 +247,9 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-    	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-    	}
+		}
 	</#if>
 
 	@Override public int getEnchantmentValue() {
