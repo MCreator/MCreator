@@ -97,13 +97,12 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"CommandRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Command.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Command.XML_BASE);
+		}
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
@@ -149,8 +148,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		commandName.setText(command.commandName);
 		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(command.argsxml));
+		blocklyPanel.setInitialXML(command.argsxml);
 	}
 
 	@Override public Command getElementFromGUI() {

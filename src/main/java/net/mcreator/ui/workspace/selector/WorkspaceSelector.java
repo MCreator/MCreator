@@ -292,7 +292,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		userTip.setOpaque(true);
 		ComponentUtils.deriveFont(userTip, 11);
 		userTip.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 0));
-		userTip.setForeground(Theme.current().getAltBackgroundColor());
+		userTip.setForeground(Theme.current().getAltBackgroundColor().brighter());
 		userTip.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		recentsList.setBorder(BorderFactory.createEmptyBorder(0, 0, 17, 0));

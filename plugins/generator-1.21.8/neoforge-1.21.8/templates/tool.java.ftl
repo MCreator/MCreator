@@ -70,51 +70,55 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			<#else>
 			properties
 			</#if>
-				<#if data.toolType == "Pickaxe">
-				.pickaxe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
-				<#elseif data.toolType == "Sword">
-				.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
-				<#elseif data.toolType == "MultiTool">
-				.attributes(ItemAttributeModifiers.builder()
-						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
-								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
-								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-						.build())
-				<#elseif data.toolType == "Shield">
+			<#if data.toolType == "Pickaxe">
+			.pickaxe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "Sword">
+			.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "MultiTool">
+			.attributes(ItemAttributeModifiers.builder()
+					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
+							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					.build())
+			<#elseif data.toolType == "Shield">
+			.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+			.component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
+			.equippableUnswappable(EquipmentSlot.OFFHAND)
+			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(
+				0.25f,
+				1,
+				List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0, 1)),
+				new BlocksAttacks.ItemDamageFunction(3, 1, 1),
+				Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+				Optional.of(SoundEvents.SHIELD_BLOCK),
+				Optional.of(SoundEvents.SHIELD_BREAK)
+			))
+			<#elseif data.toolType == "Shears">
+			.component(DataComponents.TOOL, ShearsItem.createToolProperties())
+				<#if data.repairItems?has_content>
 				.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
-				.component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
-				.equippableUnswappable(EquipmentSlot.OFFHAND)
-            	.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(
-					0.25f,
-					1,
-					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0, 1)),
-					new BlocksAttacks.ItemDamageFunction(3, 1, 1),
-					Optional.of(DamageTypeTags.BYPASSES_SHIELD),
-					Optional.of(SoundEvents.SHIELD_BLOCK),
-					Optional.of(SoundEvents.SHIELD_BREAK)
-				))
-				<#elseif data.toolType == "Shears">
-				.component(DataComponents.TOOL, ShearsItem.createToolProperties())
-					<#if data.repairItems?has_content>
-					.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
-					</#if>
 				</#if>
-				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
+			</#if>
+			<#if data.toolType == "Shears" || data.toolType == "Shield">
+				<#if data.usageCount != 0>
 				.durability(${data.usageCount})
+				<#else>
+				.stacksTo(1)
 				</#if>
-				<#if data.rarity != "COMMON">
-				.rarity(Rarity.${data.rarity})
-				</#if>
-				<#if data.immuneToFire>
-				.fireResistant()
-				</#if>
-				<#if data.enchantability != 0 && data.toolType=="Shears">
-				.enchantable(${data.enchantability})
-				</#if>
-				<#if data.stayInGridWhenCrafting && data.usageCount != 0>
-				.setNoCombineRepair()
-				</#if>
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
+			</#if>
+			<#if data.immuneToFire>
+			.fireResistant()
+			</#if>
+			<#if data.enchantability != 0 && data.toolType=="Shears">
+			.enchantable(${data.enchantability})
+			</#if>
+			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
+			.setNoCombineRepair()
+			</#if>
 		);
 	}
 
@@ -191,6 +195,8 @@ public class ${name}Item extends Item {
 		super(properties
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
 			</#if>
 			<#if data.rarity != "COMMON">
 			.rarity(Rarity.${data.rarity})
@@ -235,6 +241,8 @@ public class ${name}Item extends FishingRodItem {
 		super(properties
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
 			</#if>
 			<#if data.rarity != "COMMON">
 			.rarity(Rarity.${data.rarity})

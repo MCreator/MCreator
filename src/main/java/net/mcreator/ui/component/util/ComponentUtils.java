@@ -82,9 +82,11 @@ public class ComponentUtils {
 	}
 
 	public static void makeSection(JComponent input, String title) {
-		input.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1), title, TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, null, Theme.current().getForegroundColor()));
+		input.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2),
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
+						TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
+						Theme.current().getAltForegroundColor())));
 	}
 
 	public static void borderWrap(JComponent input) {
@@ -99,9 +101,9 @@ public class ComponentUtils {
 		p.add(gor);
 		p.setOpaque(false);
 		p.setPreferredSize(new Dimension(94, 94));
-		p.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 1), text, TitledBorder.LEADING,
-						TitledBorder.BOTTOM, gor.getFont(), color));
+		p.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor(), 1), text, TitledBorder.LEADING,
+				TitledBorder.BOTTOM, null, color));
 		return p;
 	}
 
