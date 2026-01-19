@@ -254,9 +254,9 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-    	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-    	}
+		}
 	</#if>
 
 	@Override public int getEnchantmentValue() {
