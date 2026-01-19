@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.SpecialEntity;
@@ -33,6 +34,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -75,6 +78,9 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	);
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
+	private ProcedureSelector onTickUpdate;
+	private ProcedureSelector onPlayerCollidesWith;
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public SpecialEntityGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -86,6 +92,13 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	@Override protected void initGUI() {
 		entityTexture.setAddPNGExtension(false);
 		itemTexture.setOpaque(false);
+
+		onTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
+				L10N.t("elementgui.living_entity.event_mob_tick_update"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onPlayerCollidesWith = new ProcedureSelector(this.withEntry("entity/when_player_collides"), mcreator,
+				L10N.t("elementgui.living_entity.event_player_collides_with"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
 
 		JPanel properties = new JPanel(new GridLayout(6, 2, 5, 2));
 		properties.setOpaque(false);
@@ -122,7 +135,14 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(properties)).validate(page1group);
+		JPanel procedureTriggers = new JPanel(new GridLayout(1, 2, 5, 5));
+		procedureTriggers.setOpaque(false);
+		procedureTriggers.add(onTickUpdate);
+		procedureTriggers.add(onPlayerCollidesWith);
+
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(properties)).validate(
+				page1group);
+		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(procedureTriggers));
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
@@ -138,6 +158,12 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		entityTexture.reload();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onTickUpdate.refreshListKeepSelected(context);
+		onPlayerCollidesWith.refreshListKeepSelected(context);
 	}
 
 	@Override protected void openInEditingMode(SpecialEntity entity) {
@@ -147,6 +173,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		itemTexture.setTexture(entity.itemTexture);
 		rarity.setSelectedItem(entity.rarity);
 		creativeTabs.setListElements(entity.creativeTabs);
+		onTickUpdate.setSelectedProcedure(entity.onTickUpdate);
+		onPlayerCollidesWith.setSelectedProcedure(entity.onPlayerCollidesWith);
 	}
 
 	@Override public SpecialEntity getElementFromGUI() {
@@ -157,6 +185,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		entity.itemTexture = itemTexture.getTextureHolder();
 		entity.rarity = rarity.getSelectedItem();
 		entity.creativeTabs = creativeTabs.getListElements();
+		entity.onTickUpdate = onTickUpdate.getSelectedProcedure();
+		entity.onPlayerCollidesWith = onPlayerCollidesWith.getSelectedProcedure();
 		return entity;
 	}
 

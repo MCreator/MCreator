@@ -23,6 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -57,6 +58,9 @@ import java.util.List;
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+
+	public Procedure onTickUpdate;
+	public Procedure onPlayerCollidesWith;
 
 	private SpecialEntity() {
 		this(null);

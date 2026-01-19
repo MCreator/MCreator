@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 package ${package}.entity;
 
@@ -42,5 +43,34 @@ public class ${name}Entity extends ${extendsClass} {
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world, ${JavaModName}Items.${REGISTRYNAME});
 	}
+
+	<#if hasProcedure(data.onTickUpdate)>
+	@Override public void baseTick() {
+		super.baseTick();
+		<#if hasProcedure(data.onTickUpdate)>
+			<@procedureCode data.onTickUpdate, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level()"
+			}/>
+		</#if>
+	}
+    </#if>
+
+	<#if hasProcedure(data.onPlayerCollidesWith)>
+	@Override public void playerTouch(Player sourceentity) {
+		super.playerTouch(sourceentity);
+		<@procedureCode data.onPlayerCollidesWith, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "this",
+			"sourceentity": "sourceentity",
+			"world": "this.level()"
+		}/>
+	}
+    </#if>
 }
 <#-- @formatter:off -->

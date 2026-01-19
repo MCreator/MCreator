@@ -2475,6 +2475,10 @@ public class TestWorkspaceDataProvider {
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		if (!emptyLists) {
+			specialEntity.onTickUpdate = new Procedure("procedure1");
+			specialEntity.onPlayerCollidesWith = new Procedure("procedure2");
+		}
 
 		return specialEntity;
 	}
