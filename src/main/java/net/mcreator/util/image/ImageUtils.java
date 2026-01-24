@@ -232,24 +232,26 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage darken(BufferedImage image) {
-		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		Graphics2D g2d = image.createGraphics();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				g2d.setPaint(new Color(image.getRGB(x, y), true).darker());
 				g2d.drawLine(x, y, x, y);
 			}
 		}
+		g2d.dispose();
 		return image;
 	}
 
 	public static BufferedImage brighten(BufferedImage image) {
-		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		Graphics2D g2d = image.createGraphics();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				g2d.setPaint(new Color(image.getRGB(x, y), true).brighter());
 				g2d.drawLine(x, y, x, y);
 			}
 		}
+		g2d.dispose();
 		return image;
 	}
 
@@ -343,7 +345,7 @@ public class ImageUtils {
 	public static BufferedImage generateCuboidImage(Image top, Image front, Image side, int x, int y, int z, int xOff,
 			int yOff, int zOff) {
 		BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = (Graphics2D) out.getGraphics();
+		Graphics2D g2d = out.createGraphics();
 
 		int xTot = x + xOff;
 		int yTot = y + yOff;
@@ -428,16 +430,53 @@ public class ImageUtils {
 	}
 
 	private static BufferedImage resizeImageWithAA(BufferedImage originalImage, int w, int h) {
-		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
-			return originalImage;
+		int srcW = originalImage.getWidth();
+		int srcH = originalImage.getHeight();
 
-		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(originalImage, 0, 0, w, h, null);
-		g.dispose();
-		return resizedImage;
+		if (srcW == w && srcH == h) { // No resize needed
+			return originalImage;
+		}
+
+		if (w > srcW || h > srcH) { // Upscaling -> bicubic
+			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			g.drawImage(originalImage, 0, 0, w, h, null);
+			g.dispose();
+			return resized;
+		}
+
+		if (w < srcW / 2 || h < srcH / 2) { // Progressive bilinear for heavy reduction (more than 50%)
+			return downscaleInSteps(originalImage, w, h);
+		} else { // Light downscale -> single-step bilinear
+			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g.drawImage(originalImage, 0, 0, w, h, null);
+			g.dispose();
+			return resized;
+		}
+	}
+
+	private static BufferedImage downscaleInSteps(BufferedImage src, int targetW, int targetH) {
+		BufferedImage img = src;
+		int w = src.getWidth();
+		int h = src.getHeight();
+
+		while (w != targetW || h != targetH) {
+			if (w > targetW)
+				w = Math.max(targetW, w / 2);
+			if (h > targetH)
+				h = Math.max(targetH, h / 2);
+			BufferedImage tmp = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = tmp.createGraphics();
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2.drawImage(img, 0, 0, w, h, null);
+			g2.dispose();
+			img = tmp;
+		}
+
+		return img;
 	}
 
 	private static Color[][] bufferedImageToColorArray(BufferedImage buf) {
@@ -529,6 +568,7 @@ public class ImageUtils {
 		Graphics2D graphics = bi.createGraphics();
 		graphics.drawImage(first, xFirst, yFirst, null);
 		graphics.drawImage(second, xSecond, ySecond, null);
+		graphics.dispose();
 		return bi;
 	}
 

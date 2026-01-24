@@ -300,7 +300,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.ignitedByLava = true;
 		leavesBlock.flammability = 60;
 		leavesBlock.fireSpreadSpeed = 30;
-		leavesBlock.lightOpacity = 1;
 		leavesBlock.creativeTabs = List.of(new TabEntry(workspace, "DECORATIONS"));
 		leavesBlock.reactionToPushing = "DESTROY";
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, leavesBlock);
@@ -320,7 +319,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsBlock.ignitedByLava = true;
 		stairsBlock.flammability = 20;
 		stairsBlock.fireSpreadSpeed = 5;
-		stairsBlock.lightOpacity = 0;
 		stairsBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, stairsBlock);
 
@@ -339,7 +337,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabBlock.ignitedByLava = true;
 		slabBlock.flammability = 20;
 		slabBlock.fireSpreadSpeed = 5;
-		slabBlock.lightOpacity = 0;
 		slabBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, slabBlock);
 
@@ -356,7 +353,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceBlock.ignitedByLava = true;
 		fenceBlock.flammability = 20;
 		fenceBlock.fireSpreadSpeed = 5;
-		fenceBlock.lightOpacity = 0;
 		fenceBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceBlock);
 
@@ -373,7 +369,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceGateBlock.ignitedByLava = true;
 		fenceGateBlock.flammability = 20;
 		fenceGateBlock.fireSpreadSpeed = 5;
-		fenceGateBlock.lightOpacity = 0;
 		fenceGateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, fenceGateBlock);
 
@@ -392,7 +387,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		doorBlock.destroyTool = "axe";
 		doorBlock.noteBlockInstrument = "bass";
 		doorBlock.ignitedByLava = true;
-		doorBlock.lightOpacity = 0;
 		doorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, doorBlock);
 
@@ -409,7 +403,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorBlock.destroyTool = "axe";
 		trapdoorBlock.noteBlockInstrument = "bass";
 		trapdoorBlock.ignitedByLava = true;
-		trapdoorBlock.lightOpacity = 0;
 		trapdoorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, trapdoorBlock);
 
@@ -424,7 +417,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateBlock.destroyTool = "axe";
 		pressurePlateBlock.noteBlockInstrument = "bass";
 		pressurePlateBlock.ignitedByLava = true;
-		pressurePlateBlock.lightOpacity = 0;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		pressurePlateBlock.isNotColidable = true;
 		pressurePlateBlock.reactionToPushing = "DESTROY";
@@ -439,7 +431,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		buttonBlock.hardness = 0.5 * factor;
 		buttonBlock.resistance = 0.5 * factor;
 		buttonBlock.destroyTool = "axe";
-		buttonBlock.lightOpacity = 0;
 		buttonBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		buttonBlock.isNotColidable = true;
 		buttonBlock.reactionToPushing = "DESTROY";
