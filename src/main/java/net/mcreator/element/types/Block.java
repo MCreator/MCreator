@@ -128,6 +128,7 @@ import java.util.stream.Collectors;
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
+	public boolean hasCustomOpacity;
 	public int lightOpacity;
 
 	public int tickRate;
@@ -252,6 +253,7 @@ import java.util.stream.Collectors;
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
+		this.hasCustomOpacity = true;
 		this.colorOnMap = "DEFAULT";
 		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";

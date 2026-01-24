@@ -1,0 +1,2 @@
+Tham số này điểu khiển liệu mô hình Java tùy chỉnh được chọn có hỗ trợ thành phần trong suốt khi kết xuất không.
+Chỉ bật cái này cho các mô hình có kết cấu trong suốt, vì kết xuất trong suốt có thể dẫn đến hiệu năng giảm khi sử dụng một cách không cần thiết.

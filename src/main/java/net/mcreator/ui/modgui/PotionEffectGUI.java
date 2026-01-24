@@ -66,7 +66,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private JAttributeModifierList modifierList;
+	private final JAttributeModifierList modifierList = new JAttributeModifierList(mcreator, this, true);
 
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;
@@ -82,8 +82,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	}
 
 	@Override protected void initGUI() {
-		modifierList = new JAttributeModifierList(mcreator, this);
-
 		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_applied"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));

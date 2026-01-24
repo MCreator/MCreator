@@ -117,6 +117,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
 
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
@@ -487,7 +488,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 					if (!isEditingMode()) {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
-						lightOpacity.setValue(0);
 					}
 				}
 				case "Leaves" -> {
@@ -495,7 +495,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					transparencyType.setSelectedItem("SOLID");
 					showBlockBaseCard("leaves");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(1);
 						reactionToPushing.setSelectedItem("DESTROY");
 						hasTransparency.setSelected(true);
 						ignitedByLava.setSelected(true);
@@ -506,21 +505,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 					isBonemealable.setSelected(false);
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Fence" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 					}
 				}
 				case "Door" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
@@ -528,7 +524,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				case "PressurePlate", "Button" -> {
 					showBlockBaseCard("blockSetType");
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						reactionToPushing.setSelectedItem("DESTROY");
@@ -541,7 +536,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 						renderType.setSelectedItem(pottedPlantModel);
 						hasBlockItem.setSelected(false);
 						updateBlockItemSettings();
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						transparencyType.setSelectedItem("CUTOUT");
 						hardness.setValue(0d);
@@ -557,7 +551,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						maxStackSize.setValue(16);
@@ -565,7 +558,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 				case null, default -> {
 					if (!isEditingMode()) {
-						lightOpacity.setValue(0);
 						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
 								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
@@ -573,6 +565,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 					}
 				}
 				}
+			} else {
+				showBlockBaseCard("default"); // No block base is selected, show default base settings
 			}
 
 			refreshBlockStatesList();
@@ -584,6 +578,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.addActionListener(e -> {
 			updateTextureOptions();
 			refreshBlockStatesList();
+		});
+
+		hasTransparency.addActionListener(e -> {
+			if (!isEditingMode()) {
+				// We can assume the user wants to make the block fully transparent
+				hasCustomOpacity.setSelected(hasTransparency.isSelected());
+				refreshLightOpacitySetting();
+				lightOpacity.setValue(0);
+			}
 		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -611,7 +614,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		canProvidePower.setOpaque(false);
 
 		blockBasePropertiesPanel.setOpaque(false);
-		blockBasePropertiesPanel.setVisible(false);
+
+		// Card for "default" block base
+		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"),
+						L10N.label("elementgui.block.has_gravity")), hasGravity), "default");
 
 		// Card for block bases with block set type
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
@@ -646,6 +653,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
 				blockBase), blockBasePropertiesPanel, 0, 2);
+
+		showBlockBaseCard("default");
 
 		blockBasePanel.setOpaque(false);
 		ComponentUtils.makeSection(blockBasePanel, L10N.t("elementgui.block.block_base_panel"));
@@ -830,6 +839,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		hardness.setOpaque(false);
 		resistance.setOpaque(false);
+		hasCustomOpacity.setOpaque(false);
 		lightOpacity.setOpaque(false);
 		isNotColidable.setOpaque(false);
 
@@ -855,13 +865,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.luminance")));
 		selp.add(luminance);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
+				L10N.label("elementgui.block.has_custom_opacity")));
+		selp.add(hasCustomOpacity);
+
+		hasCustomOpacity.addActionListener(e -> refreshLightOpacitySetting());
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
 		selp.add(lightOpacity);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_gravity"),
-				L10N.label("elementgui.block.has_gravity")));
-		selp.add(hasGravity);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emissive_rendering"),
 				L10N.label("elementgui.common.emissive_rendering")));
@@ -870,6 +882,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/replaceable"),
 				L10N.label("elementgui.block.is_replaceable")));
 		selp.add(isReplaceable);
+
+		refreshLightOpacitySetting();
 
 		JPanel blockItemSettings = new JPanel(new GridLayout(5, 2, 0, 2));
 		blockItemSettings.setOpaque(false);
@@ -1365,7 +1379,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 				boundingBoxList.modelChanged();
 				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
-					lightOpacity.setValue(0);
+					if (!isEditingMode()) {
+						hasCustomOpacity.setSelected(true);
+						refreshLightOpacitySetting();
+						lightOpacity.setValue(0);
+					}
 				}
 				if (!isEditingMode() && selected.equals(grassBlock)) {
 					transparencyType.setSelectedItem("CUTOUT_MIPPED");
@@ -1620,6 +1638,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		resistance.setEnabled(!isUnbreakable);
 	}
 
+	private void refreshLightOpacitySetting() {
+		lightOpacity.setEnabled(hasCustomOpacity.isSelected());
+	}
+
 	private void refreshVibrationProperties() {
 		boolean isSensitiveToVibration = sensitiveToVibration.isSelected();
 
@@ -1789,6 +1811,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.setSelectedProcedure(block.isBonemealTargetCondition);
 		bonemealSuccessCondition.setSelectedProcedure(block.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(block.onBonemealSuccess);
+		hasCustomOpacity.setSelected(block.hasCustomOpacity);
 		lightOpacity.setValue(block.lightOpacity);
 		transparencyType.setSelectedItem(block.transparencyType);
 		tintType.setSelectedItem(block.tintType);
@@ -1876,6 +1899,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		updateSoundType();
 		updateBlockItemSettings();
 		refreshUnbreakableProperties();
+		refreshLightOpacitySetting();
 		refreshSpawnProperties();
 		refreshBlockStatesList();
 	}
@@ -1925,6 +1949,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isBonemealTargetCondition = isBonemealTargetCondition.getSelectedProcedure();
 		block.bonemealSuccessCondition = bonemealSuccessCondition.getSelectedProcedure();
 		block.onBonemealSuccess = onBonemealSuccess.getSelectedProcedure();
+		block.hasCustomOpacity = hasCustomOpacity.isSelected();
 		block.lightOpacity = (int) lightOpacity.getValue();
 		block.tickRate = (int) tickRate.getValue();
 		block.isCustomSoundType = customSoundType.isSelected();
