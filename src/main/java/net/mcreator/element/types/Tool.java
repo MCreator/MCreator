@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
@@ -72,6 +73,8 @@ import java.util.stream.Collectors;
 
 	@ModElementReference public List<MItemBlock> blocksAffected;
 
+	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
+
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
 
@@ -93,6 +96,7 @@ import java.util.stream.Collectors;
 
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
+		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 
