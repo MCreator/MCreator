@@ -56,7 +56,7 @@ public class StatusBar extends JPanel {
 		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		left.setOpaque(false);
 
-		left.add(new JEmptyBox(5, 5));
+		left.add(new JEmptyBox(6, 5));
 
 		JLabel info = new JLabel(UIRES.get("info"));
 		info.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
@@ -67,7 +67,7 @@ public class StatusBar extends JPanel {
 		});
 		info.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		left.add(info);
-		left.add(new JEmptyBox(3, 3));
+		left.add(new JEmptyBox(9, 3));
 
 		JLabel donate = new JLabel(UIRES.get("donate"));
 		donate.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
@@ -78,7 +78,7 @@ public class StatusBar extends JPanel {
 		});
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		left.add(donate);
-		left.add(new JEmptyBox(3, 3));
+		left.add(new JEmptyBox(9, 3));
 
 		JLabel preferences = new JLabel(UIRES.get("settings"));
 		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));

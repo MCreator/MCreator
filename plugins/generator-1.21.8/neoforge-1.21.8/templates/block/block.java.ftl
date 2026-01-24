@@ -214,7 +214,10 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 			<#elseif data.blockBase == "Leaves">
-				super(0f, <@blockProperties/>);
+				super(${data.leavesParticleChance}f,
+						<#if data.leavesParticleType??>${data.leavesParticleType},
+						<#elseif data.tintType == "No tint">ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, ${data.getLeavesParticleColor()}),
+						</#if><@blockProperties/>);
 			<#elseif data.blockBase == "PressurePlate" || data.blockBase == "TrapDoor" || data.blockBase == "Door">
 				super(BlockSetType.${data.blockSetType}, <@blockProperties/>);
 			<#elseif data.blockBase == "Button">
@@ -325,16 +328,22 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	}
 	</#if>
 
-	<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
-	@Override public boolean propagatesSkylightDown(BlockState state) {
-		return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
-	}
-	</#if>
+	<#if data.hasCustomOpacity>
+		<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
+		@Override public boolean propagatesSkylightDown(BlockState state) {
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
 
-	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
-	@Override public int getLightBlock(BlockState state) {
-		return ${data.lightOpacity};
-	}
+		<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
+		@Override public int getLightBlock(BlockState state) {
+			<#if data.isWaterloggable && data.lightOpacity == 0> <#-- Prevent fully transparent blocks from overriding water opacity -->
+				return propagatesSkylightDown(state) ? 0 : 1;
+			<#else>
+				return ${data.lightOpacity};
+			</#if>
+		}
+		</#if>
 	</#if>
 
 	<#if data.hasTransparency && !data.blockBase?has_content>
@@ -793,7 +802,12 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
-	<#elseif blockBase == "Leaves"><#return "TintedParticleLeavesBlock">
+	<#elseif blockBase == "Leaves">
+		<#if data.leavesParticleType?? || (data.tintType == "No tint")>
+			<#return "UntintedParticleLeavesBlock">
+		<#else>
+			<#return "TintedParticleLeavesBlock">
+		</#if>
 	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>

@@ -1,0 +1,1 @@
+Tham số này xác định tác giả của bức tranh.
