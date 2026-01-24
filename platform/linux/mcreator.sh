@@ -5,37 +5,45 @@
 # ---------------------------------------------------------------------
 #
 
+CDIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$CDIR"
+
 # make launcher desktop file
 if [[ ! -f "mcreator.desktop" ]]; then
 
-pwd=$(pwd)
-
 cat > mcreator.desktop <<EOL
 [Desktop Entry]
-Exec=/bin/bash -c 'cd "${pwd}" && ./mcreator.sh'
+Exec=/bin/bash -c 'cd "${CDIR}" && ./mcreator.sh'
 Type=Application
 Terminal=false
 Name=MCreator
-Icon=${pwd}/icon.png
+Icon=${CDIR}/icon.png
 EOL
 
 chmod +x mcreator.desktop
 
-# Is xdg-user-dir available?
-if ! command -v xdg-user-dir &> /dev/null
-then
-    # Use dynamic desktop directory for other languages (#3123)
+if command -v xdg-user-dir &> /dev/null; then
     userdesktop=$(xdg-user-dir DESKTOP)
 else
     # Fall back to hardcoded ~/Desktop
     userdesktop=~/Desktop
 fi
-cp mcreator.desktop "${userdesktop}"/mcreator.desktop
+
+if [ -d "$userdesktop" ]; then
+    cp mcreator.desktop "${userdesktop}"/mcreator.desktop
+fi
 
 fi
 
 # set the classpath
 export CLASSPATH='./lib/mcreator.jar:./lib/*'
 
-# launch MCreator with bundled java
-./jdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$1"
+if [ -f "./jdk/bin/java" ]; then
+    chmod +x ./jdk/bin/java
+    # launch MCreator with bundled java
+    ./jdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$1"
+else
+    echo "Bundled JRE not found at ./jdk/bin/java!"
+    echo "Using system java instead"
+    java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$1"
+fi
