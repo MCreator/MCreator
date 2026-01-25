@@ -12,7 +12,9 @@ plugins {
 }
 
 repositories {
-    maven { url = "https://repo.gradle.org/gradle/libs-releases" } // for gradle-tooling-api
+    maven { url = "https://repo.gradle.org/gradle/libs-releases" } 
+    mavenCentral()
+    maven { url = "https://nexus.gluonhq.com/nexus/content/repositories/releases" }
     flatDir { dirs 'lib' }
 }
 
@@ -73,7 +75,8 @@ configurations {
             runtimeOnly.extendsFrom macX64
         }
     } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-        if (System.getProperty("os.arch").contains("aarch64") || System.getProperty("os.arch").contains("arm64")) {
+        def arch = System.getProperty("os.arch").toLowerCase()
+        if (arch.contains("aarch64") || arch.contains("arm64")) {
             runtimeOnly.extendsFrom linuxAarch64
         } else {
             runtimeOnly.extendsFrom linux64
@@ -154,7 +157,6 @@ dependencies {
     macX64 "com.formdev:flatlaf:3.7:macos-x86_64@dylib"
     macAarch64 "com.formdev:flatlaf:3.7:macos-arm64@dylib"
     linux64 "com.formdev:flatlaf:3.7:linux-x86_64@so"
-    linuxAarch64 "com.formdev:flatlaf:3.7:linux-aarch64@so"
 
     // test dependencies
     testImplementation platform("org.junit:junit-bom:6.0.2")
@@ -163,7 +165,7 @@ dependencies {
 }
 
 javafx {
-    version = '21.0.8' // 21.0.9 crashes sometimes when adding to clipboard (e.g. Ctrl+C)
+    version = '21.0.1' // 21.0.9 crashes sometimes when adding to clipboard (e.g. Ctrl+C)
     modules = ['javafx.web', 'javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64', 'linuxAarch64']
     // we provide natives during deployment or with SDK
