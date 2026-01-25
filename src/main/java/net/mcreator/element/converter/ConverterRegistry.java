@@ -59,6 +59,7 @@ import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
+import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
@@ -104,7 +105,8 @@ public class ConverterRegistry {
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
 			new BlockLegacyMaterialRemover(),
-			new BlockToBedrockConverter()
+			new BlockToBedrockConverter(),
+			new BlockHasCustomOpacityFixer()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
