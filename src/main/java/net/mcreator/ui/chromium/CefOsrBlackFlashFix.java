@@ -32,7 +32,7 @@ import org.cef.browser.CefPaintEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 final class CefOsrBlackFlashFix {
@@ -43,13 +43,16 @@ final class CefOsrBlackFlashFix {
 		cefComponent.setBackground(parent.getBackground());
 
 		if (cefComponent instanceof GLCanvas glCanvas) {
-			AtomicBoolean firstPaint = new AtomicBoolean(true);
+			// -1 means it is time to render the actual browser
+			AtomicInteger paintCount = new AtomicInteger(0);
 
 			try {
 				Consumer<CefPaintEvent> paintListener = cefPaintEvent -> {
-					if (firstPaint.get()) {
+					// For some reason, hiding the browser for the first two paints (show it on 3rd paint)
+					// foxes the black flash we can observe in some cases
+					if (paintCount.get() != -1 && paintCount.incrementAndGet() == 3) {
+						paintCount.set(-1);
 						glCanvas.display();
-						firstPaint.set(false);
 					}
 				};
 
@@ -58,7 +61,7 @@ final class CefOsrBlackFlashFix {
 				addListener.invoke(browser, paintListener);
 			} catch (Exception e) {
 				// Immediately render if we can't add listener to detect the first paint
-				firstPaint.set(false);
+				paintCount.set(-1);
 
 				LOG.warn("Failed to add paint listener", e);
 			}
@@ -72,7 +75,7 @@ final class CefOsrBlackFlashFix {
 				}
 
 				@Override public void display(GLAutoDrawable drawable) {
-					if (firstPaint.get()) {
+					if (paintCount.get() != -1) { // until we can render browser, render background color
 						GL2 gl = drawable.getGL().getGL2();
 						gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 					} else {
