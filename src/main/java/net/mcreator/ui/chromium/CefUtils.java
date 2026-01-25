@@ -148,6 +148,11 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--use-gl=swiftshader");
 			}
 
+			// Disable GPU compositing for OSR mode. Workaround for https://github.com/chromiumembedded/cef/issues/3826
+			if (useOSR()) {
+				config.getAppArgsAsList().add("--disable-gpu-compositing");
+			}
+
 			config.getAppArgsAsList().add("--disable-features=" + String.join(",", disabledFeatures));
 
 			LOG.debug("JCEF arguments: {}", config.getAppArgsAsList());
