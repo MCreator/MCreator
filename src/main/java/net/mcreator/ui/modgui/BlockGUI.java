@@ -110,10 +110,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final VTextField name = new VTextField(19).requireValue("elementgui.block.error_block_must_have_name")
+	private final VTextField name = new VTextField(18).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private NumberProcedureSelector luminance;
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
@@ -376,6 +376,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onBonemealSuccess = new ProcedureSelector(this.withEntry("block/on_bonemeal_success"), mcreator,
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+
+		luminance = new NumberProcedureSelector(this.withEntry("block/luminance"), mcreator,
+				L10N.t("elementgui.common.luminance"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(0, 0, 15, 1)), 130, Dependency.fromString("blockstate:blockstate"));
 
 		emittedRedstonePower = new NumberProcedureSelector(this.withEntry("block/redstone_power"), mcreator,
 				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
@@ -801,7 +805,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -847,10 +851,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(unbreakable);
 
 		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
-				L10N.label("elementgui.common.luminance")));
-		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
 				L10N.label("elementgui.block.has_custom_opacity")));
@@ -1043,7 +1043,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			blockStatesList.propertiesChanged();
 		});
 
-		ComponentUtils.makeSection(selp, L10N.t("elementgui.common.properties_general"));
+		JComponent selpInnerWrap = PanelUtils.northAndCenterElement(selp, luminance, 2, 2);
+
+		ComponentUtils.makeSection(selpInnerWrap, L10N.t("elementgui.common.properties_general"));
 
 		ComponentUtils.makeSection(blockItemSettings, L10N.t("elementgui.block.properties_block_item"));
 
@@ -1058,7 +1060,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.makeSection(selpWrap, L10N.t("elementgui.common.properties_dropping"));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp, blockItemSettings)),
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpInnerWrap, blockItemSettings)),
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
@@ -1688,6 +1690,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		specialInformation.refreshListKeepSelected(context);
 		emittedRedstonePower.refreshListKeepSelected(context);
+		luminance.refreshListKeepSelected(context);
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);
 		placingCondition.refreshListKeepSelected(context);
@@ -1778,7 +1781,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		stepSound.setSound(block.stepSound);
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
-		luminance.setValue(block.luminance);
+		luminance.setSelectedProcedure(block.luminance);
 		vanillaToolTier.setSelectedItem(block.vanillaToolTier);
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
@@ -1938,7 +1941,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.hitSound = hitSound.getSound();
 		block.placeSound = placeSound.getSound();
 		block.stepSound = stepSound.getSound();
-		block.luminance = (int) luminance.getValue();
+		block.luminance = luminance.getSelectedProcedure();
 		block.unbreakable = unbreakable.isSelected();
 		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
