@@ -486,6 +486,30 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
+  # TX: Hanging Sign templates
+  - template: block/block.java.ftl # Wall hanging sign class
+    condition: "blockBase %= HangingSign"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@[getWallName()]Block.java"
+    variables: "extends_class=WallHangingSignBlock"
+  - template: json/block_item.json.ftl
+    condition:
+      - hasBlockItem
+      - "blockBase %= HangingSign"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/block_states.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block_states.json.ftl # Wall hanging sign blockstates definition
+    condition: "blockBase %= HangingSign"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@[getWallRegistryName()].json"
+  - template: json/block_model_particle.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
 global_templates:
   - template: elementinits/woodtypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
@@ -547,6 +571,7 @@ block_base_properties:
   PressurePlate: [ powered ]
   Button: [ facing, face, powered ]
   Sign: [ facing, rotation, waterlogged ] # includes both standing sign and wall sign properties
+  HangingSign: [ attached, facing, rotation, waterlogged ] # includes both ceiling sign and wall sign properties
 
 localizationkeys:
   - key: item.@modid.@registryname
@@ -642,6 +667,11 @@ tags:
     condition: "blockBase %= Sign"
   - tag: BLOCKS:minecraft:wall_signs
     condition: "blockBase %= Sign"
+    entry: "CUSTOM:@NAME.wall"
+  - tag: BLOCKS:minecraft:ceiling_hanging_signs
+    condition: "blockBase %= HangingSign"
+  - tag: BLOCKS:minecraft:wall_hanging_signs
+    condition: "blockBase %= HangingSign"
     entry: "CUSTOM:@NAME.wall"
 
   - tag: BLOCKS:minecraft:replaceable

@@ -42,7 +42,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
+public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -195,7 +195,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
 				data.blockBase == "Wall" ||
-				data.blockBase == "Sign")>
+				data.blockBase == "Sign" ||
+				data.blockBase == "HangingSign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
@@ -205,13 +206,13 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			.isSuffocating((bs, br, bp) -> false)
 			.isViewBlocking((bs, br, bp) -> false)
 		</#if>
-		<#if var_extends_class! == "WallSignBlock">
+		<#if var_extends_class! == "WallSignBlock" || var_extends_class! == "WallHangingSignBlock">
 			.overrideLootTable(${JavaModName}Blocks.${REGISTRYNAME}.get().getLootTable())
 			.overrideDescription(${JavaModName}Blocks.${REGISTRYNAME}.get().getDescriptionId())
 		</#if>
 	</#macro>
 
-	public <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block(BlockBehaviour.Properties properties) {
+	public ${getClassName()}Block(BlockBehaviour.Properties properties) {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -229,7 +230,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
-			<#elseif data.blockBase == "Sign">
+			<#elseif data.isSign()>
 				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
@@ -784,7 +785,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	</#list>
 
 	<#if data.hasSpecialInformation(w) && !(var_extends_class??)> <#-- Do not generate item class for secondary block templates -->
-	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.isSign()>Sign<#else>Block</#if>Item {
+	public static class Item extends <#if data.isDoubleBlock()>DoubleHighBlock<#elseif data.blockBase! == "Sign">Sign<#elseif data.blockBase! == "HangingSign">HangingSign<#else>Block</#if>Item {
 
 		public Item(Item.Properties properties) {
 			super(${JavaModName}Blocks.${REGISTRYNAME}.get(), <#if data.isSign()>${JavaModName}Blocks.${data.getWallRegistryNameUpper()}.get(), </#if>properties);
@@ -799,6 +800,12 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 </@javacompress>
 <#-- @formatter:on -->
 
+<#function getClassName>
+	<#if var_extends_class! == "WallSignBlock" || var_extends_class! == "WallHangingSignBlock"><#return data.getWallName()>
+	<#else><#return name>
+	</#if>
+</#function>
+
 <#function getBlockClass blockBase="">
 	<#if var_extends_class??><#return var_extends_class>
 	<#elseif data.hasGravity><#return "FallingBlock">
@@ -811,6 +818,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			<#return "TintedParticleLeavesBlock">
 		</#if>
 	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
+	<#elseif blockBase == "HangingSign"><#return "CeilingHangingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>
 </#function>
