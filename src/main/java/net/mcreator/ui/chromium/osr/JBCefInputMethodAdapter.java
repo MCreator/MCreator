@@ -41,8 +41,6 @@ class JBCefInputMethodAdapter implements InputMethodRequests, InputMethodListene
 	}
 
 	@Override public void inputMethodTextChanged(InputMethodEvent event) {
-		CefLog.Debug("InputMethodListener::inputMethodTextChanged(event: %s)", event);
-
 		int committedCharacterCount = event.getCommittedCharacterCount();
 
 		AttributedCharacterIterator text = event.getText();
@@ -58,11 +56,8 @@ class JBCefInputMethodAdapter implements InputMethodRequests, InputMethodListene
 			}
 
 			String committedText = textBuffer.toString();
-			CefRange replacementRange = DEFAULT_RANGE;
 			int relativeCursorPos = 0;
-			CefLog.Debug("CefBrowser::ImeCommitText(compositionText: '%s', replacementRange: %s, selectionRange: %s)",
-					committedText, replacementRange, relativeCursorPos);
-			myBrowser.ImeCommitText(committedText, replacementRange, relativeCursorPos);
+			myBrowser.ImeCommitText(committedText, DEFAULT_RANGE, relativeCursorPos);
 
 			// CEF doesn't notify about changing the selection range after committing. Current data is outdated. The selection range is unknown.
 			mySelectedText = "";
@@ -96,8 +91,6 @@ class JBCefInputMethodAdapter implements InputMethodRequests, InputMethodListene
 	}
 
 	@Override public void caretPositionChanged(InputMethodEvent event) {
-		//
-		CefLog.Debug("InputMethodListener::caretPositionChanged(event: %s)", event);
 	}
 
 	@Override public Rectangle getTextLocation(TextHitInfo offset) {
@@ -107,7 +100,6 @@ class JBCefInputMethodAdapter implements InputMethodRequests, InputMethodListene
 
 		var componentLocation = myMyComponent.getLocationOnScreen();
 		candidateWindowPosition.translate(componentLocation.x, componentLocation.y);
-		CefLog.Debug("InputMethodRequests::getTextLocation(offset: %s) -> %s", offset, candidateWindowPosition);
 		return candidateWindowPosition;
 	}
 
