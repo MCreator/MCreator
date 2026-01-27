@@ -295,10 +295,12 @@ public class WebView extends JPanel implements Closeable {
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
 		StringBuilder css = new StringBuilder(ThemeCSS.generateCSS(Theme.current()));
+
 		// Workaround for https://github.com/JetBrains/jcef/issues/15 - we force the cursor to default + theme CSS
 		// Only needed for non-OSR rendering; on OSR, the cursor does not flicker, and we don't need to force the pointer
 		if (!CefUtils.useOSR())
 			css.append("* { cursor: default !important; }");
+
 		addLoadListener(() -> addCSSToDOM(css.toString()));
 
 		/*
@@ -330,31 +332,38 @@ public class WebView extends JPanel implements Closeable {
 		new CefJavaBridgeHandler(this, bridge, name);
 	}
 
-	public void executeScript(String javaScript) {
-		executeScript(javaScript, false);
-	}
-
-	@Nullable public synchronized String executeScript(String javaScript, boolean requestRetval) {
+	@Nullable public synchronized String executeScript(String javaScript, JSExecutionType executionType) {
 		if (isClosing)
 			return null;
 
 		executeScriptLatch = new CountDownLatch(1);
 		executeScriptResult.set(null);
 
-		String script;
-		if (requestRetval) {
-			script = """
+		String script = switch (executionType) {
+			case RETURN_VALUE -> """
 					(function() {
-					    const res = %s;
-					    window.cefQuery({ request: "@jsResult:" + res });
+					    var res = null;
+					    try {
+					        res = %s;
+					    } finally {
+					        window.cefQuery({ request: "@jsResult:" + res });
+					    }
 					})();
 					""".formatted(javaScript);
-		} else {
-			script = """
+			case LOCAL_SAFE -> """
+					(function() {
+					    try {
+					        %s
+					    } finally {
+					        window.cefQuery({ request: "@jsResult:" });
+					    }
+					})();
+					""".formatted(javaScript);
+			case null, default -> """
 					%s
 					window.cefQuery({ request: "@jsResult:" });
 					""".formatted(javaScript);
-		}
+		};
 
 		if (SwingUtilities.isEventDispatchThread()) { // If called from EDT, create a secondary loop to wait on
 			SecondaryLoop secondaryLoop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
@@ -400,11 +409,11 @@ public class WebView extends JPanel implements Closeable {
 				    style.innerHTML = '%s';
 				    document.head.appendChild(style);
 				})();
-				""".formatted(jsSafeCss), false);
+				""".formatted(jsSafeCss), JSExecutionType.LOCAL_SAFE);
 	}
 
 	public void addStringConstantToDOM(String name, String value) {
-		executeScript("window['%s'] = '%s';".formatted(name, value), false);
+		executeScript("window['%s'] = '%s';".formatted(name, value), JSExecutionType.LOCAL_SAFE);
 	}
 
 	CefMessageRouter getRouter() {
@@ -462,6 +471,24 @@ public class WebView extends JPanel implements Closeable {
 			latch.await();
 		} catch (InterruptedException ignored) {
 		}
+	}
+
+	public enum JSExecutionType {
+		/**
+		 * Exceptions are not caught, can hang the editor.
+		 * Do not use unless strictly necessary to preserve global variables.
+		 **/
+		GLOBAL_UNSAFE,
+
+		/**
+		 * Exceptions are caught, but can't declare global variables.
+		 */
+		LOCAL_SAFE,
+
+		/**
+		 * Exceptions are caught, global variables are lost, return value is queried.
+		 */
+		RETURN_VALUE
 	}
 
 }
