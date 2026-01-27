@@ -84,9 +84,7 @@ public class CefUtils {
 			settings = new CefBrowserSettings();
 
 			int highestFPS = 30;
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice[] devices = ge.getScreenDevices();
-
+			GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 			for (GraphicsDevice device : devices) {
 				DisplayMode mode = device.getDisplayMode();
 				if (mode.getRefreshRate() > highestFPS)
