@@ -100,14 +100,6 @@ public class WebView extends JPanel implements Closeable {
 		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
 				false);
 
-		/*
-		 * Immediately create the browser if:
-		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
-		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
-		 */
-		if (forcePreload || TestUtil.isTestingEnvironment())
-			this.browser.createImmediately(); // needed so tests that don't render also work
-
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
 			public boolean onQuery(CefBrowser browser, CefFrame frame, long queryId, String request, boolean persistent,
@@ -322,6 +314,14 @@ public class WebView extends JPanel implements Closeable {
 		if (!CefUtils.useOSR())
 			css.append("* { cursor: default !important; }");
 		addLoadListener(() -> addCSSToDOM(css.toString()));
+
+		/*
+		 * Immediately create the browser if:
+		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
+		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
+		 */
+		if (forcePreload || TestUtil.isTestingEnvironment())
+			this.browser.createImmediately(); // needed so tests that don't render also work
 	}
 
 	@Override public void removeNotify() {
