@@ -235,7 +235,7 @@ public class WebView extends JPanel implements Closeable {
 			});
 
 			cefComponent.addHierarchyListener(e -> {
-				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && cefComponent.isShowing()) {
 					browser.setFocus(true);
 					cefComponent.requestFocusInWindow();
 				}
