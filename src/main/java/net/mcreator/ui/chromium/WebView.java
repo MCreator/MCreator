@@ -20,7 +20,7 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.Launcher;
-import net.mcreator.ui.chromium.osr.JBCefBrowserOsr;
+import net.mcreator.ui.chromium.osr.CefBrowserOsrCustom;
 import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
 import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
 import net.mcreator.ui.laf.themes.Theme;
@@ -105,7 +105,7 @@ public class WebView extends JPanel implements Closeable {
 			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
-			this.browser = new JBCefBrowserOsr(this.client, url, new CefRendering.CefRenderingWithHandler(handler, osrComponent));
+			this.browser = new CefBrowserOsrCustom(this.client, url, new CefRendering.CefRenderingWithHandler(handler, osrComponent));
 			osrComponent.setBrowser(this.browser);
 		} else {
 			this.browser = this.client.createBrowser(url, CefRendering.DEFAULT, false);

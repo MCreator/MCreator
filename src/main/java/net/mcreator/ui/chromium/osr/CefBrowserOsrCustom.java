@@ -27,12 +27,13 @@ import org.cef.browser.CefRendering;
 import javax.swing.*;
 import java.awt.*;
 
-public class JBCefBrowserOsr extends CefBrowserOsrWithHandler {
+public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 
-	public JBCefBrowserOsr(CefClient client, String url, CefRendering.CefRenderingWithHandler renderingWithHandler) {
+	public CefBrowserOsrCustom(CefClient client, String url, CefRendering.CefRenderingWithHandler renderingWithHandler) {
 		super(client, url, null, renderingWithHandler.getRenderHandler(), renderingWithHandler.getComponent(), null);
 	}
 
+	// We need to override this one in order to provide a valid native window handle, or JS prompt in CefJavaBridgeHandler causes error logs
 	@Override public void createImmediately() {
 		long windowHandle = getNativeWindowHandle(this.getUIComponent());
 		if (this.getParentBrowser() == null) {
