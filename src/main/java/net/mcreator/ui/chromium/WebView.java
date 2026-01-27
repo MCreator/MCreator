@@ -58,6 +58,8 @@ public class WebView extends JPanel implements Closeable {
 
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
+	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
+
 	private final CefClient client;
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
@@ -371,7 +373,7 @@ public class WebView extends JPanel implements Closeable {
 
 			edtJSWaitThread.execute(() -> {
 				try {
-					executeScriptLatch.await(60, TimeUnit.SECONDS);
+					executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
 				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 				} finally {
 					secondaryLoopExited.set(true);
@@ -389,7 +391,7 @@ public class WebView extends JPanel implements Closeable {
 
 			try {
 				// Timeout at 60 seconds as JS is blocking and nothing should take that long
-				executeScriptLatch.await(60, TimeUnit.SECONDS);
+				executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
 			} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 			}
 		}
