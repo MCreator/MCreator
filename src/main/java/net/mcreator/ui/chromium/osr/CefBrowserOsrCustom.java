@@ -62,6 +62,11 @@ public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 		if (window == null)
 			return 0;
 
+		if (OS.isLinux() && "wayland".equals(System.getenv("XDG_SESSION_TYPE"))) {
+			// On Wayland, the window handle is not available and crashes the software, so return 0 and don't call getWindowID
+			return 0;
+		}
+
 		if (OS.isWindows()) {
 			Pointer ptr = Native.getWindowPointer(window);
 			long nativeWindowHandle = Pointer.nativeValue(ptr);

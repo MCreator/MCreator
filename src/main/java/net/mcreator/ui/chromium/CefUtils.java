@@ -83,7 +83,7 @@ public class CefUtils {
 		if (settings == null) {
 			settings = new CefBrowserSettings();
 
-			int highestFPS = 30;
+			int highestFPS = 30; // if we fail to detect anything, default to 30 FPS
 			GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 			for (GraphicsDevice device : devices) {
 				DisplayMode mode = device.getDisplayMode();
