@@ -33,7 +33,7 @@ public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 		super(client, url, null, renderingWithHandler.getRenderHandler(), renderingWithHandler.getComponent(), null);
 	}
 
-	// We need to override this one in order to provide a valid native window handle, or JS prompt in CefJavaBridgeHandler causes error logs
+	// We need to override this one to provide a valid native window handle, or JS prompt in CefJavaBridgeHandler causes error logs
 	@Override public void createImmediately() {
 		long windowHandle = getNativeWindowHandle(this.getUIComponent());
 		if (this.getParentBrowser() == null) {
