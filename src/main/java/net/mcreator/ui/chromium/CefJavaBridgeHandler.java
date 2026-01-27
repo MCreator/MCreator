@@ -89,7 +89,7 @@ public class CefJavaBridgeHandler {
 				})();
 				""".formatted(name, name, prefix, prefix);
 
-		webView.executeScript(wrapperJs, false);
+		webView.executeScript(wrapperJs, WebView.JSExecutionType.LOCAL_SAFE);
 
 		// Async calls via message router
 		webView.getRouter().addHandler(new CefMessageRouterHandlerAdapter() {

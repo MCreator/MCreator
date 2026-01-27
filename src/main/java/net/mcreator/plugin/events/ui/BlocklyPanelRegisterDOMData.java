@@ -49,7 +49,11 @@ public class BlocklyPanelRegisterDOMData extends MCREvent {
 	}
 
 	public synchronized void executeScript(String javaScript) {
-		webView.executeScript(javaScript);
+		webView.executeScript(javaScript, WebView.JSExecutionType.LOCAL_SAFE);
+	}
+
+	public synchronized String executeScriptGetReturnValue(String javaScript) {
+		return webView.executeScript(javaScript, WebView.JSExecutionType.RETURN_VALUE);
 	}
 
 	public BlocklyPanel getBlocklyPanel() {

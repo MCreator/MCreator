@@ -86,7 +86,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 			MCREvent.event(new BlocklyPanelRegisterDOMData(this, webView));
 
 			// @formatter:off
-			webView.executeScript("var MCR_BLOCKLY_PREF = { "
+			webView.executeScript("const MCR_BLOCKLY_PREF = { "
 					+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
 					+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
 					+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
@@ -98,18 +98,20 @@ public class BlocklyPanel extends JPanel implements Closeable {
 					+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
 					+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
 					+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
-					+ " };");
+					+ " };", WebView.JSExecutionType.GLOBAL_UNSAFE);
 			// @formatter:on
 
 			// Blockly MCreator definitions
-			webView.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
+			webView.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"),
+					WebView.JSExecutionType.GLOBAL_UNSAFE);
 
 			// Load JavaScript files from plugins
 			for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
-				webView.executeScript(script);
+				webView.executeScript(script, WebView.JSExecutionType.GLOBAL_UNSAFE);
 
 			//JS code generation for custom variables
-			webView.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
+			webView.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS(),
+					WebView.JSExecutionType.GLOBAL_UNSAFE);
 
 			loaded = true;
 			runAfterLoaded.forEach(Runnable::run);
@@ -138,7 +140,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	public synchronized String getXML() {
 		// If Blockly JS was loaded, query XML from the workspace using JS
 		if (loaded) {
-			@Nullable String newXml = executeJavaScriptSynchronously("workspaceToXML()", true);
+			@Nullable String newXml = webView.executeScript("workspaceToXML()", WebView.JSExecutionType.RETURN_VALUE);
 
 			// XML can become invalid if e.g., JCEF runs out of memory and executeJavaScriptSynchronously times out
 			boolean valid = isValidBlocklyXML(newXml);
@@ -183,11 +185,11 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	private void setXML(String xml) {
-		executeJavaScriptSynchronously("""
+		webView.executeScript("""
 				workspace.clear();
 				Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('%s'), workspace);
 				workspace.clearUndo();
-				""".formatted(escapeXML(xml)));
+				""".formatted(escapeXML(xml)), WebView.JSExecutionType.LOCAL_SAFE);
 
 		ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(this))));
@@ -197,33 +199,36 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		String cleanXML = escapeXML(cleanupXML(xml));
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
 		if (index == -1) { // The separator wasn't found
-			executeJavaScriptSynchronously(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
+			webView.executeScript(
+					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)",
+					WebView.JSExecutionType.LOCAL_SAFE);
 		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
-			executeJavaScriptSynchronously(
+			webView.executeScript(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
-							+ "</xml>'), workspace)");
-			executeJavaScriptSynchronously(
+							+ "</xml>'), workspace)", WebView.JSExecutionType.LOCAL_SAFE);
+			webView.executeScript(
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
-							+ "'), workspace)");
+							+ "'), workspace)", WebView.JSExecutionType.LOCAL_SAFE);
 		}
 	}
 
 	public void addGlobalVariable(String name, String type) {
-		executeJavaScriptSynchronously("global_variables.push({name: '" + name + "', type: '" + type + "'})");
+		webView.executeScript("global_variables.push({name: '" + name + "', type: '" + type + "'})",
+				WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public void addLocalVariable(String name, String type) {
-		executeJavaScriptSynchronously("workspace.createVariable('" + name + "', '" + type + "', '" + name + "')");
+		webView.executeScript("workspace.createVariable('" + name + "', '" + type + "', '" + name + "')",
+				WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public void removeLocalVariable(String name) {
-		executeJavaScriptSynchronously("workspace.deleteVariableById('" + name + "')");
+		webView.executeScript("workspace.deleteVariableById('" + name + "')", WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public List<VariableElement> getLocalVariablesList() {
-		String query = executeJavaScriptSynchronously("getSerializedLocalVariables()", true);
+		String query = webView.executeScript("getSerializedLocalVariables()", WebView.JSExecutionType.RETURN_VALUE);
 		List<VariableElement> retval = new ArrayList<>();
 		if (query == null)
 			return retval;
@@ -243,12 +248,8 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		return retval;
 	}
 
-	public void executeJavaScriptSynchronously(String javaScript) {
-		executeJavaScriptSynchronously(javaScript, false);
-	}
-
-	@Nullable public String executeJavaScriptSynchronously(String javaScript, boolean requestRetval) {
-		return webView.executeScript(javaScript, requestRetval);
+	public void executeLocalScript(String script) {
+		webView.executeScript(script, WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public MCreator getMCreator() {
