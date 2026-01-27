@@ -24,7 +24,7 @@ public class JBCefOsrComponent extends JPanel {
 
 	static final Dimension DEF_PREF_SIZE = new Dimension(800, 600);
 
-	static final int RESIZE_DELAY_MS = 100;
+	static final int RESIZE_DELAY_MS = 50;
 
 	private volatile JBCefOsrHandler myRenderHandler;
 	private volatile CefBrowser myBrowser;
