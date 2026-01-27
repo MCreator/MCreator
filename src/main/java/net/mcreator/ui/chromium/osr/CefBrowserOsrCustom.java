@@ -21,6 +21,7 @@ package net.mcreator.ui.chromium.osr;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.util.TestUtil;
 import org.cef.CefClient;
 import org.cef.OS;
@@ -32,8 +33,10 @@ import java.awt.*;
 
 public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 
-	public CefBrowserOsrCustom(CefClient client, String url, CefRendering.CefRenderingWithHandler renderingWithHandler) {
-		super(client, url, null, renderingWithHandler.getRenderHandler(), renderingWithHandler.getComponent(), null);
+	public CefBrowserOsrCustom(CefClient client, String url,
+			CefRendering.CefRenderingWithHandler renderingWithHandler) {
+		super(client, url, null, renderingWithHandler.getRenderHandler(), renderingWithHandler.getComponent(),
+				CefUtils.getCefBrowserSettings());
 	}
 
 	// We need to override this one to provide a valid native window handle, or JS prompt in CefJavaBridgeHandler causes error logs

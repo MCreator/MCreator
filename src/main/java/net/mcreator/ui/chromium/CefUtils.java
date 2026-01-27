@@ -25,10 +25,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.CefApp;
-import org.cef.CefClient;
-import org.cef.CefSettings;
-import org.cef.OS;
+import org.cef.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
@@ -52,7 +49,9 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 
-	public static Boolean useOSR = null;
+	private static Boolean useOSR = null;
+
+	private static CefBrowserSettings settings = null;
 
 	public static boolean useOSR() {
 		if (useOSR == null) {
@@ -80,9 +79,29 @@ public class CefUtils {
 		return true;
 	}
 
+	public static CefBrowserSettings getCefBrowserSettings() {
+		if (settings == null) {
+			settings = new CefBrowserSettings();
+
+			int highestFPS = 30;
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice[] devices = ge.getScreenDevices();
+
+			for (GraphicsDevice device : devices) {
+				DisplayMode mode = device.getDisplayMode();
+				if (mode.getRefreshRate() > highestFPS)
+					highestFPS = mode.getRefreshRate();
+			}
+
+			settings.windowless_frame_rate = highestFPS;
+		}
+		return settings;
+	}
+
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
-			LOG.info("Initializing JCEF in {} mode", useOSR() ? "OSR" : "WR");
+			LOG.info("Initializing JCEF in {} mode",
+					useOSR() ? "OSR (" + getCefBrowserSettings().windowless_frame_rate + " FPS)" : "WR");
 
 			JCefAppConfig config = JCefAppConfig.getInstance();
 			config.getAppArgsAsList().add("--disable-extensions");
