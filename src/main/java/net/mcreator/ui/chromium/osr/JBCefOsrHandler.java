@@ -42,9 +42,7 @@ public class JBCefOsrHandler implements CefRenderHandler {
 	protected volatile boolean myContentOutdated = false;
 	private volatile @Nullable JBCefCaretListener myCaretListener;
 
-	// DIP (device independent pixel aka logic pixel) size in screen pixels. Expected to be != 1 only if JRE supports HDPI
 	private volatile double myPixelDensity = 1;
-	private volatile double myScaleFactor = 1;
 
 	private final @Nonnull AtomicReference<Point> myLocationOnScreenRef = new AtomicReference<>(new Point());
 
@@ -155,27 +153,24 @@ public class JBCefOsrHandler implements CefRenderHandler {
 		}
 	}
 
-	public void setScreenInfo(double pixelDensity, double scaleFactor) {
+	public void setPixelDensity(double pixelDensity) {
 		myPixelDensity = pixelDensity;
-		myScaleFactor = scaleFactor;
 	}
 
-	protected double getPixelDensity() {return myPixelDensity;}
-
-	protected double getScaleFactor() {return myScaleFactor;}
+	protected double getPixelDensity() {
+		return myPixelDensity;
+	}
 
 	@Override public Rectangle getViewRect(CefBrowser browser) {
 		Component component = browser.getUIComponent();
-		double scale = getScaleFactor();
-		double value = component.getWidth() / scale;
-		double value1 = component.getHeight() / scale;
+		double value = component.getWidth();
+		double value1 = component.getHeight();
 		return new Rectangle(0, 0, (int) Math.ceil(value), (int) Math.ceil(value1));
 	}
 
 	@Override public boolean getScreenInfo(CefBrowser browser, CefScreenInfo screenInfo) {
 		Rectangle rect = myScreenBoundsProvider.apply(myComponent);
-		double scale = myScaleFactor * myPixelDensity;
-		screenInfo.Set(scale, 32, 4, false, rect, rect);
+		screenInfo.Set(myPixelDensity, 32, 4, false, rect, rect);
 		return true;
 	}
 
@@ -192,7 +187,7 @@ public class JBCefOsrHandler implements CefRenderHandler {
 	}
 
 	@Override public double getDeviceScaleFactor(CefBrowser browser) {
-		return myScaleFactor * myPixelDensity;
+		return myPixelDensity;
 	}
 
 	@SuppressWarnings("MagicConstant") @Override public boolean onCursorChange(CefBrowser browser, int cursorType) {

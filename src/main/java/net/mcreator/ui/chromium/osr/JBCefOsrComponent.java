@@ -34,12 +34,11 @@ public class JBCefOsrComponent extends JPanel {
 
 	private final @Nonnull JBCefInputMethodAdapter myInputMethodAdapter = new JBCefInputMethodAdapter(this);
 
-	private double myScale = 1.0;
-
 	private final @Nonnull AtomicLong myScheduleResizeMs = new AtomicLong(-1);
 	private @Nullable TimedTaskQueue myResizeTimedTaskQueue;
 
-	private final @Nonnull TimedTaskQueue myGraphicsConfigurationTimedTaskQueue = new TimedTaskQueue(TimedTaskQueue.ThreadToUse.SWING_THREAD);
+	private final @Nonnull TimedTaskQueue myGraphicsConfigurationTimedTaskQueue = new TimedTaskQueue(
+			TimedTaskQueue.ThreadToUse.SWING_THREAD);
 	AtomicBoolean myScaleInitialized = new AtomicBoolean(false);
 
 	public JBCefOsrComponent() {
@@ -160,10 +159,9 @@ public class JBCefOsrComponent extends JPanel {
 			return;
 		}
 
-		myBrowser.sendMouseEvent(new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
-				(int) Math.round(e.getX() / myScale), (int) Math.round(e.getY() / myScale),
-				(int) Math.round(e.getXOnScreen() / myScale), (int) Math.round(e.getYOnScreen() / myScale),
-				e.getClickCount(), e.isPopupTrigger(), e.getButton()));
+		myBrowser.sendMouseEvent(
+				new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
+						e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(), e.isPopupTrigger(), e.getButton()));
 
 		if (e.getID() == MouseEvent.MOUSE_PRESSED) {
 			requestFocusInWindow();
@@ -183,19 +181,18 @@ public class JBCefOsrComponent extends JPanel {
 			val *= -1;
 		}
 
-		myBrowser.sendMouseWheelEvent(new MouseWheelEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
-				(int) Math.round(e.getX() / myScale), (int) Math.round(e.getY() / myScale),
-				(int) Math.round(e.getXOnScreen() / myScale), (int) Math.round(e.getYOnScreen() / myScale),
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), (int) val, val));
+		myBrowser.sendMouseWheelEvent(
+				new MouseWheelEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
+						e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(), e.isPopupTrigger(), e.getScrollType(),
+						e.getScrollAmount(), (int) val, val));
 	}
 
 	@SuppressWarnings("DuplicatedCode") @Override protected void processMouseMotionEvent(MouseEvent e) {
 		super.processMouseMotionEvent(e);
 
-		myBrowser.sendMouseEvent(new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
-				(int) Math.round(e.getX() / myScale), (int) Math.round(e.getY() / myScale),
-				(int) Math.round(e.getXOnScreen() / myScale), (int) Math.round(e.getYOnScreen() / myScale),
-				e.getClickCount(), e.isPopupTrigger(), e.getButton()));
+		myBrowser.sendMouseEvent(
+				new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(), e.getX(), e.getY(),
+						e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(), e.isPopupTrigger(), e.getButton()));
 	}
 
 	@Override protected void processKeyEvent(KeyEvent e) {
@@ -204,12 +201,10 @@ public class JBCefOsrComponent extends JPanel {
 	}
 
 	private void onGraphicsConfigurationChanged() {
-		double oldScale = myScale;
 		double oldDensity = myRenderHandler.getPixelDensity();
 		double pixelDensity = JCefAppConfig.getDeviceScaleFactor(this);
-		myScale = 1.0;
-		myRenderHandler.setScreenInfo(pixelDensity, myScale);
-		if (oldScale != myScale || oldDensity != pixelDensity) {
+		myRenderHandler.setPixelDensity(pixelDensity);
+		if (oldDensity != pixelDensity) {
 			myBrowser.notifyScreenInfoChanged();
 		}
 	}
