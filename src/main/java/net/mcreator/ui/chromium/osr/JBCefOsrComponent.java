@@ -15,10 +15,7 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.im.InputMethodRequests;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -71,6 +68,17 @@ public class JBCefOsrComponent extends JPanel {
 				myScaleInitialized.set(true);
 			}
 		});
+
+		// Lazy load the OSR component after it actually becomes visible
+		addHierarchyListener(e -> {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
+				myResizeTimedTaskQueue = new TimedTaskQueue(TimedTaskQueue.ThreadToUse.POOLED_THREAD);
+
+				if (!CefClient.isNativeBrowserCreationStarted(myBrowser)) {
+					myBrowser.createImmediately();
+				}
+			}
+		});
 	}
 
 	public void setBrowser(@Nonnull CefBrowser browser) {
@@ -109,15 +117,6 @@ public class JBCefOsrComponent extends JPanel {
 				myRenderHandler.setLocationOnScreen(getLocationOnScreen());
 			}
 		});
-	}
-
-	@Override public void addNotify() {
-		super.addNotify();
-		myResizeTimedTaskQueue = new TimedTaskQueue(TimedTaskQueue.ThreadToUse.POOLED_THREAD);
-
-		if (!CefClient.isNativeBrowserCreationStarted(myBrowser)) {
-			myBrowser.createImmediately();
-		}
 	}
 
 	@Override public void removeNotify() {
