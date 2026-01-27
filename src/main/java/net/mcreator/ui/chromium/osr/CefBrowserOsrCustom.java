@@ -20,7 +20,10 @@
 package net.mcreator.ui.chromium.osr;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import net.mcreator.util.TestUtil;
 import org.cef.CefClient;
+import org.cef.OS;
 import org.cef.browser.CefBrowserOsrWithHandler;
 import org.cef.browser.CefRendering;
 
@@ -45,9 +48,24 @@ public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 	}
 
 	public static long getNativeWindowHandle(Component component) {
+		if (TestUtil.isRunningInGitHubActions()) {
+			// A hack to silence "Default dialog implementation requires a parent window handle; canceling the JS dialog" errors
+			// logged in GitHub Actions due to lack of a display
+			return 1;
+		}
+
 		Window window = SwingUtilities.getWindowAncestor(component);
+
 		if (window == null)
 			return 0;
+
+		if (OS.isWindows()) {
+			Pointer ptr = Native.getWindowPointer(window);
+			long nativeWindowHandle = Pointer.nativeValue(ptr);
+			if (nativeWindowHandle != 0)
+				return Pointer.nativeValue(ptr);
+		}
+
 		return Native.getWindowID(window);
 	}
 
