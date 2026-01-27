@@ -20,6 +20,9 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.Launcher;
+import net.mcreator.ui.chromium.osr.CefBrowserOsrCustom;
+import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
+import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.laf.themes.ThemeCSS;
 import net.mcreator.util.TestUtil;
@@ -99,8 +102,16 @@ public class WebView extends JPanel implements Closeable {
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
-		this.browser = this.client.createBrowser(url, CefUtils.useOSR() ? CefRendering.OFFSCREEN : CefRendering.DEFAULT,
-				false);
+
+		if (CefUtils.useOSR()) {
+			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
+			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
+			osrComponent.setRenderHandler(handler);
+			this.browser = new CefBrowserOsrCustom(this.client, url, new CefRendering.CefRenderingWithHandler(handler, osrComponent));
+			osrComponent.setBrowser(this.browser);
+		} else {
+			this.browser = this.client.createBrowser(url, CefRendering.DEFAULT, false);
+		}
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
@@ -266,26 +277,8 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
-		if (CefUtils.useOSR()) {
-			// On OSR components, we need to handle visibility changes to prevent crashes
-			addHierarchyListener(e -> {
-				if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-					if (isShowing()) {
-						// Browser panel should be visible and take full size
-						cefComponent.setVisible(true);
-						cefComponent.setSize(getWidth(), getHeight());
-					} else {
-						// Hidden: set the size to zero to prevent GLCanvas native crashes
-						cefComponent.setVisible(false);
-						cefComponent.setSize(0, 0);
-					}
-					revalidate();
-					repaint();
-				}
-			});
-			add(cefComponent, BorderLayout.CENTER);
-		} else if (!OS.isMacintosh()) {
-			// On non-macOS systems with a non-OSR component, we can directly add the component
+		if (!OS.isMacintosh() || CefUtils.useOSR()) {
+			// On non-macOS systems and on OSR, we can directly add the component
 			add(cefComponent, BorderLayout.CENTER);
 		} else {
 			// On macOS systems, we need to add the component only when the webview is shown
@@ -299,13 +292,6 @@ public class WebView extends JPanel implements Closeable {
 					}
 				}
 			});
-		}
-
-		// In OSR mode, there is a black flash at initialization that can be partially prevented with this hack
-		// below that prevents rendering of the Chromium component during initialization
-		if (CefUtils.useOSR()) {
-			CefOsrBlackFlashFix.apply(this, browser, cefComponent);
-			this.addMouseWheelListener(new JcefOsrWheelFix(browser, this)::handle);
 		}
 
 		enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
@@ -452,7 +438,6 @@ public class WebView extends JPanel implements Closeable {
 
 		remove(cefComponent);
 
-		browser.stopLoad();
 		browser.setCloseAllowed();
 		browser.close(true);
 

@@ -22,14 +22,10 @@ package net.mcreator.ui.chromium;
 import com.jetbrains.cef.JCefAppConfig;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.CefApp;
-import org.cef.CefClient;
-import org.cef.CefSettings;
-import org.cef.OS;
+import org.cef.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
@@ -53,7 +49,9 @@ public class CefUtils {
 
 	private static CefApp cefApp = null;
 
-	public static Boolean useOSR = null;
+	private static Boolean useOSR = null;
+
+	private static CefBrowserSettings settings = null;
 
 	public static boolean useOSR() {
 		if (useOSR == null) {
@@ -63,11 +61,6 @@ public class CefUtils {
 	}
 
 	private static boolean useOSRImpl() {
-		// For test environments, we use WR as it works better with headless environments
-		if (TestUtil.isTestingEnvironment()) {
-			return false;
-		}
-
 		if (OS.isMacintosh()) {
 			// On macOS, we need to use WR in all cases, as OSR fails to load JOGL natives in the current JBR JCEF build
 			// WR is quite stable and smooth on macOS anyway
@@ -82,13 +75,31 @@ public class CefUtils {
 			return true; // use OSR at this time due to more benefits
 		}
 
-		// On linux, we need to use OSR due to several focus and keyboard transfer issues
+		// On linux, we need to use OSR due to several focus and keyboard transfer issues with WR
 		return true;
+	}
+
+	public static CefBrowserSettings getCefBrowserSettings() {
+		if (settings == null) {
+			settings = new CefBrowserSettings();
+
+			int highestFPS = 30; // if we fail to detect anything, default to 30 FPS
+			GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+			for (GraphicsDevice device : devices) {
+				DisplayMode mode = device.getDisplayMode();
+				if (mode.getRefreshRate() > highestFPS)
+					highestFPS = mode.getRefreshRate();
+			}
+
+			settings.windowless_frame_rate = highestFPS;
+		}
+		return settings;
 	}
 
 	private static CefApp getCefApp() {
 		if (cefApp == null) {
-			LOG.info("Initializing JCEF in {} mode", useOSR() ? "OSR" : "WR");
+			LOG.info("Initializing JCEF in {} mode",
+					useOSR() ? "OSR (" + getCefBrowserSettings().windowless_frame_rate + " FPS)" : "WR");
 
 			JCefAppConfig config = JCefAppConfig.getInstance();
 			config.getAppArgsAsList().add("--disable-extensions");
@@ -161,8 +172,7 @@ public class CefUtils {
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
 			settings.cache_path = UserFolderManager.getFileFromUserFolder("/cef/").toString();
-			settings.background_color = settings.new ColorType(255, Theme.current().getBackgroundColor().getRed(),
-					Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
+			settings.background_color = settings.new ColorType(0, 0, 0, 0);
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 
