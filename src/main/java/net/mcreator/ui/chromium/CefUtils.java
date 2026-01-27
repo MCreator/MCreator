@@ -22,7 +22,6 @@ package net.mcreator.ui.chromium;
 import com.jetbrains.cef.JCefAppConfig;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -161,8 +160,7 @@ public class CefUtils {
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
 			settings.cache_path = UserFolderManager.getFileFromUserFolder("/cef/").toString();
-			settings.background_color = settings.new ColorType(255, Theme.current().getBackgroundColor().getRed(),
-					Theme.current().getBackgroundColor().getGreen(), Theme.current().getBackgroundColor().getBlue());
+			settings.background_color = settings.new ColorType(0, 0, 0, 0);
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 
