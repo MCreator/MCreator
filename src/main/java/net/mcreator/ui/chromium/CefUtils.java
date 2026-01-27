@@ -62,11 +62,6 @@ public class CefUtils {
 	}
 
 	private static boolean useOSRImpl() {
-		// For test environments, we use WR as it works better with headless environments
-		if (TestUtil.isTestingEnvironment()) {
-			return false;
-		}
-
 		if (OS.isMacintosh()) {
 			// On macOS, we need to use WR in all cases, as OSR fails to load JOGL natives in the current JBR JCEF build
 			// WR is quite stable and smooth on macOS anyway
@@ -81,7 +76,7 @@ public class CefUtils {
 			return true; // use OSR at this time due to more benefits
 		}
 
-		// On linux, we need to use OSR due to several focus and keyboard transfer issues
+		// On linux, we need to use OSR due to several focus and keyboard transfer issues with WR
 		return true;
 	}
 
