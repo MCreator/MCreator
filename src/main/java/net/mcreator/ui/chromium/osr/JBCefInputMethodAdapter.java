@@ -5,7 +5,6 @@ package net.mcreator.ui.chromium.osr;
 
 import org.cef.browser.CefBrowser;
 import org.cef.input.CefCompositionUnderline;
-import org.cef.misc.CefLog;
 import org.cef.misc.CefRange;
 
 import javax.annotation.Nullable;
