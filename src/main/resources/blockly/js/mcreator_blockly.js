@@ -3,6 +3,8 @@ let global_variables = [];
 Blockly.HSV_SATURATION = MCR_BLOCKLY_PREF['saturation'];
 Blockly.HSV_VALUE = MCR_BLOCKLY_PREF['value'];
 
+teststes;..f.f-dh-
+
 const blockly = document.getElementById('blockly');
 const workspace = Blockly.inject(blockly, {
     media: 'res/',
