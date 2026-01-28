@@ -41,7 +41,7 @@ package ${package}.entity;
 public class ${name}Entity extends ${extendsClass} {
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
-    	super(type, world, ${JavaModName}Items.${REGISTRYNAME});
+		super(type, world, ${JavaModName}Items.${REGISTRYNAME});
 	}
 
 	<#if hasProcedure(data.onTickUpdate)>
@@ -57,7 +57,7 @@ public class ${name}Entity extends ${extendsClass} {
 			}/>
 		</#if>
 	}
-    </#if>
+	</#if>
 
 	<#if hasProcedure(data.onPlayerCollidesWith)>
 	@Override public void playerTouch(Player sourceentity) {
@@ -71,6 +71,6 @@ public class ${name}Entity extends ${extendsClass} {
 			"world": "this.level()"
 		}/>
 	}
-    </#if>
+	</#if>
 }
 <#-- @formatter:off -->
