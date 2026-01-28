@@ -1686,6 +1686,9 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
+			block.enableCreativeTab = !_true;
+			block.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			block.isHiddenInCommands = _true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());

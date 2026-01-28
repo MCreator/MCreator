@@ -45,6 +45,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 
 	public String name;
+	public boolean enableCreativeTab;
+	public String creativeTab;
+	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public double friction;
@@ -69,6 +72,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public BEBlock(ModElement element) {
 		super(element);
+		this.enableCreativeTab = true;
+		this.creativeTab = "BUILDING_BLOCKS";
 	}
 
 	public boolean hasCustomDrop() {
