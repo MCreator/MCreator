@@ -141,8 +141,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 		<#else>
 			.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
-		<#if data.luminance != 0>
-			.lightLevel(s -> ${data.luminance})
+		<#if hasProcedure(data.luminance) || data.luminance.getFixedValue() != 0>
+			.lightLevel(blockstate -> <#if hasProcedure(data.luminance)>(int) <@procedureOBJToNumberCode data.luminance/><#else>${data.luminance.getFixedValue()}</#if>)
 		</#if>
 		<#if data.requiresCorrectTool>
 			.requiresCorrectToolForDrops()
@@ -169,7 +169,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			.pushReaction(PushReaction.${data.reactionToPushing})
 		</#if>
 		<#if data.emissiveRendering>
-			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
+			.hasPostProcess((bs, br, bp) -> true)
+			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
 		<#if data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
@@ -201,7 +202,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			.forceSolidOff()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "Leaves">
-			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
+			.isSuffocating((bs, br, bp) -> false)
+			.isViewBlocking((bs, br, bp) -> false)
 		</#if>
 		<#if var_extends_class! == "WallSignBlock">
 			.overrideLootTable(${JavaModName}Blocks.${REGISTRYNAME}.get().getLootTable())
@@ -328,16 +330,22 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	}
 	</#if>
 
-	<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
-	@Override public boolean propagatesSkylightDown(BlockState state) {
-		return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
-	}
-	</#if>
+	<#if data.hasCustomOpacity>
+		<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
+		@Override public boolean propagatesSkylightDown(BlockState state) {
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
 
-	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
-	@Override public int getLightBlock(BlockState state) {
-		return ${data.lightOpacity};
-	}
+		<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
+		@Override public int getLightBlock(BlockState state) {
+			<#if data.isWaterloggable && data.lightOpacity == 0> <#-- Prevent fully transparent blocks from overriding water opacity -->
+				return propagatesSkylightDown(state) ? 0 : 1;
+			<#else>
+				return ${data.lightOpacity};
+			</#if>
+		}
+		</#if>
 	</#if>
 
 	<#if data.hasTransparency && !data.blockBase?has_content>
