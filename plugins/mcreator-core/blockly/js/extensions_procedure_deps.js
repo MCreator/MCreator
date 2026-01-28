@@ -7,7 +7,7 @@ Blockly.Extensions.register('procedure_dependencies_tooltip',
                 return javabridge.t('blockly.extension.procedure_dep_tooltip.empty');
             let tooltip = javabridge.t('blockly.extension.procedure_dep_tooltip');
             for (const dependency of depList)
-                tooltip += '\n' + dependency;
+                tooltip += '\n' + dependency.readableName;
             return tooltip;
         });
     });
@@ -30,8 +30,8 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 let depType = null;
                 for (const dep of depList) {
-                    if (dep.getName() === this.getFieldValue('name' + i)) {
-                        depType = dep.getBlocklyType();
+                    if (dep.name === this.getFieldValue('name' + i)) {
+                        depType = dep.blocklyType;
                         if (depType === '')
                             depType = [];
                         break;
