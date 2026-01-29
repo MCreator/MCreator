@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -36,7 +37,9 @@
 
 package ${package}.init;
 
-public class ${JavaModName}BoatTypes {
+<#assign boatsWithTickEvent = specialentities?filter(e -> hasProcedure(e.onTickUpdate))>
+
+<#if boatsWithTickEvent?size gt 0>@EventBusSubscriber </#if>public class ${JavaModName}BoatTypes {
 	<@javacompress>
 	<#list specialentities as entity>
 		public static final EnumProxy<Boat.Type> ${entity.getModElement().getRegistryNameUpper()}_TYPE =
@@ -45,5 +48,24 @@ public class ${JavaModName}BoatTypes {
 				<#else>(Supplier<Item>) () -> Items.AIR, ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()},</#if>
 				(Supplier<Item>) () -> Items.STICK, false);
 	</#list>
+
+	<#if boatsWithTickEvent?size gt 0>
+	@SubscribeEvent public static void onBoatsTick(EntityTickEvent.Pre event) {
+		Entity entity = event.getEntity();
+		if (entity instanceof Boat boat) {
+			<#list boatsWithTickEvent as entity>
+			if (boat.getVariant() == ${entity.getModElement().getRegistryNameUpper()}_TYPE.getValue()) {
+				<@procedureCode entity.onTickUpdate, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"entity": "entity",
+					"world": "entity.level()"
+				}/>
+			}<#sep>else
+			</#list>
+		}
+	}
+	</#if>
 	</@javacompress>
 }
