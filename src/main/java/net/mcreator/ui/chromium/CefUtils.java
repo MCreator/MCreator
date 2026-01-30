@@ -91,6 +91,10 @@ public class CefUtils {
 					highestFPS = mode.getRefreshRate();
 			}
 
+			if (OS.isLinux() && "wayland".equals(System.getenv("XDG_SESSION_TYPE"))) {
+				highestFPS = 60; // hardcode Wayland to 60 FPS as the method above will not work there
+			}
+
 			settings.windowless_frame_rate = highestFPS;
 		}
 		return settings;
