@@ -56,7 +56,9 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	private final JComboBox<String> entityType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("Boat", "elementgui.special_entity.entity_type.boat"),
-			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat")
+			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat"),
+			Map.entry("Raft", "elementgui.special_entity.entity_type.raft"),
+			Map.entry("ChestRaft", "elementgui.special_entity.entity_type.chest_raft")
 			//@formatter:on
 	);
 	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")

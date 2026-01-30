@@ -76,7 +76,7 @@ import java.util.List;
 		try {
 			File entityTextureLocation = new File(
 					getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/" + ("Boat".equals(entityType) ? "boat/" : "chest_boat/")
+					"entity/" + (isBoatChestVariant() ? "chest_boat/" : "boat/")
 							+ getModElement().getRegistryName() + ".png");
 			FileIO.copyFile(entityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 		} catch (Exception e) {
@@ -116,5 +116,13 @@ import java.util.List;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	public boolean isBoatChestVariant() {
+		return "ChestBoat".equals(entityType) || "ChestRaft".equals(entityType);
+	}
+
+	public boolean isAnyRaft() {
+		return "Raft".equals(entityType) || "ChestRaft".equals(entityType);
 	}
 }

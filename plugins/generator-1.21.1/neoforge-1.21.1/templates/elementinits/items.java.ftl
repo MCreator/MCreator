@@ -100,7 +100,7 @@ public class ${JavaModName}Items {
 			<#elseif item.getModElement().getTypeString() == "specialentity">
 				${item.getModElement().getRegistryNameUpper()} =
 					REGISTRY.register("${item.getModElement().getRegistryName()}",
-						() -> new BoatItem(<#if item.entityType == "Boat">false<#else>true</#if>,
+						() -> new BoatItem(${item.isBoatChestVariant()},
 						${JavaModName}BoatTypes.${item.getModElement().getRegistryNameUpper()}_TYPE.getValue(),
 						new Item.Properties().stacksTo(1)<#if item.rarity != "COMMON">.rarity(Rarity.${item.rarity})</#if>));
 			<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>

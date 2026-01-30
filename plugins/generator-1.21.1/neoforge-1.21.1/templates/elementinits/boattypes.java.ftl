@@ -44,9 +44,9 @@ package ${package}.init;
 	<#list specialentities as entity>
 		public static final EnumProxy<Boat.Type> ${entity.getModElement().getRegistryNameUpper()}_TYPE =
 				new EnumProxy<>(Boat.Type.class, (Supplier<Block>) () -> Blocks.OAK_PLANKS, "${modid}:${entity.getModElement().getRegistryName()}",
-				<#if entity.entityType == "Boat">${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}, (Supplier<Item>) () -> Items.AIR,
+				<#if !entity.isBoatChestVariant()>${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}, (Supplier<Item>) () -> Items.AIR,
 				<#else>(Supplier<Item>) () -> Items.AIR, ${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()},</#if>
-				(Supplier<Item>) () -> Items.STICK, false);
+				(Supplier<Item>) () -> Items.STICK, ${entity.isAnyRaft()});
 	</#list>
 
 	<#if boatsWithTickEvent?size gt 0>

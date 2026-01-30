@@ -33,12 +33,7 @@
 
 package ${package}.entity;
 
-<#assign extendsClass = "Boat">
-<#if data.entityType == "ChestBoat">
-	<#assign extendsClass = "ChestBoat">
-</#if>
-
-public class ${name}Entity extends ${extendsClass} {
+public class ${name}Entity extends ${data.entityType} {
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
 		super(type, world, ${JavaModName}Items.${REGISTRYNAME});

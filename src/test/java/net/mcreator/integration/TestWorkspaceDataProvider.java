@@ -169,6 +169,10 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), random, "Boat", true));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), random, "ChestBoat", false));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), random, "ChestBoat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "5"), random, "Raft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "6"), random, "Raft", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "7"), random, "ChestRaft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "8"), random, "ChestRaft", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
