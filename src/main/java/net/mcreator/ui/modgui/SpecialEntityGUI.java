@@ -150,10 +150,21 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
 
 			String readableName = StringUtils.machineToReadableName(modElement.getName());
-			name.setText(readableName.endsWith("Chest Boat") ?
-					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" : readableName);
-			if (readableName.endsWith("Chest Boat"))
+			if (readableName.endsWith("Chest Boat")) {
+				name.setText(readableName.substring(0, readableName.length() - 10) + "Boat with Chest");
+			} else if (readableName.endsWith("Chest Raft")) {
+				name.setText(readableName.substring(0, readableName.length() - 10) + "Raft with Chest");
+			} else {
+				name.setText(readableName);
+			}
+			// Automatically set the "correct" entity type in some cases
+			if (readableName.endsWith("Chest Boat")) {
 				entityType.setSelectedItem("ChestBoat");
+			} else if (readableName.endsWith("Chest Raft")) {
+				entityType.setSelectedItem("ChestRaft");
+			} else if (readableName.endsWith("Raft")) {
+				entityType.setSelectedItem("Raft");
+			}
 		}
 	}
 
