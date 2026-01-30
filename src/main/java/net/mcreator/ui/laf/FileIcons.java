@@ -37,6 +37,8 @@ public class FileIcons {
 			return UIRES.get("16px.class");
 		if (file.endsWith(".ogg"))
 			return UIRES.get("16px.sound");
+		if (file.endsWith(".geo.json"))
+			return UIRES.get("16px.bedrock");
 		if (file.equals("mcmod.info") || file.endsWith(".json") || file.endsWith(".mcmeta"))
 			return UIRES.get("16px.json");
 		if (file.endsWith(".yaml") || file.endsWith(".yml"))

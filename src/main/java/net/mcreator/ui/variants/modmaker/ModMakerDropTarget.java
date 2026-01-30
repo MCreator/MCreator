@@ -90,6 +90,8 @@ record ModMakerDropTarget(MCreator mcreator) implements DropTargetListener {
 						} else if (file.getName().endsWith(".java")) {
 							ModelImportActions.importJavaModel(mcreator, mcreator.getWorkspace(),
 									FileIO.readFileToString(file));
+						} else if (file.getName().endsWith(".geo.json")) {
+							ModelImportActions.importBedrockModel(mcreator, file);
 						} else if (file.getName().endsWith(".json")) {
 							ModelImportActions.importJSONModel(mcreator, file);
 						} else if (file.getName().endsWith(".obj")) {

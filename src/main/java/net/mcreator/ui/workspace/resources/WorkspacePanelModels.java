@@ -76,6 +76,11 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			addToolBarButton("action.workspace.resources.import_json_model", UIRES.get("16px.importjsonmodel"),
 					e -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
 
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_bedrock")
+				!= GeneratorStats.CoverageStatus.NONE)
+			addToolBarButton("action.workspace.resources.import_bedrock_model", UIRES.get("16px.importbedrockmodel"),
+					e -> workspacePanel.getMCreator().getActionRegistry().importBedrockModel.doAction());
+
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),

@@ -69,6 +69,8 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE
 				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+				!= GeneratorStats.CoverageStatus.NONE
+				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_bedrock")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
