@@ -134,14 +134,14 @@ public class GeneratorStats {
 
 		CoverageStatus texturesCoverage = CoverageStatus.NONE;
 		int supportedTextureTypes = 0;
-		for (TextureType textureType : TextureType.values()) {
+		for (TextureType textureType : TextureType.getValuesForGenerator(generatorConfiguration)) {
 			if (generatorConfiguration.getSpecificRoot(textureType.getID() + "_textures_dir") != null) {
 				textureCoverageInfo.put(textureType, CoverageStatus.FULL);
 				texturesCoverage = CoverageStatus.PARTIAL;
 				supportedTextureTypes++;
 			}
 		}
-		if (supportedTextureTypes == TextureType.values().length)
+		if (supportedTextureTypes == TextureType.getValuesForGenerator(generatorConfiguration).length)
 			texturesCoverage = CoverageStatus.FULL;
 		baseCoverageInfo.put("textures", texturesCoverage);
 
@@ -223,6 +223,15 @@ public class GeneratorStats {
 
 	public Map<String, CoverageStatus> getBaseCoverageInfo() {
 		return baseCoverageInfo;
+	}
+
+	public boolean hasBaseCoverageForAnyOf(String... features) {
+		for (String feature : features) {
+			CoverageStatus status = baseCoverageInfo.get(feature);
+			if (status != null && status != CoverageStatus.NONE)
+				return true;
+		}
+		return false;
 	}
 
 	public Map<TextureType, CoverageStatus> getTextureCoverageInfo() {
