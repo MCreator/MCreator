@@ -42,15 +42,13 @@ public class ${name}Entity extends ${data.entityType} {
 	<#if hasProcedure(data.onTickUpdate)>
 	@Override public void baseTick() {
 		super.baseTick();
-		<#if hasProcedure(data.onTickUpdate)>
-			<@procedureCode data.onTickUpdate, {
-				"x": "this.getX()",
-				"y": "this.getY()",
-				"z": "this.getZ()",
-				"entity": "this",
-				"world": "this.level()"
-			}/>
-		</#if>
+		<@procedureCode data.onTickUpdate, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "this",
+			"world": "this.level()"
+		}/>
 	}
 	</#if>
 
