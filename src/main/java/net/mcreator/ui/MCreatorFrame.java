@@ -33,6 +33,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.variants.modmaker.ModMaker;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -183,11 +184,12 @@ public abstract class MCreatorFrame extends JFrame
 		if (!bgimages.isEmpty()) {
 			bgimage = ListUtils.getRandomItem(bgimages);
 			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-			if (avg > 0.15) {
-				avg = (float) Math.min(avg * 1.7, 0.85);
+			if (avg > 0.1) {
+				avg = (float) Math.min(avg * 2, 0.85);
 				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-						ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
+								ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
+										ColorUtils.applyAlpha(Theme.current().getSecondAltBackgroundColor(), Math.round(avg * 255)))))
+						.getImage();
 			}
 		}
 		return bgimage;
