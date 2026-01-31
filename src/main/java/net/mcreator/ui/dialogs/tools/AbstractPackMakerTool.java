@@ -108,7 +108,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	protected static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			// Create tag if it doesn't exist yet
 			TagElement tag = new TagElement(tagType, tagName);
 			if (!workspace.getTagElements().containsKey(tag)) {
