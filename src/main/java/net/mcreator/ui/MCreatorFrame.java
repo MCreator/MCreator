@@ -91,7 +91,7 @@ public abstract class MCreatorFrame extends JFrame
 
 		this.statusBar = new StatusBar(this);
 
-		Image bgimage = getBackgroundImage();
+		Image bgimage = BackgroundLoader.getBackgroundImage();
 		if (bgimage != null) {
 			mainContent = new ImagePanel(bgimage);
 			((ImagePanel) mainContent).setKeepRatio(true);
@@ -160,39 +160,6 @@ public abstract class MCreatorFrame extends JFrame
 
 	public boolean hasBackgroundImage() {
 		return mainContent instanceof ImagePanel;
-	}
-
-	private Image getBackgroundImage() {
-		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
-
-		// Load backgrounds depending on the background source
-		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
-		case "All":
-			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
-			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
-			break;
-		case "Current theme":
-			bgimages = BackgroundLoader.loadThemeBackgrounds();
-			break;
-		case "Custom":
-			bgimages = BackgroundLoader.loadUserBackgrounds();
-			break;
-		}
-
-		Image bgimage = null;
-		if (!bgimages.isEmpty()) {
-			bgimage = ListUtils.getRandomItem(bgimages);
-			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-			if (avg > 0.1) {
-				avg = (float) Math.min(avg * 2, 0.85);
-				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-								ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-										ColorUtils.applyAlpha(Theme.current().getSecondAltBackgroundColor(), Math.round(avg * 255)))))
-						.getImage();
-			}
-		}
-		return bgimage;
 	}
 
 }
