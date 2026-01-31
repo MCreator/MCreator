@@ -1,0 +1,1 @@
+/*@ItemStack*/(ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, ${input$entity}.getPersistentData().getCompoundOrEmpty(${input$tagName})).result().orElse(ItemStack.EMPTY))
