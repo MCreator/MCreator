@@ -225,13 +225,17 @@ public class GeneratorStats {
 		return baseCoverageInfo;
 	}
 
-	public boolean hasBaseCoverageForAnyOf(String... features) {
+	public boolean hasBaseCoverageAny(String... features) {
 		for (String feature : features) {
-			CoverageStatus status = baseCoverageInfo.get(feature);
-			if (status != null && status != CoverageStatus.NONE)
+			if (hasBaseCoverage(feature))
 				return true;
 		}
 		return false;
+	}
+
+	public boolean hasBaseCoverage(String feature) {
+		CoverageStatus status = baseCoverageInfo.get(feature);
+		return status != null && status != CoverageStatus.NONE;
 	}
 
 	public Map<TextureType, CoverageStatus> getTextureCoverageInfo() {

@@ -87,7 +87,7 @@ class ModMakerMenuBar extends MainMenuBar {
 
 		JMenu tools = L10N.menu("menubar.tools");
 		tools.setMnemonic('T');
-		tools.add(mcreator.getActionRegistry().createMCItemTexture);
+		tools.add(mcreator.getActionRegistry().createTexture);
 		tools.add(mcreator.getActionRegistry().createArmorTexture);
 		tools.add(mcreator.getActionRegistry().createAnimatedTexture);
 		tools.addSeparator();

@@ -172,8 +172,7 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 						// If we support variables and procedures, also test this combination
-						if (generatorConfiguration.getGeneratorStats().getBaseCoverageInfo().get("variables")
-								!= GeneratorStats.CoverageStatus.NONE) {
+						if (generatorConfiguration.getGeneratorStats().hasBaseCoverage("variables")) {
 							tests.add(DynamicTest.dynamicTest(generator + " - Testing variables",
 									() -> GTVariables.runTest(LOG, generator, random, workspace.get())));
 						}

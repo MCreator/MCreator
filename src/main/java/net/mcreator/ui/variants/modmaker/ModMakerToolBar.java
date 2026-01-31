@@ -31,7 +31,7 @@ class ModMakerToolBar extends MainToolBar {
 	}
 
 	@Override protected void assembleLeftSection(MCreator mcreator) {
-		add(mcreator.getActionRegistry().createMCItemTexture);
+		add(mcreator.getActionRegistry().createTexture);
 		add(mcreator.getActionRegistry().createAnimatedTexture);
 
 		addSeparator(new Dimension(10, 4));
