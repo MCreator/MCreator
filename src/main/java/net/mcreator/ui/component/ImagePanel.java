@@ -45,10 +45,8 @@ public class ImagePanel extends JPanel {
 	}
 
 	public void setOffsetY(int offsetY) {
-		if (this.offsetY != offsetY) {
-			this.offsetY = offsetY;
-			repaint();
-		}
+		this.offsetY = offsetY;
+		invalidateCache();
 	}
 
 	public void setKeepRatio(boolean flag) {
