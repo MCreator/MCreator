@@ -25,29 +25,48 @@ import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.util.TestUtil;
 import org.cef.CefClient;
 import org.cef.OS;
+import org.cef.browser.CefBrowser;
 import org.cef.browser.CefBrowserOsrWithHandler;
 import org.cef.browser.CefRendering;
+import org.cef.browser.CefRequestContext;
+import org.cef.handler.CefRenderHandler;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 
-	public CefBrowserOsrCustom(CefClient client, String url,
-			CefRendering.CefRenderingWithHandler renderingWithHandler) {
+	private final boolean isTransparent;
+
+	public CefBrowserOsrCustom(CefClient client, String url, CefRendering.CefRenderingWithHandler renderingWithHandler,
+			boolean isTransparent) {
 		super(client, url, null, renderingWithHandler.getRenderHandler(), renderingWithHandler.getComponent(),
 				CefUtils.getCefBrowserSettings());
+		this.isTransparent = isTransparent;
+	}
+
+	private CefBrowserOsrCustom(CefClient client, String url, CefRequestContext context, CefRenderHandler renderHandler,
+			Component component, CefBrowser parent, Point inspectAt) {
+		super(client, url, context, renderHandler, component, parent, inspectAt, null);
+		this.isTransparent = false;
 	}
 
 	// We need to override this one to provide a valid native window handle, or JS prompt in CefJavaBridgeHandler causes error logs
 	@Override public void createImmediately() {
 		long windowHandle = getNativeWindowHandle(this.getUIComponent());
 		if (this.getParentBrowser() == null) {
-			this.createBrowser(this.getClient(), windowHandle, this.getUrl(), true, false, null);
+			this.createBrowser(this.getClient(), windowHandle, this.getUrl(), true, isTransparent, null);
 		} else {
 			this.createDevTools(this.getParentBrowser(), this.getClient(), windowHandle, true, false, null,
 					this.getInspectAt());
 		}
+	}
+
+	@Override
+	protected CefBrowser createDevToolsBrowser(CefClient client, String url, CefRequestContext context,
+			CefBrowser parent, Point inspectAt) {
+		return new CefBrowserOsrCustom(client, url, context, this.getRenderHandler(), this.getUIComponent(), parent,
+				inspectAt);
 	}
 
 	public static long getNativeWindowHandle(Component component) {

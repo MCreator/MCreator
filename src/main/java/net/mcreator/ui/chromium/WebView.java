@@ -44,6 +44,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Closeable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,8 @@ public class WebView extends JPanel implements Closeable {
 			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
-			this.browser = new CefBrowserOsrCustom(this.client, url, new CefRendering.CefRenderingWithHandler(handler, osrComponent));
+			this.browser = new CefBrowserOsrCustom(this.client, url,
+					new CefRendering.CefRenderingWithHandler(handler, osrComponent), false);
 			osrComponent.setBrowser(this.browser);
 		} else {
 			this.browser = this.client.createBrowser(url, CefRendering.DEFAULT, false);
@@ -137,7 +139,9 @@ public class WebView extends JPanel implements Closeable {
 						Method method = browser.getClass().getMethod("openDevTools");
 						method.setAccessible(true);
 						method.invoke(browser);
-					} catch (Exception ignored) {
+					} catch (InvocationTargetException e) {
+						LOG.warn("Failed to open dev tools", e.getTargetException());
+					} catch (NoSuchMethodException | IllegalAccessException ignored) {
 					}
 					return true;
 				}

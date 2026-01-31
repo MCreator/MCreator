@@ -67,7 +67,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		super(new BorderLayout());
-		setOpaque(false);
 
 		this.mcreator = mcreator;
 		this.type = type;
