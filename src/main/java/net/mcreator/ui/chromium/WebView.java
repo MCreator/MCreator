@@ -94,10 +94,14 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
-		this(url, false);
+		this(url, false, false);
 	}
 
-	private WebView(String url, boolean forcePreload) {
+	public WebView(String url, boolean isTransparent) {
+		this(url, isTransparent, false);
+	}
+
+	private WebView(String url, boolean isTransparent, boolean forcePreload) {
 		setLayout(new BorderLayout());
 
 		this.client = CefUtils.createClient();
@@ -109,8 +113,13 @@ public class WebView extends JPanel implements Closeable {
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
 			this.browser = new CefBrowserOsrCustom(this.client, url,
-					new CefRendering.CefRenderingWithHandler(handler, osrComponent), false);
+					new CefRendering.CefRenderingWithHandler(handler, osrComponent), isTransparent);
 			osrComponent.setBrowser(this.browser);
+
+			if (isTransparent) {
+				setOpaque(false);
+				osrComponent.setOpaque(false);
+			}
 		} else {
 			this.browser = this.client.createBrowser(url, CefRendering.DEFAULT, false);
 		}
@@ -471,7 +480,7 @@ public class WebView extends JPanel implements Closeable {
 	public static void preload() {
 		LOG.debug("Preloading CEF WebView");
 		CountDownLatch latch = new CountDownLatch(1);
-		WebView preloader = new WebView("about:blank", true);
+		WebView preloader = new WebView("about:blank", false, true);
 		try (preloader) {
 			preloader.addLoadListener(latch::countDown);
 			latch.await();
