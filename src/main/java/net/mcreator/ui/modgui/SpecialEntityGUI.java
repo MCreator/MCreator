@@ -131,8 +131,6 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 		creativeTabs.setPreferredSize(new java.awt.Dimension(0, 42));
 
-		ComponentUtils.makeSection(properties, L10N.t("elementgui.common.properties"));
-
 		page1group.addValidationElement(entityTexture);
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(name);
