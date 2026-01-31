@@ -255,6 +255,37 @@ public class ModelImportActions {
 		}
 	}
 
+	public static class BEDROCK extends BasicAction {
+		public BEDROCK(ActionRegistry actionRegistry) {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), actionEvent -> {
+				MCreator mcreator = actionRegistry.getMCreator();
+				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
+				if (json != null) {
+					if (json.getName().endsWith(".geo.json")) {
+						importBedrockModel(mcreator, json);
+					} else {
+						actionRegistry.importBedrockModel.doAction();
+					}
+				}
+			});
+			setIcon(UIRES.get("16px.importbedrockmodel"));
+		}
+
+		@Override public boolean isEnabled() {
+			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_bedrock")
+					!= GeneratorStats.CoverageStatus.NONE;
+		}
+	}
+
+	public static void importBedrockModel(MCreator mcreator, File file) {
+		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(),
+				RegistryNameFixer.fix(file.getName())));
+
+		mcreator.reloadWorkspaceTabContents();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+	}
+
 	public static class OBJ extends BasicAction {
 		public OBJ(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_obj_mtl_model"), actionEvent -> {

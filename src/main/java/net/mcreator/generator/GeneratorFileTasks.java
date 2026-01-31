@@ -146,17 +146,17 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
-					case "JSON":
+					case "JSON", "BEDROCK":
 						for (Model model : modelList) {
-							if (model.getType() == Model.Type.JSON) {
+							if (model.getType() == Model.Type.JSON || model.getType() == Model.Type.BEDROCK) {
 								TrackingFileIO.copyFile(generator, model.getFile(),
 										new File(to, model.getFile().getName()));
 							}
 						}
 						break;
-					case "JSON_noinlinetextures":
+					case "JSON_noinlinetextures", "BEDROCK_noinlinetextures":
 						for (Model model : modelList) {
-							if (model.getType() == Model.Type.JSON) {
+							if (model.getType() == Model.Type.JSON || model.getType() == Model.Type.BEDROCK) {
 								String jsonorig = FileIO.readFileToString(model.getFile());
 								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
 								TrackingFileIO.writeFile(generator, notextures,

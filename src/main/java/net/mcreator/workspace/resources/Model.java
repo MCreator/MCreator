@@ -61,6 +61,14 @@ public class Model {
 			} else {
 				throw new ModelException("OBJ file without MTL file is not supported");
 			}
+		} else if (file.getName().endsWith(".geo.json")) {
+			this.file = new File[1];
+			this.file[0] = file;
+			if (file.getName().endsWith(".geo.json")) {
+				this.type = Type.BEDROCK;
+			} else {
+				throw new ModelException("Unsupported model type");
+			}
 		} else if (file.getName().endsWith(".json")) {
 			File textures = new File(file.getAbsolutePath() + ".textures");
 			if (textures.isFile()) {
@@ -143,6 +151,8 @@ public class Model {
 			else if (type == Type.JSON)
 				return new TexturedModel(workspace,
 						new File(workspace.getFolderManager().getModelsDir(), name + ".json"), textureMap);
+			else if (type == Type.BEDROCK)
+				return new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".geo.json"));
 			else if (type == Type.OBJ) {
 				Model objModel = new Model(new File(workspace.getFolderManager().getModelsDir(), name + ".obj"));
 				if (textureMap != null)
@@ -247,7 +257,7 @@ public class Model {
 	}
 
 	public enum Type {
-		JSON, OBJ, JAVA, MCREATOR, BUILTIN
+		JSON, OBJ, JAVA, BEDROCK, MCREATOR, BUILTIN
 	}
 
 }

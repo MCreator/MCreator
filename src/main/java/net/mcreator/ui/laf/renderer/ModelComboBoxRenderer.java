@@ -47,7 +47,7 @@ public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Mo
 		if (value == null) // sometimes value can be null
 			return this;
 
-		setText(value.toString());
+		setText(value.toString().replace(".geo", ""));
 
 		if (value.getType() == Model.Type.JSON)
 			setIcon(UIRES.get("model.small_json"));
@@ -57,6 +57,8 @@ public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Mo
 			setIcon(UIRES.get("model.small_java"));
 		else if (value.getType() == Model.Type.BUILTIN)
 			setIcon(UIRES.get("model.small_builtin"));
+		else if (value.getType() == Model.Type.BEDROCK)
+			setIcon(UIRES.get("model.small_bedrock"));
 		else
 			setIcon(new EmptyIcon(32, 32));
 
