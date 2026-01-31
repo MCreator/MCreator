@@ -24,6 +24,8 @@ import net.mcreator.ui.MainToolBar;
 
 import java.awt.*;
 
+import static net.mcreator.ui.action.ActionUtils.hideableButton;
+
 class ModMakerToolBar extends MainToolBar {
 
 	public ModMakerToolBar(MCreator mcreator) {
@@ -31,25 +33,25 @@ class ModMakerToolBar extends MainToolBar {
 	}
 
 	@Override protected void assembleLeftSection(MCreator mcreator) {
-		add(mcreator.getActionRegistry().createTexture);
-		add(mcreator.getActionRegistry().createAnimatedTexture);
+		hideableButton(add(mcreator.getActionRegistry().createTexture));
+		hideableButton(add(mcreator.getActionRegistry().createAnimatedTexture));
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.getActionRegistry().importBlockTexture);
-		add(mcreator.getActionRegistry().importItemTexture);
-		add(mcreator.getActionRegistry().importSound);
-		add(mcreator.getActionRegistry().importStructure);
+		hideableButton(add(mcreator.getActionRegistry().importBlockTexture));
+		hideableButton(add(mcreator.getActionRegistry().importItemTexture));
+		hideableButton(add(mcreator.getActionRegistry().importSound));
+		hideableButton(add(mcreator.getActionRegistry().importStructure));
 
 		addSeparator(new Dimension(10, 4));
 
-		add(mcreator.getActionRegistry().importJavaModel);
-		add(mcreator.getActionRegistry().importJavaModelAnimation);
-		add(mcreator.getActionRegistry().importJSONModel);
-		add(mcreator.getActionRegistry().importOBJModel);
+		hideableButton(add(mcreator.getActionRegistry().importJavaModel));
+		hideableButton(add(mcreator.getActionRegistry().importJavaModelAnimation));
+		hideableButton(add(mcreator.getActionRegistry().importJSONModel));
+		hideableButton(add(mcreator.getActionRegistry().importOBJModel));
 
 		addSeparator(new Dimension(10, 4));
-		add(mcreator.getActionRegistry().setCreativeTabItemOrder);
+		hideableButton(add(mcreator.getActionRegistry().setCreativeTabItemOrder));
 
 		addSeparator(new Dimension(10, 4));
 	}

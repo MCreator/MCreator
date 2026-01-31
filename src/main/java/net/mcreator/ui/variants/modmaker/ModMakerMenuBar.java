@@ -25,6 +25,8 @@ import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 
+import static net.mcreator.ui.action.ActionUtils.hideableMenu;
+
 class ModMakerMenuBar extends MainMenuBar {
 
 	protected ModMakerMenuBar(MCreator mcreator) {
@@ -45,14 +47,14 @@ class ModMakerMenuBar extends MainMenuBar {
 
 		JMenu resources = L10N.menu("menubar.resources");
 		resources.setMnemonic('R');
-		resources.add(mcreator.getActionRegistry().importBlockTexture);
-		resources.add(mcreator.getActionRegistry().importItemTexture);
-		resources.add(mcreator.getActionRegistry().importEntityTexture);
-		resources.add(mcreator.getActionRegistry().importEffectTexture);
-		resources.add(mcreator.getActionRegistry().importParticleTexture);
-		resources.add(mcreator.getActionRegistry().importScreenTexture);
-		resources.add(mcreator.getActionRegistry().importArmorTexture);
-		resources.add(mcreator.getActionRegistry().importOtherTexture);
+		resources.add(hideableMenu(mcreator.getActionRegistry().importBlockTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importItemTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importEntityTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importEffectTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importParticleTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importScreenTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importArmorTexture));
+		resources.add(hideableMenu(mcreator.getActionRegistry().importOtherTexture));
 		resources.addSeparator();
 		resources.add(mcreator.getActionRegistry().importSound);
 		resources.addSeparator();
@@ -88,14 +90,14 @@ class ModMakerMenuBar extends MainMenuBar {
 		JMenu tools = L10N.menu("menubar.tools");
 		tools.setMnemonic('T');
 		tools.add(mcreator.getActionRegistry().createTexture);
-		tools.add(mcreator.getActionRegistry().createArmorTexture);
-		tools.add(mcreator.getActionRegistry().createAnimatedTexture);
+		tools.add(hideableMenu(mcreator.getActionRegistry().createArmorTexture));
+		tools.add(hideableMenu(mcreator.getActionRegistry().createAnimatedTexture));
 		tools.addSeparator();
-		tools.add(mcreator.getActionRegistry().openMaterialPackMaker);
-		tools.add(mcreator.getActionRegistry().openOrePackMaker);
-		tools.add(mcreator.getActionRegistry().openToolPackMaker);
-		tools.add(mcreator.getActionRegistry().openArmorPackMaker);
-		tools.add(mcreator.getActionRegistry().openWoodPackMaker);
+		tools.add(hideableMenu(mcreator.getActionRegistry().openMaterialPackMaker));
+		tools.add(hideableMenu(mcreator.getActionRegistry().openOrePackMaker));
+		tools.add(hideableMenu(mcreator.getActionRegistry().openToolPackMaker));
+		tools.add(hideableMenu(mcreator.getActionRegistry().openArmorPackMaker));
+		tools.add(hideableMenu(mcreator.getActionRegistry().openWoodPackMaker));
 		tools.addSeparator();
 		tools.add(mcreator.getActionRegistry().openJavaEditionFolder);
 		tools.add(mcreator.getActionRegistry().openBedrockEditionFolder);
