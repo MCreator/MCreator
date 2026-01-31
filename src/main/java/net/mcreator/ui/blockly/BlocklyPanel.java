@@ -24,9 +24,12 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.BlocklyPanelRegisterDOMData;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.chromium.CefUtils;
 import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -67,20 +70,28 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		super(new BorderLayout());
-
 		this.mcreator = mcreator;
 		this.type = type;
+
+		if (isTransparent()) {
+			setBackground(ColorUtils.applyAlpha(Theme.current().getBackgroundColor(), 170));
+		}
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		webView = new WebView("classloader://blockly/blockly.html");
+		webView = new WebView("classloader://blockly/blockly.html", isTransparent());
 
 		add("Center", webView);
 
 		webView.addLoadListener(() -> {
 			webView.addStringConstantToDOM("editorType", type.registryName());
 			webView.addJavaScriptBridge("javabridge", bridge);
+
+			// Add a transparent class to the body if we support a background image
+			if (isTransparent()) {
+				webView.executeScript("document.body.classList.add('transparent')", WebView.JSExecutionType.LOCAL_SAFE);
+			}
 
 			MCREvent.event(new BlocklyPanelRegisterDOMData(this, webView));
 
@@ -115,6 +126,10 @@ public class BlocklyPanel extends JPanel implements Closeable {
 			loaded = true;
 			runAfterLoaded.forEach(Runnable::run);
 		});
+	}
+
+	private boolean isTransparent() {
+		return mcreator.hasBackgroundImage() && CefUtils.useOSR();
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {

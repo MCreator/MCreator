@@ -77,3 +77,19 @@ body {
 .blocklyDropDownContent {
     position: relative;
 }
+
+body.transparent {
+    background: transparent !important;
+}
+
+body.transparent #blockly {
+    background: transparent !important;
+}
+
+body.transparent .blocklySvg {
+    background-color: transparent !important;
+}
+
+body.transparent .blocklyMainBackground {
+    fill: transparent !important;
+}
