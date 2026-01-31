@@ -9,6 +9,14 @@
       }
     },
     "components": {
+      <#if data.hasCustomModel() && data.getModelIdentifier()?has_content>
+      "minecraft:geometry": "${data.getModelIdentifier()}",
+      "minecraft:material_instances": {
+          "*": {
+              "texture": "${modid}_${registryname}"
+          }
+      },
+      </#if>
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
       "minecraft:map_color": "${generator.map(data.colorOnMap, "mapcolors")}",
       </#if>
