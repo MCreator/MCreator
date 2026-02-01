@@ -24,6 +24,7 @@ import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Block;
+import net.mcreator.element.types.ItemExtension;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.SpecialEntity;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -119,7 +120,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				name + "ChestBoat", name + "WoodRecipe", "Stripped" + name + "WoodRecipe", name + "PlanksRecipe",
 				name + "StairsRecipe", name + "SlabRecipe", name + "FenceRecipe", name + "FenceGateRecipe",
 				name + "DoorRecipe", name + "TrapdoorRecipe", name + "PressurePlateRecipe", name + "ButtonRecipe",
-				name + "SignRecipe", name + "HangingSignRecipe", name + "BoatRecipe", name + "ChestBoatRecipe"))
+				name + "SignRecipe", name + "HangingSignRecipe", name + "BoatRecipe", name + "ChestBoatRecipe",
+				name + "LeavesComposting"))
 			return;
 
 		// select folder the mod pack should be in
@@ -563,6 +565,14 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoat.itemTexture = new TextureHolder(workspace, chestBoatItemTextureName);
 		chestBoat.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoat);
+
+		// Item extension to make generated leaves compostable
+		ItemExtension leavesComposting = (ItemExtension) ModElementType.ITEMEXTENSION.getModElementGUI(mcreator,
+						new ModElement(workspace, name + "LeavesComposting", ModElementType.ITEMEXTENSION), false)
+				.getElementFromGUI();
+		leavesComposting.item = new MItemBlock(workspace, "CUSTOM:" + name + "Leaves");
+		leavesComposting.compostLayerChance = 0.3;
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, leavesComposting);
 
 		// Tags
 		String planksEntry = "CUSTOM:" + name + "Planks";
