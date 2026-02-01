@@ -281,7 +281,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.renderType = 10;
 		if (model.getType() == Model.Type.BEDROCK)
 			block.renderType = 2;
-		block.customModelName = model.getReadableName().replace(".geo", "");
+		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();
 		block.hardness = (double) hardness.getValue();

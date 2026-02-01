@@ -91,7 +91,11 @@ public class Model {
 			}
 		}
 
-		this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.'));
+		if (this.type == Type.BEDROCK) {
+			this.readableName = this.file[0].getName().replace(".geo.json", "");
+		} else {
+			this.readableName = this.file[0].getName().substring(0, this.file[0].getName().lastIndexOf('.'));
+		}
 	}
 
 	/**
