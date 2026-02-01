@@ -1,0 +1,1 @@
+"minecraft:prevent_armor_change": {},
