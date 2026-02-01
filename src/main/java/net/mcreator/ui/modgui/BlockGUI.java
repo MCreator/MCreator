@@ -34,6 +34,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -110,10 +111,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final VTextField name = new VTextField(19).requireValue("elementgui.block.error_block_must_have_name")
+	private final VTextField name = new VTextField(18).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private NumberProcedureSelector luminance;
 	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
 	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
 	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
@@ -272,7 +273,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final CardLayout blockBaseCardLayout = new CardLayout();
@@ -288,6 +289,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
 	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
+	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
+	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -305,6 +308,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override protected void initGUI() {
 		signEntityTexture.setAddPNGExtension(false);
+		signGUITexture.setAddPNGExtension(false);
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -376,6 +380,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onBonemealSuccess = new ProcedureSelector(this.withEntry("block/on_bonemeal_success"), mcreator,
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
+
+		luminance = new NumberProcedureSelector(this.withEntry("block/luminance"), mcreator,
+				L10N.t("elementgui.common.luminance"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(0, 0, 15, 1)), 130, Dependency.fromString("blockstate:blockstate"));
 
 		emittedRedstonePower = new NumberProcedureSelector(this.withEntry("block/redstone_power"), mcreator,
 				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
@@ -540,8 +548,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
-				case "Sign" -> {
+				case "Sign", "HangingSign" -> {
 					showBlockBaseCard("sign");
+					// Only show GUI texture selector for hanging signs
+					signGUITexturePanel.setVisible("HangingSign".equals(selectedBlockBase));
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
 					if (!isEditingMode()) {
@@ -602,6 +612,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
 		signEntityTexture.setOpaque(false);
+		signGUITexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -633,9 +644,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"flowerPot");
 
 		// Card for signs
-		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+		JPanel signTextures = new JPanel(new AdaptiveGridLayout(-1, 1, 2, 2));
+		signTextures.setOpaque(false);
+		signTextures.add(PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_entity_texture"),
-						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture), "sign");
+						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture));
+		signTextures.add(signGUITexturePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_gui_texture"),
+						L10N.label("elementgui.block.sign_gui_texture")), signGUITexture));
+		blockBasePropertiesPanel.add(signTextures, "sign");
 
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
@@ -801,7 +818,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
 
-		JPanel selp = new JPanel(new GridLayout(9, 2, 0, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 
@@ -847,10 +864,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp.add(unbreakable);
 
 		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
-				L10N.label("elementgui.common.luminance")));
-		selp.add(luminance);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
 				L10N.label("elementgui.block.has_custom_opacity")));
@@ -1043,7 +1056,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			blockStatesList.propertiesChanged();
 		});
 
-		ComponentUtils.makeSection(selp, L10N.t("elementgui.common.properties_general"));
+		JComponent selpInnerWrap = PanelUtils.northAndCenterElement(selp, luminance, 2, 2);
+
+		ComponentUtils.makeSection(selpInnerWrap, L10N.t("elementgui.common.properties_general"));
 
 		ComponentUtils.makeSection(blockItemSettings, L10N.t("elementgui.block.properties_block_item"));
 
@@ -1058,7 +1073,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		ComponentUtils.makeSection(selpWrap, L10N.t("elementgui.common.properties_dropping"));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
-				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selp, blockItemSettings)),
+				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpInnerWrap, blockItemSettings)),
 				PanelUtils.pullElementUp(PanelUtils.centerAndSouthElement(selpWrap, soundProperties)))));
 		pane3.setOpaque(false);
 
@@ -1410,15 +1425,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(pottedPlant);
 		page1group.addValidationElement(signEntityTexture);
+		page1group.addValidationElement(signGUITexture);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
-			String selectedBlockBase = blockBase.getSelectedItem();
 			Model model = renderType.getSelectedItem();
-			return (model != null && model.getType() == Model.Type.JAVA) || ("Sign".equals(selectedBlockBase));
+			return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
 		}));
 
-		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture",
-				() -> "Sign".equals(blockBase.getSelectedItem()));
+		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
+		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
+				() -> "HangingSign".equals(blockBase.getSelectedItem()));
 
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
@@ -1572,7 +1588,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
 			refreshFieldsTileEntity();
-		} else if (!"Sign".equals(blockBase.getSelectedItem())) {
+		} else if (!isAnySign()) {
 			hasInventory.setEnabled(true);
 		}
 
@@ -1587,6 +1603,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setSelected(false);
 			hasTransparency.setEnabled(true);
 		}
+	}
+
+	private boolean isAnySign() {
+		return "Sign".equals(blockBase.getSelectedItem()) || "HangingSign".equals(blockBase.getSelectedItem());
 	}
 
 	private void updateSoundType() {
@@ -1664,6 +1684,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		super.reloadDataLists();
 
 		signEntityTexture.reload();
+		signGUITexture.reload();
 
 		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
 				mcreator.getWorkspace());
@@ -1688,6 +1709,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		specialInformation.refreshListKeepSelected(context);
 		emittedRedstonePower.refreshListKeepSelected(context);
+		luminance.refreshListKeepSelected(context);
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);
 		placingCondition.refreshListKeepSelected(context);
@@ -1778,7 +1800,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		stepSound.setSound(block.stepSound);
 		defaultSoundType.setSelected(!block.isCustomSoundType);
 		customSoundType.setSelected(block.isCustomSoundType);
-		luminance.setValue(block.luminance);
+		luminance.setSelectedProcedure(block.luminance);
 		vanillaToolTier.setSelectedItem(block.vanillaToolTier);
 		requiresCorrectTool.setSelected(block.requiresCorrectTool);
 		customDrop.setBlock(block.customDrop);
@@ -1803,6 +1825,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
 		} else {
+			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
@@ -1810,6 +1833,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		leavesParticleType.setEntry(block.leavesParticleType);
 		leavesParticleChance.setValue(block.leavesParticleChance);
 		signEntityTexture.setTexture(block.signEntityTexture);
+		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1938,7 +1962,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.hitSound = hitSound.getSound();
 		block.placeSound = placeSound.getSound();
 		block.stepSound = stepSound.getSound();
-		block.luminance = (int) luminance.getValue();
+		block.luminance = luminance.getSelectedProcedure();
 		block.unbreakable = unbreakable.isSelected();
 		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
@@ -2038,6 +2062,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.leavesParticleType = leavesParticleType.getEntry();
 		block.leavesParticleChance = (double) leavesParticleChance.getValue();
 		block.signEntityTexture = signEntityTexture.getTextureHolder();
+		block.signGUITexture = signGUITexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

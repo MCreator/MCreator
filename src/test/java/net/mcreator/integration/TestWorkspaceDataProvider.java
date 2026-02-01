@@ -197,7 +197,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	private static void fillWorkspaceWithResourcesAndData(Workspace workspace) {
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("sounds") == GeneratorStats.CoverageStatus.FULL) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("sounds")) {
 			for (int i = 1; i <= 3; i++) {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
@@ -296,8 +296,7 @@ public class TestWorkspaceDataProvider {
 					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("model_java")) {
 			try {
 				ModelImportActions.importJavaModel(null, workspace,
 						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
@@ -306,8 +305,7 @@ public class TestWorkspaceDataProvider {
 			}
 		}
 
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("model_animations_java")) {
 			try {
 				AnimationImportActions.importJavaModelAnimation(null, workspace,
 						IOUtils.resourceToString("/entityanimation-mojmap.java", StandardCharsets.UTF_8));
@@ -318,7 +316,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
@@ -1663,6 +1661,19 @@ public class TestWorkspaceDataProvider {
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
 			beitem.foodCanAlwaysEat = _true;
+			beitem.handEquipped = _true;
+			beitem.rarity = getRandomString(random, Arrays.asList("common", "uncommon", "rare", "epic"));
+			beitem.enableCreativeTab = !_true;
+			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beitem.isHiddenInCommands = _true;
+			beitem.movementModifier = _true ? 1 : 0.35;
+			beitem.allowOffHand = _true;
+			beitem.fuelDuration = _true ? 0 : 10;
+			beitem.shouldDespawn = _true;
+			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
+			beitem.animation = getRandomItem(random,
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush", "spyglass" });
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
 			BEBlock block = new BEBlock(modElement);
@@ -2057,7 +2068,7 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		block.fallSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		block.luminance = 3;
+		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
@@ -2161,6 +2172,7 @@ public class TestWorkspaceDataProvider {
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
 		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
+		block.signGUITexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "picture1");
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
