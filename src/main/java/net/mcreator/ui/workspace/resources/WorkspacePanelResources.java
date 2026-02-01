@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.resourcepack.ResourcePackInfo;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.OpaqueTabStripTabbedPaneUI;
@@ -60,30 +59,19 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				new ResourcePackInfo.Vanilla(workspacePanel.getMCreator().getWorkspace()),
 				() -> workspacePanel.getSearchTerm().trim());
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("textures"))
 			addResourcesTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
-				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
-				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_bedrock")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj", "model_bedrock"))
 			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_animations_java"))
 			addResourcesTab(L10N.t("workspace.resources.tab.animations"), workspacePanelAnimations);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("sounds"))
 			addResourcesTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("structures"))
 			addResourcesTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
@@ -91,8 +79,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 				.contains("@"))
 			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("vanilla_resources")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("vanilla_resources"))
 			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());

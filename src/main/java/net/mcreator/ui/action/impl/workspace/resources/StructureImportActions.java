@@ -48,8 +48,7 @@ public class StructureImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("structures");
 		}
 	}
 
@@ -108,8 +107,7 @@ public class StructureImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("structures");
 		}
 	}
 

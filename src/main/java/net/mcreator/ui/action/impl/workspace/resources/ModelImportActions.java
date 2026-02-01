@@ -93,8 +93,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_java");
 		}
 	}
 
@@ -232,8 +231,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_json");
 		}
 	}
 
@@ -304,8 +302,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_obj");
 		}
 	}
 

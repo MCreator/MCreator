@@ -302,8 +302,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("tags")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("tags");
 	}
 
 	private void deleteCurrentlySelected() {

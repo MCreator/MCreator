@@ -113,7 +113,7 @@ public class ActionRegistry {
 	public final BasicAction reloadCode;
 
 	// Resource actions
-	public final BasicAction createMCItemTexture;
+	public final BasicAction createTexture;
 	public final BasicAction createArmorTexture;
 	public final BasicAction createAnimatedTexture;
 	public final BasicAction importBlockTexture;
@@ -233,7 +233,7 @@ public class ActionRegistry {
 		this.reloadGradleProject = new ReloadGradleProjectAction(this);
 		this.clearAllGradleCaches = new ClearAllGradleCachesAction(this);
 		this.cancelGradleTaskAction = new CancelGradleTaskAction(this);
-		this.createMCItemTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
+		this.createTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
 		}).setIcon(UIRES.get("16px.newtexture"));
