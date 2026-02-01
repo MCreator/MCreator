@@ -271,8 +271,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_bedrock")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_bedrock");
 		}
 	}
 
