@@ -2172,6 +2172,7 @@ public class TestWorkspaceDataProvider {
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
 		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
+		block.signGUITexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "picture1");
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
