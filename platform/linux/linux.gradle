@@ -18,7 +18,7 @@ tasks.register('exportLinux64', Copy.class) {
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
-    into('jdk') { from 'jdk/jdk21_linux_64' }
+    into('jdk') { from 'jdk/jbr21_linux_64' }
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
         delete 'build/export/linux64/mcreator.shdos'
@@ -37,11 +37,15 @@ tasks.register('tarLinux64', Tar.class) {
     }
 
     into('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")) {
-        from('build/export/linux64/') { exclude "mcreator.sh", "jdk/bin*", "jdk/lib/jspawnhelper", "jdk/lib/jexec" }
+        from('build/export/linux64/') {
+            exclude "mcreator.sh", "jdk/bin*", "jdk/lib/jspawnhelper", "jdk/lib/jexec", "jdk/lib/jcef_helper", "jdk/lib/cef_server"
+        }
         from('build/export/linux64/mcreator.sh', execPermissions)
         from('build/export/linux64/jdk/bin/', execPermissions) into 'jdk/bin/'
         from('build/export/linux64/jdk/lib/jspawnhelper', execPermissions) into 'jdk/lib/'
         from('build/export/linux64/jdk/lib/jexec', execPermissions) into 'jdk/lib/'
+        from('build/export/linux64/jdk/lib/jcef_helper', execPermissions) into 'jdk/lib/'
+        from('build/export/linux64/jdk/lib/cef_server', execPermissions) into 'jdk/lib/'
     }
 
     destinationDirectory = file('build/export/')
