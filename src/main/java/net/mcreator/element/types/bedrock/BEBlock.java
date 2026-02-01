@@ -19,8 +19,7 @@
 
 package net.mcreator.element.types.bedrock;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
@@ -52,7 +51,6 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public int renderType;
 	@Nonnull public String customModelName;
-	public String modelIdentifier;
 
 	public String name;
 	public MItemBlock customDrop;
@@ -117,13 +115,15 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	public String getModelIdentifier() {
-		if (modelIdentifier == null) {
+		try {
 			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(getModel().getFile()), JsonObject.class);
-			modelIdentifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsJsonObject()
+			return obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsJsonObject()
 					.get("identifier").getAsString();
-			System.out.println(modelIdentifier);
+		} catch (JsonParseException e) {
+			System.out.println("Bedrock model: " + getModel().getReadableName() + "'s identifier could not be parsed." + e);
 		}
-		return modelIdentifier;
+
+		return "";
 	}
 
 	public boolean hasCustomModel() {
