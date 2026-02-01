@@ -262,7 +262,8 @@ public class ModelImportActions {
 					if (json.getName().endsWith(".geo.json")) {
 						importBedrockModel(mcreator, json);
 					} else {
-						actionRegistry.importBedrockModel.doAction();
+						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
+								L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
