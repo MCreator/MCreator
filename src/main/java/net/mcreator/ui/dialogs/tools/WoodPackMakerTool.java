@@ -115,11 +115,11 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		if (!checkIfNamesAvailable(workspace, name + "Wood", name + "Log", "Stripped" + name + "Wood",
 				"Stripped" + name + "Log", name + "Planks", name + "Leaves", name + "Stairs", name + "Slab",
 				name + "Fence", name + "FenceGate", name + "Door", name + "Trapdoor", name + "PressurePlate",
-				name + "Button", name + "Sign", name + "WallSign", name + "Boat", name + "ChestBoat",
-				name + "WoodRecipe", "Stripped" + name + "WoodRecipe", name + "PlanksRecipe", name + "StairsRecipe",
-				name + "SlabRecipe", name + "FenceRecipe", name + "FenceGateRecipe", name + "DoorRecipe",
-				name + "TrapdoorRecipe", name + "PressurePlateRecipe", name + "ButtonRecipe", name + "SignRecipe",
-				name + "BoatRecipe", name + "ChestBoatRecipe"))
+				name + "Button", name + "Sign", name + "HangingSign", name + "WallSign", name + "Boat",
+				name + "ChestBoat", name + "WoodRecipe", "Stripped" + name + "WoodRecipe", name + "PlanksRecipe",
+				name + "StairsRecipe", name + "SlabRecipe", name + "FenceRecipe", name + "FenceGateRecipe",
+				name + "DoorRecipe", name + "TrapdoorRecipe", name + "PressurePlateRecipe", name + "ButtonRecipe",
+				name + "SignRecipe", name + "HangingSignRecipe", name + "BoatRecipe", name + "ChestBoatRecipe"))
 			return;
 
 		// select folder the mod pack should be in
@@ -207,6 +207,28 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		String signEntityTextureName = registryName + "_sign";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signEntity.getImage()),
 				mcreator.getFolderManager().getTextureFile(signEntityTextureName, TextureType.ENTITY));
+
+		// Hanging sign textures
+		ImageIcon hangingSignItem = ImageUtils.drawOver(
+				ImageUtils.colorize(getCachedTexture("hanging_sign_item_base"), color, true),
+				getCachedTexture("hanging_sign_item_overlay"));
+		String hangingSignItemTextureName = registryName + "_hanging_sign";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignItem.getImage()),
+				mcreator.getFolderManager().getTextureFile(hangingSignItemTextureName, TextureType.ITEM));
+
+		ImageIcon hangingSignEntity = ImageUtils.drawOver(
+				ImageUtils.colorize(getCachedTexture("hanging_sign_entity_base"), color, true),
+				getCachedTexture("hanging_sign_entity_overlay"));
+		String hangingSignEntityTextureName = registryName + "_hanging_sign";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignEntity.getImage()),
+				mcreator.getFolderManager().getTextureFile(hangingSignEntityTextureName, TextureType.ENTITY));
+
+		ImageIcon hangingSignGUI = ImageUtils.drawOver(
+				ImageUtils.colorize(getCachedTexture("hanging_sign_gui_base"), color, true),
+				getCachedTexture("hanging_sign_gui_overlay"));
+		String hangingSignGUITextureName = registryName + "_hanging_sign";
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignGUI.getImage()),
+				mcreator.getFolderManager().getTextureFile(hangingSignGUITextureName, TextureType.SCREEN));
 
 		// Boat textures
 		ImageIcon boatItem = ImageUtils.colorize(getCachedTexture("boat_item"), color, true);
@@ -504,6 +526,25 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signBlock.ignitedByLava = true;
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, signBlock);
 
+		Block hangingSignBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "HangingSign", ModElementType.BLOCK), false).getElementFromGUI();
+		hangingSignBlock.name = readableName + " Hanging Sign";
+		hangingSignBlock.blockBase = "HangingSign";
+		hangingSignBlock.texture = new TextureHolder(workspace, planksTextureName);
+		hangingSignBlock.itemTexture = new TextureHolder(workspace, hangingSignItemTextureName);
+		hangingSignBlock.signEntityTexture = new TextureHolder(workspace, hangingSignEntityTextureName);
+		hangingSignBlock.signGUITexture = new TextureHolder(workspace, hangingSignGUITextureName);
+		hangingSignBlock.maxStackSize = 16;
+		hangingSignBlock.soundOnStep = new StepSound(workspace, "HANGING_SIGN");
+		hangingSignBlock.hardness = 1 * factor;
+		hangingSignBlock.resistance = 1 * factor;
+		hangingSignBlock.destroyTool = "axe";
+		hangingSignBlock.noteBlockInstrument = "bass";
+		hangingSignBlock.creativeTabs = List.of(new TabEntry(workspace, "TRANSPORTATION"));
+		hangingSignBlock.isNotColidable = true;
+		hangingSignBlock.ignitedByLava = true;
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, hangingSignBlock);
+
 		// Boats
 		SpecialEntity boat = (SpecialEntity) ModElementType.SPECIALENTITY.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Boat", ModElementType.SPECIALENTITY), false).getElementFromGUI();
@@ -703,6 +744,24 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signRecipe.recipeRetstackSize = 3;
 		signRecipe.unlockingItems.add(new MItemBlock(workspace, planksEntry));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, signRecipe);
+
+		Recipe hangingSignRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+						new ModElement(workspace, name + "HangingSignRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
+		hangingSignRecipe.craftingBookCategory = "MISC";
+		hangingSignRecipe.group = "hanging_sign";
+		hangingSignRecipe.recipeSlots[0] = new MItemBlock(workspace, "Blocks.CHAIN");
+		hangingSignRecipe.recipeSlots[2] = new MItemBlock(workspace, "Blocks.CHAIN");
+		hangingSignRecipe.recipeSlots[3] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeSlots[4] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeSlots[5] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeSlots[6] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeSlots[7] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeSlots[8] = new MItemBlock(workspace, strippedLogEntry);
+		hangingSignRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "HangingSign");
+		hangingSignRecipe.recipeRetstackSize = 6;
+		hangingSignRecipe.unlockingItems.add(new MItemBlock(workspace, strippedLogEntry));
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, hangingSignRecipe);
 
 		Recipe boatRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BoatRecipe", ModElementType.RECIPE), false).getElementFromGUI();
