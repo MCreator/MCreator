@@ -57,5 +57,5 @@ resources_setup_tasks:
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@SRCROOT/pack_icon.png"
   - task: copy_models
-    type: BEDROCK_noinlinetextures
+    type: BEDROCK
     to: "@MODASSETSROOT/models/blocks"

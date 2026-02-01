@@ -154,9 +154,9 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
-					case "JSON_noinlinetextures", "BEDROCK_noinlinetextures":
+					case "JSON_noinlinetextures":
 						for (Model model : modelList) {
-							if (model.getType() == Model.Type.JSON || model.getType() == Model.Type.BEDROCK) {
+							if (model.getType() == Model.Type.JSON) {
 								String jsonorig = FileIO.readFileToString(model.getFile());
 								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
 								TrackingFileIO.writeFile(generator, notextures,
