@@ -35,10 +35,7 @@ import net.mcreator.minecraft.JavaModels;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.CollapsiblePanel;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -74,10 +71,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ArmorGUI extends ModElementGUI<Armor> {
@@ -189,6 +184,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private ProcedureSelector onLeggingsTick;
 	private ProcedureSelector onBootsTick;
 
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup group1page = new ValidationGroup();
@@ -609,11 +612,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp22));
 
-		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 2));
+		JPanel enderpanel = new JPanel(new GridLayout(10, 2, 20, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
 				L10N.label("elementgui.armor.layer_texture")));
 		enderpanel.add(armorTextureFile);
+
+		enderpanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		enderpanel.add(rarity);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
@@ -899,6 +906,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableBody.setSelected(armor.enableBody);
 		enableLeggings.setSelected(armor.enableLeggings);
 		enableBoots.setSelected(armor.enableBoots);
+		rarity.setSelectedItem(armor.rarity);
 		creativeTabs.setListElements(armor.creativeTabs);
 		textureHelmet.setEnabled(enableHelmet.isSelected());
 		textureBody.setEnabled(enableBody.isSelected());
@@ -1011,6 +1019,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodySpecialInformation = bodySpecialInformation.getSelectedProcedure();
 		armor.leggingsSpecialInformation = leggingsSpecialInformation.getSelectedProcedure();
 		armor.bootsSpecialInformation = bootsSpecialInformation.getSelectedProcedure();
+		armor.rarity = rarity.getSelectedItem();
 		armor.creativeTabs = creativeTabs.getListElements();
 		armor.armorTextureFile = armorTextureFile.getTextureName();
 		armor.maxDamage = (int) maxDamage.getValue();
