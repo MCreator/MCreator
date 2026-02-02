@@ -38,6 +38,7 @@ import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.io.writer.JSWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -597,6 +598,10 @@ public class Generator implements IGenerator, Closeable {
 								generatorFile.getUsercodeComment()));
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(workspace, generatorFile.contents(), generatorFile.getFile());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.JS) {
+				JSWriter.writeJSToFile(workspace,
+						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
+								generatorFile.getUsercodeComment()), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				String usercodeComment = generatorFile.getUsercodeComment();
 				if (usercodeComment != null)
