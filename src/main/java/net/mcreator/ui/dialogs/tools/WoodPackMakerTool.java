@@ -371,6 +371,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
+		leavesBlock.destroyTool = "hoe";
 		leavesBlock.ignitedByLava = true;
 		leavesBlock.flammability = 60;
 		leavesBlock.fireSpreadSpeed = 30;
