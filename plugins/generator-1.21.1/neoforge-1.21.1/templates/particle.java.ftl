@@ -111,6 +111,28 @@ package ${package}.client.particle;
 	}
 	</#if>
 
+	<#if hasProcedure(data.rotationProvider)>
+	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+		Vec3 vec = <@procedureCode data.rotationProvider, {
+			"world": "this.level",
+			"x": "this.x",
+			"y": "this.y",
+			"z": "this.z",
+			"speedX": "this.xd",
+			"speedY": "this.yd",
+			"speedZ": "this.zd",
+			"angularVelocity": "this.angularVelocity",
+			"angularAcceleration": "this.angularAcceleration",
+			"age": "this.age + partialTicks"
+		}/>;
+		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
+		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
+		Quaternionf flippedTilt = new Quaternionf(tilt).mul(new Quaternionf().rotateY((float) Math.PI));
+		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks);
+	}
+	</#if>
+
 	@Override public void tick() {
 		super.tick();
 
