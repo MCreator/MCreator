@@ -22,7 +22,6 @@ package net.mcreator.integration;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.gui.*;
@@ -102,7 +101,8 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
 
-		Collection<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats().getSupportedModElementTypes();
+		Collection<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
+				.getSupportedModElementTypes();
 
 		// Remove METs not supported by the generator
 		retval.retainAll(supportedMETs);
@@ -1677,7 +1677,8 @@ public class TestWorkspaceDataProvider {
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 			beitem.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush", "spyglass" });
+					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
+							"spyglass" });
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
 			BEBlock block = new BEBlock(modElement);
@@ -1690,7 +1691,8 @@ public class TestWorkspaceDataProvider {
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 			block.hardness = 2.3;
 			block.resistance = 3.1;
-			block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			block.customDrop = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
 			block.dropAmount = 3;
 			block.flammability = 5;
 			block.flammableDestroyChance = 12;
@@ -1973,7 +1975,9 @@ public class TestWorkspaceDataProvider {
 					new PropertyData.StringType("CUSTOM:enum_prop", new String[] { "logic", "integer", "string" }),
 					"string"));
 
-			Set<String> usedRegistryNames = new HashSet<>();
+			Map<String, List<String>> blockBaseProperties = BlockStatePropertyUtils.getBlockBaseProperties(
+					modElement.getGeneratorConfiguration());
+			Set<String> usedRegistryNames = new HashSet<>(blockBaseProperties.getOrDefault(blockBase, List.of()));
 			for (DataListEntry entry : DataListLoader.loadDataMap("blockstateproperties").values()) {
 				Map<?, ?> other = (Map<?, ?>) entry.getOther();
 				PropertyDataWithValue<?> property = BlockStatePropertyUtils.fromDataListEntry(entry);
@@ -2052,8 +2056,10 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.leavesParticleType = emptyLists ? null : new Particle(modElement.getWorkspace(),
-				getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+		block.leavesParticleType = emptyLists ?
+				null :
+				new Particle(modElement.getWorkspace(),
+						getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 		block.leavesParticleChance = 0.265;
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
 		block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
