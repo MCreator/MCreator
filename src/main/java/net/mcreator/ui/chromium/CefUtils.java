@@ -62,8 +62,9 @@ public class CefUtils {
 
 	private static boolean useOSRImpl() {
 		if (OS.isMacintosh()) {
-			// On macOS, we need to use WR in all cases, as OSR fails to load JOGL natives in the current JBR JCEF build
-			// WR is quite stable and smooth on macOS anyway
+			// Default OSR fails to load due to missing JOGL natives in the current JBR JCEF build
+			// However, we use a custom OSR solution that works fine on macOS, but is slower than WR
+			// WR is much more snappy, however, acts strangely during window resize, but has right size afterwards
 			return false;
 		}
 
